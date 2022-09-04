@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: de.mannodermaus.gradle.plugins:android-junit5:1.8.2.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.mannodermaus.gradle.plugins/android-junit5/1.8.2.1/76be1a24edd67861dbf20d20ee855b8ccd1bab0e/android-junit5-1.8.2.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.mannodermaus.gradle.plugins/android-junit5/1.8.2.1/b71a6996c0f2041049e573d9ae008717bd48934f/android-junit5-1.8.2.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.mannodermaus.gradle.plugins/android-junit5/1.8.2.1/8500c4f1e3f0e9713c91cac7a37f8c5735c0d267/android-junit5-1.8.2.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
