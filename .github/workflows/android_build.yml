@@ -6,7 +6,5 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
-      - name: Gradle Wrapper
-        run: ./gradlew wrapper  
       - name: Build the app
         run: ./gradlew build
