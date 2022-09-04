@@ -7,6 +7,14 @@ android {
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.3.0"
+    }
+
     buildTypes {
         getByName(types.BuildTypes.UniqueBuilds.Release.buildName) {
             isMinifyEnabled = types.BuildTypes.UniqueBuilds.Release.isMinifyEnabled
@@ -49,6 +57,10 @@ android {
 dependencies {
     implementation(Dependencies.Android.appCompat)
     implementation(Dependencies.Android.ktx)
+
+    implementation(Dependencies.Compose.activity)
+    implementation(Dependencies.Compose.material)
+
     implementation(Dependencies.Material.material)
 
     testImplementation(Dependencies.Junit.Jupiter.api)
