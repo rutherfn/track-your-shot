@@ -1,7 +1,8 @@
 package com.nicholas.rutherford.track.my.shot
 
-import junit.framework.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -9,8 +10,10 @@ import org.junit.Test
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    @DisplayName("Test with Custom Display Name in nested class")
+    internal fun testInNestedClass() {
+        assertEquals("LOL", "LO" + "L")
     }
 }

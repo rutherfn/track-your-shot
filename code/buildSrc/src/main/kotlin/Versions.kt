@@ -7,12 +7,21 @@ object Versions {
         const val kotlin = "1.6.10"
     }
 
+//    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
+//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+//    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.2")
+
     /**
      *  To define dependencies versions */
     object Dependencies {
-        const val appCompat = "1.4.1"
-        const val junit = "4.13.2"
-        const val ktx = "1.7.0"
-        const val material = "1.5.0"
+
+        object Android {
+            const val appCompat = "1.4.1"
+            const val ktx = "1.7.0"
+        }
+
+        object JunitJupiter { const val junitJupiter = "5.7.2" }
+
+        object Material { const val material = "1.5.0" }
     }
 }
