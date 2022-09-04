@@ -3,3 +3,4 @@
 /workspace.xml
 # CodeStream ignored files
 /codestream.xml
+/gradle.xml
