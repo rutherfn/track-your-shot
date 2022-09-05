@@ -30,10 +30,6 @@ object Dependencies {
         }
     }
 
-    object KLint {
-        const val klint = "org.jlleitschuh.gradle.ktlint"
-    }
-
     object Material {
         const val material = "com.google.android.material:material:${Versions.Dependencies.Material.material}"
     }
