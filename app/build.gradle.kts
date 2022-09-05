@@ -1,6 +1,7 @@
 plugins {
     id(BuildIds.pluginId)
     kotlin(BuildIds.pluginKotlin)
+    id(BuildIds.kLintId) version Versions.Dependencies.KLint.kLint
 }
 
 android {
@@ -8,11 +9,11 @@ android {
     compileSdk = ConfigurationData.compileSdk
 
     buildFeatures {
-        compose = true
+        compose = ComposeData.Enabled.value
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.0"
+        kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
     }
 
     buildTypes {
@@ -60,6 +61,8 @@ dependencies {
 
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.material)
+
+    implementation(Dependencies.KLint.klint)
 
     implementation(Dependencies.Material.material)
 

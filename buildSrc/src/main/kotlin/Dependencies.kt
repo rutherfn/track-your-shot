@@ -21,13 +21,17 @@ object Dependencies {
     }
 
     object Junit {
-        const val junit = "de.mannodermaus.gradle.plugins:android-junit5:1.8.2.1"
+        const val junit = "de.mannodermaus.gradle.plugins:android-junit5:${Versions.Dependencies.JunitJupiter.junit}"
 
         object Jupiter {
             const val api = "org.junit.jupiter:junit-jupiter-api:${Versions.Dependencies.JunitJupiter.junitJupiter}"
             const val engine = "org.junit.jupiter:junit-jupiter-engine:${Versions.Dependencies.JunitJupiter.junitJupiter}"
             const val params = "org.junit.jupiter:junit-jupiter-params:${Versions.Dependencies.JunitJupiter.junitJupiter}"
         }
+    }
+
+    object KLint {
+        const val klint = "org.jlleitschuh.gradle:ktlint-gradle:${Versions.Dependencies.KLint.kLint}"
     }
 
     object Material {
