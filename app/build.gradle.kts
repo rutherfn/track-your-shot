@@ -2,7 +2,6 @@ plugins {
     id(BuildIds.pluginId)
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.kLintId) version Versions.Dependencies.KLint.kLint
-    id("org.jlleitschuh.gradle.ktlint-idea") version Versions.Dependencies.KLint.kLint
 }
 
 android {
@@ -70,13 +69,4 @@ dependencies {
     testImplementation(Dependencies.Junit.junit)
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
-}
-
-ktlint {
-    debug.set(false)
-    verbose.set(false)
-    outputToConsole.set(true)
-    ignoreFailures.set(false)
-    enableExperimentalRules.set(false)
-    this.disabledRules.set(listOf("no-wildcard-imports"))
 }
