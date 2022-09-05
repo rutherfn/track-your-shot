@@ -1,4 +1,4 @@
-name: KTLint
+name: KtLint
 on: [pull_request]
 jobs:
   build:
