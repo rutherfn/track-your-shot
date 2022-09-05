@@ -1,7 +1,7 @@
 plugins {
     id(BuildIds.pluginId)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.kLintId) version Versions.Dependencies.KLint.kLint
+    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
 }
 
 android {
