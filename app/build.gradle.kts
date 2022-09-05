@@ -55,8 +55,6 @@ android {
     }
 }
 
-apply(Dependencies.KLint.klint)
-
 dependencies {
     implementation(Dependencies.Android.appCompat)
     implementation(Dependencies.Android.ktx)
@@ -72,3 +70,5 @@ dependencies {
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }
+
+apply("org.jlleitschuh.gradle.ktlint")
