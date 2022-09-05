@@ -55,14 +55,14 @@ android {
     }
 }
 
+apply(Dependencies.KLint.klint)
+
 dependencies {
     implementation(Dependencies.Android.appCompat)
     implementation(Dependencies.Android.ktx)
 
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.material)
-
-    implementation(Dependencies.KLint.klint)
 
     implementation(Dependencies.Material.material)
 

@@ -31,7 +31,7 @@ object Dependencies {
     }
 
     object KLint {
-        const val klint = "org.jlleitschuh.gradle:ktlint-gradle:${Versions.Dependencies.KLint.kLint}"
+        const val klint = "org.jlleitschuh.gradle.ktlint"
     }
 
     object Material {
