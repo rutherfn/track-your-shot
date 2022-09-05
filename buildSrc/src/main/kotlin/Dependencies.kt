@@ -21,7 +21,7 @@ object Dependencies {
     }
 
     object Junit {
-        const val junit = "de.mannodermaus.gradle.plugins:android-junit5:1.8.2.1"
+        const val junit = "de.mannodermaus.gradle.plugins:android-junit5:${Versions.Dependencies.JunitJupiter.junit}"
 
         object Jupiter {
             const val api = "org.junit.jupiter:junit-jupiter-api:${Versions.Dependencies.JunitJupiter.junitJupiter}"

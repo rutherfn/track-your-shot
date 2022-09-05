@@ -22,7 +22,12 @@ object Versions {
             const val viewModel = "1.5.1"
         }
 
-        object JunitJupiter { const val junitJupiter = "5.7.2" }
+        object JunitJupiter {
+            const val junit = "1.8.2.1"
+            const val junitJupiter = "5.7.2"
+        }
+
+        object KtLint { const val ktLint = "11.0.0" }
 
         object Material { const val material = "1.5.0" }
     }
