@@ -1,4 +1,4 @@
-name: KtLint
+name: Assemble
 on: [pull_request]
 jobs:
   build:
@@ -7,5 +7,5 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v2
 
-      - name: KtLint format app
-        run:  ./gradlew ktlintCheck
+      - name: Assemble the app
+        run: ./gradlew assemble
