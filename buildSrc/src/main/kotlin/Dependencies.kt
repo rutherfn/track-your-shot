@@ -30,6 +30,12 @@ object Dependencies {
         }
     }
 
+    object Koin {
+        val core = "io.insert-koin:koin-android:${Versions.Dependencies.Koin.latestVersion}"
+        val test = "io.insert-koin:koin-core:${Versions.Dependencies.Koin.latestVersion}"
+        val testJunit4 = "io.insert-koin:koin-test-junit4:${Versions.Dependencies.Koin.latestVersion}"
+    }
+
     object Material {
         const val material = "com.google.android.material:material:${Versions.Dependencies.Material.material}"
     }

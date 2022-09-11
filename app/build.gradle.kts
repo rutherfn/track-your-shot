@@ -62,11 +62,16 @@ dependencies {
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.material)
 
+    implementation(Dependencies.Koin.core)
+
     implementation(Dependencies.Material.material)
 
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)
     testImplementation(Dependencies.Junit.junit)
+
+    testImplementation(Dependencies.Koin.test)
+    testImplementation(Dependencies.Koin.testJunit4)
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }

@@ -27,6 +27,8 @@ object Versions {
             const val junitJupiter = "5.7.2"
         }
 
+        object Koin { const val latestVersion = "3.2.0" }
+
         object KtLint { const val ktLint = "11.0.0" }
 
         object Material { const val material = "1.5.0" }
