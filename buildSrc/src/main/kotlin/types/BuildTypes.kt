@@ -13,19 +13,33 @@ object BuildTypes {
         val targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    object Res {
+        val string = "string"
+        val app_name = "app_name"
+    }
+
     object UniqueBuilds {
         object Debug : Build {
-            override var buildName: String = "Debug"
+            override var appName: String = "Debug"
+            override var applicationIdSuffix: String = ".debug"
+            override var buildName: String = "debug"
+            override var isDebuggable: Boolean = true
             override var isMinifyEnabled: Boolean = false
         }
 
         object Release : Build {
+            override var appName: String = "Track My Shot"
+            override var applicationIdSuffix: String = ".release"
             override var buildName: String = "release"
-            override var isMinifyEnabled: Boolean = false
+            override var isDebuggable: Boolean = false
+            override var isMinifyEnabled: Boolean = true
         }
 
-        object Stage : Build {
-            override var buildName: String = "Stage"
+        object Staging : Build {
+            override var appName: String = "Staging"
+            override var applicationIdSuffix: String = ".staging"
+            override var buildName: String = "Staging"
+            override var isDebuggable: Boolean = true
             override var isMinifyEnabled: Boolean = false
         }
     }
