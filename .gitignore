@@ -20,6 +20,7 @@ gen/
 .gradle/
 build/
 
+# Ignore module build gradles files
 ./buildSrc/.gradle
 ./buildSrc/build
 
