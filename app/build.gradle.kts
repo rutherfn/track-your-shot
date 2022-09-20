@@ -43,19 +43,19 @@ android {
             )
         }
 
-        create(types.BuildTypes.UniqueBuilds.Staging.buildName) {
+        create(types.BuildTypes.UniqueBuilds.Stage.buildName) {
             /**
              * To copies the Build Name [types.BuildTypes.UniqueBuilds.Debug] and
              * allows me to customize attributes
              **/
             initWith(getByName(types.BuildTypes.UniqueBuilds.Debug.buildName))
-            applicationIdSuffix = types.BuildTypes.UniqueBuilds.Staging.applicationIdSuffix
-            isMinifyEnabled = types.BuildTypes.UniqueBuilds.Staging.isMinifyEnabled
-            isDebuggable = types.BuildTypes.UniqueBuilds.Staging.isDebuggable
+            applicationIdSuffix = types.BuildTypes.UniqueBuilds.Stage.applicationIdSuffix
+            isMinifyEnabled = types.BuildTypes.UniqueBuilds.Stage.isMinifyEnabled
+            isDebuggable = types.BuildTypes.UniqueBuilds.Stage.isDebuggable
             resValue(
                 type = types.BuildTypes.Res.string,
                 name = types.BuildTypes.Res.app_name,
-                value = types.BuildTypes.UniqueBuilds.Staging.appName
+                value = types.BuildTypes.UniqueBuilds.Stage.appName
             )
         }
     }
