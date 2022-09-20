@@ -35,10 +35,10 @@ object BuildTypes {
             override var isMinifyEnabled: Boolean = true
         }
 
-        object Staging : Build {
-            override var appName: String = "Staging"
-            override var applicationIdSuffix: String = ".staging"
-            override var buildName: String = "Staging"
+        object Stage : Build {
+            override var appName: String = "Stage"
+            override var applicationIdSuffix: String = ".stage"
+            override var buildName: String = "Stage"
             override var isDebuggable: Boolean = true
             override var isMinifyEnabled: Boolean = false
         }
