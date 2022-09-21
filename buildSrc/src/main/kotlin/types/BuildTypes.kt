@@ -18,6 +18,11 @@ object BuildTypes {
         val app_name = "app_name"
     }
 
+    object Icon {
+        val appIcon = "appIcon"
+        val roundAppIcon = "roundAppIcon"
+    }
+
     object UniqueBuilds {
         object Debug : Build {
             override var appName: String = "Debug"
@@ -25,6 +30,8 @@ object BuildTypes {
             override var buildName: String = "debug"
             override var isDebuggable: Boolean = true
             override var isMinifyEnabled: Boolean = false
+            override var appIconRoute: String = "@mipmap/ic_launcher_test"
+            override var roundAppIconRoute: String = "@mipmap/ic_launcher_round_test"
         }
 
         object Release : Build {
@@ -33,14 +40,18 @@ object BuildTypes {
             override var buildName: String = "release"
             override var isDebuggable: Boolean = false
             override var isMinifyEnabled: Boolean = true
+            override var appIconRoute: String = "@mipmap/ic_launcher"
+            override var roundAppIconRoute: String = "@mipmap/ic_launcher_round"
         }
 
         object Stage : Build {
             override var appName: String = "Stage"
             override var applicationIdSuffix: String = ".stage"
-            override var buildName: String = "Stage"
+            override var buildName: String = "stage"
             override var isDebuggable: Boolean = true
             override var isMinifyEnabled: Boolean = false
+            override var appIconRoute: String = "@mipmap/ic_launcher_stage"
+            override var roundAppIconRoute: String = "@mipmap/ic_launcher_round_stage"
         }
     }
 }

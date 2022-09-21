@@ -30,6 +30,8 @@ android {
                 name = types.BuildTypes.Res.app_name,
                 value = types.BuildTypes.UniqueBuilds.Release.appName
             )
+            manifestPlaceholders[types.BuildTypes.Icon.appIcon] = types.BuildTypes.UniqueBuilds.Release.appIconRoute
+            manifestPlaceholders[types.BuildTypes.Icon.roundAppIcon] = types.BuildTypes.UniqueBuilds.Release.roundAppIconRoute
         }
 
         getByName(types.BuildTypes.UniqueBuilds.Debug.buildName) {
@@ -41,6 +43,9 @@ android {
                 name = types.BuildTypes.Res.app_name,
                 value = types.BuildTypes.UniqueBuilds.Debug.appName
             )
+
+            manifestPlaceholders[types.BuildTypes.Icon.appIcon] = types.BuildTypes.UniqueBuilds.Debug.appIconRoute
+            manifestPlaceholders[types.BuildTypes.Icon.roundAppIcon] = types.BuildTypes.UniqueBuilds.Debug.roundAppIconRoute
         }
 
         create(types.BuildTypes.UniqueBuilds.Stage.buildName) {
@@ -57,6 +62,8 @@ android {
                 name = types.BuildTypes.Res.app_name,
                 value = types.BuildTypes.UniqueBuilds.Stage.appName
             )
+            manifestPlaceholders[types.BuildTypes.Icon.appIcon] = types.BuildTypes.UniqueBuilds.Stage.appIconRoute
+            manifestPlaceholders[types.BuildTypes.Icon.roundAppIcon] = types.BuildTypes.UniqueBuilds.Stage.roundAppIconRoute
         }
     }
 
