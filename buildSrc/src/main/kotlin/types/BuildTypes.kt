@@ -13,14 +13,10 @@ object BuildTypes {
         val targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    object Res {
-        val string = "string"
-        val app_name = "app_name"
-    }
-
-    object Icon {
-        val appIcon = "appIcon"
-        val roundAppIcon = "roundAppIcon"
+    object ManifiestOptions {
+        const val appLabel = "appLabel"
+        const val appIcon = "appIcon"
+        const val roundAppIcon = "roundAppIcon"
     }
 
     object UniqueBuilds {

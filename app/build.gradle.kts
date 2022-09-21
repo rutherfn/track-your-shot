@@ -25,27 +25,20 @@ android {
                 getDefaultProguardFile(types.BuildTypes.proguardAndroidOptimizeTxt),
                 types.BuildTypes.proguardRulesPro
             )
-            resValue(
-                type = types.BuildTypes.Res.string,
-                name = types.BuildTypes.Res.app_name,
-                value = types.BuildTypes.UniqueBuilds.Release.appName
-            )
-            manifestPlaceholders[types.BuildTypes.Icon.appIcon] = types.BuildTypes.UniqueBuilds.Release.appIconRoute
-            manifestPlaceholders[types.BuildTypes.Icon.roundAppIcon] = types.BuildTypes.UniqueBuilds.Release.roundAppIconRoute
+
+            manifestPlaceholders[types.BuildTypes.ManifiestOptions.appLabel] = types.BuildTypes.UniqueBuilds.Release.appName
+            manifestPlaceholders[types.BuildTypes.ManifiestOptions.appIcon] = types.BuildTypes.UniqueBuilds.Release.appIconRoute
+            manifestPlaceholders[types.BuildTypes.ManifiestOptions.roundAppIcon] = types.BuildTypes.UniqueBuilds.Release.roundAppIconRoute
         }
 
         getByName(types.BuildTypes.UniqueBuilds.Debug.buildName) {
             applicationIdSuffix = types.BuildTypes.UniqueBuilds.Debug.applicationIdSuffix
             isMinifyEnabled = types.BuildTypes.UniqueBuilds.Debug.isMinifyEnabled
             isDebuggable = types.BuildTypes.UniqueBuilds.Debug.isDebuggable
-            resValue(
-                type = types.BuildTypes.Res.string,
-                name = types.BuildTypes.Res.app_name,
-                value = types.BuildTypes.UniqueBuilds.Debug.appName
-            )
 
-            manifestPlaceholders[types.BuildTypes.Icon.appIcon] = types.BuildTypes.UniqueBuilds.Debug.appIconRoute
-            manifestPlaceholders[types.BuildTypes.Icon.roundAppIcon] = types.BuildTypes.UniqueBuilds.Debug.roundAppIconRoute
+            manifestPlaceholders[types.BuildTypes.ManifiestOptions.appLabel] = types.BuildTypes.UniqueBuilds.Debug.appName
+            manifestPlaceholders[types.BuildTypes.ManifiestOptions.appIcon] = types.BuildTypes.UniqueBuilds.Debug.appIconRoute
+            manifestPlaceholders[types.BuildTypes.ManifiestOptions.roundAppIcon] = types.BuildTypes.UniqueBuilds.Debug.roundAppIconRoute
         }
 
         create(types.BuildTypes.UniqueBuilds.Stage.buildName) {
@@ -57,13 +50,10 @@ android {
             applicationIdSuffix = types.BuildTypes.UniqueBuilds.Stage.applicationIdSuffix
             isMinifyEnabled = types.BuildTypes.UniqueBuilds.Stage.isMinifyEnabled
             isDebuggable = types.BuildTypes.UniqueBuilds.Stage.isDebuggable
-            resValue(
-                type = types.BuildTypes.Res.string,
-                name = types.BuildTypes.Res.app_name,
-                value = types.BuildTypes.UniqueBuilds.Stage.appName
-            )
-            manifestPlaceholders[types.BuildTypes.Icon.appIcon] = types.BuildTypes.UniqueBuilds.Stage.appIconRoute
-            manifestPlaceholders[types.BuildTypes.Icon.roundAppIcon] = types.BuildTypes.UniqueBuilds.Stage.roundAppIconRoute
+
+            manifestPlaceholders[types.BuildTypes.ManifiestOptions.appLabel] = types.BuildTypes.UniqueBuilds.Stage.appName
+            manifestPlaceholders[types.BuildTypes.ManifiestOptions.appIcon] = types.BuildTypes.UniqueBuilds.Stage.appIconRoute
+            manifestPlaceholders[types.BuildTypes.ManifiestOptions.roundAppIcon] = types.BuildTypes.UniqueBuilds.Stage.roundAppIconRoute
         }
     }
 
