@@ -8,4 +8,6 @@ interface Build {
     var buildName: String
     var isDebuggable: Boolean
     var isMinifyEnabled: Boolean
+    var appIconRoute: String
+    var roundAppIconRoute: String
 }
