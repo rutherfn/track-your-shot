@@ -16,3 +16,4 @@ rootProject.name = "TrackMyShot"
 
 include ':app'
 include ':app-center'
+include ':build-type'

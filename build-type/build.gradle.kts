@@ -31,10 +31,3 @@ android {
         useJUnitPlatform()
     }
 }
-
-dependencies {
-    api(project(path = ":build-type"))
-
-    implementation(AppCenter.appCenterAnalytics)
-    implementation(AppCenter.appCenterCrashes)
-}
