@@ -30,4 +30,12 @@ android {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
+
+    dependencies {
+        testImplementation(Dependencies.Junit.Jupiter.api)
+        testImplementation(Dependencies.Junit.Jupiter.params)
+        testImplementation(Dependencies.Junit.junit)
+
+        testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+    }
 }
