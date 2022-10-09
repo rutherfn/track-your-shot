@@ -48,4 +48,6 @@ Thumbs.db
 .idea/dataSources.ids
 
 .idea/gradle.xml
-.idea/modules.xml
+.idea/modules.
+/gradle.properties
+gradle.properties
