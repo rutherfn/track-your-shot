@@ -1,10 +1,10 @@
 package com.nicholas.rutherford.track.my.shot.build.type
 
-class BuildTypeImpl(private val buildTypeValue: String): BuildType {
+const val DEBUG_VERSION_NAME = "debug"
+const val RELEASE_VERSION_NAME = "release"
+const val STAGE_VERSION_NAME = "stage"
 
-    const val DEBUG_VERSION_NAME = "debug"
-    const val RELEASE_VERSION_NAME = "release"
-    const val STAGE_VERSION_NAME = "stage"
+class BuildTypeImpl(private val buildTypeValue: String) : BuildType {
 
     override fun isDebug(): Boolean = buildTypeValue == DEBUG_VERSION_NAME
 
