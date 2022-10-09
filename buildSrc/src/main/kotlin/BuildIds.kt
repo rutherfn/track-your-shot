@@ -7,4 +7,5 @@ object BuildIds {
     const val ktLintId = "org.jlleitschuh.gradle.ktlint"
     const val pluginId = "com.android.application"
     const val pluginKotlin = "android"
+    const val googleServices = "com.google.gms.google-services"
 }

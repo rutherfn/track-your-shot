@@ -21,6 +21,29 @@ android {
         testInstrumentationRunnerArguments[ConfigurationData.runnerBuilder] = ConfigurationData.androidJunit5Builder
     }
 
+    buildTypes {
+        getByName(types.BuildTypes.UniqueBuilds.Release.buildName) {
+            isMinifyEnabled = types.BuildTypes.UniqueBuilds.Release.isMinifyEnabled
+            proguardFiles(
+                getDefaultProguardFile(types.BuildTypes.proguardAndroidOptimizeTxt),
+                types.BuildTypes.proguardRulesPro
+            )
+        }
+
+        getByName(types.BuildTypes.UniqueBuilds.Debug.buildName) {
+            isMinifyEnabled = types.BuildTypes.UniqueBuilds.Debug.isMinifyEnabled
+        }
+
+        create(types.BuildTypes.UniqueBuilds.Stage.buildName) {
+            /**
+             * To copies the Build Name [types.BuildTypes.UniqueBuilds.Debug] and
+             * allows me to customize attributes
+             **/
+            initWith(getByName(types.BuildTypes.UniqueBuilds.Debug.buildName))
+            isMinifyEnabled = types.BuildTypes.UniqueBuilds.Stage.isMinifyEnabled
+        }
+    }
+
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
             jvmTarget = KotlinOptions.jvmTarget

@@ -2,6 +2,7 @@ plugins {
     id(BuildIds.pluginId)
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.googleServices)
 }
 
 android {
@@ -100,6 +101,8 @@ dependencies {
 
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.material)
+
+    implementation("com.google.firebase:firebase-bom:30.5.0")
 
     implementation(Dependencies.Koin.core)
 

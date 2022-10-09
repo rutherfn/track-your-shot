@@ -1,0 +1,97 @@
+{
+  "project_info": {
+    "project_number": "387745292656",
+    "project_id": "trackmyshot-25f70",
+    "storage_bucket": "trackmyshot-25f70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:387745292656:android:03fef2b316669c7d8d6fb5",
+        "android_client_info": {
+          "package_name": "com.nicholas.rutherford.track.my.shot.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "387745292656-dbtkmcprr6ug213rc8t1dk9q7jan7gao.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7jU6gtEiq4xry6FcE86uAiuNpJqsgdf4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "387745292656-dbtkmcprr6ug213rc8t1dk9q7jan7gao.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:387745292656:android:03fef2b316669c7d8d6fb5",
+        "android_client_info": {
+          "package_name": "com.nicholas.rutherford.track.my.shot.stage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "387745292656-dbtkmcprr6ug213rc8t1dk9q7jan7gao.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7jU6gtEiq4xry6FcE86uAiuNpJqsgdf4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "387745292656-dbtkmcprr6ug213rc8t1dk9q7jan7gao.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:387745292656:android:03fef2b316669c7d8d6fb5",
+        "android_client_info": {
+          "package_name": "com.nicholas.rutherford.track.my.shot.release"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "387745292656-dbtkmcprr6ug213rc8t1dk9q7jan7gao.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7jU6gtEiq4xry6FcE86uAiuNpJqsgdf4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "387745292656-dbtkmcprr6ug213rc8t1dk9q7jan7gao.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
