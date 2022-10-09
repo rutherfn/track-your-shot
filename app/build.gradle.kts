@@ -92,6 +92,8 @@ android {
 }
 
 dependencies {
+    api(project(path = ":app-center"))
+
     implementation(Dependencies.Android.appCompat)
     implementation(Dependencies.Android.ktx)
 

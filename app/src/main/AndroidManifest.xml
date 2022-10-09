@@ -3,6 +3,7 @@
     package="com.nicholas.rutherford.track.my.shot">
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="${appIcon}"
         android:label="${appLabel}"
