@@ -18,7 +18,10 @@ gen/
 
 # Ignore gradle files
 .gradle/
-build/
+build/kotlin
+app-center/build
+build-type/build
+buildSrc/build
 
 # Ignore module build gradles files
 ./buildSrc/.gradle
