@@ -4,10 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TrackMyShot.iml" filepath="$PROJECT_DIR$/.idea/modules/TrackMyShot.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/TrackMyShot.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/TrackMyShot.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app-center/TrackMyShot.app-center.iml" filepath="$PROJECT_DIR$/.idea/modules/app-center/TrackMyShot.app-center.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app-center/TrackMyShot.app-center.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app-center/TrackMyShot.app-center.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app-center/TrackMyShot.app-center.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app-center/TrackMyShot.app-center.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app-center/TrackMyShot.app-center.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app-center/TrackMyShot.app-center.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/TrackMyShot.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/TrackMyShot.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/TrackMyShot.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/TrackMyShot.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/TrackMyShot.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/TrackMyShot.app.unitTest.iml" />
