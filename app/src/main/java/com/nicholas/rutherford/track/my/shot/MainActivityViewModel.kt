@@ -5,5 +5,5 @@ import com.nicholas.rutherford.track.my.shot.app.center.AppCenter
 
 class MainActivityViewModel(private val appCenter: AppCenter) : ViewModel() {
 
-    fun doSomething() = appCenter.start()
+    fun initAppCenter() = appCenter.start()
 }

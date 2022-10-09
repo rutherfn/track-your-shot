@@ -102,7 +102,7 @@ dependencies {
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.material)
 
-    implementation("com.google.firebase:firebase-bom:30.5.0")
+    implementation(Firebase.bom)
 
     implementation(Dependencies.Koin.core)
 

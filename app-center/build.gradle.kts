@@ -35,10 +35,6 @@ android {
         }
 
         create(types.BuildTypes.UniqueBuilds.Stage.buildName) {
-            /**
-             * To copies the Build Name [types.BuildTypes.UniqueBuilds.Debug] and
-             * allows me to customize attributes
-             **/
             initWith(getByName(types.BuildTypes.UniqueBuilds.Debug.buildName))
             isMinifyEnabled = types.BuildTypes.UniqueBuilds.Stage.isMinifyEnabled
         }
