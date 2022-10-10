@@ -112,6 +112,7 @@ dependencies {
     testImplementation(Dependencies.Junit.Jupiter.params)
     testImplementation(Dependencies.Junit.junit)
 
+    testImplementation(Dependencies.Koin.koinTest)
     testImplementation(Dependencies.Koin.test)
     testImplementation(Dependencies.Koin.testJunit4)
 
