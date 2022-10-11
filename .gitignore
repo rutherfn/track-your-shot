@@ -18,7 +18,10 @@ gen/
 
 # Ignore gradle files
 .gradle/
-build/
+build/kotlin
+app-center/build
+build-type/build
+buildSrc/build
 
 # Ignore module build gradles files
 ./buildSrc/.gradle
@@ -40,15 +43,4 @@ proguard/
 Thumbs.db
 
 # Intellij IDEA (see https://intellij-support.jetbrains.com/entries/23393067)
-.idea/libraries
-.idea/modules
-.idea/.name
-.idea/compiler.xml
-.idea/gradle.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/workspace.xml
-.idea/vcs.xml
-.idea/tasks.xml
-.idea/datasources.xml
-.idea/dataSources.ids
+.idea
