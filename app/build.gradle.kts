@@ -2,7 +2,6 @@ plugins {
     id(BuildIds.pluginId)
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
-    id(BuildIds.googleServices)
 }
 
 android {
@@ -101,8 +100,6 @@ dependencies {
 
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.material)
-
-    implementation(Firebase.bom)
 
     implementation(Dependencies.Koin.core)
 

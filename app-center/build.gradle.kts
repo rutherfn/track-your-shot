@@ -39,6 +39,13 @@ android {
             isMinifyEnabled = types.BuildTypes.UniqueBuilds.Stage.isMinifyEnabled
         }
     }
+    sourceSets {
+        getByName("main") {
+            java {
+                srcDirs("src/main/java", "src/main/test")
+            }
+        }
+    }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
@@ -56,4 +63,10 @@ dependencies {
 
     implementation(AppCenter.appCenterAnalytics)
     implementation(AppCenter.appCenterCrashes)
+
+    testImplementation(Dependencies.Junit.Jupiter.api)
+    testImplementation(Dependencies.Junit.Jupiter.params)
+    testImplementation(Dependencies.Junit.junit)
+
+    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }
