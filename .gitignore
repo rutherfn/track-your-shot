@@ -26,6 +26,8 @@ buildSrc/build
 # Ignore module build gradles files
 ./buildSrc/.gradle
 ./buildSrc/build
+,/feature/home/build
+,/feature/splash/build
 
 # Local configuration file (sdk path, etc)
 local.properties
