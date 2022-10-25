@@ -8,6 +8,14 @@ android {
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
+    buildFeatures {
+        compose = ComposeData.Enabled.value
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
+    }
+
     compileOptions {
         sourceCompatibility = types.BuildTypes.CompileOptions.sourceCompatibility
         targetCompatibility = types.BuildTypes.CompileOptions.targetCompatibility
@@ -59,6 +67,8 @@ android {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")
-    implementation(Coroutine.core)
+
+    implementation(Dependencies.Compose.navigation)
+
+    implementation(Coroutine.jvm)
 }

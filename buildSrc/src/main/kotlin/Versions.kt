@@ -18,7 +18,8 @@ object Versions {
 
         object Compose {
             const val activity = "1.5.1"
-            const val compose = "1.2.1"
+            const val core = "1.2.1"
+            const val navigation = "2.5.3"
             const val viewModel = "1.5.1"
         }
 
