@@ -6,5 +6,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun SplashScreen(viewModel: SplashViewModel) {
-    Button(onClick = { viewModel.testNavigator() }, content = { Text("dd") })
+    Button(onClick = { viewModel.testNavigator() }, content = { Text("Splash") })
 }

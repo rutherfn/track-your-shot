@@ -1,6 +1,4 @@
 plugins {
-    id("kotlin-android")
-    id("kotlin-android-extensions")
     id(BuildIds.pluginId)
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
