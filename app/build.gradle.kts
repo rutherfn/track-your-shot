@@ -92,6 +92,7 @@ android {
 
 dependencies {
     api(project(path = ":app-center"))
+    api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
     api(project(path = ":feature:home"))
     api(project(path = ":feature:splash"))
