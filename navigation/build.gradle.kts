@@ -66,8 +66,15 @@ android {
 }
 
 dependencies {
-    api(project(path = ":navigation"))
 
+    implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.viewModel)
+
+    implementation(Coroutine.jvm)
+
+    testImplementation(Dependencies.Junit.Jupiter.api)
+    testImplementation(Dependencies.Junit.Jupiter.params)
+    testImplementation(Dependencies.Junit.junit)
+
+    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }

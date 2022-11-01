@@ -11,16 +11,24 @@ object Dependencies {
 
     object Compose {
         val activity = "androidx.activity:activity-compose:${Versions.Dependencies.Compose.activity}"
-        val foundation = "androidx.compose.foundation:foundation:${Versions.Dependencies.Compose.compose}"
-        val material = "androidx.compose.material:material:${Versions.Dependencies.Compose.compose}"
-        val materialDesignIconsCore = "androidx.compose.material:material-icons-core:${Versions.Dependencies.Compose.compose}"
-        val materialDesignIconsExtended = "androidx.compose.material:material-icons-extended:${Versions.Dependencies.Compose.compose}"
-        val tooling = "androidx.compose.ui:ui-tooling:${Versions.Dependencies.Compose.compose}"
-        val ui = "androidx.compose.ui:ui:${Versions.Dependencies.Compose.compose}"
-        val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.Dependencies.Compose.compose}"
+        val foundation = "androidx.compose.foundation:foundation:${Versions.Dependencies.Compose.core}"
+        val material = "androidx.compose.material:material:${Versions.Dependencies.Compose.core}"
+        val materialDesignIconsCore = "androidx.compose.material:material-icons-core:${Versions.Dependencies.Compose.core}"
+        val materialDesignIconsExtended = "androidx.compose.material:material-icons-extended:${Versions.Dependencies.Compose.core}"
+        val navigation = "androidx.navigation:navigation-compose:${Versions.Dependencies.Compose.navigation}"
+        val tooling = "androidx.compose.ui:ui-tooling:${Versions.Dependencies.Compose.core}"
+        val ui = "androidx.compose.ui:ui:${Versions.Dependencies.Compose.core}"
+        val uiTestJunit4 = "androidx.compose.ui:ui-test-junit4:${Versions.Dependencies.Compose.uiTest}"
+        val uiTestManifest = "androidx.compose.ui:ui-test-manifest:${Versions.Dependencies.Compose.uiTest}"
+        val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.Dependencies.Compose.viewModel}"
+    }
+
+    object Espresso {
+        val core = "androidx.test.espresso:espresso-core:${Versions.Dependencies.Espresso.core}"
     }
 
     object Junit {
+        const val ext = "androidx.test.ext:junit:${Versions.Dependencies.JunitJupiter.ext}"
         const val junit = "de.mannodermaus.gradle.plugins:android-junit5:${Versions.Dependencies.JunitJupiter.junit}"
 
         object Jupiter {

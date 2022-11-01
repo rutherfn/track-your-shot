@@ -74,7 +74,6 @@ android {
         targetSdk = ConfigurationData.targetSdk
 
         testInstrumentationRunner = ConfigurationData.testInstrumentationRunner
-        testInstrumentationRunnerArguments[ConfigurationData.runnerBuilder] = ConfigurationData.androidJunit5Builder
 
         versionCode = ConfigurationData.versionCode
         versionName = ConfigurationData.versionName
@@ -94,11 +93,14 @@ android {
 dependencies {
     api(project(path = ":app-center"))
     api(project(path = ":build-type"))
+    api(project(path = ":feature:home"))
+    api(project(path = ":feature:splash"))
 
     implementation(Dependencies.Android.appCompat)
     implementation(Dependencies.Android.ktx)
 
     implementation(Dependencies.Compose.activity)
+    implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
 
     implementation(Dependencies.Koin.core)
