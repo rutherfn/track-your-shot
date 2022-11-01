@@ -21,10 +21,10 @@ gen/
 build/kotlin
 app-center/build
 build-type/build
-buildSrc/build
 
 # Ignore module build gradles files
 buildSrc/.gradle
+buildSrc/build
 feature/home/build
 feature/splash/build
 navigation/build
