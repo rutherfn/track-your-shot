@@ -7,7 +7,7 @@
         android:allowBackup="true"
         android:icon="${appIcon}"
         android:label="${appLabel}"
-        android:roundIcon="${roundAppIcon}"
+        android:roundIcon=""
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackMyShot">
 
