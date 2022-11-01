@@ -1,4 +1,6 @@
 plugins {
+    id("kotlin-android")
+    id("kotlin-android-extensions")
     id(BuildIds.pluginId)
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
@@ -74,7 +76,6 @@ android {
         targetSdk = ConfigurationData.targetSdk
 
         testInstrumentationRunner = ConfigurationData.testInstrumentationRunner
-        testInstrumentationRunnerArguments[ConfigurationData.runnerBuilder] = ConfigurationData.androidJunit5Builder
 
         versionCode = ConfigurationData.versionCode
         versionName = ConfigurationData.versionName
@@ -101,6 +102,7 @@ dependencies {
     implementation(Dependencies.Android.ktx)
 
     implementation(Dependencies.Compose.activity)
+    implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
 
     implementation(Dependencies.Koin.core)
@@ -114,6 +116,4 @@ dependencies {
     testImplementation(Dependencies.Koin.koinTest)
     testImplementation(Dependencies.Koin.test)
     testImplementation(Dependencies.Koin.testJunit4)
-
-    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }

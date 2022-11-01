@@ -2,34 +2,46 @@ package com.nicholas.rutherford.track.my.shot.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
+/**
+ * Navigation Component that initiates content that's being passed in
+ * todo: Need to look into adding params here:https://proandroiddev.com/how-to-make-jetpack-compose-navigation-easier-and-testable-b4b19fd5f2e4
+ */
 @Composable
 fun NavigationComponent(
     navHostController: NavHostController,
     navigator: Navigator,
-    splashContent: @Composable () -> Unit,
-    homeContent: @Composable () -> Unit
+    splashContent: @Composable (navController: Navigator) -> Unit,
+    homeContent: @Composable (navController: Navigator) -> Unit
 ) {
-    LaunchedEffect("navigation") {
-        navigator.sharedFlow.onEach {
-            navHostController.navigate(it.label)
-        }.launchIn(this)
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val navigatorState by navigator.navActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
+    LaunchedEffect(navigatorState) {
+        navigatorState?.let {
+            it.parcelableArguments.forEach { arg ->
+                navHostController.currentBackStackEntry?.arguments?.putParcelable(arg.key, arg.value)
+            }
+            navHostController.navigate(it.destination, it.navOptions)
+        }
     }
 
     NavHost(
         navController = navHostController,
-        startDestination = Navigator.NavTarget.SPLASH.label
+        startDestination = NavigationDestinations.SPLASH_SCREEN
     ) {
-        composable(route = Navigator.NavTarget.SPLASH.label) {
-            splashContent.invoke()
+        composable(route = NavigationDestinations.SPLASH_SCREEN) {
+            splashContent.invoke(navigator)
         }
-        composable(route = Navigator.NavTarget.HOME.label) {
-            homeContent.invoke()
+        composable(route = NavigationDestinations.HOME_SCREEN) {
+            homeContent.invoke(navigator)
         }
     }
 }

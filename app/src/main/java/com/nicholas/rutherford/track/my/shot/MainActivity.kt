@@ -3,10 +3,16 @@ package com.nicholas.rutherford.track.my.shot
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.Text
+import androidx.navigation.compose.rememberNavController
+import com.nicholas.rutherford.track.my.shot.feature.home.HomeScreen
+import com.nicholas.rutherford.track.my.shot.feature.splash.SplashScreen
+import com.nicholas.rutherford.track.my.shot.navigation.NavigationComponent
+import com.nicholas.rutherford.track.my.shot.navigation.Navigator
+import org.koin.android.ext.android.get
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity() : ComponentActivity() {
+class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModel<MainActivityViewModel>()
 
@@ -14,7 +20,12 @@ class MainActivity() : ComponentActivity() {
         super.onCreate(savedInstanceState)
         viewModel.initAppCenter()
         setContent {
-            Text(text = "Hello World")
+            val navigator: Navigator = get()
+            NavigationComponent(
+                navHostController = rememberNavController(),
+                navigator = navigator,
+                splashContent = { SplashScreen(viewModel = getViewModel()) }, homeContent = { HomeScreen(viewModel = getViewModel()) }
+            )
         }
     }
 }

@@ -21,9 +21,15 @@ object Versions {
             const val core = "1.2.1"
             const val navigation = "2.5.3"
             const val viewModel = "1.5.1"
+            const val uiTest = "1.3.0"
+        }
+
+        object Espresso {
+            const val core = "3.4.0"
         }
 
         object JunitJupiter {
+            const val ext = "1.1.3"
             const val junit = "1.8.2.1"
             const val junitJupiter = "5.7.2"
         }

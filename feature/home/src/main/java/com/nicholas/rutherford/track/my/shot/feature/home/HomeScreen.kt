@@ -6,5 +6,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
-    Button(onClick = { viewModel.navigateToSplash() }, content = { Text("dada") })
+    Button(onClick = { viewModel.navigateTest() }, content = { Text("Home") })
 }

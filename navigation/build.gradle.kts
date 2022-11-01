@@ -26,7 +26,6 @@ android {
         targetSdk = ConfigurationData.targetSdk
 
         testInstrumentationRunner = ConfigurationData.testInstrumentationRunner
-        testInstrumentationRunnerArguments[ConfigurationData.runnerBuilder] = ConfigurationData.androidJunit5Builder
     }
 
     buildTypes {
@@ -69,6 +68,13 @@ android {
 dependencies {
 
     implementation(Dependencies.Compose.navigation)
+    implementation(Dependencies.Compose.material)
 
     implementation(Coroutine.jvm)
+
+    testImplementation(Dependencies.Junit.Jupiter.api)
+    testImplementation(Dependencies.Junit.Jupiter.params)
+    testImplementation(Dependencies.Junit.junit)
+
+    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }
