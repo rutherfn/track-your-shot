@@ -1,8 +1,0 @@
-R_DEF: Internal format may change without notice
-local
-mipmap ic_launcher
-mipmap ic_launcher_round
-mipmap ic_launcher_round_stage
-mipmap ic_launcher_round_test
-mipmap ic_launcher_stage
-mipmap ic_launcher_test

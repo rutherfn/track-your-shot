@@ -23,6 +23,7 @@ app-center/build
 build-type/build
 
 # Ignore module build gradles files
+base-resources//build
 buildSrc/.gradle
 buildSrc/build
 feature/home/build

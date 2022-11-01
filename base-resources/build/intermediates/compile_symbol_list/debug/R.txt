@@ -1,6 +1,0 @@
-int mipmap ic_launcher 0x0
-int mipmap ic_launcher_round 0x0
-int mipmap ic_launcher_round_stage 0x0
-int mipmap ic_launcher_round_test 0x0
-int mipmap ic_launcher_stage 0x0
-int mipmap ic_launcher_test 0x0
