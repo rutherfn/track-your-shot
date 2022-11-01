@@ -114,4 +114,6 @@ dependencies {
     testImplementation(Dependencies.Koin.koinTest)
     testImplementation(Dependencies.Koin.test)
     testImplementation(Dependencies.Koin.testJunit4)
+
+    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }

@@ -1,7 +1,7 @@
 package com.nicholas.rutherford.track.my.shot
 
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenter
-import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
+import com.nicholas.rutherford.track.my.shot.build.type.BuildType
 import org.junit.Rule
 import org.junit.jupiter.api.Test
 import org.koin.android.ext.koin.androidContext
@@ -13,7 +13,7 @@ import kotlin.test.assertNotNull
 class MyApplicationTest : KoinTest {
 
     private val appCenter: AppCenter by inject()
-    private val buildTypeImpl: BuildTypeImpl by inject()
+    private val buildType: BuildType by inject()
     private val viewModel: MainActivityViewModel by inject()
 
     private val myApplication = MyApplication()
@@ -30,7 +30,7 @@ class MyApplicationTest : KoinTest {
         myApplication.startKoinOnCreate()
 
         assertNotNull(appCenter)
-        assertNotNull(buildTypeImpl)
+        assertNotNull(buildType)
         assertNotNull(viewModel)
     }
 }
