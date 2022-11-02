@@ -25,7 +25,6 @@ android {
                 getDefaultProguardFile(types.BuildTypes.proguardAndroidOptimizeTxt),
                 types.BuildTypes.proguardRulesPro
             )
-            androidResources { isCrunchPngs = false }
 
             manifestPlaceholders[types.BuildTypes.ManifiestOptions.appLabel] = types.BuildTypes.UniqueBuilds.Release.appName
             manifestPlaceholders[types.BuildTypes.ManifiestOptions.appIcon] = types.BuildTypes.UniqueBuilds.Release.appIconRoute
@@ -36,8 +35,6 @@ android {
             applicationIdSuffix = types.BuildTypes.UniqueBuilds.Debug.applicationIdSuffix
             isMinifyEnabled = types.BuildTypes.UniqueBuilds.Debug.isMinifyEnabled
             isDebuggable = types.BuildTypes.UniqueBuilds.Debug.isDebuggable
-
-            androidResources { isCrunchPngs = false }
 
             manifestPlaceholders[types.BuildTypes.ManifiestOptions.appLabel] = types.BuildTypes.UniqueBuilds.Debug.appName
             manifestPlaceholders[types.BuildTypes.ManifiestOptions.appIcon] = types.BuildTypes.UniqueBuilds.Debug.appIconRoute
@@ -53,8 +50,6 @@ android {
             applicationIdSuffix = types.BuildTypes.UniqueBuilds.Stage.applicationIdSuffix
             isMinifyEnabled = types.BuildTypes.UniqueBuilds.Stage.isMinifyEnabled
             isDebuggable = types.BuildTypes.UniqueBuilds.Stage.isDebuggable
-
-            androidResources { isCrunchPngs = false }
 
             manifestPlaceholders[types.BuildTypes.ManifiestOptions.appLabel] = types.BuildTypes.UniqueBuilds.Stage.appName
             manifestPlaceholders[types.BuildTypes.ManifiestOptions.appIcon] = types.BuildTypes.UniqueBuilds.Stage.appIconRoute
@@ -92,6 +87,7 @@ android {
 
 dependencies {
     api(project(path = ":app-center"))
+    api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
     api(project(path = ":feature:home"))
     api(project(path = ":feature:splash"))
