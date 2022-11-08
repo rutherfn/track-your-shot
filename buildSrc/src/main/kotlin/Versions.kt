@@ -24,6 +24,11 @@ object Versions {
             const val uiTest = "1.3.0"
         }
 
+        object Coroutine {
+            const val core = "1.3.9"
+            const val jvm = "1.6.4"
+        }
+
         object Espresso {
             const val core = "3.4.0"
         }

@@ -5,26 +5,27 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 
-const val SPLASH_IMAGE_SCALE = 1f
-
 @Composable
 fun SplashScreen(viewModel: SplashViewModel) {
+    val state = viewModel.splashState.collectAsState().value
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
-            .background(Colors.splashBackgroundColor)
+            .background(state.backgroundColor)
     ) {
         Image(
-            painter = painterResource(id = DrawablesIds.splash),
+            painter = painterResource(id = state.imageDrawableId),
             contentDescription = stringResource(id = StringsIds.splashIconDescription),
-            modifier = Modifier.scale(scale = SPLASH_IMAGE_SCALE)
+            modifier = Modifier.scale(scale = state.imageScale)
         )
     }
 }

@@ -70,7 +70,7 @@ dependencies {
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
 
-    implementation(Coroutine.jvm)
+    implementation(Dependencies.Coroutine.jvm)
 
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)
