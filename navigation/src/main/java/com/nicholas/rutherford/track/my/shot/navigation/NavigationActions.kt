@@ -5,7 +5,7 @@ import androidx.navigation.NavOptions
 object NavigationActions {
 
     object SplashScreen {
-        fun navigateToHome() = object : NavigationAction {
+        fun home() = object : NavigationAction {
             override val destination = NavigationDestinations.HOME_SCREEN
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(0, true)
@@ -15,7 +15,7 @@ object NavigationActions {
     }
 
     object HomeScreen {
-        fun navigateToSplash() = object : NavigationAction {
+        fun splash() = object : NavigationAction {
             override val destination = NavigationDestinations.SPLASH_SCREEN
         }
     }

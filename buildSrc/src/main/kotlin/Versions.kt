@@ -16,6 +16,12 @@ object Versions {
             const val ktx = "1.7.0"
         }
 
+        object AppCenter {
+            const val core = "4.3.1"
+        }
+
+        object Coil { const val core = "2.2.2" }
+
         object Compose {
             const val activity = "1.5.1"
             const val core = "1.2.1"
@@ -43,6 +49,12 @@ object Versions {
 
         object KtLint { const val ktLint = "11.0.0" }
 
+        object Lifecycle { const val core = "2.6.0-alpha02" }
+
         object Material { const val material = "1.5.0" }
+
+        object Mockk { const val core = "1.13.2" }
+
+        object Room { const val core = "2.4.4" }
     }
 }

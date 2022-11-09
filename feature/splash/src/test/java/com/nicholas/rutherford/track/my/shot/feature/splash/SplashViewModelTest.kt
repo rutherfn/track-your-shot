@@ -1,7 +1,7 @@
 package com.nicholas.rutherford.track.my.shot.feature.splash
 
-import com.nicholas.rutherford.track.my.shot.navigation.NavigationActions
-import com.nicholas.rutherford.track.my.shot.navigation.NavigatorImpl
+import io.mockk.coVerify
+import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -19,7 +19,7 @@ class SplashViewModelTest {
 
     lateinit var viewModel: SplashViewModel
 
-    internal var navigator = NavigatorImpl()
+    internal var navigation = mockk<SplashNavigation>(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val dispatcher = StandardTestDispatcher()
@@ -28,7 +28,7 @@ class SplashViewModelTest {
     @BeforeEach
     fun beforeEach() {
         Dispatchers.setMain(dispatcher)
-        viewModel = SplashViewModel(navigator = navigator)
+        viewModel = SplashViewModel(navigation = navigation)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -63,10 +63,10 @@ class SplashViewModelTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `should delay for 4 seconds and navigate to home`() = runTest {
-            delay(4000)
+        fun `should delay for 4 seconds and verifies that it calls navigate to home`() = runTest {
+            delay(4001) // needs 1 extra millisecond to account for function below call
 
-            Assertions.assertEquals(viewModel.navigationDestination, NavigationActions.SplashScreen.navigateToHome())
+            coVerify { navigation.navigateToHome() }
         }
     }
 }

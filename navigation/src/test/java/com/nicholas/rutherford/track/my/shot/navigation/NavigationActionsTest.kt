@@ -10,19 +10,33 @@ class NavigationActionsTest {
 
     @Nested inner class NavigationActions {
 
-        @Test fun navigateToHome() {
-            Assertions.assertEquals(Actions.SplashScreen.navigateToHome().destination, NavigationDestinations.HOME_SCREEN)
-            Assertions.assertEquals(
-                Actions.SplashScreen.navigateToHome().navOptions,
-                NavOptions.Builder()
-                    .setPopUpTo(0, true)
-                    .setLaunchSingleTop(true)
-                    .build()
-            )
+        @Nested inner class SplashScreen {
+
+            @Test
+            fun home() {
+                Assertions.assertEquals(
+                    Actions.SplashScreen.home().destination,
+                    NavigationDestinations.HOME_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.SplashScreen.home().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(0, true)
+                        .setLaunchSingleTop(true)
+                        .build()
+                )
+            }
         }
 
-        @Test fun navigateToSplash() {
-            Assertions.assertEquals(Actions.HomeScreen.navigateToSplash().destination, NavigationDestinations.SPLASH_SCREEN)
+        @Nested inner class Home {
+
+            @Test
+            fun splash() {
+                Assertions.assertEquals(
+                    Actions.HomeScreen.splash().destination,
+                    NavigationDestinations.SPLASH_SCREEN
+                )
+            }
         }
     }
 }

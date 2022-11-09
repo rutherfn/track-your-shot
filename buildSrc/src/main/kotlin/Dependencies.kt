@@ -9,6 +9,15 @@ object Dependencies {
         const val ktx = "androidx.core:core-ktx:${Versions.Dependencies.Android.ktx}"
     }
 
+    object AppCenter {
+        const val analytics = "com.microsoft.appcenter:appcenter-analytics:${Versions.Dependencies.AppCenter.core}"
+        const val crashes = "com.microsoft.appcenter-crashes:${Versions.Dependencies.AppCenter.core}"
+    }
+
+    object Coil {
+        const val core = "io.coil-kt:coil:${Versions.Dependencies.Coil.core}"
+    }
+
     object Compose {
         const val activity = "androidx.activity:activity-compose:${Versions.Dependencies.Compose.activity}"
         const val foundation = "androidx.compose.foundation:foundation:${Versions.Dependencies.Compose.core}"
@@ -51,7 +60,22 @@ object Dependencies {
         const val testJunit4 = "io.insert-koin:koin-test-junit4:${Versions.Dependencies.Koin.latestVersion}"
     }
 
+    object Lifecycle {
+        const val compose = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.Dependencies.Lifecycle.core}"
+        const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.Dependencies.Lifecycle.core}"
+    }
+
     object Material {
         const val material = "com.google.android.material:material:${Versions.Dependencies.Material.material}"
+    }
+
+    object Mockk {
+        const val core = "io.mockk:mockk:${Versions.Dependencies.Mockk.core}"
+    }
+
+    object Room {
+        const val compiler = "androidx.room:room-runtime:${Versions.Dependencies.Room.core}"
+        const val kaptCompiler = "androidx.room:room-compiler:${Versions.Dependencies.Room.core}"
+        const val runtime = "androidx.room:room-runtime:${Versions.Dependencies.Room.core}"
     }
 }
