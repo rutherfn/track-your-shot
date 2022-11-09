@@ -14,7 +14,7 @@ fun <T> Flow<T>.asLifecycleAwareState(lifecycleOwner: LifecycleOwner, initialSta
     lifecycleAwareState(lifecycleOwner, this, initialState)
 
 @Composable
-fun <T> lifecycleAwareState(
+internal fun <T> lifecycleAwareState(
     lifecycleOwner: LifecycleOwner,
     flow: Flow<T>,
     initialState: T

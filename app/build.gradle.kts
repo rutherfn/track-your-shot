@@ -103,13 +103,15 @@ dependencies {
 
     implementation(Dependencies.Material.material)
 
-    testImplementation(Dependencies.Junit.Jupiter.api)
-    testImplementation(Dependencies.Junit.Jupiter.params)
-    testImplementation(Dependencies.Junit.junit)
+    testImplementation(Dependencies.Coroutine.test)
 
     testImplementation(Dependencies.Koin.koinTest)
     testImplementation(Dependencies.Koin.test)
     testImplementation(Dependencies.Koin.testJunit4)
+
+    testImplementation(Dependencies.Junit.Jupiter.api)
+    testImplementation(Dependencies.Junit.Jupiter.params)
+    testImplementation(Dependencies.Junit.junit)
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }

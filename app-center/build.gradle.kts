@@ -60,8 +60,8 @@ android {
 dependencies {
     api(project(path = ":build-type"))
 
-    implementation(AppCenter.appCenterAnalytics)
-    implementation(AppCenter.appCenterCrashes)
+    implementation(Dependencies.AppCenter.analytics)
+    implementation(Dependencies.AppCenter.crashes)
 
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)
