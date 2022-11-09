@@ -11,7 +11,7 @@ object Dependencies {
 
     object AppCenter {
         const val analytics = "com.microsoft.appcenter:appcenter-analytics:${Versions.Dependencies.AppCenter.core}"
-        const val crashes = "com.microsoft.appcenter-crashes:${Versions.Dependencies.AppCenter.core}"
+        const val crashes = "com.microsoft.appcenter:appcenter-crashes:${Versions.Dependencies.AppCenter.core}"
     }
 
     object Coil {
