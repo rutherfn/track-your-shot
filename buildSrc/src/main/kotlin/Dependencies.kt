@@ -9,22 +9,37 @@ object Dependencies {
         const val ktx = "androidx.core:core-ktx:${Versions.Dependencies.Android.ktx}"
     }
 
+    object AppCenter {
+        const val analytics = "com.microsoft.appcenter:appcenter-analytics:${Versions.Dependencies.AppCenter.core}"
+        const val crashes = "com.microsoft.appcenter:appcenter-crashes:${Versions.Dependencies.AppCenter.core}"
+    }
+
+    object Coil {
+        const val core = "io.coil-kt:coil:${Versions.Dependencies.Coil.core}"
+    }
+
     object Compose {
-        val activity = "androidx.activity:activity-compose:${Versions.Dependencies.Compose.activity}"
-        val foundation = "androidx.compose.foundation:foundation:${Versions.Dependencies.Compose.core}"
-        val material = "androidx.compose.material:material:${Versions.Dependencies.Compose.core}"
-        val materialDesignIconsCore = "androidx.compose.material:material-icons-core:${Versions.Dependencies.Compose.core}"
-        val materialDesignIconsExtended = "androidx.compose.material:material-icons-extended:${Versions.Dependencies.Compose.core}"
-        val navigation = "androidx.navigation:navigation-compose:${Versions.Dependencies.Compose.navigation}"
-        val tooling = "androidx.compose.ui:ui-tooling:${Versions.Dependencies.Compose.core}"
-        val ui = "androidx.compose.ui:ui:${Versions.Dependencies.Compose.core}"
-        val uiTestJunit4 = "androidx.compose.ui:ui-test-junit4:${Versions.Dependencies.Compose.uiTest}"
-        val uiTestManifest = "androidx.compose.ui:ui-test-manifest:${Versions.Dependencies.Compose.uiTest}"
-        val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.Dependencies.Compose.viewModel}"
+        const val activity = "androidx.activity:activity-compose:${Versions.Dependencies.Compose.activity}"
+        const val foundation = "androidx.compose.foundation:foundation:${Versions.Dependencies.Compose.core}"
+        const val material = "androidx.compose.material:material:${Versions.Dependencies.Compose.core}"
+        const val materialDesignIconsCore = "androidx.compose.material:material-icons-core:${Versions.Dependencies.Compose.core}"
+        const val materialDesignIconsExtended = "androidx.compose.material:material-icons-extended:${Versions.Dependencies.Compose.core}"
+        const val navigation = "androidx.navigation:navigation-compose:${Versions.Dependencies.Compose.navigation}"
+        const val tooling = "androidx.compose.ui:ui-tooling:${Versions.Dependencies.Compose.core}"
+        const val ui = "androidx.compose.ui:ui:${Versions.Dependencies.Compose.core}"
+        const val uiTestJunit4 = "androidx.compose.ui:ui-test-junit4:${Versions.Dependencies.Compose.uiTest}"
+        const val uiTestManifest = "androidx.compose.ui:ui-test-manifest:${Versions.Dependencies.Compose.uiTest}"
+        const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.Dependencies.Compose.viewModel}"
+    }
+
+    object Coroutine {
+        const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Dependencies.Coroutine.core}"
+        const val jvm = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${Versions.Dependencies.Coroutine.jvm}"
+        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.Dependencies.Coroutine.jvm}"
     }
 
     object Espresso {
-        val core = "androidx.test.espresso:espresso-core:${Versions.Dependencies.Espresso.core}"
+        const val core = "androidx.test.espresso:espresso-core:${Versions.Dependencies.Espresso.core}"
     }
 
     object Junit {
@@ -39,13 +54,28 @@ object Dependencies {
     }
 
     object Koin {
-        val core = "io.insert-koin:koin-android:${Versions.Dependencies.Koin.latestVersion}"
-        val koinTest = "io.insert-koin:koin-test:${Versions.Dependencies.Koin.latestVersion}"
-        val test = "io.insert-koin:koin-core:${Versions.Dependencies.Koin.latestVersion}"
-        val testJunit4 = "io.insert-koin:koin-test-junit4:${Versions.Dependencies.Koin.latestVersion}"
+        const val core = "io.insert-koin:koin-android:${Versions.Dependencies.Koin.latestVersion}"
+        const val koinTest = "io.insert-koin:koin-test:${Versions.Dependencies.Koin.latestVersion}"
+        const val test = "io.insert-koin:koin-core:${Versions.Dependencies.Koin.latestVersion}"
+        const val testJunit4 = "io.insert-koin:koin-test-junit4:${Versions.Dependencies.Koin.latestVersion}"
+    }
+
+    object Lifecycle {
+        const val compose = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.Dependencies.Lifecycle.core}"
+        const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.Dependencies.Lifecycle.core}"
     }
 
     object Material {
         const val material = "com.google.android.material:material:${Versions.Dependencies.Material.material}"
+    }
+
+    object Mockk {
+        const val core = "io.mockk:mockk:${Versions.Dependencies.Mockk.core}"
+    }
+
+    object Room {
+        const val compiler = "androidx.room:room-runtime:${Versions.Dependencies.Room.core}"
+        const val kaptCompiler = "androidx.room:room-compiler:${Versions.Dependencies.Room.core}"
+        const val runtime = "androidx.room:room-runtime:${Versions.Dependencies.Room.core}"
     }
 }

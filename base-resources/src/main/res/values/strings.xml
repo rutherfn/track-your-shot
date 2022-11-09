@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="splash_icon_description">This is a splash image for the splash screen that gets displayed before app is triggered</string>
+</resources>

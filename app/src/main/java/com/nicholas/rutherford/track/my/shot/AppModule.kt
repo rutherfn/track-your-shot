@@ -5,6 +5,8 @@ import com.nicholas.rutherford.track.my.shot.app.center.AppCenterImpl
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
 import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
+import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigation
+import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 import com.nicholas.rutherford.track.my.shot.navigation.NavigatorImpl
@@ -24,11 +26,14 @@ class AppModule {
         single<Navigator> {
             NavigatorImpl()
         }
+        single<SplashNavigation> {
+            SplashNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(appCenter = get())
         }
         viewModel {
-            SplashViewModel(navigator = get())
+            SplashViewModel(navigation = get())
         }
         viewModel {
             HomeViewModel(navigator = get())
