@@ -45,21 +45,22 @@ Users will download the <b> Track My Shot  </b> mobile Android application on th
 
 ## Development Timeline 
 
-1. Month 1: Setting up project stucture --  feature<b> Ability to create, edit, view, and delete a person </b>
+1. Month 1: Setting up project structure --  feature<b> Ability to create, edit, view, and delete a person </b>
 2. Month 2: -- feature <b> Ability to add stats for given player manually </b>
 3. Month 3: -- feature <b> Ability to add stats for given player live </b>
 4. Month 4: TBD 
 
 <h2> Development Milestones </h2>
 
-1. Milestone 1: Ability to create person 
-2. Milestone 2: Ability to edit person 
-3. Milestone 3: Ability to view person 
-4. Milestone 4: Ability to delete person 
-5. Milestone 5: Ability to record given stats for player manually 
-6. Milestone 6: Ability to record given stats for player live
-7. Milestone 7: Ability to view those stats 
-8. Milestone 8: TBD 
+1. Milestone 1: Create account / login into account 
+2. Milestone 2: Ability to create person 
+3. Milestone 3: Ability to edit person 
+4. Milestone 4: Ability to view person 
+5. Milestone 5: Ability to delete person 
+6. Milestone 6: Ability to record given stats for player manually 
+7. Milestone 7: Ability to record given stats for player live
+8. Milestone 8: Ability to view those stats 
+9. Milestone 9: TBD 
 
 <h3> How Is Success Measured </h3> 
 
