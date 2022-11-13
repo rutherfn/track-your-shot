@@ -52,7 +52,7 @@ Users will download the <b> Track My Shot  </b> mobile Android application on th
 
 <h2> Development Milestones </h2>
 
-1. Milestone 1: Create account / login Into Account 
+1. Milestone 1: Create account / login into account 
 2. Milestone 2: Ability to create person 
 3. Milestone 3: Ability to edit person 
 4. Milestone 4: Ability to view person 
