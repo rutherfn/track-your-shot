@@ -25,7 +25,7 @@ class SplashViewModel(private val navigation: SplashNavigation) : ViewModel() {
         delayAndNavigateToHome()
     }
 
-    fun delayAndNavigateToHome() {
+    internal fun delayAndNavigateToHome() {
         viewModelScope.launch {
             delay(timeMillis = SPLASH_DELAY_IN_MILLIS)
             navigation.navigateToHome()
