@@ -8,9 +8,11 @@ import com.nicholas.rutherford.track.my.shot.navigation.NavigationActions as Act
 
 class NavigationActionsTest {
 
-    @Nested inner class NavigationActions {
+    @Nested
+    inner class NavigationActions {
 
-        @Nested inner class SplashScreen {
+        @Nested
+        inner class SplashScreen {
 
             @Test
             fun home() {
@@ -26,16 +28,49 @@ class NavigationActionsTest {
                         .build()
                 )
             }
-        }
-
-        @Nested inner class Home {
 
             @Test
-            fun splash() {
+            fun login() {
                 Assertions.assertEquals(
-                    Actions.HomeScreen.splash().destination,
-                    NavigationDestinations.SPLASH_SCREEN
+                    Actions.SplashScreen.login().destination,
+                    NavigationDestinations.LOGIN_SCREEN
                 )
+                Assertions.assertEquals(
+                    Actions.SplashScreen.login().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(0, true)
+                        .setLaunchSingleTop(true)
+                        .build()
+                )
+            }
+
+            @Nested inner class Login {
+
+                @Test fun home() {
+                    Assertions.assertEquals(
+                        Actions.LoginScreen.home().destination,
+                        NavigationDestinations.HOME_SCREEN
+                    )
+                    Assertions.assertEquals(
+                        Actions.LoginScreen.home().navOptions,
+                        NavOptions.Builder()
+                            .setPopUpTo(0, true)
+                            .setLaunchSingleTop(true)
+                            .build()
+                    )
+                }
+            }
+
+            @Nested
+            inner class Home {
+
+                @Test
+                fun splash() {
+                    Assertions.assertEquals(
+                        Actions.HomeScreen.splash().destination,
+                        NavigationDestinations.SPLASH_SCREEN
+                    )
+                }
             }
         }
     }
