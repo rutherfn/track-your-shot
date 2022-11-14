@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "143483841610",
+    "project_id": "track-my-shot---stage",
+    "storage_bucket": "track-my-shot---stage.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143483841610:android:edbf8da14f9cc666d0cab3",
+        "android_client_info": {
+          "package_name": "com.nicholas.rutherford.track.my.shot.stage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143483841610-o6dm0hijpq6qhe85c6g1h0q8kdutghhh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwXBZWpAdMhe4B-76ZKot-_EMV2R-nywc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "143483841610-o6dm0hijpq6qhe85c6g1h0q8kdutghhh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
