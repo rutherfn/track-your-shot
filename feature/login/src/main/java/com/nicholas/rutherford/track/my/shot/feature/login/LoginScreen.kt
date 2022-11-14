@@ -6,5 +6,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel) {
-    Button(onClick = { viewModel.onButtonClickedTest() }, content = { Text(text = "Login Button")})
+    Button(onClick = { viewModel.onButtonClickedTest() }, content = { Text(text = "Login Button") })
 }
