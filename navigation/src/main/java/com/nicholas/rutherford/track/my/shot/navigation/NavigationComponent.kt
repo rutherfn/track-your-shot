@@ -17,6 +17,7 @@ fun NavigationComponent(
     navHostController: NavHostController,
     navigator: Navigator,
     splashContent: @Composable (navController: Navigator) -> Unit,
+    loginContent: @Composable (navController: Navigator) -> Unit,
     homeContent: @Composable (navController: Navigator) -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -39,6 +40,9 @@ fun NavigationComponent(
     ) {
         composable(route = NavigationDestinations.SPLASH_SCREEN) {
             splashContent.invoke(navigator)
+        }
+        composable(route = NavigationDestinations.LOGIN_SCREEN) {
+            loginContent.invoke(navigator)
         }
         composable(route = NavigationDestinations.HOME_SCREEN) {
             homeContent.invoke(navigator)
