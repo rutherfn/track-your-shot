@@ -14,6 +14,10 @@ object Dependencies {
         const val crashes = "com.microsoft.appcenter:appcenter-crashes:${Versions.Dependencies.AppCenter.core}"
     }
 
+    object Auth0 {
+        const val core = "com.auth0.android:auth0:${Versions.Dependencies.Auth0.core}"
+    }
+
     object Coil {
         const val core = "io.coil-kt:coil:${Versions.Dependencies.Coil.core}"
     }
