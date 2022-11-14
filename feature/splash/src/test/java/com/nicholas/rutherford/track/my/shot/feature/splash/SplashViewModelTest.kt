@@ -63,10 +63,10 @@ class SplashViewModelTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `should delay for 4 seconds and verifies that it calls navigate to home`() = runTest {
+        fun `should delay for 4 seconds and verifies that it calls navigate to login`() = runTest {
             delay(4001) // needs 1 extra millisecond to account for function below call
 
-            coVerify { navigation.navigateToHome() }
+            coVerify { navigation.navigateToLogin() }
         }
     }
 }

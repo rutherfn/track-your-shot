@@ -9,8 +9,9 @@ class NavigationDestinationsTest {
 
     lateinit var navigationDestinations: NavigationDestinations
 
-    internal val splashScreen = "splashScreen"
     internal val homeScreen = "homeScreen"
+    internal val loginScreen = "loginScreen"
+    internal val splashScreen = "splashScreen"
 
     @BeforeEach
     fun beforeEach() {
@@ -21,13 +22,17 @@ class NavigationDestinationsTest {
     inner class Constants {
 
         @Test
-        fun `splash screen name should result in splash screen`() {
-            Assertions.assertEquals(navigationDestinations.SPLASH_SCREEN, splashScreen)
+        fun `home screen name should result in home screen`() {
+            Assertions.assertEquals(navigationDestinations.HOME_SCREEN, homeScreen)
+        }
+
+        @Test fun `login screen name should result in login screen`() {
+            Assertions.assertEquals(navigationDestinations.LOGIN_SCREEN, loginScreen)
         }
 
         @Test
-        fun `home screen name should result in home screen`() {
-            Assertions.assertEquals(navigationDestinations.HOME_SCREEN, homeScreen)
+        fun `splash screen name should result in splash screen`() {
+            Assertions.assertEquals(navigationDestinations.SPLASH_SCREEN, splashScreen)
         }
     }
 }

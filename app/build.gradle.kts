@@ -90,6 +90,7 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
     api(project(path = ":feature:home"))
+    api(project(path = ":feature:login"))
     api(project(path = ":feature:splash"))
 
     implementation(Dependencies.Android.appCompat)

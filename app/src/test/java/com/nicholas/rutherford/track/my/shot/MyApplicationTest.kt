@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.my.shot
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
+import com.nicholas.rutherford.track.my.shot.feature.login.LoginNavigation
+import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
@@ -26,9 +28,11 @@ class MyApplicationTest : KoinTest {
     private val navigator: Navigator by inject()
 
     private val splashNavigation: SplashNavigation by inject()
+    private val loginNavigation: LoginNavigation by inject()
 
     private val mainActivityViewModel: MainActivityViewModel by inject()
     private val splashViewModel: SplashViewModel by inject()
+    private val loginViewModel: LoginViewModel by inject()
     private val homeViewModel: HomeViewModel by inject()
 
     private val myApplication = MyApplication()
@@ -58,9 +62,11 @@ class MyApplicationTest : KoinTest {
         assertNotNull(navigator)
 
         assertNotNull(splashNavigation)
+        assertNotNull(loginNavigation)
 
         assertNotNull(mainActivityViewModel)
         assertNotNull(splashViewModel)
+        assertNotNull(loginViewModel)
         assertNotNull(homeViewModel)
     }
 }

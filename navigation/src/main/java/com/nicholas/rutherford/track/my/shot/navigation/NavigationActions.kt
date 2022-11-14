@@ -12,6 +12,24 @@ object NavigationActions {
                 .setLaunchSingleTop(true)
                 .build()
         }
+
+        fun login() = object : NavigationAction {
+            override val destination = NavigationDestinations.LOGIN_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .setLaunchSingleTop(true)
+                .build()
+        }
+    }
+
+    object LoginScreen {
+        fun home() = object : NavigationAction {
+            override val destination = NavigationDestinations.HOME_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .setLaunchSingleTop(true)
+                .build()
+        }
     }
 
     object HomeScreen {
