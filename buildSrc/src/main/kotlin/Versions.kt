@@ -43,6 +43,10 @@ object Versions {
             const val core = "3.4.0"
         }
 
+        object Firebase {
+            const val bom = "31.0.3"
+        }
+
         object JunitJupiter {
             const val ext = "1.1.3"
             const val junit = "1.8.2.1"

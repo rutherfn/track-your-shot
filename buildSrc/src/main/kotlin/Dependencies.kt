@@ -46,6 +46,11 @@ object Dependencies {
         const val core = "androidx.test.espresso:espresso-core:${Versions.Dependencies.Espresso.core}"
     }
 
+    object Firebase {
+        const val bom = "com.google.firebase:firebase-bom:${Versions.Dependencies.Firebase.bom}"
+        const val databaseKts = "com.google.firebase.firebase-database-ktx"
+    }
+
     object Junit {
         const val ext = "androidx.test.ext:junit:${Versions.Dependencies.JunitJupiter.ext}"
         const val junit = "de.mannodermaus.gradle.plugins:android-junit5:${Versions.Dependencies.JunitJupiter.junit}"

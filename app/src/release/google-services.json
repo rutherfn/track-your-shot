@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "882285803706",
+    "project_id": "track-my-shot---android",
+    "storage_bucket": "track-my-shot---android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882285803706:android:ae1553890d5bc58fb2ea83",
+        "android_client_info": {
+          "package_name": "com.nicholas.rutherford.track.my.shot.release"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882285803706-ki3c1r2lbp5pj6skah9nlqcgssv0hdjq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsYJl08NZ4wvNan0mOWEuWoShd3EBDYnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882285803706-ki3c1r2lbp5pj6skah9nlqcgssv0hdjq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
