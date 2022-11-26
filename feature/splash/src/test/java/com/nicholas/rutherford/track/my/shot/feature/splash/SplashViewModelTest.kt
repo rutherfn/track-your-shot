@@ -56,8 +56,12 @@ class SplashViewModelTest {
 
         @Test fun initalizeSplashState() {
             Assertions.assertEquals(
-                viewModel.splashState.value,
-                viewModel.initializeSplashState
+                viewModel.splashStateFlow.value,
+                SplashState(
+                    backgroundColor = Colors.primaryColor,
+                    imageScale = SPLASH_IMAGE_SCALE,
+                    imageDrawableId = DrawablesIds.splash
+                )
             )
         }
 

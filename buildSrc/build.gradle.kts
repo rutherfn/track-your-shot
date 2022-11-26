@@ -6,4 +6,12 @@ plugins {
 
 repositories {
     mavenCentral()
+    google()
+    maven("https://plugins.gradle.org/m2/")
+}
+
+dependencies {
+    val stdibVersion = "1.2.71"
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$stdibVersion")
 }
