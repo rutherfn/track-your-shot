@@ -12,7 +12,7 @@ class LoginViewModelTest {
 
     private var navigation = mockk<LoginNavigation>(relaxed = true)
 
-    val state = LoginState(username = null, password = null)
+    private val state = LoginState(username = null, password = null)
 
     @BeforeEach
     fun beforeEach() {
