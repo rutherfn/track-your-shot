@@ -15,14 +15,14 @@ const val ALWAYS_LOGIN_TEST = true
 
 class SplashViewModel(private val navigation: SplashNavigation) : ViewModel() {
 
-    internal val initializeSplashState = SplashState(
-        backgroundColor = Colors.splashBackgroundColor,
+    private val initializeSplashState = SplashState(
+        backgroundColor = Colors.primaryColor,
         imageScale = SPLASH_IMAGE_SCALE,
         imageDrawableId = DrawablesIds.splash
     )
 
-    private val _splashState = MutableStateFlow(value = initializeSplashState)
-    val splashState = _splashState.asStateFlow()
+    private val splashStateMutableStateFlow = MutableStateFlow(value = initializeSplashState)
+    val splashStateFlow = splashStateMutableStateFlow.asStateFlow()
 
     init {
         delayAndNavigateToHomeOrLogin()
