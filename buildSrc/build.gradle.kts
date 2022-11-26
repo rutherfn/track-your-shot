@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly(gradleApi())
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.71")
+    val stdibVersion = "1.2.71"
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$stdibVersion")
 }
