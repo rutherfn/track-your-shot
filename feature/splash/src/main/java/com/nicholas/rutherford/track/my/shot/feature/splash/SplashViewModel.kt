@@ -21,8 +21,8 @@ class SplashViewModel(private val navigation: SplashNavigation) : ViewModel() {
         imageDrawableId = DrawablesIds.splash
     )
 
-    private val _splashState = MutableStateFlow(value = initializeSplashState)
-    val splashState = _splashState.asStateFlow()
+    private val splashStateMutableStateFlow = MutableStateFlow(value = initializeSplashState)
+    val splashStateFlow = splashStateMutableStateFlow.asStateFlow()
 
     init {
         delayAndNavigateToHomeOrLogin()

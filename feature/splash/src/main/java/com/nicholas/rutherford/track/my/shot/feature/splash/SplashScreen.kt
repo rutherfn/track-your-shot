@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 
 @Composable
 fun SplashScreen(viewModel: SplashViewModel) {
-    val state = viewModel.splashState.collectAsState().value
+    val state = viewModel.splashStateFlow.collectAsState().value
 
     Box(
         contentAlignment = Alignment.Center,
