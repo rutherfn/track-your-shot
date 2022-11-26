@@ -15,7 +15,7 @@ const val ALWAYS_LOGIN_TEST = true
 
 class SplashViewModel(private val navigation: SplashNavigation) : ViewModel() {
 
-    internal val initializeSplashState = SplashState(
+    private val initializeSplashState = SplashState(
         backgroundColor = Colors.primaryColor,
         imageScale = SPLASH_IMAGE_SCALE,
         imageDrawableId = DrawablesIds.splash
