@@ -9,25 +9,25 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
 
 object TextStyles {
 
-    val Large = TextStyle(
+    val large = TextStyle(
         fontSize = 40.sp,
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold, color = Colors.primaryColor
     )
 
-    val SubLarge = TextStyle(
+    val subLarge = TextStyle(
         fontSize = 32.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Bold, color = Colors.primaryColor
     )
 
-    val Medium = TextStyle(
+    val medium = TextStyle(
         fontSize = 24.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Medium, color = Colors.primaryColor
     )
 
-    val Body = TextStyle(
+    val body = TextStyle(
         fontSize = 14.sp, fontFamily = FontFamily.Default, color = Colors.primaryColor
     )
 
-    val HyperLink = TextStyle(
+    val hyperLink = TextStyle(
         fontSize = 14.sp,
         fontFamily = FontFamily.Default,
         textDecoration = TextDecoration.Underline,

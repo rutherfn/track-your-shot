@@ -33,7 +33,7 @@ fun LoginScreen(viewModel: LoginViewModel) {
     ) {
         Text(
             text = stringResource(id = StringsIds.login),
-            style = TextStyles.Large
+            style = TextStyles.large
         )
 
         Spacer(modifier = Modifier.height(Padding.twenty))
@@ -41,7 +41,7 @@ fun LoginScreen(viewModel: LoginViewModel) {
             label = { Text(text = stringResource(id = StringsIds.login)) },
             value = state.username ?: stringResource(id = StringsIds.empty),
             onValueChange = { newUsername -> viewModel.onUsernameValueChanged(newUsername = newUsername) },
-            textStyle = TextStyles.Body
+            textStyle = TextStyles.body
         )
 
         Spacer(modifier = Modifier.height(Padding.twenty))
@@ -51,7 +51,7 @@ fun LoginScreen(viewModel: LoginViewModel) {
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             onValueChange = { newPassword -> viewModel.onPasswordValueChanged(newPassword = newPassword) },
-            textStyle = TextStyles.Body
+            textStyle = TextStyles.body
         )
 
         Spacer(modifier = Modifier.height(Padding.twenty))
@@ -66,7 +66,7 @@ fun LoginScreen(viewModel: LoginViewModel) {
                 content = {
                     Text(
                         text = stringResource(id = StringsIds.login),
-                        style = TextStyles.Medium
+                        style = TextStyles.medium
                     )
                 }
             )
@@ -76,14 +76,14 @@ fun LoginScreen(viewModel: LoginViewModel) {
         ClickableText(
             text = AnnotatedString(stringResource(id = StringsIds.clickMeToRestPassword)),
             onClick = { },
-            style = TextStyles.HyperLink
+            style = TextStyles.hyperLink
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))
         ClickableText(
             text = AnnotatedString(stringResource(id = StringsIds.clickMeToCreateAccount)),
             onClick = { },
-            style = TextStyles.HyperLink
+            style = TextStyles.hyperLink
         )
     }
 }
