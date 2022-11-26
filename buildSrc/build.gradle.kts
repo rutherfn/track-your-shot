@@ -7,4 +7,10 @@ plugins {
 repositories {
     mavenCentral()
     google()
+    maven("https://plugins.gradle.org/m2/")
+}
+
+dependencies {
+    compileOnly(gradleApi())
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.21")
 }
