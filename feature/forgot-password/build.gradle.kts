@@ -57,4 +57,11 @@ android {
     }
 }
 
-dependencies {}
+dependencies {
+    api(project(path = ":base-resources"))
+    api(project(path = ":helper:ui"))
+    api(project(path = ":navigation"))
+
+    implementation(Dependencies.Compose.material)
+    implementation(Dependencies.Compose.viewModel)
+}

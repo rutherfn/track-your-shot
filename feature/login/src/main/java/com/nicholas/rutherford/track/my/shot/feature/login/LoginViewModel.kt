@@ -6,9 +6,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class LoginViewModel(private val navigation: LoginNavigation) : ViewModel() {
 
-    private val initializeLoginState = LoginState(username = null, password = null)
-
-    private val loginMutableStateFlow = MutableStateFlow(value = initializeLoginState)
+    private val loginMutableStateFlow = MutableStateFlow(value = LoginState(username = null, password = null))
     val loginStateFlow = loginMutableStateFlow.asStateFlow()
 
     internal fun onLoginClicked() = navigation.navigateToHome()
