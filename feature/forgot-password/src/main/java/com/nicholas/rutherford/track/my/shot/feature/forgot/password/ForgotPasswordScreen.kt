@@ -36,11 +36,15 @@ fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
         TopAppBar(
             title = {
                 Text(text = stringResource(id = StringsIds.forgotPassword))
-            }, navigationIcon = {
-                IconButton(onClick = {
-                    viewModel.onBackButtonClicked()
-                }) {
-                    Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
+            },
+            navigationIcon = {
+                IconButton(onClick = { viewModel.onBackButtonClicked() }) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(
+                            id = StringsIds.empty
+                        )
+                    )
                 }
             }
         )
@@ -49,7 +53,9 @@ fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
 
         TextField(
             label = { Text(text = stringResource(id = StringsIds.forgotPassword)) },
-            modifier = Modifier.fillMaxWidth().padding(4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
             value = state.email ?: stringResource(id = StringsIds.empty),
             onValueChange = { newEmail -> viewModel.onEmailValueChanged(newEmail = newEmail) },
             textStyle = TextStyles.body,
@@ -65,7 +71,8 @@ fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
             onClick = { viewModel.onSendPasswordResetButtonClicked() },
             shape = RoundedCornerShape(size = 50.dp),
             modifier = Modifier
-                .fillMaxWidth().padding(Padding.twentyFour),
+                .fillMaxWidth()
+                .padding(Padding.twentyFour),
             colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
             content = {
                 Text(
