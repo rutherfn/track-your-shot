@@ -1,6 +1,11 @@
 package com.nicholas.rutherford.track.my.shot.feature.forgot.password
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -60,12 +65,13 @@ fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
             onClick = { viewModel.onSendPasswordResetButtonClicked() },
             shape = RoundedCornerShape(size = 50.dp),
             modifier = Modifier
-                .fillMaxWidth().padding(24.dp),
+                .fillMaxWidth().padding(Padding.twentyFour),
             colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
             content = {
                 Text(
                     text = stringResource(id = StringsIds.resetPassword),
-                    style = TextStyles.medium
+                    style = TextStyles.small,
+                    color = Color.White
                 )
             }
         )

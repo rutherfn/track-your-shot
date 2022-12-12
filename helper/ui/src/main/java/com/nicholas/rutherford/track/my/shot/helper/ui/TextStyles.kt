@@ -23,6 +23,10 @@ object TextStyles {
         fontSize = 24.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Medium, color = Colors.primaryColor
     )
 
+    val small = TextStyle(
+        fontSize = 19.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Medium, color = Colors.primaryColor
+    )
+
     val body = TextStyle(
         fontSize = 14.sp, fontFamily = FontFamily.Default, color = Colors.primaryColor
     )
