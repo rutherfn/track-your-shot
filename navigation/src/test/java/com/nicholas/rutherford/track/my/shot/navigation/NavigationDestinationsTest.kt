@@ -9,6 +9,7 @@ class NavigationDestinationsTest {
 
     lateinit var navigationDestinations: NavigationDestinations
 
+    internal val forgotPasswordScreen = "forgotPasswordScreen"
     internal val homeScreen = "homeScreen"
     internal val loginScreen = "loginScreen"
     internal val splashScreen = "splashScreen"
@@ -20,6 +21,10 @@ class NavigationDestinationsTest {
 
     @Nested
     inner class Constants {
+
+        @Test fun `forgot password screen name should result in forgot screen`() {
+            Assertions.assertEquals(navigationDestinations.FORGOT_PASSWORD_SCREEN, forgotPasswordScreen)
+        }
 
         @Test
         fun `home screen name should result in home screen`() {
