@@ -37,6 +37,11 @@ class ForgotPasswordViewModelTest {
     @Test fun `on email value change should update email state value`() {
         val newEmail = "new email"
 
+        Assertions.assertEquals(
+            viewModel.forgotPasswordStateFlow.value,
+            state
+        )
+
         viewModel.onEmailValueChanged(newEmail = newEmail)
 
         Assertions.assertEquals(

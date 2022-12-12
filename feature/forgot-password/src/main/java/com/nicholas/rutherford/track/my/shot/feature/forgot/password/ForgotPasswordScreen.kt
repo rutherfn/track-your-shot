@@ -1,10 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.feature.forgot.password
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -48,9 +44,11 @@ fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
 
         TextField(
             label = { Text(text = stringResource(id = StringsIds.forgotPassword)) },
+            modifier = Modifier.fillMaxWidth().padding(4.dp),
             value = state.email ?: stringResource(id = StringsIds.empty),
             onValueChange = { newEmail -> viewModel.onEmailValueChanged(newEmail = newEmail) },
             textStyle = TextStyles.body,
+            singleLine = true,
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color(color = 0x00000000)
             )
@@ -59,11 +57,10 @@ fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
         Spacer(modifier = Modifier.height(Padding.four))
 
         Button(
-            onClick = {},
-            shape = RoundedCornerShape(size = 30.dp),
+            onClick = { viewModel.onSendPasswordResetButtonClicked() },
+            shape = RoundedCornerShape(size = 50.dp),
             modifier = Modifier
-                .fillMaxWidth()
-                .height(height = 50.dp),
+                .fillMaxWidth().padding(24.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
             content = {
                 Text(
