@@ -32,10 +32,10 @@ class LoginViewModelTest {
         verify { navigation.navigateToHome() }
     }
 
-    @Test fun `on reset password clicked should call navigate to reset password`() {
-        viewModel.onResetPasswordClicked()
+    @Test fun `on forgot password clicked should call navigate to forgot password`() {
+        viewModel.onForgotPasswordClicked()
 
-        verify { navigation.navigateToResetPassword() }
+        verify { navigation.navigateToForgotPassword() }
     }
 
     @Test fun `on create account clicked should call navigate to create account`() {

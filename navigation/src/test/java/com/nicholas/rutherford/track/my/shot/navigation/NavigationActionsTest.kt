@@ -24,7 +24,6 @@ class NavigationActionsTest {
                     Actions.SplashScreen.home().navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
-                        .setLaunchSingleTop(true)
                         .build()
                 )
             }
@@ -38,8 +37,7 @@ class NavigationActionsTest {
                 Assertions.assertEquals(
                     Actions.SplashScreen.login().navOptions,
                     NavOptions.Builder()
-                        .setPopUpTo(0, true)
-                        .setLaunchSingleTop(true)
+                        .setPopUpTo(0, false)
                         .build()
                 )
             }
@@ -56,6 +54,18 @@ class NavigationActionsTest {
                         NavOptions.Builder()
                             .setPopUpTo(0, true)
                             .setLaunchSingleTop(true)
+                            .build()
+                    )
+                }
+
+                @Test fun forgot() {
+                    Assertions.assertEquals(
+                        Actions.LoginScreen.forgotPassword().destination,
+                        NavigationDestinations.FORGOT_PASSWORD_SCREEN
+                    )
+                    Assertions.assertEquals(
+                        Actions.LoginScreen.forgotPassword().navOptions,
+                        NavOptions.Builder()
                             .build()
                     )
                 }

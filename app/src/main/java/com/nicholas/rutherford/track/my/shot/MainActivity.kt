@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
+import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordScreen
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeScreen
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashScreen
@@ -25,7 +26,8 @@ class MainActivity : ComponentActivity() {
                 navigator = get(),
                 splashContent = { SplashScreen(viewModel = getViewModel()) },
                 loginContent = { LoginScreen(viewModel = getViewModel()) },
-                homeContent = { HomeScreen(viewModel = getViewModel()) }
+                homeContent = { HomeScreen(viewModel = getViewModel()) },
+                forgotPasswordContent = { ForgotPasswordScreen(viewModel = getViewModel()) }
             )
         }
     }
