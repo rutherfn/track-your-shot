@@ -8,5 +8,4 @@ interface Navigator {
 
     fun navigate(navigationAction: NavigationAction?)
     fun pop(popRouteAction: String?)
-    fun updatePopRouteActionToNull()
 }

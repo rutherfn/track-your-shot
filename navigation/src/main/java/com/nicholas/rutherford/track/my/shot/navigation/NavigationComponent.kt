@@ -42,7 +42,7 @@ fun NavigationComponent(
     LaunchedEffect(popRouteState) {
         popRouteState?.let { route ->
             navHostController.popBackStack(route = route, inclusive = false)
-            navigator.updatePopRouteActionToNull()
+            navigator.pop(popRouteAction = null) // need to set this to null to listen to next pop action
         }
     }
 
