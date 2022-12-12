@@ -11,7 +11,7 @@ class LoginViewModel(private val navigation: LoginNavigation) : ViewModel() {
 
     internal fun onLoginClicked() = navigation.navigateToHome()
 
-    internal fun onResetPasswordClicked() = navigation.navigateToResetPassword()
+    internal fun onForgotPasswordClicked() = navigation.navigateToForgotPassword()
 
     internal fun onCreateAccountClicked() = navigation.navigateToCreateAccount()
 

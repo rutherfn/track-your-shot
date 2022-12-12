@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class ForgotPasswordViewModel : ViewModel() {
+class ForgotPasswordViewModel(private val navigation: ForgotPasswordNavigation) : ViewModel() {
 
     private val forgotPasswordMutableStateFlow = MutableStateFlow(value = ForgotPasswordState(email = null))
     val forgotPasswordStateFlow = forgotPasswordMutableStateFlow.asStateFlow()
+
+    fun onBackButtonClicked() = navigation.pop()
 
     internal fun onSendPasswordResetButtonClicked() {
         // todo: business logic

@@ -9,15 +9,13 @@ object NavigationActions {
             override val destination = NavigationDestinations.HOME_SCREEN
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(0, true)
-                .setLaunchSingleTop(true)
                 .build()
         }
 
         fun login() = object : NavigationAction {
             override val destination = NavigationDestinations.LOGIN_SCREEN
             override val navOptions = NavOptions.Builder()
-                .setPopUpTo(0, true)
-                .setLaunchSingleTop(true)
+                .setPopUpTo(0, false)
                 .build()
         }
     }
@@ -28,6 +26,11 @@ object NavigationActions {
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(0, true)
                 .setLaunchSingleTop(true)
+                .build()
+        }
+        fun forgotPassword() = object : NavigationAction {
+            override val destination = NavigationDestinations.FORGOT_PASSWORD_SCREEN
+            override val navOptions = NavOptions.Builder()
                 .build()
         }
     }

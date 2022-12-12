@@ -18,10 +18,15 @@ fun NavigationComponent(
     navigator: Navigator,
     splashContent: @Composable (navController: Navigator) -> Unit,
     loginContent: @Composable (navController: Navigator) -> Unit,
-    homeContent: @Composable (navController: Navigator) -> Unit
+    homeContent: @Composable (navController: Navigator) -> Unit,
+    forgotPasswordContent: @Composable (navController: Navigator) -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigatorState by navigator.navActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
+    val popRouteState by navigator.popRouteActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
@@ -31,6 +36,13 @@ fun NavigationComponent(
                 navHostController.currentBackStackEntry?.arguments?.putParcelable(arg.key, arg.value)
             }
             navHostController.navigate(it.destination, it.navOptions)
+        }
+    }
+
+    LaunchedEffect(popRouteState) {
+        popRouteState?.let { route ->
+            navHostController.popBackStack(route = route, inclusive = false)
+            navigator.updatePopRouteActionToNull()
         }
     }
 
@@ -46,6 +58,9 @@ fun NavigationComponent(
         }
         composable(route = NavigationDestinations.HOME_SCREEN) {
             homeContent.invoke(navigator)
+        }
+        composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {
+            forgotPasswordContent.invoke(navigator)
         }
     }
 }

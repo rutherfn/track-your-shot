@@ -81,8 +81,8 @@ fun LoginScreen(viewModel: LoginViewModel) {
 
         Spacer(modifier = Modifier.height(Padding.twenty))
         ClickableText(
-            text = AnnotatedString(stringResource(id = StringsIds.clickMeToRestPassword)),
-            onClick = { },
+            text = AnnotatedString(stringResource(id = StringsIds.forgotPassword)),
+            onClick = { viewModel.onForgotPasswordClicked() },
             style = TextStyles.hyperLink
         )
 
