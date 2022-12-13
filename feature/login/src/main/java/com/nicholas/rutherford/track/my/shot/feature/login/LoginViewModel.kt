@@ -21,7 +21,7 @@ class LoginViewModel(private val navigation: LoginNavigation, private val buildT
         updateLauncherDrawableIdState()
     }
 
-    internal fun updateLauncherDrawableIdState() {
+    private fun updateLauncherDrawableIdState() {
         if (buildType.isDebug()) {
             loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundTest)
         } else if (buildType.isStage()) {
@@ -29,6 +29,9 @@ class LoginViewModel(private val navigation: LoginNavigation, private val buildT
         } else if (buildType.isRelease()) {
             loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRound)
         }
+    }
+
+    internal fun onLoginButtonClicked() {
     }
 
     internal fun onLoginClicked() = navigation.navigateToHome()

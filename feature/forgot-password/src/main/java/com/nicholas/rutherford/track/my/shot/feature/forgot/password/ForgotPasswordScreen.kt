@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -51,36 +53,36 @@ fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
 
         Spacer(modifier = Modifier.height(Padding.eight))
 
-        TextField(
-            label = { Text(text = stringResource(id = StringsIds.forgotPassword)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(4.dp),
-            value = state.email ?: stringResource(id = StringsIds.empty),
-            onValueChange = { newEmail -> viewModel.onEmailValueChanged(newEmail = newEmail) },
-            textStyle = TextStyles.body,
-            singleLine = true,
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color(color = 0x00000000)
+        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(14.dp)) {
+            TextField(
+                label = { Text(text = stringResource(id = StringsIds.forgotPassword)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp),
+                value = state.email ?: stringResource(id = StringsIds.empty),
+                onValueChange = { newEmail -> viewModel.onEmailValueChanged(newEmail = newEmail) },
+                textStyle = TextStyles.body,
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
             )
-        )
 
-        Spacer(modifier = Modifier.height(Padding.four))
+            Spacer(modifier = Modifier.height(Padding.four))
 
-        Button(
-            onClick = { viewModel.onSendPasswordResetButtonClicked() },
-            shape = RoundedCornerShape(size = 50.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(Padding.twentyFour),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
-            content = {
-                Text(
-                    text = stringResource(id = StringsIds.resetPassword),
-                    style = TextStyles.small,
-                    color = Color.White
-                )
-            }
-        )
+            Button(
+                onClick = { viewModel.onSendPasswordResetButtonClicked() },
+                shape = RoundedCornerShape(size = 50.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(Padding.twentyFour),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
+                content = {
+                    Text(
+                        text = stringResource(id = StringsIds.resetPassword),
+                        style = TextStyles.small,
+                        color = Color.White
+                    )
+                }
+            )
+        }
     }
 }

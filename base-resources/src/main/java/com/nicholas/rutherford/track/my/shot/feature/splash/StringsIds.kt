@@ -6,6 +6,7 @@ object StringsIds {
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val forgotPassword = R.string.forgot_password
     val empty = R.string.empty
+    val email = R.string.email
     val login = R.string.login
     val loginIconDescription = R.string.login_icon_description
     val password = R.string.password

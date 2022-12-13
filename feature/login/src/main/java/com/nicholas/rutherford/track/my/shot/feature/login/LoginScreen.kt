@@ -9,13 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -29,7 +28,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
-import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
@@ -39,7 +37,7 @@ fun LoginScreen(viewModel: LoginViewModel) {
     val state = viewModel.loginStateFlow.collectAsState().value
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(14.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -59,39 +57,44 @@ fun LoginScreen(viewModel: LoginViewModel) {
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))
-
         Text(
             text = stringResource(id = StringsIds.login),
             modifier = Modifier.padding(8.dp),
             style = TextStyles.medium
         )
 
-        Spacer(modifier = Modifier.height(Padding.twenty))
+        Spacer(modifier = Modifier.height(Padding.eight))
         TextField(
-            label = { Text(text = stringResource(id = StringsIds.login)) },
+            label = { Text(text = stringResource(id = StringsIds.email)) },
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
             value = state.username ?: stringResource(id = StringsIds.empty),
             onValueChange = { newUsername -> viewModel.onUsernameValueChanged(newUsername = newUsername) },
-            textStyle = TextStyles.body
+            textStyle = TextStyles.body,
+            singleLine = true,
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
         )
 
         Spacer(modifier = Modifier.height(Padding.twenty))
         TextField(
             label = { Text(text = stringResource(id = StringsIds.password)) },
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
             value = state.password ?: stringResource(id = StringsIds.empty),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             onValueChange = { newPassword -> viewModel.onPasswordValueChanged(newPassword = newPassword) },
-            textStyle = TextStyles.body
+            textStyle = TextStyles.body,
+            singleLine = true,
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
         )
 
         Spacer(modifier = Modifier.height(Padding.twenty))
         Box(modifier = Modifier.padding(start = Padding.forty, end = Padding.forty)) {
             Button(
-                onClick = { },
+                onClick = { viewModel.onLoginButtonClicked() },
                 shape = RoundedCornerShape(size = 50.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 50.dp),
+                    .padding(vertical = Padding.twentyFour),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
                 content = {
                     Text(
