@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.feature.login
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,13 +20,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
+import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
@@ -39,9 +43,27 @@ fun LoginScreen(viewModel: LoginViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        state.launcherDrawableId?.let { drawableId ->
+            Image(
+                painter = painterResource(id = drawableId),
+                contentDescription = stringResource(id = StringsIds.loginIconDescription),
+                modifier = Modifier
+                    .scale(scale = 2.0f)
+                    .padding(bottom = 20.dp)
+            )
+        }
+
+        Text(
+            text = stringResource(id = StringsIds.proceedWithYourAccount),
+            style = TextStyles.small
+        )
+
+        Spacer(modifier = Modifier.height(Padding.eight))
+
         Text(
             text = stringResource(id = StringsIds.login),
-            style = TextStyles.large
+            modifier = Modifier.padding(8.dp),
+            style = TextStyles.medium
         )
 
         Spacer(modifier = Modifier.height(Padding.twenty))

@@ -48,7 +48,7 @@ class AppModule {
             SplashViewModel(navigation = get())
         }
         viewModel {
-            LoginViewModel(navigation = get())
+            LoginViewModel(navigation = get(), buildType = get())
         }
         viewModel {
             HomeViewModel(navigator = get())

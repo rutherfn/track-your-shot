@@ -7,7 +7,9 @@ object StringsIds {
     val forgotPassword = R.string.forgot_password
     val empty = R.string.empty
     val login = R.string.login
+    val loginIconDescription = R.string.login_icon_description
     val password = R.string.password
+    val proceedWithYourAccount = R.string.proceed_with_your_account
     val resetPassword = R.string.reset_password
     val splashIconDescription = R.string.splash_icon_description
 }

@@ -4,7 +4,9 @@
     <string name="forgot_password">Forgot Password</string>
     <string name="empty" translatable="false" />
     <string name="login">Login</string>
+    <string name="login_icon_description">This is a login image for the login screen</string>
     <string name="reset_password">Reset Password</string>
     <string name="password">Password</string>
+    <string name="proceed_with_your_account">Proceed With Your Account</string>
     <string name="splash_icon_description">This is a splash image for the splash screen that gets displayed before app is triggered</string>
 </resources>

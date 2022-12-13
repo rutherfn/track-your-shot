@@ -67,6 +67,7 @@ android {
 
 dependencies {
     api(project(path = ":base-resources"))
+    api(project(path = ":build-type"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
 
