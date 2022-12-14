@@ -1,7 +1,8 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -13,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 
 @Composable
 fun CreateAccountScreen(viewModel: CreateAccountViewModel) {
@@ -30,5 +32,13 @@ fun CreateAccountScreen(viewModel: CreateAccountViewModel) {
                 }
             }
         )
+
+        Spacer(modifier = Modifier.height(Padding.eight))
+
+        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Padding.twenty)) {
+            Text(
+                text = "Enter All Fields To Create Account"
+            )
+        }
     }
 }
