@@ -4,6 +4,9 @@ import com.nicholas.rutherford.track.my.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenterImpl
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
 import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
+import com.nicholas.rutherford.track.my.shot.feature.create.account.CreateAccountNavigation
+import com.nicholas.rutherford.track.my.shot.feature.create.account.CreateAccountNavigationImpl
+import com.nicholas.rutherford.track.my.shot.feature.create.account.CreateAccountViewModel
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordNavigation
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordViewModel
@@ -41,6 +44,9 @@ class AppModule {
         single<ForgotPasswordNavigation> {
             ForgotPasswordNavigationImpl(navigator = get())
         }
+        single<CreateAccountNavigation> {
+            CreateAccountNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(appCenter = get())
         }
@@ -55,6 +61,9 @@ class AppModule {
         }
         viewModel {
             ForgotPasswordViewModel(navigation = get())
+        }
+        viewModel {
+            CreateAccountViewModel(navigation = get())
         }
     }
 }

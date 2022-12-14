@@ -7,9 +7,7 @@ class LoginNavigationImpl(private val navigator: Navigator) : LoginNavigation {
 
     override fun navigateToHome() = navigator.navigate(navigationAction = NavigationActions.LoginScreen.home())
 
-    // todo
-    override fun navigateToCreateAccount() = Unit
+    override fun navigateToCreateAccount() = navigator.navigate(navigationAction = NavigationActions.LoginScreen.createAccount())
 
-    // todo
     override fun navigateToForgotPassword() = navigator.navigate(navigationAction = NavigationActions.LoginScreen.forgotPassword())
 }

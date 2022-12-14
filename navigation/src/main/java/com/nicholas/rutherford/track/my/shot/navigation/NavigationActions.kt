@@ -28,6 +28,12 @@ object NavigationActions {
                 .setLaunchSingleTop(true)
                 .build()
         }
+
+        fun createAccount() = object : NavigationAction {
+            override val destination = NavigationDestinations.CREATE_ACCOUNT_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .build()
+        }
         fun forgotPassword() = object : NavigationAction {
             override val destination = NavigationDestinations.FORGOT_PASSWORD_SCREEN
             override val navOptions = NavOptions.Builder()

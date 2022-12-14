@@ -4,6 +4,7 @@ import com.nicholas.rutherford.track.my.shot.base.resources.R
 
 object StringsIds {
     val clickMeToCreateAccount = R.string.click_me_to_create_account
+    val createAccount = R.string.create_account
     val forgotPassword = R.string.forgot_password
     val empty = R.string.empty
     val email = R.string.email
