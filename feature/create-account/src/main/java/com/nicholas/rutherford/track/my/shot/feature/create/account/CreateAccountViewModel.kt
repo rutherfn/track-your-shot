@@ -6,7 +6,13 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class CreateAccountViewModel(private val navigation: CreateAccountNavigation) : ViewModel() {
 
-    private val createAccountMutableStateFlow = MutableStateFlow(value = CreateAccountState(username = null, email = null, password = null))
+    private val createAccountMutableStateFlow = MutableStateFlow(
+        value = CreateAccountState(
+            username = null,
+            email = null,
+            password = null
+        )
+    )
     val createAccountStateFlow = createAccountMutableStateFlow.asStateFlow()
 
     fun onBackButtonClicked() = navigation.pop()

@@ -58,6 +58,18 @@ class NavigationActionsTest {
                     )
                 }
 
+                @Test fun createAccount() {
+                    Assertions.assertEquals(
+                        Actions.LoginScreen.createAccount().destination,
+                        NavigationDestinations.CREATE_ACCOUNT_SCREEN
+                    )
+                    Assertions.assertEquals(
+                        Actions.LoginScreen.createAccount().navOptions,
+                        NavOptions.Builder()
+                            .build()
+                    )
+                }
+
                 @Test fun forgot() {
                     Assertions.assertEquals(
                         Actions.LoginScreen.forgotPassword().destination,

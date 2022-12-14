@@ -9,6 +9,7 @@ class NavigationDestinationsTest {
 
     lateinit var navigationDestinations: NavigationDestinations
 
+    internal val createAccountScreen = "createAccountScreen"
     internal val forgotPasswordScreen = "forgotPasswordScreen"
     internal val homeScreen = "homeScreen"
     internal val loginScreen = "loginScreen"
@@ -38,6 +39,11 @@ class NavigationDestinationsTest {
         @Test
         fun `splash screen name should result in splash screen`() {
             Assertions.assertEquals(navigationDestinations.SPLASH_SCREEN, splashScreen)
+        }
+
+        @Test
+        fun `create account screen name should result in create account screen`() {
+            Assertions.assertEquals(navigationDestinations.CREATE_ACCOUNT_SCREEN, createAccountScreen)
         }
     }
 }
