@@ -120,7 +120,7 @@ fun LoginScreen(viewModel: LoginViewModel) {
         Spacer(modifier = Modifier.height(Padding.eight))
         ClickableText(
             text = AnnotatedString(stringResource(id = StringsIds.clickMeToCreateAccount)),
-            onClick = { },
+            onClick = { viewModel.onCreateAccountClicked() },
             style = TextStyles.hyperLink
         )
     }

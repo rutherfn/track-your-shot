@@ -28,7 +28,7 @@ class ForgotPasswordViewModelTest {
     }
 
     @Test
-    fun `on back button clicked should pop to forgot password`() {
+    fun `on back button clicked should pop`() {
         viewModel.onBackButtonClicked()
 
         verify { navigation.pop() }

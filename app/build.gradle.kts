@@ -90,6 +90,7 @@ dependencies {
     api(project(path = ":app-center"))
     api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
+    api(project(path = ":feature:create-account"))
     api(project(path = ":feature:forgot-password"))
     api(project(path = ":feature:home"))
     api(project(path = ":feature:login"))
