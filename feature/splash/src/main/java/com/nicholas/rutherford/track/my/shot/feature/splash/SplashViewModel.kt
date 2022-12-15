@@ -36,7 +36,7 @@ class SplashViewModel(private val navigation: SplashNavigation) : ViewModel() {
     }
 
     private fun navigateLoginOrHome() {
-        // todo - determine if the user is signed in or not via auth0
+        // todo - determine if the user is signed in or not via firebase realtime databse
         // todo - if they arent, navigate them to login
         // todo - if they are, navigate them to home
         if (ALWAYS_LOGIN_TEST) {
