@@ -20,10 +20,6 @@ object Versions {
             const val core = "4.3.1"
         }
 
-        object Auth0 {
-            const val core = "2.+"
-        }
-
         object Coil { const val core = "2.2.2" }
 
         object Compose {
