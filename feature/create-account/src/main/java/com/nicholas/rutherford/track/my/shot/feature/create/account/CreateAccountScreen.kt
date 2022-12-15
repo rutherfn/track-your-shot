@@ -1,9 +1,26 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account
 
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -19,23 +36,6 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.offset
-import androidx.compose.material.Button
-import androidx.compose.material.TextField
-import androidx.compose.material.IconButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.ButtonDefaults
 
 @Composable
 fun CreateAccountScreen(viewModel: CreateAccountViewModel) {
@@ -46,12 +46,15 @@ fun CreateAccountScreen(viewModel: CreateAccountViewModel) {
             title = {
                 Text(text = stringResource(id = StringsIds.createAccount))
             }, navigationIcon = {
-                IconButton(onClick = { viewModel.onBackButtonClicked() }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack, contentDescription = stringResource(id = StringsIds.empty)
+            IconButton(onClick = { viewModel.onBackButtonClicked() }) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(
+                        id = StringsIds.empty
                     )
-                }
+                )
             }
+        }
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))
@@ -81,7 +84,10 @@ fun CreateAccountScreen(viewModel: CreateAccountViewModel) {
                         .fillMaxWidth(),
                     value = state.username ?: stringResource(id = StringsIds.empty),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                    onValueChange = { newUsername -> viewModel.onUsernameValueChanged(newUsername = newUsername) },
+                    onValueChange = {
+                        newUsername ->
+                        viewModel.onUsernameValueChanged(newUsername = newUsername)
+                    },
                     textStyle = TextStyles.body,
                     singleLine = true,
                     colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
@@ -100,7 +106,10 @@ fun CreateAccountScreen(viewModel: CreateAccountViewModel) {
                         .offset(x = (-8).dp)
                         .fillMaxWidth(),
                     value = state.email ?: stringResource(id = StringsIds.empty),
-                    onValueChange = { newEmail -> viewModel.onEmailValueChanged(newEmail = newEmail) },
+                    onValueChange = {
+                        newEmail ->
+                        viewModel.onEmailValueChanged(newEmail = newEmail)
+                    },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     textStyle = TextStyles.body,
                     singleLine = true,
@@ -120,7 +129,10 @@ fun CreateAccountScreen(viewModel: CreateAccountViewModel) {
                         .offset(x = (-8).dp)
                         .fillMaxWidth(),
                     value = state.password ?: stringResource(id = StringsIds.empty),
-                    onValueChange = { newPassword -> viewModel.onPasswordValueChanged(newPassword = newPassword) },
+                    onValueChange = {
+                        newPassword ->
+                        viewModel.onPasswordValueChanged(newPassword = newPassword)
+                    },
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     textStyle = TextStyles.body,
@@ -132,7 +144,7 @@ fun CreateAccountScreen(viewModel: CreateAccountViewModel) {
             Spacer(modifier = Modifier.height(Padding.eight))
 
             Button(
-                onClick = {  },
+                onClick = { },
                 shape = RoundedCornerShape(size = 50.dp),
                 modifier = Modifier
                     .fillMaxWidth()

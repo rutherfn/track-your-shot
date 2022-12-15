@@ -23,7 +23,8 @@ class CreateAccountViewModelTest {
     fun initializeCreateAccountState() {
         Assertions.assertEquals(
             viewModel.createAccountStateFlow.value, state
-        ) }
+        )
+    }
 
     @Test fun `on back button clicked should pop`() {
         viewModel.onBackButtonClicked()
