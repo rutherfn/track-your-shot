@@ -29,8 +29,7 @@ class MainActivity : ComponentActivity() {
                 loginContent = { LoginScreen(viewModel = getViewModel()) },
                 homeContent = { HomeScreen(viewModel = getViewModel()) },
                 forgotPasswordContent = { ForgotPasswordScreen(viewModel = getViewModel()) },
-                createAccountContent = { CreateAccountScreen(viewModel = getViewModel())}
-            )
+                createAccountContent = { CreateAccountScreen(viewModel = getViewModel()) })
         }
     }
 }
