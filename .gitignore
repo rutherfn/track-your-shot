@@ -26,6 +26,7 @@ build-type/build
 base-resources/build
 buildSrc/.gradle
 buildSrc/build
+compose-components/build
 feature/create-account/build
 feature/forgot-password/build
 feature/home/build
