@@ -11,20 +11,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.nicholas.rutherford.track.my.shot.compose.components.ContentWithTopBackAppBar
 import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
@@ -34,55 +30,53 @@ import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
 fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
     val state = viewModel.forgotPasswordStateFlow.collectAsState().value
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopAppBar(
-            title = {
-                Text(text = stringResource(id = StringsIds.forgotPassword))
-            },
-            navigationIcon = {
-                IconButton(onClick = { viewModel.onBackButtonClicked() }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(
-                            id = StringsIds.empty
-                        )
-                    )
-                }
-            }
+    ContentWithTopBackAppBar(
+        toolbarTitle = stringResource(id = StringsIds.forgotPassword),
+        onBackButtonClicked = { viewModel.onBackButtonClicked() },
+        iconContentDescription = stringResource(id = StringsIds.empty),
+        content = {
+            ForgotPasswordScreenContent(state = state, viewModel = viewModel)
+        }
+    )
+}
+
+@Composable
+fun ForgotPasswordScreenContent(
+    state: ForgotPasswordState,
+    viewModel: ForgotPasswordViewModel
+) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(rememberScrollState())
+        .padding(14.dp)) {
+        TextField(
+            label = { Text(text = stringResource(id = StringsIds.forgotPassword)) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
+            value = state.email ?: stringResource(id = StringsIds.empty),
+            onValueChange = { newEmail -> viewModel.onEmailValueChanged(newEmail = newEmail) },
+            textStyle = TextStyles.body,
+            singleLine = true,
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
         )
 
-        Spacer(modifier = Modifier.height(Padding.eight))
+        Spacer(modifier = Modifier.height(Padding.four))
 
-        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(14.dp)) {
-            TextField(
-                label = { Text(text = stringResource(id = StringsIds.forgotPassword)) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                value = state.email ?: stringResource(id = StringsIds.empty),
-                onValueChange = { newEmail -> viewModel.onEmailValueChanged(newEmail = newEmail) },
-                textStyle = TextStyles.body,
-                singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
-            )
-
-            Spacer(modifier = Modifier.height(Padding.four))
-
-            Button(
-                onClick = { viewModel.onSendPasswordResetButtonClicked() },
-                shape = RoundedCornerShape(size = 50.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Padding.twentyFour),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
-                content = {
-                    Text(
-                        text = stringResource(id = StringsIds.resetPassword),
-                        style = TextStyles.small,
-                        color = Color.White
-                    )
-                }
-            )
-        }
+        Button(
+            onClick = { viewModel.onSendPasswordResetButtonClicked() },
+            shape = RoundedCornerShape(size = 50.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(Padding.twentyFour),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
+            content = {
+                Text(
+                    text = stringResource(id = StringsIds.resetPassword),
+                    style = TextStyles.small,
+                    color = Color.White
+                )
+            }
+        )
     }
 }

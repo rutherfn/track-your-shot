@@ -66,6 +66,7 @@ android {
 }
 
 dependencies {
+    api(project(path = ":compose-components"))
     api(project(path = ":base-resources"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))

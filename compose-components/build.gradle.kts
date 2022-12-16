@@ -66,5 +66,7 @@ android {
 }
 
 dependencies {
+    api(project(path = ":helper:ui"))
+
     implementation(Dependencies.Compose.material)
 }
