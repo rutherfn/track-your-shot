@@ -12,14 +12,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 
 @Composable
 fun ContentWithTopBackAppBar(
     toolbarTitle: String,
     onBackButtonClicked: (() -> Unit),
-    iconContentDescription: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
+    iconContentDescription: Int = StringsIds.empty,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
@@ -29,7 +31,7 @@ fun ContentWithTopBackAppBar(
                 IconButton(onClick = { onBackButtonClicked.invoke() }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = iconContentDescription
+                        contentDescription = stringResource(id = iconContentDescription)
                     )
                 }
             }

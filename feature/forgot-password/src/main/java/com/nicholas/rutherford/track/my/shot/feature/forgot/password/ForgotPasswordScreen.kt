@@ -33,10 +33,9 @@ fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
     ContentWithTopBackAppBar(
         toolbarTitle = stringResource(id = StringsIds.forgotPassword),
         onBackButtonClicked = { viewModel.onBackButtonClicked() },
-        iconContentDescription = stringResource(id = StringsIds.empty),
         content = {
-            ForgotPasswordScreenContent(state = state, viewModel = viewModel)
-        }
+        ForgotPasswordScreenContent(state = state, viewModel = viewModel)
+    }
     )
 }
 
