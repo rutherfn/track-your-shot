@@ -34,8 +34,8 @@ fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
         toolbarTitle = stringResource(id = StringsIds.forgotPassword),
         onBackButtonClicked = { viewModel.onBackButtonClicked() },
         content = {
-        ForgotPasswordScreenContent(state = state, viewModel = viewModel)
-    }
+            ForgotPasswordScreenContent(state = state, viewModel = viewModel)
+        }
     )
 }
 
@@ -44,10 +44,12 @@ fun ForgotPasswordScreenContent(
     state: ForgotPasswordState,
     viewModel: ForgotPasswordViewModel
 ) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState())
-        .padding(14.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(14.dp)
+    ) {
         TextField(
             label = { Text(text = stringResource(id = StringsIds.forgotPassword)) },
             modifier = Modifier

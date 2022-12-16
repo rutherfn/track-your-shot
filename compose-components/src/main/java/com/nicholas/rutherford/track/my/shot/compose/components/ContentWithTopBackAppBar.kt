@@ -28,13 +28,13 @@ fun ContentWithTopBackAppBar(
             title = {
                 Text(text = toolbarTitle)
             }, navigationIcon = {
-                IconButton(onClick = { onBackButtonClicked.invoke() }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(id = iconContentDescription)
-                    )
-                }
+            IconButton(onClick = { onBackButtonClicked.invoke() }) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(id = iconContentDescription)
+                )
             }
+        }
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))

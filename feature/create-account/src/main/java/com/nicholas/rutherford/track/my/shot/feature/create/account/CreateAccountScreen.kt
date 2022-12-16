@@ -1,11 +1,23 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -65,7 +77,7 @@ fun CreateAccountScreenContent(
                 value = state.username ?: stringResource(id = StringsIds.empty),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 onValueChange = {
-                        newUsername ->
+                    newUsername ->
                     viewModel.onUsernameValueChanged(newUsername = newUsername)
                 },
                 textStyle = TextStyles.body,
@@ -87,7 +99,7 @@ fun CreateAccountScreenContent(
                     .fillMaxWidth(),
                 value = state.email ?: stringResource(id = StringsIds.empty),
                 onValueChange = {
-                        newEmail ->
+                    newEmail ->
                     viewModel.onEmailValueChanged(newEmail = newEmail)
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -110,7 +122,7 @@ fun CreateAccountScreenContent(
                     .fillMaxWidth(),
                 value = state.password ?: stringResource(id = StringsIds.empty),
                 onValueChange = {
-                        newPassword ->
+                    newPassword ->
                     viewModel.onPasswordValueChanged(newPassword = newPassword)
                 },
                 visualTransformation = PasswordVisualTransformation(),
