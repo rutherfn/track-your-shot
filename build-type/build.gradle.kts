@@ -49,11 +49,13 @@ android {
         useJUnitPlatform()
     }
 
-    dependencies {
-        testImplementation(Dependencies.Junit.Jupiter.api)
-        testImplementation(Dependencies.Junit.Jupiter.params)
-        testImplementation(Dependencies.Junit.junit)
+    tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
+}
 
-        testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
-    }
+dependencies {
+    testImplementation(Dependencies.Junit.Jupiter.api)
+    testImplementation(Dependencies.Junit.Jupiter.params)
+    testImplementation(Dependencies.Junit.junit)
+
+    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }
