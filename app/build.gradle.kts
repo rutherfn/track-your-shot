@@ -84,6 +84,8 @@ android {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
+
+    tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
 dependencies {
