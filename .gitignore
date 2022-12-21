@@ -24,15 +24,24 @@ build-type/build
 
 # Ignore module build gradles files
 base-resources/build
+
 buildSrc/.gradle
 buildSrc/build
+
 compose-components/build
+
 feature/create-account/build
 feature/forgot-password/build
 feature/home/build
 feature/login/build
 feature/splash/build
+
+firebase/create/build
+firebase/delete/build
+firebase/read/build
+
 helper/ui/build
+
 navigation/build
 
 # Local configuration file (sdk path, etc)
