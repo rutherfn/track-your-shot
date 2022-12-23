@@ -30,6 +30,8 @@ buildSrc/build
 
 compose-components/build
 
+data/account-info/build
+
 feature/create-account/build
 feature/forgot-password/build
 feature/home/build
