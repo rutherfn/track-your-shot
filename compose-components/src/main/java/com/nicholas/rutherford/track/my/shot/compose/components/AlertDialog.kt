@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.compose.components.alert
+package com.nicholas.rutherford.track.my.shot.compose.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 
 /**
- * Default [AlertDialog] with given params to build alert through out navigation flow
+ * Default [AlertDialog] with given params to build alerts used in [Content]
  *
  * @param onDismissClicked triggers whenever the user attempts to dismiss the [AlertDialog]
  * @param title sets the [Text] for the [AlertDialog]
