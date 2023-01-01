@@ -12,7 +12,7 @@ class ForgotPasswordViewModel(private val navigation: ForgotPasswordNavigation) 
     fun onBackButtonClicked() = navigation.pop()
 
     internal fun onSendPasswordResetButtonClicked() {
-        // todo
+        // todo: business logic
     }
 
     internal fun onEmailValueChanged(newEmail: String) {
