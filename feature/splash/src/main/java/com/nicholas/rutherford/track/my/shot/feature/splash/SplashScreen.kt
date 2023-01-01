@@ -11,11 +11,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.nicholas.rutherford.track.my.shot.compose.components.Content
 
 @Composable
 fun SplashScreen(viewModel: SplashViewModel) {
     val state = viewModel.splashStateFlow.collectAsState().value
 
+    Content(
+        ui = {
+            SplashScreenContent(state = state)
+        }
+    )
+}
+
+@Composable
+fun SplashScreenContent(
+    state: SplashState
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier

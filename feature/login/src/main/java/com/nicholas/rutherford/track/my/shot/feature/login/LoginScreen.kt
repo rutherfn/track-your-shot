@@ -31,6 +31,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.nicholas.rutherford.track.my.shot.compose.components.Content
 import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
@@ -40,8 +41,23 @@ import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
 fun LoginScreen(viewModel: LoginViewModel) {
     val state = viewModel.loginStateFlow.collectAsState().value
 
+    Content(
+        ui = {
+            LoginScreenContent(state = state, viewModel = viewModel)
+        }
+    )
+}
+
+@Composable
+fun LoginScreenContent(
+    state: LoginState,
+    viewModel: LoginViewModel
+) {
     Column(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(14.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(14.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -70,7 +86,9 @@ fun LoginScreen(viewModel: LoginViewModel) {
         Spacer(modifier = Modifier.height(Padding.eight))
         TextField(
             label = { Text(text = stringResource(id = StringsIds.email)) },
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             value = state.username ?: stringResource(id = StringsIds.empty),
             onValueChange = { newUsername -> viewModel.onUsernameValueChanged(newUsername = newUsername) },
             textStyle = TextStyles.body,
@@ -81,7 +99,9 @@ fun LoginScreen(viewModel: LoginViewModel) {
         Spacer(modifier = Modifier.height(Padding.twenty))
         TextField(
             label = { Text(text = stringResource(id = StringsIds.password)) },
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             value = state.password ?: stringResource(id = StringsIds.empty),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),

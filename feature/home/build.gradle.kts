@@ -68,6 +68,7 @@ android {
 }
 
 dependencies {
+    api(project(path = ":compose-components"))
     api(project(path = ":navigation"))
 
     implementation(Dependencies.Compose.material)

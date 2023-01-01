@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.compose.components.alert.data
+package com.nicholas.rutherford.track.my.shot.data.shared.alert
 
 data class AlertConfirmAndDismissButton(
     val onButtonClicked: () -> Unit,
