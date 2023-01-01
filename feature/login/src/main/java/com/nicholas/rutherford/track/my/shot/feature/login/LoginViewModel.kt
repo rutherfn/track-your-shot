@@ -32,7 +32,6 @@ class LoginViewModel(private val navigation: LoginNavigation, private val buildT
     }
 
     internal fun onLoginButtonClicked() {
-
     }
 
     internal fun onLoginClicked() = navigation.navigateToHome()
