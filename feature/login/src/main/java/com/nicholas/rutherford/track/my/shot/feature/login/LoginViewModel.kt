@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.my.shot.feature.login
 
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
+import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,8 +32,7 @@ class LoginViewModel(private val navigation: LoginNavigation, private val buildT
         }
     }
 
-    internal fun onLoginButtonClicked() {
-    }
+    internal fun onLoginButtonClicked() {}
 
     internal fun onLoginClicked() = navigation.navigateToHome()
 
