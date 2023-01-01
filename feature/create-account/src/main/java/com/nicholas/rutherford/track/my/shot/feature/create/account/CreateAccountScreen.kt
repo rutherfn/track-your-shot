@@ -20,8 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.nicholas.rutherford.track.my.shot.compose.components.ContentWithTopBackAppBar
+import com.nicholas.rutherford.track.my.shot.compose.components.Content
 import com.nicholas.rutherford.track.my.shot.compose.components.TextFieldNoPadding
+import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
@@ -31,12 +32,14 @@ import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
 fun CreateAccountScreen(viewModel: CreateAccountViewModel) {
     val state = viewModel.createAccountStateFlow.collectAsState().value
 
-    ContentWithTopBackAppBar(
-        toolbarTitle = stringResource(id = StringsIds.createAccount),
-        onBackButtonClicked = { viewModel.onBackButtonClicked() },
-        content = {
+    Content(
+        ui = {
             CreateAccountScreenContent(state = state, viewModel = viewModel)
-        }
+        },
+        appBar = AppBar(
+            toolbarTitle = stringResource(id = StringsIds.createAccount),
+            onBackButtonClicked = { viewModel.onBackButtonClicked() }
+        )
     )
 }
 

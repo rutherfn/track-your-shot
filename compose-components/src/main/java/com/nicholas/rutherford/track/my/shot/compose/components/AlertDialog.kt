@@ -7,40 +7,40 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.nicholas.rutherford.track.my.shot.compose.components.alert.data.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 
 /**
  * Default [AlertDialog] with given params to build alert through out navigation flow
  *
  * @param onDismissClicked triggers whenever the user attempts to dismiss the [AlertDialog]
  * @param title sets the [Text] for the [AlertDialog]
- * @param alertConfirmButton optional param that by default is set to null. If its set to true, will set [AlertDialog] confirmButton properties
- * @param alertDismissButton optional param that by default is set to null. If its set to true, will set [AlertDialog] dismissButton properties
+ * @param confirmButton optional param that by default is set to null. If its set to true, will set [AlertDialog] confirmButton properties
+ * @param dismissButton optional param that by default is set to null. If its set to true, will set [AlertDialog] dismissButton properties
  * @param description optional param that sets the [Text] of the [AlertDialog]
  */
 @Composable
 fun AlertDialog(
     onDismissClicked: () -> Unit,
     title: String,
-    alertConfirmButton: AlertConfirmAndDismissButton? = null,
-    alertDismissButton: AlertConfirmAndDismissButton? = null,
+    confirmButton: AlertConfirmAndDismissButton? = null,
+    dismissButton: AlertConfirmAndDismissButton? = null,
     description: String? = null
 ) {
     AlertDialog(
         onDismissRequest = { onDismissClicked.invoke() },
         confirmButton = {
-            alertConfirmButton?.let { confirmButton ->
+            confirmButton?.let { button ->
                 TextButton(
-                    onClick = { confirmButton.onButtonClicked.invoke() },
-                    content = { Text(text = confirmButton.buttonText) }
+                    onClick = { button.onButtonClicked.invoke() },
+                    content = { Text(text = button.buttonText) }
                 )
             }
         },
         dismissButton = {
-            alertDismissButton?.let { dismissButton ->
+            dismissButton?.let { button ->
                 TextButton(
-                    onClick = { dismissButton.onButtonClicked.invoke() },
-                    content = { Text(text = dismissButton.buttonText) }
+                    onClick = { button.onButtonClicked.invoke() },
+                    content = { Text(text = button.buttonText) }
                 )
             }
         },

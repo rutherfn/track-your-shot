@@ -20,7 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.nicholas.rutherford.track.my.shot.compose.components.ContentWithTopBackAppBar
+import com.nicholas.rutherford.track.my.shot.compose.components.Content
+import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
@@ -30,12 +31,14 @@ import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
 fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
     val state = viewModel.forgotPasswordStateFlow.collectAsState().value
 
-    ContentWithTopBackAppBar(
-        toolbarTitle = stringResource(id = StringsIds.forgotPassword),
-        onBackButtonClicked = { viewModel.onBackButtonClicked() },
-        content = {
+    Content(
+        ui = {
             ForgotPasswordScreenContent(state = state, viewModel = viewModel)
-        }
+        },
+        appBar = AppBar(
+            toolbarTitle = stringResource(id = StringsIds.forgotPassword),
+            onBackButtonClicked = { viewModel.onBackButtonClicked() }
+        )
     )
 }
 

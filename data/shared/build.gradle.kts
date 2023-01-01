@@ -8,14 +8,6 @@ android {
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
-    buildFeatures {
-        compose = ComposeData.Enabled.value
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
-    }
-
     compileOptions {
         sourceCompatibility = types.BuildTypes.CompileOptions.sourceCompatibility
         targetCompatibility = types.BuildTypes.CompileOptions.targetCompatibility
@@ -67,9 +59,4 @@ android {
     tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
-dependencies {
-    api(project(path = ":data:shared"))
-    api(project(path = ":helper:ui"))
-
-    implementation(Dependencies.Compose.material)
-}
+dependencies {}
