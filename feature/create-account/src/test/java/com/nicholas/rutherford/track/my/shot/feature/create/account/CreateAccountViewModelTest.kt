@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account
 
+import android.app.Application
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions
@@ -12,12 +13,13 @@ class CreateAccountViewModelTest {
     private lateinit var viewModel: CreateAccountViewModel
 
     private var navigation = mockk<CreateAccountNavigation>(relaxed = true)
+    internal val application = Application()
 
     private val state = CreateAccountState(username = null, email = null, password = null, alert = null)
 
     @BeforeEach
     fun beforeEach() {
-        viewModel = CreateAccountViewModel(navigation = navigation)
+        viewModel = CreateAccountViewModel(navigation = navigation, application = application)
     }
 
     @Test
@@ -139,6 +141,66 @@ class CreateAccountViewModelTest {
 
             Assertions.assertEquals(
                 viewModel.isPasswordEmptyOrNull,
+                true
+            )
+        }
+    }
+
+    @Nested
+    inner class SetIsTwoOrMoreFieldsEmptyOrNull {
+
+        @Test fun `when none of the fields are empty or null isTwoMoreFieldsEmptyOrNull should be set to false`() {
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = true
+
+            viewModel.setIsTwoOrMoreFieldsEmptyOrNull()
+
+            Assertions.assertEquals(
+                viewModel.isTwoOrMoreFieldsEmptyOrNull,
+                false
+            )
+        }
+
+        @Test fun `when 1 of the fields are empty or null isTwoMoreFieldsEmptyOrNull should be set to false`() {
+            viewModel.isUsernameEmptyOrNull = true
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = true
+
+            viewModel.setIsTwoOrMoreFieldsEmptyOrNull()
+
+            Assertions.assertEquals(
+                viewModel.isTwoOrMoreFieldsEmptyOrNull,
+                false
+            )
+        }
+
+        @Test fun `when 2 of the fields are empty or null isTwoMoreFieldsEmptyOrNull should be set to true`() {
+            viewModel.isUsernameEmptyOrNull = true
+            viewModel.isEmailEmptyOrNull = true
+            viewModel.isPasswordEmptyOrNull = false
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+
+            viewModel.setIsTwoOrMoreFieldsEmptyOrNull()
+
+            Assertions.assertEquals(
+                viewModel.isTwoOrMoreFieldsEmptyOrNull,
+                true
+            )
+        }
+
+        @Test fun `when all of the fields are empty or null isTwoMoreFieldsEmptyOrNull should be set to true`() {
+            viewModel.isUsernameEmptyOrNull = true
+            viewModel.isEmailEmptyOrNull = true
+            viewModel.isPasswordEmptyOrNull = true
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+
+            viewModel.setIsTwoOrMoreFieldsEmptyOrNull()
+
+            Assertions.assertEquals(
+                viewModel.isTwoOrMoreFieldsEmptyOrNull,
                 true
             )
         }

@@ -63,7 +63,7 @@ class AppModule {
             ForgotPasswordViewModel(navigation = get())
         }
         viewModel {
-            CreateAccountViewModel(navigation = get())
+            CreateAccountViewModel(navigation = get(), application = androidApplication())
         }
     }
 }

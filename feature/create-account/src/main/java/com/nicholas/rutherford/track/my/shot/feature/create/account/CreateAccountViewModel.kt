@@ -1,14 +1,22 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
+import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class CreateAccountViewModel(private val navigation: CreateAccountNavigation) : ViewModel() {
+class CreateAccountViewModel(
+    private val navigation: CreateAccountNavigation,
+    private val application: Application
+) : ViewModel() {
 
     internal var isUsernameEmptyOrNull: Boolean = false
     internal var isEmailEmptyOrNull: Boolean = false
     internal var isPasswordEmptyOrNull: Boolean = false
+    internal var isTwoOrMoreFieldsEmptyOrNull: Boolean = false
 
     private val createAccountMutableStateFlow = MutableStateFlow(
         value = CreateAccountState(
@@ -28,6 +36,9 @@ class CreateAccountViewModel(private val navigation: CreateAccountNavigation) : 
         setIsUsernameEmptyOrNull(username = createAccountState.username)
         setIsEmailEmptyOrNull(email = createAccountState.email)
         setIsPasswordEmptyOrNull(password = createAccountState.password)
+        setIsTwoOrMoreFieldsEmptyOrNull()
+
+        validateFields()
     }
 
     internal fun setIsUsernameEmptyOrNull(username: String?) {
@@ -54,15 +65,84 @@ class CreateAccountViewModel(private val navigation: CreateAccountNavigation) : 
         }
     }
 
-    fun onUsernameValueChanged(newUsername: String) {
+    internal fun setIsTwoOrMoreFieldsEmptyOrNull() {
+        var counter = 0
+
+        if (isUsernameEmptyOrNull) {
+            counter += 1
+        }
+        if (isEmailEmptyOrNull) {
+            counter += 1
+        }
+        if (isPasswordEmptyOrNull) {
+            counter += 1
+        }
+
+        isTwoOrMoreFieldsEmptyOrNull = counter >= 2
+    }
+
+    internal fun validateFields() {
+        val defaultAlert = Alert(
+            onDismissClicked = {
+                updateAlertStateProperty(alert = null)
+            },
+            title = application.getString(StringsIds.empty),
+            dismissButton = AlertConfirmAndDismissButton(
+                onButtonClicked = {
+                    updateAlertStateProperty(alert = null)
+                },
+                buttonText = application.getString(StringsIds.gotIt)
+            )
+        )
+
+        if (isTwoOrMoreFieldsEmptyOrNull) {
+            updateAlertStateProperty(
+                defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(StringsIds.multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields)
+                )
+            )
+        } else if (isUsernameEmptyOrNull) {
+            updateAlertStateProperty(
+                defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyField),
+                    description = application.getString(StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
+                )
+            )
+        } else if (isEmailEmptyOrNull) {
+            updateAlertStateProperty(
+                defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyField),
+                    description = application.getString(
+                        StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount
+                    )
+                )
+            )
+        } else if (isPasswordEmptyOrNull) {
+            updateAlertStateProperty(
+                defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyField),
+                    description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
+                )
+            )
+        } else {
+            // everything is good to go just continue throughout
+        }
+    }
+
+    private fun updateAlertStateProperty(alert: Alert?) {
+        createAccountMutableStateFlow.value = createAccountStateFlow.value.copy(alert = alert)
+    }
+
+    internal fun onUsernameValueChanged(newUsername: String) {
         createAccountMutableStateFlow.value = createAccountStateFlow.value.copy(username = newUsername)
     }
 
-    fun onEmailValueChanged(newEmail: String) {
+    internal fun onEmailValueChanged(newEmail: String) {
         createAccountMutableStateFlow.value = createAccountStateFlow.value.copy(email = newEmail)
     }
 
-    fun onPasswordValueChanged(newPassword: String) {
+    internal fun onPasswordValueChanged(newPassword: String) {
         createAccountMutableStateFlow.value = createAccountStateFlow.value.copy(password = newPassword)
     }
 }
