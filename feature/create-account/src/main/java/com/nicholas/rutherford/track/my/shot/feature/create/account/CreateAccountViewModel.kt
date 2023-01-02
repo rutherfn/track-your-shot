@@ -22,8 +22,7 @@ class CreateAccountViewModel(
         value = CreateAccountState(
             username = null,
             email = null,
-            password = null,
-            alert = null
+            password = null
         )
     )
     val createAccountStateFlow = createAccountMutableStateFlow.asStateFlow()
@@ -83,35 +82,31 @@ class CreateAccountViewModel(
 
     internal fun validateFields() {
         val defaultAlert = Alert(
-            onDismissClicked = {
-                updateAlertStateProperty(alert = null)
-            },
+            onDismissClicked = {},
             title = application.getString(StringsIds.empty),
             dismissButton = AlertConfirmAndDismissButton(
-                onButtonClicked = {
-                    updateAlertStateProperty(alert = null)
-                },
+                onButtonClicked = {},
                 buttonText = application.getString(StringsIds.gotIt)
             )
         )
 
         if (isTwoOrMoreFieldsEmptyOrNull) {
-            updateAlertStateProperty(
-                defaultAlert.copy(
+            navigation.alert(
+                alert = defaultAlert.copy(
                     title = application.getString(StringsIds.emptyFields),
                     description = application.getString(StringsIds.multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields)
                 )
             )
         } else if (isUsernameEmptyOrNull) {
-            updateAlertStateProperty(
-                defaultAlert.copy(
+            navigation.alert(
+                alert = defaultAlert.copy(
                     title = application.getString(StringsIds.emptyField),
                     description = application.getString(StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
                 )
             )
         } else if (isEmailEmptyOrNull) {
-            updateAlertStateProperty(
-                defaultAlert.copy(
+            navigation.alert(
+                alert = defaultAlert.copy(
                     title = application.getString(StringsIds.emptyField),
                     description = application.getString(
                         StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount
@@ -119,19 +114,17 @@ class CreateAccountViewModel(
                 )
             )
         } else if (isPasswordEmptyOrNull) {
-            updateAlertStateProperty(
-                defaultAlert.copy(
+            navigation.alert(
+                alert = defaultAlert.copy(
                     title = application.getString(StringsIds.emptyField),
                     description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
                 )
             )
         } else {
+            // add the progress mask through a function
+            // and then in the same deal after 5 seconds dismiss it
             // everything is good to go just continue throughout
         }
-    }
-
-    private fun updateAlertStateProperty(alert: Alert?) {
-        createAccountMutableStateFlow.value = createAccountStateFlow.value.copy(alert = alert)
     }
 
     internal fun onUsernameValueChanged(newUsername: String) {

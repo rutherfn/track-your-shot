@@ -64,10 +64,12 @@ android {
         useJUnitPlatform()
     }
 
-    tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
+ //   tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
 dependencies {
+
+    api(project(path = ":compose-components"))
 
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)

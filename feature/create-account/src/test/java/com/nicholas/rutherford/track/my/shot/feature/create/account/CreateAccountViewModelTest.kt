@@ -13,9 +13,9 @@ class CreateAccountViewModelTest {
     private lateinit var viewModel: CreateAccountViewModel
 
     private var navigation = mockk<CreateAccountNavigation>(relaxed = true)
-    internal val application = Application()
+    private val application = mockk<Application>(relaxed = true)
 
-    private val state = CreateAccountState(username = null, email = null, password = null, alert = null)
+    private val state = CreateAccountState(username = null, email = null, password = null)
 
     @BeforeEach
     fun beforeEach() {
@@ -203,6 +203,71 @@ class CreateAccountViewModelTest {
                 viewModel.isTwoOrMoreFieldsEmptyOrNull,
                 true
             )
+        }
+    }
+
+    @Nested
+    inner class ValidateFields {
+
+        @Test
+        fun `when isTwoOrMoreFieldsEmptyOrNull is set to true should navigate to show alert`() {
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = true
+
+            viewModel.validateFields()
+
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when isUsernamEmptyOrNull is set to true should navigate to show alert`() {
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = true
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+
+            viewModel.validateFields()
+
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when isEmailEmptyOrNull is set to true should navigate to show alert`() {
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailEmptyOrNull = true
+            viewModel.isPasswordEmptyOrNull = false
+
+            viewModel.validateFields()
+
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when isPasswordEmptyOrNull is set to true should navigate to show alert`() {
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = true
+
+            viewModel.validateFields()
+
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when all validation fields are set to false should not navigate to show alert`() {
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+
+            viewModel.validateFields()
+
+            verify(exactly = 0) { navigation.alert(alert = any()) }
         }
     }
 
