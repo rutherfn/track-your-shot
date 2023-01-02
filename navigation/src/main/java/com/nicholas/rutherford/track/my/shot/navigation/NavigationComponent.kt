@@ -128,7 +128,12 @@ fun NavigationComponent(
 
     progress?.let { newProgress ->
         ProgressDialog(
-            onDismissClicked = { newProgress.onDismissClicked.invoke() },
+            onDismissClicked = {
+                if (newProgress.shouldBeAbleToBeDismissed) {
+                    progress = null
+                }
+                newProgress.onDismissClicked.invoke()
+                               },
             title = newProgress.title
         )
     }
