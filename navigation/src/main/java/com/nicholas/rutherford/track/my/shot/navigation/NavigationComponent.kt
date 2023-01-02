@@ -6,8 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nicholas.rutherford.track.my.shot.compose.components.AlertDialog
+import com.nicholas.rutherford.track.my.shot.compose.components.ProgressDialog
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 
 /**
  * Navigation Component that initiates content that's being passed in
@@ -36,8 +38,13 @@ fun NavigationComponent(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
+    val progressState by navigator.progressActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
 
     var alert: Alert? by remember { mutableStateOf(value = null) }
+    var progress: Progress? by remember { mutableStateOf(value = null) }
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -57,6 +64,14 @@ fun NavigationComponent(
         popRouteState?.let { route ->
             navHostController.popBackStack(route = route, inclusive = false)
             navigator.pop(popRouteAction = null) // need to set this to null to listen to next pop action
+        }
+    }
+
+    LaunchedEffect(progressState) {
+        progressState?.let { newProgress ->
+            progress = newProgress
+        } ?: run {
+            progress = null
         }
     }
 
@@ -97,9 +112,7 @@ fun NavigationComponent(
                     buttonText = confirmButton.buttonText
                 )
 
-            } ?: run {
-                     null
-            },
+            } ?: run { null },
             dismissButton  = newAlert.dismissButton?.let { dismissButton ->
                 AlertConfirmAndDismissButton(
                     onButtonClicked = {
@@ -108,10 +121,15 @@ fun NavigationComponent(
                     },
                     buttonText = dismissButton.buttonText
                 )
-            } ?: run {
-                null
-            },
+            } ?: run { null },
             description = newAlert.description
+        )
+    }
+
+    progress?.let { newProgress ->
+        ProgressDialog(
+            onDismissClicked = { newProgress.onDismissClicked.invoke() },
+            title = newProgress.title
         )
     }
 }
