@@ -39,7 +39,8 @@ fun CreateAccountScreen(viewModel: CreateAccountViewModel) {
         appBar = AppBar(
             toolbarTitle = stringResource(id = StringsIds.createAccount),
             onBackButtonClicked = { viewModel.onBackButtonClicked() }
-        )
+        ),
+        alert = state.alert
     )
 }
 
@@ -95,7 +96,7 @@ fun CreateAccountScreenContent(
         Spacer(modifier = Modifier.height(Padding.eight))
 
         Button(
-            onClick = { },
+            onClick = { viewModel.onCreateAccountButtonClicked() },
             shape = RoundedCornerShape(size = 50.dp),
             modifier = Modifier
                 .fillMaxWidth()

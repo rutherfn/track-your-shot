@@ -6,16 +6,53 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class CreateAccountViewModel(private val navigation: CreateAccountNavigation) : ViewModel() {
 
+    private var isUsernameEmptyOrNull: Boolean = false
+    private var isEmailEmptyOrNull: Boolean = false
+    private var isPasswordEmptyOrNull: Boolean = false
+
     private val createAccountMutableStateFlow = MutableStateFlow(
         value = CreateAccountState(
             username = null,
             email = null,
-            password = null
+            password = null,
+            alert = null
         )
     )
     val createAccountStateFlow = createAccountMutableStateFlow.asStateFlow()
 
     fun onBackButtonClicked() = navigation.pop()
+
+    fun onCreateAccountButtonClicked() {
+        val createAccountState = createAccountMutableStateFlow.value
+
+        setIsUsernameEmptyOrNull(username = createAccountState.username)
+        setIsEmailEmptyOrNull(email = createAccountState.email)
+        setIsPasswordEmptyOrNull(password = createAccountState.password)
+    }
+
+    internal fun setIsUsernameEmptyOrNull(username: String?) {
+        username?.let { value ->
+            isUsernameEmptyOrNull = value.isEmpty()
+        } ?: run {
+            isUsernameEmptyOrNull = true
+        }
+    }
+
+    internal fun setIsEmailEmptyOrNull(email: String?) {
+        email?.let { value ->
+            isEmailEmptyOrNull = value.isEmpty()
+        } ?: run {
+            isEmailEmptyOrNull = true
+        }
+    }
+
+    internal fun setIsPasswordEmptyOrNull(password: String?) {
+        password?.let { value ->
+            isPasswordEmptyOrNull = value.isEmpty()
+        }?: run {
+            isPasswordEmptyOrNull = true
+        }
+    }
 
     fun onUsernameValueChanged(newUsername: String) {
         createAccountMutableStateFlow.value = createAccountStateFlow.value.copy(username = newUsername)
