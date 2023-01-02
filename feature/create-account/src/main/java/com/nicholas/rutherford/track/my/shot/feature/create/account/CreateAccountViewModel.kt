@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class CreateAccountViewModel(private val navigation: CreateAccountNavigation) : ViewModel() {
 
-    private var isUsernameEmptyOrNull: Boolean = false
-    private var isEmailEmptyOrNull: Boolean = false
-    private var isPasswordEmptyOrNull: Boolean = false
+    internal var isUsernameEmptyOrNull: Boolean = false
+    internal var isEmailEmptyOrNull: Boolean = false
+    internal var isPasswordEmptyOrNull: Boolean = false
 
     private val createAccountMutableStateFlow = MutableStateFlow(
         value = CreateAccountState(
@@ -49,7 +49,7 @@ class CreateAccountViewModel(private val navigation: CreateAccountNavigation) : 
     internal fun setIsPasswordEmptyOrNull(password: String?) {
         password?.let { value ->
             isPasswordEmptyOrNull = value.isEmpty()
-        }?: run {
+        } ?: run {
             isPasswordEmptyOrNull = true
         }
     }
