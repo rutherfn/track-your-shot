@@ -24,6 +24,7 @@ class NavigationDestinationsTest {
     inner class Constants {
 
         @Test fun `forgot password screen name should result in forgot screen`() {
+
             Assertions.assertEquals(navigationDestinations.FORGOT_PASSWORD_SCREEN, forgotPasswordScreen)
         }
 

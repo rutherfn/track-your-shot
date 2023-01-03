@@ -111,9 +111,8 @@ fun NavigationComponent(
                     },
                     buttonText = confirmButton.buttonText
                 )
-
             } ?: run { null },
-            dismissButton  = newAlert.dismissButton?.let { dismissButton ->
+            dismissButton = newAlert.dismissButton?.let { dismissButton ->
                 AlertConfirmAndDismissButton(
                     onButtonClicked = {
                         alert = null
@@ -133,7 +132,7 @@ fun NavigationComponent(
                     progress = null
                 }
                 newProgress.onDismissClicked.invoke()
-                               },
+            },
             title = newProgress.title
         )
     }
