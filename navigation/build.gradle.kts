@@ -65,9 +65,15 @@ android {
     }
 
     tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
+
+    ktlint {
+        disabledRules.value(mutableListOf("no-wildcard-imports"))
+    }
 }
 
 dependencies {
+
+    api(project(path = ":compose-components"))
 
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)

@@ -4,13 +4,20 @@
     <string name="click_me_to_create_account">Click me to create account</string>
     <string name="create_account">Create Account</string>
     <string name="forgot_password">Forgot Password</string>
+    <string name="email_is_required_please_enter_a_email_to_create_a_account">Email is required. Please enter a email to create a account.</string>
     <string name="empty" translatable="false" />
+    <string name="empty_field">Empty Field</string>
+    <string name="empty_fields">Empty Fields</string>
     <string name="email">Email</string>
+    <string name="got_it">Got It</string>
     <string name="login">Login</string>
     <string name="login_icon_description">This is a login image for the login screen</string>
+    <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
     <string name="reset_password">Reset Password</string>
     <string name="password">Password</string>
+    <string name="password_is_required_please_enter_a_password_to_create_a_account">Password is required. Please enter a password to create a account.</string>
     <string name="proceed_with_your_account">Proceed With Your Account</string>
     <string name="splash_icon_description">This is a splash image for the splash screen that gets displayed before app is triggered</string>
     <string name="username">Username</string>
+    <string name="username_is_required_please_enter_a_username_to_create_a_account">Username is required. Please enter a username to create a account.</string>
 </resources>

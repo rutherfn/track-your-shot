@@ -11,9 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
-import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 
 /**
@@ -21,15 +19,11 @@ import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
  *
  * @param ui used to set body of the interface below the optional [TopAppBar] via a [Composable]
  * @param appBar optional param that is responsible for creating a [TopAppBar] with set properties if not null
- * @param progress optional param by default is set to null. When not null, init the custom [Progress] with its proper data class fields
- * @param alert optional param by default is set to null. When not null, init the custom [AlertDialog] with its proper data class fields
  */
 @Composable
 fun Content(
     ui: @Composable () -> Unit,
-    appBar: AppBar? = null,
-    progress: Progress? = null,
-    alert: Alert? = null
+    appBar: AppBar? = null
 ) {
     Column {
         appBar?.let { bar ->
@@ -50,22 +44,5 @@ fun Content(
         }
 
         ui.invoke()
-
-        progress?.let { progressDialog ->
-            ProgressDialog(
-                onDismissClicked = progressDialog.onDismissClicked,
-                title = progressDialog.title
-            )
-        }
-    }
-
-    alert?.let { alertDialog ->
-        AlertDialog(
-            onDismissClicked = alertDialog.onDismissClicked,
-            title = alertDialog.title,
-            confirmButton = alertDialog.confirmButton,
-            dismissButton = alertDialog.dismissButton,
-            description = alertDialog.description
-        )
     }
 }
