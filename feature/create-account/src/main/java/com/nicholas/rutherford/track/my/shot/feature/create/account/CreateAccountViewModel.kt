@@ -2,15 +2,11 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
 class CreateAccountViewModel(
     private val navigation: CreateAccountNavigation,
@@ -126,16 +122,16 @@ class CreateAccountViewModel(
             )
         } else {
             // test code not final
-            viewModelScope.launch {
-                navigation.enableProgress(
-                    progress = Progress(
-                        onDismissClicked = {}
-                    )
-                )
-
-                delay(timeMillis = 4000L)
-                navigation.disableProgress()
-            }
+//            viewModelScope.launch {
+//                navigation.enableProgress(
+//                    progress = Progress(
+//                        onDismissClicked = {}
+//                    )
+//                )
+//
+//                delay(timeMillis = 4000L)
+//                navigation.disableProgress()
+//            }
         }
     }
 
