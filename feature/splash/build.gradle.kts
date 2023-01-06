@@ -70,6 +70,7 @@ android {
 dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":compose-components"))
+    api(project(path = ":firebase:read"))
     api(project(path = ":navigation"))
 
     implementation(Dependencies.Compose.material)

@@ -60,4 +60,14 @@ android {
 }
 
 dependencies {
+    implementation(Dependencies.Firebase.authKtx)
+    implementation(Dependencies.Firebase.bom)
+
+    testImplementation(Dependencies.Junit.Jupiter.api)
+    testImplementation(Dependencies.Junit.Jupiter.params)
+    testImplementation(Dependencies.Junit.junit)
+
+    testImplementation(Dependencies.Mockk.core)
+
+    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }

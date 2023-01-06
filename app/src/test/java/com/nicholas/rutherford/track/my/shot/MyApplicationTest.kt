@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.my.shot
 
+import com.google.firebase.auth.FirebaseAuth
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
@@ -8,6 +9,9 @@ import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -23,6 +27,7 @@ import kotlin.test.assertNotNull
 
 class MyApplicationTest : KoinTest {
 
+    private val firebaseAuth: FirebaseAuth by inject()
     private val buildType: BuildType by inject()
     private val appCenter: AppCenter by inject()
     private val navigator: Navigator by inject()
@@ -55,8 +60,12 @@ class MyApplicationTest : KoinTest {
 
     @Test
     fun `start koin on create should inject modules with instances as not null`() {
+        mockkStatic(FirebaseAuth::class)
+        every { FirebaseAuth.getInstance() } returns mockk(relaxed = true)
+
         myApplication.startKoinOnCreate()
 
+        assertNotNull(firebaseAuth)
         assertNotNull(buildType)
         assertNotNull(appCenter)
         assertNotNull(navigator)

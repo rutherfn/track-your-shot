@@ -105,6 +105,7 @@ dependencies {
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
 
+    implementation(Dependencies.Firebase.authKtx)
     implementation(Dependencies.Firebase.bom)
 
     implementation(Dependencies.Koin.core)
@@ -122,4 +123,6 @@ dependencies {
     testImplementation(Dependencies.Junit.junit)
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+
+    testImplementation(Dependencies.Mockk.core)
 }
