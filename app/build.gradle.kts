@@ -123,4 +123,6 @@ dependencies {
     testImplementation(Dependencies.Junit.junit)
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+
+    testImplementation(Dependencies.Mockk.core)
 }
