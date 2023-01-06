@@ -105,6 +105,7 @@ dependencies {
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
 
+    implementation(Dependencies.Firebase.authKtx)
     implementation(Dependencies.Firebase.bom)
 
     implementation(Dependencies.Koin.core)

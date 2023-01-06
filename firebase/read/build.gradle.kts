@@ -60,4 +60,6 @@ android {
 }
 
 dependencies {
+    implementation(Dependencies.Firebase.authKtx)
+    implementation(Dependencies.Firebase.bom)
 }

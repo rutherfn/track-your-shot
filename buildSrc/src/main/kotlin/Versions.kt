@@ -40,6 +40,7 @@ object Versions {
         }
 
         object Firebase {
+            const val authKtx = "21.1.0"
             const val bom = "31.0.3"
         }
 
