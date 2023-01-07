@@ -59,4 +59,7 @@ android {
     tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
-dependencies {}
+dependencies {
+    implementation(Dependencies.Firebase.authKtx)
+    implementation(Dependencies.Firebase.bom)
+}
