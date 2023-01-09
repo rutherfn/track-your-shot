@@ -13,9 +13,8 @@ class CreateFirebaseUserInfoImpl(private val firebaseAuth: FirebaseAuth) : Creat
                     trySend(
                         CreateAccountResponse(
                             isSuccessful = task.isSuccessful,
-                            additionalUserInfo = task.result?.additionalUserInfo,
-                            authCredential = task.result?.credential,
-                            firebaseUser = task.result?.user
+                            username = task.result?.additionalUserInfo?.username,
+                            isNewUser = task.result?.additionalUserInfo?.isNewUser
                         )
                     )
                 }
