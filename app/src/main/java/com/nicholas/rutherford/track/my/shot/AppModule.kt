@@ -18,6 +18,8 @@ import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
+import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
@@ -31,6 +33,9 @@ class AppModule {
     val modules = module {
         single {
             FirebaseAuth.getInstance()
+        }
+        single<CreateFirebaseUserInfo> {
+            CreateFirebaseUserInfoImpl(firebaseAuth = get())
         }
         single<BuildType> {
             BuildTypeImpl(buildTypeValue = BuildConfig.BUILD_TYPE)
@@ -72,7 +77,7 @@ class AppModule {
             ForgotPasswordViewModel(navigation = get())
         }
         viewModel {
-            CreateAccountViewModel(navigation = get(), application = androidApplication())
+            CreateAccountViewModel(navigation = get(), application = androidApplication(), createFirebaseUserInfo = get())
         }
     }
 }

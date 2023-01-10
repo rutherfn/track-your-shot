@@ -70,6 +70,7 @@ android {
 dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":compose-components"))
+    api(project(path = ":firebase:create"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
 
