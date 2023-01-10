@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.my.shot.firebase.create
 
 import com.google.firebase.auth.FirebaseAuth
 import com.nicholas.rutherford.track.my.shot.account.info.CreateAccountResponse
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
@@ -14,17 +15,12 @@ class CreateFirebaseUserInfoImpl(private val firebaseAuth: FirebaseAuth) : Creat
                         CreateAccountResponse(
                             isSuccessful = task.isSuccessful,
                             username = task.result?.additionalUserInfo?.username,
-                            isNewUser = task.result?.additionalUserInfo?.isNewUser
+                            isNewUser = task.result?.additionalUserInfo?.isNewUser,
+                            exception = task.exception
                         )
                     )
                 }
-                .addOnFailureListener { exception ->
-                    trySend(
-                        CreateAccountResponse(
-                            exception = exception
-                        )
-                    )
-                }
+            awaitClose()
         }
     }
 }

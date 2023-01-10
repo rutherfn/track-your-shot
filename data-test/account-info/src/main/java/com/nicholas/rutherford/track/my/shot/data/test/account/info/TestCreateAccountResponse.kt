@@ -16,4 +16,4 @@ class TestCreateAccountResponse {
 const val IS_SUCCESSFUL = true
 const val USERNAME = "boomyNicholasR"
 const val IS_NEW_USER = true
-val EXCEPTION = Exception(message = "Something went wrong")
+val EXCEPTION = Exception("Something went wrong")
