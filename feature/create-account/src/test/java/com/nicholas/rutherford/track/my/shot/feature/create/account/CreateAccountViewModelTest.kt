@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account
 
 import android.app.Application
+import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions
@@ -15,11 +16,13 @@ class CreateAccountViewModelTest {
     private var navigation = mockk<CreateAccountNavigation>(relaxed = true)
     private val application = mockk<Application>(relaxed = true)
 
+    private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
+
     private val state = CreateAccountState(username = null, email = null, password = null)
 
     @BeforeEach
     fun beforeEach() {
-        viewModel = CreateAccountViewModel(navigation = navigation, application = application)
+        viewModel = CreateAccountViewModel(navigation = navigation, application = application, createFirebaseUserInfo = createFirebaseUserInfo)
     }
 
     @Test

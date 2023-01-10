@@ -59,4 +59,6 @@ android {
     tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
-dependencies {}
+dependencies {
+    api(project(path = ":data:account-info"))
+}
