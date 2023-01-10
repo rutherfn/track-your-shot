@@ -12,6 +12,7 @@ object StringsIds {
     val emptyFields = R.string.empty_fields
     val emailIsRequiredPleaseEnterAEmailToCreateAAccount = R.string.email_is_required_please_enter_a_email_to_create_a_account
     val email = R.string.email
+    val googleCom = R.string.google_com
     val gotIt = R.string.got_it
     val login = R.string.login
     val loginIconDescription = R.string.login_icon_description
