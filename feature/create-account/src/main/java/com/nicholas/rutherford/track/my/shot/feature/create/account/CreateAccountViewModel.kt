@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class CreateAccountViewModel(
     private val navigation: CreateAccountNavigation,
-    private val application: Application
+    private val application: Application,
+    private val createFirebaseUserInfo: CreateFirebaseUserInfo
 ) : ViewModel() {
 
     internal var isUsernameEmptyOrNull: Boolean = false
