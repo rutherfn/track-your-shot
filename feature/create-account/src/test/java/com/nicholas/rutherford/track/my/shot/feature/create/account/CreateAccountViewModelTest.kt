@@ -2,6 +2,8 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account
 
 import android.app.Application
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.helper.network.Network
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions
@@ -16,13 +18,15 @@ class CreateAccountViewModelTest {
     private var navigation = mockk<CreateAccountNavigation>(relaxed = true)
     private val application = mockk<Application>(relaxed = true)
 
+    private val network = mockk<Network>(relaxed = true)
+
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
 
     private val state = CreateAccountState(username = null, email = null, password = null)
 
     @BeforeEach
     fun beforeEach() {
-        viewModel = CreateAccountViewModel(navigation = navigation, application = application, createFirebaseUserInfo = createFirebaseUserInfo)
+        viewModel = CreateAccountViewModel(navigation = navigation, application = application, network = network, createFirebaseUserInfo = createFirebaseUserInfo)
     }
 
     @Test
@@ -213,7 +217,18 @@ class CreateAccountViewModelTest {
     inner class ValidateFields {
 
         @Test
+        fun `when isDeviceConnectedToInternet is set to true should navigate to show alert`() {
+            every { network.isDeviceConnectedToInternet() } returns false
+
+            viewModel.validateFields()
+
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
         fun `when isTwoOrMoreFieldsEmptyOrNull is set to true should navigate to show alert`() {
+            every { network.isDeviceConnectedToInternet() } returns true
+
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = false
@@ -227,6 +242,8 @@ class CreateAccountViewModelTest {
 
         @Test
         fun `when isUsernamEmptyOrNull is set to true should navigate to show alert`() {
+            every { network.isDeviceConnectedToInternet() } returns true
+
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = true
             viewModel.isEmailEmptyOrNull = false
@@ -239,6 +256,8 @@ class CreateAccountViewModelTest {
 
         @Test
         fun `when isEmailEmptyOrNull is set to true should navigate to show alert`() {
+            every { network.isDeviceConnectedToInternet() } returns true
+
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = true
@@ -251,6 +270,8 @@ class CreateAccountViewModelTest {
 
         @Test
         fun `when isPasswordEmptyOrNull is set to true should navigate to show alert`() {
+            every { network.isDeviceConnectedToInternet() } returns true
+
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = false
@@ -263,6 +284,8 @@ class CreateAccountViewModelTest {
 
         @Test
         fun `when all validation fields are set to false should not navigate to show alert`() {
+            every { network.isDeviceConnectedToInternet() } returns true
+
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = false

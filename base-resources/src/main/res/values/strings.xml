@@ -3,6 +3,7 @@
     <string name="all_fields_are_required">All Fields Are Required</string>
     <string name="click_me_to_create_account">Click me to create account</string>
     <string name="create_account">Create Account</string>
+    <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="email_is_required_please_enter_a_email_to_create_a_account">Email is required. Please enter a email to create a account.</string>
     <string name="empty" translatable="false" />
@@ -14,6 +15,7 @@
     <string name="login">Login</string>
     <string name="login_icon_description">This is a login image for the login screen</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
+    <string name="not_connected_to_internet">Not connected to internet</string>
     <string name="reset_password">Reset Password</string>
     <string name="password">Password</string>
     <string name="password_is_required_please_enter_a_password_to_create_a_account">Password is required. Please enter a password to create a account.</string>
