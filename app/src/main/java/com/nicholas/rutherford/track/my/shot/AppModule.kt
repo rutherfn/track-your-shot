@@ -22,6 +22,8 @@ import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserI
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImpl
+import com.nicholas.rutherford.track.my.shot.helper.network.Network
+import com.nicholas.rutherford.track.my.shot.helper.network.NetworkImpl
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 import com.nicholas.rutherford.track.my.shot.navigation.NavigatorImpl
 import org.koin.android.ext.koin.androidApplication
@@ -36,6 +38,9 @@ class AppModule {
         }
         single<CreateFirebaseUserInfo> {
             CreateFirebaseUserInfoImpl(firebaseAuth = get())
+        }
+        single<Network> {
+            NetworkImpl(application = androidApplication())
         }
         single<BuildType> {
             BuildTypeImpl(buildTypeValue = BuildConfig.BUILD_TYPE)
@@ -77,7 +82,7 @@ class AppModule {
             ForgotPasswordViewModel(navigation = get())
         }
         viewModel {
-            CreateAccountViewModel(navigation = get(), application = androidApplication(), createFirebaseUserInfo = get())
+            CreateAccountViewModel(navigation = get(), application = androidApplication(), network = get(), createFirebaseUserInfo = get())
         }
     }
 }

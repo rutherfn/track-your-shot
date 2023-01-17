@@ -3,7 +3,7 @@
     <string name="all_fields_are_required">All Fields Are Required</string>
     <string name="click_me_to_create_account">Click me to create account</string>
     <string name="create_account">Create Account</string>
-    <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action</string>
+    <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="email_is_required_please_enter_a_email_to_create_a_account">Email is required. Please enter a email to create a account.</string>
     <string name="empty" translatable="false" />
