@@ -1,18 +1,15 @@
 package com.nicholas.rutherford.track.my.shot.helper.network
 
 import android.app.Application
-import io.mockk.every
-import io.mockk.runs
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import java.net.InetAddress
 import java.net.UnknownHostException
 
 class NetworkImplTest {
 
-    internal val application = Application()
+    private val application = Application()
 
     lateinit var networkImpl: NetworkImpl
 
