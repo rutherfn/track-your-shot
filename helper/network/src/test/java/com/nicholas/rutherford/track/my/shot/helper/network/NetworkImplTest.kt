@@ -30,11 +30,6 @@ class NetworkImplTest {
             Assertions.assertEquals(false, networkImpl.isDeviceConnectedToInternet())
         }
 
-        @Test
-        fun `should return back false if InetAddress getByName equals a emptyString`() {
-        //    every { InetAddress.getByName("google.com").equals("") } just runs
-
-            //Assertions.assertEquals(UnknownHostException::class, networkImpl.isDeviceConnectedToInternet())
-        }
+        // todo -> add more tests for InetAddresses in the future
     }
 }
