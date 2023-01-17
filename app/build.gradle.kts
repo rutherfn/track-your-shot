@@ -97,6 +97,7 @@ dependencies {
     api(project(path = ":feature:home"))
     api(project(path = ":feature:login"))
     api(project(path = ":feature:splash"))
+    api(project(path = ":helper:network"))
 
     implementation(Dependencies.Android.appCompat)
     implementation(Dependencies.Android.ktx)

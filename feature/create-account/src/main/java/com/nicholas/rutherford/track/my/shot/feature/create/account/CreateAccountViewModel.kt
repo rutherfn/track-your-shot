@@ -6,12 +6,14 @@ import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class CreateAccountViewModel(
     private val navigation: CreateAccountNavigation,
     private val application: Application,
+    private val network: Network,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo
 ) : ViewModel() {
 
@@ -91,6 +93,15 @@ class CreateAccountViewModel(
                 buttonText = application.getString(StringsIds.gotIt)
             )
         )
+
+        if (!network.isDeviceConnectedToInternet()) {
+            navigation.alert(
+                alert = defaultAlert.copy(
+                    title = application.getString(StringsIds.notConnectedToInternet),
+                    description = application.getString(StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
+                )
+            )
+        }
 
         if (isTwoOrMoreFieldsEmptyOrNull) {
             navigation.alert(
