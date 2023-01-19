@@ -78,6 +78,8 @@ dependencies {
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
 
+    testImplementation(Dependencies.Coroutine.test)
+
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)
     testImplementation(Dependencies.Junit.junit)

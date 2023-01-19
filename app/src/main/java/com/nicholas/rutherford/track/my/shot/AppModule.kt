@@ -40,7 +40,7 @@ class AppModule {
             CreateFirebaseUserInfoImpl(firebaseAuth = get())
         }
         single<Network> {
-            NetworkImpl(application = androidApplication())
+            NetworkImpl()
         }
         single<BuildType> {
             BuildTypeImpl(buildTypeValue = BuildConfig.BUILD_TYPE)
