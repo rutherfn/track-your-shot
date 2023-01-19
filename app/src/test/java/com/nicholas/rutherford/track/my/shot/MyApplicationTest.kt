@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.my.shot
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
@@ -30,6 +31,8 @@ import kotlin.test.assertNotNull
 class MyApplicationTest : KoinTest {
 
     private val firebaseAuth: FirebaseAuth by inject()
+    private val firebaseDatabase: FirebaseDatabase by inject()
+
     private val createFirebaseUserInfo: CreateFirebaseUserInfo by inject()
 
     private val network: Network by inject()
@@ -71,6 +74,8 @@ class MyApplicationTest : KoinTest {
         myApplication.startKoinOnCreate()
 
         assertNotNull(firebaseAuth)
+        assertNotNull(firebaseDatabase)
+
         assertNotNull(createFirebaseUserInfo)
 
         assertNotNull(network)

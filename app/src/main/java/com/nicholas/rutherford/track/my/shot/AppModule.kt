@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.my.shot
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenterImpl
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
@@ -36,8 +37,11 @@ class AppModule {
         single {
             FirebaseAuth.getInstance()
         }
+        single {
+            FirebaseDatabase.getInstance()
+        }
         single<CreateFirebaseUserInfo> {
-            CreateFirebaseUserInfoImpl(firebaseAuth = get())
+            CreateFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
         single<Network> {
             NetworkImpl()

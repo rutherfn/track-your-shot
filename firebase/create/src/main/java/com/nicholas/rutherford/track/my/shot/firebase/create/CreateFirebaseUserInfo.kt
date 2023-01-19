@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface CreateFirebaseUserInfo {
     fun attemptToCreateAccountFirebaseAuthResponseFlow(email: String, password: String): Flow<CreateAccountFirebaseAuthResponse>
+    fun attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName: String, email: String): Flow<Boolean>
 }
