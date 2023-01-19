@@ -1,10 +1,10 @@
 package com.nicholas.rutherford.track.my.shot.data.test.account.info
 
-import com.nicholas.rutherford.track.my.shot.account.info.CreateAccountResponse
+import com.nicholas.rutherford.track.my.shot.account.info.CreateAccountFirebaseAuthResponse
 
-class TestCreateAccountResponse {
-    fun create(): CreateAccountResponse {
-        return CreateAccountResponse(
+class TestCreateAccountFirebaseAuthResponse {
+    fun create(): CreateAccountFirebaseAuthResponse {
+        return CreateAccountFirebaseAuthResponse(
             isSuccessful = IS_SUCCESSFUL,
             username = USERNAME,
             isNewUser = IS_NEW_USER,

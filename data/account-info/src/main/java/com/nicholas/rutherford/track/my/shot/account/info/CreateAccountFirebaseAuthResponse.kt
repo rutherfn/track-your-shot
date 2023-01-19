@@ -1,6 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.account.info
 
-data class CreateAccountResponse(
+data class CreateAccountFirebaseAuthResponse(
     val isSuccessful: Boolean = false,
     val username: String? = null,
     val isNewUser: Boolean? = null,

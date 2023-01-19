@@ -5,7 +5,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountResponse
+import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountFirebaseAuthResponse
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -23,7 +23,7 @@ class CreateFirebaseUserInfoImplTest {
 
     val firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
 
-    val createAccountResponse = TestCreateAccountResponse().create()
+    val createAccountResponse = TestCreateAccountFirebaseAuthResponse().create()
 
     val testEmail = "testemail@yahoo.com"
     val testPassword = "passwordTest112"
@@ -51,7 +51,7 @@ class CreateFirebaseUserInfoImplTest {
             mockTaskAuthResult
         }
 
-        val createFirebaseUserInfo = createFirebaseUserInfoImpl.attemptToCreateAccountResponseFlow(testEmail, testPassword).first()
+        val createFirebaseUserInfo = createFirebaseUserInfoImpl.attemptToCreateAccountFirebaseAuthResponseFlow(testEmail, testPassword).first()
 
         Assertions.assertEquals(createAccountResponse.copy(exception = null), createFirebaseUserInfo)
     }
