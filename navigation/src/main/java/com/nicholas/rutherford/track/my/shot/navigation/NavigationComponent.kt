@@ -99,6 +99,7 @@ fun NavigationComponent(
     alert?.let { newAlert ->
         AlertDialog(
             onDismissClicked = {
+                navigator.alert(alertAction = null)
                 alert = null
                 newAlert.onDismissClicked.invoke()
             },
@@ -106,6 +107,7 @@ fun NavigationComponent(
             confirmButton = newAlert.confirmButton?.let { confirmButton ->
                 AlertConfirmAndDismissButton(
                     onButtonClicked = {
+                        navigator.alert(alertAction = null)
                         alert = null
                         confirmButton.onButtonClicked.invoke()
                     },
@@ -115,6 +117,7 @@ fun NavigationComponent(
             dismissButton = newAlert.dismissButton?.let { dismissButton ->
                 AlertConfirmAndDismissButton(
                     onButtonClicked = {
+                        navigator.alert(alertAction = null)
                         alert = null
                         dismissButton.onButtonClicked.invoke()
                     },
@@ -129,6 +132,7 @@ fun NavigationComponent(
         ProgressDialog(
             onDismissClicked = {
                 if (newProgress.shouldBeAbleToBeDismissed) {
+                    navigator.progress(progressAction = null)
                     progress = null
                 }
                 newProgress.onDismissClicked.invoke()

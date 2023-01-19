@@ -62,6 +62,8 @@ android {
 dependencies {
     api(project(path = ":base-resources"))
 
+    implementation(Dependencies.Coroutine.jvm)
+
     testImplementation(Dependencies.Coroutine.test)
 
     testImplementation(Dependencies.Junit.Jupiter.api)

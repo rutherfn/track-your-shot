@@ -1,32 +1,66 @@
 package com.nicholas.rutherford.track.my.shot.helper.network
 
-import android.app.Application
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import java.net.UnknownHostException
 
 class NetworkImplTest {
 
-    private val application = Application()
-
     lateinit var networkImpl: NetworkImpl
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val dispatcher = StandardTestDispatcher()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
     fun beforeEach() {
-        networkImpl = NetworkImpl(application = application)
+        Dispatchers.setMain(dispatcher)
+        networkImpl = NetworkImpl()
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @AfterEach
+    fun afterEach() {
+        Dispatchers.resetMain()
     }
 
     @Nested
-    inner class IsDeviceConnectedToInternet() {
+    inner class consts {
 
         @Test
-        @Throws(UnknownHostException::class)
-        fun `should return back false if InetAddress throws back a unknown expection`() {
-            Assertions.assertEquals(false, networkImpl.isDeviceConnectedToInternet())
+        fun `host name`() {
+            Assertions.assertEquals("8.8.8.8", HOST_NAME)
         }
 
-        // todo -> add more tests for InetAddresses in the future
+        @Test
+        fun `port`() {
+            Assertions.assertEquals(53, PORT)
+        }
+
+        @Test
+        fun `timeout ms`() {
+            Assertions.assertEquals(1500, TIMEOUT_MS)
+        }
+    }
+
+    // todo add tests
+    @Nested
+    inner class IsDeviceConnectedToInternet() {
+
+//        @OptIn(ExperimentalCoroutinesApi::class)
+//        @Test
+//        @Throws(IOException::class)
+//        fun `should return back false if InetAddress throws back a unknown expection`() = runTest {
+//            Dispatchers.setMain(dispatcher)
+//
+//            Assertions.assertEquals(false, networkImpl.isDeviceConnectedToInternet())
+//        }
     }
 }

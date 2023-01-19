@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
@@ -9,6 +10,7 @@ import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserI
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class CreateAccountViewModel(
     private val navigation: CreateAccountNavigation,
@@ -41,7 +43,9 @@ class CreateAccountViewModel(
         setIsPasswordEmptyOrNull(password = createAccountState.password)
         setIsTwoOrMoreFieldsEmptyOrNull()
 
-        validateFields()
+        viewModelScope.launch {
+            validateFields()
+        }
     }
 
     internal fun setIsUsernameEmptyOrNull(username: String?) {
@@ -84,7 +88,7 @@ class CreateAccountViewModel(
         isTwoOrMoreFieldsEmptyOrNull = counter >= 2
     }
 
-    internal fun validateFields() {
+    internal suspend fun validateFields() {
         val defaultAlert = Alert(
             onDismissClicked = {},
             title = application.getString(StringsIds.empty),
@@ -101,9 +105,7 @@ class CreateAccountViewModel(
                     description = application.getString(StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
                 )
             )
-        }
-
-        if (isTwoOrMoreFieldsEmptyOrNull) {
+        } else if (isTwoOrMoreFieldsEmptyOrNull) {
             navigation.alert(
                 alert = defaultAlert.copy(
                     title = application.getString(StringsIds.emptyFields),
@@ -134,17 +136,7 @@ class CreateAccountViewModel(
                 )
             )
         } else {
-            // test code not final
-//            viewModelScope.launch {
-//                navigation.enableProgress(
-//                    progress = Progress(
-//                        onDismissClicked = {}
-//                    )
-//                )
-//
-//                delay(timeMillis = 4000L)
-//                navigation.disableProgress()
-//            }
+            // end user logic for creating account goes here
         }
     }
 
