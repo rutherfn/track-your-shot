@@ -108,6 +108,7 @@ dependencies {
 
     implementation(Dependencies.Firebase.authKtx)
     implementation(Dependencies.Firebase.bom)
+    implementation(Dependencies.Firebase.databaseKtx)
 
     implementation(Dependencies.Koin.core)
 

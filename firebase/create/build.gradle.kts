@@ -64,6 +64,7 @@ dependencies {
 
     implementation(Dependencies.Firebase.authKtx)
     implementation(Dependencies.Firebase.bom)
+    implementation(Dependencies.Firebase.databaseKtx)
 
     testImplementation(Dependencies.Coroutine.test)
 
