@@ -10,7 +10,6 @@
     <string name="empty_field">Empty Field</string>
     <string name="empty_fields">Empty Fields</string>
     <string name="email">Email</string>
-    <string name="google_com" translatable="false">google.com</string>
     <string name="got_it">Got It</string>
     <string name="login">Login</string>
     <string name="login_icon_description">This is a login image for the login screen</string>
