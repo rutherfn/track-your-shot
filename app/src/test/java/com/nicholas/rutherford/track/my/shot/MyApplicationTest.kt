@@ -69,7 +69,10 @@ class MyApplicationTest : KoinTest {
     @Test
     fun `start koin on create should inject modules with instances as not null`() {
         mockkStatic(FirebaseAuth::class)
+        mockkStatic(FirebaseDatabase::class)
+
         every { FirebaseAuth.getInstance() } returns mockk(relaxed = true)
+        every { FirebaseDatabase.getInstance() } returns mockk(relaxed = true)
 
         myApplication.startKoinOnCreate()
 
