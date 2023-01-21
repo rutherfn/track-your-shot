@@ -46,6 +46,7 @@ feature/splash/build
 firebase/create/build
 firebase/delete/build
 firebase/read/build
+firebase/util/build
 
 helper/network/build
 helper/ui/build
