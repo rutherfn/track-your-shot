@@ -9,6 +9,7 @@ class NavigationDestinationsTest {
 
     lateinit var navigationDestinations: NavigationDestinations
 
+    internal val authenticationScreen = "authenticationScreen"
     internal val createAccountScreen = "createAccountScreen"
     internal val forgotPasswordScreen = "forgotPasswordScreen"
     internal val homeScreen = "homeScreen"
@@ -44,6 +45,11 @@ class NavigationDestinationsTest {
         @Test
         fun `create account screen name should result in create account screen`() {
             Assertions.assertEquals(navigationDestinations.CREATE_ACCOUNT_SCREEN, createAccountScreen)
+        }
+
+        @Test
+        fun `authetnication screen should result in authentication screen`() {
+            Assertions.assertEquals(navigationDestinations.AUTHENTICATION_SCREEN, authenticationScreen)
         }
     }
 }

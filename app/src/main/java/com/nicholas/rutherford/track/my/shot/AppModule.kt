@@ -9,6 +9,9 @@ import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.my.shot.feature.create.account.CreateAccountNavigation
 import com.nicholas.rutherford.track.my.shot.feature.create.account.CreateAccountNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.create.account.CreateAccountViewModel
+import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigation
+import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigationImpl
+import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordNavigation
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordViewModel
@@ -67,6 +70,9 @@ class AppModule {
         single<CreateAccountNavigation> {
             CreateAccountNavigationImpl(navigator = get())
         }
+        single<AuthenticationNavigation> {
+            AuthenticationNavigationImpl(navigator = get())
+        }
         single<ReadFirebaseUserInfo> {
             ReadFirebaseUserInfoImpl(firebaseAuth = get())
         }
@@ -87,6 +93,9 @@ class AppModule {
         }
         viewModel {
             CreateAccountViewModel(navigation = get(), application = androidApplication(), network = get(), createFirebaseUserInfo = get())
+        }
+        viewModel {
+            AuthenticationViewModel(navigation = get())
         }
     }
 }
