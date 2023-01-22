@@ -21,5 +21,4 @@ fun AuthenticationScreenContent(
     state: AuthenticationState,
     viewModel: AuthenticationViewModel
 ) {
-
 }

@@ -6,12 +6,12 @@ import com.nicholas.rutherford.track.my.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenterImpl
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
 import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigationImpl
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigation
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigationImpl
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordNavigation
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordViewModel
