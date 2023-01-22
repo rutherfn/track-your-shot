@@ -47,17 +47,11 @@ object NavigationActions {
         }
     }
 
-    object CreateAccount {
+    object CreateAccountScreen {
         fun authentication() = object : NavigationAction {
             override val destination = NavigationDestinations.AUTHENTICATION_SCREEN
             override val navOptions = NavOptions.Builder()
                 .build()
-        }
-    }
-
-    object HomeScreen {
-        fun splash() = object : NavigationAction {
-            override val destination = NavigationDestinations.SPLASH_SCREEN
         }
     }
 }
