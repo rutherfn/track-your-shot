@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.my.shot.navigation
 
 object NavigationDestinations {
+    const val AUTHENTICATION_SCREEN = "authenticationScreen"
     const val CREATE_ACCOUNT_SCREEN = "createAccountScreen"
     const val FORGOT_PASSWORD_SCREEN = "forgotPasswordScreen"
     const val HOME_SCREEN = "homeScreen"

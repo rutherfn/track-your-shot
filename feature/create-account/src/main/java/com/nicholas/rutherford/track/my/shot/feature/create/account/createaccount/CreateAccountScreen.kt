@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.feature.create.account
+package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

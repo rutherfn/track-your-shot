@@ -42,57 +42,75 @@ class NavigationActionsTest {
                 )
             }
 
-            @Nested inner class Login {
+            @Test
+            fun authentication() {
+                Assertions.assertEquals(
+                    Actions.SplashScreen.authentication().destination,
+                    NavigationDestinations.AUTHENTICATION_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.CreateAccountScreen.authentication().navOptions,
+                    NavOptions.Builder()
+                        .build()
+                )
+            }
+        }
 
-                @Test fun home() {
-                    Assertions.assertEquals(
-                        Actions.LoginScreen.home().destination,
-                        NavigationDestinations.HOME_SCREEN
-                    )
-                    Assertions.assertEquals(
-                        Actions.LoginScreen.home().navOptions,
-                        NavOptions.Builder()
-                            .setPopUpTo(0, true)
-                            .setLaunchSingleTop(true)
-                            .build()
-                    )
-                }
+        @Nested inner class LoginScreen {
 
-                @Test fun createAccount() {
-                    Assertions.assertEquals(
-                        Actions.LoginScreen.createAccount().destination,
-                        NavigationDestinations.CREATE_ACCOUNT_SCREEN
-                    )
-                    Assertions.assertEquals(
-                        Actions.LoginScreen.createAccount().navOptions,
-                        NavOptions.Builder()
-                            .build()
-                    )
-                }
-
-                @Test fun forgot() {
-                    Assertions.assertEquals(
-                        Actions.LoginScreen.forgotPassword().destination,
-                        NavigationDestinations.FORGOT_PASSWORD_SCREEN
-                    )
-                    Assertions.assertEquals(
-                        Actions.LoginScreen.forgotPassword().navOptions,
-                        NavOptions.Builder()
-                            .build()
-                    )
-                }
+            @Test fun home() {
+                Assertions.assertEquals(
+                    Actions.LoginScreen.home().destination,
+                    NavigationDestinations.HOME_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.LoginScreen.home().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(0, true)
+                        .setLaunchSingleTop(true)
+                        .build()
+                )
             }
 
-            @Nested
-            inner class Home {
+            @Test fun createAccount() {
+                Assertions.assertEquals(
+                    Actions.LoginScreen.createAccount().destination,
+                    NavigationDestinations.CREATE_ACCOUNT_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.LoginScreen.createAccount().navOptions,
+                    NavOptions.Builder()
+                        .build()
+                )
+            }
 
-                @Test
-                fun splash() {
-                    Assertions.assertEquals(
-                        Actions.HomeScreen.splash().destination,
-                        NavigationDestinations.SPLASH_SCREEN
-                    )
-                }
+            @Test fun forgot() {
+                Assertions.assertEquals(
+                    Actions.LoginScreen.forgotPassword().destination,
+                    NavigationDestinations.FORGOT_PASSWORD_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.LoginScreen.forgotPassword().navOptions,
+                    NavOptions.Builder()
+                        .build()
+                )
+            }
+        }
+
+        @Nested
+        inner class CreateAccountScreen {
+
+            @Test
+            fun authentication() {
+                Assertions.assertEquals(
+                    Actions.CreateAccountScreen.authentication().destination,
+                    NavigationDestinations.AUTHENTICATION_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.CreateAccountScreen.authentication().navOptions,
+                    NavOptions.Builder()
+                        .build()
+                )
             }
         }
     }
