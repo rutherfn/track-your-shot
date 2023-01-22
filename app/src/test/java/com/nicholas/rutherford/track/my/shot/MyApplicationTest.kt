@@ -4,12 +4,20 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
+import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigation
+import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
+import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordNavigation
+import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordViewModel
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 import io.mockk.every
@@ -34,6 +42,8 @@ class MyApplicationTest : KoinTest {
     private val firebaseDatabase: FirebaseDatabase by inject()
 
     private val createFirebaseUserInfo: CreateFirebaseUserInfo by inject()
+    private val authenticationFirebase: AuthenticationFirebase by inject()
+    private val readFirebaseUserInfo: ReadFirebaseUserInfo by inject()
 
     private val network: Network by inject()
     private val buildType: BuildType by inject()
@@ -42,11 +52,17 @@ class MyApplicationTest : KoinTest {
 
     private val splashNavigation: SplashNavigation by inject()
     private val loginNavigation: LoginNavigation by inject()
+    private val forgotPasswordNavigation: ForgotPasswordNavigation by inject()
+    private val createAccountNavigation: CreateAccountNavigation by inject()
+    private val authenticationNavigation: AuthenticationNavigation by inject()
 
     private val mainActivityViewModel: MainActivityViewModel by inject()
     private val splashViewModel: SplashViewModel by inject()
     private val loginViewModel: LoginViewModel by inject()
     private val homeViewModel: HomeViewModel by inject()
+    private val forgotPasswordViewModel: ForgotPasswordViewModel by inject()
+    private val createAccountViewModel: CreateAccountViewModel by inject()
+    private val authenticationViewModel: AuthenticationViewModel by inject()
 
     private val myApplication = MyApplication()
 
@@ -80,6 +96,8 @@ class MyApplicationTest : KoinTest {
         assertNotNull(firebaseDatabase)
 
         assertNotNull(createFirebaseUserInfo)
+        assertNotNull(authenticationFirebase)
+        assertNotNull(readFirebaseUserInfo)
 
         assertNotNull(network)
         assertNotNull(buildType)
@@ -88,10 +106,16 @@ class MyApplicationTest : KoinTest {
 
         assertNotNull(splashNavigation)
         assertNotNull(loginNavigation)
+        assertNotNull(forgotPasswordNavigation)
+        assertNotNull(createAccountNavigation)
+        assertNotNull(authenticationNavigation)
 
         assertNotNull(mainActivityViewModel)
         assertNotNull(splashViewModel)
         assertNotNull(loginViewModel)
         assertNotNull(homeViewModel)
+        assertNotNull(forgotPasswordViewModel)
+        assertNotNull(createAccountViewModel)
+        assertNotNull(authenticationViewModel)
     }
 }

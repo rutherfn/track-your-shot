@@ -26,6 +26,8 @@ import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserI
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImpl
+import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
+import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebaseImpl
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import com.nicholas.rutherford.track.my.shot.helper.network.NetworkImpl
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
@@ -45,6 +47,12 @@ class AppModule {
         }
         single<CreateFirebaseUserInfo> {
             CreateFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
+        }
+        single<AuthenticationFirebase> {
+            AuthenticationFirebaseImpl(firebaseAuth = get())
+        }
+        single<ReadFirebaseUserInfo> {
+            ReadFirebaseUserInfoImpl(firebaseAuth = get())
         }
         single<Network> {
             NetworkImpl()
@@ -73,9 +81,6 @@ class AppModule {
         single<AuthenticationNavigation> {
             AuthenticationNavigationImpl(navigator = get())
         }
-        single<ReadFirebaseUserInfo> {
-            ReadFirebaseUserInfoImpl(firebaseAuth = get())
-        }
         viewModel {
             MainActivityViewModel(appCenter = get())
         }
@@ -95,7 +100,7 @@ class AppModule {
             CreateAccountViewModel(navigation = get(), application = androidApplication(), network = get(), createFirebaseUserInfo = get())
         }
         viewModel {
-            AuthenticationViewModel(navigation = get())
+            AuthenticationViewModel(navigation = get(), authenticationFirebase = get())
         }
     }
 }
