@@ -18,6 +18,12 @@ object NavigationActions {
                 .setPopUpTo(0, false)
                 .build()
         }
+
+        fun authentication() = object : NavigationAction {
+            override val destination = NavigationDestinations.AUTHENTICATION_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .build()
+        }
     }
 
     object LoginScreen {
@@ -41,9 +47,11 @@ object NavigationActions {
         }
     }
 
-    object HomeScreen {
-        fun splash() = object : NavigationAction {
-            override val destination = NavigationDestinations.SPLASH_SCREEN
+    object CreateAccountScreen {
+        fun authentication() = object : NavigationAction {
+            override val destination = NavigationDestinations.AUTHENTICATION_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .build()
         }
     }
 }

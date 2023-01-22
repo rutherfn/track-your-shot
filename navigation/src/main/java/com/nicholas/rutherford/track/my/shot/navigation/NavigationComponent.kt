@@ -23,7 +23,8 @@ fun NavigationComponent(
     loginContent: @Composable (navController: Navigator) -> Unit,
     homeContent: @Composable (navController: Navigator) -> Unit,
     forgotPasswordContent: @Composable (navController: Navigator) -> Unit,
-    createAccountContent: @Composable (navController: Navigator) -> Unit
+    createAccountContent: @Composable (navController: Navigator) -> Unit,
+    authenticationContent: @Composable (navController: Navigator) -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val alertState by navigator.alertActions.asLifecycleAwareState(
@@ -93,6 +94,9 @@ fun NavigationComponent(
         }
         composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
             createAccountContent.invoke(navigator)
+        }
+        composable(route = NavigationDestinations.AUTHENTICATION_SCREEN) {
+            authenticationContent.invoke(navigator)
         }
     }
 
