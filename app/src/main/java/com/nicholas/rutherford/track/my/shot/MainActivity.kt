@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
-import com.nicholas.rutherford.track.my.shot.feature.create.account.CreateAccountScreen
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountScreen
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationScreen
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordScreen
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeScreen
