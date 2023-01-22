@@ -22,16 +22,16 @@ import org.junit.jupiter.api.Test
 
 class CreateFirebaseUserInfoImplTest {
 
-    lateinit var createFirebaseUserInfoImpl: CreateFirebaseUserInfoImpl
+    private lateinit var createFirebaseUserInfoImpl: CreateFirebaseUserInfoImpl
 
-    val firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
-    val firebaseDatabase = mockk<FirebaseDatabase>(relaxed = true)
+    private val firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
+    private val firebaseDatabase = mockk<FirebaseDatabase>(relaxed = true)
 
-    val createAccountResponse = TestCreateAccountFirebaseAuthResponse().create()
-    val createAccountResult = TestCreateAccountFirebaseRealtimeDatabaseResult().create()
+    private val createAccountResponse = TestCreateAccountFirebaseAuthResponse().create()
+    private val createAccountResult = TestCreateAccountFirebaseRealtimeDatabaseResult().create()
 
-    val testEmail = "testemail@yahoo.com"
-    val testPassword = "passwordTest112"
+    private val testEmail = "testemail@yahoo.com"
+    private val testPassword = "passwordTest112"
 
     @BeforeEach
     fun beforeEach() {
