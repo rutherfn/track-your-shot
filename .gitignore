@@ -37,6 +37,7 @@ data/user/build
 data-test/account-info/build
 data-test/user/build
 
+feature/authentication/build
 feature/create-account/build
 feature/forgot-password/build
 feature/home/build
