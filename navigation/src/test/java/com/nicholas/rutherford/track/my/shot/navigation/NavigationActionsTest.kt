@@ -49,8 +49,9 @@ class NavigationActionsTest {
                     NavigationDestinations.AUTHENTICATION_SCREEN
                 )
                 Assertions.assertEquals(
-                    Actions.CreateAccountScreen.authentication().navOptions,
+                    Actions.SplashScreen.authentication().navOptions,
                     NavOptions.Builder()
+                        .setPopUpTo(0, true)
                         .build()
                 )
             }
@@ -109,6 +110,7 @@ class NavigationActionsTest {
                 Assertions.assertEquals(
                     Actions.CreateAccountScreen.authentication().navOptions,
                     NavOptions.Builder()
+                        .setPopUpTo(0, false)
                         .build()
                 )
             }
