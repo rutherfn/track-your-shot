@@ -100,7 +100,7 @@ class AppModule {
             CreateAccountViewModel(navigation = get(), application = androidApplication(), network = get(), createFirebaseUserInfo = get())
         }
         viewModel {
-            AuthenticationViewModel(readFirebaseUserInfo = get(), navigation = get(), authenticationFirebase = get())
+            AuthenticationViewModel(readFirebaseUserInfo = get(), navigation = get(), application = androidApplication(), authenticationFirebase = get())
         }
     }
 }

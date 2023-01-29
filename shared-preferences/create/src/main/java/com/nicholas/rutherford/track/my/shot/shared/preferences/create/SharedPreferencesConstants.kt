@@ -1,0 +1,12 @@
+package com.nicholas.rutherford.track.my.shot.shared.preferences.create
+
+object SharedPreferencesConstants {
+
+    object Core {
+        const val TRACK_MY_SHOT_PREFERENCES = "TRACK_MY_SHOT_PREFERENCES"
+    }
+
+    object Preferences {
+        const val ACCOUNT_HAS_BEEN_CREATED = "ACCOUNT_HAS_BEEN_CREATED_PREFERENCE"
+    }
+}

@@ -56,7 +56,7 @@ fun AuthenticationScreen(viewModel: AuthenticationViewModel) {
         },
         appBar = AppBar(
             toolbarTitle = stringResource(id = StringsIds.verifyAccount),
-            onIconButtonClicked = {}
+            onIconButtonClicked = { viewModel.onNavigateClose() }
         ),
         imageVector = Icons.Filled.Close
     )

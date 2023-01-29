@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.navigation
 
+import android.app.Activity
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.NavHostController
@@ -17,6 +18,7 @@ import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
  */
 @Composable
 fun NavigationComponent(
+    activity: Activity,
     navHostController: NavHostController,
     navigator: Navigator,
     splashContent: @Composable (navController: Navigator) -> Unit,
@@ -28,6 +30,10 @@ fun NavigationComponent(
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val alertState by navigator.alertActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
+    val finishState by navigator.finishActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
@@ -58,6 +64,15 @@ fun NavigationComponent(
                 navHostController.currentBackStackEntry?.arguments?.putParcelable(arg.key, arg.value)
             }
             navHostController.navigate(it.destination, it.navOptions)
+        }
+    }
+
+    LaunchedEffect(finishState) {
+        finishState?.let { shouldFinish ->
+            if (shouldFinish) {
+                activity.finish()
+                navigator.finish(finishAction = null)
+            }
         }
     }
 

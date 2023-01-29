@@ -72,8 +72,25 @@ class SplashViewModelTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
+        fun `when isLoggedIn and testBoolean is set top true should call navigateToAuthentication`() = runTest {
+            viewModel.testBoolean = true
+
+            every { readFirebaseUserInfo.isLoggedIn } returns true
+            every { readFirebaseUserInfo.isEmailVerified } returns false
+
+            Dispatchers.setMain(dispatcher)
+            viewModel = SplashViewModel(navigation = navigation, readFirebaseUserInfo = readFirebaseUserInfo)
+
+            delay(delayTime)
+
+            coVerify { navigation.navigateToAuthentication() }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
         fun `should delay for 4 seconds and verifies that it calls navigateToLogin when isLoggedIn is set to false`() = runTest {
             every { readFirebaseUserInfo.isLoggedIn } returns false
+            every { readFirebaseUserInfo.isEmailVerified } returns false
 
             Dispatchers.setMain(dispatcher)
             viewModel = SplashViewModel(navigation = navigation, readFirebaseUserInfo = readFirebaseUserInfo)
@@ -87,6 +104,7 @@ class SplashViewModelTest {
         @Test
         fun `should delay for 4 seconds and verifies it calls navigateToHome when isLoggedIn is set to true`() = runTest {
             every { readFirebaseUserInfo.isLoggedIn } returns true
+            every { readFirebaseUserInfo.isEmailVerified } returns false
 
             Dispatchers.setMain(dispatcher)
             viewModel = SplashViewModel(navigation = navigation, readFirebaseUserInfo = readFirebaseUserInfo)

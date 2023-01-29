@@ -11,7 +11,12 @@ import kotlinx.coroutines.launch
 const val SPLASH_DELAY_IN_MILLIS = 4000L
 const val SPLASH_IMAGE_SCALE = 1f
 
-class SplashViewModel(private val navigation: SplashNavigation, private val readFirebaseUserInfo: ReadFirebaseUserInfo) : ViewModel() {
+class SplashViewModel(
+    private val navigation: SplashNavigation,
+    private val readFirebaseUserInfo: ReadFirebaseUserInfo
+) : ViewModel() {
+
+    var accountHasBeenCreated = false
 
     private val initializeSplashState = SplashState(
         backgroundColor = Colors.primaryColor,
@@ -23,7 +28,11 @@ class SplashViewModel(private val navigation: SplashNavigation, private val read
     val splashStateFlow = splashStateMutableStateFlow.asStateFlow()
 
     init {
-        delayAndNavigateToHomeOrLogin()
+        if (readFirebaseUserInfo.isLoggedIn && !readFirebaseUserInfo.isEmailVerified && !accountHasBeenCreated) {
+            navigation.navigateToAuthentication()
+        } else {
+            delayAndNavigateToHomeOrLogin()
+        }
     }
 
     private fun delayAndNavigateToHomeOrLogin() {

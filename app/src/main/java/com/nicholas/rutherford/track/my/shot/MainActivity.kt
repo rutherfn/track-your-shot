@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
         viewModel.initAppCenter()
         setContent {
             NavigationComponent(
+                activity = this,
                 navHostController = rememberNavController(),
                 navigator = get(),
                 splashContent = { SplashScreen(viewModel = getViewModel()) },
@@ -31,7 +32,7 @@ class MainActivity : ComponentActivity() {
                 homeContent = { HomeScreen(viewModel = getViewModel()) },
                 forgotPasswordContent = { ForgotPasswordScreen(viewModel = getViewModel()) },
                 createAccountContent = { CreateAccountScreen(viewModel = getViewModel()) },
-                authenticationContent = { AuthenticationScreen(viewModel = getViewModel()) }
+                authenticationContent = { AuthenticationScreen(viewModel = getViewModel()) },
             )
         }
     }
