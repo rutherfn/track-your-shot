@@ -71,6 +71,7 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":compose-components"))
     api(project(path = ":firebase:create"))
+    api(project(path = ":firebase:read"))
     api(project(path = ":firebase:util"))
     api(project(path = ":helper:network"))
     api(project(path = ":helper:ui"))

@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import com.nicholas.rutherford.track.my.shot.compose.components.Content
 import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
@@ -35,12 +36,19 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.Shared
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
+import com.nicholas.rutherford.track.my.shot.navigation.OnLifecycleEvent
 
 const val EMAIL_IMAGE_HEIGHT_WIDTH = 144
 
 @Composable
 fun AuthenticationScreen(viewModel: AuthenticationViewModel) {
     val state = viewModel.authenticationStateFlow.collectAsState().value
+
+    OnLifecycleEvent { _, event ->
+        if (event == Lifecycle.Event.ON_RESUME) {
+            viewModel.onResume()
+        }
+    }
 
     Content(
         ui = {

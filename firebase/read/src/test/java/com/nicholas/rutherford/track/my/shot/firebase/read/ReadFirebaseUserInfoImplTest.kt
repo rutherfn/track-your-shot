@@ -20,6 +20,37 @@ class ReadFirebaseUserInfoImplTest {
     }
 
     @Nested
+    inner class IsEmailVerified {
+
+        @Test
+        fun `when currentUser is set to null should set to false`() {
+            every { firebaseAuth.currentUser } returns null
+
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth)
+
+            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerified)
+        }
+
+        @Test
+        fun `when currentUser is not null and isEmailVerified returns back false should be set to false`() {
+            every { firebaseAuth.currentUser!!.isEmailVerified } returns false
+
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth)
+
+            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerified)
+        }
+
+        @Test
+        fun `when currentUser is not null and isEmailVerified returns back true should be set to true`() {
+            every { firebaseAuth.currentUser!!.isEmailVerified } returns true
+
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth)
+
+            Assertions.assertEquals(true, readFirebaseUserInfoImpl.isEmailVerified)
+        }
+    }
+
+    @Nested
     inner class IsLoggedIn {
 
         @Test

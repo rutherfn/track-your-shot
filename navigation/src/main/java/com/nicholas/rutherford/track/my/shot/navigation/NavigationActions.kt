@@ -42,7 +42,7 @@ object NavigationActions {
                 .build()
         }
         fun forgotPassword() = object : NavigationAction {
-            override val destination = NavigationDestinations.FORGOT_PASSWORD_SCREEN
+            override val destination = NavigationDestinations.AUTHENTICATION_SCREEN
             override val navOptions = NavOptions.Builder()
                 .build()
         }
