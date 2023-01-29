@@ -38,7 +38,7 @@ fun CreateAccountScreen(viewModel: CreateAccountViewModel) {
         },
         appBar = AppBar(
             toolbarTitle = stringResource(id = StringsIds.createAccount),
-            onBackButtonClicked = { viewModel.onBackButtonClicked() }
+            onIconButtonClicked = { viewModel.onBackButtonClicked() }
         )
     )
 }
