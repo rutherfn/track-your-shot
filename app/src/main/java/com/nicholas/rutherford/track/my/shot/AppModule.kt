@@ -32,6 +32,8 @@ import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import com.nicholas.rutherford.track.my.shot.helper.network.NetworkImpl
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 import com.nicholas.rutherford.track.my.shot.navigation.NavigatorImpl
+import com.nicholas.rutherford.track.my.shot.shared.preferences.read.ReadSharedPreferences
+import com.nicholas.rutherford.track.my.shot.shared.preferences.read.ReadSharedPreferencesImpl
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -39,6 +41,9 @@ import org.koin.dsl.module
 class AppModule {
 
     val modules = module {
+        single<ReadSharedPreferences> {
+            ReadSharedPreferencesImpl(application = androidApplication())
+        }
         single {
             FirebaseAuth.getInstance()
         }
@@ -85,7 +90,7 @@ class AppModule {
             MainActivityViewModel(appCenter = get())
         }
         viewModel {
-            SplashViewModel(navigation = get(), readFirebaseUserInfo = get())
+            SplashViewModel(readSharedPreferences = get(), navigation = get(), readFirebaseUserInfo = get())
         }
         viewModel {
             LoginViewModel(navigation = get(), buildType = get())
@@ -103,4 +108,5 @@ class AppModule {
             AuthenticationViewModel(readFirebaseUserInfo = get(), navigation = get(), application = androidApplication(), authenticationFirebase = get())
         }
     }
+
 }

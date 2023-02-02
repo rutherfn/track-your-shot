@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.my.shot.feature.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.shared.preferences.read.ReadSharedPreferences
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,11 +13,10 @@ const val SPLASH_DELAY_IN_MILLIS = 4000L
 const val SPLASH_IMAGE_SCALE = 1f
 
 class SplashViewModel(
+    readSharedPreferences: ReadSharedPreferences,
     private val navigation: SplashNavigation,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo
 ) : ViewModel() {
-
-    var accountHasBeenCreated = false
 
     private val initializeSplashState = SplashState(
         backgroundColor = Colors.primaryColor,
@@ -27,8 +27,12 @@ class SplashViewModel(
     private val splashStateMutableStateFlow = MutableStateFlow(value = initializeSplashState)
     val splashStateFlow = splashStateMutableStateFlow.asStateFlow()
 
+    private var isUserAccountCreatedButNotAuthenticated = false
+
     init {
-        if (readFirebaseUserInfo.isLoggedIn && !readFirebaseUserInfo.isEmailVerified && !accountHasBeenCreated) {
+        isUserAccountCreatedButNotAuthenticated = readFirebaseUserInfo.isLoggedIn && !readFirebaseUserInfo.isEmailVerified && !readSharedPreferences.accountHasBeenCreated()
+
+        if (isUserAccountCreatedButNotAuthenticated) {
             navigation.navigateToAuthentication()
         } else {
             delayAndNavigateToHomeOrLogin()

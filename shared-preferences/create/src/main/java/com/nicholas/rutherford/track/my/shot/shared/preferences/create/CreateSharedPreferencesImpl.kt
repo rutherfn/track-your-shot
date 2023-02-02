@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.my.shot.shared.preferences.create
 
 import android.app.Application
 import android.content.Context
+import com.nicholas.rutherford.track.my.shot.helper.constants.SharedPreferencesConstants
 
 class CreateSharedPreferencesImpl(application: Application) : CreateSharedPreferences {
 
@@ -15,6 +16,4 @@ class CreateSharedPreferencesImpl(application: Application) : CreateSharedPrefer
         editor.putBoolean(SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED, value)
         editor.apply()
     }
-
-
 }

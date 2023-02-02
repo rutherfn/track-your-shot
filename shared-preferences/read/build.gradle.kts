@@ -8,14 +8,6 @@ android {
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
-    buildFeatures {
-        compose = ComposeData.Enabled.value
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
-    }
-
     compileOptions {
         sourceCompatibility = types.BuildTypes.CompileOptions.sourceCompatibility
         targetCompatibility = types.BuildTypes.CompileOptions.targetCompatibility
@@ -72,17 +64,5 @@ android {
 }
 
 dependencies {
-
-    api(project(path = ":compose-components"))
-
-    implementation(Dependencies.Compose.navigation)
-    implementation(Dependencies.Compose.material)
-
-    implementation(Dependencies.Coroutine.jvm)
-
-    testImplementation(Dependencies.Junit.Jupiter.api)
-    testImplementation(Dependencies.Junit.Jupiter.params)
-    testImplementation(Dependencies.Junit.junit)
-
-    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+    api(project(path = ":helper:constants"))
 }

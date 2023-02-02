@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.shared.preferences.create
+package com.nicholas.rutherford.track.my.shot.helper.constants
 
 object SharedPreferencesConstants {
 

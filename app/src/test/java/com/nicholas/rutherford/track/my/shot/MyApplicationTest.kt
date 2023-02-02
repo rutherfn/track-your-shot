@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.my.shot
 
+import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenter
@@ -18,8 +19,11 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
+import com.nicholas.rutherford.track.my.shot.helper.constants.SharedPreferencesConstants
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
+import com.nicholas.rutherford.track.my.shot.shared.preferences.create.CreateSharedPreferences
+import com.nicholas.rutherford.track.my.shot.shared.preferences.read.ReadSharedPreferences
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -38,6 +42,8 @@ import kotlin.test.assertNotNull
 
 class MyApplicationTest : KoinTest {
 
+    private val readSharedPreferences: ReadSharedPreferences by inject()
+
     private val firebaseAuth: FirebaseAuth by inject()
     private val firebaseDatabase: FirebaseDatabase by inject()
 
@@ -49,6 +55,8 @@ class MyApplicationTest : KoinTest {
     private val buildType: BuildType by inject()
     private val appCenter: AppCenter by inject()
     private val navigator: Navigator by inject()
+
+    private val createSharedPreferences: CreateSharedPreferences by inject()
 
     private val splashNavigation: SplashNavigation by inject()
     private val loginNavigation: LoginNavigation by inject()
@@ -92,6 +100,8 @@ class MyApplicationTest : KoinTest {
 
         myApplication.startKoinOnCreate()
 
+        assertNotNull(readSharedPreferences)
+
         assertNotNull(firebaseAuth)
         assertNotNull(firebaseDatabase)
 
@@ -103,6 +113,8 @@ class MyApplicationTest : KoinTest {
         assertNotNull(buildType)
         assertNotNull(appCenter)
         assertNotNull(navigator)
+
+//        assertNotNull(createSharedPreferences)
 
         assertNotNull(splashNavigation)
         assertNotNull(loginNavigation)
