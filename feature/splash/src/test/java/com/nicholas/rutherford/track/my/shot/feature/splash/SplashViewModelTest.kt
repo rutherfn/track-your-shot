@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.feature.splash
 
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
-import com.nicholas.rutherford.track.my.shot.shared.preferences.read.ReadSharedPreferences
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -63,7 +62,7 @@ class SplashViewModelTest {
     inner class Init {
 
         @Test
-        fun initalizeSplashState() {
+        fun initializeSplashState() {
             Assertions.assertEquals(
                 viewModel.splashStateFlow.value,
                 SplashState(

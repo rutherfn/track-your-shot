@@ -1,7 +1,5 @@
 package com.nicholas.rutherford.track.my.shot
 
-import android.content.Context
-import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenter
@@ -30,15 +28,10 @@ import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebaseImpl
-import com.nicholas.rutherford.track.my.shot.helper.constants.SharedPreferencesConstants
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import com.nicholas.rutherford.track.my.shot.helper.network.NetworkImpl
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 import com.nicholas.rutherford.track.my.shot.navigation.NavigatorImpl
-import com.nicholas.rutherford.track.my.shot.shared.preferences.create.CreateSharedPreferences
-import com.nicholas.rutherford.track.my.shot.shared.preferences.create.CreateSharedPreferencesImpl
-import com.nicholas.rutherford.track.my.shot.shared.preferences.read.ReadSharedPreferences
-import com.nicholas.rutherford.track.my.shot.shared.preferences.read.ReadSharedPreferencesImpl
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -46,18 +39,6 @@ import org.koin.dsl.module
 class AppModule {
 
     val modules = module {
-        single {
-            androidApplication().getSharedPreferences(SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES, Context.MODE_PRIVATE)
-        }
-        single {
-            androidApplication().getSharedPreferences(SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES, Context.MODE_PRIVATE).edit()
-        }
-        single<ReadSharedPreferences> {
-            ReadSharedPreferencesImpl(sharedPreference = get())
-        }
-        single<CreateSharedPreferences> {
-            CreateSharedPreferencesImpl(editor = get())
-        }
         single {
             FirebaseAuth.getInstance()
         }
@@ -104,7 +85,7 @@ class AppModule {
             MainActivityViewModel(appCenter = get())
         }
         viewModel {
-            SplashViewModel(readSharedPreferences = get(), navigation = get(), readFirebaseUserInfo = get())
+            SplashViewModel(application = androidApplication(), navigation = get(), readFirebaseUserInfo = get())
         }
         viewModel {
             LoginViewModel(navigation = get(), buildType = get())
@@ -122,5 +103,4 @@ class AppModule {
             AuthenticationViewModel(readFirebaseUserInfo = get(), navigation = get(), application = androidApplication(), authenticationFirebase = get())
         }
     }
-
 }

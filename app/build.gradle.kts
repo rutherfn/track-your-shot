@@ -98,8 +98,6 @@ dependencies {
     api(project(path = ":feature:login"))
     api(project(path = ":feature:splash"))
     api(project(path = ":helper:network"))
-    api(project(path = ":shared-preferences:create"))
-    api(project(path = ":shared-preferences:read"))
 
     implementation(Dependencies.Android.appCompat)
     implementation(Dependencies.Android.ktx)

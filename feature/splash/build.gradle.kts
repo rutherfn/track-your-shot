@@ -72,7 +72,7 @@ dependencies {
     api(project(path = ":compose-components"))
     api(project(path = ":firebase:read"))
     api(project(path = ":navigation"))
-    api(project(path = ":shared-preferences:read"))
+    api(project(path = ":shared-preference"))
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)

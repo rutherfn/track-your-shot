@@ -54,8 +54,7 @@ helper/ui/build
 
 navigation/build
 
-shared-preferences/create/build
-shared-preferences/read/build
+shared-preference/build
 
 # Local configuration file (sdk path, etc)
 local.properties
