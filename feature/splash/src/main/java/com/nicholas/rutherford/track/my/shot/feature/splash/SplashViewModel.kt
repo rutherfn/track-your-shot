@@ -30,7 +30,7 @@ class SplashViewModel(
 
     private var isUserAccountCreatedButNotAuthenticated = false
 
-    private val sharedPreferences = SharedPreferences(application = application)
+    internal val sharedPreferences = SharedPreferences(application = application)
 
     init {
         isUserAccountCreatedButNotAuthenticated = readFirebaseUserInfo.isLoggedIn && !readFirebaseUserInfo.isEmailVerified && sharedPreferences.accountHasBeenCreated() == false
