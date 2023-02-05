@@ -14,7 +14,6 @@ import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigation
-import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
@@ -54,7 +53,6 @@ class MyApplicationTest : KoinTest {
     private val authenticationNavigation: AuthenticationNavigation by inject()
 
     private val mainActivityViewModel: MainActivityViewModel by inject()
-    private val splashViewModel: SplashViewModel by inject()
     private val loginViewModel: LoginViewModel by inject()
     private val homeViewModel: HomeViewModel by inject()
     private val forgotPasswordViewModel: ForgotPasswordViewModel by inject()
@@ -105,11 +103,14 @@ class MyApplicationTest : KoinTest {
         assertNotNull(authenticationNavigation)
 
         assertNotNull(mainActivityViewModel)
-        // assertNotNull(splashViewModel)
         assertNotNull(loginViewModel)
         assertNotNull(homeViewModel)
         assertNotNull(forgotPasswordViewModel)
         assertNotNull(createAccountViewModel)
         assertNotNull(authenticationViewModel)
+
+        // todo figure out a way to mock shared preferences in classes that it gets used
+        // the tests for some reason is not able to create the factory generated class
+        // assertNotNull(splashViewModel)
     }
 }

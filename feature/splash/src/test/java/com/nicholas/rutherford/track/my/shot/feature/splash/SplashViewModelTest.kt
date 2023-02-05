@@ -1,10 +1,7 @@
 package com.nicholas.rutherford.track.my.shot.feature.splash
 
-import android.app.Application
-import android.content.Context
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
-import com.nicholas.rutherford.track.my.shot.helper.constants.SharedPreferencesConstants
-import io.mockk.coEvery
+import com.nicholas.rutherford.track.my.shot.shared.preference.read.ReadSharedPreferences
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -25,12 +22,10 @@ class SplashViewModelTest {
 
     lateinit var viewModel: SplashViewModel
 
-    internal val application = mockk<Application>()
+    internal var readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
 
     internal var navigation = mockk<SplashNavigation>(relaxed = true)
     internal var readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
-
-    private var editor = mockk<android.content.SharedPreferences.Editor>(relaxed = true)
 
     internal val delayTime = 4001L // needs 1 extra millisecond to account for function below call
 
@@ -41,15 +36,7 @@ class SplashViewModelTest {
     @BeforeEach
     fun beforeEach() {
         Dispatchers.setMain(dispatcher)
-
-        coEvery {
-            application.getSharedPreferences(
-                SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES,
-                Context.MODE_PRIVATE
-            ).edit()
-        } returns editor
-
-        viewModel = SplashViewModel(application = application, navigation = navigation, readFirebaseUserInfo = readFirebaseUserInfo)
+        viewModel = SplashViewModel(readSharedPreferences = readSharedPreferences, navigation = navigation, readFirebaseUserInfo = readFirebaseUserInfo)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -96,17 +83,11 @@ class SplashViewModelTest {
                 runTest {
                     every { readFirebaseUserInfo.isLoggedIn } returns true
                     every { readFirebaseUserInfo.isEmailVerified } returns false
-
-                    coEvery {
-                        application.getSharedPreferences(SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES, Context.MODE_PRIVATE).getBoolean(
-                            SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED,
-                            false
-                        )
-                    } returns false
+                    every { readSharedPreferences.accountHasBeenCreated() } returns false
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
-                        application = application,
+                        readSharedPreferences = readSharedPreferences,
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
@@ -122,16 +103,11 @@ class SplashViewModelTest {
                 runTest {
                     every { readFirebaseUserInfo.isLoggedIn } returns false
                     every { readFirebaseUserInfo.isEmailVerified } returns false
-                    coEvery {
-                        application.getSharedPreferences(SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES, Context.MODE_PRIVATE).getBoolean(
-                            SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED,
-                            false
-                        )
-                    } returns false
+                    every { readSharedPreferences.accountHasBeenCreated() } returns false
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
-                        application = application,
+                        readSharedPreferences = readSharedPreferences,
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
@@ -147,16 +123,11 @@ class SplashViewModelTest {
                 runTest {
                     every { readFirebaseUserInfo.isLoggedIn } returns true
                     every { readFirebaseUserInfo.isEmailVerified } returns true
-                    coEvery {
-                        application.getSharedPreferences(SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES, Context.MODE_PRIVATE).getBoolean(
-                            SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED,
-                            false
-                        )
-                    } returns false
+                    every { readSharedPreferences.accountHasBeenCreated() } returns false
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
-                        application = application,
+                        readSharedPreferences = readSharedPreferences,
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
@@ -172,16 +143,11 @@ class SplashViewModelTest {
                 runTest {
                     every { readFirebaseUserInfo.isLoggedIn } returns true
                     every { readFirebaseUserInfo.isEmailVerified } returns false
-                    coEvery {
-                        application.getSharedPreferences(SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES, Context.MODE_PRIVATE).getBoolean(
-                            SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED,
-                            false
-                        )
-                    } returns true
+                    every { readSharedPreferences.accountHasBeenCreated() } returns true
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
-                        application = application,
+                        readSharedPreferences = readSharedPreferences,
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
@@ -201,16 +167,11 @@ class SplashViewModelTest {
                 runTest {
                     every { readFirebaseUserInfo.isLoggedIn } returns false
                     every { readFirebaseUserInfo.isEmailVerified } returns true
-                    coEvery {
-                        application.getSharedPreferences(SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES, Context.MODE_PRIVATE).getBoolean(
-                            SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED,
-                            false
-                        )
-                    } returns false
+                    every { readSharedPreferences.accountHasBeenCreated() } returns false
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
-                        application = application,
+                        readSharedPreferences = readSharedPreferences,
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
@@ -226,16 +187,11 @@ class SplashViewModelTest {
                 runTest {
                     every { readFirebaseUserInfo.isLoggedIn } returns true
                     every { readFirebaseUserInfo.isEmailVerified } returns true
-                    coEvery {
-                        application.getSharedPreferences(SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES, Context.MODE_PRIVATE).getBoolean(
-                            SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED,
-                            false
-                        )
-                    } returns false
+                    every { readSharedPreferences.accountHasBeenCreated() } returns false
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
-                        application = application,
+                        readSharedPreferences = readSharedPreferences,
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
