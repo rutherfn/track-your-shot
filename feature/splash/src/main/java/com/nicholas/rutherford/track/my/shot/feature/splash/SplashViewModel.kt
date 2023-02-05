@@ -13,7 +13,7 @@ const val SPLASH_DELAY_IN_MILLIS = 4000L
 const val SPLASH_IMAGE_SCALE = 1f
 
 class SplashViewModel(
-    readSharedPreferences: ReadSharedPreferences,
+    private val readSharedPreferences: ReadSharedPreferences,
     private val navigation: SplashNavigation,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo
 ) : ViewModel() {
@@ -27,13 +27,15 @@ class SplashViewModel(
     private val splashStateMutableStateFlow = MutableStateFlow(value = initializeSplashState)
     val splashStateFlow = splashStateMutableStateFlow.asStateFlow()
 
-    private var isUserAccountCreatedButNotAuthenticated = false
+    init { navigateToHomeLoginOrAuthentication() }
 
-    init {
-        isUserAccountCreatedButNotAuthenticated = readFirebaseUserInfo.isLoggedIn && !readFirebaseUserInfo.isEmailVerified && readSharedPreferences.accountHasBeenCreated() == false
-
-        if (isUserAccountCreatedButNotAuthenticated) {
-            navigation.navigateToAuthentication()
+    private fun navigateToHomeLoginOrAuthentication() {
+        if (readFirebaseUserInfo.isLoggedIn) {
+            if (readFirebaseUserInfo.isEmailVerified && readSharedPreferences.accountHasBeenCreated()) {
+                delayAndNavigateToHomeOrLogin()
+            } else {
+                navigation.navigateToAuthentication()
+            }
         } else {
             delayAndNavigateToHomeOrLogin()
         }

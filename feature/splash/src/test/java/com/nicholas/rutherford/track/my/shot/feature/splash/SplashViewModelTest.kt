@@ -79,10 +79,30 @@ class SplashViewModelTest {
 
             @OptIn(ExperimentalCoroutinesApi::class)
             @Test
-            fun `when isLoggedIn is set to true, isEmailVerified set to false, and accountHasBeenCreated set to false should navigateToAuthentication`() =
+            fun `when isLoggedIn is set to true, isEmailVerified set to false and accountHasBeenCreated is set to true should call navigateToAuthentication`() =
                 runTest {
                     every { readFirebaseUserInfo.isLoggedIn } returns true
                     every { readFirebaseUserInfo.isEmailVerified } returns false
+                    every { readSharedPreferences.accountHasBeenCreated() } returns true
+
+                    Dispatchers.setMain(dispatcher)
+                    viewModel = SplashViewModel(
+                        readSharedPreferences = readSharedPreferences,
+                        navigation = navigation,
+                        readFirebaseUserInfo = readFirebaseUserInfo
+                    )
+
+                    delay(delayTime)
+
+                    coVerify { navigation.navigateToAuthentication() }
+                }
+
+            @OptIn(ExperimentalCoroutinesApi::class)
+            @Test
+            fun `when isLoggedIn is set to true, isEmailVerified set to true and accountHasBeenCreated is set to false should call navigateToAuthentication`() =
+                runTest {
+                    every { readFirebaseUserInfo.isLoggedIn } returns true
+                    every { readFirebaseUserInfo.isEmailVerified } returns true
                     every { readSharedPreferences.accountHasBeenCreated() } returns false
 
                     Dispatchers.setMain(dispatcher)
@@ -99,11 +119,9 @@ class SplashViewModelTest {
 
             @OptIn(ExperimentalCoroutinesApi::class)
             @Test
-            fun `when isLoggedIn is set to false, isEmailVerified is set ot false, and accountHasBeenCreated set to false should not navigateToAuthentication`() =
+            fun `when isLoggedIn is set to false should not navigateToAuthentication`() =
                 runTest {
                     every { readFirebaseUserInfo.isLoggedIn } returns false
-                    every { readFirebaseUserInfo.isEmailVerified } returns false
-                    every { readSharedPreferences.accountHasBeenCreated() } returns false
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
@@ -119,30 +137,10 @@ class SplashViewModelTest {
 
             @OptIn(ExperimentalCoroutinesApi::class)
             @Test
-            fun `when isLoggedIn is set to true, isEmailVerified is set true, and accountHasBeenCreated set to false should not navigateToAuthentication`() =
+            fun `when isLoggedIn is set to true, isEmailVerified set to true and accountHasBeenCreated is set to true should not navigateToAuthentication`() =
                 runTest {
                     every { readFirebaseUserInfo.isLoggedIn } returns true
                     every { readFirebaseUserInfo.isEmailVerified } returns true
-                    every { readSharedPreferences.accountHasBeenCreated() } returns false
-
-                    Dispatchers.setMain(dispatcher)
-                    viewModel = SplashViewModel(
-                        readSharedPreferences = readSharedPreferences,
-                        navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo
-                    )
-
-                    delay(delayTime)
-
-                    coVerify(exactly = 0) { navigation.navigateToAuthentication() }
-                }
-
-            @OptIn(ExperimentalCoroutinesApi::class)
-            @Test
-            fun `when isLoggedIn is set to true, isEmailVerified is set false, and accountHasBeenCreated set to true should not navigateToAuthentication`() =
-                runTest {
-                    every { readFirebaseUserInfo.isLoggedIn } returns true
-                    every { readFirebaseUserInfo.isEmailVerified } returns false
                     every { readSharedPreferences.accountHasBeenCreated() } returns true
 
                     Dispatchers.setMain(dispatcher)
