@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account
 
 import android.app.Application
+import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
+import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountState
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
@@ -13,6 +15,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -36,6 +39,9 @@ class CreateAccountViewModelTest {
     private val authenticationFirebase = mockk<AuthenticationFirebase>(relaxed = true)
 
     private val state = CreateAccountState(username = null, email = null, password = null)
+
+    private val createAccountFirebaseAuthResponse = TestCreateAccountFirebaseAuthResponse().create()
+    private var authenticateUserViaEmailFirebaseResponse = TestAuthenticateUserViaEmailFirebaseResponse().create()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val dispatcher = StandardTestDispatcher()
@@ -260,8 +266,6 @@ class CreateAccountViewModelTest {
                     description = application.getString(StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
                 )
             )
-
-            // verify { navigation.alert(alert = any()) }
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -366,6 +370,80 @@ class CreateAccountViewModelTest {
                 null
             )
         }
+    }
+
+    @Nested
+    inner class AttemptToCreateFirebaseAuthAndSendEmailVerification {
+
+        private val testEmail = "testemail@gmail.com"
+        private val testPassword = "testPassword"
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when attemptToCreateAccountFirebaseAuthResponse returns back as not successful should call functions`() =
+            runTest {
+                coEvery {
+                    createFirebaseUserInfo.attemptToCreateAccountFirebaseAuthResponseFlow(
+                        email = testEmail,
+                        password = testPassword
+                    )
+                } returns flowOf(createAccountFirebaseAuthResponse.copy(isSuccessful = false))
+
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = testEmail,
+                    password = testPassword
+                )
+
+                verify { navigation.disableProgress() }
+                verify { navigation.alert(alert = any()) }
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when attemptToAttemptToCreateAccountFirebaseAuthResponse returns successful and send email returns back not successful should call functions`() =
+            runTest {
+                coEvery {
+                    createFirebaseUserInfo.attemptToCreateAccountFirebaseAuthResponseFlow(
+                        email = testEmail,
+                        password = testPassword
+                    )
+                } returns flowOf(createAccountFirebaseAuthResponse.copy(isSuccessful = true))
+                coEvery {
+                    authenticationFirebase.attemptToSendEmailVerificationForCurrentUser()
+                } returns flowOf(authenticateUserViaEmailFirebaseResponse.copy(isSuccessful = false))
+
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = testEmail,
+                    password = testPassword
+                )
+
+                verify { navigation.disableProgress() }
+                verify { navigation.alert(alert = any()) }
+                verify { navigation.navigateToAuthentication() }
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when attemptToAttemptToCreateAccountFirebaseAuthResponse returns successful and send email returns back successful should call functions`() =
+            runTest {
+                coEvery {
+                    createFirebaseUserInfo.attemptToCreateAccountFirebaseAuthResponseFlow(
+                        email = testEmail,
+                        password = testPassword
+                    )
+                } returns flowOf(createAccountFirebaseAuthResponse.copy(isSuccessful = true))
+                coEvery {
+                    authenticationFirebase.attemptToSendEmailVerificationForCurrentUser()
+                } returns flowOf(authenticateUserViaEmailFirebaseResponse.copy(isSuccessful = true))
+
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = testEmail,
+                    password = testPassword
+                )
+
+                verify { navigation.disableProgress() }
+                verify { navigation.navigateToAuthentication() }
+            }
     }
 
     @Test fun `on user name value changed should update username state value`() {

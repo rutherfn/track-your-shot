@@ -143,7 +143,7 @@ class CreateAccountViewModel(
         }
     }
 
-    private suspend fun attemptToCreateFirebaseAuthAndSendEmailVerification(email: String, password: String) {
+    internal suspend fun attemptToCreateFirebaseAuthAndSendEmailVerification(email: String, password: String) {
         createFirebaseUserInfo.attemptToCreateAccountFirebaseAuthResponseFlow(email = email, password)
             .collectLatest { createAccountFirebaseAuthResponse ->
                 if (createAccountFirebaseAuthResponse.isSuccessful) {
