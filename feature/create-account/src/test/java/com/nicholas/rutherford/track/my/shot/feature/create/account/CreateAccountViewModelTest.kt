@@ -4,7 +4,9 @@ import android.app.Application
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountState
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
+import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -31,6 +33,7 @@ class CreateAccountViewModelTest {
     private val network = mockk<Network>(relaxed = true)
 
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
+    private val authenticationFirebase = mockk<AuthenticationFirebase>(relaxed = true)
 
     private val state = CreateAccountState(username = null, email = null, password = null)
 
@@ -41,7 +44,13 @@ class CreateAccountViewModelTest {
     @BeforeEach
     fun beforeEach() {
         Dispatchers.setMain(dispatcher)
-        viewModel = CreateAccountViewModel(navigation = navigation, application = application, network = network, createFirebaseUserInfo = createFirebaseUserInfo)
+        viewModel = CreateAccountViewModel(
+            navigation = navigation,
+            application = application,
+            network = network,
+            createFirebaseUserInfo = createFirebaseUserInfo,
+            authenticationFirebase = authenticationFirebase
+        )
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -235,23 +244,29 @@ class CreateAccountViewModelTest {
     }
 
     @Nested
-    inner class ValidateFields {
+    inner class ValidateFieldsWithOptionalAlert {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isDeviceConnectedToInternet is set to true should navigate to show alert`() = runTest {
+        fun `when isDeviceConnectedToInternet is set to true should return back not connected to internet alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns false
 
-            viewModel.validateFields()
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.notConnectedToInternet),
+                    description = application.getString(StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
+                )
+            )
 
-            verify { navigation.alert(alert = any()) }
+            // verify { navigation.alert(alert = any()) }
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isTwoOrMoreFieldsEmptyOrNull is set to true should navigate to show alert`() = runTest {
+        fun `when isTwoOrMoreFieldsEmptyOrNull is set to true should return back mulitple fields are required alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns true
@@ -262,14 +277,18 @@ class CreateAccountViewModelTest {
             viewModel.isPasswordEmptyOrNull = false
             viewModel.isTwoOrMoreFieldsEmptyOrNull = true
 
-            viewModel.validateFields()
-
-            verify { navigation.alert(alert = any()) }
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(StringsIds.multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields)
+                )
+            )
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isUsernamEmptyOrNull is set to true should navigate to show alert`() = runTest {
+        fun `when isUsernameEmptyOrNull is set to true should return back username is required please enter a username alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns true
@@ -279,14 +298,18 @@ class CreateAccountViewModelTest {
             viewModel.isEmailEmptyOrNull = false
             viewModel.isPasswordEmptyOrNull = false
 
-            viewModel.validateFields()
-
-            verify { navigation.alert(alert = any()) }
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
+                )
+            )
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isEmailEmptyOrNull is set to true should navigate to show alert`() = runTest {
+        fun `when isEmailEmptyOrNull is set to true should return back email is required alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns true
@@ -296,14 +319,18 @@ class CreateAccountViewModelTest {
             viewModel.isEmailEmptyOrNull = true
             viewModel.isPasswordEmptyOrNull = false
 
-            viewModel.validateFields()
-
-            verify { navigation.alert(alert = any()) }
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount)
+                )
+            )
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isPasswordEmptyOrNull is set to true should navigate to show alert`() = runTest {
+        fun `when isPasswordEmptyOrNull is set to true should return back password is required alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns true
@@ -313,14 +340,18 @@ class CreateAccountViewModelTest {
             viewModel.isEmailEmptyOrNull = false
             viewModel.isPasswordEmptyOrNull = true
 
-            viewModel.validateFields()
-
-            verify { navigation.alert(alert = any()) }
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
+                )
+            )
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when all validation fields are set to false should not navigate to show alert`() = runTest {
+        fun `when all validation fields are set to false should return back null`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns true
@@ -330,9 +361,10 @@ class CreateAccountViewModelTest {
             viewModel.isEmailEmptyOrNull = false
             viewModel.isPasswordEmptyOrNull = false
 
-            viewModel.validateFields()
-
-            verify(exactly = 0) { navigation.alert(alert = any()) }
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                null
+            )
         }
     }
 

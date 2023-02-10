@@ -13,6 +13,7 @@
     <string name="empty_fields">Empty Fields</string>
     <string name="email">Email</string>
     <string name="got_it">Got It</string>
+    <string name="having_trouble_creating_your_account_please_try_again">Having trouble creating your account. Please try again</string>
     <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">Leaving the app will result you in not finishing the account creation process. You will not be able to continue until you verify your email. If you verify your email and then come back to the app, you can continue to create your account.</string>
     <string name="login">Login</string>
     <string name="login_icon_description">This is a login image for the login screen</string>
@@ -27,7 +28,10 @@
     <string name="proceed_with_your_account">Proceed With Your Account</string>
     <string name="splash_icon_description">This is a splash image for the splash screen that gets displayed before app is triggered</string>
     <string name="username">Username</string>
+    <string name="unable_to_create_account">Unable to create account</string>
+    <string name="unable_to_send_email_verification">Unable to send email verification</string>
     <string name="username_is_required_please_enter_a_username_to_create_a_account">Username is required. Please enter a username to create a account.</string>
+    <string name="we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again">We were uanble to send email verification. Please click send email verification to try again.</string>
     <string name="verify_account">Verify Account</string>
     <string name="yes">Yes</string>
 </resources>
