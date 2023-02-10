@@ -49,6 +49,7 @@ firebase/read/build
 firebase/util/build
 
 helper/constants/build
+helper/extension/build
 helper/network/build
 helper/ui/build
 
