@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.my.shot.navigation
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.NavHostController
@@ -33,6 +35,10 @@ fun NavigationComponent(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
+    val emailState by navigator.emailActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
     val finishState by navigator.finishActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
@@ -56,6 +62,23 @@ fun NavigationComponent(
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
             alert = newAlert
+        }
+    }
+    LaunchedEffect(emailState) {
+        emailState?.let { shouldAttemptToOpenEmail ->
+            if (shouldAttemptToOpenEmail) {
+                try {
+                    val intent = Intent(Intent.ACTION_MAIN)
+
+                    intent.addCategory(Intent.CATEGORY_APP_EMAIL)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+                    activity.startActivity(intent)
+                    navigator.emailAction(emailAction = null)
+                } catch (ex: ActivityNotFoundException) {
+                    println("$ex")
+                }
+            }
         }
     }
     LaunchedEffect(navigatorState) {

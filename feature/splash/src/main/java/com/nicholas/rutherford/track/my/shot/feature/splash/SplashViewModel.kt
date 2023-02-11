@@ -37,7 +37,7 @@ class SplashViewModel(
                 navigation.navigateToAuthentication()
             }
         } else {
-            delayAndNavigateToHomeOrLogin()
+            navigation.navigateToAuthentication()
         }
     }
 

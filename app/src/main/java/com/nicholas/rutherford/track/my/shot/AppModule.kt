@@ -116,7 +116,13 @@ class AppModule {
             ForgotPasswordViewModel(navigation = get())
         }
         viewModel {
-            CreateAccountViewModel(navigation = get(), application = androidApplication(), network = get(), createFirebaseUserInfo = get())
+            CreateAccountViewModel(
+                navigation = get(),
+                application = androidApplication(),
+                network = get(),
+                createFirebaseUserInfo = get(),
+                authenticationFirebase = get()
+            )
         }
         viewModel {
             AuthenticationViewModel(readFirebaseUserInfo = get(), navigation = get(), application = androidApplication(), authenticationFirebase = get())

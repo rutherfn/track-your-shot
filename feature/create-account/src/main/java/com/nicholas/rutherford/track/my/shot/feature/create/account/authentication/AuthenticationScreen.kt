@@ -95,7 +95,7 @@ fun AuthenticationScreenContent(
         Spacer(modifier = Modifier.height(Padding.eight))
 
         Button(
-            onClick = { },
+            onClick = { viewModel.onOpenEmailClicked() },
             shape = RoundedCornerShape(size = Shared.buttonDefaultShapeSize),
             modifier = Modifier
                 .fillMaxWidth()
@@ -111,7 +111,7 @@ fun AuthenticationScreenContent(
         )
 
         Button(
-            onClick = { },
+            onClick = { viewModel.onResendEmailClicked() },
             shape = RoundedCornerShape(size = Shared.buttonDefaultShapeSize),
             modifier = Modifier
                 .fillMaxWidth()

@@ -30,11 +30,13 @@ object StringsIds {
     val resetPassword = R.string.reset_password
     val resendEmail = R.string.resend_email
     val splashIconDescription = R.string.splash_icon_description
+    val successfullySendEmailVerification = R.string.successfully_sent_email_verification
     val unableToCreateAccount = R.string.unable_to_create_account
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
     val userName = R.string.username
     val usernameIsRequiredPleaseEnterAUsernameToCreateAAccount = R.string.username_is_required_please_enter_a_username_to_create_a_account
     val verifyAccount = R.string.verify_account
+    val weWereAbleToSendEmailVerificationPleaseCheckYourEmailToVerifyAccount = R.string.we_were_able_to_send_email_verification_please_check_your_email_to_verify_account
     val weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain = R.string.we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again
     val yes = R.string.yes
 }

@@ -7,5 +7,7 @@ class AuthenticationNavigationImpl(private val navigator: Navigator) : Authentic
 
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
 
-    override fun finish() = navigator.finish()
+    override fun openEmail() = navigator.emailAction(emailAction = true)
+
+    override fun finish() = navigator.finish(finishAction = true)
 }
