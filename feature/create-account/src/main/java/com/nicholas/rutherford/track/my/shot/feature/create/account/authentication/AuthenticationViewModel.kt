@@ -45,6 +45,7 @@ class AuthenticationViewModel(
 
     internal fun onResume() {
         if (readFirebaseUserInfo.isEmailVerified) {
+            readFirebaseUserInfo.isEmailVerified
             println("attempt to actually create the user account via database")
         }
     }

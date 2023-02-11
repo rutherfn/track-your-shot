@@ -61,4 +61,50 @@ class CreateSharedPreferencesImplTest {
                 verify { editor.apply() }
             }
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `createUnverifiedEmailPreference should call editor putString and apply`() =
+        runTest {
+            val defaultValue = "emailtest@gmail.com"
+
+            coEvery {
+                sharedPreferences.edit()
+            } returns editor
+
+            init()
+
+            createSharedPreferencesImpl.createUnverifiedEmailPreference(value = defaultValue)
+
+            verify {
+                editor.putString(
+                    SharedPreferencesConstants.Preferences.UNVERIFIED_EMAIL,
+                    defaultValue
+                )
+            }
+            verify { editor.apply() }
+        }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `createUnverifiedUsernamePreference should call editor putString and apply`() =
+        runTest {
+            val defaultValue = "newUsername112"
+
+            coEvery {
+                sharedPreferences.edit()
+            } returns editor
+
+            init()
+
+            createSharedPreferencesImpl.createUnverifiedUsernamePreference(value = defaultValue)
+
+            verify {
+                editor.putString(
+                    SharedPreferencesConstants.Preferences.UNVERIFIED_USERNAME,
+                    defaultValue
+                )
+            }
+            verify { editor.apply() }
+        }
 }

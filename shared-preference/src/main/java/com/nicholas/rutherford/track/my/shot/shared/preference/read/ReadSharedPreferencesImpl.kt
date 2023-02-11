@@ -8,4 +8,24 @@ class ReadSharedPreferencesImpl(private val sharedPreferences: SharedPreferences
     override fun accountHasBeenCreated(): Boolean {
         return sharedPreferences.getBoolean(SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED, false)
     }
+
+    override fun unverifiedEmail(): String? {
+        val unverifiedEmail = sharedPreferences.getString(SharedPreferencesConstants.Preferences.UNVERIFIED_EMAIL, null)
+
+        return if (unverifiedEmail?.isEmpty() == true) {
+            return null
+        } else {
+            unverifiedEmail
+        }
+    }
+
+    override fun unverifiedUsername(): String? {
+        val unverifiedUsername = sharedPreferences.getString(SharedPreferencesConstants.Preferences.UNVERIFIED_USERNAME, null)
+
+        return if (unverifiedUsername?.isEmpty() == true) {
+            null
+        } else {
+            unverifiedUsername
+        }
+    }
 }

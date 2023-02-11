@@ -61,4 +61,120 @@ class ReadSharedPreferencesImplTest {
                 Assertions.assertEquals(readSharedPreferencesImpl.accountHasBeenCreated(), false)
             }
     }
+
+    @Nested
+    inner class UnVerifiedEmail {
+
+        @BeforeEach
+        fun beforeEach() {
+            mockkStatic(SharedPreferences::class)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return null when getString returns back null`() =
+            runTest {
+                coEvery {
+                    sharedPreferences.getString(
+                        SharedPreferencesConstants.Preferences.UNVERIFIED_EMAIL,
+                        null
+                    )
+                } returns null
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.unverifiedEmail(), null)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return null when getString returns back empty string`() =
+            runTest {
+                coEvery {
+                    sharedPreferences.getString(
+                        SharedPreferencesConstants.Preferences.UNVERIFIED_EMAIL,
+                        null
+                    )
+                } returns ""
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.unverifiedEmail(), null)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return back actual data when getString returns back data`() =
+            runTest {
+                val testEmail = "test@email11.com"
+                coEvery {
+                    sharedPreferences.getString(
+                        SharedPreferencesConstants.Preferences.UNVERIFIED_EMAIL,
+                        null
+                    )
+                } returns testEmail
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.unverifiedEmail(), testEmail)
+            }
+    }
+
+    @Nested
+    inner class UnVerifiedUsername {
+
+        @BeforeEach
+        fun beforeEach() {
+            mockkStatic(SharedPreferences::class)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return null when getString returns back null`() =
+            runTest {
+                coEvery {
+                    sharedPreferences.getString(
+                        SharedPreferencesConstants.Preferences.UNVERIFIED_USERNAME,
+                        null
+                    )
+                } returns null
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.unverifiedUsername(), null)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return null when getString returns back empty string`() =
+            runTest {
+                coEvery {
+                    sharedPreferences.getString(
+                        SharedPreferencesConstants.Preferences.UNVERIFIED_USERNAME,
+                        null
+                    )
+                } returns ""
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.unverifiedUsername(), null)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return back actual data when getString returns back data`() =
+            runTest {
+                val username = "testUsername"
+                coEvery {
+                    sharedPreferences.getString(
+                        SharedPreferencesConstants.Preferences.UNVERIFIED_USERNAME,
+                        null
+                    )
+                } returns username
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.unverifiedUsername(), username)
+            }
+    }
 }

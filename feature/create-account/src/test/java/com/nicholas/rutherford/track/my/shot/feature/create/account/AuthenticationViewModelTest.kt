@@ -44,6 +44,4 @@ class AuthenticationViewModelTest {
 
         verify { navigation.finish() }
     }
-
-    nESTE
 }
