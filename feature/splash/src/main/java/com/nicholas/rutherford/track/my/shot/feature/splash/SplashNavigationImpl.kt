@@ -5,7 +5,7 @@ import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 
 class SplashNavigationImpl(private val navigator: Navigator) : SplashNavigation {
 
-    override fun navigateToAuthentication() = navigator.navigate(navigationAction = NavigationActions.SplashScreen.authentication())
+    override fun navigateToAuthentication(username: String, email: String) = navigator.navigate(navigationAction = NavigationActions.SplashScreen.authentication(username = username, email = email))
 
     override fun navigateToHome() = navigator.navigate(navigationAction = NavigationActions.SplashScreen.home())
 

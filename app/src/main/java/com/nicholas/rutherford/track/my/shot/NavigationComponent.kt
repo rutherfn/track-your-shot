@@ -6,10 +6,8 @@ import android.content.Intent
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.nicholas.rutherford.track.my.shot.compose.components.AlertDialog
 import com.nicholas.rutherford.track.my.shot.compose.components.ProgressDialog
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
@@ -29,6 +27,8 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.my.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
+import com.nicholas.rutherford.track.my.shot.navigation.arguments.NamedArguments
+import com.nicholas.rutherford.track.my.shot.navigation.arguments.NavArguments
 import com.nicholas.rutherford.track.my.shot.navigation.asLifecycleAwareState
 
 @Composable
@@ -144,12 +144,13 @@ fun NavigationComponent(
             CreateAccountScreen(viewModel = createAccountViewModel)
         }
         composable(
-            route = "${NavigationDestinations.AUTHENTICATION_SCREEN}/{username}",
-            arguments = listOf(navArgument("username") { type = NavType.StringType })
+            route = NavigationDestinations.AUTHENTICATION_SCREEN_WITH_PARAMS,
+            arguments = NavArguments.authentication
         ) {
             AuthenticationScreen(
                 viewModel = authenticationViewModel,
-                username = it.arguments?.getString("username")
+                usernameArgument = it.arguments?.getString(NamedArguments.USERNAME),
+                emailArgument = it.arguments?.getString(NamedArguments.EMAIL)
             )
         }
     }

@@ -5,9 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
+import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
+import com.nicholas.rutherford.track.my.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -17,19 +21,28 @@ class AuthenticationViewModel(
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val navigation: AuthenticationNavigation,
     private val application: Application,
-    private val authenticationFirebase: AuthenticationFirebase
+    private val authenticationFirebase: AuthenticationFirebase,
+    private val createSharedPreferences: CreateSharedPreferences,
+    private val createFirebaseUserInfo: CreateFirebaseUserInfo
 ) : ViewModel() {
 
     private var username: String? = null
-    private var email: String = ""
+    private var email: String? = null
 
     private val authenticationMutableStateFlow = MutableStateFlow(value = AuthenticationState(test = ""))
     val authenticationStateFlow = authenticationMutableStateFlow.asStateFlow()
 
-    internal fun updateUsernameAndEmail(username: String?) {
-        this.username = username
+    internal fun updateUsernameAndEmail(usernameArgument: String?, emailArgument: String?) {
+        this.username = usernameArgument
+        this.email = emailArgument
+        createSharedPreferencesForUnAuthenticatedUser()
+    }
 
-        println("here is the new username: ${this.username}")
+    internal fun createSharedPreferencesForUnAuthenticatedUser() {
+        safeLet(username, email) { usernameArgument, emailArgument ->
+            createSharedPreferences.createUnverifiedUsernamePreference(value = usernameArgument)
+            createSharedPreferences.createUnverifiedEmailPreference(value = emailArgument)
+        }
     }
 
     internal fun onNavigateClose() {
@@ -53,9 +66,28 @@ class AuthenticationViewModel(
     internal fun onAlertConfirmButtonClicked() = navigation.finish()
 
     internal fun onResume() {
-        if (readFirebaseUserInfo.isEmailVerified) {
-            readFirebaseUserInfo.isEmailVerified
-            println("attempt to actually create the user account via database")
+        viewModelScope.launch {
+            readFirebaseUserInfo.isEmailVerified().collectLatest { isVerified ->
+                if (isVerified) {
+                    navigation.enableProgress(progress = Progress(onDismissClicked = {}))
+                    safeLet(username, email) { usernameArgument, emailArgument ->
+                        createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(
+                            userName = usernameArgument,
+                            email = emailArgument
+                        ).collectLatest { isSuccessful ->
+                            if (isSuccessful) {
+                                createSharedPreferences.createAccountHasBeenCreatedPreference(value = true)
+                                navigation.disableProgress()
+                                navigation.navigateToHome()
+                            } else {
+                                // show some type of alert
+                            }
+                        }
+                    }
+                } else {
+                    println("email is not verified")
+                }
+            }
         }
     }
 

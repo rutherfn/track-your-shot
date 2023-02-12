@@ -110,7 +110,7 @@ class AppModule {
             LoginViewModel(navigation = get(), buildType = get())
         }
         viewModel {
-            HomeViewModel(navigator = get())
+            HomeViewModel(navigator = get(), createSharedPreferences = get())
         }
         viewModel {
             ForgotPasswordViewModel(navigation = get())
@@ -125,7 +125,14 @@ class AppModule {
             )
         }
         viewModel {
-            AuthenticationViewModel(readFirebaseUserInfo = get(), navigation = get(), application = androidApplication(), authenticationFirebase = get())
+            AuthenticationViewModel(
+                readFirebaseUserInfo = get(),
+                navigation = get(),
+                application = androidApplication(),
+                authenticationFirebase = get(),
+                createSharedPreferences = get(),
+                createFirebaseUserInfo = get()
+            )
         }
     }
 

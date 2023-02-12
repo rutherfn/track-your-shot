@@ -3,10 +3,12 @@ package com.nicholas.rutherford.track.my.shot.feature.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.my.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 const val SPLASH_DELAY_IN_MILLIS = 4000L
@@ -27,29 +29,40 @@ class SplashViewModel(
     private val splashStateMutableStateFlow = MutableStateFlow(value = initializeSplashState)
     val splashStateFlow = splashStateMutableStateFlow.asStateFlow()
 
-    init { navigateToHomeLoginOrAuthentication() }
-
-    private fun navigateToHomeLoginOrAuthentication() {
-        if (readFirebaseUserInfo.isLoggedIn) {
-            if (readFirebaseUserInfo.isEmailVerified && readSharedPreferences.accountHasBeenCreated()) {
-                delayAndNavigateToHomeOrLogin()
-            } else {
-                navigation.navigateToAuthentication()
-            }
-        } else {
-            delayAndNavigateToHomeOrLogin()
-        }
-    }
-
-    private fun delayAndNavigateToHomeOrLogin() {
+    init {
         viewModelScope.launch {
-            delay(timeMillis = SPLASH_DELAY_IN_MILLIS)
-            navigateToLoginOrHome()
+            navigateToHomeLoginOrAuthentication()
         }
     }
 
-    private fun navigateToLoginOrHome() {
-        if (readFirebaseUserInfo.isLoggedIn) {
+    private suspend fun navigateToHomeLoginOrAuthentication() {
+        readFirebaseUserInfo.isLoggedIn().collectLatest { isLoggedIn ->
+            readFirebaseUserInfo.isEmailVerified().collectLatest { isEmailVerified ->
+                if (isLoggedIn) {
+                    if (isEmailVerified && readSharedPreferences.accountHasBeenCreated()) {
+                        delayAndNavigateToHomeOrLogin(isLoggedIn = isLoggedIn)
+                    } else {
+                        safeLet(
+                            readSharedPreferences.unverifiedUsername(),
+                            readSharedPreferences.unverifiedEmail()
+                        ) { username, email ->
+                            navigation.navigateToAuthentication(username = username, email = email)
+                        }
+                    }
+                } else {
+                    delayAndNavigateToHomeOrLogin(isLoggedIn = isLoggedIn)
+                }
+            }
+        }
+    }
+
+    private suspend fun delayAndNavigateToHomeOrLogin(isLoggedIn: Boolean) {
+        delay(timeMillis = SPLASH_DELAY_IN_MILLIS)
+        navigateToLoginOrHome(isLoggedIn = isLoggedIn)
+    }
+
+    private fun navigateToLoginOrHome(isLoggedIn: Boolean) {
+        if (isLoggedIn) {
             navigation.navigateToHome()
         } else {
             navigation.navigateToLogin()
