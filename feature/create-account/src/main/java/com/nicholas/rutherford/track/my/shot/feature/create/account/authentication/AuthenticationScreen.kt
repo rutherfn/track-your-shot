@@ -41,8 +41,10 @@ import com.nicholas.rutherford.track.my.shot.navigation.OnLifecycleEvent
 const val EMAIL_IMAGE_HEIGHT_WIDTH = 144
 
 @Composable
-fun AuthenticationScreen(viewModel: AuthenticationViewModel) {
+fun AuthenticationScreen(viewModel: AuthenticationViewModel, username: String?) {
     val state = viewModel.authenticationStateFlow.collectAsState().value
+
+    viewModel.updateUsernameAndEmail(username = username)
 
     OnLifecycleEvent { _, event ->
         if (event == Lifecycle.Event.ON_RESUME) {

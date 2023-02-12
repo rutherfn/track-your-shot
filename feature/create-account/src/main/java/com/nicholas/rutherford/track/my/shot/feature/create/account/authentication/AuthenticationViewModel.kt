@@ -20,8 +20,17 @@ class AuthenticationViewModel(
     private val authenticationFirebase: AuthenticationFirebase
 ) : ViewModel() {
 
+    private var username: String? = null
+    private var email: String = ""
+
     private val authenticationMutableStateFlow = MutableStateFlow(value = AuthenticationState(test = ""))
     val authenticationStateFlow = authenticationMutableStateFlow.asStateFlow()
+
+    internal fun updateUsernameAndEmail(username: String?) {
+        this.username = username
+
+        println("here is the new username: ${this.username}")
+    }
 
     internal fun onNavigateClose() {
         navigation.alert(

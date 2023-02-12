@@ -7,6 +7,6 @@ interface CreateAccountNavigation {
     fun alert(alert: Alert)
     fun disableProgress()
     fun enableProgress(progress: Progress)
-    fun navigateToAuthentication()
+    fun navigateToAuthentication(email: String, username: String)
     fun pop()
 }

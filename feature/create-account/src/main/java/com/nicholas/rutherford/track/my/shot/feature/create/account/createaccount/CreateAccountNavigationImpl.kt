@@ -14,7 +14,7 @@ class CreateAccountNavigationImpl(private val navigator: Navigator) : CreateAcco
 
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
 
-    override fun navigateToAuthentication() = navigator.navigate(navigationAction = NavigationActions.CreateAccountScreen.authentication())
+    override fun navigateToAuthentication(email: String, username: String) = navigator.navigate(navigationAction = NavigationActions.CreateAccountScreen.authentication(username = username))
 
     override fun pop() = navigator.pop(popRouteAction = NavigationDestinations.LOGIN_SCREEN)
 }

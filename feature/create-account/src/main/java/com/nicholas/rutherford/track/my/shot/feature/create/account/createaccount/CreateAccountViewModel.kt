@@ -63,8 +63,8 @@ class CreateAccountViewModel(
                 navigation.disableProgress()
                 navigation.alert(alert = alert)
             } ?: run {
-                safeLet(createAccountState.email, createAccountState.password) { email, password ->
-                    attemptToCreateFirebaseAuthAndSendEmailVerification(email = email, password = password)
+                safeLet(createAccountState.email, createAccountState.username, createAccountState.password) { email, username, password ->
+                    attemptToCreateFirebaseAuthAndSendEmailVerification(email = email, username = username, password = password)
                 }
             }
         }
@@ -143,16 +143,16 @@ class CreateAccountViewModel(
         }
     }
 
-    internal suspend fun attemptToCreateFirebaseAuthAndSendEmailVerification(email: String, password: String) {
+    internal suspend fun attemptToCreateFirebaseAuthAndSendEmailVerification(email: String, username: String, password: String) {
         createFirebaseUserInfo.attemptToCreateAccountFirebaseAuthResponseFlow(email = email, password)
             .collectLatest { createAccountFirebaseAuthResponse ->
                 if (createAccountFirebaseAuthResponse.isSuccessful) {
                     authenticationFirebase.attemptToSendEmailVerificationForCurrentUser()
                         .collectLatest { authenticatedUserViaEmailFirebaseResponse ->
                             if (authenticatedUserViaEmailFirebaseResponse.isSuccessful) {
-                                navigateToAuthentication()
+                                navigateToAuthentication(email = email, username = username)
                             } else {
-                                showUnableToSendEmailVerificationAlert()
+                                showUnableToSendEmailVerificationAlert(email = email, username = username)
                             }
                         }
                 } else {
@@ -161,12 +161,12 @@ class CreateAccountViewModel(
             }
     }
 
-    private fun navigateToAuthentication() {
+    private fun navigateToAuthentication(email: String, username: String) {
         navigation.disableProgress()
-        navigation.navigateToAuthentication()
+        navigation.navigateToAuthentication(email = email, username = username)
     }
 
-    private fun showUnableToSendEmailVerificationAlert() {
+    private fun showUnableToSendEmailVerificationAlert(email: String, username: String) {
         navigation.disableProgress()
         navigation.alert(
             alert = defaultAlert.copy(
@@ -174,7 +174,7 @@ class CreateAccountViewModel(
                 description = application.getString(StringsIds.weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain)
             )
         )
-        navigation.navigateToAuthentication()
+        navigation.navigateToAuthentication(email = email, username = username)
     }
 
     private fun showUnableToCreateFirebaseAuthAlert() {

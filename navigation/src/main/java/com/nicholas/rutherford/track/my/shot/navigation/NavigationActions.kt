@@ -50,8 +50,8 @@ object NavigationActions {
     }
 
     object CreateAccountScreen {
-        fun authentication() = object : NavigationAction {
-            override val destination = NavigationDestinations.AUTHENTICATION_SCREEN
+        fun authentication(username: String) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.authenticationWithParams(username = username)
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(0, true)
                 .build()
