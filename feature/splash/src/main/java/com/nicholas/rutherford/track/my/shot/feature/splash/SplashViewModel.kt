@@ -40,7 +40,7 @@ class SplashViewModel(
             readFirebaseUserInfo.isEmailVerified().collectLatest { isEmailVerified ->
                 if (isLoggedIn) {
                     if (isEmailVerified && readSharedPreferences.accountHasBeenCreated()) {
-                        delayAndNavigateToHomeOrLogin(isLoggedIn = isLoggedIn)
+                        delayAndNavigateToHomeOrLogin(isLoggedIn = true)
                     } else {
                         safeLet(
                             readSharedPreferences.unverifiedUsername(),
@@ -50,7 +50,7 @@ class SplashViewModel(
                         }
                     }
                 } else {
-                    delayAndNavigateToHomeOrLogin(isLoggedIn = isLoggedIn)
+                    delayAndNavigateToHomeOrLogin(isLoggedIn = false)
                 }
             }
         }
