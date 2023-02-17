@@ -52,7 +52,7 @@ class SplashViewModel(
             } else {
                 delayAndNavigateToHomeOrLogin(isLoggedIn = false)
             }
-        }.collectLatest { }
+        }.collectLatest {}
     }
 
     private suspend fun delayAndNavigateToHomeOrLogin(isLoggedIn: Boolean) {
