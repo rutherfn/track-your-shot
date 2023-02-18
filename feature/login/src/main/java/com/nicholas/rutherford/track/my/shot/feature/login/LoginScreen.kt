@@ -21,6 +21,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -36,14 +37,21 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel) {
+    val coroutineScope = rememberCoroutineScope()
     val state = viewModel.loginStateFlow.collectAsState().value
 
     Content(
         ui = {
-            LoginScreenContent(state = state, viewModel = viewModel)
+            LoginScreenContent(
+                state = state,
+                viewModel = viewModel,
+                coroutineScope = coroutineScope
+            )
         }
     )
 }
@@ -51,7 +59,8 @@ fun LoginScreen(viewModel: LoginViewModel) {
 @Composable
 fun LoginScreenContent(
     state: LoginState,
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
+    coroutineScope: CoroutineScope
 ) {
     Column(
         modifier = Modifier
@@ -114,7 +123,9 @@ fun LoginScreenContent(
         Spacer(modifier = Modifier.height(Padding.twenty))
         Box(modifier = Modifier.padding(start = Padding.forty, end = Padding.forty)) {
             Button(
-                onClick = { viewModel.onLoginButtonClicked() },
+                onClick = {
+                    coroutineScope.launch { viewModel.onLoginButtonClicked(email = state.email, password = state.password) }
+                },
                 shape = RoundedCornerShape(size = 50.dp),
                 modifier = Modifier
                     .fillMaxWidth()

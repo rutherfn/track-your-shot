@@ -72,11 +72,14 @@ dependencies {
     api(project(path = ":build-type"))
     api(project(path = ":compose-components"))
     api(project(path = ":firebase:util"))
+    api(project(path = ":helper:extensions"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
+
+    testImplementation(Dependencies.Coroutine.test)
 
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)

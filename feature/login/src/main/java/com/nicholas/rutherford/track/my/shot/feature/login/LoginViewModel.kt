@@ -1,15 +1,20 @@
 package com.nicholas.rutherford.track.my.shot.feature.login
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
+import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
+import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 
 class LoginViewModel(
+    private val application: Application,
     private val existingUserFirebase: ExistingUserFirebase,
     private val navigation: LoginNavigation,
     private val buildType: BuildType
@@ -23,6 +28,15 @@ class LoginViewModel(
         )
     )
     val loginStateFlow = loginMutableStateFlow.asStateFlow()
+
+    internal val defaultAlert = Alert(
+        onDismissClicked = {},
+        title = application.getString(StringsIds.empty),
+        dismissButton = AlertConfirmAndDismissButton(
+            onButtonClicked = {},
+            buttonText = application.getString(StringsIds.gotIt)
+        )
+    )
 
     init {
         updateLauncherDrawableIdState()
@@ -38,26 +52,36 @@ class LoginViewModel(
         }
     }
 
-    internal suspend fun onLoginButtonClicked(email: String, password: String) {
-        if (email.isEmpty()) {
+    internal suspend fun onLoginButtonClicked(email: String?, password: String?) {
+        email?.let { userEmail ->
+            password?.let { userPassword ->
+                if (userEmail.isEmpty()) {
+                    navigation.alert(alert = emailEmptyAlert())
+                } else if (userPassword.isEmpty()) {
+                    navigation.alert(alert = passwordEmptyAlert())
+                } else {
+                    navigation.enableProgress(progress = Progress(onDismissClicked = {}))
 
-        }
-        else if (password.isEmpty()) {
-
-        } else {
-            navigation.enableProgress(progress = Progress(onDismissClicked = {}))
-
-            existingUserFirebase.logInFlow(email = email, password = password)
-                .collectLatest { isSuccessful ->
-                    if (isSuccessful) {
-                        navigation.disableProgress()
-                        navigation.navigateToHome()
-                        // log the user in
-                    } else {
-                        navigation.disableProgress()
-                        // show user a error
-                    }
+                    existingUserFirebase.logInFlow(
+                        email = userEmail.filterNot { it.isWhitespace() },
+                        password = userPassword.filterNot { it.isWhitespace() }
+                    )
+                        .collectLatest { isSuccessful ->
+                            if (isSuccessful) {
+                                navigation.disableProgress()
+                                navigation.navigateToHome()
+                            } else {
+                                navigation.disableProgress()
+                                navigation.alert(alert = unableToLoginToAccountAlert())
+                            }
+                        }
                 }
+            } ?: run {
+                navigation.alert(alert = passwordEmptyAlert())
+                // show no password alert
+            }
+        } ?: run {
+            navigation.alert(alert = emailEmptyAlert())
         }
     }
 
@@ -73,5 +97,26 @@ class LoginViewModel(
 
     internal fun onPasswordValueChanged(newPassword: String) {
         loginMutableStateFlow.value = loginMutableStateFlow.value.copy(password = newPassword)
+    }
+
+    internal fun emailEmptyAlert(): Alert {
+        return defaultAlert.copy(
+            title = application.getString(StringsIds.emptyField),
+            description = application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToLoginToExistingAccount)
+        )
+    }
+
+    internal fun passwordEmptyAlert(): Alert {
+        return defaultAlert.copy(
+            title = application.getString(StringsIds.emptyField),
+            description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount)
+        )
+    }
+
+    internal fun unableToLoginToAccountAlert(): Alert {
+        return defaultAlert.copy(
+            title = application.getString(StringsIds.unableToLoginToAccount),
+            description = application.getString(StringsIds.havingTroubleLoggingIntoYourAccountPleaseTryAgainAndEnsureCredentialsExistAndAreValid)
+        )
     }
 }
