@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.my.shot.feature.login
 
 import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
+import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions
@@ -13,6 +14,8 @@ class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
 
+    private var existingUserFirebase = mockk<ExistingUserFirebase>(relaxed = true)
+
     private var navigation = mockk<LoginNavigation>(relaxed = true)
 
     private val debugVersionName = "debug"
@@ -23,11 +26,15 @@ class LoginViewModelTest {
     private val buildTypeRelease = BuildTypeImpl(buildTypeValue = releaseVersionName)
     private val buildTypeStage = BuildTypeImpl(buildTypeValue = stageVersionName)
 
-    private val state = LoginState(launcherDrawableId = null, username = null, password = null)
+    private val state = LoginState(launcherDrawableId = null, email = null, password = null)
 
     @BeforeEach
     fun beforeEach() {
-        viewModel = LoginViewModel(navigation = navigation, buildType = buildTypeDebug)
+        viewModel = LoginViewModel(
+            existingUserFirebase = existingUserFirebase,
+            navigation = navigation,
+            buildType = buildTypeDebug
+        )
     }
 
     @Test fun initializeLoginState() {
@@ -40,7 +47,11 @@ class LoginViewModelTest {
     @Nested inner class UpdateLauncherDrawableIdState {
 
         @Test fun `when build type is debug should set launcherDrawableId state property to launcherRoundTest`() {
-            viewModel = LoginViewModel(navigation = navigation, buildType = buildTypeDebug)
+            viewModel = LoginViewModel(
+                existingUserFirebase = existingUserFirebase,
+                navigation = navigation,
+                buildType = buildTypeDebug
+            )
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
@@ -49,7 +60,11 @@ class LoginViewModelTest {
         }
 
         @Test fun `when build type is stage should set launcherDrawableId state property to launcherRoundStage`() {
-            viewModel = LoginViewModel(navigation = navigation, buildType = buildTypeStage)
+            viewModel = LoginViewModel(
+                existingUserFirebase = existingUserFirebase,
+                navigation = navigation,
+                buildType = buildTypeStage
+            )
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
@@ -58,7 +73,11 @@ class LoginViewModelTest {
         }
 
         @Test fun `when build type is release should set launcherDrawableId property to launcherRound`() {
-            viewModel = LoginViewModel(navigation = navigation, buildType = buildTypeRelease)
+            viewModel = LoginViewModel(
+                existingUserFirebase = existingUserFirebase,
+                navigation = navigation,
+                buildType = buildTypeRelease
+            )
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
@@ -85,14 +104,14 @@ class LoginViewModelTest {
         verify { navigation.navigateToCreateAccount() }
     }
 
-    @Test fun `on user name value changed should update username state value`() {
-        val usernameTest = "user name 1"
+    @Test fun `on email value changed should update username state value`() {
+        val emailTest = "newuser@yahoo.com"
 
-        viewModel.onUsernameValueChanged(newUsername = usernameTest)
+        viewModel.onEmailValueChanged(newEmail = emailTest)
 
         Assertions.assertEquals(
             viewModel.loginStateFlow.value,
-            state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, username = usernameTest)
+            state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, email = emailTest)
         )
     }
 

@@ -89,8 +89,8 @@ fun LoginScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            value = state.username ?: stringResource(id = StringsIds.empty),
-            onValueChange = { newUsername -> viewModel.onUsernameValueChanged(newUsername = newUsername) },
+            value = state.email ?: stringResource(id = StringsIds.empty),
+            onValueChange = { newEmail -> viewModel.onEmailValueChanged(newEmail = newEmail) },
             textStyle = TextStyles.body,
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
