@@ -67,4 +67,14 @@ object NavigationActions {
                 .build()
         }
     }
+
+    object HomeScreen {
+
+        fun login() = object : NavigationAction {
+            override val destination = NavigationDestinations.LOGIN_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, false)
+                .build()
+        }
+    }
 }

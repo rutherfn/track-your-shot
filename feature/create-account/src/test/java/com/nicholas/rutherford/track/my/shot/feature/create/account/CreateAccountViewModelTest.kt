@@ -8,7 +8,7 @@ import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccoun
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
-import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
+import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.coVerify

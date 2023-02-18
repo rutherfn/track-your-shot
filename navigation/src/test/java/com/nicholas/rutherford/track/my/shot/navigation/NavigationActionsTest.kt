@@ -118,5 +118,23 @@ class NavigationActionsTest {
                 )
             }
         }
+
+        @Nested
+        inner class HomeScreen {
+
+            @Test
+            fun login() {
+                Assertions.assertEquals(
+                    Actions.HomeScreen.login().destination,
+                    NavigationDestinations.LOGIN_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.HomeScreen.login().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(0, false)
+                        .build()
+                )
+            }
+        }
     }
 }

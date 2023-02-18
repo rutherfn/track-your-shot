@@ -16,6 +16,8 @@ import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccoun
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordNavigation
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordViewModel
+import com.nicholas.rutherford.track.my.shot.feature.home.HomeNavigation
+import com.nicholas.rutherford.track.my.shot.feature.home.HomeNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginNavigationImpl
@@ -27,8 +29,10 @@ import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserI
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImpl
-import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
-import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebaseImpl
+import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
+import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebaseImpl
+import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
+import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebaseImpl
 import com.nicholas.rutherford.track.my.shot.helper.constants.SharedPreferencesConstants
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import com.nicholas.rutherford.track.my.shot.helper.network.NetworkImpl
@@ -70,6 +74,9 @@ class AppModule {
         single<AuthenticationFirebase> {
             AuthenticationFirebaseImpl(firebaseAuth = get())
         }
+        single<ExistingUserFirebase> {
+            ExistingUserFirebaseImpl(firebaseAuth = get())
+        }
         single<ReadFirebaseUserInfo> {
             ReadFirebaseUserInfoImpl(firebaseAuth = get())
         }
@@ -100,6 +107,9 @@ class AppModule {
         single<AuthenticationNavigation> {
             AuthenticationNavigationImpl(navigator = get())
         }
+        single<HomeNavigation> {
+            HomeNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(appCenter = get())
         }
@@ -110,7 +120,7 @@ class AppModule {
             LoginViewModel(navigation = get(), buildType = get())
         }
         viewModel {
-            HomeViewModel(navigator = get())
+            HomeViewModel(navigation = get(), existingUserFirebase = get())
         }
         viewModel {
             ForgotPasswordViewModel(navigation = get())
