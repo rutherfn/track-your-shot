@@ -14,7 +14,7 @@ import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
-import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
+import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 import io.mockk.every

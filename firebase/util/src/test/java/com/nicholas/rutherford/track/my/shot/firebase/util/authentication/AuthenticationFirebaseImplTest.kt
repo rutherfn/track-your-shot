@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.firebase.util
+package com.nicholas.rutherford.track.my.shot.firebase.util.authentication
 
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
