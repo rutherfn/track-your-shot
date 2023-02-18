@@ -1,3 +1,13 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account.authentication
 
-interface AuthenticationNavigation
+import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
+
+interface AuthenticationNavigation {
+    fun alert(alert: Alert)
+    fun disableProgress()
+    fun enableProgress(progress: Progress)
+    fun navigateToHome()
+    fun openEmail()
+    fun finish()
+}

@@ -1,5 +1,8 @@
 package com.nicholas.rutherford.track.my.shot.firebase.read
 
+import kotlinx.coroutines.flow.Flow
+
 interface ReadFirebaseUserInfo {
-    val isLoggedIn: Boolean
+    fun isEmailVerified(): Flow<Boolean>
+    fun isLoggedIn(): Flow<Boolean>
 }

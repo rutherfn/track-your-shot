@@ -5,7 +5,8 @@ import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 
 interface CreateAccountNavigation {
     fun alert(alert: Alert)
-    fun enableProgress(progress: Progress)
     fun disableProgress()
+    fun enableProgress(progress: Progress)
+    fun navigateToAuthentication(email: String, username: String)
     fun pop()
 }

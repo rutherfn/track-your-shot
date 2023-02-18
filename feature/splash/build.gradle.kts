@@ -70,8 +70,10 @@ android {
 dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":compose-components"))
+    api(project(path = ":helper:extensions"))
     api(project(path = ":firebase:read"))
     api(project(path = ":navigation"))
+    api(project(path = ":shared-preference"))
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)

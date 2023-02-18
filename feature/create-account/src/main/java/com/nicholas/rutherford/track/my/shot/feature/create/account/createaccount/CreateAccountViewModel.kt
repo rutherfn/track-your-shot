@@ -5,18 +5,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
+import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class CreateAccountViewModel(
     private val navigation: CreateAccountNavigation,
     private val application: Application,
     private val network: Network,
-    private val createFirebaseUserInfo: CreateFirebaseUserInfo
+    private val createFirebaseUserInfo: CreateFirebaseUserInfo,
+    private val authenticationFirebase: AuthenticationFirebase
 ) : ViewModel() {
 
     internal var isUsernameEmptyOrNull: Boolean = false
@@ -33,9 +38,19 @@ class CreateAccountViewModel(
     )
     val createAccountStateFlow = createAccountMutableStateFlow.asStateFlow()
 
+    internal val defaultAlert = Alert(
+        onDismissClicked = {},
+        title = application.getString(StringsIds.empty),
+        dismissButton = AlertConfirmAndDismissButton(
+            onButtonClicked = {},
+            buttonText = application.getString(StringsIds.gotIt)
+        )
+    )
+
     fun onBackButtonClicked() = navigation.pop()
 
     fun onCreateAccountButtonClicked() {
+        navigation.enableProgress(progress = Progress(onDismissClicked = {}))
         val createAccountState = createAccountMutableStateFlow.value
 
         setIsUsernameEmptyOrNull(username = createAccountState.username)
@@ -44,7 +59,18 @@ class CreateAccountViewModel(
         setIsTwoOrMoreFieldsEmptyOrNull()
 
         viewModelScope.launch {
-            validateFields()
+            attemptToShowErrorAlertOrCreateFirebaseAuth(createAccountState = createAccountState)
+        }
+    }
+
+    internal suspend fun attemptToShowErrorAlertOrCreateFirebaseAuth(createAccountState: CreateAccountState) {
+        validateFieldsWithOptionalAlert()?.let { alert ->
+            navigation.disableProgress()
+            navigation.alert(alert = alert)
+        } ?: run {
+            safeLet(createAccountState.email, createAccountState.username, createAccountState.password) { email, username, password ->
+                attemptToCreateFirebaseAuthAndSendEmailVerification(email = email, username = username, password = password)
+            }
         }
     }
 
@@ -88,56 +114,81 @@ class CreateAccountViewModel(
         isTwoOrMoreFieldsEmptyOrNull = counter >= 2
     }
 
-    internal suspend fun validateFields() {
-        val defaultAlert = Alert(
-            onDismissClicked = {},
-            title = application.getString(StringsIds.empty),
-            dismissButton = AlertConfirmAndDismissButton(
-                onButtonClicked = {},
-                buttonText = application.getString(StringsIds.gotIt)
-            )
-        )
-
+    internal suspend fun validateFieldsWithOptionalAlert(): Alert? {
         if (!network.isDeviceConnectedToInternet()) {
-            navigation.alert(
-                alert = defaultAlert.copy(
-                    title = application.getString(StringsIds.notConnectedToInternet),
-                    description = application.getString(StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
-                )
+            return defaultAlert.copy(
+                title = application.getString(StringsIds.notConnectedToInternet),
+                description = application.getString(StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
             )
         } else if (isTwoOrMoreFieldsEmptyOrNull) {
-            navigation.alert(
-                alert = defaultAlert.copy(
-                    title = application.getString(StringsIds.emptyFields),
-                    description = application.getString(StringsIds.multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields)
-                )
+            return defaultAlert.copy(
+                title = application.getString(StringsIds.emptyFields),
+                description = application.getString(StringsIds.multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields)
             )
         } else if (isUsernameEmptyOrNull) {
-            navigation.alert(
-                alert = defaultAlert.copy(
-                    title = application.getString(StringsIds.emptyField),
-                    description = application.getString(StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
-                )
+            return defaultAlert.copy(
+                title = application.getString(StringsIds.emptyField),
+                description = application.getString(StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
             )
         } else if (isEmailEmptyOrNull) {
-            navigation.alert(
-                alert = defaultAlert.copy(
-                    title = application.getString(StringsIds.emptyField),
-                    description = application.getString(
-                        StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount
-                    )
+            return defaultAlert.copy(
+                title = application.getString(StringsIds.emptyField),
+                description = application.getString(
+                    StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount
                 )
             )
         } else if (isPasswordEmptyOrNull) {
-            navigation.alert(
-                alert = defaultAlert.copy(
-                    title = application.getString(StringsIds.emptyField),
-                    description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
-                )
+            return defaultAlert.copy(
+                title = application.getString(StringsIds.emptyField),
+                description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
             )
         } else {
-            // end user logic for creating account goes here
+            return null
         }
+    }
+
+    internal suspend fun attemptToCreateFirebaseAuthAndSendEmailVerification(email: String, username: String, password: String) {
+        createFirebaseUserInfo.attemptToCreateAccountFirebaseAuthResponseFlow(email = email, password)
+            .collectLatest { createAccountFirebaseAuthResponse ->
+                if (createAccountFirebaseAuthResponse.isSuccessful) {
+                    authenticationFirebase.attemptToSendEmailVerificationForCurrentUser()
+                        .collectLatest { authenticatedUserViaEmailFirebaseResponse ->
+                            if (authenticatedUserViaEmailFirebaseResponse.isSuccessful) {
+                                navigateToAuthentication(email = email, username = username)
+                            } else {
+                                showUnableToSendEmailVerificationAlert(email = email, username = username)
+                            }
+                        }
+                } else {
+                    showUnableToCreateFirebaseAuthAlert()
+                }
+            }
+    }
+
+    private fun navigateToAuthentication(email: String, username: String) {
+        navigation.disableProgress()
+        navigation.navigateToAuthentication(email = email, username = username)
+    }
+
+    private fun showUnableToSendEmailVerificationAlert(email: String, username: String) {
+        navigation.disableProgress()
+        navigation.alert(
+            alert = defaultAlert.copy(
+                title = application.getString(StringsIds.unableToSendEmailVerification),
+                description = application.getString(StringsIds.weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain)
+            )
+        )
+        navigation.navigateToAuthentication(email = email, username = username)
+    }
+
+    private fun showUnableToCreateFirebaseAuthAlert() {
+        navigation.disableProgress()
+        navigation.alert(
+            alert = defaultAlert.copy(
+                title = application.getString(StringsIds.unableToCreateAccount),
+                description = application.getString(StringsIds.havingTroubleCreatingYourAccountPleaseTryAgain)
+            )
+        )
     }
 
     internal fun onUsernameValueChanged(newUsername: String) {

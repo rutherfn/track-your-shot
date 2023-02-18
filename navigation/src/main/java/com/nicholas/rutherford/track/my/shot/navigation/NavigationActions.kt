@@ -19,9 +19,10 @@ object NavigationActions {
                 .build()
         }
 
-        fun authentication() = object : NavigationAction {
-            override val destination = NavigationDestinations.AUTHENTICATION_SCREEN
+        fun authentication(username: String, email: String) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.authenticationWithParams(username = username, email = email)
             override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
                 .build()
         }
     }
@@ -48,9 +49,21 @@ object NavigationActions {
     }
 
     object CreateAccountScreen {
-        fun authentication() = object : NavigationAction {
-            override val destination = NavigationDestinations.AUTHENTICATION_SCREEN
+        fun authentication(username: String, email: String) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.authenticationWithParams(username = username, email = email)
             override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .build()
+        }
+    }
+
+    object AuthenticationScreen {
+
+        fun home() = object : NavigationAction {
+            override val destination = NavigationDestinations.HOME_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .setLaunchSingleTop(true)
                 .build()
         }
     }

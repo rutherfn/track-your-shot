@@ -1,5 +1,8 @@
-package com.nicholas.rutherford.track.my.shot.navigation
+package com.nicholas.rutherford.track.my.shot
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.NavHostController
@@ -10,24 +13,46 @@ import com.nicholas.rutherford.track.my.shot.compose.components.ProgressDialog
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationScreen
+import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountScreen
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
+import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordScreen
+import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordViewModel
+import com.nicholas.rutherford.track.my.shot.feature.home.HomeScreen
+import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
+import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreen
+import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
+import com.nicholas.rutherford.track.my.shot.feature.splash.SplashScreen
+import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
+import com.nicholas.rutherford.track.my.shot.navigation.NavigationDestinations
+import com.nicholas.rutherford.track.my.shot.navigation.Navigator
+import com.nicholas.rutherford.track.my.shot.navigation.arguments.NamedArguments
+import com.nicholas.rutherford.track.my.shot.navigation.arguments.NavArguments
+import com.nicholas.rutherford.track.my.shot.navigation.asLifecycleAwareState
 
-/**
- * Navigation Component that initiates content that's being passed in
- * todo: Need to look into adding params here:https://proandroiddev.com/how-to-make-jetpack-compose-navigation-easier-and-testable-b4b19fd5f2e4
- */
 @Composable
 fun NavigationComponent(
+    activity: Activity,
     navHostController: NavHostController,
     navigator: Navigator,
-    splashContent: @Composable (navController: Navigator) -> Unit,
-    loginContent: @Composable (navController: Navigator) -> Unit,
-    homeContent: @Composable (navController: Navigator) -> Unit,
-    forgotPasswordContent: @Composable (navController: Navigator) -> Unit,
-    createAccountContent: @Composable (navController: Navigator) -> Unit,
-    authenticationContent: @Composable (navController: Navigator) -> Unit
+    splashViewModel: SplashViewModel,
+    loginViewModel: LoginViewModel,
+    homeViewModel: HomeViewModel,
+    forgotPasswordViewModel: ForgotPasswordViewModel,
+    createAccountViewModel: CreateAccountViewModel,
+    authenticationViewModel: AuthenticationViewModel
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val alertState by navigator.alertActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
+    val emailState by navigator.emailActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
+    val finishState by navigator.finishActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
@@ -52,12 +77,35 @@ fun NavigationComponent(
             alert = newAlert
         }
     }
+    LaunchedEffect(emailState) {
+        emailState?.let { shouldAttemptToOpenEmail ->
+            if (shouldAttemptToOpenEmail) {
+                try {
+                    val intent = Intent(Intent.ACTION_MAIN)
+
+                    intent.addCategory(Intent.CATEGORY_APP_EMAIL)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+                    activity.startActivity(intent)
+                    navigator.emailAction(emailAction = null)
+                } catch (ex: ActivityNotFoundException) {
+                    println("$ex")
+                }
+            }
+        }
+    }
     LaunchedEffect(navigatorState) {
         navigatorState?.let {
-            it.parcelableArguments.forEach { arg ->
-                navHostController.currentBackStackEntry?.arguments?.putParcelable(arg.key, arg.value)
-            }
             navHostController.navigate(it.destination, it.navOptions)
+        }
+    }
+
+    LaunchedEffect(finishState) {
+        finishState?.let { shouldFinish ->
+            if (shouldFinish) {
+                activity.finish()
+                navigator.finish(finishAction = null)
+            }
         }
     }
 
@@ -81,22 +129,29 @@ fun NavigationComponent(
         startDestination = NavigationDestinations.SPLASH_SCREEN
     ) {
         composable(route = NavigationDestinations.SPLASH_SCREEN) {
-            splashContent.invoke(navigator)
+            SplashScreen(viewModel = splashViewModel)
         }
         composable(route = NavigationDestinations.LOGIN_SCREEN) {
-            loginContent.invoke(navigator)
+            LoginScreen(viewModel = loginViewModel)
         }
         composable(route = NavigationDestinations.HOME_SCREEN) {
-            homeContent.invoke(navigator)
+            HomeScreen(viewModel = homeViewModel)
         }
         composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {
-            forgotPasswordContent.invoke(navigator)
+            ForgotPasswordScreen(viewModel = forgotPasswordViewModel)
         }
         composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
-            createAccountContent.invoke(navigator)
+            CreateAccountScreen(viewModel = createAccountViewModel)
         }
-        composable(route = NavigationDestinations.AUTHENTICATION_SCREEN) {
-            authenticationContent.invoke(navigator)
+        composable(
+            route = NavigationDestinations.AUTHENTICATION_SCREEN_WITH_PARAMS,
+            arguments = NavArguments.authentication
+        ) {
+            AuthenticationScreen(
+                viewModel = authenticationViewModel,
+                usernameArgument = it.arguments?.getString(NamedArguments.USERNAME),
+                emailArgument = it.arguments?.getString(NamedArguments.EMAIL)
+            )
         }
     }
 

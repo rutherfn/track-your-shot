@@ -1,12 +1,14 @@
 package com.nicholas.rutherford.track.my.shot.feature.splash
 
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.shared.preference.read.ReadSharedPreferences
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -21,10 +23,15 @@ class SplashViewModelTest {
 
     lateinit var viewModel: SplashViewModel
 
+    internal var readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
+
     internal var navigation = mockk<SplashNavigation>(relaxed = true)
     internal var readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
 
     internal val delayTime = 4001L // needs 1 extra millisecond to account for function below call
+
+    internal val unverifiedUsername = "unverified11Username"
+    internal val unverifiedEmail = "unverifiedEmail@yahoo.com"
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val dispatcher = StandardTestDispatcher()
@@ -33,7 +40,11 @@ class SplashViewModelTest {
     @BeforeEach
     fun beforeEach() {
         Dispatchers.setMain(dispatcher)
-        viewModel = SplashViewModel(navigation = navigation, readFirebaseUserInfo = readFirebaseUserInfo)
+        viewModel = SplashViewModel(
+            readSharedPreferences = readSharedPreferences,
+            navigation = navigation,
+            readFirebaseUserInfo = readFirebaseUserInfo
+        )
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -59,7 +70,8 @@ class SplashViewModelTest {
     @Nested
     inner class Init {
 
-        @Test fun initalizeSplashState() {
+        @Test
+        fun initializeSplashState() {
             Assertions.assertEquals(
                 viewModel.splashStateFlow.value,
                 SplashState(
@@ -70,30 +82,182 @@ class SplashViewModelTest {
             )
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
-        @Test
-        fun `should delay for 4 seconds and verifies that it calls navigateToLogin when isLoggedIn is set to false`() = runTest {
-            every { readFirebaseUserInfo.isLoggedIn } returns false
+        @Nested
+        inner class NavigateToAuthentication {
 
-            Dispatchers.setMain(dispatcher)
-            viewModel = SplashViewModel(navigation = navigation, readFirebaseUserInfo = readFirebaseUserInfo)
+            @OptIn(ExperimentalCoroutinesApi::class)
+            @Test
+            fun `when isLoggedIn is set to true, isEmailVerified set to false, accountHasBeenCreated is set to true, and fields are not null should call navigateToAuthentication`() =
+                runTest {
+                    every { readSharedPreferences.unverifiedUsername() } returns unverifiedUsername
+                    every { readSharedPreferences.unverifiedEmail() } returns unverifiedEmail
 
-            delay(delayTime)
+                    every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(true)
+                    every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(false)
+                    every { readSharedPreferences.accountHasBeenCreated() } returns true
 
-            coVerify { navigation.navigateToLogin() }
+                    Dispatchers.setMain(dispatcher)
+                    viewModel = SplashViewModel(
+                        readSharedPreferences = readSharedPreferences,
+                        navigation = navigation,
+                        readFirebaseUserInfo = readFirebaseUserInfo
+                    )
+
+                    delay(delayTime)
+
+                    coVerify { navigation.navigateToAuthentication(username = unverifiedUsername, email = unverifiedEmail) }
+                }
+
+            @OptIn(ExperimentalCoroutinesApi::class)
+            @Test
+            fun `when isLoggedIn is set to true, isEmailVerified set to true, accountHasBeenCreated is set to false and fields are not null should call navigateToAuthentication`() =
+                runTest {
+                    every { readSharedPreferences.unverifiedUsername() } returns unverifiedUsername
+                    every { readSharedPreferences.unverifiedEmail() } returns unverifiedEmail
+
+                    every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(true)
+                    every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(true)
+                    every { readSharedPreferences.accountHasBeenCreated() } returns false
+
+                    Dispatchers.setMain(dispatcher)
+                    viewModel = SplashViewModel(
+                        readSharedPreferences = readSharedPreferences,
+                        navigation = navigation,
+                        readFirebaseUserInfo = readFirebaseUserInfo
+                    )
+
+                    delay(delayTime)
+
+                    coVerify { navigation.navigateToAuthentication(username = unverifiedUsername, email = unverifiedEmail) }
+                }
+
+            @OptIn(ExperimentalCoroutinesApi::class)
+            @Test
+            fun `when isLoggedIn is set to false should not navigateToAuthentication`() =
+                runTest {
+                    every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(false)
+
+                    Dispatchers.setMain(dispatcher)
+                    viewModel = SplashViewModel(
+                        readSharedPreferences = readSharedPreferences,
+                        navigation = navigation,
+                        readFirebaseUserInfo = readFirebaseUserInfo
+                    )
+
+                    delay(delayTime)
+
+                    coVerify(exactly = 0) { navigation.navigateToAuthentication(username = any(), email = any()) }
+                }
+
+            @OptIn(ExperimentalCoroutinesApi::class)
+            @Test
+            fun `when isLoggedIn is set to true, isEmailVerified set to true and accountHasBeenCreated is set to true should not call navigateToAuthentication`() =
+                runTest {
+                    every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(true)
+                    every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(true)
+                    every { readSharedPreferences.accountHasBeenCreated() } returns true
+
+                    Dispatchers.setMain(dispatcher)
+                    viewModel = SplashViewModel(
+                        readSharedPreferences = readSharedPreferences,
+                        navigation = navigation,
+                        readFirebaseUserInfo = readFirebaseUserInfo
+                    )
+
+                    delay(delayTime)
+
+                    coVerify(exactly = 0) { navigation.navigateToAuthentication(username = any(), email = any()) }
+                }
+
+            @OptIn(ExperimentalCoroutinesApi::class)
+            @Test
+            fun `when conditions are met but username is null should not call navigateToAuthentication`() = runTest {
+                every { readSharedPreferences.unverifiedUsername() } returns null
+                every { readSharedPreferences.unverifiedEmail() } returns unverifiedEmail
+
+                every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(true)
+                every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(false)
+                every { readSharedPreferences.accountHasBeenCreated() } returns true
+
+                Dispatchers.setMain(dispatcher)
+                viewModel = SplashViewModel(
+                    readSharedPreferences = readSharedPreferences,
+                    navigation = navigation,
+                    readFirebaseUserInfo = readFirebaseUserInfo
+                )
+
+                delay(delayTime)
+
+                coVerify(exactly = 0) { navigation.navigateToAuthentication(username = any(), email = any()) }
+            }
+
+            @OptIn(ExperimentalCoroutinesApi::class)
+            @Test
+            fun `when conditions are met but email is null should not call navigateToAuthentication`() = runTest {
+                every { readSharedPreferences.unverifiedUsername() } returns unverifiedUsername
+                every { readSharedPreferences.unverifiedEmail() } returns null
+
+                every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(true)
+                every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(false)
+                every { readSharedPreferences.accountHasBeenCreated() } returns true
+
+                Dispatchers.setMain(dispatcher)
+                viewModel = SplashViewModel(
+                    readSharedPreferences = readSharedPreferences,
+                    navigation = navigation,
+                    readFirebaseUserInfo = readFirebaseUserInfo
+                )
+
+                delay(delayTime)
+
+                coVerify(exactly = 0) { navigation.navigateToAuthentication(username = any(), email = any()) }
+            }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
-        @Test
-        fun `should delay for 4 seconds and verifies it calls navigateToHome when isLoggedIn is set to true`() = runTest {
-            every { readFirebaseUserInfo.isLoggedIn } returns true
+        @Nested
+        inner class NavigateToHomeOrLogin {
 
-            Dispatchers.setMain(dispatcher)
-            viewModel = SplashViewModel(navigation = navigation, readFirebaseUserInfo = readFirebaseUserInfo)
+            @OptIn(ExperimentalCoroutinesApi::class)
+            @Test
+            fun `should delay for 4 seconds and verifies that it calls navigateToLogin when isLoggedIn is set to false`() =
+                runTest {
+                    every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(false)
+                    every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(true)
+                    every { readSharedPreferences.accountHasBeenCreated() } returns false
 
-            delay(delayTime)
+                    Dispatchers.setMain(dispatcher)
 
-            coVerify { navigation.navigateToHome() }
+                    viewModel = SplashViewModel(
+                        readSharedPreferences = readSharedPreferences,
+                        navigation = navigation,
+                        readFirebaseUserInfo = readFirebaseUserInfo
+                    )
+
+                    delay(delayTime)
+
+                    coVerify { navigation.navigateToLogin() }
+                }
+
+            @OptIn(ExperimentalCoroutinesApi::class)
+            @Test
+            fun `should delay for 4 seconds and verifies it calls navigateToHome when isLoggedIn is set to true`() =
+                runTest {
+                    every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(true)
+                    every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(true)
+                    every { readSharedPreferences.accountHasBeenCreated() } returns true
+
+                    Dispatchers.setMain(dispatcher)
+
+                    viewModel = SplashViewModel(
+                        readSharedPreferences = readSharedPreferences,
+                        navigation = navigation,
+                        readFirebaseUserInfo = readFirebaseUserInfo
+                    )
+
+                    delay(delayTime)
+
+                    coVerify { navigation.navigateToHome() }
+                }
         }
     }
 }

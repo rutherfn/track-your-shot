@@ -71,10 +71,13 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":compose-components"))
     api(project(path = ":firebase:create"))
+    api(project(path = ":firebase:read"))
     api(project(path = ":firebase:util"))
+    api(project(path = ":helper:extensions"))
     api(project(path = ":helper:network"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
+    api(project(path = ":shared-preference"))
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
@@ -88,4 +91,6 @@ dependencies {
     testImplementation(Dependencies.Mockk.core)
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+
+    testImplementation(project(path = ":data-test:account-info"))
 }

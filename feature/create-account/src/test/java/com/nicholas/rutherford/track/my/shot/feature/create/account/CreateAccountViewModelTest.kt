@@ -1,16 +1,22 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account
 
 import android.app.Application
+import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
+import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountState
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
+import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -31,8 +37,12 @@ class CreateAccountViewModelTest {
     private val network = mockk<Network>(relaxed = true)
 
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
+    private val authenticationFirebase = mockk<AuthenticationFirebase>(relaxed = true)
 
     private val state = CreateAccountState(username = null, email = null, password = null)
+
+    private val createAccountFirebaseAuthResponse = TestCreateAccountFirebaseAuthResponse().create()
+    private var authenticateUserViaEmailFirebaseResponse = TestAuthenticateUserViaEmailFirebaseResponse().create()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val dispatcher = StandardTestDispatcher()
@@ -41,7 +51,13 @@ class CreateAccountViewModelTest {
     @BeforeEach
     fun beforeEach() {
         Dispatchers.setMain(dispatcher)
-        viewModel = CreateAccountViewModel(navigation = navigation, application = application, network = network, createFirebaseUserInfo = createFirebaseUserInfo)
+        viewModel = CreateAccountViewModel(
+            navigation = navigation,
+            application = application,
+            network = network,
+            createFirebaseUserInfo = createFirebaseUserInfo,
+            authenticationFirebase = authenticationFirebase
+        )
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -235,23 +251,158 @@ class CreateAccountViewModelTest {
     }
 
     @Nested
-    inner class ValidateFields {
+    inner class AttemptToShowErrorOrCreateFirebaseAuth {
+
+        private val testUsername = "testUsername11"
+        private val testEmail = "test@yahoo.com"
+        private val testPassword = "PasswordTest"
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isDeviceConnectedToInternet is set to true should navigate to show alert`() = runTest {
+        fun `when validateFieldsWithOptionalAlert is not null should call disableProgress and alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns false
 
-            viewModel.validateFields()
+            viewModel.attemptToShowErrorAlertOrCreateFirebaseAuth(
+                createAccountState = CreateAccountState(
+                    username = null,
+                    email = null,
+                    password = null
+                )
+            )
 
+            verify { navigation.disableProgress() }
             verify { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) {
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = "",
+                    username = "",
+                    password = ""
+                )
+            }
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isTwoOrMoreFieldsEmptyOrNull is set to true should navigate to show alert`() = runTest {
+        fun `when validateFieldsWithOptionalAlert is not null and username is null should not call any functions`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+
+            viewModel.attemptToShowErrorAlertOrCreateFirebaseAuth(
+                createAccountState = CreateAccountState(
+                    username = null,
+                    email = testEmail,
+                    password = testPassword
+                )
+            )
+
+            verify(exactly = 0) { navigation.disableProgress() }
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) {
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = testEmail,
+                    username = "",
+                    password = testPassword
+                )
+            }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when validateFieldsWithOptionalAlert is not null and email is null should not call any functions`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+
+            viewModel.attemptToShowErrorAlertOrCreateFirebaseAuth(
+                createAccountState = CreateAccountState(
+                    username = testUsername,
+                    email = null,
+                    password = testPassword
+                )
+            )
+
+            verify(exactly = 0) { navigation.disableProgress() }
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) {
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = "",
+                    username = testUsername,
+                    password = testPassword
+                )
+            }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when validafeFieldsWithOptionalAlert is not null and password is null should not call any functions`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+
+            viewModel.attemptToShowErrorAlertOrCreateFirebaseAuth(
+                createAccountState = CreateAccountState(
+                    username = testUsername,
+                    email = testEmail,
+                    password = null
+                )
+            )
+
+            verify(exactly = 0) { navigation.disableProgress() }
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) {
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = testEmail,
+                    username = testUsername,
+                    password = ""
+                )
+            }
+        }
+    }
+
+    @Nested
+    inner class ValidateFieldsWithOptionalAlert {
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when isDeviceConnectedToInternet is set to true should return back not connected to internet alert`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            coEvery { network.isDeviceConnectedToInternet() } returns false
+
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.notConnectedToInternet),
+                    description = application.getString(StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
+                )
+            )
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when isTwoOrMoreFieldsEmptyOrNull is set to true should return back mulitple fields are required alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns true
@@ -262,14 +413,18 @@ class CreateAccountViewModelTest {
             viewModel.isPasswordEmptyOrNull = false
             viewModel.isTwoOrMoreFieldsEmptyOrNull = true
 
-            viewModel.validateFields()
-
-            verify { navigation.alert(alert = any()) }
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(StringsIds.multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields)
+                )
+            )
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isUsernamEmptyOrNull is set to true should navigate to show alert`() = runTest {
+        fun `when isUsernameEmptyOrNull is set to true should return back username is required please enter a username alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns true
@@ -279,14 +434,18 @@ class CreateAccountViewModelTest {
             viewModel.isEmailEmptyOrNull = false
             viewModel.isPasswordEmptyOrNull = false
 
-            viewModel.validateFields()
-
-            verify { navigation.alert(alert = any()) }
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
+                )
+            )
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isEmailEmptyOrNull is set to true should navigate to show alert`() = runTest {
+        fun `when isEmailEmptyOrNull is set to true should return back email is required alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns true
@@ -296,14 +455,18 @@ class CreateAccountViewModelTest {
             viewModel.isEmailEmptyOrNull = true
             viewModel.isPasswordEmptyOrNull = false
 
-            viewModel.validateFields()
-
-            verify { navigation.alert(alert = any()) }
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount)
+                )
+            )
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isPasswordEmptyOrNull is set to true should navigate to show alert`() = runTest {
+        fun `when isPasswordEmptyOrNull is set to true should return back password is required alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns true
@@ -313,14 +476,18 @@ class CreateAccountViewModelTest {
             viewModel.isEmailEmptyOrNull = false
             viewModel.isPasswordEmptyOrNull = true
 
-            viewModel.validateFields()
-
-            verify { navigation.alert(alert = any()) }
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
+                )
+            )
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when all validation fields are set to false should not navigate to show alert`() = runTest {
+        fun `when all validation fields are set to false should return back null`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns true
@@ -330,10 +497,89 @@ class CreateAccountViewModelTest {
             viewModel.isEmailEmptyOrNull = false
             viewModel.isPasswordEmptyOrNull = false
 
-            viewModel.validateFields()
-
-            verify(exactly = 0) { navigation.alert(alert = any()) }
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                null
+            )
         }
+    }
+
+    @Nested
+    inner class AttemptToCreateFirebaseAuthAndSendEmailVerification {
+
+        private val testEmail = "testemail@gmail.com"
+        private val testPassword = "testPassword"
+        private val testUsername = "testUsername"
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when attemptToCreateAccountFirebaseAuthResponse returns back as not successful should call functions`() =
+            runTest {
+                coEvery {
+                    createFirebaseUserInfo.attemptToCreateAccountFirebaseAuthResponseFlow(
+                        email = testEmail,
+                        password = testPassword
+                    )
+                } returns flowOf(createAccountFirebaseAuthResponse.copy(isSuccessful = false))
+
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = testEmail,
+                    password = testPassword,
+                    username = testUsername
+                )
+
+                verify { navigation.disableProgress() }
+                verify { navigation.alert(alert = any()) }
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when attemptToAttemptToCreateAccountFirebaseAuthResponse returns successful and send email returns back not successful should call functions`() =
+            runTest {
+                coEvery {
+                    createFirebaseUserInfo.attemptToCreateAccountFirebaseAuthResponseFlow(
+                        email = testEmail,
+                        password = testPassword
+                    )
+                } returns flowOf(createAccountFirebaseAuthResponse.copy(isSuccessful = true))
+                coEvery {
+                    authenticationFirebase.attemptToSendEmailVerificationForCurrentUser()
+                } returns flowOf(authenticateUserViaEmailFirebaseResponse.copy(isSuccessful = false))
+
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = testEmail,
+                    password = testPassword,
+                    username = testUsername
+                )
+
+                verify { navigation.disableProgress() }
+                verify { navigation.alert(alert = any()) }
+                verify { navigation.navigateToAuthentication(email = testEmail, username = testUsername) }
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when attemptToAttemptToCreateAccountFirebaseAuthResponse returns successful and send email returns back successful should call functions`() =
+            runTest {
+                coEvery {
+                    createFirebaseUserInfo.attemptToCreateAccountFirebaseAuthResponseFlow(
+                        email = testEmail,
+                        password = testPassword
+                    )
+                } returns flowOf(createAccountFirebaseAuthResponse.copy(isSuccessful = true))
+                coEvery {
+                    authenticationFirebase.attemptToSendEmailVerificationForCurrentUser()
+                } returns flowOf(authenticateUserViaEmailFirebaseResponse.copy(isSuccessful = true))
+
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = testEmail,
+                    password = testPassword,
+                    username = testUsername
+                )
+
+                verify { navigation.disableProgress() }
+                verify { navigation.navigateToAuthentication(email = testEmail, username = testUsername) }
+            }
     }
 
     @Test fun `on user name value changed should update username state value`() {

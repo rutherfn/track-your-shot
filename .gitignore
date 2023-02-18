@@ -48,10 +48,14 @@ firebase/delete/build
 firebase/read/build
 firebase/util/build
 
+helper/constants/build
+helper/extensions/build
 helper/network/build
 helper/ui/build
 
 navigation/build
+
+shared-preference/build
 
 # Local configuration file (sdk path, etc)
 local.properties

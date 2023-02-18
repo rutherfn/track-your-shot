@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccou
 
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.my.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.my.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 
@@ -9,9 +10,11 @@ class CreateAccountNavigationImpl(private val navigator: Navigator) : CreateAcco
 
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
 
+    override fun disableProgress() = navigator.progress(progressAction = null)
+
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
 
-    override fun disableProgress() = navigator.progress(progressAction = null)
+    override fun navigateToAuthentication(email: String, username: String) = navigator.navigate(navigationAction = NavigationActions.CreateAccountScreen.authentication(username = username, email = email))
 
     override fun pop() = navigator.pop(popRouteAction = NavigationDestinations.LOGIN_SCREEN)
 }
