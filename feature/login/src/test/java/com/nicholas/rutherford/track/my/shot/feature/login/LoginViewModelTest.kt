@@ -1,9 +1,16 @@
 package com.nicholas.rutherford.track.my.shot.feature.login
 
+import android.app.Application
 import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
+import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
+import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -13,7 +20,10 @@ class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
 
+    private var existingUserFirebase = mockk<ExistingUserFirebase>(relaxed = true)
+
     private var navigation = mockk<LoginNavigation>(relaxed = true)
+    private var application = mockk<Application>(relaxed = true)
 
     private val debugVersionName = "debug"
     private val releaseVersionName = "release"
@@ -23,11 +33,16 @@ class LoginViewModelTest {
     private val buildTypeRelease = BuildTypeImpl(buildTypeValue = releaseVersionName)
     private val buildTypeStage = BuildTypeImpl(buildTypeValue = stageVersionName)
 
-    private val state = LoginState(launcherDrawableId = null, username = null, password = null)
+    private val state = LoginState(launcherDrawableId = null, email = null, password = null)
 
     @BeforeEach
     fun beforeEach() {
-        viewModel = LoginViewModel(navigation = navigation, buildType = buildTypeDebug)
+        viewModel = LoginViewModel(
+            existingUserFirebase = existingUserFirebase,
+            navigation = navigation,
+            buildType = buildTypeDebug,
+            application = application
+        )
     }
 
     @Test fun initializeLoginState() {
@@ -40,7 +55,12 @@ class LoginViewModelTest {
     @Nested inner class UpdateLauncherDrawableIdState {
 
         @Test fun `when build type is debug should set launcherDrawableId state property to launcherRoundTest`() {
-            viewModel = LoginViewModel(navigation = navigation, buildType = buildTypeDebug)
+            viewModel = LoginViewModel(
+                existingUserFirebase = existingUserFirebase,
+                navigation = navigation,
+                buildType = buildTypeDebug,
+                application = application
+            )
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
@@ -49,7 +69,12 @@ class LoginViewModelTest {
         }
 
         @Test fun `when build type is stage should set launcherDrawableId state property to launcherRoundStage`() {
-            viewModel = LoginViewModel(navigation = navigation, buildType = buildTypeStage)
+            viewModel = LoginViewModel(
+                existingUserFirebase = existingUserFirebase,
+                navigation = navigation,
+                buildType = buildTypeStage,
+                application = application
+            )
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
@@ -58,12 +83,80 @@ class LoginViewModelTest {
         }
 
         @Test fun `when build type is release should set launcherDrawableId property to launcherRound`() {
-            viewModel = LoginViewModel(navigation = navigation, buildType = buildTypeRelease)
+            viewModel = LoginViewModel(
+                existingUserFirebase = existingUserFirebase,
+                navigation = navigation,
+                buildType = buildTypeRelease,
+                application = application
+            )
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
                 state.copy(launcherDrawableId = DrawablesIds.launcherRound)
             )
+        }
+    }
+
+    @Nested
+    inner class OnLoginButtonClicked {
+
+        val emailTest = "newuser@yahoo.com"
+        val passwordTest = "password1"
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when email is set to null should call email empty alert`() = runTest {
+            viewModel.onLoginButtonClicked(email = null, password = passwordTest)
+
+            verify { navigation.alert(alert = viewModel.emailEmptyAlert()) }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when password is set to null should call password empty alert`() = runTest {
+            viewModel.onLoginButtonClicked(email = emailTest, password = null)
+
+            verify { navigation.alert(alert = viewModel.passwordEmptyAlert()) }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when email is set to empty should call email empty alert`() = runTest {
+            viewModel.onLoginButtonClicked(email = "", password = passwordTest)
+
+            verify { navigation.alert(alert = viewModel.emailEmptyAlert()) }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when password is set to empty should call password empty alert`() = runTest {
+            viewModel.onLoginButtonClicked(email = emailTest, password = "")
+
+            verify { navigation.alert(alert = viewModel.passwordEmptyAlert()) }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when email and password has valid values and loginFlow returns back not successful should call unable to login to account alert`() = runTest {
+            coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = false)
+
+            viewModel.onLoginButtonClicked(email = emailTest, password = passwordTest)
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = viewModel.unableToLoginToAccountAlert()) }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when email and password has valid values and loginFlow returns back successful should call navigate to home`() = runTest {
+            coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = true)
+
+            viewModel.onLoginButtonClicked(email = emailTest, password = passwordTest)
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.navigateToHome() }
         }
     }
 
@@ -85,25 +178,73 @@ class LoginViewModelTest {
         verify { navigation.navigateToCreateAccount() }
     }
 
-    @Test fun `on user name value changed should update username state value`() {
-        val usernameTest = "user name 1"
+    @Test fun `on email value changed should update username state value`() {
+        val emailTest = "newuser@yahoo.com"
 
-        viewModel.onUsernameValueChanged(newUsername = usernameTest)
+        viewModel.onEmailValueChanged(newEmail = emailTest)
 
         Assertions.assertEquals(
             viewModel.loginStateFlow.value,
-            state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, username = usernameTest)
+            state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, email = emailTest)
         )
     }
 
     @Test fun `on password value changed should update password state value`() {
-        val passwordTest = "password 1"
+        val passwordTest = "password1"
 
         viewModel.onPasswordValueChanged(newPassword = passwordTest)
 
         Assertions.assertEquals(
             viewModel.loginStateFlow.value,
             state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, password = passwordTest)
+        )
+    }
+
+    @Test
+    fun `emailEmptyAlert should have valid values`() {
+        Assertions.assertEquals(
+            viewModel.emailEmptyAlert().title,
+            application.getString(StringsIds.emptyField)
+        )
+        Assertions.assertEquals(
+            viewModel.emailEmptyAlert().description,
+            application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToLoginToExistingAccount)
+        )
+        Assertions.assertEquals(
+            viewModel.emailEmptyAlert().dismissButton!!.buttonText,
+            application.getString(StringsIds.gotIt)
+        )
+    }
+
+    @Test
+    fun `passwordEmptyAlert should have valid values`() {
+        Assertions.assertEquals(
+            viewModel.passwordEmptyAlert().title,
+            application.getString(StringsIds.emptyField)
+        )
+        Assertions.assertEquals(
+            viewModel.passwordEmptyAlert().description,
+            application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount)
+        )
+        Assertions.assertEquals(
+            viewModel.passwordEmptyAlert().dismissButton!!.buttonText,
+            application.getString(StringsIds.gotIt)
+        )
+    }
+
+    @Test
+    fun `unableToLoginAccountAlert should have valid values`() {
+        Assertions.assertEquals(
+            viewModel.unableToLoginToAccountAlert().title,
+            application.getString(StringsIds.unableToLoginToAccount)
+        )
+        Assertions.assertEquals(
+            viewModel.unableToLoginToAccountAlert().description,
+            application.getString(StringsIds.havingTroubleLoggingIntoYourAccountPleaseTryAgainAndEnsureCredentialsExistAndAreValid)
+        )
+        Assertions.assertEquals(
+            viewModel.unableToLoginToAccountAlert().dismissButton!!.buttonText,
+            application.getString(StringsIds.gotIt)
         )
     }
 }

@@ -117,7 +117,12 @@ class AppModule {
             SplashViewModel(readSharedPreferences = get(), navigation = get(), readFirebaseUserInfo = get())
         }
         viewModel {
-            LoginViewModel(navigation = get(), buildType = get())
+            LoginViewModel(
+                application = androidApplication(),
+                existingUserFirebase = get(),
+                navigation = get(),
+                buildType = get()
+            )
         }
         viewModel {
             HomeViewModel(navigation = get(), existingUserFirebase = get())
