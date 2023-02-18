@@ -1,3 +1,0 @@
-package com.nicholas.rutherford.track.my.shot.navigation.arguments
-
-object Routes

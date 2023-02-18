@@ -8,6 +8,9 @@ import com.nicholas.rutherford.track.my.shot.navigation.NavigationActions as Act
 
 class NavigationActionsTest {
 
+    val testEmail = "testemail@yahoo.com"
+    val testUsername = "testUsername112"
+
     @Nested
     inner class NavigationActions {
 
@@ -45,11 +48,11 @@ class NavigationActionsTest {
             @Test
             fun authentication() {
                 Assertions.assertEquals(
-                    Actions.SplashScreen.authentication().destination,
-                    NavigationDestinations.AUTHENTICATION_SCREEN
+                    Actions.SplashScreen.authentication(email = testEmail, username = testUsername).destination,
+                    NavigationDestinationsWithParams.authenticationWithParams(username = testUsername, email = testEmail)
                 )
                 Assertions.assertEquals(
-                    Actions.SplashScreen.authentication().navOptions,
+                    Actions.SplashScreen.authentication(email = testEmail, username = testUsername).navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
                         .build()
@@ -104,13 +107,13 @@ class NavigationActionsTest {
             @Test
             fun authentication() {
                 Assertions.assertEquals(
-                    Actions.CreateAccountScreen.authentication().destination,
-                    NavigationDestinations.AUTHENTICATION_SCREEN
+                    Actions.CreateAccountScreen.authentication(email = testEmail, username = testUsername).destination,
+                    NavigationDestinationsWithParams.authenticationWithParams(username = testUsername, email = testEmail)
                 )
                 Assertions.assertEquals(
-                    Actions.CreateAccountScreen.authentication().navOptions,
+                    Actions.CreateAccountScreen.authentication(email = testEmail, username = testUsername).navOptions,
                     NavOptions.Builder()
-                        .setPopUpTo(0, false)
+                        .setPopUpTo(0, true)
                         .build()
                 )
             }

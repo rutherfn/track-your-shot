@@ -46,11 +46,11 @@ class AppModule {
 
     val modules = module {
         single {
-            getSharedPrefs(androidApplication())
+            getSharedPreferences(androidApplication())
         }
 
         single<android.content.SharedPreferences.Editor> {
-            getSharedPrefs(androidApplication()).edit()
+            getSharedPreferences(androidApplication()).edit()
         }
         single<CreateSharedPreferences> {
             CreateSharedPreferencesImpl(editor = get())
@@ -110,7 +110,7 @@ class AppModule {
             LoginViewModel(navigation = get(), buildType = get())
         }
         viewModel {
-            HomeViewModel(navigator = get(), createSharedPreferences = get())
+            HomeViewModel(navigator = get())
         }
         viewModel {
             ForgotPasswordViewModel(navigation = get())
@@ -136,7 +136,7 @@ class AppModule {
         }
     }
 
-    fun getSharedPrefs(androidApplication: Application): android.content.SharedPreferences {
+    private fun getSharedPreferences(androidApplication: Application): android.content.SharedPreferences {
         return androidApplication.getSharedPreferences(SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES, android.content.Context.MODE_PRIVATE)
     }
 }

@@ -73,5 +73,4 @@ dependencies {
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
-    implementation(project(mapOf("path" to ":shared-preference")))
 }

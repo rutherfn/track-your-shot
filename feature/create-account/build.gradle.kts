@@ -77,10 +77,10 @@ dependencies {
     api(project(path = ":helper:network"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
+    api(project(path = ":shared-preference"))
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
-    implementation(project(mapOf("path" to ":shared-preference")))
 
     testImplementation(Dependencies.Coroutine.test)
 
