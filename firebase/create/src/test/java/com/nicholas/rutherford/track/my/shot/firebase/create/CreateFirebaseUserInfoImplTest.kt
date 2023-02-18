@@ -64,7 +64,7 @@ class CreateFirebaseUserInfoImplTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `when add on complete listener is executed should set flow to valid create account response flow`() = runTest {
+    fun `attemptToCreateAccountFirebaseAuthResponseFlow when add on complete listener is executed should set flow to valid create account response flow`() = runTest {
         val mockTaskAuthResult = mockk<Task<AuthResult>>()
         val slot = slot<OnCompleteListener<AuthResult>>()
 
@@ -87,7 +87,7 @@ class CreateFirebaseUserInfoImplTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `when add on complete listener is executed should set flow to true when isSuccessful returns back true`() = runTest {
+    fun `attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow when add on complete listener is executed should set flow to false when isSuccessful returns back false`() = runTest {
         val mockTaskVoidResult = mockk<Task<Void>>()
         val slot = slot<OnCompleteListener<Void>>()
 
