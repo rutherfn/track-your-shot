@@ -2,7 +2,6 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account.authenticat
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
@@ -12,10 +11,7 @@ import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.my.shot.shared.preference.create.CreateSharedPreferences
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
@@ -26,11 +22,8 @@ class AuthenticationViewModel(
     private val createFirebaseUserInfo: CreateFirebaseUserInfo
 ) : ViewModel() {
 
-    private var username: String? = null
-    private var email: String? = null
-
-    private val authenticationMutableStateFlow = MutableStateFlow(value = AuthenticationState(test = ""))
-    val authenticationStateFlow = authenticationMutableStateFlow.asStateFlow()
+    internal var username: String? = null
+    internal var email: String? = null
 
     internal fun updateUsernameAndEmail(usernameArgument: String?, emailArgument: String?) {
         this.username = usernameArgument
@@ -65,43 +58,54 @@ class AuthenticationViewModel(
 
     internal fun onAlertConfirmButtonClicked() = navigation.finish()
 
-    internal fun onResume() {
-        viewModelScope.launch {
-            readFirebaseUserInfo.isEmailVerified().collectLatest { isVerified ->
-                if (isVerified) {
+    internal suspend fun onResume() {
+        collectIfUserIsVerifiedAndAttemptToCreateAccount()
+    }
+
+    private suspend fun collectIfUserIsVerifiedAndAttemptToCreateAccount() {
+        readFirebaseUserInfo.isEmailVerified().collectLatest { isVerified ->
+            if (isVerified) {
+                safeLet(username, email) { usernameArgument, emailArgument ->
                     navigation.enableProgress(progress = Progress(onDismissClicked = {}))
-                    safeLet(username, email) { usernameArgument, emailArgument ->
-                        createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(
-                            userName = usernameArgument,
-                            email = emailArgument
-                        ).collectLatest { isSuccessful ->
-                            if (isSuccessful) {
-                                createSharedPreferences.createAccountHasBeenCreatedPreference(value = true)
-                                navigation.disableProgress()
-                                navigation.navigateToHome()
-                            } else {
-                                // show some type of alert
-                            }
+                    createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(
+                        userName = usernameArgument,
+                        email = emailArgument
+                    ).collectLatest { isSuccessful ->
+                        if (isSuccessful) {
+                            createSharedPreferences.createAccountHasBeenCreatedPreference(value = true)
+                            navigation.disableProgress()
+                            navigation.navigateToHome()
+                        } else {
+                            navigation.disableProgress()
+                            navigation.alert(alert = errorCreatingAccountAlert())
                         }
                     }
-                } else {
-                    println("email is not verified")
                 }
             }
         }
     }
 
-    internal fun onResendEmailClicked() {
-        viewModelScope.launch {
-            authenticationFirebase.attemptToSendEmailVerificationForCurrentUser()
-                .collectLatest { authenticationUserViaEmailFirebaseResponse ->
-                    if (authenticationUserViaEmailFirebaseResponse.isSuccessful) {
-                        navigation.alert(alert = successfullySentEmailVerificationAlert())
-                    } else {
-                        navigation.alert(alert = unsuccessfullySendEmailVerificationAlert())
-                    }
+    internal suspend fun onResendEmailClicked() {
+        authenticationFirebase.attemptToSendEmailVerificationForCurrentUser()
+            .collectLatest { authenticationUserViaEmailFirebaseResponse ->
+                if (authenticationUserViaEmailFirebaseResponse.isSuccessful) {
+                    navigation.alert(alert = successfullySentEmailVerificationAlert())
+                } else {
+                    navigation.alert(alert = unsuccessfullySendEmailVerificationAlert())
                 }
-        }
+            }
+    }
+
+    internal fun errorCreatingAccountAlert(): Alert {
+        return Alert(
+            onDismissClicked = {},
+            title = application.getString(StringsIds.errorCreatingAccount),
+            dismissButton = AlertConfirmAndDismissButton(
+                onButtonClicked = {},
+                buttonText = application.getString(StringsIds.gotIt)
+            ),
+            description = application.getString(StringsIds.thereWasAErrorCreatingYourAccountPleaseTryAgain)
+        )
     }
 
     internal fun successfullySentEmailVerificationAlert(): Alert {

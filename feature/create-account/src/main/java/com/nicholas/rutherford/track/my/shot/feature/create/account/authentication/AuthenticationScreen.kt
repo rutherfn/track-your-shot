@@ -18,7 +18,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,12 +37,14 @@ import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.Shared
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
 import com.nicholas.rutherford.track.my.shot.navigation.OnLifecycleEvent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 const val EMAIL_IMAGE_HEIGHT_WIDTH = 144
 
 @Composable
 fun AuthenticationScreen(viewModel: AuthenticationViewModel, usernameArgument: String?, emailArgument: String?) {
-    val state = viewModel.authenticationStateFlow.collectAsState().value
+    val coroutineScope = rememberCoroutineScope()
 
     viewModel.updateUsernameAndEmail(
         usernameArgument = usernameArgument,
@@ -51,13 +53,15 @@ fun AuthenticationScreen(viewModel: AuthenticationViewModel, usernameArgument: S
 
     OnLifecycleEvent { _, event ->
         if (event == Lifecycle.Event.ON_RESUME) {
-            viewModel.onResume()
+            coroutineScope.launch {
+                viewModel.onResume()
+            }
         }
     }
 
     Content(
         ui = {
-            AuthenticationScreenContent(state = state, viewModel = viewModel)
+            AuthenticationScreenContent(viewModel = viewModel, coroutineScope = coroutineScope)
         },
         appBar = AppBar(
             toolbarTitle = stringResource(id = StringsIds.verifyAccount),
@@ -69,8 +73,8 @@ fun AuthenticationScreen(viewModel: AuthenticationViewModel, usernameArgument: S
 
 @Composable
 fun AuthenticationScreenContent(
-    state: AuthenticationState,
-    viewModel: AuthenticationViewModel
+    viewModel: AuthenticationViewModel,
+    coroutineScope: CoroutineScope
 ) {
     Column(
         modifier = Modifier
@@ -116,7 +120,11 @@ fun AuthenticationScreenContent(
         )
 
         Button(
-            onClick = { viewModel.onResendEmailClicked() },
+            onClick = {
+                coroutineScope.launch {
+                    viewModel.onResendEmailClicked()
+                }
+            },
             shape = RoundedCornerShape(size = Shared.buttonDefaultShapeSize),
             modifier = Modifier
                 .fillMaxWidth()

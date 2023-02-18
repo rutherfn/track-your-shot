@@ -59,13 +59,17 @@ class CreateAccountViewModel(
         setIsTwoOrMoreFieldsEmptyOrNull()
 
         viewModelScope.launch {
-            validateFieldsWithOptionalAlert()?.let { alert ->
-                navigation.disableProgress()
-                navigation.alert(alert = alert)
-            } ?: run {
-                safeLet(createAccountState.email, createAccountState.username, createAccountState.password) { email, username, password ->
-                    attemptToCreateFirebaseAuthAndSendEmailVerification(email = email, username = username, password = password)
-                }
+            attemptToShowErrorAlertOrCreateFirebaseAuth(createAccountState = createAccountState)
+        }
+    }
+
+    internal suspend fun attemptToShowErrorAlertOrCreateFirebaseAuth(createAccountState: CreateAccountState) {
+        validateFieldsWithOptionalAlert()?.let { alert ->
+            navigation.disableProgress()
+            navigation.alert(alert = alert)
+        } ?: run {
+            safeLet(createAccountState.email, createAccountState.username, createAccountState.password) { email, username, password ->
+                attemptToCreateFirebaseAuthAndSendEmailVerification(email = email, username = username, password = password)
             }
         }
     }

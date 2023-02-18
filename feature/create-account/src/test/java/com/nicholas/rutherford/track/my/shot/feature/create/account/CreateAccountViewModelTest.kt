@@ -11,6 +11,7 @@ import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserI
 import com.nicholas.rutherford.track.my.shot.firebase.util.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
@@ -250,6 +251,137 @@ class CreateAccountViewModelTest {
     }
 
     @Nested
+    inner class AttemptToShowErrorOrCreateFirebaseAuth {
+
+        private val testUsername = "testUsername11"
+        private val testEmail = "test@yahoo.com"
+        private val testPassword = "PasswordTest"
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when validateFieldsWithOptionalAlert is not null should call disableProgress and alert`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            coEvery { network.isDeviceConnectedToInternet() } returns false
+
+            viewModel.attemptToShowErrorAlertOrCreateFirebaseAuth(
+                createAccountState = CreateAccountState(
+                    username = null,
+                    email = null,
+                    password = null
+                )
+            )
+
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) {
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = "",
+                    username = "",
+                    password = ""
+                )
+            }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when validateFieldsWithOptionalAlert is not null and username is null should not call any functions`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+
+            viewModel.attemptToShowErrorAlertOrCreateFirebaseAuth(
+                createAccountState = CreateAccountState(
+                    username = null,
+                    email = testEmail,
+                    password = testPassword
+                )
+            )
+
+            verify(exactly = 0) { navigation.disableProgress() }
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) {
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = testEmail,
+                    username = "",
+                    password = testPassword
+                )
+            }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when validateFieldsWithOptionalAlert is not null and email is null should not call any functions`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+
+            viewModel.attemptToShowErrorAlertOrCreateFirebaseAuth(
+                createAccountState = CreateAccountState(
+                    username = testUsername,
+                    email = null,
+                    password = testPassword
+                )
+            )
+
+            verify(exactly = 0) { navigation.disableProgress() }
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) {
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = "",
+                    username = testUsername,
+                    password = testPassword
+                )
+            }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when validafeFieldsWithOptionalAlert is not null and password is null should not call any functions`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+
+            viewModel.attemptToShowErrorAlertOrCreateFirebaseAuth(
+                createAccountState = CreateAccountState(
+                    username = testUsername,
+                    email = testEmail,
+                    password = null
+                )
+            )
+
+            verify(exactly = 0) { navigation.disableProgress() }
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) {
+                viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
+                    email = testEmail,
+                    username = testUsername,
+                    password = ""
+                )
+            }
+        }
+    }
+
+    @Nested
     inner class ValidateFieldsWithOptionalAlert {
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -377,6 +509,7 @@ class CreateAccountViewModelTest {
 
         private val testEmail = "testemail@gmail.com"
         private val testPassword = "testPassword"
+        private val testUsername = "testUsername"
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
@@ -391,7 +524,8 @@ class CreateAccountViewModelTest {
 
                 viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
                     email = testEmail,
-                    password = testPassword
+                    password = testPassword,
+                    username = testUsername
                 )
 
                 verify { navigation.disableProgress() }
@@ -414,12 +548,13 @@ class CreateAccountViewModelTest {
 
                 viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
                     email = testEmail,
-                    password = testPassword
+                    password = testPassword,
+                    username = testUsername
                 )
 
                 verify { navigation.disableProgress() }
                 verify { navigation.alert(alert = any()) }
-                verify { navigation.navigateToAuthentication() }
+                verify { navigation.navigateToAuthentication(email = testEmail, username = testUsername) }
             }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -438,11 +573,12 @@ class CreateAccountViewModelTest {
 
                 viewModel.attemptToCreateFirebaseAuthAndSendEmailVerification(
                     email = testEmail,
-                    password = testPassword
+                    password = testPassword,
+                    username = testUsername
                 )
 
                 verify { navigation.disableProgress() }
-                verify { navigation.navigateToAuthentication() }
+                verify { navigation.navigateToAuthentication(email = testEmail, username = testUsername) }
             }
     }
 

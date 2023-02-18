@@ -15,6 +15,7 @@ object StringsIds {
     val emptyFields = R.string.empty_fields
     val emailIsRequiredPleaseEnterAEmailToCreateAAccount = R.string.email_is_required_please_enter_a_email_to_create_a_account
     val email = R.string.email
+    val errorCreatingAccount = R.string.error_creating_account
     val gotIt = R.string.got_it
     val havingTroubleCreatingYourAccountPleaseTryAgain = R.string.having_trouble_creating_your_account_please_try_again
     val leavingTheAppWillResultInYouNotFinishingTheAccountCreationProcessDescription = R.string.leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description
@@ -31,6 +32,7 @@ object StringsIds {
     val resendEmail = R.string.resend_email
     val splashIconDescription = R.string.splash_icon_description
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
+    val thereWasAErrorCreatingYourAccountPleaseTryAgain = R.string.there_was_a_error_creating_your_account_please_try_again
     val unableToCreateAccount = R.string.unable_to_create_account
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
     val userName = R.string.username
