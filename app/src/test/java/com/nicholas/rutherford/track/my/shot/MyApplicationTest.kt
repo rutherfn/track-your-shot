@@ -8,6 +8,7 @@ import com.nicholas.rutherford.track.my.shot.feature.create.account.authenticati
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordNavigation
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordViewModel
+import com.nicholas.rutherford.track.my.shot.feature.home.HomeNavigation
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
@@ -15,6 +16,7 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
+import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 import io.mockk.every
@@ -38,6 +40,7 @@ class MyApplicationTest : KoinTest {
     private val createFirebaseUserInfo: CreateFirebaseUserInfo by inject()
     private val authenticationFirebase: AuthenticationFirebase by inject()
     private val readFirebaseUserInfo: ReadFirebaseUserInfo by inject()
+    private val existingUserFirebase: ExistingUserFirebase by inject()
 
     private val network: Network by inject()
     private val buildType: BuildType by inject()
@@ -49,6 +52,7 @@ class MyApplicationTest : KoinTest {
     private val forgotPasswordNavigation: ForgotPasswordNavigation by inject()
     private val createAccountNavigation: CreateAccountNavigation by inject()
     private val authenticationNavigation: AuthenticationNavigation by inject()
+    private val homeNavigation: HomeNavigation by inject()
 
     private val mainActivityViewModel: MainActivityViewModel by inject()
     private val loginViewModel: LoginViewModel by inject()
@@ -86,6 +90,7 @@ class MyApplicationTest : KoinTest {
         assertNotNull(createFirebaseUserInfo)
         assertNotNull(authenticationFirebase)
         assertNotNull(readFirebaseUserInfo)
+        assertNotNull(existingUserFirebase)
 
         assertNotNull(network)
         assertNotNull(buildType)
@@ -97,6 +102,7 @@ class MyApplicationTest : KoinTest {
         assertNotNull(forgotPasswordNavigation)
         assertNotNull(createAccountNavigation)
         assertNotNull(authenticationNavigation)
+        assertNotNull(homeNavigation)
 
         assertNotNull(mainActivityViewModel)
         assertNotNull(loginViewModel)

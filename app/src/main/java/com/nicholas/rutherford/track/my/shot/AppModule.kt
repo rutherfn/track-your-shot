@@ -118,7 +118,7 @@ class AppModule {
         }
         viewModel {
             LoginViewModel(
-                application = get(),
+                application = androidApplication(),
                 existingUserFirebase = get(),
                 navigation = get(),
                 buildType = get()

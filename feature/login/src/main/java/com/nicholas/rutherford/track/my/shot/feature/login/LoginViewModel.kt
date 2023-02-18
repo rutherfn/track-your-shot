@@ -29,15 +29,6 @@ class LoginViewModel(
     )
     val loginStateFlow = loginMutableStateFlow.asStateFlow()
 
-    internal val defaultAlert = Alert(
-        onDismissClicked = {},
-        title = application.getString(StringsIds.empty),
-        dismissButton = AlertConfirmAndDismissButton(
-            onButtonClicked = {},
-            buttonText = application.getString(StringsIds.gotIt)
-        )
-    )
-
     init {
         updateLauncherDrawableIdState()
     }
@@ -100,22 +91,37 @@ class LoginViewModel(
     }
 
     internal fun emailEmptyAlert(): Alert {
-        return defaultAlert.copy(
+        return Alert(
+            onDismissClicked = {},
             title = application.getString(StringsIds.emptyField),
+            dismissButton = AlertConfirmAndDismissButton(
+                onButtonClicked = {},
+                buttonText = application.getString(StringsIds.gotIt)
+            ),
             description = application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToLoginToExistingAccount)
         )
     }
 
     internal fun passwordEmptyAlert(): Alert {
-        return defaultAlert.copy(
+        return Alert(
+            onDismissClicked = {},
             title = application.getString(StringsIds.emptyField),
+            dismissButton = AlertConfirmAndDismissButton(
+                onButtonClicked = {},
+                buttonText = application.getString(StringsIds.gotIt)
+            ),
             description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount)
         )
     }
 
     internal fun unableToLoginToAccountAlert(): Alert {
-        return defaultAlert.copy(
+        return Alert(
+            onDismissClicked = {},
             title = application.getString(StringsIds.unableToLoginToAccount),
+            dismissButton = AlertConfirmAndDismissButton(
+                onButtonClicked = {},
+                buttonText = application.getString(StringsIds.gotIt)
+            ),
             description = application.getString(StringsIds.havingTroubleLoggingIntoYourAccountPleaseTryAgainAndEnsureCredentialsExistAndAreValid)
         )
     }
