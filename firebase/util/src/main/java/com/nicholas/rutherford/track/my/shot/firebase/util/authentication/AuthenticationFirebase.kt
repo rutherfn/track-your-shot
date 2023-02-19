@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthenticationFirebase {
     fun attemptToSendEmailVerificationForCurrentUser(): Flow<AuthenticateUserViaEmailFirebaseResponse>
+    fun attemptToSendPasswordReset(email: String): Flow<Boolean>
 }

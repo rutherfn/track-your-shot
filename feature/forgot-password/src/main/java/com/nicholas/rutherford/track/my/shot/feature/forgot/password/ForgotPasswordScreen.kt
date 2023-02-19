@@ -16,6 +16,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -26,14 +27,21 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
     val state = viewModel.forgotPasswordStateFlow.collectAsState().value
+    val coroutineScope = rememberCoroutineScope()
 
     Content(
         ui = {
-            ForgotPasswordScreenContent(state = state, viewModel = viewModel)
+            ForgotPasswordScreenContent(
+                state = state,
+                viewModel = viewModel,
+                coroutineScope = coroutineScope
+            )
         },
         appBar = AppBar(
             toolbarTitle = stringResource(id = StringsIds.forgotPassword),
@@ -45,7 +53,8 @@ fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
 @Composable
 fun ForgotPasswordScreenContent(
     state: ForgotPasswordState,
-    viewModel: ForgotPasswordViewModel
+    viewModel: ForgotPasswordViewModel,
+    coroutineScope: CoroutineScope
 ) {
     Column(
         modifier = Modifier
@@ -68,7 +77,11 @@ fun ForgotPasswordScreenContent(
         Spacer(modifier = Modifier.height(Padding.four))
 
         Button(
-            onClick = { viewModel.onSendPasswordResetButtonClicked() },
+            onClick = {
+                coroutineScope.launch {
+                    viewModel.onSendPasswordResetButtonClicked(newEmail = state.email)
+                }
+            },
             shape = RoundedCornerShape(size = 50.dp),
             modifier = Modifier
                 .fillMaxWidth()
