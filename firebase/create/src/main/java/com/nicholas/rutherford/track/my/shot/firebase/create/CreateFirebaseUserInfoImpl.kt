@@ -8,10 +8,10 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
+const val ACCOUNT_INFO = "accountInfo"
+const val EMAIL = "email"
 const val USERS_PATH = "users"
 const val USERNAME = "userName"
-const val EMAIL = "email"
-const val USER_INFO = "userInfo"
 
 class CreateFirebaseUserInfoImpl(private val firebaseAuth: FirebaseAuth, firebaseDatabase: FirebaseDatabase) : CreateFirebaseUserInfo {
 
@@ -42,7 +42,7 @@ class CreateFirebaseUserInfoImpl(private val firebaseAuth: FirebaseAuth, firebas
             values[USERNAME] = createAccountResult.username
             values[EMAIL] = createAccountResult.email
 
-            userReference.child(USER_INFO).push().setValue(values)
+            userReference.child(ACCOUNT_INFO).push().setValue(values)
                 .addOnCompleteListener { task ->
                     trySend(task.isSuccessful)
                 }

@@ -39,7 +39,17 @@ class CreateFirebaseUserInfoImplTest {
     }
 
     @Nested
-    inner class Consts {
+    inner class Constants {
+
+        @Test
+        fun `account info`() {
+            Assertions.assertEquals("accountInfo", ACCOUNT_INFO)
+        }
+
+        @Test
+        fun email() {
+            Assertions.assertEquals("email", EMAIL)
+        }
 
         @Test
         fun `users path`() {
@@ -49,16 +59,6 @@ class CreateFirebaseUserInfoImplTest {
         @Test
         fun `user name`() {
             Assertions.assertEquals("userName", USERNAME)
-        }
-
-        @Test
-        fun email() {
-            Assertions.assertEquals("email", EMAIL)
-        }
-
-        @Test
-        fun `user info`() {
-            Assertions.assertEquals("userInfo", USER_INFO)
         }
     }
 
@@ -100,7 +100,7 @@ class CreateFirebaseUserInfoImplTest {
 
         every { mockTaskVoidResult.isSuccessful } returns false
 
-        every { firebaseDatabase.getReference(USERS_PATH).child(USER_INFO).push().setValue(values).addOnCompleteListener(capture(slot)) } answers {
+        every { firebaseDatabase.getReference(USERS_PATH).child(ACCOUNT_INFO).push().setValue(values).addOnCompleteListener(capture(slot)) } answers {
             slot.captured.onComplete(mockTaskVoidResult)
             mockTaskVoidResult
         }
