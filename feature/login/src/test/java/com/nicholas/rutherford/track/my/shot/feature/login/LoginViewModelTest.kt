@@ -157,6 +157,11 @@ class LoginViewModelTest {
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
             verify { navigation.navigateToHome() }
+
+            Assertions.assertEquals(
+                viewModel.loginStateFlow.value,
+                state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, email = "", password = "")
+            )
         }
     }
 
