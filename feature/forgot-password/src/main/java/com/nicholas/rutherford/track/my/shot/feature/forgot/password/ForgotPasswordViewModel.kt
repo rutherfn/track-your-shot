@@ -28,7 +28,7 @@ class ForgotPasswordViewModel(
                 navigation.alert(alert = emailEmptyAlert())
             } else {
                 navigation.enableProgress(progress = Progress(onDismissClicked = {}))
-                authenticationFirebase.attemptToSendPasswordReset(email = email.filterNot { it.isWhitespace() })
+                authenticationFirebase.attemptToSendPasswordResetFlow(email = email.filterNot { it.isWhitespace() })
                     .collectLatest { isSuccessful ->
                         navigation.disableProgress()
                         if (isSuccessful) {

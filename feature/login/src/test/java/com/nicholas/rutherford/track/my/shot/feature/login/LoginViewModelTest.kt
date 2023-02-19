@@ -100,8 +100,8 @@ class LoginViewModelTest {
     @Nested
     inner class OnLoginButtonClicked {
 
-        val emailTest = "newuser@yahoo.com"
-        val passwordTest = "password1"
+        private val emailTest = "newuser@yahoo.com"
+        private val passwordTest = "password1"
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test

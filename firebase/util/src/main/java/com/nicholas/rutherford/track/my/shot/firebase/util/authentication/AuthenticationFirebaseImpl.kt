@@ -25,7 +25,7 @@ class AuthenticationFirebaseImpl(private val firebaseAuth: FirebaseAuth) : Authe
         }
     }
 
-    override fun attemptToSendPasswordReset(email: String): Flow<Boolean> {
+    override fun attemptToSendPasswordResetFlow(email: String): Flow<Boolean> {
         return callbackFlow {
             firebaseAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener { task ->
