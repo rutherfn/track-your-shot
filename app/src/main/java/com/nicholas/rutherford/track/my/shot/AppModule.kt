@@ -114,7 +114,11 @@ class AppModule {
             MainActivityViewModel(appCenter = get())
         }
         viewModel {
-            SplashViewModel(readSharedPreferences = get(), navigation = get(), readFirebaseUserInfo = get())
+            SplashViewModel(
+                readSharedPreferences = get(),
+                navigation = get(),
+                readFirebaseUserInfo = get()
+            )
         }
         viewModel {
             LoginViewModel(
@@ -128,7 +132,11 @@ class AppModule {
             HomeViewModel(navigation = get(), existingUserFirebase = get())
         }
         viewModel {
-            ForgotPasswordViewModel(navigation = get())
+            ForgotPasswordViewModel(
+                application = androidApplication(),
+                authenticationFirebase = get(),
+                navigation = get()
+            )
         }
         viewModel {
             CreateAccountViewModel(

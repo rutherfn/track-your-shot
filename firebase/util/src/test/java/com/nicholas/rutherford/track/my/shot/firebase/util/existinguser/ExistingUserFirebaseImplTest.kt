@@ -18,18 +18,18 @@ import org.junit.jupiter.api.Test
 
 class ExistingUserFirebaseImplTest {
 
-    private lateinit var existingUserFirebase: ExistingUserFirebaseImpl
+    private lateinit var existingUserFirebaseImpl: ExistingUserFirebaseImpl
 
     private val firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
 
     @BeforeEach
     fun beforeEach() {
-        existingUserFirebase = ExistingUserFirebaseImpl(firebaseAuth = firebaseAuth)
+        existingUserFirebaseImpl = ExistingUserFirebaseImpl(firebaseAuth = firebaseAuth)
     }
 
     @Test
     fun `logout should call firebaseAuth signOut`() {
-        existingUserFirebase.logOut()
+        existingUserFirebaseImpl.logOut()
 
         verify { firebaseAuth.signOut() }
     }
@@ -37,8 +37,8 @@ class ExistingUserFirebaseImplTest {
     @Nested
     inner class LoginInFlow {
 
-        val testEmail = "test@email.com"
-        val testPassword = "testPassword123"
+        private val testEmail = "test@email.com"
+        private val testPassword = "testPassword123"
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
@@ -54,7 +54,7 @@ class ExistingUserFirebaseImplTest {
                     mockAuthResult
                 }
 
-                val value = existingUserFirebase.logInFlow(email = testEmail, password = testPassword).first()
+                val value = existingUserFirebaseImpl.logInFlow(email = testEmail, password = testPassword).first()
 
                 Assertions.assertEquals(true, value)
             }
@@ -73,7 +73,7 @@ class ExistingUserFirebaseImplTest {
                     mockAuthResult
                 }
 
-                val value = existingUserFirebase.logInFlow(email = testEmail, password = testPassword).first()
+                val value = existingUserFirebaseImpl.logInFlow(email = testEmail, password = testPassword).first()
 
                 Assertions.assertEquals(false, value)
             }
