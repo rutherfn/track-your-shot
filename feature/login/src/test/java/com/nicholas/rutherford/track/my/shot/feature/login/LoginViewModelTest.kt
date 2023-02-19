@@ -100,8 +100,8 @@ class LoginViewModelTest {
     @Nested
     inner class OnLoginButtonClicked {
 
-        val emailTest = "newuser@yahoo.com"
-        val passwordTest = "password1"
+        private val emailTest = "newuser@yahoo.com"
+        private val passwordTest = "password1"
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
@@ -157,6 +157,11 @@ class LoginViewModelTest {
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
             verify { navigation.navigateToHome() }
+
+            Assertions.assertEquals(
+                viewModel.loginStateFlow.value,
+                state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, email = "", password = "")
+            )
         }
     }
 

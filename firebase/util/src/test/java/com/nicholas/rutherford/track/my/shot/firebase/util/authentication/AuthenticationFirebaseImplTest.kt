@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class AuthenticationFirebaseImplTest {
@@ -30,51 +31,132 @@ class AuthenticationFirebaseImplTest {
         authenticationFirebaseImpl = AuthenticationFirebaseImpl(firebaseAuth = firebaseAuth)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `when firebaseAuth createUser is set to null should set flow to valid authenticate user via email response flow`() = runTest {
-        every { firebaseAuth.currentUser } returns null
+    @Nested
+    inner class AttemptToSendEmailVerificationForCurrentUser {
 
-        val attemptToSendEmailVerificationForCurrentUser = authenticationFirebaseImpl.attemptToSendEmailVerificationForCurrentUser().first()
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when firebaseAuth createUser is set to null should set flow to valid authenticate user via email response flow`() =
+            runTest {
+                every { firebaseAuth.currentUser } returns null
 
-        Assertions.assertEquals(authenticateViaEmailFirebaseResponse.copy(isSuccessful = false, isAlreadyAuthenticated = false, isUserExist = false), attemptToSendEmailVerificationForCurrentUser)
+                val attemptToSendEmailVerificationForCurrentUser =
+                    authenticationFirebaseImpl.attemptToSendEmailVerificationForCurrentUser()
+                        .first()
+
+                Assertions.assertEquals(
+                    authenticateViaEmailFirebaseResponse.copy(
+                        isSuccessful = false,
+                        isAlreadyAuthenticated = false,
+                        isUserExist = false
+                    ),
+                    attemptToSendEmailVerificationForCurrentUser
+                )
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when firebaseAuth createUser is not set to null and isEmailVerified set to true should set flow to valid authenticate user via email response floe`() =
+            runTest {
+                val mockFirebaseUser = mockk<FirebaseUser>()
+
+                every { firebaseAuth.currentUser } returns mockFirebaseUser
+                every { firebaseAuth.currentUser!!.isEmailVerified } returns true
+
+                val attemptToSendEmailVerificationForCurrentUser =
+                    authenticationFirebaseImpl.attemptToSendEmailVerificationForCurrentUser()
+                        .first()
+
+                Assertions.assertEquals(
+                    authenticateViaEmailFirebaseResponse.copy(
+                        isSuccessful = false,
+                        isAlreadyAuthenticated = true,
+                        isUserExist = true
+                    ),
+                    attemptToSendEmailVerificationForCurrentUser
+                )
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when firebaseAuth createUser is not set to null and isEmailVerified is set to false should set flow to valid authenticate user via email response floe`() =
+            runTest {
+                val mockTaskVoidResult = mockk<Task<Void>>()
+                val slot = slot<OnCompleteListener<Void>>()
+                val mockFirebaseUser = mockk<FirebaseUser>()
+                val isSuccessful = true
+
+                every { firebaseAuth.currentUser } returns mockFirebaseUser
+                every { firebaseAuth.currentUser!!.isEmailVerified } returns false
+
+                mockkStatic(Tasks::class)
+
+                every { mockTaskVoidResult.isSuccessful } returns isSuccessful
+
+                every {
+                    firebaseAuth.currentUser!!.sendEmailVerification()
+                        .addOnCompleteListener(capture(slot))
+                } answers {
+                    slot.captured.onComplete(mockTaskVoidResult)
+                    mockTaskVoidResult
+                }
+
+                val attemptToSendEmailVerificationForCurrentUser =
+                    authenticationFirebaseImpl.attemptToSendEmailVerificationForCurrentUser()
+                        .first()
+
+                Assertions.assertEquals(
+                    authenticateViaEmailFirebaseResponse.copy(
+                        isSuccessful = isSuccessful,
+                        isAlreadyAuthenticated = false,
+                        isUserExist = true
+                    ),
+                    attemptToSendEmailVerificationForCurrentUser
+                )
+            }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `when firebaseAuth createUser is not set to null and isEamilVerified set to true should set flow to valid authenticate user via email response floe`() = runTest {
-        val mockFirebaseUser = mockk<FirebaseUser>()
+    @Nested
+    inner class AttemptToSendPasswordResetFlow {
 
-        every { firebaseAuth.currentUser } returns mockFirebaseUser
-        every { firebaseAuth.currentUser!!.isEmailVerified } returns true
+        private val testEmail = "test@email.com"
 
-        val attemptToSendEmailVerificationForCurrentUser = authenticationFirebaseImpl.attemptToSendEmailVerificationForCurrentUser().first()
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when add on complete listener is executed should set flow to true when isSuccessful returns back true`() =
+            runTest {
+                val mockTaskVoid = mockk<Task<Void>>()
+                val slot = slot<OnCompleteListener<Void>>()
 
-        Assertions.assertEquals(authenticateViaEmailFirebaseResponse.copy(isSuccessful = false, isAlreadyAuthenticated = true, isUserExist = true), attemptToSendEmailVerificationForCurrentUser)
-    }
+                every { mockTaskVoid.isSuccessful } returns true
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `when firebaseAuth createUser is not set to null and isEmailVerified is set to false should set flow to valid authenticate user via email response floe`() = runTest {
-        val mockTaskVoidResult = mockk<Task<Void>>()
-        val slot = slot<OnCompleteListener<Void>>()
-        val mockFirebaseUser = mockk<FirebaseUser>()
-        val isSuccessful = true
+                every { firebaseAuth.sendPasswordResetEmail(testEmail).addOnCompleteListener(capture(slot)) } answers {
+                    slot.captured.onComplete(mockTaskVoid)
+                    mockTaskVoid
+                }
 
-        every { firebaseAuth.currentUser } returns mockFirebaseUser
-        every { firebaseAuth.currentUser!!.isEmailVerified } returns false
+                val value = authenticationFirebaseImpl.attemptToSendPasswordResetFlow(email = testEmail).first()
 
-        mockkStatic(Tasks::class)
+                Assertions.assertEquals(true, value)
+            }
 
-        every { mockTaskVoidResult.isSuccessful } returns isSuccessful
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when add on complete listener is executed should set flow to false when isSuccessful returns back false`() =
+            runTest {
+                val mockTaskVoid = mockk<Task<Void>>()
+                val slot = slot<OnCompleteListener<Void>>()
 
-        every { firebaseAuth.currentUser!!.sendEmailVerification().addOnCompleteListener(capture(slot)) } answers {
-            slot.captured.onComplete(mockTaskVoidResult)
-            mockTaskVoidResult
-        }
+                every { mockTaskVoid.isSuccessful } returns false
 
-        val attemptToSendEmailVerificationForCurrentUser = authenticationFirebaseImpl.attemptToSendEmailVerificationForCurrentUser().first()
+                every { firebaseAuth.sendPasswordResetEmail(testEmail).addOnCompleteListener(capture(slot)) } answers {
+                    slot.captured.onComplete(mockTaskVoid)
+                    mockTaskVoid
+                }
 
-        Assertions.assertEquals(authenticateViaEmailFirebaseResponse.copy(isSuccessful = isSuccessful, isAlreadyAuthenticated = false, isUserExist = true), attemptToSendEmailVerificationForCurrentUser)
+                val value = authenticationFirebaseImpl.attemptToSendPasswordResetFlow(email = testEmail).first()
+
+                Assertions.assertEquals(false, value)
+            }
     }
 }

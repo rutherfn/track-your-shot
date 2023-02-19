@@ -59,6 +59,8 @@ class LoginViewModel(
                     )
                         .collectLatest { isSuccessful ->
                             if (isSuccessful) {
+                                onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
+                                onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
                                 navigation.disableProgress()
                                 navigation.navigateToHome()
                             } else {
@@ -69,7 +71,6 @@ class LoginViewModel(
                 }
             } ?: run {
                 navigation.alert(alert = passwordEmptyAlert())
-                // show no password alert
             }
         } ?: run {
             navigation.alert(alert = emailEmptyAlert())

@@ -24,4 +24,14 @@ class AuthenticationFirebaseImpl(private val firebaseAuth: FirebaseAuth) : Authe
             awaitClose()
         }
     }
+
+    override fun attemptToSendPasswordResetFlow(email: String): Flow<Boolean> {
+        return callbackFlow {
+            firebaseAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    trySend(element = task.isSuccessful)
+                }
+            awaitClose()
+        }
+    }
 }
