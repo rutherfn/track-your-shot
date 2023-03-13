@@ -1,8 +1,11 @@
 package com.nicholas.rutherford.track.my.shot.firebase.read
 
+import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRealtimeResponse
 import kotlinx.coroutines.flow.Flow
 
 interface ReadFirebaseUserInfo {
-    fun isEmailVerified(): Flow<Boolean>
-    fun isLoggedIn(): Flow<Boolean>
+    fun getLoggedInAccountEmail(): Flow<String?>
+    fun getAccountInfoFlowByEmail(email: String): Flow<AccountInfoRealtimeResponse?>
+    fun isEmailVerifiedFlow(): Flow<Boolean>
+    fun isLoggedInFlow(): Flow<Boolean>
 }

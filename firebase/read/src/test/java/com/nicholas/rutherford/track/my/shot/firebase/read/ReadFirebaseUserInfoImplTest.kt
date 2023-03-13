@@ -4,6 +4,12 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.TestAccountInfoRealTimeResponse
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -21,22 +27,194 @@ class ReadFirebaseUserInfoImplTest {
     lateinit var readFirebaseUserInfoImpl: ReadFirebaseUserInfoImpl
 
     var firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
+    var firebaseDatabase = mockk<FirebaseDatabase>(relaxed = true)
+
+    val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create()
 
     @BeforeEach
     fun beforeEach() {
-        readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth)
+        readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
+    }
+
+    @Test
+    fun constants() {
+        Assertions.assertEquals(ACCOUNT_INFO, "accountInfo")
+        Assertions.assertEquals(EMAIL, "email")
+        Assertions.assertEquals(USERS, "users")
     }
 
     @Nested
-    inner class IsEmailVerified {
+    inner class GetLoggedInAccountEmail {
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when currentUser is set to null should set to null`() = runTest {
+            every { firebaseAuth.currentUser } returns null
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
+
+            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getLoggedInAccountEmail().first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when currentUser email is set to null should set to null`() = runTest {
+            every { firebaseAuth.currentUser!!.email } returns null
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
+
+            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getLoggedInAccountEmail().first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when currentUser and email is not set to null should set value to returned email`() = runTest {
+            every { firebaseAuth.currentUser!!.email } returns accountInfoRealtimeResponse.email
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
+
+            Assertions.assertEquals(accountInfoRealtimeResponse.email, readFirebaseUserInfoImpl.getLoggedInAccountEmail().first())
+        }
+    }
+
+    @Nested
+    inner class GetAccountInfoFlowByEmail {
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when onCancelled is called should return null`() = runTest {
+            val mockDatabaseError = mockk<DatabaseError>()
+            val slot = slot<ValueEventListener>()
+
+            every {
+                firebaseDatabase.getReference(USERS)
+                    .child(ACCOUNT_INFO)
+                    .orderByChild(EMAIL)
+                    .equalTo(accountInfoRealtimeResponse.email)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onCancelled(mockDatabaseError)
+            }
+
+            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoFlowByEmail(accountInfoRealtimeResponse.email).first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when onDataChange is called but the count is 0 should return null`() = runTest {
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockDataSnapshotList = listOf(mockDataSnapshot)
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
+            every { mockDataSnapshot.getValue(AccountInfoRealtimeResponse::class.java) } returns null
+            every { mockDataSnapshot.children } returns mockDataSnapshotList
+
+            mockkStatic(DataSnapshot::class)
+
+            every {
+                firebaseDatabase.getReference(USERS)
+                    .child(ACCOUNT_INFO)
+                    .orderByChild(EMAIL)
+                    .equalTo(accountInfoRealtimeResponse.email)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoFlowByEmail(accountInfoRealtimeResponse.email).first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when onDataChange is called but the count is greater then 1 should return null`() = runTest {
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockDataSnapshotList = listOf(mockDataSnapshot, mockDataSnapshot)
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
+            every { mockDataSnapshot.getValue(AccountInfoRealtimeResponse::class.java) } returns accountInfoRealtimeResponse
+            every { mockDataSnapshot.children } returns mockDataSnapshotList
+
+            mockkStatic(DataSnapshot::class)
+
+            every {
+                firebaseDatabase.getReference(USERS)
+                    .child(ACCOUNT_INFO)
+                    .orderByChild(EMAIL)
+                    .equalTo(accountInfoRealtimeResponse.email)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoFlowByEmail(accountInfoRealtimeResponse.email).first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when onDataChange is called with snapshot exists return back as false should return null`() = runTest {
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockDataSnapshotList = listOf(mockDataSnapshot)
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns false
+            every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
+            every { mockDataSnapshot.getValue(AccountInfoRealtimeResponse::class.java) } returns accountInfoRealtimeResponse
+            every { mockDataSnapshot.children } returns mockDataSnapshotList
+
+            mockkStatic(DataSnapshot::class)
+
+            every {
+                firebaseDatabase.getReference(USERS)
+                    .child(ACCOUNT_INFO)
+                    .orderByChild(EMAIL)
+                    .equalTo(accountInfoRealtimeResponse.email)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoFlowByEmail(accountInfoRealtimeResponse.email).first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when onDataChange is called with valid conditions should return accountInfoRealTimeResponse`() = runTest {
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockDataSnapshotList = listOf(mockDataSnapshot)
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
+            every { mockDataSnapshot.getValue(AccountInfoRealtimeResponse::class.java) } returns accountInfoRealtimeResponse
+            every { mockDataSnapshot.children } returns mockDataSnapshotList
+
+            mockkStatic(DataSnapshot::class)
+
+            every {
+                firebaseDatabase.getReference(USERS)
+                    .child(ACCOUNT_INFO)
+                    .orderByChild(EMAIL)
+                    .equalTo(accountInfoRealtimeResponse.email)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(accountInfoRealtimeResponse, readFirebaseUserInfoImpl.getAccountInfoFlowByEmail(accountInfoRealtimeResponse.email).first())
+        }
+    }
+
+    @Nested
+    inner class IsEmailVerifiedFlow {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser is set to null should set to false`() = runTest {
             every { firebaseAuth.currentUser } returns null
-            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth)
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
 
-            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerified().first())
+            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -54,7 +232,7 @@ class ReadFirebaseUserInfoImplTest {
                 mockTaskReloadResult
             }
 
-            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerified().first())
+            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -73,7 +251,7 @@ class ReadFirebaseUserInfoImplTest {
                 mockTaskReloadResult
             }
 
-            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerified().first())
+            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -92,28 +270,28 @@ class ReadFirebaseUserInfoImplTest {
                 mockTaskReloadResult
             }
 
-            Assertions.assertEquals(true, readFirebaseUserInfoImpl.isEmailVerified().first())
+            Assertions.assertEquals(true, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
         }
     }
 
     @Nested
-    inner class IsLoggedIn {
+    inner class IsLoggedInFlow {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser is set to null should set to false`() = runTest {
             every { firebaseAuth.currentUser } returns null
-            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth)
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
 
-            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isLoggedIn().first())
+            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isLoggedInFlow().first())
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser is not set to null should be set to true`() = runTest {
-            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth)
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
 
-            Assertions.assertEquals(true, readFirebaseUserInfoImpl.isLoggedIn().first())
+            Assertions.assertEquals(true, readFirebaseUserInfoImpl.isLoggedInFlow().first())
         }
     }
 }

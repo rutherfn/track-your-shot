@@ -3,7 +3,7 @@ package com.nicholas.rutherford.track.my.shot.firebase.create
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.account.info.CreateAccountFirebaseAuthResponse
-import com.nicholas.rutherford.track.my.shot.account.info.CreateAccountFirebaseRealtimeDatabaseResult
+import com.nicholas.rutherford.track.my.shot.account.info.realtime.CreateAccountFirebaseRealtimeDatabaseResult
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow

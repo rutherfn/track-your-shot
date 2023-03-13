@@ -1,6 +1,6 @@
-package com.nicholas.rutherford.track.my.shot.data.test.account.info
+package com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime
 
-import com.nicholas.rutherford.track.my.shot.account.info.CreateAccountFirebaseRealtimeDatabaseResult
+import com.nicholas.rutherford.track.my.shot.account.info.realtime.CreateAccountFirebaseRealtimeDatabaseResult
 
 class TestCreateAccountFirebaseRealtimeDatabaseResult {
     fun create(): CreateAccountFirebaseRealtimeDatabaseResult {

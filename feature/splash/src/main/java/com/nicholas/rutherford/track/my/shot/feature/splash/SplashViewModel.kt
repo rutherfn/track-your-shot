@@ -37,7 +37,7 @@ class SplashViewModel(
     }
 
     private suspend fun navigateToHomeLoginOrAuthentication() {
-        readFirebaseUserInfo.isLoggedIn().combine(readFirebaseUserInfo.isEmailVerified()) { isLoggedIn, isEmailVerified ->
+        readFirebaseUserInfo.isLoggedInFlow().combine(readFirebaseUserInfo.isEmailVerifiedFlow()) { isLoggedIn, isEmailVerified ->
             if (isLoggedIn) {
                 if (isEmailVerified && readSharedPreferences.accountHasBeenCreated()) {
                     delayAndNavigateToHomeOrLogin(isLoggedIn = true)

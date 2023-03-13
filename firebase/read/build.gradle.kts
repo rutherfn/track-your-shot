@@ -60,7 +60,10 @@ android {
 }
 
 dependencies {
+    api(project(path = ":data:account-info"))
+
     implementation(Dependencies.Firebase.authKtx)
+    implementation(Dependencies.Firebase.databaseKtx)
     implementation(Dependencies.Firebase.bom)
 
     testImplementation(Dependencies.Coroutine.test)
@@ -72,4 +75,6 @@ dependencies {
     testImplementation(Dependencies.Mockk.core)
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+
+    testImplementation(project(path = ":data-test:account-info"))
 }

@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.account.info
+package com.nicholas.rutherford.track.my.shot.account.info.realtime
 
 data class CreateAccountFirebaseRealtimeDatabaseResult(
     val username: String,
