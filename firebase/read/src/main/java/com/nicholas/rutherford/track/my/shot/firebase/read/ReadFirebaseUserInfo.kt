@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface ReadFirebaseUserInfo {
     fun getLoggedInAccountEmail(): Flow<String?>
     fun getAccountInfoFlowByEmail(email: String): Flow<AccountInfoRealtimeResponse?>
-    fun getAllAccountInfoFlow(): Flow<List<AccountInfoRealtimeResponse>?>
+    fun getAccountInfoListFlow(): Flow<List<AccountInfoRealtimeResponse>?>
     fun isEmailVerifiedFlow(): Flow<Boolean>
     fun isLoggedInFlow(): Flow<Boolean>
 }

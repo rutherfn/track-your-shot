@@ -6,7 +6,7 @@ class TestAccountInfoRealTimeResponse {
 
     fun create(): AccountInfoRealtimeResponse {
         return AccountInfoRealtimeResponse(
-            username = USER_NAME_ACCOUNT_INFO_REALTIME_RESPONSE,
+            userName = USER_NAME_ACCOUNT_INFO_REALTIME_RESPONSE,
             email = EMAIL_ACCOUNT_INFO_REALTIME_RESPONSE
         )
     }

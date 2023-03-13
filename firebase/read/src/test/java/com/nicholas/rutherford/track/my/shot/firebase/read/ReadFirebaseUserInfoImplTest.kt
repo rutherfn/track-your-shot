@@ -75,6 +75,77 @@ class ReadFirebaseUserInfoImplTest {
     }
 
     @Nested
+    inner class GetAccountInfoListFlow {
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when onCancelled is called should return null`() = runTest {
+            val mockDatabaseError = mockk<DatabaseError>()
+            val slot = slot<ValueEventListener>()
+
+            every {
+                firebaseDatabase.getReference(USERS)
+                    .child(ACCOUNT_INFO)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onCancelled(mockDatabaseError)
+            }
+
+            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoListFlow().first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when onDataChange is called with snapshot exists return back as false should return null`() = runTest {
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockDataSnapshotList = listOf(mockDataSnapshot)
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns false
+            every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
+            every { mockDataSnapshot.getValue(AccountInfoRealtimeResponse::class.java) } returns accountInfoRealtimeResponse
+            every { mockDataSnapshot.children } returns mockDataSnapshotList
+
+            mockkStatic(DataSnapshot::class)
+
+            every {
+                firebaseDatabase.getReference(USERS)
+                    .child(ACCOUNT_INFO)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoListFlow().first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when onDataChange is called with snapshot exists return back as true with snapshot child data should return info`() = runTest {
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockDataSnapshotList = listOf(mockDataSnapshot)
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
+            every { mockDataSnapshot.getValue(AccountInfoRealtimeResponse::class.java) } returns accountInfoRealtimeResponse
+            every { mockDataSnapshot.children } returns mockDataSnapshotList
+
+            mockkStatic(DataSnapshot::class)
+
+            every {
+                firebaseDatabase.getReference(USERS)
+                    .child(ACCOUNT_INFO)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(listOf(accountInfoRealtimeResponse), readFirebaseUserInfoImpl.getAccountInfoListFlow().first())
+        }
+    }
+
+    @Nested
     inner class GetAccountInfoFlowByEmail {
 
         @OptIn(ExperimentalCoroutinesApi::class)
