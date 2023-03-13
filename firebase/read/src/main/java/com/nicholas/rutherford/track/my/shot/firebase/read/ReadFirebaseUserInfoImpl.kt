@@ -62,6 +62,36 @@ class ReadFirebaseUserInfoImpl(
         }
     }
 
+    override fun getAllAccountInfoFlow(): Flow<List<AccountInfoRealtimeResponse>?> {
+        return callbackFlow {
+            val accountInfoRealTimeResponseArrayList: ArrayList<AccountInfoRealtimeResponse>? = null
+
+            firebaseDatabase.getReference(USERS)
+                .child(ACCOUNT_INFO)
+                .addListenerForSingleValueEvent(object: ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            snapshot.children.map { child ->
+                                child.getValue(AccountInfoRealtimeResponse::class.java)
+                                    ?.let { accountInfoRealTimeResponse ->
+                                        accountInfoRealTimeResponseArrayList?.add(accountInfoRealTimeResponse)
+                                    }
+                            }
+
+                            trySend(element = accountInfoRealTimeResponseArrayList?.toList())
+                        } else {
+                            trySend(element = null)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        trySend(element = null)
+                    }
+                })
+            awaitClose()
+        }
+    }
+
     override fun isEmailVerifiedFlow(): Flow<Boolean> {
         return callbackFlow {
             firebaseAuth.currentUser?.let { firebaseUser ->
