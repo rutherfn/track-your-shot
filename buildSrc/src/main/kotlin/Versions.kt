@@ -62,5 +62,7 @@ object Versions {
         object Mockk { const val core = "1.13.2" }
 
         object Room { const val core = "2.4.4" }
+
+        object Timber { const val core = "5.0.1" }
     }
 }

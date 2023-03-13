@@ -84,4 +84,8 @@ object Dependencies {
         const val kaptCompiler = "androidx.room:room-compiler:${Versions.Dependencies.Room.core}"
         const val runtime = "androidx.room:room-runtime:${Versions.Dependencies.Room.core}"
     }
+
+    object Timber {
+        const val core = "com.jakewharton.timber:timber:${Versions.Dependencies.Timber.core}"
+    }
 }
