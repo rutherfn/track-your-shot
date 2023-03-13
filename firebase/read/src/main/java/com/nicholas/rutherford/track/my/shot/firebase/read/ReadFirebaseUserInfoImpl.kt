@@ -9,6 +9,7 @@ import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRe
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import timber.log.Timber
 
 const val ACCOUNT_INFO = "accountInfo"
 const val EMAIL = "email"
@@ -24,6 +25,7 @@ class ReadFirebaseUserInfoImpl(
             firebaseAuth.currentUser?.let { user ->
                 trySend(element = user.email)
             } ?: run {
+                Timber.e(message = "Error(getLoggedInAccountEmail) -> Current firebase user is set to null")
                 trySend(element = null)
             }
             awaitClose()
@@ -47,14 +49,17 @@ class ReadFirebaseUserInfoImpl(
                                 }
                                 trySend(element = accountInfoRealTimeResponse)
                             } else {
+                                Timber.w(message = "Error(getAccountInfoFlowByEmail) -> Current snapshot contains the same email more then once")
                                 trySend(element = null)
                             }
                         } else {
+                            Timber.e(message = "Error(getAccountInfoFlowByEmail) -> Current snapshot does not exist")
                             trySend(element = null)
                         }
                     }
 
                     override fun onCancelled(error: DatabaseError) {
+                        Timber.e(message = "Error(getAccountInfoFlowByEmail) -> Database error when attempting to get account info")
                         trySend(element = null)
                     }
                 })
@@ -79,11 +84,13 @@ class ReadFirebaseUserInfoImpl(
                             }
                             trySend(element = accountInfoRealTimeResponseArrayList.toList())
                         } else {
+                            Timber.e(message = "Error(getAccountInfoListFlow) -> Current snapshot does not exist")
                             trySend(element = null)
                         }
                     }
 
                     override fun onCancelled(error: DatabaseError) {
+                        Timber.e(message = "Error(getAccountInfoListFlow) -> Database error when attempting to get account info")
                         trySend(element = null)
                     }
                 })
@@ -98,10 +105,12 @@ class ReadFirebaseUserInfoImpl(
                     if (task.isSuccessful) {
                         trySend(element = firebaseUser.isEmailVerified)
                     } else {
+                        Timber.e(message = "Error(isEmailVerifiedFlow) -> Add on complete listener was not successful")
                         trySend(element = false)
                     }
                 }
             } ?: run {
+                Timber.e(message = "Error(isEmailVerifiedFlow) -> Current user is set to null")
                 trySend(element = false)
             }
             awaitClose()
