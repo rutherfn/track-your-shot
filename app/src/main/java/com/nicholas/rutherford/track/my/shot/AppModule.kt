@@ -78,7 +78,7 @@ class AppModule {
             ExistingUserFirebaseImpl(firebaseAuth = get())
         }
         single<ReadFirebaseUserInfo> {
-            ReadFirebaseUserInfoImpl(firebaseAuth = get())
+            ReadFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
         single<Network> {
             NetworkImpl()

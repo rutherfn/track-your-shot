@@ -92,8 +92,8 @@ class SplashViewModelTest {
                     every { readSharedPreferences.unverifiedUsername() } returns unverifiedUsername
                     every { readSharedPreferences.unverifiedEmail() } returns unverifiedEmail
 
-                    every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(true)
-                    every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(false)
+                    every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(true)
+                    every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(false)
                     every { readSharedPreferences.accountHasBeenCreated() } returns true
 
                     Dispatchers.setMain(dispatcher)
@@ -115,8 +115,8 @@ class SplashViewModelTest {
                     every { readSharedPreferences.unverifiedUsername() } returns unverifiedUsername
                     every { readSharedPreferences.unverifiedEmail() } returns unverifiedEmail
 
-                    every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(true)
-                    every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(true)
+                    every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(true)
+                    every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(true)
                     every { readSharedPreferences.accountHasBeenCreated() } returns false
 
                     Dispatchers.setMain(dispatcher)
@@ -135,7 +135,7 @@ class SplashViewModelTest {
             @Test
             fun `when isLoggedIn is set to false should not navigateToAuthentication`() =
                 runTest {
-                    every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(false)
+                    every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(false)
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
@@ -153,8 +153,8 @@ class SplashViewModelTest {
             @Test
             fun `when isLoggedIn is set to true, isEmailVerified set to true and accountHasBeenCreated is set to true should not call navigateToAuthentication`() =
                 runTest {
-                    every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(true)
-                    every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(true)
+                    every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(true)
+                    every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(true)
                     every { readSharedPreferences.accountHasBeenCreated() } returns true
 
                     Dispatchers.setMain(dispatcher)
@@ -175,8 +175,8 @@ class SplashViewModelTest {
                 every { readSharedPreferences.unverifiedUsername() } returns null
                 every { readSharedPreferences.unverifiedEmail() } returns unverifiedEmail
 
-                every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(true)
-                every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(false)
+                every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(true)
+                every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(false)
                 every { readSharedPreferences.accountHasBeenCreated() } returns true
 
                 Dispatchers.setMain(dispatcher)
@@ -197,8 +197,8 @@ class SplashViewModelTest {
                 every { readSharedPreferences.unverifiedUsername() } returns unverifiedUsername
                 every { readSharedPreferences.unverifiedEmail() } returns null
 
-                every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(true)
-                every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(false)
+                every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(true)
+                every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(false)
                 every { readSharedPreferences.accountHasBeenCreated() } returns true
 
                 Dispatchers.setMain(dispatcher)
@@ -221,8 +221,8 @@ class SplashViewModelTest {
             @Test
             fun `should delay for 4 seconds and verifies that it calls navigateToLogin when isLoggedIn is set to false`() =
                 runTest {
-                    every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(false)
-                    every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(true)
+                    every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(false)
+                    every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(true)
                     every { readSharedPreferences.accountHasBeenCreated() } returns false
 
                     Dispatchers.setMain(dispatcher)
@@ -242,8 +242,8 @@ class SplashViewModelTest {
             @Test
             fun `should delay for 4 seconds and verifies it calls navigateToHome when isLoggedIn is set to true`() =
                 runTest {
-                    every { readFirebaseUserInfo.isLoggedIn() } returns flowOf(true)
-                    every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(true)
+                    every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(true)
+                    every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(true)
                     every { readSharedPreferences.accountHasBeenCreated() } returns true
 
                     Dispatchers.setMain(dispatcher)

@@ -63,7 +63,7 @@ class AuthenticationViewModel(
     }
 
     private suspend fun collectIfUserIsVerifiedAndAttemptToCreateAccount() {
-        readFirebaseUserInfo.isEmailVerified().collectLatest { isVerified ->
+        readFirebaseUserInfo.isEmailVerifiedFlow().collectLatest { isVerified ->
             if (isVerified) {
                 safeLet(username, email) { usernameArgument, emailArgument ->
                     navigation.enableProgress(progress = Progress(onDismissClicked = {}))

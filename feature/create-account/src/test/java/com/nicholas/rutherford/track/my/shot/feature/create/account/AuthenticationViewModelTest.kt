@@ -136,7 +136,7 @@ class AuthenticationViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back false should not attempt to create account`() = runTest {
-            every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(value = false)
+            every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = false)
 
             viewModel.username = username
             viewModel.email = email
@@ -149,7 +149,7 @@ class AuthenticationViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true and username is null should not attempt to create account`() = runTest {
-            every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(value = true)
+            every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
 
             viewModel.username = null
             viewModel.email = email
@@ -162,7 +162,7 @@ class AuthenticationViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true and email is null should not attempt to create account`() = runTest {
-            every { readFirebaseUserInfo.isEmailVerified() } returns flowOf(value = true)
+            every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
 
             viewModel.username = username
             viewModel.email = null
@@ -175,7 +175,7 @@ class AuthenticationViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back not successful should show error creating account alert`() = runTest {
-            coEvery { readFirebaseUserInfo.isEmailVerified() } returns flowOf(value = true)
+            coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
             } returns flowOf(value = false)
@@ -202,7 +202,7 @@ class AuthenticationViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back successful should navigate to home`() = runTest {
-            coEvery { readFirebaseUserInfo.isEmailVerified() } returns flowOf(value = true)
+            coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
             } returns flowOf(value = true)
