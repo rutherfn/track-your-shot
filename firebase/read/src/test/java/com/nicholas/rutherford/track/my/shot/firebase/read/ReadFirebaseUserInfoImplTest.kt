@@ -4,6 +4,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -21,22 +22,63 @@ class ReadFirebaseUserInfoImplTest {
     lateinit var readFirebaseUserInfoImpl: ReadFirebaseUserInfoImpl
 
     var firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
+    var firebaseDatabase = mockk<FirebaseDatabase>(relaxed = true)
 
     @BeforeEach
     fun beforeEach() {
-        readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth)
+        readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
+    }
+
+    @Test
+    fun constants() {
+        Assertions.assertEquals(ACCOUNT_INFO, "accountInfo")
+        Assertions.assertEquals(EMAIL, "email")
+        Assertions.assertEquals(USERS, "users")
     }
 
     @Nested
-    inner class IsEmailVerified {
+    inner class GetLoggedInAccountEmail {
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when currentUser is set to null should set to null`() = runTest {
+            every { firebaseAuth.currentUser } returns null
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
+
+            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getLoggedInAccountEmail().first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when currentUser email is set to null should set to null`() = runTest {
+            every { firebaseAuth.currentUser!!.email } returns null
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
+
+            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getLoggedInAccountEmail().first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when currentUser and email is not set to null should set value to returned email`() = runTest {
+            val email = "testEmail@yahoo.com"
+
+            every { firebaseAuth.currentUser!!.email } returns email
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
+
+            Assertions.assertEquals(email, readFirebaseUserInfoImpl.getLoggedInAccountEmail().first())
+        }
+    }
+
+    @Nested
+    inner class IsEmailVerifiedFlow {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser is set to null should set to false`() = runTest {
             every { firebaseAuth.currentUser } returns null
-            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth)
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
 
-            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerified().first())
+            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -54,7 +96,7 @@ class ReadFirebaseUserInfoImplTest {
                 mockTaskReloadResult
             }
 
-            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerified().first())
+            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -73,7 +115,7 @@ class ReadFirebaseUserInfoImplTest {
                 mockTaskReloadResult
             }
 
-            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerified().first())
+            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -92,28 +134,28 @@ class ReadFirebaseUserInfoImplTest {
                 mockTaskReloadResult
             }
 
-            Assertions.assertEquals(true, readFirebaseUserInfoImpl.isEmailVerified().first())
+            Assertions.assertEquals(true, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
         }
     }
 
     @Nested
-    inner class IsLoggedIn {
+    inner class IsLoggedInFlow {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser is set to null should set to false`() = runTest {
             every { firebaseAuth.currentUser } returns null
-            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth)
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
 
-            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isLoggedIn().first())
+            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isLoggedInFlow().first())
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser is not set to null should be set to true`() = runTest {
-            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth)
+            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
 
-            Assertions.assertEquals(true, readFirebaseUserInfoImpl.isLoggedIn().first())
+            Assertions.assertEquals(true, readFirebaseUserInfoImpl.isLoggedInFlow().first())
         }
     }
 }
