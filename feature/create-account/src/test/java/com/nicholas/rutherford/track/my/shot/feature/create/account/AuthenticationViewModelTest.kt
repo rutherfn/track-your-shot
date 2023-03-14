@@ -116,6 +116,105 @@ class AuthenticationViewModelTest {
         }
     }
 
+    @Nested
+    inner class OnCheckIfAccountHasBeenVerifiedClicked {
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when isEmailVerified returns back false should not attempt to create account`() = runTest {
+            every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = false)
+
+            viewModel.username = username
+            viewModel.email = email
+
+            viewModel.onCheckIfAccountHaBeenVerifiedClicked()
+
+            verify { navigation.alert(alert = viewModel.errorVerifyingAccount()) }
+            verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when isEmailVerified returns back true and username is null should not attempt to create account`() = runTest {
+            every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
+
+            viewModel.username = null
+            viewModel.email = email
+
+            viewModel.onCheckIfAccountHaBeenVerifiedClicked()
+
+            verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when isEmailVerified returns back true and email is null should not attempt to create account`() = runTest {
+            every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
+
+            viewModel.username = username
+            viewModel.email = null
+
+            viewModel.onCheckIfAccountHaBeenVerifiedClicked()
+
+            verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back not successful should show error creating account alert`() = runTest {
+            coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
+            coEvery {
+                createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
+            } returns flowOf(value = false)
+
+            viewModel = AuthenticationViewModel(
+                readFirebaseUserInfo = readFirebaseUserInfo,
+                navigation = navigation,
+                application = application,
+                authenticationFirebase = authenticationFirebase,
+                createSharedPreferences = createSharedPreferences,
+                createFirebaseUserInfo = createFirebaseUserInfo
+            )
+
+            viewModel.username = username
+            viewModel.email = email
+
+            viewModel.onCheckIfAccountHaBeenVerifiedClicked()
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = viewModel.errorCreatingAccountAlert()) }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back successful should navigate to home`() = runTest {
+            coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
+            coEvery {
+                createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
+            } returns flowOf(value = true)
+
+            viewModel = AuthenticationViewModel(
+                readFirebaseUserInfo = readFirebaseUserInfo,
+                navigation = navigation,
+                application = application,
+                authenticationFirebase = authenticationFirebase,
+                createSharedPreferences = createSharedPreferences,
+                createFirebaseUserInfo = createFirebaseUserInfo
+            )
+
+            viewModel.username = username
+            viewModel.email = email
+
+            viewModel.onCheckIfAccountHaBeenVerifiedClicked()
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { createSharedPreferences.createAccountHasBeenCreatedPreference(value = true) }
+            verify { navigation.disableProgress() }
+            verify { navigation.navigateToHome() }
+        }
+    }
+
     @Test
     fun `on navigate close should call navigation alert`() {
         viewModel.onNavigateClose()
@@ -143,6 +242,7 @@ class AuthenticationViewModelTest {
 
             viewModel.onResume()
 
+            verify(exactly = 0) { navigation.alert(alert = viewModel.errorVerifyingAccount()) }
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
         }
 
@@ -270,6 +370,22 @@ class AuthenticationViewModelTest {
         )
         Assertions.assertEquals(
             application.getString(StringsIds.thereWasAErrorCreatingYourAccountPleaseTryAgain),
+            viewModel.errorCreatingAccountAlert().description
+        )
+    }
+
+    @Test
+    fun `errorVerifyingAccount content should match`() {
+        Assertions.assertEquals(
+            application.getString(StringsIds.accountHasNotBeenVerified),
+            viewModel.errorCreatingAccountAlert().title
+        )
+        Assertions.assertEquals(
+            application.getString(StringsIds.gotIt),
+            viewModel.errorCreatingAccountAlert().dismissButton!!.buttonText
+        )
+        Assertions.assertEquals(
+            application.getString(StringsIds.currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount),
             viewModel.errorCreatingAccountAlert().description
         )
     }

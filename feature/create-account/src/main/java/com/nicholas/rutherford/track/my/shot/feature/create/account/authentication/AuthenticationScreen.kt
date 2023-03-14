@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -25,8 +26,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import com.nicholas.rutherford.track.my.shot.compose.components.Content
 import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
@@ -99,6 +102,18 @@ fun AuthenticationScreenContent(
             modifier = Modifier.padding(Padding.four),
             style = TextStyles.small,
             textAlign = TextAlign.Center,
+        )
+
+        Spacer(modifier = Modifier.height(Padding.four))
+
+        ClickableText(
+            text = AnnotatedString(stringResource(id = StringsIds.checkIfAccountHaBeenVerified)),
+            onClick = {
+                coroutineScope.launch {
+                    viewModel.onCheckIfAccountHaBeenVerifiedClicked()
+                }
+            },
+            style = TextStyles.hyperLink.copy(fontSize = 16.sp, color = Color.Blue)
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))
