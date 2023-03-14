@@ -3,10 +3,13 @@ package com.nicholas.rutherford.track.my.shot.feature.splash
 import com.nicholas.rutherford.track.my.shot.base.resources.R
 
 object StringsIds {
+    val accountHasNotBeenVerified = R.string.account_has_not_been_verified
     val allFieldsAreRequired = R.string.all_fields_are_required
     val areYouSureYouWantLeaveTrackMyShot = R.string.are_you_sure_you_want_to_leave_track_my_shot
+    val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val createAccount = R.string.create_account
+    val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount = R.string.current_account_has_not_been_verified_please_open_email_to_verify_account
     val deviceIsCurrentlyNotConnectedToInternetDesc = R.string.device_is_currently_not_connected_to_internet_desc
     val emailHasBeenSentToRestPasswordPleaseFollowDirectionsToResetPassword = R.string.email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password
     val emailHasBeenSentToVerifyAccountPleaseOpenEmailSentEmailToVerifyAccount = R.string.email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account

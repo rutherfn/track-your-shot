@@ -38,6 +38,8 @@ class AuthenticationViewModel(
         }
     }
 
+    internal suspend fun onCheckIfAccountHaBeenVerifiedClicked() = collectIfUserIsVerifiedAndAttemptToCreateAccount(shouldShowAccountIsNotVerifiedAlert = true)
+
     internal fun onNavigateClose() {
         navigation.alert(
             alert = Alert(
@@ -58,11 +60,9 @@ class AuthenticationViewModel(
 
     internal fun onAlertConfirmButtonClicked() = navigation.finish()
 
-    internal suspend fun onResume() {
-        collectIfUserIsVerifiedAndAttemptToCreateAccount()
-    }
+    internal suspend fun onResume() = collectIfUserIsVerifiedAndAttemptToCreateAccount(shouldShowAccountIsNotVerifiedAlert = false)
 
-    private suspend fun collectIfUserIsVerifiedAndAttemptToCreateAccount() {
+    private suspend fun collectIfUserIsVerifiedAndAttemptToCreateAccount(shouldShowAccountIsNotVerifiedAlert: Boolean) {
         readFirebaseUserInfo.isEmailVerifiedFlow().collectLatest { isVerified ->
             if (isVerified) {
                 safeLet(username, email) { usernameArgument, emailArgument ->
@@ -80,6 +80,10 @@ class AuthenticationViewModel(
                             navigation.alert(alert = errorCreatingAccountAlert())
                         }
                     }
+                }
+            } else {
+                if (shouldShowAccountIsNotVerifiedAlert) {
+                    navigation.alert(alert = errorVerifyingAccount())
                 }
             }
         }
@@ -105,6 +109,18 @@ class AuthenticationViewModel(
                 buttonText = application.getString(StringsIds.gotIt)
             ),
             description = application.getString(StringsIds.thereWasAErrorCreatingYourAccountPleaseTryAgain)
+        )
+    }
+
+    internal fun errorVerifyingAccount(): Alert {
+        return Alert(
+            onDismissClicked = {},
+            title = application.getString(StringsIds.accountHasNotBeenVerified),
+            dismissButton = AlertConfirmAndDismissButton(
+                onButtonClicked = {},
+                buttonText = application.getString(StringsIds.gotIt)
+            ),
+            description = application.getString(StringsIds.currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount)
         )
     }
 
