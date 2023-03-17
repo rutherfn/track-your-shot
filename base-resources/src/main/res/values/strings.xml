@@ -11,6 +11,7 @@
     <string name="forgot_password">Forgot Password</string>
     <string name="email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password">Email has been sent to reset password. Please follow directions to reset password.</string>
     <string name="email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account">Email has been sent to verify account. Please open sent email to verify account.</string>
+    <string name="email_is_not_in_correct_format_please_enter_email_in_correct_format">Email is not in correct format. Please enter email in correct format</string>
     <string name="email_is_required_please_enter_a_email_to_create_a_account">Email is required. Please enter a email to create a account.</string>
     <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">Email is required. Please enter a email to login to existing account.</string>
     <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">Email is required. Please enter a email to reset password for existing account.</string>

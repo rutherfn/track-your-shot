@@ -17,6 +17,7 @@ object StringsIds {
     val empty = R.string.empty
     val emptyField = R.string.empty_field
     val emptyFields = R.string.empty_fields
+    val emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat = R.string.email_is_not_in_correct_format_please_enter_email_in_correct_format
     val emailIsRequiredPleaseEnterAEmailToCreateAAccount = R.string.email_is_required_please_enter_a_email_to_create_a_account
     val emailIsRequiredPleaseEnterAEmailToLoginToExistingAccount = R.string.email_is_required_please_enter_a_email_to_login_to_existing_account
     val emailIsRequiredPleaseEnterAEmailToResetPasswordForExistingAccount = R.string.email_is_required_please_enter_a_email_to_reset_password_for_existing_account

@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount
 
 import android.app.Application
+import androidx.core.util.PatternsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
@@ -26,6 +27,7 @@ class CreateAccountViewModel(
 
     internal var isUsernameEmptyOrNull: Boolean = false
     internal var isEmailEmptyOrNull: Boolean = false
+    internal var isEmailInNotCorrectFormat: Boolean = false
     internal var isPasswordEmptyOrNull: Boolean = false
     internal var isTwoOrMoreFieldsEmptyOrNull: Boolean = false
 
@@ -55,6 +57,7 @@ class CreateAccountViewModel(
 
         setIsUsernameEmptyOrNull(username = createAccountState.username)
         setIsEmailEmptyOrNull(email = createAccountState.email)
+        setIsEmailInNotCorrectFormat(email = createAccountState.email)
         setIsPasswordEmptyOrNull(password = createAccountState.password)
         setIsTwoOrMoreFieldsEmptyOrNull()
 
@@ -87,6 +90,14 @@ class CreateAccountViewModel(
             isEmailEmptyOrNull = value.isEmpty()
         } ?: run {
             isEmailEmptyOrNull = true
+        }
+    }
+
+    internal fun setIsEmailInNotCorrectFormat(email: String?) {
+        email?.let { value ->
+            isEmailInNotCorrectFormat = !PatternsCompat.EMAIL_ADDRESS.matcher(value).matches()
+        } ?: run {
+            isEmailInNotCorrectFormat = true
         }
     }
 
@@ -135,6 +146,13 @@ class CreateAccountViewModel(
                 title = application.getString(StringsIds.emptyField),
                 description = application.getString(
                     StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount
+                )
+            )
+        } else if (isEmailInNotCorrectFormat) {
+            return defaultAlert.copy(
+                title = application.getString(StringsIds.emptyField),
+                description = application.getString(
+                    StringsIds.emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat
                 )
             )
         } else if (isPasswordEmptyOrNull) {

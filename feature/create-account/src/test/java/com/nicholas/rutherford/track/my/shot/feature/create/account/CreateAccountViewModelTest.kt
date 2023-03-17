@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account
 
 import android.app.Application
+import androidx.core.util.PatternsCompat
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
@@ -12,7 +13,9 @@ import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.Authen
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -149,6 +152,52 @@ class CreateAccountViewModelTest {
             Assertions.assertEquals(
                 viewModel.isEmailEmptyOrNull,
                 true
+            )
+        }
+    }
+
+    @Nested
+    inner class SetIsEmailInNotCorrectFormat {
+        val testEmail = "testemail@yahoo.com"
+
+        @Test fun `when email is null should set isEmailInNotCorrectFormat to true`() {
+            viewModel.isEmailInNotCorrectFormat = false
+
+            viewModel.setIsEmailInNotCorrectFormat(email = null)
+
+            Assertions.assertEquals(
+                viewModel.isEmailInNotCorrectFormat,
+                true
+            )
+        }
+
+        @Test fun `when email is not null and not in correct format should set isEmailInNotCorrectFormat to true`() {
+            mockkObject(PatternsCompat.EMAIL_ADDRESS)
+
+            every { PatternsCompat.EMAIL_ADDRESS.matcher(testEmail).matches() } returns false
+
+            viewModel.isEmailInNotCorrectFormat = false
+
+            viewModel.setIsEmailInNotCorrectFormat(email = testEmail)
+
+            Assertions.assertEquals(
+                viewModel.isEmailInNotCorrectFormat,
+                true
+            )
+        }
+
+        @Test fun `when email is not null and in correct format should set isEmailInNotCorrectFormat to false`() {
+            mockkObject(PatternsCompat.EMAIL_ADDRESS)
+
+            every { PatternsCompat.EMAIL_ADDRESS.matcher(testEmail).matches() } returns true
+
+            viewModel.isEmailInNotCorrectFormat = false
+
+            viewModel.setIsEmailInNotCorrectFormat(email = testEmail)
+
+            Assertions.assertEquals(
+                viewModel.isEmailInNotCorrectFormat,
+                false
             )
         }
     }
@@ -410,6 +459,7 @@ class CreateAccountViewModelTest {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = false
+            viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
             viewModel.isTwoOrMoreFieldsEmptyOrNull = true
 
@@ -432,6 +482,7 @@ class CreateAccountViewModelTest {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = true
             viewModel.isEmailEmptyOrNull = false
+            viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
 
             Assertions.assertEquals(
@@ -453,6 +504,7 @@ class CreateAccountViewModelTest {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = true
+            viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
 
             Assertions.assertEquals(
@@ -460,6 +512,32 @@ class CreateAccountViewModelTest {
                 viewModel.defaultAlert.copy(
                     title = application.getString(StringsIds.emptyFields),
                     description = application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount)
+                )
+            )
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when isEmailInNotCorrectFormat is set to true should return back email is not in correct format alert`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            Dispatchers.setMain(dispatcher)
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailInNotCorrectFormat = true
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(
+                        StringsIds.emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat
+                    )
                 )
             )
         }
@@ -474,6 +552,7 @@ class CreateAccountViewModelTest {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = false
+            viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = true
 
             Assertions.assertEquals(
@@ -495,6 +574,7 @@ class CreateAccountViewModelTest {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = false
+            viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
 
             Assertions.assertEquals(
