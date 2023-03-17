@@ -178,7 +178,7 @@ class CreateAccountViewModel(
                             }
                         }
                 } else {
-                    showUnableToCreateFirebaseAuthAlert()
+                    showUnableToCreateFirebaseAuthAlert(message = createAccountFirebaseAuthResponse.exception?.message)
                 }
             }
     }
@@ -199,12 +199,12 @@ class CreateAccountViewModel(
         navigation.navigateToAuthentication(email = email, username = username)
     }
 
-    private fun showUnableToCreateFirebaseAuthAlert() {
+    private fun showUnableToCreateFirebaseAuthAlert(message: String?) {
         navigation.disableProgress()
         navigation.alert(
             alert = defaultAlert.copy(
                 title = application.getString(StringsIds.unableToCreateAccount),
-                description = application.getString(StringsIds.havingTroubleCreatingYourAccountPleaseTryAgain)
+                description = message ?: application.getString(StringsIds.havingTroubleCreatingYourAccountPleaseTryAgain)
             )
         )
     }
