@@ -178,7 +178,10 @@ class CreateAccountViewModel(
                 description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
             )
         } else if (isPasswordInNotCorrectFormat) {
-            return null
+            return defaultAlert.copy(
+                title = application.getString(StringsIds.emptyField),
+                description = application.getString(StringsIds.passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat)
+            )
         } else {
             return null
         }

@@ -562,6 +562,7 @@ class CreateAccountViewModelTest {
             viewModel.isEmailEmptyOrNull = false
             viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
+            viewModel.isPasswordInNotCorrectFormat = false
             viewModel.isTwoOrMoreFieldsEmptyOrNull = true
 
             Assertions.assertEquals(
@@ -585,6 +586,7 @@ class CreateAccountViewModelTest {
             viewModel.isEmailEmptyOrNull = false
             viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
+            viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
                 viewModel.validateFieldsWithOptionalAlert(),
@@ -607,6 +609,7 @@ class CreateAccountViewModelTest {
             viewModel.isEmailEmptyOrNull = true
             viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
+            viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
                 viewModel.validateFieldsWithOptionalAlert(),
@@ -622,8 +625,6 @@ class CreateAccountViewModelTest {
         fun `when isEmailInNotCorrectFormat is set to true should return back email is not in correct format alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
-            Dispatchers.setMain(dispatcher)
-
             coEvery { network.isDeviceConnectedToInternet() } returns true
 
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
@@ -631,6 +632,7 @@ class CreateAccountViewModelTest {
             viewModel.isEmailInNotCorrectFormat = true
             viewModel.isEmailEmptyOrNull = false
             viewModel.isPasswordEmptyOrNull = false
+            viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
                 viewModel.validateFieldsWithOptionalAlert(),
@@ -655,12 +657,38 @@ class CreateAccountViewModelTest {
             viewModel.isEmailEmptyOrNull = false
             viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = true
+            viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
                 viewModel.validateFieldsWithOptionalAlert(),
                 viewModel.defaultAlert.copy(
                     title = application.getString(StringsIds.emptyFields),
                     description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
+                )
+            )
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when isPasswordInNotCorrectFormat is set to true should return back password is not in correct format alert`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailInNotCorrectFormat = false
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+            viewModel.isPasswordInNotCorrectFormat = true
+
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(
+                        StringsIds.passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat
+                    )
                 )
             )
         }
@@ -677,6 +705,7 @@ class CreateAccountViewModelTest {
             viewModel.isEmailEmptyOrNull = false
             viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
+            viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
                 viewModel.validateFieldsWithOptionalAlert(),

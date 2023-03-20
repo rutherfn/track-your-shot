@@ -35,6 +35,7 @@ object StringsIds {
     val notConnectedToInternet = R.string.not_connected_to_internet
     val openEmail = R.string.open_email
     val password = R.string.password
+    val passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat = R.string.password_is_not_in_correct_format_please_enter_password_in_correct_format
     val passwordIsRequiredPleaseEnterAPasswordToCreateAAccount = R.string.password_is_required_please_enter_a_password_to_create_a_account
     val passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount = R.string.password_is_required_please_enter_a_password_to_login_to_existing_account
     val proceedWithYourAccount = R.string.proceed_with_your_account
