@@ -7,6 +7,8 @@ import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAc
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountState
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.EMAIL_PATTERN
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.PASSWORD_PATTERN
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
@@ -70,10 +72,80 @@ class CreateAccountViewModelTest {
     }
 
     @Test
+    fun constants() {
+        Assertions.assertEquals(EMAIL_PATTERN, "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}\$")
+        Assertions.assertEquals(PASSWORD_PATTERN, "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$")
+    }
+
+    @Test
     fun initializeCreateAccountState() {
         Assertions.assertEquals(
             viewModel.createAccountStateFlow.value, state
         )
+    }
+
+    @Nested
+    inner class EmailPattern {
+        private val regex = EMAIL_PATTERN.toRegex()
+
+        private val invalidEmails = listOf(
+            "joe@123aspx.com",
+            "joe@web.info ",
+            "joe@company.co.uk"
+        )
+        private val validEmails = listOf(
+            "oe@aol.com",
+            "ssmith@aspalliance.com",
+            "a@b.cc"
+        )
+
+        @Test
+        fun `should not contain match with invalid emails`() {
+            invalidEmails.forEach { value ->
+                Assertions.assertFalse(regex.containsMatchIn(value))
+            }
+        }
+
+        @Test
+        fun `should contain match with valid emails`() {
+            validEmails.forEach { value ->
+                Assertions.assertTrue(regex.containsMatchIn(value))
+            }
+        }
+    }
+
+    @Nested
+    inner class PasswordPattern {
+        private val regex = PASSWORD_PATTERN.toRegex()
+
+        private val invalidPasswords = listOf(
+            "Pass12",
+            "password#@@@12",
+            "PASS1234@@#",
+            "Password$$$$",
+            "Password121212"
+        )
+        private val validPasswords = listOf(
+            "Password$123",
+            "CorrectNickPassword&122",
+            "passWord%12121",
+            "trackMyShotIsAwesome@12",
+            "Password$$$$121"
+        )
+
+        @Test
+        fun `should not contain match with invalid passwords`() {
+            invalidPasswords.forEach { value ->
+                Assertions.assertFalse(regex.containsMatchIn(value))
+            }
+        }
+
+        @Test
+        fun `should contain match with valid passwords`() {
+            validPasswords.forEach { value ->
+                Assertions.assertTrue(regex.containsMatchIn(value))
+            }
+        }
     }
 
     @Test fun `on back button clicked should pop`() {
@@ -156,9 +228,19 @@ class CreateAccountViewModelTest {
         }
     }
 
+//    @Nested
+//    inner class SetIsPasswordInNotCorrectFormat {
+//
+//        @Test fun `when password is null should set isPasswordNotInNotCorrectFormat to true`() {
+//            viewModel.isPasswordInNotCorrectFormat = false
+//
+//            viewModel.setIsPasswordNotInCorrectFormat("dsds")
+//        }
+//    }
+
     @Nested
     inner class SetIsEmailInNotCorrectFormat {
-        val testEmail = "testemail@yahoo.com"
+        private val testEmail = "testemail@yahoo.com"
 
         @Test fun `when email is null should set isEmailInNotCorrectFormat to true`() {
             viewModel.isEmailInNotCorrectFormat = false
