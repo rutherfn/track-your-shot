@@ -10,8 +10,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nicholas.rutherford.track.my.shot.compose.components.AlertDialog
 import com.nicholas.rutherford.track.my.shot.compose.components.ProgressDialog
+import com.nicholas.rutherford.track.my.shot.compose.components.alerts.DialogWithTextField
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.my.shot.data.shared.dialogtextfield.DialogTextField
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationScreen
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
@@ -48,6 +50,10 @@ fun NavigationComponent(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
+    val dialogTextFieldState by navigator.dialogWithTextFieldActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
     val emailState by navigator.emailActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
@@ -70,11 +76,17 @@ fun NavigationComponent(
     )
 
     var alert: Alert? by remember { mutableStateOf(value = null) }
+    var dialogTextField: DialogTextField? by remember { mutableStateOf(value = null) }
     var progress: Progress? by remember { mutableStateOf(value = null) }
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
             alert = newAlert
+        }
+    }
+    LaunchedEffect(dialogTextFieldState) {
+        dialogTextFieldState?.let { newDialogTextField ->
+            dialogTextField = newDialogTextField
         }
     }
     LaunchedEffect(emailState) {
@@ -184,6 +196,44 @@ fun NavigationComponent(
                 )
             } ?: run { null },
             description = newAlert.description
+        )
+    }
+
+    dialogTextField?.let { newDialogTextField ->
+        DialogWithTextField(
+            onDismissClicked = {
+                navigator.dialogWithTextField(dialogWithTextFieldAction = null)
+                dialogTextField = null
+                newDialogTextField.onDismissClicked.invoke()
+            },
+            title = newDialogTextField.title,
+            textFieldValue = newDialogTextField.textFieldValue,
+            textFieldLabelValue = newDialogTextField.textFieldLabelValue,
+            onValueChange = {
+                navigator.dialogWithTextField(dialogWithTextFieldAction = null)
+                dialogTextField = null
+                newDialogTextField.onValueChange.invoke()
+            },
+            confirmButton = newDialogTextField.confirmButton?.let { confirmButton ->
+                AlertConfirmAndDismissButton(
+                    onButtonClicked = {
+                        navigator.dialogWithTextField(dialogWithTextFieldAction = null)
+                         dialogTextField = null
+                        confirmButton.onButtonClicked.invoke()
+                    },
+                    buttonText = confirmButton.buttonText
+                )
+            } ?: run { null },
+            dismissButton = newDialogTextField.dismissButton?.let { dismissButton ->
+                AlertConfirmAndDismissButton(
+                    onButtonClicked = {
+                        navigator.dialogWithTextField(dialogWithTextFieldAction = null)
+                        dialogTextField = null
+                        dismissButton.onButtonClicked.invoke()
+                    },
+                    buttonText = dismissButton.buttonText
+                )
+            } ?: run { null }
         )
     }
 
