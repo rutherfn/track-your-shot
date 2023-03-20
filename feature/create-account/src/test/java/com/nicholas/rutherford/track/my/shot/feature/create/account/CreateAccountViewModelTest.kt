@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account
 
 import android.app.Application
-import androidx.core.util.PatternsCompat
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
@@ -15,9 +14,7 @@ import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.Authen
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkObject
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -228,19 +225,49 @@ class CreateAccountViewModelTest {
         }
     }
 
-//    @Nested
-//    inner class SetIsPasswordInNotCorrectFormat {
-//
-//        @Test fun `when password is null should set isPasswordNotInNotCorrectFormat to true`() {
-//            viewModel.isPasswordInNotCorrectFormat = false
-//
-//            viewModel.setIsPasswordNotInCorrectFormat("dsds")
-//        }
-//    }
+    @Nested
+    inner class SetIsPasswordInNotCorrectFormat {
+        private val testPassword = "Password$12341"
+        private val invalidTestPassword = "Password"
+
+        @Test fun `when password is null should set isPasswordNotInNotCorrectFormat to true`() {
+            viewModel.isPasswordInNotCorrectFormat = false
+
+            viewModel.setIsPasswordNotInCorrectFormat(password = null)
+
+            Assertions.assertEquals(
+                viewModel.isPasswordInNotCorrectFormat,
+                true
+            )
+        }
+
+        @Test fun `when password is not null and is invalid should set isPasswordNotInNotCorrectFormat to true`() {
+            viewModel.isPasswordInNotCorrectFormat = false
+
+            viewModel.setIsPasswordNotInCorrectFormat(password = invalidTestPassword)
+
+            Assertions.assertEquals(
+                viewModel.isPasswordInNotCorrectFormat,
+                true
+            )
+        }
+
+        @Test fun `when password is not null and is valid should set isPasswordNotInNotCorrectFormat to false`() {
+            viewModel.isPasswordInNotCorrectFormat = false
+
+            viewModel.setIsPasswordNotInCorrectFormat(password = testPassword)
+
+            Assertions.assertEquals(
+                viewModel.isPasswordInNotCorrectFormat,
+                false
+            )
+        }
+    }
 
     @Nested
     inner class SetIsEmailInNotCorrectFormat {
         private val testEmail = "testemail@yahoo.com"
+        private val invalidTestEmail = "testemail"
 
         @Test fun `when email is null should set isEmailInNotCorrectFormat to true`() {
             viewModel.isEmailInNotCorrectFormat = false
@@ -253,14 +280,10 @@ class CreateAccountViewModelTest {
             )
         }
 
-        @Test fun `when email is not null and not in correct format should set isEmailInNotCorrectFormat to true`() {
-            mockkObject(PatternsCompat.EMAIL_ADDRESS)
-
-            every { PatternsCompat.EMAIL_ADDRESS.matcher(testEmail).matches() } returns false
-
+        @Test fun `when email is not null and is invalid should set isEmailInNotCorrectFormat to true`() {
             viewModel.isEmailInNotCorrectFormat = false
 
-            viewModel.setIsEmailInNotCorrectFormat(email = testEmail)
+            viewModel.setIsEmailInNotCorrectFormat(email = invalidTestEmail)
 
             Assertions.assertEquals(
                 viewModel.isEmailInNotCorrectFormat,
@@ -268,11 +291,7 @@ class CreateAccountViewModelTest {
             )
         }
 
-        @Test fun `when email is not null and in correct format should set isEmailInNotCorrectFormat to false`() {
-            mockkObject(PatternsCompat.EMAIL_ADDRESS)
-
-            every { PatternsCompat.EMAIL_ADDRESS.matcher(testEmail).matches() } returns true
-
+        @Test fun `when email is not null and is valid should set isEmailInNotCorrectFormat to false`() {
             viewModel.isEmailInNotCorrectFormat = false
 
             viewModel.setIsEmailInNotCorrectFormat(email = testEmail)

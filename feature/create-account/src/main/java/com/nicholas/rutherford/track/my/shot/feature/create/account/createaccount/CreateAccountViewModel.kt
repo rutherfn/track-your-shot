@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount
 
 import android.app.Application
-import androidx.core.util.PatternsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
@@ -105,7 +104,7 @@ class CreateAccountViewModel(
 
     internal fun setIsEmailInNotCorrectFormat(email: String?) {
         email?.let { value ->
-            isEmailInNotCorrectFormat = !PatternsCompat.EMAIL_ADDRESS.matcher(value).matches()
+            isEmailInNotCorrectFormat = !EMAIL_PATTERN.toRegex().matches(value)
         } ?: run {
             isEmailInNotCorrectFormat = true
         }
@@ -121,7 +120,7 @@ class CreateAccountViewModel(
 
     internal fun setIsPasswordNotInCorrectFormat(password: String?) {
         password?.let { value ->
-            isPasswordInNotCorrectFormat = PASSWORD_PATTERN.toRegex().matches(value)
+            isPasswordInNotCorrectFormat = !PASSWORD_PATTERN.toRegex().matches(value)
         } ?: run {
             isPasswordInNotCorrectFormat = true
         }
