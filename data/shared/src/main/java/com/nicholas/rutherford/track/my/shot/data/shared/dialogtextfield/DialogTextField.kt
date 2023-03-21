@@ -10,5 +10,4 @@ data class DialogTextField(
     val onValueChange: (value: String) -> Unit,
     val confirmButton: AlertConfirmAndDismissButton? = null,
     val dismissButton: AlertConfirmAndDismissButton? = null
-) {
-}
+)

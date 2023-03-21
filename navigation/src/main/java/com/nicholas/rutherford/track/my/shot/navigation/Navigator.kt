@@ -15,7 +15,7 @@ interface Navigator {
     val progressActions: StateFlow<Progress?>
 
     fun alert(alertAction: Alert?)
-    fun dialogWithTextField(dialogWithTextFieldAction:DialogTextField?)
+    fun dialogWithTextField(dialogWithTextFieldAction: DialogTextField?)
     fun emailAction(emailAction: Boolean?)
     fun finish(finishAction: Boolean?)
     fun navigate(navigationAction: NavigationAction?)

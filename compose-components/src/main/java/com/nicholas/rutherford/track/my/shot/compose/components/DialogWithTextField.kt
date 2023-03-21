@@ -1,7 +1,17 @@
-package com.nicholas.rutherford.track.my.shot.compose.components.alerts
+package com.nicholas.rutherford.track.my.shot.compose.components
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +30,7 @@ fun DialogWithTextField(
     confirmButton: AlertConfirmAndDismissButton? = null,
     dismissButton: AlertConfirmAndDismissButton? = null
 ) {
-    Dialog(onDismissRequest = { onDismissClicked.invoke() } ) {
+    Dialog(onDismissRequest = { onDismissClicked.invoke() }) {
         Surface(shape = MaterialTheme.shapes.medium) {
             Column {
                 Column(modifier = Modifier.padding(Padding.twentyFour)) {
@@ -35,27 +45,28 @@ fun DialogWithTextField(
                     OutlinedTextField(
                         value = textFieldValue,
                         onValueChange = { onValueChange.invoke(it) },
-                        label =  { Text(text = textFieldLabelValue) }
+                        label = { Text(text = textFieldLabelValue) }
                     )
+                }
 
-                    Row(
-                        modifier = Modifier.size(4.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
-                    ) {
-                        confirmButton?.let { button ->
-                            TextButton(
-                                onClick = { button.onButtonClicked.invoke() },
-                                content = { Text(text = button.buttonText)}
-                            )
-                        }
+                Row(
+                    modifier = Modifier.padding(8.dp).fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
+                ) {
+                    confirmButton?.let { button ->
+                        println("get here 12121")
+                        TextButton(
+                            onClick = { button.onButtonClicked.invoke() },
+                            content = { Text(text = button.buttonText) }
+                        )
+                    }
 
-                        dismissButton?.let { button ->
-                            TextButton(
-                                onClick = { button.onButtonClicked.invoke() },
-                                content = { Text(text = button.buttonText)}
-                            )
-                        }
-
+                    dismissButton?.let { button ->
+                        println("get here test1211")
+                        TextButton(
+                            onClick = { button.onButtonClicked.invoke() },
+                            content = { Text(text = button.buttonText) }
+                        )
                     }
                 }
             }

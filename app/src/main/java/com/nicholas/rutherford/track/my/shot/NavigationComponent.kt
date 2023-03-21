@@ -9,8 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nicholas.rutherford.track.my.shot.compose.components.AlertDialog
+import com.nicholas.rutherford.track.my.shot.compose.components.DialogWithTextField
 import com.nicholas.rutherford.track.my.shot.compose.components.ProgressDialog
-import com.nicholas.rutherford.track.my.shot.compose.components.alerts.DialogWithTextField
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.dialogtextfield.DialogTextField
@@ -210,15 +210,13 @@ fun NavigationComponent(
             textFieldValue = newDialogTextField.textFieldValue,
             textFieldLabelValue = newDialogTextField.textFieldLabelValue,
             onValueChange = {
-                navigator.dialogWithTextField(dialogWithTextFieldAction = null)
-                dialogTextField = null
-                newDialogTextField.onValueChange.invoke()
+                newDialogTextField.onValueChange.invoke(newDialogTextField.textFieldLabelValue)
             },
             confirmButton = newDialogTextField.confirmButton?.let { confirmButton ->
                 AlertConfirmAndDismissButton(
                     onButtonClicked = {
                         navigator.dialogWithTextField(dialogWithTextFieldAction = null)
-                         dialogTextField = null
+                        dialogTextField = null
                         confirmButton.onButtonClicked.invoke()
                     },
                     buttonText = confirmButton.buttonText

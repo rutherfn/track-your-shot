@@ -27,7 +27,7 @@ class NavigatorImpl : Navigator {
 
     override fun alert(alertAction: Alert?) = _alertActions.update { alertAction }
 
-    override fun dialogWithTextField(dialogWithTextFieldAction: DialogTextField?)  = _dialogWithTextFieldActions.update { dialogWithTextFieldAction }
+    override fun dialogWithTextField(dialogWithTextFieldAction: DialogTextField?) = _dialogWithTextFieldActions.update { dialogWithTextFieldAction }
 
     override fun emailAction(emailAction: Boolean?) = _emailActions.update { emailAction }
 
