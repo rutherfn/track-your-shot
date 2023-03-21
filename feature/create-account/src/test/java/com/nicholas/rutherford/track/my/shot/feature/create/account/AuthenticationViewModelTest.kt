@@ -2,6 +2,8 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account
 
 import android.app.Application
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
+import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.TestAccountInfoRealTimeResponse
+import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.USER_NAME_ACCOUNT_INFO_REALTIME_RESPONSE
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigation
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
@@ -231,6 +233,32 @@ class AuthenticationViewModelTest {
 
     @Nested
     inner class OnResume {
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when getAccountInfoListFlow returns back as empty should set allUsernamesList to empty list`() = runTest {
+            val expectedList: List<String> = emptyList()
+
+            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(emptyList())
+
+            viewModel.onResume()
+
+            Assertions.assertEquals(viewModel.allUsernamesList, expectedList)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when getAccountInfoListFlow returns back as valid response should set allUsernamesList to values list`() = runTest {
+            val expectedList = listOf(USER_NAME_ACCOUNT_INFO_REALTIME_RESPONSE)
+
+            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(
+                listOf(TestAccountInfoRealTimeResponse().create())
+            )
+
+            viewModel.onResume()
+
+            Assertions.assertEquals(viewModel.allUsernamesList, expectedList)
+        }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test

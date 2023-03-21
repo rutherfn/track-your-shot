@@ -54,7 +54,6 @@ fun DialogWithTextField(
                     horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
                 ) {
                     confirmButton?.let { button ->
-                        println("get here 12121")
                         TextButton(
                             onClick = { button.onButtonClicked.invoke() },
                             content = { Text(text = button.buttonText) }
@@ -62,7 +61,6 @@ fun DialogWithTextField(
                     }
 
                     dismissButton?.let { button ->
-                        println("get here test1211")
                         TextButton(
                             onClick = { button.onButtonClicked.invoke() },
                             content = { Text(text = button.buttonText) }

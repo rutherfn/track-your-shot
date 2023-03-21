@@ -2,10 +2,8 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account.authenticat
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.my.shot.data.shared.dialogtextfield.DialogTextField
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
@@ -14,7 +12,6 @@ import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.Authen
 import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.my.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
@@ -29,18 +26,6 @@ class AuthenticationViewModel(
     internal var email: String? = null
 
     internal var allUsernamesList: List<String> = emptyList()
-
-    init {
-        viewModelScope.launch {
-            getAccountInfoListAndSetAllUsernamesList()
-        }
-    }
-
-    internal suspend fun getAccountInfoListAndSetAllUsernamesList() {
-        readFirebaseUserInfo.getAccountInfoListFlow().collectLatest { accountInfoRealtimeResponseList ->
-            allUsernamesList = accountInfoRealtimeResponseList?.map { accountInfoRealtimeResponse -> accountInfoRealtimeResponse.userName } ?: emptyList()
-        }
-    }
 
     internal fun updateUsernameAndEmail(usernameArgument: String?, emailArgument: String?) {
         this.username = usernameArgument
@@ -77,7 +62,16 @@ class AuthenticationViewModel(
 
     internal fun onAlertConfirmButtonClicked() = navigation.finish()
 
-    internal suspend fun onResume() = collectIfUserIsVerifiedAndAttemptToCreateAccount(shouldShowAccountIsNotVerifiedAlert = false)
+    internal suspend fun onResume() {
+        collectAccountInfoListAndSetAllUsernamesList()
+        collectIfUserIsVerifiedAndAttemptToCreateAccount(shouldShowAccountIsNotVerifiedAlert = false)
+    }
+
+    private suspend fun collectAccountInfoListAndSetAllUsernamesList() {
+        readFirebaseUserInfo.getAccountInfoListFlow().collectLatest { accountInfoRealtimeResponseList ->
+            allUsernamesList = accountInfoRealtimeResponseList?.map { accountInfoRealtimeResponse -> accountInfoRealtimeResponse.userName } ?: emptyList()
+        }
+    }
 
     private suspend fun collectIfUserIsVerifiedAndAttemptToCreateAccount(shouldShowAccountIsNotVerifiedAlert: Boolean) {
         readFirebaseUserInfo.isEmailVerifiedFlow().collectLatest { isVerified ->
