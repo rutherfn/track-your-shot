@@ -35,7 +35,6 @@ class AuthenticationViewModel(
     val shouldShowDialogWithTextFieldFlow = shouldShowDialogWithTextFieldMutableStateFlow.asStateFlow()
 
     internal fun updateUsernameAndEmail(usernameArgument: String?, emailArgument: String?) {
-        println("call this")
         this.username = usernameArgument
         this.email = emailArgument
         createSharedPreferencesForUnAuthenticatedUser()
@@ -79,6 +78,7 @@ class AuthenticationViewModel(
         newUsername: String? = null
     ) {
         val accountUsername = newUsername ?: username
+
         readFirebaseUserInfo.getAccountInfoListFlow().collectLatest { accountInfoRealtimeResponseList ->
             val allUsernamesList = accountInfoRealtimeResponseList?.map { accountInfoRealtimeResponse -> accountInfoRealtimeResponse.userName } ?: emptyList()
             accountUsername?.let { value ->
