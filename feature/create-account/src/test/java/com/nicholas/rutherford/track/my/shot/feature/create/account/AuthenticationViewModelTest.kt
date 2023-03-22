@@ -233,23 +233,24 @@ class AuthenticationViewModelTest {
 
     @Nested
     inner class OnResume {
+        private val username = "username"
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when getAccountInfoListFlow returns back as empty should set allUsernamesList to empty list`() = runTest {
-            val expectedList: List<String> = emptyList()
+        fun `when getAccountInfoListFlow returns back as empty should set usernameIsContainedInFirebase to false`() = runTest {
+            viewModel.username = username
 
             every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(emptyList())
 
             viewModel.onResume()
 
-            Assertions.assertEquals(viewModel.allUsernamesList, expectedList)
+            Assertions.assertFalse(viewModel.usernameIsContainedInFirebase)
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when getAccountInfoListFlow returns back as valid response should set allUsernamesList to values list`() = runTest {
-            val expectedList = listOf(USER_NAME_ACCOUNT_INFO_REALTIME_RESPONSE)
+        fun `when getAccountInfoListFlow returns back as valid response but it is not contained in username should set usernameIsContainedInFirebase to false`() = runTest {
+            viewModel.username = username
 
             every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(
                 listOf(TestAccountInfoRealTimeResponse().create())
@@ -257,7 +258,35 @@ class AuthenticationViewModelTest {
 
             viewModel.onResume()
 
-            Assertions.assertEquals(viewModel.allUsernamesList, expectedList)
+            Assertions.assertFalse(viewModel.usernameIsContainedInFirebase)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when getAccountInfoListFlow returns back as valid response but username is null should set usernameIsContainedInFirebase to false`() = runTest {
+            viewModel.username = null
+
+            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(
+                listOf(TestAccountInfoRealTimeResponse().create())
+            )
+
+            viewModel.onResume()
+
+            Assertions.assertFalse(viewModel.usernameIsContainedInFirebase)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when getAccountInfoListFlow returns back as valid response with included username should set usernameIsContainedInFirebase to true`() = runTest {
+            viewModel.username = USER_NAME_ACCOUNT_INFO_REALTIME_RESPONSE
+
+            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(
+                listOf(TestAccountInfoRealTimeResponse().create())
+            )
+
+            viewModel.onResume()
+
+            Assertions.assertTrue(viewModel.usernameIsContainedInFirebase)
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
