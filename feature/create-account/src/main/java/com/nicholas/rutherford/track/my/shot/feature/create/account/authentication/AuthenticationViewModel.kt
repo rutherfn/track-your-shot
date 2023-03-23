@@ -31,7 +31,7 @@ class AuthenticationViewModel(
 
     internal var usernameIsContainedInFirebase: Boolean = false
 
-    private val shouldShowDialogWithTextFieldMutableStateFlow = MutableStateFlow(value = false)
+    internal val shouldShowDialogWithTextFieldMutableStateFlow = MutableStateFlow(value = false)
     val shouldShowDialogWithTextFieldFlow = shouldShowDialogWithTextFieldMutableStateFlow.asStateFlow()
 
     internal fun updateUsernameAndEmail(usernameArgument: String?, emailArgument: String?) {
@@ -191,7 +191,7 @@ class AuthenticationViewModel(
         )
     }
 
-    internal fun newUserNameIsDuplicateAlert(): Alert {
+    internal fun newUsernameIsDuplicateAlert(): Alert {
         return Alert(
             onDismissClicked = {},
             title = application.getString(StringsIds.unableToSetNewUsername),
@@ -208,10 +208,10 @@ class AuthenticationViewModel(
         if (newUsername.isEmpty()) {
             navigation.alert(alert = newUsernameIsEmptyAlert())
         } else if (newUsername == username) {
-            navigation.alert(alert = newUserNameIsDuplicateAlert())
+            navigation.alert(alert = newUsernameIsDuplicateAlert())
         } else {
             viewModelScope.launch {
-                collectIfUserIsVerifiedAndAttemptToCreateAccount(shouldShowAccountIsNotVerifiedAlert = true, newUsername = newUsername)
+                onCheckIfAccountHaBeenVerifiedClicked()
             }
         }
     }

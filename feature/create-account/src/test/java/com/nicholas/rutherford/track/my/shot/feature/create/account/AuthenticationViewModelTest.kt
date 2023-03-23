@@ -11,10 +11,7 @@ import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserI
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.shared.preference.create.CreateSharedPreferences
-import io.mockk.coEvery
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -124,6 +121,7 @@ class AuthenticationViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back false should not attempt to create account`() = runTest {
+            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = false)
 
             viewModel.username = username
@@ -138,6 +136,7 @@ class AuthenticationViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true and username is null should not attempt to create account`() = runTest {
+            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
 
             viewModel.username = null
@@ -151,6 +150,7 @@ class AuthenticationViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true and email is null should not attempt to create account`() = runTest {
+            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
 
             viewModel.username = username
@@ -164,6 +164,7 @@ class AuthenticationViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back not successful should show error creating account alert`() = runTest {
+            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
@@ -191,6 +192,7 @@ class AuthenticationViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back successful should navigate to home`() = runTest {
+            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
@@ -244,6 +246,7 @@ class AuthenticationViewModelTest {
 
             viewModel.onResume()
 
+            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
             Assertions.assertFalse(viewModel.usernameIsContainedInFirebase)
         }
 
@@ -258,6 +261,7 @@ class AuthenticationViewModelTest {
 
             viewModel.onResume()
 
+            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
             Assertions.assertFalse(viewModel.usernameIsContainedInFirebase)
         }
 
@@ -272,6 +276,7 @@ class AuthenticationViewModelTest {
 
             viewModel.onResume()
 
+            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
             Assertions.assertFalse(viewModel.usernameIsContainedInFirebase)
         }
 
@@ -286,6 +291,7 @@ class AuthenticationViewModelTest {
 
             viewModel.onResume()
 
+            Assertions.assertTrue(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
             Assertions.assertTrue(viewModel.usernameIsContainedInFirebase)
         }
 
@@ -298,6 +304,8 @@ class AuthenticationViewModelTest {
             viewModel.email = email
 
             viewModel.onResume()
+
+            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
 
             verify(exactly = 0) { navigation.alert(alert = viewModel.errorVerifyingAccount()) }
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
@@ -313,6 +321,8 @@ class AuthenticationViewModelTest {
 
             viewModel.onResume()
 
+            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
+
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
         }
 
@@ -326,12 +336,14 @@ class AuthenticationViewModelTest {
 
             viewModel.onResume()
 
+            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back not successful should show error creating account alert`() = runTest {
+            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
@@ -351,6 +363,8 @@ class AuthenticationViewModelTest {
 
             viewModel.onResume()
 
+            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
+
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
             verify { navigation.alert(alert = viewModel.errorCreatingAccountAlert()) }
@@ -359,6 +373,7 @@ class AuthenticationViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back successful should navigate to home`() = runTest {
+            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
@@ -377,6 +392,8 @@ class AuthenticationViewModelTest {
             viewModel.email = email
 
             viewModel.onResume()
+
+            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
 
             verify { navigation.enableProgress(progress = any()) }
             verify { createSharedPreferences.createAccountHasBeenCreatedPreference(value = true) }
@@ -477,6 +494,61 @@ class AuthenticationViewModelTest {
             application.getString(StringsIds.weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain),
             viewModel.unsuccessfullySendEmailVerificationAlert().description
         )
+    }
+
+    @Test
+    fun `newUsernameIsEmptyAlert() content should match`() {
+        Assertions.assertEquals(
+            application.getString(StringsIds.unableToSetNewUsername),
+            viewModel.newUsernameIsEmptyAlert().title
+        )
+        Assertions.assertEquals(
+            application.getString(StringsIds.tryAgain),
+            viewModel.newUsernameIsEmptyAlert().confirmButton!!.buttonText
+        )
+        Assertions.assertEquals(
+            application.getString(StringsIds.weWereUnableToSetNewUsernameSinceTheUsernameIsEmptyPleaseClickTryAgainToSetNewUsername),
+            viewModel.newUsernameIsEmptyAlert().description
+        )
+    }
+
+    @Test
+    fun `newUsernameIsDuplicateAlert() content should match`() {
+        Assertions.assertEquals(
+            application.getString(StringsIds.unableToSetNewUsername),
+            viewModel.newUsernameIsDuplicateAlert().title
+        )
+        Assertions.assertEquals(
+            application.getString(StringsIds.tryAgain),
+            viewModel.newUsernameIsDuplicateAlert().confirmButton!!.buttonText
+        )
+        Assertions.assertEquals(
+            application.getString(StringsIds.weWereUnableToSetNewUsernameSinceTheUsernameIsTheSameAsTheCurrentUsernamePleaseClickTryAgainToSetNewUsername),
+            viewModel.newUsernameIsDuplicateAlert().description
+        )
+    }
+
+    @Nested
+    inner class OnConfirmNewUsernameClicked {
+        private val defaultUsername = "defaultUsername"
+
+        @Test
+        fun `when newUsername is empty should call alert`() {
+            viewModel.onConfirmNewUsernameClicked(newUsername = "")
+
+            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when newUsername is equal to the existing username should call alert`() {
+            viewModel.username = defaultUsername
+
+            viewModel.onConfirmNewUsernameClicked(newUsername = defaultUsername)
+
+            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
+            verify { navigation.alert(alert = any()) }
+        }
     }
 
     @Test
