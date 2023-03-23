@@ -13,7 +13,6 @@ interface Navigator {
     val progressActions: StateFlow<Progress?>
 
     fun alert(alertAction: Alert?)
-
     fun emailAction(emailAction: Boolean?)
     fun finish(finishAction: Boolean?)
     fun navigate(navigationAction: NavigationAction?)

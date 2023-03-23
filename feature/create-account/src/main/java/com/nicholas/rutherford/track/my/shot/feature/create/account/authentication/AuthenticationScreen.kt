@@ -18,8 +18,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import com.nicholas.rutherford.track.my.shot.compose.components.Content
+import com.nicholas.rutherford.track.my.shot.compose.components.DialogWithTextField
+import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
@@ -48,6 +49,26 @@ const val EMAIL_IMAGE_HEIGHT_WIDTH = 144
 @Composable
 fun AuthenticationScreen(viewModel: AuthenticationViewModel, usernameArgument: String?, emailArgument: String?) {
     val coroutineScope = rememberCoroutineScope()
+
+    val shouldShowDialogWithTextField = viewModel.shouldShowDialogWithTextFieldFlow.collectAsState().value
+    var textFieldValue by remember { mutableStateOf("") }
+
+    if (shouldShowDialogWithTextField) {
+        DialogWithTextField(
+            onDismissClicked = {},
+            title = stringResource(id = StringsIds.usernameInUse),
+            description = stringResource(id = StringsIds.yourUsernameIsCurrentlyAlreadyBeingUsedForTrackMyShotPleaseCreateANewUsernameAndPressConfirmToContinueVerifyingAccount),
+            textFieldValue = textFieldValue,
+            textFieldLabelValue = stringResource(id = StringsIds.userName),
+            onValueChange = {
+                textFieldValue = it
+            },
+            confirmButton = AlertConfirmAndDismissButton(
+                onButtonClicked = { viewModel.onConfirmNewUsernameClicked(newUsername = textFieldValue) },
+                buttonText = stringResource(id = StringsIds.confirm)
+            )
+        )
+    }
 
     viewModel.updateUsernameAndEmail(
         usernameArgument = usernameArgument,
@@ -109,9 +130,7 @@ fun AuthenticationScreenContent(
         ClickableText(
             text = AnnotatedString(stringResource(id = StringsIds.checkIfAccountHaBeenVerified)),
             onClick = {
-                coroutineScope.launch {
-                    viewModel.onCheckIfAccountHaBeenVerifiedClicked()
-                }
+                coroutineScope.launch { viewModel.onCheckIfAccountHaBeenVerifiedClicked() }
             },
             style = TextStyles.hyperLink.copy(fontSize = 16.sp, color = Color.Blue)
         )

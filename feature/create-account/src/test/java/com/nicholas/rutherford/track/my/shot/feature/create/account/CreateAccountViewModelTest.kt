@@ -6,6 +6,8 @@ import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAc
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountState
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.EMAIL_PATTERN
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.PASSWORD_PATTERN
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
@@ -67,10 +69,80 @@ class CreateAccountViewModelTest {
     }
 
     @Test
+    fun constants() {
+        Assertions.assertEquals(EMAIL_PATTERN, "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}\$")
+        Assertions.assertEquals(PASSWORD_PATTERN, "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$")
+    }
+
+    @Test
     fun initializeCreateAccountState() {
         Assertions.assertEquals(
             viewModel.createAccountStateFlow.value, state
         )
+    }
+
+    @Nested
+    inner class EmailPattern {
+        private val regex = EMAIL_PATTERN.toRegex()
+
+        private val invalidEmails = listOf(
+            "joe@123aspx.com",
+            "joe@web.info ",
+            "joe@company.co.uk"
+        )
+        private val validEmails = listOf(
+            "oe@aol.com",
+            "ssmith@aspalliance.com",
+            "a@b.cc"
+        )
+
+        @Test
+        fun `should not contain match with invalid emails`() {
+            invalidEmails.forEach { value ->
+                Assertions.assertFalse(regex.containsMatchIn(value))
+            }
+        }
+
+        @Test
+        fun `should contain match with valid emails`() {
+            validEmails.forEach { value ->
+                Assertions.assertTrue(regex.containsMatchIn(value))
+            }
+        }
+    }
+
+    @Nested
+    inner class PasswordPattern {
+        private val regex = PASSWORD_PATTERN.toRegex()
+
+        private val invalidPasswords = listOf(
+            "Pass12",
+            "password#@@@12",
+            "PASS1234@@#",
+            "Password$$$$",
+            "Password121212"
+        )
+        private val validPasswords = listOf(
+            "Password$123",
+            "CorrectNickPassword&122",
+            "passWord%12121",
+            "trackMyShotIsAwesome@12",
+            "Password$$$$121"
+        )
+
+        @Test
+        fun `should not contain match with invalid passwords`() {
+            invalidPasswords.forEach { value ->
+                Assertions.assertFalse(regex.containsMatchIn(value))
+            }
+        }
+
+        @Test
+        fun `should contain match with valid passwords`() {
+            validPasswords.forEach { value ->
+                Assertions.assertTrue(regex.containsMatchIn(value))
+            }
+        }
     }
 
     @Test fun `on back button clicked should pop`() {
@@ -149,6 +221,84 @@ class CreateAccountViewModelTest {
             Assertions.assertEquals(
                 viewModel.isEmailEmptyOrNull,
                 true
+            )
+        }
+    }
+
+    @Nested
+    inner class SetIsPasswordInNotCorrectFormat {
+        private val testPassword = "Password$12341"
+        private val invalidTestPassword = "Password"
+
+        @Test fun `when password is null should set isPasswordNotInNotCorrectFormat to true`() {
+            viewModel.isPasswordInNotCorrectFormat = false
+
+            viewModel.setIsPasswordNotInCorrectFormat(password = null)
+
+            Assertions.assertEquals(
+                viewModel.isPasswordInNotCorrectFormat,
+                true
+            )
+        }
+
+        @Test fun `when password is not null and is invalid should set isPasswordNotInNotCorrectFormat to true`() {
+            viewModel.isPasswordInNotCorrectFormat = false
+
+            viewModel.setIsPasswordNotInCorrectFormat(password = invalidTestPassword)
+
+            Assertions.assertEquals(
+                viewModel.isPasswordInNotCorrectFormat,
+                true
+            )
+        }
+
+        @Test fun `when password is not null and is valid should set isPasswordNotInNotCorrectFormat to false`() {
+            viewModel.isPasswordInNotCorrectFormat = false
+
+            viewModel.setIsPasswordNotInCorrectFormat(password = testPassword)
+
+            Assertions.assertEquals(
+                viewModel.isPasswordInNotCorrectFormat,
+                false
+            )
+        }
+    }
+
+    @Nested
+    inner class SetIsEmailInNotCorrectFormat {
+        private val testEmail = "testemail@yahoo.com"
+        private val invalidTestEmail = "testemail"
+
+        @Test fun `when email is null should set isEmailInNotCorrectFormat to true`() {
+            viewModel.isEmailInNotCorrectFormat = false
+
+            viewModel.setIsEmailInNotCorrectFormat(email = null)
+
+            Assertions.assertEquals(
+                viewModel.isEmailInNotCorrectFormat,
+                true
+            )
+        }
+
+        @Test fun `when email is not null and is invalid should set isEmailInNotCorrectFormat to true`() {
+            viewModel.isEmailInNotCorrectFormat = false
+
+            viewModel.setIsEmailInNotCorrectFormat(email = invalidTestEmail)
+
+            Assertions.assertEquals(
+                viewModel.isEmailInNotCorrectFormat,
+                true
+            )
+        }
+
+        @Test fun `when email is not null and is valid should set isEmailInNotCorrectFormat to false`() {
+            viewModel.isEmailInNotCorrectFormat = false
+
+            viewModel.setIsEmailInNotCorrectFormat(email = testEmail)
+
+            Assertions.assertEquals(
+                viewModel.isEmailInNotCorrectFormat,
+                false
             )
         }
     }
@@ -410,7 +560,9 @@ class CreateAccountViewModelTest {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = false
+            viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
+            viewModel.isPasswordInNotCorrectFormat = false
             viewModel.isTwoOrMoreFieldsEmptyOrNull = true
 
             Assertions.assertEquals(
@@ -432,7 +584,9 @@ class CreateAccountViewModelTest {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = true
             viewModel.isEmailEmptyOrNull = false
+            viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
+            viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
                 viewModel.validateFieldsWithOptionalAlert(),
@@ -453,13 +607,40 @@ class CreateAccountViewModelTest {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = true
+            viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
+            viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
                 viewModel.validateFieldsWithOptionalAlert(),
                 viewModel.defaultAlert.copy(
                     title = application.getString(StringsIds.emptyFields),
                     description = application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount)
+                )
+            )
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when isEmailInNotCorrectFormat is set to true should return back email is not in correct format alert`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailInNotCorrectFormat = true
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+            viewModel.isPasswordInNotCorrectFormat = false
+
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(
+                        StringsIds.emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat
+                    )
                 )
             )
         }
@@ -474,13 +655,40 @@ class CreateAccountViewModelTest {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = false
+            viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = true
+            viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
                 viewModel.validateFieldsWithOptionalAlert(),
                 viewModel.defaultAlert.copy(
                     title = application.getString(StringsIds.emptyFields),
                     description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
+                )
+            )
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when isPasswordInNotCorrectFormat is set to true should return back password is not in correct format alert`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isEmailInNotCorrectFormat = false
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isPasswordEmptyOrNull = false
+            viewModel.isPasswordInNotCorrectFormat = true
+
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(
+                        StringsIds.passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat
+                    )
                 )
             )
         }
@@ -495,7 +703,9 @@ class CreateAccountViewModelTest {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = false
+            viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
+            viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
                 viewModel.validateFieldsWithOptionalAlert(),

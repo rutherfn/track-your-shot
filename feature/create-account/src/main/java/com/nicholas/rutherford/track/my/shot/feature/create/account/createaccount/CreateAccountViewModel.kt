@@ -16,6 +16,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+// Simple email expression. Doesn't allow numbers in the domain name and doesn't allow for top level domains
+// that are less than 2 or more than 3 letters (which is fine until they allow more).
+// Doesn't handle multiple &quot;.&quot; in the domain
+const val EMAIL_PATTERN = "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}\$"
+
+// Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
+const val PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$"
+
 class CreateAccountViewModel(
     private val navigation: CreateAccountNavigation,
     private val application: Application,
@@ -26,7 +34,9 @@ class CreateAccountViewModel(
 
     internal var isUsernameEmptyOrNull: Boolean = false
     internal var isEmailEmptyOrNull: Boolean = false
+    internal var isEmailInNotCorrectFormat: Boolean = false
     internal var isPasswordEmptyOrNull: Boolean = false
+    internal var isPasswordInNotCorrectFormat: Boolean = false
     internal var isTwoOrMoreFieldsEmptyOrNull: Boolean = false
 
     private val createAccountMutableStateFlow = MutableStateFlow(
@@ -55,7 +65,9 @@ class CreateAccountViewModel(
 
         setIsUsernameEmptyOrNull(username = createAccountState.username)
         setIsEmailEmptyOrNull(email = createAccountState.email)
+        setIsEmailInNotCorrectFormat(email = createAccountState.email)
         setIsPasswordEmptyOrNull(password = createAccountState.password)
+        setIsPasswordNotInCorrectFormat(password = createAccountState.password)
         setIsTwoOrMoreFieldsEmptyOrNull()
 
         viewModelScope.launch {
@@ -90,11 +102,27 @@ class CreateAccountViewModel(
         }
     }
 
+    internal fun setIsEmailInNotCorrectFormat(email: String?) {
+        email?.let { value ->
+            isEmailInNotCorrectFormat = !EMAIL_PATTERN.toRegex().matches(value)
+        } ?: run {
+            isEmailInNotCorrectFormat = true
+        }
+    }
+
     internal fun setIsPasswordEmptyOrNull(password: String?) {
         password?.let { value ->
             isPasswordEmptyOrNull = value.isEmpty()
         } ?: run {
             isPasswordEmptyOrNull = true
+        }
+    }
+
+    internal fun setIsPasswordNotInCorrectFormat(password: String?) {
+        password?.let { value ->
+            isPasswordInNotCorrectFormat = !PASSWORD_PATTERN.toRegex().matches(value)
+        } ?: run {
+            isPasswordInNotCorrectFormat = true
         }
     }
 
@@ -137,10 +165,22 @@ class CreateAccountViewModel(
                     StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount
                 )
             )
+        } else if (isEmailInNotCorrectFormat) {
+            return defaultAlert.copy(
+                title = application.getString(StringsIds.emptyField),
+                description = application.getString(
+                    StringsIds.emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat
+                )
+            )
         } else if (isPasswordEmptyOrNull) {
             return defaultAlert.copy(
                 title = application.getString(StringsIds.emptyField),
                 description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
+            )
+        } else if (isPasswordInNotCorrectFormat) {
+            return defaultAlert.copy(
+                title = application.getString(StringsIds.emptyField),
+                description = application.getString(StringsIds.passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat)
             )
         } else {
             return null
@@ -160,7 +200,7 @@ class CreateAccountViewModel(
                             }
                         }
                 } else {
-                    showUnableToCreateFirebaseAuthAlert()
+                    showUnableToCreateFirebaseAuthAlert(message = createAccountFirebaseAuthResponse.exception?.message)
                 }
             }
     }
@@ -181,12 +221,12 @@ class CreateAccountViewModel(
         navigation.navigateToAuthentication(email = email, username = username)
     }
 
-    private fun showUnableToCreateFirebaseAuthAlert() {
+    private fun showUnableToCreateFirebaseAuthAlert(message: String?) {
         navigation.disableProgress()
         navigation.alert(
             alert = defaultAlert.copy(
                 title = application.getString(StringsIds.unableToCreateAccount),
-                description = application.getString(StringsIds.havingTroubleCreatingYourAccountPleaseTryAgain)
+                description = message ?: application.getString(StringsIds.havingTroubleCreatingYourAccountPleaseTryAgain)
             )
         )
     }

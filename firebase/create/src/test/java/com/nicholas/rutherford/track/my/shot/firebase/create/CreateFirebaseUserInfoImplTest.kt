@@ -62,27 +62,75 @@ class CreateFirebaseUserInfoImplTest {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `attemptToCreateAccountFirebaseAuthResponseFlow when add on complete listener is executed should set flow to valid create account response flow`() = runTest {
-        val mockTaskAuthResult = mockk<Task<AuthResult>>()
-        val slot = slot<OnCompleteListener<AuthResult>>()
+    @Nested
+    inner class AttemptToCreateAccountFirebaseAuthResponseFlow {
 
-        mockkStatic(Tasks::class)
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when add on complete listener is executed and isSuccessful returns true should set flow to valid create account response flow`() =
+            runTest {
+                val mockTaskAuthResult = mockk<Task<AuthResult>>()
+                val slot = slot<OnCompleteListener<AuthResult>>()
 
-        every { mockTaskAuthResult.isSuccessful } returns createAccountResponse.isSuccessful
-        every { mockTaskAuthResult.result!!.additionalUserInfo!!.username } returns createAccountResponse.username
-        every { mockTaskAuthResult.result!!.additionalUserInfo!!.isNewUser } returns true
-        every { mockTaskAuthResult.exception } returns null
+                mockkStatic(Tasks::class)
 
-        every { firebaseAuth.createUserWithEmailAndPassword(testEmail, testPassword).addOnCompleteListener(capture(slot)) } answers {
-            slot.captured.onComplete(mockTaskAuthResult)
-            mockTaskAuthResult
-        }
+                every { mockTaskAuthResult.isSuccessful } returns true
+                every { mockTaskAuthResult.result!!.additionalUserInfo!!.username } returns createAccountResponse.username
+                every { mockTaskAuthResult.result!!.additionalUserInfo!!.isNewUser } returns true
+                every { mockTaskAuthResult.exception } returns null
 
-        val createFirebaseUserInfo = createFirebaseUserInfoImpl.attemptToCreateAccountFirebaseAuthResponseFlow(testEmail, testPassword).first()
+                every {
+                    firebaseAuth.createUserWithEmailAndPassword(testEmail, testPassword)
+                        .addOnCompleteListener(capture(slot))
+                } answers {
+                    slot.captured.onComplete(mockTaskAuthResult)
+                    mockTaskAuthResult
+                }
 
-        Assertions.assertEquals(createAccountResponse.copy(exception = null), createFirebaseUserInfo)
+                val createFirebaseUserInfo =
+                    createFirebaseUserInfoImpl.attemptToCreateAccountFirebaseAuthResponseFlow(
+                        testEmail,
+                        testPassword
+                    ).first()
+
+                Assertions.assertEquals(
+                    createAccountResponse.copy(exception = null),
+                    createFirebaseUserInfo
+                )
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when add on complete listener is executed and isSuccessful returns false should set flow to valid create account response flow`() =
+            runTest {
+                val mockException = mockk<java.lang.Exception>(relaxed = true)
+                val mockTaskAuthResult = mockk<Task<AuthResult>>()
+                val slot = slot<OnCompleteListener<AuthResult>>()
+
+                mockkStatic(Tasks::class)
+
+                every { mockTaskAuthResult.isSuccessful } returns false
+                every { mockTaskAuthResult.exception } returns mockException
+
+                every {
+                    firebaseAuth.createUserWithEmailAndPassword(testEmail, testPassword)
+                        .addOnCompleteListener(capture(slot))
+                } answers {
+                    slot.captured.onComplete(mockTaskAuthResult)
+                    mockTaskAuthResult
+                }
+
+                val createFirebaseUserInfo =
+                    createFirebaseUserInfoImpl.attemptToCreateAccountFirebaseAuthResponseFlow(
+                        testEmail,
+                        testPassword
+                    ).first()
+
+                Assertions.assertEquals(
+                    createAccountResponse.copy(isSuccessful = false, username = null, isNewUser = null, exception = mockException),
+                    createFirebaseUserInfo
+                )
+            }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

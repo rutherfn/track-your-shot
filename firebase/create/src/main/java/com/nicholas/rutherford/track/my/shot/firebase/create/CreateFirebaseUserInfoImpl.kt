@@ -21,14 +21,25 @@ class CreateFirebaseUserInfoImpl(private val firebaseAuth: FirebaseAuth, firebas
         return callbackFlow {
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
-                    trySend(
-                        CreateAccountFirebaseAuthResponse(
-                            isSuccessful = task.isSuccessful,
-                            username = task.result?.additionalUserInfo?.username,
-                            isNewUser = task.result?.additionalUserInfo?.isNewUser,
-                            exception = task.exception
+                    if (task.isSuccessful) {
+                        trySend(
+                            CreateAccountFirebaseAuthResponse(
+                                isSuccessful = true,
+                                username = task.result?.additionalUserInfo?.username,
+                                isNewUser = task.result?.additionalUserInfo?.isNewUser,
+                                exception = null
+                            )
                         )
-                    )
+                    } else {
+                        trySend(
+                            CreateAccountFirebaseAuthResponse(
+                                isSuccessful = false,
+                                username = null,
+                                isNewUser = null,
+                                exception = task.exception
+                            )
+                        )
+                    }
                 }
             awaitClose()
         }
