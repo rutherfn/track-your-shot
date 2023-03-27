@@ -3,7 +3,12 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account
 import android.app.Application
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountFirebaseAuthResponse
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.*
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountState
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.EMAIL_PATTERN
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.PASSWORD_PATTERN
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.USERNAME_PATTERN
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
@@ -68,7 +73,7 @@ class CreateAccountViewModelTest {
     fun constants() {
         Assertions.assertEquals(EMAIL_PATTERN, "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}\$")
         Assertions.assertEquals(PASSWORD_PATTERN, "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$")
-        Assertions.assertEquals(USERNAME_PATTERN, "^[A-Za-z]\\w{7,29}\$")
+        Assertions.assertEquals(USERNAME_PATTERN, "^(?=[a-zA-Z\\d._]{8,20}\$)(?!.*[_.]{2})[^_.].*[^_.]\$")
     }
 
     @Test
@@ -142,6 +147,47 @@ class CreateAccountViewModelTest {
         }
     }
 
+    @Nested
+    inner class UsernamePattern {
+        private val regex = USERNAME_PATTERN.toRegex()
+
+        private val invalidUsernames = listOf(
+            "user",
+            "username12121212121212121212121",
+            ".username",
+            "username.",
+            "_username",
+            "username-1",
+            "username_",
+            "username$$$",
+            "..username",
+            "._username",
+            "_.username",
+            "__username"
+        )
+        private val validUsernames = listOf(
+            "UsernameValid1291",
+            "Testdsds4112",
+            "OneTestUsername2222",
+            "Test2211",
+            "Username124"
+        )
+
+        @Test
+        fun `should not contain match with invalid usernames`() {
+            invalidUsernames.forEach { value ->
+                Assertions.assertFalse(regex.containsMatchIn(value))
+            }
+        }
+
+        @Test
+        fun `should contain match with valid usernames`() {
+            validUsernames.forEach { value ->
+                Assertions.assertTrue(regex.containsMatchIn(value))
+            }
+        }
+    }
+
     @Test fun `on back button clicked should pop`() {
         viewModel.onBackButtonClicked()
 
@@ -181,6 +227,45 @@ class CreateAccountViewModelTest {
             Assertions.assertEquals(
                 viewModel.isUsernameEmptyOrNull,
                 true
+            )
+        }
+    }
+
+    @Nested
+    inner class SetIsUsernameInNotCorrectFormat {
+        private val invalidUsername = "_username"
+        private val validUsername = "Usernametest12212"
+
+        @Test fun `when username is null should set isUsernameInNotCorrectFormat to true`() {
+            viewModel.isUsernameInNotCorrectFormat = false
+
+            viewModel.setIsUsernameInNotCorrectFormat(username = null)
+
+            Assertions.assertEquals(
+                viewModel.isUsernameInNotCorrectFormat,
+                true
+            )
+        }
+
+        @Test fun `when username is not null and invalid should set isUsernameInNotCorrectFormat to true`() {
+            viewModel.isUsernameInNotCorrectFormat = false
+
+            viewModel.setIsUsernameInNotCorrectFormat(username = invalidUsername)
+
+            Assertions.assertEquals(
+                viewModel.isUsernameInNotCorrectFormat,
+                true
+            )
+        }
+
+        @Test fun `when username is not null and valid should set isUsernameInNotCorrectFormat to false`() {
+            viewModel.isUsernameInNotCorrectFormat = false
+
+            viewModel.setIsUsernameInNotCorrectFormat(username = validUsername)
+
+            Assertions.assertEquals(
+                viewModel.isUsernameInNotCorrectFormat,
+                false
             )
         }
     }
@@ -573,6 +658,30 @@ class CreateAccountViewModelTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
+        fun `when isUsernameEmptyOrNull is set to true should return back username is not in correct format alert`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+
+            viewModel.isTwoOrMoreFieldsEmptyOrNull = false
+            viewModel.isUsernameEmptyOrNull = false
+            viewModel.isUsernameInNotCorrectFormat = false
+            viewModel.isEmailEmptyOrNull = false
+            viewModel.isEmailInNotCorrectFormat = true
+            viewModel.isPasswordEmptyOrNull = false
+            viewModel.isPasswordInNotCorrectFormat = false
+
+            Assertions.assertEquals(
+                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.defaultAlert.copy(
+                    title = application.getString(StringsIds.emptyFields),
+                    description = application.getString(StringsIds.usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat)
+                )
+            )
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
         fun `when isUsernameEmptyOrNull is set to true should return back username is required please enter a username alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
@@ -580,6 +689,7 @@ class CreateAccountViewModelTest {
 
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = true
+            viewModel.isUsernameInNotCorrectFormat = false
             viewModel.isEmailEmptyOrNull = false
             viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
@@ -603,6 +713,7 @@ class CreateAccountViewModelTest {
 
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
+            viewModel.isUsernameInNotCorrectFormat = false
             viewModel.isEmailEmptyOrNull = true
             viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false
@@ -626,6 +737,7 @@ class CreateAccountViewModelTest {
 
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
+            viewModel.isUsernameInNotCorrectFormat = false
             viewModel.isEmailInNotCorrectFormat = true
             viewModel.isEmailEmptyOrNull = false
             viewModel.isPasswordEmptyOrNull = false
@@ -651,6 +763,7 @@ class CreateAccountViewModelTest {
 
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
+            viewModel.isUsernameInNotCorrectFormat = false
             viewModel.isEmailEmptyOrNull = false
             viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = true
@@ -674,6 +787,7 @@ class CreateAccountViewModelTest {
 
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
+            viewModel.isUsernameInNotCorrectFormat = false
             viewModel.isEmailInNotCorrectFormat = false
             viewModel.isEmailEmptyOrNull = false
             viewModel.isPasswordEmptyOrNull = false
@@ -699,6 +813,7 @@ class CreateAccountViewModelTest {
 
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
+            viewModel.isUsernameInNotCorrectFormat = false
             viewModel.isEmailEmptyOrNull = false
             viewModel.isEmailInNotCorrectFormat = false
             viewModel.isPasswordEmptyOrNull = false

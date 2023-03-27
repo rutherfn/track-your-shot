@@ -25,7 +25,7 @@ const val EMAIL_PATTERN = "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}\$"
 const val PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$"
 
 // 8 to 30 characters, only contain alphanumeric characters and underscores, first character must be alphabetic character
-const val USERNAME_PATTERN = "^[A-Za-z]\\w{7,29}\$"
+const val USERNAME_PATTERN = "^(?=[a-zA-Z\\d._]{8,20}\$)(?!.*[_.]{2})[^_.].*[^_.]\$"
 
 class CreateAccountViewModel(
     private val navigation: CreateAccountNavigation,
