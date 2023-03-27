@@ -3,11 +3,7 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account
 import android.app.Application
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountFirebaseAuthResponse
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountState
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.EMAIL_PATTERN
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.PASSWORD_PATTERN
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.*
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
@@ -72,6 +68,7 @@ class CreateAccountViewModelTest {
     fun constants() {
         Assertions.assertEquals(EMAIL_PATTERN, "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}\$")
         Assertions.assertEquals(PASSWORD_PATTERN, "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$")
+        Assertions.assertEquals(USERNAME_PATTERN, "^[A-Za-z]\\w{7,29}\$")
     }
 
     @Test
