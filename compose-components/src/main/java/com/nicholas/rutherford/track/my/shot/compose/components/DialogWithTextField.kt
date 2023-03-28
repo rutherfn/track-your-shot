@@ -1,16 +1,7 @@
 package com.nicholas.rutherford.track.my.shot.compose.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +11,18 @@ import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDi
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
 
+/**
+ * Default [Dialog] with a given [TextField] inside with optional text and buttons. Used in [Content]
+ *
+ * @param onDismissClicked triggers whenever the user attempts to dismiss the [Dialog]
+ * @param title value of [Text] that sets the title displayed inside of the [Dialog]
+ * @param description value of [Text] that sets the description displayed inside of the [Dialog]
+ * @param textFieldValue value of the [OutlinedTextField] that displays inside of the [Dialog]
+ * @param textFieldLabelValue label of the [OutlinedTextField] that displays inside of the [Dialog]
+ * @param onValueChange triggers when the value is changed from the [OutlinedTextField]
+ * @param confirmButton optional param that by default is set to null. If its set to true, will set [DialogWithTextField] confirmButton properties
+ * @param dismissButton optional param that by default is set to null. If its set to true, will set [DialogWithTextField] dismissButton properties
+ */
 @Composable
 fun DialogWithTextField(
     onDismissClicked: () -> Unit,

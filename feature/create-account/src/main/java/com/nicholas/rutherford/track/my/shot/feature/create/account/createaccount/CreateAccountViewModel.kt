@@ -24,6 +24,9 @@ const val EMAIL_PATTERN = "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}\$"
 // Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
 const val PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$"
 
+// 8 to 30 characters, only contain alphanumeric characters and underscores, first character must be alphabetic character
+const val USERNAME_PATTERN = "^(?=[a-zA-Z\\d._]{8,20}\$)(?!.*[_.]{2})[^_.].*[^_.]\$"
+
 class CreateAccountViewModel(
     private val navigation: CreateAccountNavigation,
     private val application: Application,
@@ -33,6 +36,7 @@ class CreateAccountViewModel(
 ) : ViewModel() {
 
     internal var isUsernameEmptyOrNull: Boolean = false
+    internal var isUsernameInNotCorrectFormat: Boolean = false
     internal var isEmailEmptyOrNull: Boolean = false
     internal var isEmailInNotCorrectFormat: Boolean = false
     internal var isPasswordEmptyOrNull: Boolean = false
@@ -60,14 +64,19 @@ class CreateAccountViewModel(
     fun onBackButtonClicked() = navigation.pop()
 
     fun onCreateAccountButtonClicked() {
-        navigation.enableProgress(progress = Progress(onDismissClicked = {}))
         val createAccountState = createAccountMutableStateFlow.value
 
+        navigation.enableProgress(progress = Progress(onDismissClicked = {}))
+
         setIsUsernameEmptyOrNull(username = createAccountState.username)
+        setIsUsernameInNotCorrectFormat(username = createAccountState.username)
+
         setIsEmailEmptyOrNull(email = createAccountState.email)
         setIsEmailInNotCorrectFormat(email = createAccountState.email)
+
         setIsPasswordEmptyOrNull(password = createAccountState.password)
         setIsPasswordNotInCorrectFormat(password = createAccountState.password)
+
         setIsTwoOrMoreFieldsEmptyOrNull()
 
         viewModelScope.launch {
@@ -91,6 +100,14 @@ class CreateAccountViewModel(
             isUsernameEmptyOrNull = value.isEmpty()
         } ?: run {
             isUsernameEmptyOrNull = true
+        }
+    }
+
+    internal fun setIsUsernameInNotCorrectFormat(username: String?) {
+        username?.let { value ->
+            isUsernameInNotCorrectFormat = !USERNAME_PATTERN.toRegex().matches(value)
+        } ?: run {
+            isUsernameInNotCorrectFormat = true
         }
     }
 
@@ -157,6 +174,11 @@ class CreateAccountViewModel(
             return defaultAlert.copy(
                 title = application.getString(StringsIds.emptyField),
                 description = application.getString(StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
+            )
+        } else if (isUsernameInNotCorrectFormat) {
+            return defaultAlert.copy(
+                title = application.getString(StringsIds.emptyField),
+                description = application.getString(StringsIds.usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat)
             )
         } else if (isEmailEmptyOrNull) {
             return defaultAlert.copy(

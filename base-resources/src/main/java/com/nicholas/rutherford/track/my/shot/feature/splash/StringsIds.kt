@@ -54,6 +54,7 @@ object StringsIds {
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
     val userName = R.string.username
     val usernameInUse = R.string.username_in_use
+    val usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat = R.string.username_is_not_in_correct_format_please_enter_username_in_correct_format
     val usernameIsRequiredPleaseEnterAUsernameToCreateAAccount = R.string.username_is_required_please_enter_a_username_to_create_a_account
     val verifyAccount = R.string.verify_account
     val weWereAbleToSendEmailVerificationPleaseCheckYourEmailToVerifyAccount = R.string.we_were_able_to_send_email_verification_please_check_your_email_to_verify_account
