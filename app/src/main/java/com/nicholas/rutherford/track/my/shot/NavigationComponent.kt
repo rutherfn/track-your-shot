@@ -129,7 +129,7 @@ fun NavigationComponent(
         startDestination = NavigationDestinations.SPLASH_SCREEN
     ) {
         composable(route = NavigationDestinations.SPLASH_SCREEN) {
-            SplashScreen(viewModel = splashViewModel)
+            SplashScreen()
         }
         composable(route = NavigationDestinations.LOGIN_SCREEN) {
             LoginScreen(viewModel = loginViewModel)

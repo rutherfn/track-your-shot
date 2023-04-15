@@ -70,18 +70,6 @@ class SplashViewModelTest {
     @Nested
     inner class Init {
 
-        @Test
-        fun initializeSplashState() {
-            Assertions.assertEquals(
-                viewModel.splashStateFlow.value,
-                SplashState(
-                    backgroundColor = Colors.primaryColor,
-                    imageScale = SPLASH_IMAGE_SCALE,
-                    imageDrawableId = DrawablesIds.splash
-                )
-            )
-        }
-
         @Nested
         inner class NavigateToAuthentication {
 

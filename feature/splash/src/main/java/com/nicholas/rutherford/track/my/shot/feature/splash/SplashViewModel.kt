@@ -6,8 +6,6 @@ import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.my.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -20,15 +18,6 @@ class SplashViewModel(
     private val navigation: SplashNavigation,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo
 ) : ViewModel() {
-
-    private val initializeSplashState = SplashState(
-        backgroundColor = Colors.primaryColor,
-        imageScale = SPLASH_IMAGE_SCALE,
-        imageDrawableId = DrawablesIds.splash
-    )
-
-    private val splashStateMutableStateFlow = MutableStateFlow(value = initializeSplashState)
-    val splashStateFlow = splashStateMutableStateFlow.asStateFlow()
 
     init {
         viewModelScope.launch {
