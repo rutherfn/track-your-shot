@@ -68,7 +68,7 @@ android {
 }
 
 dependencies {
-    api(project(path = ":compose-components"))
+    api(project(path = ":compose:components"))
     api(project(path = ":firebase:util"))
     api(project(path = ":navigation"))
 

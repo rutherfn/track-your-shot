@@ -1,0 +1,25 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml:1:1-80
+INJECTED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml:1:1-80
+INJECTED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml:1:1-80
+	package
+		ADDED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml:1:11-77
+		INJECTED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml
+		INJECTED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml:1:1-80
+uses-sdk
+INJECTED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml
+INJECTED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml
+INJECTED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml
+INJECTED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml
+		ADDED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml
+		INJECTED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml
+		ADDED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml
+		INJECTED from /Users/nrutherf/Desktop/track-my-shot/compose/components/src/main/AndroidManifest.xml
