@@ -14,17 +14,11 @@ import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationScreen
-import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountScreen
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordScreen
-import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordViewModel
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeScreen
-import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreen
-import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashScreen
-import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.my.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 import com.nicholas.rutherford.track.my.shot.navigation.arguments.NamedArguments
@@ -36,12 +30,7 @@ fun NavigationComponent(
     activity: Activity,
     navHostController: NavHostController,
     navigator: Navigator,
-    splashViewModel: SplashViewModel,
-    loginViewModel: LoginViewModel,
-    homeViewModel: HomeViewModel,
-    forgotPasswordViewModel: ForgotPasswordViewModel,
-    createAccountViewModel: CreateAccountViewModel,
-    authenticationViewModel: AuthenticationViewModel
+    viewModels: ViewModels
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val alertState by navigator.alertActions.asLifecycleAwareState(
@@ -130,27 +119,27 @@ fun NavigationComponent(
     ) {
         composable(route = NavigationDestinations.SPLASH_SCREEN) {
             SplashScreen(navigateToHomeLoginOrAuthentication = {
-                splashViewModel.navigateToHomeLoginOrAuthentication()
+                viewModels.splashViewModel.navigateToHomeLoginOrAuthentication()
             })
         }
         composable(route = NavigationDestinations.LOGIN_SCREEN) {
-            LoginScreen(viewModel = loginViewModel)
+            LoginScreen(viewModel = viewModels.loginViewModel)
         }
         composable(route = NavigationDestinations.HOME_SCREEN) {
-            HomeScreen(viewModel = homeViewModel)
+            HomeScreen(viewModel = viewModels.homeViewModel)
         }
         composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {
-            ForgotPasswordScreen(viewModel = forgotPasswordViewModel)
+            ForgotPasswordScreen(viewModel = viewModels.forgotPasswordViewModel)
         }
         composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
-            CreateAccountScreen(viewModel = createAccountViewModel)
+            CreateAccountScreen(viewModel = viewModels.createAccountViewModel)
         }
         composable(
             route = NavigationDestinations.AUTHENTICATION_SCREEN_WITH_PARAMS,
             arguments = NavArguments.authentication
         ) {
             AuthenticationScreen(
-                viewModel = authenticationViewModel,
+                viewModel = viewModels.authenticationViewModel,
                 usernameArgument = it.arguments?.getString(NamedArguments.USERNAME),
                 emailArgument = it.arguments?.getString(NamedArguments.EMAIL)
             )

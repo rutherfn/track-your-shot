@@ -20,12 +20,14 @@ class MainActivity : ComponentActivity() {
                 activity = this,
                 navHostController = rememberNavController(),
                 navigator = get(),
-                splashViewModel = getViewModel(),
-                loginViewModel = getViewModel(),
-                homeViewModel = getViewModel(),
-                forgotPasswordViewModel = getViewModel(),
-                createAccountViewModel = getViewModel(),
-                authenticationViewModel = getViewModel()
+                viewModels = ViewModels(
+                    splashViewModel = getViewModel(),
+                    loginViewModel = getViewModel(),
+                    homeViewModel = getViewModel(),
+                    forgotPasswordViewModel = getViewModel(),
+                    createAccountViewModel = getViewModel(),
+                    authenticationViewModel = getViewModel()
+                )
             )
         }
     }
