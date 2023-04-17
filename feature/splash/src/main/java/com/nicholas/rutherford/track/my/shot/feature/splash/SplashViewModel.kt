@@ -19,29 +19,29 @@ class SplashViewModel(
     private val readFirebaseUserInfo: ReadFirebaseUserInfo
 ) : ViewModel() {
 
-    init {
+    fun navigateToHomeLoginOrAuthentication() {
         viewModelScope.launch {
-            navigateToHomeLoginOrAuthentication()
-        }
-    }
-
-    private suspend fun navigateToHomeLoginOrAuthentication() {
-        readFirebaseUserInfo.isLoggedInFlow().combine(readFirebaseUserInfo.isEmailVerifiedFlow()) { isLoggedIn, isEmailVerified ->
-            if (isLoggedIn) {
-                if (isEmailVerified && readSharedPreferences.accountHasBeenCreated()) {
-                    delayAndNavigateToHomeOrLogin(isLoggedIn = true)
-                } else {
-                    safeLet(
-                        readSharedPreferences.unverifiedUsername(),
-                        readSharedPreferences.unverifiedEmail()
-                    ) { username, email ->
-                        navigation.navigateToAuthentication(username = username, email = email)
+            readFirebaseUserInfo.isLoggedInFlow()
+                .combine(readFirebaseUserInfo.isEmailVerifiedFlow()) { isLoggedIn, isEmailVerified ->
+                    if (isLoggedIn) {
+                        if (isEmailVerified && readSharedPreferences.accountHasBeenCreated()) {
+                            delayAndNavigateToHomeOrLogin(isLoggedIn = true)
+                        } else {
+                            safeLet(
+                                readSharedPreferences.unverifiedUsername(),
+                                readSharedPreferences.unverifiedEmail()
+                            ) { username, email ->
+                                navigation.navigateToAuthentication(
+                                    username = username,
+                                    email = email
+                                )
+                            }
+                        }
+                    } else {
+                        delayAndNavigateToHomeOrLogin(isLoggedIn = false)
                     }
-                }
-            } else {
-                delayAndNavigateToHomeOrLogin(isLoggedIn = false)
-            }
-        }.collectLatest {}
+                }.collectLatest {}
+        }
     }
 
     private suspend fun delayAndNavigateToHomeOrLogin(isLoggedIn: Boolean) {

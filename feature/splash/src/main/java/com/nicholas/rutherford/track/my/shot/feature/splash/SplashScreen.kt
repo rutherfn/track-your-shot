@@ -13,11 +13,10 @@ import androidx.compose.ui.res.stringResource
 import com.nicholas.rutherford.track.my.shot.compose.components.Content
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(navigateToHomeLoginOrAuthentication: () -> Unit) {
     Content(
-        ui = {
-            SplashScreenContent()
-        }
+        ui = { SplashScreenContent() },
+        invokeFunctionOnInit = { navigateToHomeLoginOrAuthentication.invoke() }
     )
 }
 

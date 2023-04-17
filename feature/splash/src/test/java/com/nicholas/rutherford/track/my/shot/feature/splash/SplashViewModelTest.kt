@@ -91,6 +91,8 @@ class SplashViewModelTest {
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
 
+                    viewModel.navigateToHomeLoginOrAuthentication()
+
                     delay(delayTime)
 
                     coVerify { navigation.navigateToAuthentication(username = unverifiedUsername, email = unverifiedEmail) }
@@ -114,6 +116,8 @@ class SplashViewModelTest {
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
 
+                    viewModel.navigateToHomeLoginOrAuthentication()
+
                     delay(delayTime)
 
                     coVerify { navigation.navigateToAuthentication(username = unverifiedUsername, email = unverifiedEmail) }
@@ -131,6 +135,8 @@ class SplashViewModelTest {
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
+
+                    viewModel.navigateToHomeLoginOrAuthentication()
 
                     delay(delayTime)
 
@@ -151,6 +157,8 @@ class SplashViewModelTest {
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
+
+                    viewModel.navigateToHomeLoginOrAuthentication()
 
                     delay(delayTime)
 
@@ -174,6 +182,8 @@ class SplashViewModelTest {
                     readFirebaseUserInfo = readFirebaseUserInfo
                 )
 
+                viewModel.navigateToHomeLoginOrAuthentication()
+
                 delay(delayTime)
 
                 coVerify(exactly = 0) { navigation.navigateToAuthentication(username = any(), email = any()) }
@@ -195,6 +205,8 @@ class SplashViewModelTest {
                     navigation = navigation,
                     readFirebaseUserInfo = readFirebaseUserInfo
                 )
+
+                viewModel.navigateToHomeLoginOrAuthentication()
 
                 delay(delayTime)
 
@@ -221,6 +233,8 @@ class SplashViewModelTest {
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
 
+                    viewModel.navigateToHomeLoginOrAuthentication()
+
                     delay(delayTime)
 
                     coVerify { navigation.navigateToLogin() }
@@ -241,6 +255,8 @@ class SplashViewModelTest {
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
+
+                    viewModel.navigateToHomeLoginOrAuthentication()
 
                     delay(delayTime)
 

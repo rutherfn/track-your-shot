@@ -21,15 +21,19 @@ import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
  * @param ui used to set body of the interface below the optional [TopAppBar] via a [Composable]
  * @param appBar optional param that is responsible for creating a [TopAppBar] with set properties if not null
  * @param imageVector optional param that will set a new default [ImageVector] if not null to the [TopAppBar]
- * [imageVector] is not being passed in to [appBar] to avoid adding Compose dependence to data module
+ * @param [imageVector] optional param that will set a image vector to the [appBar] if not null
+ * If the [imageVector] is null then go ahead and set the vector image to [Icons.Filled.ArrowBack]
+ * @param invokeFunctionOnInit optional param that will invoke a function on the [Content] function invoke state
  */
 @Composable
 fun Content(
     ui: @Composable () -> Unit,
     appBar: AppBar? = null,
-    imageVector: ImageVector? = null
+    imageVector: ImageVector? = null,
+    invokeFunctionOnInit: (() -> Unit?)? = null
 ) {
     Column {
+        invokeFunctionOnInit?.invoke()
         appBar?.let { bar ->
             TopAppBar(
                 title = {
