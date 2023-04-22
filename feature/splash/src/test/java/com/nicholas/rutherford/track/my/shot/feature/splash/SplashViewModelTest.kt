@@ -70,18 +70,6 @@ class SplashViewModelTest {
     @Nested
     inner class Init {
 
-        @Test
-        fun initializeSplashState() {
-            Assertions.assertEquals(
-                viewModel.splashStateFlow.value,
-                SplashState(
-                    backgroundColor = Colors.primaryColor,
-                    imageScale = SPLASH_IMAGE_SCALE,
-                    imageDrawableId = DrawablesIds.splash
-                )
-            )
-        }
-
         @Nested
         inner class NavigateToAuthentication {
 
@@ -102,6 +90,8 @@ class SplashViewModelTest {
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
+
+                    viewModel.navigateToHomeLoginOrAuthentication()
 
                     delay(delayTime)
 
@@ -126,6 +116,8 @@ class SplashViewModelTest {
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
 
+                    viewModel.navigateToHomeLoginOrAuthentication()
+
                     delay(delayTime)
 
                     coVerify { navigation.navigateToAuthentication(username = unverifiedUsername, email = unverifiedEmail) }
@@ -143,6 +135,8 @@ class SplashViewModelTest {
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
+
+                    viewModel.navigateToHomeLoginOrAuthentication()
 
                     delay(delayTime)
 
@@ -163,6 +157,8 @@ class SplashViewModelTest {
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
+
+                    viewModel.navigateToHomeLoginOrAuthentication()
 
                     delay(delayTime)
 
@@ -186,6 +182,8 @@ class SplashViewModelTest {
                     readFirebaseUserInfo = readFirebaseUserInfo
                 )
 
+                viewModel.navigateToHomeLoginOrAuthentication()
+
                 delay(delayTime)
 
                 coVerify(exactly = 0) { navigation.navigateToAuthentication(username = any(), email = any()) }
@@ -207,6 +205,8 @@ class SplashViewModelTest {
                     navigation = navigation,
                     readFirebaseUserInfo = readFirebaseUserInfo
                 )
+
+                viewModel.navigateToHomeLoginOrAuthentication()
 
                 delay(delayTime)
 
@@ -233,6 +233,8 @@ class SplashViewModelTest {
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
 
+                    viewModel.navigateToHomeLoginOrAuthentication()
+
                     delay(delayTime)
 
                     coVerify { navigation.navigateToLogin() }
@@ -253,6 +255,8 @@ class SplashViewModelTest {
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo
                     )
+
+                    viewModel.navigateToHomeLoginOrAuthentication()
 
                     delay(delayTime)
 

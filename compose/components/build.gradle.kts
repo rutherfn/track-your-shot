@@ -72,6 +72,7 @@ android {
 }
 
 dependencies {
+    api(project(path = ":compose:theme"))
     api(project(path = ":data:shared"))
     api(project(path = ":helper:ui"))
 

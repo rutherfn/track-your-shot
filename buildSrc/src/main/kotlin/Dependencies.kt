@@ -14,6 +14,10 @@ object Dependencies {
         const val crashes = "com.microsoft.appcenter:appcenter-crashes:${Versions.Dependencies.AppCenter.core}"
     }
 
+    object Accompanist {
+        const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${Versions.Dependencies.SystemUiController.core}"
+    }
+
     object Coil {
         const val core = "io.coil-kt:coil:${Versions.Dependencies.Coil.core}"
     }

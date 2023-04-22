@@ -28,7 +28,8 @@ base-resources/build
 buildSrc/.gradle
 buildSrc/build
 
-compose-components/build
+compose/components/build
+compose/theme/build
 
 data/account-info/build
 data/shared/build

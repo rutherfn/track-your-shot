@@ -6,8 +6,6 @@ import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.my.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -21,38 +19,29 @@ class SplashViewModel(
     private val readFirebaseUserInfo: ReadFirebaseUserInfo
 ) : ViewModel() {
 
-    private val initializeSplashState = SplashState(
-        backgroundColor = Colors.primaryColor,
-        imageScale = SPLASH_IMAGE_SCALE,
-        imageDrawableId = DrawablesIds.splash
-    )
-
-    private val splashStateMutableStateFlow = MutableStateFlow(value = initializeSplashState)
-    val splashStateFlow = splashStateMutableStateFlow.asStateFlow()
-
-    init {
+    fun navigateToHomeLoginOrAuthentication() {
         viewModelScope.launch {
-            navigateToHomeLoginOrAuthentication()
-        }
-    }
-
-    private suspend fun navigateToHomeLoginOrAuthentication() {
-        readFirebaseUserInfo.isLoggedInFlow().combine(readFirebaseUserInfo.isEmailVerifiedFlow()) { isLoggedIn, isEmailVerified ->
-            if (isLoggedIn) {
-                if (isEmailVerified && readSharedPreferences.accountHasBeenCreated()) {
-                    delayAndNavigateToHomeOrLogin(isLoggedIn = true)
-                } else {
-                    safeLet(
-                        readSharedPreferences.unverifiedUsername(),
-                        readSharedPreferences.unverifiedEmail()
-                    ) { username, email ->
-                        navigation.navigateToAuthentication(username = username, email = email)
+            readFirebaseUserInfo.isLoggedInFlow()
+                .combine(readFirebaseUserInfo.isEmailVerifiedFlow()) { isLoggedIn, isEmailVerified ->
+                    if (isLoggedIn) {
+                        if (isEmailVerified && readSharedPreferences.accountHasBeenCreated()) {
+                            delayAndNavigateToHomeOrLogin(isLoggedIn = true)
+                        } else {
+                            safeLet(
+                                readSharedPreferences.unverifiedUsername(),
+                                readSharedPreferences.unverifiedEmail()
+                            ) { username, email ->
+                                navigation.navigateToAuthentication(
+                                    username = username,
+                                    email = email
+                                )
+                            }
+                        }
+                    } else {
+                        delayAndNavigateToHomeOrLogin(isLoggedIn = false)
                     }
-                }
-            } else {
-                delayAndNavigateToHomeOrLogin(isLoggedIn = false)
-            }
-        }.collectLatest {}
+                }.collectLatest {}
+        }
     }
 
     private suspend fun delayAndNavigateToHomeOrLogin(isLoggedIn: Boolean) {
