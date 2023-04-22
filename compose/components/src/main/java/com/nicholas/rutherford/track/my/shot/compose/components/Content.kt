@@ -12,11 +12,13 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.nicholas.rutherford.track.my.shot.TrackMyShotTheme
 import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 
 /**
  * Default Content with optional back [TopAppBar]. Used for default content views inside of [Composable]
+ * It uses [TrackMyShotTheme] to set theming of the content block
  *
  * @param ui used to set body of the interface below the optional [TopAppBar] via a [Composable]
  * @param appBar optional param that is responsible for creating a [TopAppBar] with set properties if not null
@@ -32,25 +34,27 @@ fun Content(
     imageVector: ImageVector? = null,
     invokeFunctionOnInit: (() -> Unit?)? = null
 ) {
-    Column {
-        invokeFunctionOnInit?.invoke()
-        appBar?.let { bar ->
-            TopAppBar(
-                title = {
-                    Text(text = bar.toolbarTitle)
-                }, navigationIcon = {
-                IconButton(onClick = { bar.onIconButtonClicked.invoke() }) {
-                    Icon(
-                        imageVector = imageVector ?: Icons.Filled.ArrowBack,
-                        contentDescription = bar.iconContentDescription
-                    )
+    TrackMyShotTheme {
+        Column {
+            invokeFunctionOnInit?.invoke()
+            appBar?.let { bar ->
+                TopAppBar(
+                    title = {
+                        Text(text = bar.toolbarTitle)
+                    }, navigationIcon = {
+                    IconButton(onClick = { bar.onIconButtonClicked.invoke() }) {
+                        Icon(
+                            imageVector = imageVector ?: Icons.Filled.ArrowBack,
+                            contentDescription = bar.iconContentDescription
+                        )
+                    }
                 }
+                )
+
+                Spacer(modifier = Modifier.height(Padding.eight))
             }
-            )
 
-            Spacer(modifier = Modifier.height(Padding.eight))
+            ui.invoke()
         }
-
-        ui.invoke()
     }
 }

@@ -72,6 +72,8 @@ android {
 }
 
 dependencies {
+    implementation(Dependencies.Accompanist.systemUiController)
+
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.ui)
 }
