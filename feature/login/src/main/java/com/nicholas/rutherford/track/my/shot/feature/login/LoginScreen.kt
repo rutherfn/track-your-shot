@@ -1,14 +1,7 @@
 package com.nicholas.rutherford.track.my.shot.feature.login
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -20,8 +13,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -37,31 +28,19 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel) {
-    val coroutineScope = rememberCoroutineScope()
-    val state = viewModel.loginStateFlow.collectAsState().value
-
+fun LoginScreen(loginScreenParams: LoginScreenParams) {
     Content(
         ui = {
-            LoginScreenContent(
-                state = state,
-                viewModel = viewModel,
-                coroutineScope = coroutineScope
-            )
+            LoginScreenContent(loginScreenParams = loginScreenParams)
         }
     )
 }
 
 @Composable
-fun LoginScreenContent(
-    state: LoginState,
-    viewModel: LoginViewModel,
-    coroutineScope: CoroutineScope
-) {
+fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -70,7 +49,7 @@ fun LoginScreenContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        state.launcherDrawableId?.let { drawableId ->
+        loginScreenParams.state.launcherDrawableId?.let { drawableId ->
             Image(
                 painter = painterResource(id = drawableId),
                 contentDescription = stringResource(id = StringsIds.loginIconDescription),
@@ -98,8 +77,8 @@ fun LoginScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            value = state.email ?: stringResource(id = StringsIds.empty),
-            onValueChange = { newEmail -> viewModel.onEmailValueChanged(newEmail = newEmail) },
+            value = loginScreenParams.state.email ?: stringResource(id = StringsIds.empty),
+            onValueChange = { newEmail -> loginScreenParams.onEmailValueChanged.invoke(newEmail) },
             textStyle = TextStyles.body,
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
@@ -111,10 +90,10 @@ fun LoginScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            value = state.password ?: stringResource(id = StringsIds.empty),
+            value = loginScreenParams.state.password ?: stringResource(id = StringsIds.empty),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            onValueChange = { newPassword -> viewModel.onPasswordValueChanged(newPassword = newPassword) },
+            onValueChange = { newPassword -> loginScreenParams.onPasswordValueChanged.invoke(newPassword) },
             textStyle = TextStyles.body,
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
@@ -124,7 +103,7 @@ fun LoginScreenContent(
         Box(modifier = Modifier.padding(start = Padding.forty, end = Padding.forty)) {
             Button(
                 onClick = {
-                    coroutineScope.launch { viewModel.onLoginButtonClicked(email = state.email, password = state.password) }
+                    loginScreenParams.coroutineScope.launch { loginScreenParams.onLoginButtonClicked.invoke() }
                 },
                 shape = RoundedCornerShape(size = 50.dp),
                 modifier = Modifier
@@ -144,14 +123,14 @@ fun LoginScreenContent(
         Spacer(modifier = Modifier.height(Padding.twenty))
         ClickableText(
             text = AnnotatedString(stringResource(id = StringsIds.forgotPassword)),
-            onClick = { viewModel.onForgotPasswordClicked() },
+            onClick = { loginScreenParams.onForgotPasswordClicked.invoke() },
             style = TextStyles.hyperLink
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))
         ClickableText(
             text = AnnotatedString(stringResource(id = StringsIds.clickMeToCreateAccount)),
-            onClick = { viewModel.onCreateAccountClicked() },
+            onClick = { loginScreenParams.onCreateAccountClicked.invoke() },
             style = TextStyles.hyperLink
         )
     }

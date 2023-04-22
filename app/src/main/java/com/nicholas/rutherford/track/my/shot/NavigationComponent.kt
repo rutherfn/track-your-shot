@@ -18,12 +18,14 @@ import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccoun
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordScreen
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeScreen
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreen
+import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreenParams
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.my.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 import com.nicholas.rutherford.track.my.shot.navigation.arguments.NamedArguments
 import com.nicholas.rutherford.track.my.shot.navigation.arguments.NavArguments
 import com.nicholas.rutherford.track.my.shot.navigation.asLifecycleAwareState
+import kotlinx.coroutines.launch
 
 @Composable
 fun NavigationComponent(
@@ -123,7 +125,24 @@ fun NavigationComponent(
             })
         }
         composable(route = NavigationDestinations.LOGIN_SCREEN) {
-            LoginScreen(viewModel = viewModels.loginViewModel)
+            val coroutineScope = rememberCoroutineScope()
+            val loginViewModel = viewModels.loginViewModel
+
+            LoginScreen(
+                loginScreenParams = LoginScreenParams(
+                    state = loginViewModel.loginStateFlow.collectAsState().value,
+                    onEmailValueChanged = { newEmail -> loginViewModel.onEmailValueChanged(newEmail = newEmail) },
+                    onPasswordValueChanged = { newPassword -> loginViewModel.onPasswordValueChanged(newPassword = newPassword) },
+                    onLoginButtonClicked = {
+                        coroutineScope.launch {
+                            loginViewModel.onLoginButtonClicked()
+                        }
+                    },
+                    onForgotPasswordClicked = { loginViewModel.onForgotPasswordClicked() },
+                    onCreateAccountClicked = { loginViewModel.onCreateAccountClicked() },
+                    coroutineScope = coroutineScope
+                )
+            )
         }
         composable(route = NavigationDestinations.HOME_SCREEN) {
             HomeScreen(viewModel = viewModels.homeViewModel)
