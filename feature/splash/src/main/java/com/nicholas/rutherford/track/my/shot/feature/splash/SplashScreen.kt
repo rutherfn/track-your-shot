@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.nicholas.rutherford.track.my.shot.compose.components.Content
@@ -31,7 +32,7 @@ fun SplashScreenContent() {
         Image(
             painter = painterResource(id = DrawablesIds.splash),
             contentDescription = stringResource(id = StringsIds.splashIconDescription),
-            modifier = Modifier.scale(scale = SPLASH_IMAGE_SCALE)
+            modifier = Modifier.scale(scale = SPLASH_IMAGE_SCALE).testTag(tag = SplashTags.SPLASH_IMAGE)
         )
     }
 }
