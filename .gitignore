@@ -49,6 +49,7 @@ firebase/delete/build
 firebase/read/build
 firebase/util/build
 
+helper/compose-content-test-rule/build
 helper/constants/build
 helper/extensions/build
 helper/network/build

@@ -8,14 +8,6 @@ android {
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
-    buildFeatures {
-        compose = ComposeData.Enabled.value
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
-    }
-
     compileOptions {
         sourceCompatibility = types.BuildTypes.CompileOptions.sourceCompatibility
         targetCompatibility = types.BuildTypes.CompileOptions.targetCompatibility
@@ -68,28 +60,5 @@ android {
 }
 
 dependencies {
-    androidTestImplementation(Dependencies.Compose.uiTestJunit4)
-
-    api(project(path = ":base-resources"))
-    api(project(path = ":compose:components"))
-    api(project(path = ":helper:compose-content-test-rule"))
-    api(project(path = ":helper:extensions"))
-    api(project(path = ":firebase:read"))
-    api(project(path = ":navigation"))
-    api(project(path = ":shared-preference"))
-
-    debugImplementation(Dependencies.Compose.uiTestManifest)
-
-    implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.viewModel)
-
-    testImplementation(Dependencies.Coroutine.test)
-
-    testImplementation(Dependencies.Junit.Jupiter.api)
-    testImplementation(Dependencies.Junit.Jupiter.params)
-    testImplementation(Dependencies.Junit.junit)
-
-    testImplementation(Dependencies.Mockk.core)
-
-    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+    implementation(Dependencies.Compose.uiTestJunit4)
 }

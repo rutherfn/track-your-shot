@@ -1,8 +1,7 @@
 package com.nicholas.rutherford.track.my.shot.feature.splash
 
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
+import com.nicholas.rutherford.track.myshot.compose.content.test.rule.verifyTagIsDisplayed
 import org.junit.Rule
 import org.junit.Test
 
@@ -16,6 +15,6 @@ class SplashScreenTest {
         composeTestRule.setContent {
             SplashScreen {}
         }
-        composeTestRule.onNodeWithTag(SplashTags.SPLASH_IMAGE).assertIsDisplayed()
+        composeTestRule.verifyTagIsDisplayed(testTag = SplashTags.SPLASH_IMAGE)
     }
 }
