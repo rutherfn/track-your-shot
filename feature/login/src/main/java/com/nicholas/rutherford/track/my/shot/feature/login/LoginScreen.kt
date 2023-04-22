@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -56,18 +57,20 @@ fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
                 modifier = Modifier
                     .scale(scale = 2.0f)
                     .padding(bottom = 20.dp)
+                    .testTag(tag = LoginTags.LOGIN_APP_IMAGE)
             )
         }
 
         Text(
             text = stringResource(id = StringsIds.proceedWithYourAccount),
-            style = TextStyles.small
+            style = TextStyles.small,
+            modifier = Modifier.testTag(tag = LoginTags.PROCEED_WITH_YOUR_ACCOUNT_TEXT)
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))
         Text(
             text = stringResource(id = StringsIds.login),
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(8.dp).testTag(tag = LoginTags.LOGIN_TEXT),
             style = TextStyles.medium
         )
 
@@ -76,7 +79,8 @@ fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
             label = { Text(text = stringResource(id = StringsIds.email)) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(8.dp)
+                .testTag(tag = LoginTags.EMAIL_TEXT_FIELD),
             value = loginScreenParams.state.email ?: stringResource(id = StringsIds.empty),
             onValueChange = { newEmail -> loginScreenParams.onEmailValueChanged.invoke(newEmail) },
             textStyle = TextStyles.body,
@@ -89,7 +93,8 @@ fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
             label = { Text(text = stringResource(id = StringsIds.password)) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(8.dp)
+                .testTag(tag = LoginTags.PASSWORD_TEXT_FIELD),
             value = loginScreenParams.state.password ?: stringResource(id = StringsIds.empty),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -108,13 +113,15 @@ fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
                 shape = RoundedCornerShape(size = 50.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = Padding.twentyFour),
+                    .padding(vertical = Padding.twentyFour)
+                    .testTag(tag = LoginTags.LOGIN_BUTTON),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
                 content = {
                     Text(
                         text = stringResource(id = StringsIds.login),
                         style = TextStyles.small,
-                        color = Color.White
+                        color = Color.White,
+                        modifier = Modifier.testTag(tag = LoginTags.LOGIN_BUTTON_TEXT)
                     )
                 }
             )
@@ -124,14 +131,16 @@ fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
         ClickableText(
             text = AnnotatedString(stringResource(id = StringsIds.forgotPassword)),
             onClick = { loginScreenParams.onForgotPasswordClicked.invoke() },
-            style = TextStyles.hyperLink
+            style = TextStyles.hyperLink,
+            modifier = Modifier.testTag(tag = LoginTags.FORGOT_PASSWORD_TEXT)
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))
         ClickableText(
             text = AnnotatedString(stringResource(id = StringsIds.clickMeToCreateAccount)),
             onClick = { loginScreenParams.onCreateAccountClicked.invoke() },
-            style = TextStyles.hyperLink
+            style = TextStyles.hyperLink,
+            modifier = Modifier.testTag(tag = LoginTags.CLICK_ME_TO_CREATE_ACCOUNT_TEXT)
         )
     }
 }
