@@ -72,6 +72,8 @@ android {
 }
 
 dependencies {
+    androidTestImplementation(Dependencies.Compose.uiTestJunit4)
+
     api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
     api(project(path = ":compose:components"))
@@ -79,6 +81,8 @@ dependencies {
     api(project(path = ":helper:extensions"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
+
+    debugImplementation(Dependencies.Compose.uiTestManifest)
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
