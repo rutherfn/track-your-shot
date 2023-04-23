@@ -8,7 +8,7 @@ import org.junit.Test
 class SplashScreenTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    internal val composeTestRule = createComposeRule()
 
     @Test
     fun verifySplashImageIsDisplayed() {

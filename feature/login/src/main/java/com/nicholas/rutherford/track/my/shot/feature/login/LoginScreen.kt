@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -29,6 +30,7 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
+import com.nicholas.rutherford.track.myshot.compose.content.test.rule.drawableId
 import kotlinx.coroutines.launch
 
 @Composable
@@ -50,14 +52,15 @@ fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        loginScreenParams.state.launcherDrawableId?.let { drawableId ->
+        loginScreenParams.state.launcherDrawableId?.let { launcherDrawableId ->
             Image(
-                painter = painterResource(id = drawableId),
+                painter = painterResource(id = launcherDrawableId),
                 contentDescription = stringResource(id = StringsIds.loginIconDescription),
                 modifier = Modifier
                     .scale(scale = 2.0f)
                     .padding(bottom = 20.dp)
                     .testTag(tag = LoginTags.LOGIN_APP_IMAGE)
+                    .semantics { drawableId = launcherDrawableId }
             )
         }
 

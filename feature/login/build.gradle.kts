@@ -78,6 +78,7 @@ dependencies {
     api(project(path = ":build-type"))
     api(project(path = ":compose:components"))
     api(project(path = ":firebase:util"))
+    api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:extensions"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
