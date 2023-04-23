@@ -106,7 +106,9 @@ class LoginViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when email is set to null should call email empty alert`() = runTest {
-            viewModel.onLoginButtonClicked(email = null, password = passwordTest)
+            viewModel._loginStateFlow.value = LoginState(email = null, password = passwordTest)
+
+            viewModel.onLoginButtonClicked()
 
             verify { navigation.alert(alert = viewModel.emailEmptyAlert()) }
         }
@@ -114,7 +116,9 @@ class LoginViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when password is set to null should call password empty alert`() = runTest {
-            viewModel.onLoginButtonClicked(email = emailTest, password = null)
+            viewModel._loginStateFlow.value = LoginState(email = emailTest, password = null)
+
+            viewModel.onLoginButtonClicked()
 
             verify { navigation.alert(alert = viewModel.passwordEmptyAlert()) }
         }
@@ -122,7 +126,9 @@ class LoginViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when email is set to empty should call email empty alert`() = runTest {
-            viewModel.onLoginButtonClicked(email = "", password = passwordTest)
+            viewModel._loginStateFlow.value = LoginState(email = "", password = passwordTest)
+
+            viewModel.onLoginButtonClicked()
 
             verify { navigation.alert(alert = viewModel.emailEmptyAlert()) }
         }
@@ -130,7 +136,9 @@ class LoginViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when password is set to empty should call password empty alert`() = runTest {
-            viewModel.onLoginButtonClicked(email = emailTest, password = "")
+            viewModel._loginStateFlow.value = LoginState(email = emailTest, password = "")
+
+            viewModel.onLoginButtonClicked()
 
             verify { navigation.alert(alert = viewModel.passwordEmptyAlert()) }
         }
@@ -140,7 +148,9 @@ class LoginViewModelTest {
         fun `when email and password has valid values and loginFlow returns back not successful should call unable to login to account alert`() = runTest {
             coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = false)
 
-            viewModel.onLoginButtonClicked(email = emailTest, password = passwordTest)
+            viewModel._loginStateFlow.value = LoginState(email = emailTest, password = passwordTest)
+
+            viewModel.onLoginButtonClicked()
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
@@ -152,7 +162,9 @@ class LoginViewModelTest {
         fun `when email and password has valid values and loginFlow returns back successful should call navigate to home`() = runTest {
             coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = true)
 
-            viewModel.onLoginButtonClicked(email = emailTest, password = passwordTest)
+            viewModel._loginStateFlow.value = LoginState(email = emailTest, password = passwordTest)
+
+            viewModel.onLoginButtonClicked()
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
@@ -160,15 +172,9 @@ class LoginViewModelTest {
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
-                state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, email = "", password = "")
+                state.copy(email = "", password = "")
             )
         }
-    }
-
-    @Test fun `on login clicked should call navigate to home`() {
-        viewModel.onLoginClicked()
-
-        verify { navigation.navigateToHome() }
     }
 
     @Test fun `on forgot password clicked should call navigate to forgot password`() {

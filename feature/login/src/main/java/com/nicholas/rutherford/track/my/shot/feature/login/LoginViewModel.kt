@@ -20,14 +20,8 @@ class LoginViewModel(
     private val buildType: BuildType
 ) : ViewModel() {
 
-    private val loginMutableStateFlow = MutableStateFlow(
-        value = LoginState(
-            launcherDrawableId = null,
-            email = null,
-            password = null
-        )
-    )
-    val loginStateFlow = loginMutableStateFlow.asStateFlow()
+    internal val _loginStateFlow = MutableStateFlow(LoginState())
+    val loginStateFlow = _loginStateFlow.asStateFlow()
 
     init {
         updateLauncherDrawableIdState()
@@ -35,17 +29,17 @@ class LoginViewModel(
 
     private fun updateLauncherDrawableIdState() {
         if (buildType.isDebug()) {
-            loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundTest)
+            _loginStateFlow.value = _loginStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundTest)
         } else if (buildType.isStage()) {
-            loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundStage)
+            _loginStateFlow.value = _loginStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundStage)
         } else if (buildType.isRelease()) {
-            loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRound)
+            _loginStateFlow.value = _loginStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRound)
         }
     }
 
-    internal suspend fun onLoginButtonClicked(email: String?, password: String?) {
-        email?.let { userEmail ->
-            password?.let { userPassword ->
+    suspend fun onLoginButtonClicked() {
+        loginStateFlow.value.email?.let { userEmail ->
+            loginStateFlow.value.password?.let { userPassword ->
                 if (userEmail.isEmpty()) {
                     navigation.alert(alert = emailEmptyAlert())
                 } else if (userPassword.isEmpty()) {
@@ -77,18 +71,16 @@ class LoginViewModel(
         }
     }
 
-    internal fun onLoginClicked() = navigation.navigateToHome()
+    fun onForgotPasswordClicked() = navigation.navigateToForgotPassword()
 
-    internal fun onForgotPasswordClicked() = navigation.navigateToForgotPassword()
+    fun onCreateAccountClicked() = navigation.navigateToCreateAccount()
 
-    internal fun onCreateAccountClicked() = navigation.navigateToCreateAccount()
-
-    internal fun onEmailValueChanged(newEmail: String) {
-        loginMutableStateFlow.value = loginMutableStateFlow.value.copy(email = newEmail)
+    fun onEmailValueChanged(newEmail: String) {
+        _loginStateFlow.value = _loginStateFlow.value.copy(email = newEmail)
     }
 
-    internal fun onPasswordValueChanged(newPassword: String) {
-        loginMutableStateFlow.value = loginMutableStateFlow.value.copy(password = newPassword)
+    fun onPasswordValueChanged(newPassword: String) {
+        _loginStateFlow.value = _loginStateFlow.value.copy(password = newPassword)
     }
 
     internal fun emailEmptyAlert(): Alert {
