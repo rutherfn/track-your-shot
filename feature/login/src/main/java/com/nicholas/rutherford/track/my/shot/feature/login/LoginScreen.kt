@@ -123,8 +123,7 @@ fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
                     Text(
                         text = stringResource(id = StringsIds.login),
                         style = TextStyles.small,
-                        color = Color.White,
-                        modifier = Modifier.testTag(tag = LoginTags.LOGIN_BUTTON_TEXT)
+                        color = Color.White
                     )
                 }
             )

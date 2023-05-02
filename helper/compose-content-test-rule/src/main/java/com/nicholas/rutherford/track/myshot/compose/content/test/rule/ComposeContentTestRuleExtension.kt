@@ -20,7 +20,7 @@ fun ComposeContentTestRule.verifyTagWithImageResIsDisplayed(id: Int, testTag: St
 }
 
 fun ComposeContentTestRule.verifyTagIsNotDisplayed(testTag: String) {
-    this.onNodeWithTag(testTag = testTag).assertIsNotDisplayed()
+    this.onNodeWithTag(testTag = testTag).assertDoesNotExist()
 }
 
 fun ComposeContentTestRule.verifyTagWithTextIsDisplayed(text: String, testTag: String) {
