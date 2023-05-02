@@ -40,11 +40,6 @@ class LoginTagsTest {
         }
 
         @Test
-        fun `login button text`() {
-            Assertions.assertEquals(LoginTags.LOGIN_BUTTON_TEXT, "login_button_text")
-        }
-
-        @Test
         fun `forgot password text`() {
             Assertions.assertEquals(LoginTags.FORGOT_PASSWORD_TEXT, "forgot_password_text")
         }

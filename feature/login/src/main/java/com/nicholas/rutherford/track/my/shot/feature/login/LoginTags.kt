@@ -7,7 +7,6 @@ object LoginTags {
     const val EMAIL_TEXT_FIELD = "email_text_field"
     const val PASSWORD_TEXT_FIELD = "password_text_field"
     const val LOGIN_BUTTON = "login_button"
-    const val LOGIN_BUTTON_TEXT = "login_button_text"
     const val FORGOT_PASSWORD_TEXT = "forgot_password_text"
     const val CLICK_ME_TO_CREATE_ACCOUNT_TEXT = "click_me_to_create_account_text"
 }
