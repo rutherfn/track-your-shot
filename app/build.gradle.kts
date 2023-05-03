@@ -93,6 +93,8 @@ android {
 }
 
 dependencies {
+    androidTestImplementation(Dependencies.Compose.uiTestJunit4)
+
     api(project(path = ":app-center"))
     api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
@@ -101,7 +103,10 @@ dependencies {
     api(project(path = ":feature:home"))
     api(project(path = ":feature:login"))
     api(project(path = ":feature:splash"))
+    api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:network"))
+
+    debugImplementation(Dependencies.Compose.uiTestManifest)
 
     implementation(Dependencies.Android.appCompat)
     implementation(Dependencies.Android.ktx)
@@ -109,6 +114,8 @@ dependencies {
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
+
+    implementation("io.insert-koin:koin-androidx-compose:3.2.0")
 
     implementation(Dependencies.Firebase.authKtx)
     implementation(Dependencies.Firebase.bom)
@@ -123,6 +130,8 @@ dependencies {
     testImplementation(Dependencies.Koin.koinTest)
     testImplementation(Dependencies.Koin.test)
     testImplementation(Dependencies.Koin.testJunit4)
+
+    androidTestImplementation("org.mockito:mockito-core:3.12.4")
 
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)

@@ -1,6 +1,5 @@
 package com.nicholas.rutherford.track.my.shot
 
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import androidx.compose.runtime.*
@@ -29,7 +28,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun NavigationComponent(
-    activity: Activity,
+    activity: MainActivityWrapper,
     navHostController: NavHostController,
     navigator: Navigator,
     viewModels: ViewModels
