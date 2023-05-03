@@ -2,6 +2,8 @@ package com.nicholas.ruitherford.track.my.shot
 
 import android.app.Application
 import android.content.SharedPreferences
+import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.idling.CountingIdlingResource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.BuildConfig
@@ -33,16 +35,31 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 
-class TestSetup {
+class TestUtil {
 
-    fun loadAllKoinModules() {
+    private val countingIdlingResource = CountingIdlingResource("DelayIdlingResource")
+
+    /**
+     * Function to load all Koin modules for testing
+     * takes in optional params to mock certain data based on option params passed in.
+     * If optional param is passed in; will override what is currently being used
+     *
+     * @param overrideReadSharedPreferencesImpl optional param that if set will override to use non null [module]
+     * which is defined as [ReadSharedPreferencesImpl]
+     * @param overrideReadFirebaseUserInfoImpl optional param that if set will override to use non null [module]
+     * which is defined in [ReadFirebaseUserInfoImpl]
+     */
+    fun loadAllKoinModules(
+        overrideReadSharedPreferencesImpl: ReadSharedPreferencesImpl? = null,
+        overrideReadFirebaseUserInfoImpl: ReadFirebaseUserInfoImpl? = null
+    ) {
         val modules = module {
             single { NavigatorImpl() }
-            single { ReadSharedPreferencesImpl(sharedPreferences = get()) }
+            single { overrideReadSharedPreferencesImpl ?: ReadSharedPreferencesImpl(sharedPreferences = get()) }
             single { SplashNavigationImpl(navigator = get()) }
             single { FirebaseAuth.getInstance() }
             single { FirebaseDatabase.getInstance() }
-            single { ReadFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get()) }
+            single { overrideReadFirebaseUserInfoImpl ?: ReadFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get()) }
             viewModel {
                 SplashViewModel(
                     readSharedPreferences = get(),
@@ -114,6 +131,17 @@ class TestSetup {
     }
 
     fun tearDownKoin() = stopKoin()
+
+    fun registerAndStartDelayCallback(delayMillis: Long) {
+        IdlingRegistry.getInstance().register(countingIdlingResource)
+        countingIdlingResource.increment()
+        Thread.sleep(delayMillis)
+        countingIdlingResource.decrement()
+    }
+
+    fun unregisterDelayCallback() {
+        IdlingRegistry.getInstance().unregister(countingIdlingResource)
+    }
 
     private fun getSharedPreferences(androidApplication: Application): android.content.SharedPreferences {
         return androidApplication.getSharedPreferences(SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES, android.content.Context.MODE_PRIVATE)

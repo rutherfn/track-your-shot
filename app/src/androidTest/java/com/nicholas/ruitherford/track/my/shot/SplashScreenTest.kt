@@ -1,9 +1,10 @@
 package com.nicholas.ruitherford.track.my.shot
 
-import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.navigation.compose.rememberNavController
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.nicholas.rutherford.track.my.shot.MainActivity
 import com.nicholas.rutherford.track.my.shot.MainActivityWrapper
 import com.nicholas.rutherford.track.my.shot.NavigationComponent
 import com.nicholas.rutherford.track.my.shot.ViewModels
@@ -11,12 +12,15 @@ import com.nicholas.rutherford.track.my.shot.feature.create.account.authenticati
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordViewModel
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
+import com.nicholas.rutherford.track.my.shot.feature.login.LoginTags
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
+import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashTags
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
-import com.nicholas.rutherford.track.my.shot.helper.constants.SharedPreferencesConstants
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 import com.nicholas.rutherford.track.myshot.compose.content.test.rule.verifyTagIsDisplayed
+import com.nicholas.rutherford.track.myshot.compose.content.test.rule.verifyTagWithImageResIsDisplayed
+import com.nicholas.rutherford.track.myshot.compose.content.test.rule.verifyTagWithTextIsDisplayed
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -24,23 +28,25 @@ import org.junit.Test
 import org.koin.androidx.compose.get
 
 class SplashScreenTest {
+
     @get:Rule
     val composeRule = createComposeRule()
 
-    private val testSetup = TestSetup()
+    @get:Rule
+    val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
+
+    private val testUtil = TestUtil()
 
     @Before
-    fun setUp() = testSetup.loadAllKoinModules()
+    fun setUp() = testUtil.loadAllKoinModules()
 
     @After
     fun tearDown() {
-        testSetup.tearDownKoin()
+        testUtil.tearDownKoin()
     }
 
     @Test
-    fun verify_splash_screen_content() {
-
-        // Build a Composable that depends on MyViewModel and MyDependency
+    fun verify_splash_screen_content_normal_state() {
         val content = @Composable {
             val navHostController = rememberNavController()
             val navigator = get<Navigator>()
@@ -73,10 +79,16 @@ class SplashScreenTest {
 
         composeRule.verifyTagIsDisplayed(testTag = SplashTags.SPLASH_IMAGE)
 
-        Thread.sleep(5000)
-    }
+        testUtil.registerAndStartDelayCallback(delayMillis = 5000L)
 
-    private fun getSharedPreferences(androidApplication: Application): android.content.SharedPreferences {
-        return androidApplication.getSharedPreferences(SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES, android.content.Context.MODE_PRIVATE)
+        composeRule.verifyTagWithImageResIsDisplayed(id = DrawablesIds.launcherRoundTest, testTag = LoginTags.LOGIN_APP_IMAGE)
+        composeRule.verifyTagWithTextIsDisplayed(text = "Proceed With Your Account", testTag = LoginTags.PROCEED_WITH_YOUR_ACCOUNT_TEXT)
+        composeRule.verifyTagWithTextIsDisplayed(text = "Login", testTag = LoginTags.LOGIN_TEXT)
+        composeRule.verifyTagWithTextIsDisplayed(text = "Email", testTag = LoginTags.EMAIL_TEXT_FIELD)
+        composeRule.verifyTagWithTextIsDisplayed(text = "Login", testTag = LoginTags.LOGIN_BUTTON)
+        composeRule.verifyTagWithTextIsDisplayed(text = "Forgot Password", testTag = LoginTags.FORGOT_PASSWORD_TEXT)
+        composeRule.verifyTagWithTextIsDisplayed(text = "Click me to create account", testTag = LoginTags.CLICK_ME_TO_CREATE_ACCOUNT_TEXT)
+
+        testUtil.unregisterDelayCallback()
     }
 }
