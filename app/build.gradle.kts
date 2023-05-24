@@ -93,6 +93,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.play:core-ktx:1.8.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.3.0")
     androidTestImplementation("androidx.test:rules:1.5.0")
