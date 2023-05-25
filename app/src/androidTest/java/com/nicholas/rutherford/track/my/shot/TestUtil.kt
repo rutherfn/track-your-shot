@@ -15,17 +15,18 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.compose.get
+import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.core.module.Module
 
-class TestUtil {
-
+class TestUtil(private val composeRule: ComposeContentTestRule) {
     private val countingIdlingResource = CountingIdlingResource("DelayIdlingResource")
 
     fun setupKoinModules() {
         val mockAndroidContext = ApplicationProvider.getApplicationContext<Context>()
-        // we need to call this because by default koin is starting in the production code
-        // todo fruther investigation -> Can we override the production koin instance?
+        // [stopKoin] gets called to stop the priduction instanc eof startKoin
+        // todo further investigation -> Can we override the production koin instance?
         stopKoin()
         startKoin {
             androidContext(mockAndroidContext)
@@ -33,10 +34,10 @@ class TestUtil {
         }
     }
 
-    fun registerAndStartDelayCallback(delayMillis: Long) {
+    fun registerAndStartDelayCallback() {
         IdlingRegistry.getInstance().register(countingIdlingResource)
         countingIdlingResource.increment()
-        Thread.sleep(delayMillis)
+        Thread.sleep(5000L) // 5000L Represents 5 seconds, the current time showing splash
         countingIdlingResource.decrement()
     }
 
@@ -44,7 +45,19 @@ class TestUtil {
         IdlingRegistry.getInstance().unregister(countingIdlingResource)
     }
 
-    fun setDefaultComposeContent(composeRule: ComposeContentTestRule) {
+    fun setContentAndLoadOptionalModule(koinModule: Module? = null) {
+        koinModule?.let { module ->
+            loadKoinModules(module = module)
+        }
+        setDefaultComposeContent()
+        //   registerAndStartDelayCallback()
+    }
+
+    fun breakdownSetupsForTest() {
+        unregisterDelayCallback()
+    }
+
+    private fun setDefaultComposeContent() {
         composeRule.setContent {
             val navHostController = rememberNavController()
             val navigator = get<Navigator>()
