@@ -10,11 +10,6 @@ class SplashRobot(private val composeRule: ComposeContentTestRule) {
         composeRule.verifyTagIsDisplayed(
             testTag = SplashTags.SPLASH_IMAGE
         )
-//        composeRule.waitUntil {
-//            composeRule.verifyTagIsDisplayed(
-//                testTag = SplashTags.SPLASH_IMAGE
-//            )
-//            true
-//        }
+        Thread.sleep(5000)
     }
 }

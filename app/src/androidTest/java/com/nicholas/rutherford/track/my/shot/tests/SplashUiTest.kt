@@ -8,14 +8,12 @@ import com.nicholas.rutherford.track.my.shot.TestUtil
 import com.nicholas.rutherford.track.my.shot.fakes.FakeReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.fakes.FakeReadSharedPreferences
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeTags
-import com.nicholas.rutherford.track.my.shot.feature.login.LoginTags
-import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.robots.AuthenticationRobot
+import com.nicholas.rutherford.track.my.shot.robots.LoginRobot
 import com.nicholas.rutherford.track.my.shot.robots.SplashRobot
 import com.nicholas.rutherford.track.my.shot.shared.preference.read.ReadSharedPreferences
 import com.nicholas.rutherford.track.myshot.compose.content.test.rule.verifyTagIsDisplayed
-import com.nicholas.rutherford.track.myshot.compose.content.test.rule.verifyTagWithImageResIsDisplayed
-import com.nicholas.rutherford.track.myshot.compose.content.test.rule.verifyTagWithTextIsDisplayed
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,7 +29,9 @@ class SplashUiTest {
     @get:Rule
     val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
+    private val authenticationRobot = AuthenticationRobot(composeRule = composeRule)
     private val splashRobot = SplashRobot(composeRule = composeRule)
+    private val loginRobot = LoginRobot(composeRule = composeRule)
 
     private val testUtil = TestUtil(composeRule = composeRule)
 
@@ -45,18 +45,7 @@ class SplashUiTest {
         testUtil.setContentAndLoadOptionalModule()
 
         splashRobot.verifySplashImageIsDisplayed()
-
-        testUtil.registerAndStartDelayCallback()
-
-        composeRule.verifyTagWithImageResIsDisplayed(id = DrawablesIds.launcherRoundTest, testTag = LoginTags.LOGIN_APP_IMAGE)
-        composeRule.verifyTagWithTextIsDisplayed(text = "Proceed With Your Account", testTag = LoginTags.PROCEED_WITH_YOUR_ACCOUNT_TEXT)
-        composeRule.verifyTagWithTextIsDisplayed(text = "Login", testTag = LoginTags.LOGIN_TEXT)
-        composeRule.verifyTagWithTextIsDisplayed(text = "Email", testTag = LoginTags.EMAIL_TEXT_FIELD)
-        composeRule.verifyTagWithTextIsDisplayed(text = "Login", testTag = LoginTags.LOGIN_BUTTON)
-        composeRule.verifyTagWithTextIsDisplayed(text = "Forgot Password", testTag = LoginTags.FORGOT_PASSWORD_TEXT)
-        composeRule.verifyTagWithTextIsDisplayed(text = "Click me to create account", testTag = LoginTags.CLICK_ME_TO_CREATE_ACCOUNT_TEXT)
-
-        testUtil.breakdownSetupsForTest()
+        loginRobot.verifyLoginTestContent()
     }
 
     @Test
@@ -70,11 +59,8 @@ class SplashUiTest {
 
         splashRobot.verifySplashImageIsDisplayed()
 
-        testUtil.registerAndStartDelayCallback()
-
+        // todo verify home content once created
         composeRule.verifyTagIsDisplayed(testTag = HomeTags.TEST_BUTTON)
-
-        testUtil.breakdownSetupsForTest()
     }
 
     @Test
@@ -87,5 +73,6 @@ class SplashUiTest {
         )
 
         splashRobot.verifySplashImageIsDisplayed()
+        authenticationRobot.verifyAuthenticationContent()
     }
 }

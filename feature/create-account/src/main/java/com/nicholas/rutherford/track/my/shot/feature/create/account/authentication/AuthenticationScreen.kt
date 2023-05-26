@@ -23,8 +23,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,6 +43,7 @@ import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.Shared
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
 import com.nicholas.rutherford.track.my.shot.navigation.OnLifecycleEvent
+import com.nicholas.rutherford.track.myshot.compose.content.test.rule.drawableId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -116,13 +119,17 @@ fun AuthenticationScreenContent(
                 .height(EMAIL_IMAGE_HEIGHT_WIDTH.dp)
                 .width(EMAIL_IMAGE_HEIGHT_WIDTH.dp)
                 .padding(bottom = Padding.twenty)
+                .semantics { drawableId = DrawablesIds.email }
+                .testTag(tag = AuthenticationTags.EMAIL_IMAGE)
         )
 
         Text(
             text = stringResource(id = StringsIds.emailHasBeenSentToVerifyAccountPleaseOpenEmailSentEmailToVerifyAccount),
-            modifier = Modifier.padding(Padding.four),
+            modifier = Modifier
+                .padding(Padding.four)
+                .testTag(tag = AuthenticationTags.EMAIL_HAS_BEEN_SENT_TEXT),
             style = TextStyles.small,
-            textAlign = TextAlign.Center,
+            textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier.height(Padding.four))
@@ -132,7 +139,8 @@ fun AuthenticationScreenContent(
             onClick = {
                 coroutineScope.launch { viewModel.onCheckIfAccountHaBeenVerifiedClicked() }
             },
-            style = TextStyles.hyperLink.copy(fontSize = 16.sp, color = Color.Blue)
+            style = TextStyles.hyperLink.copy(fontSize = 16.sp, color = Color.Blue),
+            modifier = Modifier.testTag(tag = AuthenticationTags.CHECK_IF_ACCOUNT_HAS_BEEN_VERIFIED_TEXT)
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))
@@ -142,7 +150,8 @@ fun AuthenticationScreenContent(
             shape = RoundedCornerShape(size = Shared.buttonDefaultShapeSize),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Padding.eight),
+                .padding(Padding.eight)
+                .testTag(tag = AuthenticationTags.OPEN_EMAIL_BUTTON),
             colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
             content = {
                 Text(
@@ -162,7 +171,8 @@ fun AuthenticationScreenContent(
             shape = RoundedCornerShape(size = Shared.buttonDefaultShapeSize),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Padding.eight),
+                .padding(Padding.eight)
+                .testTag(tag = AuthenticationTags.RESEND_EMAIL_BUTTON),
             colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
             content = {
                 Text(

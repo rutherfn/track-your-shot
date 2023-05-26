@@ -31,7 +31,7 @@ class SplashViewModel(
                                 readSharedPreferences.unverifiedUsername(),
                                 readSharedPreferences.unverifiedEmail()
                             ) { username, email ->
-                                navigation.navigateToAuthentication(
+                                delayAndNavigateToAuthentication(
                                     username = username,
                                     email = email
                                 )
@@ -47,6 +47,14 @@ class SplashViewModel(
     private suspend fun delayAndNavigateToHomeOrLogin(isLoggedIn: Boolean) {
         delay(timeMillis = SPLASH_DELAY_IN_MILLIS)
         navigateToLoginOrHome(isLoggedIn = isLoggedIn)
+    }
+
+    private suspend fun delayAndNavigateToAuthentication(username: String, email: String) {
+        delay(timeMillis = SPLASH_DELAY_IN_MILLIS)
+        navigation.navigateToAuthentication(
+            username = username,
+            email = email
+        )
     }
 
     private fun navigateToLoginOrHome(isLoggedIn: Boolean) {
