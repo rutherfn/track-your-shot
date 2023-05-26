@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import com.nicholas.rutherford.track.my.shot.TrackMyShotTheme
 import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
@@ -40,9 +41,15 @@ fun Content(
             appBar?.let { bar ->
                 TopAppBar(
                     title = {
-                        Text(text = bar.toolbarTitle)
+                        Text(
+                            text = bar.toolbarTitle,
+                            modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_TITLE)
+                        )
                     }, navigationIcon = {
-                    IconButton(onClick = { bar.onIconButtonClicked.invoke() }) {
+                    IconButton(
+                        onClick = { bar.onIconButtonClicked.invoke() },
+                        modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
+                    ) {
                         Icon(
                             imageVector = imageVector ?: Icons.Filled.ArrowBack,
                             contentDescription = bar.iconContentDescription
