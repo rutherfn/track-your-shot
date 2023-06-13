@@ -8,7 +8,7 @@ import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : ComponentActivity() {
+open class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModel<MainActivityViewModel>()
 
@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         viewModel.initAppCenter()
         setContent {
             NavigationComponent(
-                activity = this,
+                activity = MainActivityWrapper(),
                 navHostController = rememberNavController(),
                 navigator = get(),
                 viewModels = ViewModels(

@@ -1,14 +1,8 @@
-package com.nicholas.rutherford.track.my.shot.feature.create.account
+package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount
 
 import android.app.Application
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountFirebaseAuthResponse
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountState
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.EMAIL_PATTERN
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.PASSWORD_PATTERN
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.USERNAME_PATTERN
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase

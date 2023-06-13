@@ -93,6 +93,11 @@ android {
 }
 
 dependencies {
+    androidTestImplementation(Dependencies.Android.testRules)
+    androidTestImplementation(Dependencies.Compose.uiTestJunit4)
+    androidTestImplementation(Dependencies.Espresso.core)
+    androidTestImplementation(Dependencies.Espresso.idilingResource)
+
     api(project(path = ":app-center"))
     api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
@@ -101,7 +106,10 @@ dependencies {
     api(project(path = ":feature:home"))
     api(project(path = ":feature:login"))
     api(project(path = ":feature:splash"))
+    api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:network"))
+
+    debugImplementation(Dependencies.Compose.uiTestManifest)
 
     implementation(Dependencies.Android.appCompat)
     implementation(Dependencies.Android.ktx)
@@ -114,6 +122,7 @@ dependencies {
     implementation(Dependencies.Firebase.bom)
     implementation(Dependencies.Firebase.databaseKtx)
 
+    implementation(Dependencies.Koin.compose)
     implementation(Dependencies.Koin.core)
 
     implementation(Dependencies.Material.material)
