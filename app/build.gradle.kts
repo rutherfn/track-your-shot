@@ -135,8 +135,6 @@ dependencies {
     testImplementation(Dependencies.Koin.test)
     testImplementation(Dependencies.Koin.testJunit4)
 
-    androidTestImplementation("org.mockito:mockito-core:3.12.4")
-
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)
     testImplementation(Dependencies.Junit.junit)
