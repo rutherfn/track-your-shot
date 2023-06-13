@@ -19,7 +19,7 @@
 2. Empowering users to save voice commands within the app, which will allow them to conveniently record whether a given shot by a player is a miss or a make.
 3. Implementing an in-app survey to gather feedback from users regarding their experience with the app's performance.
 
-**Version 1.2** - 	TBD
+**Version 1.2** - TBD
 
 **Features:**
 
