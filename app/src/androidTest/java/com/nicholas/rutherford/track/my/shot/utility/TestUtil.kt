@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.navigation.compose.rememberNavController
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.idling.CountingIdlingResource
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
@@ -34,27 +33,11 @@ class TestUtil(private val composeRule: ComposeContentTestRule) {
         }
     }
 
-    fun registerAndStartDelayCallback() {
-        IdlingRegistry.getInstance().register(countingIdlingResource)
-        countingIdlingResource.increment()
-        Thread.sleep(5000L) // 5000L Represents 5 seconds, the current time showing splash
-        countingIdlingResource.decrement()
-    }
-
-    fun unregisterDelayCallback() {
-        IdlingRegistry.getInstance().unregister(countingIdlingResource)
-    }
-
     fun setContentAndLoadOptionalModule(koinModule: Module? = null) {
         koinModule?.let { module ->
             loadKoinModules(module = module)
         }
         setDefaultComposeContent()
-        //   registerAndStartDelayCallback()
-    }
-
-    fun breakdownSetupsForTest() {
-        unregisterDelayCallback()
     }
 
     private fun setDefaultComposeContent() {
