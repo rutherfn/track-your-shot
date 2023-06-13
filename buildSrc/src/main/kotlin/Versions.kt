@@ -14,6 +14,7 @@ object Versions {
         object Android {
             const val appCompat = "1.4.1"
             const val ktx = "1.7.0"
+            const val testRules = "1.5.0"
         }
 
         object AppCenter {
@@ -35,9 +36,7 @@ object Versions {
             const val jvm = "1.6.4"
         }
 
-        object Espresso {
-            const val core = "3.4.0"
-        }
+        object Espresso { const val core = "3.3.0" }
 
         object Firebase {
             const val authKtx = "21.1.0"

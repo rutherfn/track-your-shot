@@ -7,6 +7,7 @@ object Dependencies {
     object Android {
         const val appCompat = "androidx.appcompat:appcompat:${Versions.Dependencies.Android.appCompat}"
         const val ktx = "androidx.core:core-ktx:${Versions.Dependencies.Android.ktx}"
+        const val testRules = "androidx.test:rules:${Versions.Dependencies.Android.testRules}"
     }
 
     object AppCenter {
@@ -44,6 +45,7 @@ object Dependencies {
 
     object Espresso {
         const val core = "androidx.test.espresso:espresso-core:${Versions.Dependencies.Espresso.core}"
+        const val idilingResource = "androidx.test.espresso:espresso-idling-resource:${Versions.Dependencies.Espresso.core}"
     }
 
     object Firebase {
@@ -64,6 +66,7 @@ object Dependencies {
     }
 
     object Koin {
+        const val compose = "io.insert-koin:koin-androidx-compose:${Versions.Dependencies.Koin.latestVersion}"
         const val core = "io.insert-koin:koin-android:${Versions.Dependencies.Koin.latestVersion}"
         const val koinTest = "io.insert-koin:koin-test:${Versions.Dependencies.Koin.latestVersion}"
         const val test = "io.insert-koin:koin-core:${Versions.Dependencies.Koin.latestVersion}"

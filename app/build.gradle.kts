@@ -93,11 +93,10 @@ android {
 }
 
 dependencies {
-    implementation("com.google.android.play:core-ktx:1.8.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
-    androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.3.0")
-    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation(Dependencies.Android.testRules)
     androidTestImplementation(Dependencies.Compose.uiTestJunit4)
+    androidTestImplementation(Dependencies.Espresso.core)
+    androidTestImplementation(Dependencies.Espresso.idilingResource)
 
     api(project(path = ":app-center"))
     api(project(path = ":base-resources"))
@@ -119,12 +118,11 @@ dependencies {
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
 
-    implementation("io.insert-koin:koin-androidx-compose:3.2.0")
-
     implementation(Dependencies.Firebase.authKtx)
     implementation(Dependencies.Firebase.bom)
     implementation(Dependencies.Firebase.databaseKtx)
 
+    implementation(Dependencies.Koin.compose)
     implementation(Dependencies.Koin.core)
 
     implementation(Dependencies.Material.material)
