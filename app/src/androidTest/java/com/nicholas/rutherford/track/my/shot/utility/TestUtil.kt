@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.navigation.compose.rememberNavController
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.idling.CountingIdlingResource
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordViewModel
@@ -20,7 +19,6 @@ import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
 
 class TestUtil(private val composeRule: ComposeContentTestRule) {
-    private val countingIdlingResource = CountingIdlingResource("DelayIdlingResource")
 
     fun setupKoinModules() {
         val mockAndroidContext = ApplicationProvider.getApplicationContext<Context>()
