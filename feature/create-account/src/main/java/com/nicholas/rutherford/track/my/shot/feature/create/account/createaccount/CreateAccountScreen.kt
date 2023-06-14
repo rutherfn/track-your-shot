@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,8 +16,11 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -24,6 +28,7 @@ import com.nicholas.rutherford.track.my.shot.compose.components.Content
 import com.nicholas.rutherford.track.my.shot.compose.components.TextFieldNoPadding
 import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
+import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
@@ -52,12 +57,16 @@ fun CreateAccountScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(Padding.twenty)
+            .padding(Padding.twenty),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Text(
-            text = stringResource(id = StringsIds.allFieldsAreRequired),
-            style = TextStyles.small
+        Image(
+            painter = painterResource(id = DrawablesIds.launcherRound),
+            contentDescription = stringResource(id = StringsIds.loginIconDescription),
+            modifier = Modifier
+                .scale(scale = 1.5f)
+                .padding(bottom = 20.dp)
         )
 
         Spacer(modifier = Modifier.height(Padding.four))
@@ -103,7 +112,7 @@ fun CreateAccountScreenContent(
             colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
             content = {
                 Text(
-                    text = stringResource(id = StringsIds.createAccount),
+                    text = stringResource(id = StringsIds.continueText),
                     style = TextStyles.small,
                     color = Color.White
                 )

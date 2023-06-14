@@ -4,10 +4,10 @@ import com.nicholas.rutherford.track.my.shot.base.resources.R
 
 object StringsIds {
     val accountHasNotBeenVerified = R.string.account_has_not_been_verified
-    val allFieldsAreRequired = R.string.all_fields_are_required
     val areYouSureYouWantLeaveTrackMyShot = R.string.are_you_sure_you_want_to_leave_track_my_shot
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
     val confirm = R.string.confirm
+    val continueText = R.string.continue_text
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val createAccount = R.string.create_account
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount = R.string.current_account_has_not_been_verified_please_open_email_to_verify_account
@@ -45,6 +45,7 @@ object StringsIds {
     val resendEmail = R.string.resend_email
     val splashIconDescription = R.string.splash_icon_description
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
+    val termsConditions = R.string.terms_conditions
     val thereWasAErrorCreatingYourAccountPleaseTryAgain = R.string.there_was_a_error_creating_your_account_please_try_again
     val tryAgain = R.string.try_again
     val unableToCreateAccount = R.string.unable_to_create_account

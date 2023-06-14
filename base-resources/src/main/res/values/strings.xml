@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_has_not_been_verified">Account Has Not Been Verified</string>
-    <string name="all_fields_are_required">All Fields Are Required</string>
     <string name="are_you_sure_you_want_to_leave_track_my_shot">Are you sure you want to leave Track My Shot?</string>
     <string name="check_if_account_has_been_verified">Check if account has been verified</string>
     <string name="confirm">Confirm</string>
+    <string name="continue_text">Continue</string>
     <string name="click_me_to_create_account">Click me to create account</string>
     <string name="create_account">Create Account</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
@@ -42,6 +42,7 @@
     <string name="proceed_with_your_account">Proceed With Your Account</string>
     <string name="splash_icon_description">This is a splash image for the splash screen that gets displayed before app is triggered</string>
     <string name="successfully_sent_email_verification">Successfully sent verification</string>
+    <string name="terms_conditions">Terms &amp; Conditions</string>
     <string name="there_was_a_error_creating_your_account_please_try_again">There was a error creating your account. Please try again.</string>
     <string name="try_again">Try Again</string>
     <string name="username">Username</string>
