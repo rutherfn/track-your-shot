@@ -10,16 +10,17 @@
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
     <string name="forgot_password">Forgot Password</string>
+    <string name="email">Email</string>
     <string name="email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password">Email has been sent to reset password. Please follow directions to reset password.</string>
     <string name="email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account">Email has been sent to verify account. Please open sent email to verify account.</string>
     <string name="email_is_not_in_correct_format_please_enter_email_in_correct_format">Email is not in correct format. Please enter email in correct format</string>
     <string name="email_is_required_please_enter_a_email_to_create_a_account">Email is required. Please enter a email to create a account.</string>
     <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">Email is required. Please enter a email to login to existing account.</string>
     <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">Email is required. Please enter a email to reset password for existing account.</string>
+    <string name="email_required">Email*</string>
     <string name="empty" translatable="false" />
     <string name="empty_field">Empty Field</string>
     <string name="empty_fields">Empty Fields</string>
-    <string name="email">Email</string>
     <string name="error_creating_account">Error Creating Account</string>
     <string name="got_it">Got It</string>
     <string name="having_trouble_creating_your_account_please_try_again">Having trouble creating your account. Please try again</string>
@@ -36,6 +37,7 @@
     <string name="reset_password_email_sent">Reset Password Email Sent</string>
     <string name="resend_email">Resend Email</string>
     <string name="password">Password</string>
+    <string name="password_required">Password*</string>
     <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">Password is not in correct format. Please enter password in correct format</string>
     <string name="password_is_required_please_enter_a_password_to_create_a_account">Password is required. Please enter a password to create a account.</string>
     <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">Password is required. Please enter a password to login to existing account.</string>
@@ -46,6 +48,7 @@
     <string name="there_was_a_error_creating_your_account_please_try_again">There was a error creating your account. Please try again.</string>
     <string name="try_again">Try Again</string>
     <string name="username">Username</string>
+    <string name="username_required">Username*</string>
     <string name="username_in_use">Username in use</string>
     <string name="username_is_not_in_correct_format_please_enter_username_in_correct_format">Username is not in correct format. Please enter username in correct format</string>
     <string name="unable_to_create_account">Unable to create account</string>

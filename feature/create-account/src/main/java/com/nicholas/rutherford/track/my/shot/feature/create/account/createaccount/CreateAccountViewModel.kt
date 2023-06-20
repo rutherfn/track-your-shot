@@ -253,15 +253,15 @@ class CreateAccountViewModel(
         )
     }
 
-    internal fun onUsernameValueChanged(newUsername: String) {
+    fun onUsernameValueChanged(newUsername: String) {
         createAccountMutableStateFlow.value = createAccountStateFlow.value.copy(username = newUsername)
     }
 
-    internal fun onEmailValueChanged(newEmail: String) {
+    fun onEmailValueChanged(newEmail: String) {
         createAccountMutableStateFlow.value = createAccountStateFlow.value.copy(email = newEmail)
     }
 
-    internal fun onPasswordValueChanged(newPassword: String) {
+    fun onPasswordValueChanged(newPassword: String) {
         createAccountMutableStateFlow.value = createAccountStateFlow.value.copy(password = newPassword)
     }
 }
