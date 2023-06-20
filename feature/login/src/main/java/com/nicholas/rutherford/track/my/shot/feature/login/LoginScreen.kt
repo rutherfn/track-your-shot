@@ -116,7 +116,7 @@ fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
                 shape = RoundedCornerShape(size = 50.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = Padding.twentyFour)
+                    .padding(vertical = Padding.twelve)
                     .testTag(tag = LoginTags.LOGIN_BUTTON),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
                 content = {

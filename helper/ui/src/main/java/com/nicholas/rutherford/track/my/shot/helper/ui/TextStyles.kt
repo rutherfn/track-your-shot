@@ -37,4 +37,11 @@ object TextStyles {
         textDecoration = TextDecoration.Underline,
         color = Colors.primaryColor
     )
+
+    val toolbar = TextStyle(
+        fontSize = 18.sp,
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        color = Colors.primaryColor
+    )
 }

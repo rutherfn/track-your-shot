@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.testTag
 import com.nicholas.rutherford.track.my.shot.TrackMyShotTheme
 import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
+import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
 
 /**
  * Default Content with optional back [TopAppBar]. Used for default content views inside of [Composable]
@@ -43,7 +44,8 @@ fun Content(
                     title = {
                         Text(
                             text = bar.toolbarTitle,
-                            modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_TITLE)
+                            modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_TITLE),
+                            style = TextStyles.toolbar
                         )
                     }, navigationIcon = {
                     IconButton(

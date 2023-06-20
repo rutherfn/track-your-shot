@@ -14,6 +14,7 @@ import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDi
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationScreen
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountScreen
+import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountScreenParams
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordScreen
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeScreen
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreen
@@ -150,7 +151,18 @@ fun NavigationComponent(
             ForgotPasswordScreen(viewModel = viewModels.forgotPasswordViewModel)
         }
         composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
-            CreateAccountScreen(viewModel = viewModels.createAccountViewModel)
+            val createAccountViewModel = viewModels.createAccountViewModel
+
+            CreateAccountScreen(
+                createAccountScreenParams = CreateAccountScreenParams(
+                    state = createAccountViewModel.createAccountStateFlow.collectAsState().value,
+                    onUsernameValueChanged = { newUsername -> createAccountViewModel.onUsernameValueChanged(newUsername = newUsername) },
+                    onEmailValueChanged = { newEmail -> createAccountViewModel.onEmailValueChanged(newEmail = newEmail) },
+                    onPasswordValueChanged = { newPassword -> createAccountViewModel.onPasswordValueChanged(newPassword = newPassword) },
+                    onCreateAccountButtonClicked = { createAccountViewModel.onCreateAccountButtonClicked() },
+                    onBackButtonClicked = { createAccountViewModel.onBackButtonClicked() }
+                )
+            )
         }
         composable(
             route = NavigationDestinations.AUTHENTICATION_SCREEN_WITH_PARAMS,

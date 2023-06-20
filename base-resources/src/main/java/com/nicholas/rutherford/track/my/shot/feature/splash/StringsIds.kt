@@ -4,10 +4,10 @@ import com.nicholas.rutherford.track.my.shot.base.resources.R
 
 object StringsIds {
     val accountHasNotBeenVerified = R.string.account_has_not_been_verified
-    val allFieldsAreRequired = R.string.all_fields_are_required
     val areYouSureYouWantLeaveTrackMyShot = R.string.are_you_sure_you_want_to_leave_track_my_shot
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
     val confirm = R.string.confirm
+    val continueText = R.string.continue_text
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val createAccount = R.string.create_account
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount = R.string.current_account_has_not_been_verified_please_open_email_to_verify_account
@@ -18,11 +18,12 @@ object StringsIds {
     val empty = R.string.empty
     val emptyField = R.string.empty_field
     val emptyFields = R.string.empty_fields
+    val email = R.string.email
     val emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat = R.string.email_is_not_in_correct_format_please_enter_email_in_correct_format
     val emailIsRequiredPleaseEnterAEmailToCreateAAccount = R.string.email_is_required_please_enter_a_email_to_create_a_account
     val emailIsRequiredPleaseEnterAEmailToLoginToExistingAccount = R.string.email_is_required_please_enter_a_email_to_login_to_existing_account
     val emailIsRequiredPleaseEnterAEmailToResetPasswordForExistingAccount = R.string.email_is_required_please_enter_a_email_to_reset_password_for_existing_account
-    val email = R.string.email
+    val emailRequired = R.string.email_required
     val errorCreatingAccount = R.string.error_creating_account
     val gotIt = R.string.got_it
     val havingTroubleCreatingYourAccountPleaseTryAgain = R.string.having_trouble_creating_your_account_please_try_again
@@ -36,6 +37,7 @@ object StringsIds {
     val notConnectedToInternet = R.string.not_connected_to_internet
     val openEmail = R.string.open_email
     val password = R.string.password
+    val passwordRequired = R.string.password_required
     val passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat = R.string.password_is_not_in_correct_format_please_enter_password_in_correct_format
     val passwordIsRequiredPleaseEnterAPasswordToCreateAAccount = R.string.password_is_required_please_enter_a_password_to_create_a_account
     val passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount = R.string.password_is_required_please_enter_a_password_to_login_to_existing_account
@@ -45,6 +47,7 @@ object StringsIds {
     val resendEmail = R.string.resend_email
     val splashIconDescription = R.string.splash_icon_description
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
+    val termsConditions = R.string.terms_conditions
     val thereWasAErrorCreatingYourAccountPleaseTryAgain = R.string.there_was_a_error_creating_your_account_please_try_again
     val tryAgain = R.string.try_again
     val unableToCreateAccount = R.string.unable_to_create_account
@@ -53,6 +56,7 @@ object StringsIds {
     val unableToSetNewUsername = R.string.unable_to_set_new_username
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
     val userName = R.string.username
+    val usernameRequired = R.string.username_required
     val usernameInUse = R.string.username_in_use
     val usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat = R.string.username_is_not_in_correct_format_please_enter_username_in_correct_format
     val usernameIsRequiredPleaseEnterAUsernameToCreateAAccount = R.string.username_is_required_please_enter_a_username_to_create_a_account
