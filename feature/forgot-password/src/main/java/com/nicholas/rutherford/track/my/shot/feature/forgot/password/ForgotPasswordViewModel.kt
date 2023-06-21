@@ -22,7 +22,7 @@ class ForgotPasswordViewModel(
 
     fun onBackButtonClicked() = navigation.pop()
 
-    internal suspend fun onSendPasswordResetButtonClicked(newEmail: String?) {
+    suspend fun onSendPasswordResetButtonClicked(newEmail: String?) {
         newEmail?.let { email ->
             if (email.isEmpty()) {
                 navigation.alert(alert = emailEmptyAlert())
@@ -44,7 +44,7 @@ class ForgotPasswordViewModel(
         }
     }
 
-    internal fun onEmailValueChanged(newEmail: String) {
+    fun onEmailValueChanged(newEmail: String) {
         forgotPasswordMutableStateFlow.value = forgotPasswordMutableStateFlow.value.copy(email = newEmail)
     }
 

@@ -15,8 +15,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -27,35 +25,22 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
-fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel) {
-    val state = viewModel.forgotPasswordStateFlow.collectAsState().value
-    val coroutineScope = rememberCoroutineScope()
-
+fun ForgotPasswordScreen(forgotPasswordScreenParams: ForgotPasswordScreenParams) {
     Content(
         ui = {
-            ForgotPasswordScreenContent(
-                state = state,
-                viewModel = viewModel,
-                coroutineScope = coroutineScope
-            )
+            ForgotPasswordScreenContent(forgotPasswordScreenParams = forgotPasswordScreenParams)
         },
         appBar = AppBar(
             toolbarTitle = stringResource(id = StringsIds.forgotPassword),
-            onIconButtonClicked = { viewModel.onBackButtonClicked() }
+            onIconButtonClicked = { forgotPasswordScreenParams.onBackButtonClicked() }
         )
     )
 }
 
 @Composable
-fun ForgotPasswordScreenContent(
-    state: ForgotPasswordState,
-    viewModel: ForgotPasswordViewModel,
-    coroutineScope: CoroutineScope
-) {
+fun ForgotPasswordScreenContent(forgotPasswordScreenParams: ForgotPasswordScreenParams) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,12 +48,12 @@ fun ForgotPasswordScreenContent(
             .padding(14.dp)
     ) {
         TextField(
-            label = { Text(text = stringResource(id = StringsIds.forgotPassword)) },
+            label = { Text(text = stringResource(id = StringsIds.emailRequired)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp),
-            value = state.email ?: stringResource(id = StringsIds.empty),
-            onValueChange = { newEmail -> viewModel.onEmailValueChanged(newEmail = newEmail) },
+            value = forgotPasswordScreenParams.state.email ?: stringResource(id = StringsIds.empty),
+            onValueChange = { newEmail -> forgotPasswordScreenParams.onEmailValueChanged(newEmail) },
             textStyle = TextStyles.body,
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
@@ -78,9 +63,7 @@ fun ForgotPasswordScreenContent(
 
         Button(
             onClick = {
-                coroutineScope.launch {
-                    viewModel.onSendPasswordResetButtonClicked(newEmail = state.email)
-                }
+                forgotPasswordScreenParams.onSendPasswordResetButtonClicked(forgotPasswordScreenParams.state.email)
             },
             shape = RoundedCornerShape(size = 50.dp),
             modifier = Modifier
