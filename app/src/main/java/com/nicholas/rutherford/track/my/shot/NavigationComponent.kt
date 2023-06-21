@@ -16,6 +16,7 @@ import com.nicholas.rutherford.track.my.shot.feature.create.account.authenticati
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountScreen
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountScreenParams
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordScreen
+import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordScreenParams
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeScreen
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreenParams
@@ -34,7 +35,9 @@ fun NavigationComponent(
     navigator: Navigator,
     viewModels: ViewModels
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val lifecycleOwner = LocalLifecycleOwner.current
+
     val alertState by navigator.alertActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
@@ -62,6 +65,10 @@ fun NavigationComponent(
 
     var alert: Alert? by remember { mutableStateOf(value = null) }
     var progress: Progress? by remember { mutableStateOf(value = null) }
+
+    val createAccountViewModel = viewModels.createAccountViewModel
+    val loginViewModel = viewModels.loginViewModel
+    val forgotPasswordViewModel = viewModels.forgotPasswordViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -125,9 +132,6 @@ fun NavigationComponent(
             })
         }
         composable(route = NavigationDestinations.LOGIN_SCREEN) {
-            val coroutineScope = rememberCoroutineScope()
-            val loginViewModel = viewModels.loginViewModel
-
             LoginScreen(
                 loginScreenParams = LoginScreenParams(
                     state = loginViewModel.loginStateFlow.collectAsState().value,
@@ -148,11 +152,18 @@ fun NavigationComponent(
             HomeScreen(viewModel = viewModels.homeViewModel)
         }
         composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {
-            ForgotPasswordScreen(viewModel = viewModels.forgotPasswordViewModel)
+            ForgotPasswordScreen(
+                forgotPasswordScreenParams = ForgotPasswordScreenParams(
+                    state = forgotPasswordViewModel.forgotPasswordStateFlow.collectAsState().value,
+                    onEmailValueChanged = { newEmail -> forgotPasswordViewModel.onEmailValueChanged(newEmail = newEmail) },
+                    onSendPasswordResetButtonClicked = { newEmail ->
+                        coroutineScope.launch { forgotPasswordViewModel.onSendPasswordResetButtonClicked(newEmail = newEmail) }
+                    },
+                    onBackButtonClicked = { forgotPasswordViewModel.onBackButtonClicked() }
+                )
+            )
         }
         composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
-            val createAccountViewModel = viewModels.createAccountViewModel
-
             CreateAccountScreen(
                 createAccountScreenParams = CreateAccountScreenParams(
                     state = createAccountViewModel.createAccountStateFlow.collectAsState().value,
