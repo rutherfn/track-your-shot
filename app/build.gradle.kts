@@ -3,6 +3,7 @@ plugins {
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
     id(BuildIds.gmsGoogleServices)
+    id("kotlin-kapt")
 }
 
 android {
@@ -93,6 +94,9 @@ android {
 }
 
 dependencies {
+    implementation("androidx.room:room-runtime:2.4.1")
+    kapt("androidx.room:room-compiler:2.4.1")
+
     androidTestImplementation(Dependencies.Android.testRules)
     androidTestImplementation(Dependencies.Compose.uiTestJunit4)
     androidTestImplementation(Dependencies.Espresso.core)

@@ -89,6 +89,7 @@ object Dependencies {
     object Room {
         const val compiler = "androidx.room:room-runtime:${Versions.Dependencies.Room.core}"
         const val kaptCompiler = "androidx.room:room-compiler:${Versions.Dependencies.Room.core}"
+        const val ktx = "androidx.room:room-ktx:${Versions.Dependencies.Room.core}"
         const val runtime = "androidx.room:room-runtime:${Versions.Dependencies.Room.core}"
     }
 

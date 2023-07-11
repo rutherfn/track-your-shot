@@ -1,20 +1,18 @@
 plugins {
     id(BuildIds.androidLibrary)
+    id("kotlin-kapt")
     kotlin(BuildIds.pluginKotlin)
+    kotlin(BuildIds.pluginKapt)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 android {
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
-
-    buildFeatures {
-        compose = ComposeData.Enabled.value
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
-    }
 
     compileOptions {
         sourceCompatibility = types.BuildTypes.CompileOptions.sourceCompatibility
@@ -68,23 +66,15 @@ android {
 }
 
 dependencies {
-    androidTestImplementation(Dependencies.Compose.uiTestJunit4)
+    implementation("androidx.room:room-runtime:2.4.1")
+    kapt("androidx.room:room-compiler:2.4.1")
 
-    api(project(path = ":base-resources"))
-    api(project(path = ":compose:components"))
-    api(project(path = ":data:room"))
-    api(project(path = ":helper:compose-content-test-rule"))
-    api(project(path = ":helper:extensions"))
-    api(project(path = ":firebase:read"))
-    api(project(path = ":navigation"))
-    api(project(path = ":shared-preference"))
+    testImplementation("org.mockito:mockito-core:3.12.4")
+    implementation("androidx.test:core-ktx:1.5.0")
+    implementation("androidx.test.ext:junit-ktx:1.1.3")
+    androidTestImplementation(project(mapOf("path" to ":data-test:room")))
 
-    debugImplementation(Dependencies.Compose.uiTestManifest)
-
-    implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.viewModel)
-
-    testImplementation(Dependencies.Coroutine.test)
+    testImplementation(project(path = ":data-test:room"))
 
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)

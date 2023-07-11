@@ -1,12 +1,14 @@
 package com.nicholas.rutherford.track.my.shot
 
 import android.app.Application
+import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenterImpl
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
 import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
+import com.nicholas.rutherford.track.my.shot.data.room.database.AppDatabase
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigation
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
@@ -51,6 +53,17 @@ class AppModule {
     val modules = module {
         single {
             getSharedPreferences(androidApplication())
+        }
+        single<AppDatabase> {
+            Room.databaseBuilder(
+                androidApplication(),
+                AppDatabase::class.java,
+                "app_database.db"
+            ).build()
+        }
+
+        single {
+            get<AppDatabase>().pendingUserDao()
         }
 
         single<android.content.SharedPreferences.Editor> {
@@ -117,7 +130,9 @@ class AppModule {
             SplashViewModel(
                 readSharedPreferences = get(),
                 navigation = get(),
-                readFirebaseUserInfo = get()
+                readFirebaseUserInfo = get(),
+                androidApplication(),
+                get()
             )
         }
         viewModel {
