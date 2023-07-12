@@ -26,6 +26,39 @@ class SplashViewModel(
     private val pendingUserDao: PendingUserDao
 ) : ViewModel() {
 
+    init {
+        insertPendingUser()
+        retrievePendingUser()
+//        pendingUserDao.getPendingUser()
+
+        // appDatabase.pendingUserDao().getPendingUser()
+    }
+
+    fun insertPendingUser() {
+        val pendingUser = PendingUser(
+            id = 1,
+            accountHasBeenCreated = true,
+            unverifiedEmail = "example@example.com",
+            unverifiedUsername = "JohnDoe"
+        )
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                pendingUserDao.insert(pendingUser)
+            }
+        }
+    }
+
+    fun retrievePendingUser() {
+        viewModelScope.launch {
+            val pendingUser = withContext(Dispatchers.IO) {
+                pendingUserDao.getPendingUser()
+            }
+            pendingUser?.let {
+                println("Retrieved Pending User: $it")
+            }
+        }
+    }
+
     fun navigateToHomeLoginOrAuthentication() {
         viewModelScope.launch {
             readFirebaseUserInfo.isLoggedInFlow()

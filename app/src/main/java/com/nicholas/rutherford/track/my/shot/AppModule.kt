@@ -35,6 +35,7 @@ import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.Authen
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebaseImpl
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebaseImpl
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.my.shot.helper.constants.SharedPreferencesConstants
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import com.nicholas.rutherford.track.my.shot.helper.network.NetworkImpl
@@ -58,7 +59,7 @@ class AppModule {
             Room.databaseBuilder(
                 androidApplication(),
                 AppDatabase::class.java,
-                "app_database.db"
+                Constants.APP_DATABASE_NAME
             ).build()
         }
 

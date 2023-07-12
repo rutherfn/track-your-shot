@@ -60,7 +60,7 @@ object Versions {
 
         object Mockk { const val core = "1.13.2" }
 
-        object Room { const val core = "2.4.0" }
+        object Room { const val core = "2.4.1" }
         object SystemUiController { const val core = "0.27.0" }
 
         object Timber { const val core = "5.0.1" }

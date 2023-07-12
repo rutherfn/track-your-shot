@@ -66,6 +66,13 @@ android {
 }
 
 dependencies {
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("com.google.truth:truth:1.0.1")
+    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
+
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
     implementation("androidx.room:room-runtime:2.4.1")
     kapt("androidx.room:room-compiler:2.4.1")
 
@@ -75,12 +82,4 @@ dependencies {
     androidTestImplementation(project(mapOf("path" to ":data-test:room")))
 
     testImplementation(project(path = ":data-test:room"))
-
-    testImplementation(Dependencies.Junit.Jupiter.api)
-    testImplementation(Dependencies.Junit.Jupiter.params)
-    testImplementation(Dependencies.Junit.junit)
-
-    testImplementation(Dependencies.Mockk.core)
-
-    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }

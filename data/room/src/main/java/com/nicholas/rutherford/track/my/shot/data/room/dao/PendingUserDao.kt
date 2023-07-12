@@ -20,7 +20,4 @@ interface PendingUserDao {
 
     @Query("SELECT * FROM pendingUser")
     fun getPendingUser(): PendingUser?
-
-    @Query("SELECT * FROM pendingUser WHERE id = :id")
-    fun getPendingUserById(id: Int): PendingUser?
 }
