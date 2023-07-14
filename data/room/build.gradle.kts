@@ -66,20 +66,16 @@ android {
 }
 
 dependencies {
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("com.google.truth:truth:1.0.1")
-    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
+    androidTestImplementation(Dependencies.Junit.ext)
+    androidTestImplementation(Dependencies.CoreTesting.core)
+    androidTestImplementation(Dependencies.Espresso.core)
+    androidTestImplementation(Dependencies.Truth.core)
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-    implementation("androidx.room:room-runtime:2.4.1")
-    kapt("androidx.room:room-compiler:2.4.1")
+    implementation(Dependencies.Room.runtime)
+    implementation(Dependencies.Room.lifecycleRuntimeKtx)
+    kapt(Dependencies.Room.compiler)
 
-    testImplementation("org.mockito:mockito-core:3.12.4")
-    implementation("androidx.test:core-ktx:1.5.0")
-    implementation("androidx.test.ext:junit-ktx:1.1.3")
+    testImplementation(Dependencies.Junit.core)
+
     androidTestImplementation(project(mapOf("path" to ":data-test:room")))
-
-    testImplementation(project(path = ":data-test:room"))
 }
