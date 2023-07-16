@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account.authentication
 
 import android.app.Application
+import com.nicholas.rutherford.track.my.shot.data.room.dao.ActiveUserDao
+import com.nicholas.rutherford.track.my.shot.data.room.entities.ActiveUserEntity
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.TestAccountInfoRealTimeResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.USER_NAME_ACCOUNT_INFO_REALTIME_RESPONSE
@@ -37,8 +39,12 @@ class AuthenticationViewModelTest {
     private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
 
+    private val activeUserDao = mockk<ActiveUserDao>(relaxed = true)
+
     private val username = "testUsername11"
     private val email = "testemail@yahoo.com"
+
+    private val activeUserEntity = TestActiveUserEntity().create()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val dispatcher = StandardTestDispatcher()
@@ -53,7 +59,8 @@ class AuthenticationViewModelTest {
             application = application,
             authenticationFirebase = authenticationFirebase,
             createSharedPreferences = createSharedPreferences,
-            createFirebaseUserInfo = createFirebaseUserInfo
+            createFirebaseUserInfo = createFirebaseUserInfo,
+            activeUserDao = activeUserDao
         )
     }
 
@@ -74,6 +81,60 @@ class AuthenticationViewModelTest {
         Assertions.assertEquals(email, viewModel.email)
 
         verify { viewModel.createSharedPreferencesForUnAuthenticatedUser() }
+    }
+
+    @Nested
+    inner class CreateActiveUser {
+        private val activeUserEntity = ActiveUserEntity(
+            id = 1,
+            accountHasBeenCreated = false,
+            username = username,
+            email = email
+        )
+
+        @Test
+        fun `when username is set to null should not call insert function`() {
+            viewModel.username = null
+            viewModel.email = email
+
+            viewModel.createActiveUser()
+
+            verify(exactly = 0) { activeUserDao.insert(activeUserEntity = activeUserEntity) }
+        }
+
+        @Test
+        fun `when email is set to null should not call insert function`() {
+            viewModel.username = username
+            viewModel.email = null
+
+            viewModel.createActiveUser()
+
+            verify(exactly = 0) { activeUserDao.insert(activeUserEntity = activeUserEntity) }
+        }
+
+        @Test
+        fun `when getActiveUser does not return null should not call insert function`() {
+            every { activeUserDao.getActiveUser() } returns activeUserEntity
+
+            viewModel.username = username
+            viewModel.email = email
+
+            viewModel.createActiveUser()
+
+            verify(exactly = 0) { activeUserDao.insert(activeUserEntity = activeUserEntity) }
+        }
+
+        @Test
+        fun `when getActiveUser does return null should call insert function`() {
+            every { activeUserDao.getActiveUser() } returns null
+
+            viewModel.username = username
+            viewModel.email = email
+
+            viewModel.createActiveUser()
+
+            verify { activeUserDao.insert(activeUserEntity = activeUserEntity) }
+        }
     }
 
     @Nested
@@ -174,7 +235,8 @@ class AuthenticationViewModelTest {
                 application = application,
                 authenticationFirebase = authenticationFirebase,
                 createSharedPreferences = createSharedPreferences,
-                createFirebaseUserInfo = createFirebaseUserInfo
+                createFirebaseUserInfo = createFirebaseUserInfo,
+                activeUserDao = activeUserDao
             )
 
             viewModel.username = username
@@ -202,7 +264,8 @@ class AuthenticationViewModelTest {
                 application = application,
                 authenticationFirebase = authenticationFirebase,
                 createSharedPreferences = createSharedPreferences,
-                createFirebaseUserInfo = createFirebaseUserInfo
+                createFirebaseUserInfo = createFirebaseUserInfo,
+                activeUserDao = activeUserDao
             )
 
             viewModel.username = username
@@ -353,7 +416,8 @@ class AuthenticationViewModelTest {
                 application = application,
                 authenticationFirebase = authenticationFirebase,
                 createSharedPreferences = createSharedPreferences,
-                createFirebaseUserInfo = createFirebaseUserInfo
+                createFirebaseUserInfo = createFirebaseUserInfo,
+                activeUserDao = activeUserDao
             )
 
             viewModel.username = username
@@ -383,7 +447,8 @@ class AuthenticationViewModelTest {
                 application = application,
                 authenticationFirebase = authenticationFirebase,
                 createSharedPreferences = createSharedPreferences,
-                createFirebaseUserInfo = createFirebaseUserInfo
+                createFirebaseUserInfo = createFirebaseUserInfo,
+                activeUserDao = activeUserDao
             )
 
             viewModel.username = username

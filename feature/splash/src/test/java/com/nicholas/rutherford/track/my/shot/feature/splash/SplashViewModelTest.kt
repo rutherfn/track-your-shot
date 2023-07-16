@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.feature.splash
 
+import com.nicholas.rutherford.track.my.shot.data.room.dao.ActiveUserDao
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.shared.preference.read.ReadSharedPreferences
 import io.mockk.coVerify
@@ -28,6 +29,8 @@ class SplashViewModelTest {
     internal var navigation = mockk<SplashNavigation>(relaxed = true)
     internal var readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
 
+    internal var activeUserDao = mockk<ActiveUserDao>(relaxed = true)
+
     internal val delayTime = 4001L // needs 1 extra millisecond to account for function below call
 
     internal val unverifiedUsername = "unverified11Username"
@@ -43,7 +46,8 @@ class SplashViewModelTest {
         viewModel = SplashViewModel(
             readSharedPreferences = readSharedPreferences,
             navigation = navigation,
-            readFirebaseUserInfo = readFirebaseUserInfo
+            readFirebaseUserInfo = readFirebaseUserInfo,
+            activeUserDao = activeUserDao
         )
     }
 
@@ -88,7 +92,8 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         readSharedPreferences = readSharedPreferences,
                         navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo
+                        readFirebaseUserInfo = readFirebaseUserInfo,
+                        activeUserDao = activeUserDao
                     )
 
                     viewModel.navigateToHomeLoginOrAuthentication()
@@ -113,7 +118,8 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         readSharedPreferences = readSharedPreferences,
                         navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo
+                        readFirebaseUserInfo = readFirebaseUserInfo,
+                        activeUserDao = activeUserDao
                     )
 
                     viewModel.navigateToHomeLoginOrAuthentication()
@@ -133,7 +139,8 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         readSharedPreferences = readSharedPreferences,
                         navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo
+                        readFirebaseUserInfo = readFirebaseUserInfo,
+                        activeUserDao = activeUserDao
                     )
 
                     viewModel.navigateToHomeLoginOrAuthentication()
@@ -155,7 +162,8 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         readSharedPreferences = readSharedPreferences,
                         navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo
+                        readFirebaseUserInfo = readFirebaseUserInfo,
+                        activeUserDao = activeUserDao
                     )
 
                     viewModel.navigateToHomeLoginOrAuthentication()
@@ -179,7 +187,8 @@ class SplashViewModelTest {
                 viewModel = SplashViewModel(
                     readSharedPreferences = readSharedPreferences,
                     navigation = navigation,
-                    readFirebaseUserInfo = readFirebaseUserInfo
+                    readFirebaseUserInfo = readFirebaseUserInfo,
+                    activeUserDao = activeUserDao
                 )
 
                 viewModel.navigateToHomeLoginOrAuthentication()
@@ -203,7 +212,8 @@ class SplashViewModelTest {
                 viewModel = SplashViewModel(
                     readSharedPreferences = readSharedPreferences,
                     navigation = navigation,
-                    readFirebaseUserInfo = readFirebaseUserInfo
+                    readFirebaseUserInfo = readFirebaseUserInfo,
+                    activeUserDao = activeUserDao
                 )
 
                 viewModel.navigateToHomeLoginOrAuthentication()
@@ -230,7 +240,8 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         readSharedPreferences = readSharedPreferences,
                         navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo
+                        readFirebaseUserInfo = readFirebaseUserInfo,
+                        activeUserDao = activeUserDao
                     )
 
                     viewModel.navigateToHomeLoginOrAuthentication()
@@ -253,7 +264,8 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         readSharedPreferences = readSharedPreferences,
                         navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo
+                        readFirebaseUserInfo = readFirebaseUserInfo,
+                        activeUserDao = activeUserDao
                     )
 
                     viewModel.navigateToHomeLoginOrAuthentication()

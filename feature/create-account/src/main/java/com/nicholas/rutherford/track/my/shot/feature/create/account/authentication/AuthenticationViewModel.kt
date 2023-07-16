@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account.authenticat
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nicholas.rutherford.track.my.shot.data.room.dao.ActiveUserDao
+import com.nicholas.rutherford.track.my.shot.data.room.entities.ActiveUserEntity
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
@@ -10,6 +12,7 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants.PENDING_ACTIVE_USER_ID
 import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.my.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +26,8 @@ class AuthenticationViewModel(
     private val application: Application,
     private val authenticationFirebase: AuthenticationFirebase,
     private val createSharedPreferences: CreateSharedPreferences,
-    private val createFirebaseUserInfo: CreateFirebaseUserInfo
+    private val createFirebaseUserInfo: CreateFirebaseUserInfo,
+    private val activeUserDao: ActiveUserDao
 ) : ViewModel() {
 
     internal var username: String? = null
@@ -38,12 +42,28 @@ class AuthenticationViewModel(
         this.username = usernameArgument
         this.email = emailArgument
         createSharedPreferencesForUnAuthenticatedUser()
+        createActiveUser()
     }
 
     internal fun createSharedPreferencesForUnAuthenticatedUser() {
         safeLet(username, email) { usernameArgument, emailArgument ->
             createSharedPreferences.createUnverifiedUsernamePreference(value = usernameArgument)
             createSharedPreferences.createUnverifiedEmailPreference(value = emailArgument)
+        }
+    }
+
+    internal fun createActiveUser() {
+        safeLet(username, email) { username, email ->
+            if (activeUserDao.getActiveUser() == null) {
+                activeUserDao.insert(
+                    activeUserEntity = ActiveUserEntity(
+                        id = PENDING_ACTIVE_USER_ID,
+                        accountHasBeenCreated = false,
+                        username = username,
+                        email = email
+                    )
+                )
+            }
         }
     }
 

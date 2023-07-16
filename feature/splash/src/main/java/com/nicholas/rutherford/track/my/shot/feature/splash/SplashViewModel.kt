@@ -1,19 +1,15 @@
 package com.nicholas.rutherford.track.my.shot.feature.splash
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nicholas.rutherford.track.my.shot.data.room.PendingUser
-import com.nicholas.rutherford.track.my.shot.data.room.dao.PendingUserDao
+import com.nicholas.rutherford.track.my.shot.data.room.dao.ActiveUserDao
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.my.shot.shared.preference.read.ReadSharedPreferences
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 const val SPLASH_DELAY_IN_MILLIS = 4000L
 const val SPLASH_IMAGE_SCALE = 1f
@@ -22,42 +18,8 @@ class SplashViewModel(
     private val readSharedPreferences: ReadSharedPreferences,
     private val navigation: SplashNavigation,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
-    private val application: Application,
-    private val pendingUserDao: PendingUserDao
+    private val activeUserDao: ActiveUserDao
 ) : ViewModel() {
-
-    init {
-        insertPendingUser()
-        retrievePendingUser()
-//        pendingUserDao.getPendingUser()
-
-        // appDatabase.pendingUserDao().getPendingUser()
-    }
-
-    fun insertPendingUser() {
-        val pendingUser = PendingUser(
-            id = 1,
-            accountHasBeenCreated = true,
-            unverifiedEmail = "example@example.com",
-            unverifiedUsername = "JohnDoe"
-        )
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                pendingUserDao.insert(pendingUser)
-            }
-        }
-    }
-
-    fun retrievePendingUser() {
-        viewModelScope.launch {
-            val pendingUser = withContext(Dispatchers.IO) {
-                pendingUserDao.getPendingUser()
-            }
-            pendingUser?.let {
-                println("Retrieved Pending User: $it")
-            }
-        }
-    }
 
     fun navigateToHomeLoginOrAuthentication() {
         viewModelScope.launch {

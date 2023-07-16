@@ -64,7 +64,7 @@ class AppModule {
         }
 
         single {
-            get<AppDatabase>().pendingUserDao()
+            get<AppDatabase>().activeUserDao()
         }
 
         single<android.content.SharedPreferences.Editor> {
@@ -132,8 +132,7 @@ class AppModule {
                 readSharedPreferences = get(),
                 navigation = get(),
                 readFirebaseUserInfo = get(),
-                androidApplication(),
-                get()
+                activeUserDao = get()
             )
         }
         viewModel {
@@ -170,7 +169,8 @@ class AppModule {
                 application = androidApplication(),
                 authenticationFirebase = get(),
                 createSharedPreferences = get(),
-                createFirebaseUserInfo = get()
+                createFirebaseUserInfo = get(),
+                activeUserDao = get()
             )
         }
     }

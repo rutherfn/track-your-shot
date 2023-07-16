@@ -61,4 +61,5 @@ android {
 
 dependencies {
     api(project(path = ":data:room"))
+    api(project(path = ":helper:constants"))
 }
