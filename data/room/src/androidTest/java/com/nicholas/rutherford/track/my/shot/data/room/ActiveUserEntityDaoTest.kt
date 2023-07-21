@@ -38,6 +38,13 @@ class ActiveUserEntityDaoTest {
     }
 
     @Test
+    fun insert() = runBlocking {
+        activeUserDao.insert(activeUserEntity = activeUserEntity)
+
+        assertThat(activeUserEntity, equalTo(activeUserDao.getActiveUser()))
+    }
+
+    @Test
     fun update() = runBlocking {
         activeUserDao.insert(activeUserEntity = activeUserEntity)
 
