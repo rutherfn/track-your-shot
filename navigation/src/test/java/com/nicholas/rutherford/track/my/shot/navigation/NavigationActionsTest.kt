@@ -20,11 +20,11 @@ class NavigationActionsTest {
             @Test
             fun home() {
                 Assertions.assertEquals(
-                    Actions.SplashScreen.home().destination,
-                    NavigationDestinations.HOME_SCREEN
+                    Actions.SplashScreen.home(email = testEmail).destination,
+                    NavigationDestinationsWithParams.homeWithParams(email = testEmail)
                 )
                 Assertions.assertEquals(
-                    Actions.SplashScreen.home().navOptions,
+                    Actions.SplashScreen.home(email = testEmail).navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
                         .build()
@@ -64,11 +64,11 @@ class NavigationActionsTest {
 
             @Test fun home() {
                 Assertions.assertEquals(
-                    Actions.LoginScreen.home().destination,
-                    NavigationDestinations.HOME_SCREEN
+                    Actions.LoginScreen.home(email = testEmail).destination,
+                    NavigationDestinationsWithParams.homeWithParams(email = testEmail)
                 )
                 Assertions.assertEquals(
-                    Actions.LoginScreen.home().navOptions,
+                    Actions.LoginScreen.home(email = testEmail).navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
                         .setLaunchSingleTop(true)
