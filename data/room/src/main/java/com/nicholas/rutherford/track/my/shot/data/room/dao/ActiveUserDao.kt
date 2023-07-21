@@ -10,14 +10,14 @@ import com.nicholas.rutherford.track.my.shot.data.room.entities.ActiveUserEntity
 @Dao
 interface ActiveUserDao {
     @Insert
-    fun insert(activeUserEntity: ActiveUserEntity)
+    suspend fun insert(activeUserEntity: ActiveUserEntity)
 
     @Update
-    fun update(activeUserEntity: ActiveUserEntity)
+    suspend fun update(activeUserEntity: ActiveUserEntity)
 
     @Delete
-    fun delete(activeUserEntity: ActiveUserEntity)
+    suspend fun delete(activeUserEntity: ActiveUserEntity)
 
-    @Query("SELECT * FROM ActiveUserEntity")
-    fun getActiveUser(): ActiveUserEntity?
+    @Query("SELECT * FROM activeUsers")
+    suspend fun getActiveUser(): ActiveUserEntity?
 }

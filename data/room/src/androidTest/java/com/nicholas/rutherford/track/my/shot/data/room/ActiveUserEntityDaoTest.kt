@@ -6,6 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nicholas.rutherford.track.my.shot.data.room.dao.ActiveUserDao
 import com.nicholas.rutherford.track.my.shot.data.room.database.AppDatabase
 import com.nicholas.rutherford.track.my.shot.data.test.room.TestActiveUserEntity
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
@@ -37,7 +38,7 @@ class ActiveUserEntityDaoTest {
     }
 
     @Test
-    fun update() {
+    fun update() = runBlocking {
         activeUserDao.insert(activeUserEntity = activeUserEntity)
 
         assertThat(activeUserEntity, equalTo(activeUserDao.getActiveUser()))
@@ -48,7 +49,7 @@ class ActiveUserEntityDaoTest {
     }
 
     @Test
-    fun delete() {
+    fun delete() = runBlocking {
         activeUserDao.insert(activeUserEntity = activeUserEntity)
 
         assertThat(activeUserEntity, equalTo(activeUserDao.getActiveUser()))
@@ -59,7 +60,7 @@ class ActiveUserEntityDaoTest {
     }
 
     @Test
-    fun getActiveUser() {
+    fun getActiveUser() = runBlocking {
         activeUserDao.insert(activeUserEntity = activeUserEntity)
 
         val retrievedPActiveUser = activeUserDao.getActiveUser()

@@ -60,7 +60,9 @@ class AppModule {
                 androidApplication(),
                 AppDatabase::class.java,
                 Constants.APP_DATABASE_NAME
-            ).build()
+            )
+                .fallbackToDestructiveMigration()
+                .build()
         }
 
         single {
@@ -129,7 +131,6 @@ class AppModule {
         }
         viewModel {
             SplashViewModel(
-                readSharedPreferences = get(),
                 navigation = get(),
                 readFirebaseUserInfo = get(),
                 activeUserDao = get()

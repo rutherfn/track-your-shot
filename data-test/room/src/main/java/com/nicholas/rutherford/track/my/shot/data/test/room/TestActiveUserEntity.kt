@@ -14,7 +14,7 @@ class TestActiveUserEntity {
     }
 }
 
-const val ID = Constants.PENDING_ACTIVE_USER_ID
+const val ID = Constants.ACTIVE_USER_ID
 const val ACCOUNT_HAS_BEEN_CREATED = false
 const val EMAIL = "unverifiedemail@test.org"
 const val USERNAME = "unverifiedUsername"

@@ -12,7 +12,7 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
-import com.nicholas.rutherford.track.my.shot.helper.constants.Constants.PENDING_ACTIVE_USER_ID
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.my.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,16 +53,18 @@ class AuthenticationViewModel(
     }
 
     internal fun createActiveUser() {
-        safeLet(username, email) { username, email ->
-            if (activeUserDao.getActiveUser() == null) {
-                activeUserDao.insert(
-                    activeUserEntity = ActiveUserEntity(
-                        id = PENDING_ACTIVE_USER_ID,
-                        accountHasBeenCreated = false,
-                        username = username,
-                        email = email
+        viewModelScope.launch {
+            safeLet(username, email) { username, email ->
+                if (activeUserDao.getActiveUser() == null) {
+                    activeUserDao.insert(
+                        activeUserEntity = ActiveUserEntity(
+                            id = Constants.ACTIVE_USER_ID,
+                            accountHasBeenCreated = false,
+                            username = username,
+                            email = email
+                        )
                     )
-                )
+                }
             }
         }
     }
@@ -119,6 +121,14 @@ class AuthenticationViewModel(
                                 email = emailArgument
                             ).collectLatest { isSuccessful ->
                                 if (isSuccessful) {
+                                    activeUserDao.update(
+                                        activeUserEntity = ActiveUserEntity(
+                                            id = Constants.ACTIVE_USER_ID,
+                                            accountHasBeenCreated = true,
+                                            email = emailArgument,
+                                            username = usernameArgument
+                                        )
+                                    )
                                     createSharedPreferences.createAccountHasBeenCreatedPreference(
                                         value = true
                                     )

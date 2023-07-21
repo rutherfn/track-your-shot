@@ -6,6 +6,7 @@ import com.nicholas.rutherford.track.my.shot.data.room.entities.ActiveUserEntity
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.TestAccountInfoRealTimeResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.USER_NAME_ACCOUNT_INFO_REALTIME_RESPONSE
+import com.nicholas.rutherford.track.my.shot.data.test.room.TestActiveUserEntity
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
@@ -41,10 +42,10 @@ class AuthenticationViewModelTest {
 
     private val activeUserDao = mockk<ActiveUserDao>(relaxed = true)
 
-    private val username = "testUsername11"
-    private val email = "testemail@yahoo.com"
-
     private val activeUserEntity = TestActiveUserEntity().create()
+
+    private val username = activeUserEntity.username
+    private val email = activeUserEntity.email
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val dispatcher = StandardTestDispatcher()
@@ -275,6 +276,7 @@ class AuthenticationViewModelTest {
 
             verify { navigation.enableProgress(progress = any()) }
             verify { createSharedPreferences.createAccountHasBeenCreatedPreference(value = true) }
+            verify { activeUserDao.update(activeUserEntity = activeUserEntity.copy(accountHasBeenCreated = true)) }
             verify { navigation.disableProgress() }
             verify { navigation.navigateToHome() }
         }

@@ -71,8 +71,9 @@ dependencies {
     androidTestImplementation(Dependencies.Espresso.core)
     androidTestImplementation(Dependencies.Truth.core)
 
+    implementation(Dependencies.Room.ktx)
     implementation(Dependencies.Room.runtime)
-    implementation(Dependencies.Room.lifecycleRuntimeKtx)
+    implementation(Dependencies.Room.coroutines)
     kapt(Dependencies.Room.compiler)
 
     testImplementation(Dependencies.Junit.core)
