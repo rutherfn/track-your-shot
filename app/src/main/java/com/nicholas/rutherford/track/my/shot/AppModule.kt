@@ -9,6 +9,8 @@ import com.nicholas.rutherford.track.my.shot.app.center.AppCenterImpl
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
 import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.my.shot.data.room.database.AppDatabase
+import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepositoryImpl
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigation
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
@@ -67,6 +69,9 @@ class AppModule {
 
         single {
             get<AppDatabase>().activeUserDao()
+        }
+        single<ActiveUserRepository> {
+            ActiveUserRepositoryImpl(activeUserDao = get())
         }
 
         single<android.content.SharedPreferences.Editor> {
@@ -133,7 +138,7 @@ class AppModule {
             SplashViewModel(
                 navigation = get(),
                 readFirebaseUserInfo = get(),
-                activeUserDao = get()
+                activeUserRepository = get()
             )
         }
         viewModel {
@@ -145,7 +150,12 @@ class AppModule {
             )
         }
         viewModel {
-            HomeViewModel(navigation = get(), existingUserFirebase = get())
+            HomeViewModel(
+                navigation = get(),
+                existingUserFirebase = get(),
+                activeUserRepository = get(),
+                readFirebaseUserInfo = get()
+            )
         }
         viewModel {
             ForgotPasswordViewModel(

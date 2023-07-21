@@ -7,7 +7,7 @@ class SplashNavigationImpl(private val navigator: Navigator) : SplashNavigation 
 
     override fun navigateToAuthentication(username: String, email: String) = navigator.navigate(navigationAction = NavigationActions.SplashScreen.authentication(username = username, email = email))
 
-    override fun navigateToHome() = navigator.navigate(navigationAction = NavigationActions.SplashScreen.home())
+    override fun navigateToHome(email: String) = navigator.navigate(navigationAction = NavigationActions.SplashScreen.home(email = email))
 
     override fun navigateToLogin() = navigator.navigate(navigationAction = NavigationActions.SplashScreen.login())
 }

@@ -2,7 +2,7 @@ package com.nicholas.rutherford.track.my.shot.feature.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nicholas.rutherford.track.my.shot.data.room.dao.ActiveUserDao
+import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -15,17 +15,17 @@ const val SPLASH_IMAGE_SCALE = 1f
 class SplashViewModel(
     private val navigation: SplashNavigation,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
-    private val activeUserDao: ActiveUserDao
+    private val activeUserRepository: ActiveUserRepository
 ) : ViewModel() {
 
     fun navigateToHomeLoginOrAuthentication() {
         viewModelScope.launch {
             readFirebaseUserInfo.isLoggedInFlow()
                 .combine(readFirebaseUserInfo.isEmailVerifiedFlow()) { isLoggedIn, isEmailVerified ->
-                    val activeUser = activeUserDao.getActiveUser()
+                    val activeUser = activeUserRepository.fetchActiveUser()
                     if (isLoggedIn) {
                         if (isEmailVerified && activeUser != null && activeUser.accountHasBeenCreated) {
-                            delayAndNavigateToHomeOrLogin(isLoggedIn = true)
+                            delayAndNavigateToHomeOrLogin(isLoggedIn = true, email = activeUser.email)
                         } else {
                             activeUser?.let { user ->
                                 delayAndNavigateToAuthentication(
@@ -35,15 +35,15 @@ class SplashViewModel(
                             }
                         }
                     } else {
-                        delayAndNavigateToHomeOrLogin(isLoggedIn = false)
+                        delayAndNavigateToHomeOrLogin(isLoggedIn = false, email = activeUser?.email)
                     }
                 }.collectLatest {}
         }
     }
 
-    private suspend fun delayAndNavigateToHomeOrLogin(isLoggedIn: Boolean) {
+    private suspend fun delayAndNavigateToHomeOrLogin(isLoggedIn: Boolean, email: String?) {
         delay(timeMillis = SPLASH_DELAY_IN_MILLIS)
-        navigateToLoginOrHome(isLoggedIn = isLoggedIn)
+        navigateToLoginOrHome(isLoggedIn = isLoggedIn, email = email)
     }
 
     private suspend fun delayAndNavigateToAuthentication(username: String, email: String) {
@@ -54,9 +54,11 @@ class SplashViewModel(
         )
     }
 
-    private fun navigateToLoginOrHome(isLoggedIn: Boolean) {
+    private fun navigateToLoginOrHome(isLoggedIn: Boolean, email: String?) {
         if (isLoggedIn) {
-            navigation.navigateToHome()
+            email?.let {
+                navigation.navigateToHome(email = it)
+            } ?: navigation.navigateToLogin()
         } else {
             navigation.navigateToLogin()
         }

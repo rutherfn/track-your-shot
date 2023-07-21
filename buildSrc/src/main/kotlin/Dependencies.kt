@@ -94,7 +94,7 @@ object Dependencies {
 
     object Room {
         const val compiler = "androidx.room:room-compiler:${Versions.Dependencies.Room.core}"
-        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Dependencies.Room.coroutines}"
         const val kaptCompiler = "androidx.room:room-compiler:${Versions.Dependencies.Room.core}"
         const val ktx = "androidx.room:room-ktx:${Versions.Dependencies.Room.core}"
         const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.Dependencies.Room.core}"
