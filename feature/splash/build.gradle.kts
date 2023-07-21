@@ -86,6 +86,8 @@ dependencies {
 
     testImplementation(Dependencies.Coroutine.test)
 
+    testImplementation(project(mapOf("path" to ":data-test:room")))
+
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)
     testImplementation(Dependencies.Junit.junit)
