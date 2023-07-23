@@ -27,7 +27,6 @@ class HomeViewModel(
         if (activeUserRepository.fetchActiveUser() == null) {
             activeUserRepository.createActiveUser(
                 activeUser = ActiveUser(
-
                     id = Constants.ACTIVE_USER_ID,
                     accountHasBeenCreated = true,
                     email = email,

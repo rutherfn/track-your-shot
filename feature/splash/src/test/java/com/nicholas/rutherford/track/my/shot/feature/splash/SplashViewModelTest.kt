@@ -1,6 +1,5 @@
 package com.nicholas.rutherford.track.my.shot.feature.splash
 
-import com.nicholas.rutherford.track.my.shot.data.room.dao.ActiveUserDao
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
@@ -26,13 +25,10 @@ class SplashViewModelTest {
 
     lateinit var viewModel: SplashViewModel
 
-    // internal var readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
-
     internal var navigation = mockk<SplashNavigation>(relaxed = true)
     internal var readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
 
     internal var activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
-    internal var activeUserDao = mockk<ActiveUserDao>(relaxed = true)
 
     internal val delayTime = 4001L // needs 1 extra millisecond to account for function below call
 
