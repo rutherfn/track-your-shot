@@ -78,5 +78,5 @@ dependencies {
 
     testImplementation(Dependencies.Junit.core)
 
-    androidTestImplementation(project(mapOf("path" to ":data-test:room")))
+    androidTestImplementation(project(path = ":data-test:room"))
 }

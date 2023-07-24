@@ -6,11 +6,8 @@ import org.koin.core.context.startKoin
 
 open class MyApplication : Application() {
 
-    //  private lateinit var appDatabase: AppDatabase
-
     override fun onCreate() {
         super.onCreate()
-        //  appDatabase = AppDatabase.getInstance(this@MyApplication)
         startKoinOnCreate()
     }
 
