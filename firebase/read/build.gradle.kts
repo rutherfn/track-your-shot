@@ -77,5 +77,6 @@ dependencies {
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 
+    testImplementation(project(path = ":data-test:account-info"))
     testImplementation(project(path = ":data-test:room"))
 }
