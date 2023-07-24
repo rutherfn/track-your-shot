@@ -73,10 +73,12 @@ fun AuthenticationScreen(viewModel: AuthenticationViewModel, usernameArgument: S
         )
     }
 
-    viewModel.updateUsernameAndEmail(
-        usernameArgument = usernameArgument,
-        emailArgument = emailArgument
-    )
+    LaunchedEffect(Unit) {
+        viewModel.updateUsernameAndEmail(
+            usernameArgument = usernameArgument,
+            emailArgument = emailArgument
+        )
+    }
 
     OnLifecycleEvent { _, event ->
         if (event == Lifecycle.Event.ON_RESUME) {

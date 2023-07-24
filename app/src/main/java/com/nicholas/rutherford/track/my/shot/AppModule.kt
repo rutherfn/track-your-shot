@@ -179,9 +179,8 @@ class AppModule {
                 navigation = get(),
                 application = androidApplication(),
                 authenticationFirebase = get(),
-                createSharedPreferences = get(),
                 createFirebaseUserInfo = get(),
-                activeUserDao = get()
+                activeUserRepository = get()
             )
         }
     }
