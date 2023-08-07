@@ -31,6 +31,10 @@ object Versions {
             const val uiTest = "1.3.0"
         }
 
+        object CoreTesting {
+            const val core = "2.2.0"
+        }
+
         object Coroutine {
             const val core = "1.3.9"
             const val jvm = "1.6.4"
@@ -44,6 +48,11 @@ object Versions {
             const val ktx = "20.1.0"
         }
 
+        object Junit {
+            const val core = "4.13.2"
+            const val textExt = ""
+        }
+
         object JunitJupiter {
             const val ext = "1.1.3"
             const val junit = "1.8.2.1"
@@ -54,15 +63,23 @@ object Versions {
 
         object KtLint { const val ktLint = "11.0.0" }
 
-        object Lifecycle { const val core = "2.6.0-alpha02" }
+        object Lifecycle {
+            const val core = "2.6.0-alpha02"
+            const val runtimeKtx = "2.4.1"
+        }
 
         object Material { const val material = "1.5.0" }
 
         object Mockk { const val core = "1.13.2" }
 
-        object Room { const val core = "2.4.4" }
+        object Room {
+            const val core = "2.5.0-alpha02"
+            const val coroutines = "1.5.2"
+        }
         object SystemUiController { const val core = "0.27.0" }
 
         object Timber { const val core = "5.0.1" }
+
+        object Truth { const val core = "1.0.1" }
     }
 }

@@ -32,10 +32,12 @@ compose/components/build
 compose/theme/build
 
 data/account-info/build
+data/room/build
 data/shared/build
 data/user/build
 
 data-test/account-info/build
+data-test/room/build
 data-test/user/build
 
 feature/create-account/build

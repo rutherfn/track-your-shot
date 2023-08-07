@@ -72,6 +72,7 @@ dependencies {
 
     api(project(path = ":base-resources"))
     api(project(path = ":compose:components"))
+    api(project(path = ":data:room"))
     api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:extensions"))
     api(project(path = ":firebase:read"))
@@ -84,6 +85,8 @@ dependencies {
     implementation(Dependencies.Compose.viewModel)
 
     testImplementation(Dependencies.Coroutine.test)
+
+    testImplementation(project(mapOf("path" to ":data-test:room")))
 
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)

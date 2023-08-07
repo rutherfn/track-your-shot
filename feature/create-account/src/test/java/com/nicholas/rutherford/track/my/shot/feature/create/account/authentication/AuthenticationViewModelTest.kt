@@ -1,14 +1,16 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account.authentication
 
 import android.app.Application
+import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.TestAccountInfoRealTimeResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.USER_NAME_ACCOUNT_INFO_REALTIME_RESPONSE
+import com.nicholas.rutherford.track.my.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
-import com.nicholas.rutherford.track.my.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,11 +36,14 @@ class AuthenticationViewModelTest {
 
     private val authenticationFirebase = mockk<AuthenticationFirebase>(relaxed = true)
 
-    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
 
-    private val username = "testUsername11"
-    private val email = "testemail@yahoo.com"
+    private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
+
+    private val activeUser = TestActiveUser().create()
+
+    private val username = activeUser.username
+    private val email = activeUser.email
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val dispatcher = StandardTestDispatcher()
@@ -52,8 +57,8 @@ class AuthenticationViewModelTest {
             navigation = navigation,
             application = application,
             authenticationFirebase = authenticationFirebase,
-            createSharedPreferences = createSharedPreferences,
-            createFirebaseUserInfo = createFirebaseUserInfo
+            createFirebaseUserInfo = createFirebaseUserInfo,
+            activeUserRepository = activeUserRepository
         )
     }
 
@@ -63,8 +68,9 @@ class AuthenticationViewModelTest {
         Dispatchers.resetMain()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `updateUsernameAndEmail should update local username and email and call createSharedPreferencesForUnAuthenticatedUser`() {
+    fun `updateUsernameAndEmail should update local username and email and call createSharedPreferencesForUnAuthenticatedUser`() = runTest {
         Assertions.assertEquals(null, viewModel.username)
         Assertions.assertEquals(null, viewModel.email)
 
@@ -72,44 +78,35 @@ class AuthenticationViewModelTest {
 
         Assertions.assertEquals(username, viewModel.username)
         Assertions.assertEquals(email, viewModel.email)
-
-        verify { viewModel.createSharedPreferencesForUnAuthenticatedUser() }
     }
 
     @Nested
-    inner class CreateSharedPreferencesForUnAuthenticatedUser {
+    inner class AttemptToCreateActiveUser {
+        private val newActiveUser = ActiveUser(
+            id = 1,
+            accountHasBeenCreated = false,
+            username = username,
+            email = email
+        )
 
+        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `should not call functions if username is set to null`() {
-            viewModel.username = null
-            viewModel.email = email
+        fun `when fetchActiveUser does not return null should not call create active user function`() = runTest {
+            coEvery { activeUserRepository.fetchActiveUser() } returns newActiveUser
 
-            viewModel.createSharedPreferencesForUnAuthenticatedUser()
+            viewModel.attemptToCreateActiveUser(email = email, username = username)
 
-            verify(exactly = 0) { createSharedPreferences.createUnverifiedUsernamePreference(value = any()) }
-            verify(exactly = 0) { createSharedPreferences.createUnverifiedEmailPreference(value = any()) }
+            coVerify(exactly = 0) { activeUserRepository.createActiveUser(activeUser = newActiveUser) }
         }
 
+        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `should not call functions if email is set to null`() {
-            viewModel.username = username
-            viewModel.email = null
+        fun `when fetchActiveUser does return null and all conditions are met should call create active user function`() = runTest {
+            coEvery { activeUserRepository.fetchActiveUser() } returns null
 
-            viewModel.createSharedPreferencesForUnAuthenticatedUser()
+            viewModel.attemptToCreateActiveUser(email = email, username = username)
 
-            verify(exactly = 0) { createSharedPreferences.createUnverifiedUsernamePreference(value = any()) }
-            verify(exactly = 0) { createSharedPreferences.createUnverifiedEmailPreference(value = any()) }
-        }
-
-        @Test
-        fun `should call functions if email and username is not set to null`() {
-            viewModel.username = username
-            viewModel.email = email
-
-            viewModel.createSharedPreferencesForUnAuthenticatedUser()
-
-            verify { createSharedPreferences.createUnverifiedUsernamePreference(value = username) }
-            verify { createSharedPreferences.createUnverifiedEmailPreference(value = email) }
+            coVerify { activeUserRepository.createActiveUser(activeUser = activeUser) }
         }
     }
 
@@ -173,8 +170,8 @@ class AuthenticationViewModelTest {
                 navigation = navigation,
                 application = application,
                 authenticationFirebase = authenticationFirebase,
-                createSharedPreferences = createSharedPreferences,
-                createFirebaseUserInfo = createFirebaseUserInfo
+                createFirebaseUserInfo = createFirebaseUserInfo,
+                activeUserRepository = activeUserRepository
             )
 
             viewModel.username = username
@@ -201,8 +198,8 @@ class AuthenticationViewModelTest {
                 navigation = navigation,
                 application = application,
                 authenticationFirebase = authenticationFirebase,
-                createSharedPreferences = createSharedPreferences,
-                createFirebaseUserInfo = createFirebaseUserInfo
+                createFirebaseUserInfo = createFirebaseUserInfo,
+                activeUserRepository = activeUserRepository
             )
 
             viewModel.username = username
@@ -211,7 +208,7 @@ class AuthenticationViewModelTest {
             viewModel.onCheckIfAccountHaBeenVerifiedClicked()
 
             verify { navigation.enableProgress(progress = any()) }
-            verify { createSharedPreferences.createAccountHasBeenCreatedPreference(value = true) }
+            coVerify { activeUserRepository.updateActiveUser(activeUser = activeUser.copy(accountHasBeenCreated = true)) }
             verify { navigation.disableProgress() }
             verify { navigation.navigateToHome() }
         }
@@ -352,8 +349,8 @@ class AuthenticationViewModelTest {
                 navigation = navigation,
                 application = application,
                 authenticationFirebase = authenticationFirebase,
-                createSharedPreferences = createSharedPreferences,
-                createFirebaseUserInfo = createFirebaseUserInfo
+                createFirebaseUserInfo = createFirebaseUserInfo,
+                activeUserRepository = activeUserRepository
             )
 
             viewModel.username = username
@@ -382,8 +379,8 @@ class AuthenticationViewModelTest {
                 navigation = navigation,
                 application = application,
                 authenticationFirebase = authenticationFirebase,
-                createSharedPreferences = createSharedPreferences,
-                createFirebaseUserInfo = createFirebaseUserInfo
+                createFirebaseUserInfo = createFirebaseUserInfo,
+                activeUserRepository = activeUserRepository
             )
 
             viewModel.username = username
@@ -394,7 +391,6 @@ class AuthenticationViewModelTest {
             Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
 
             verify { navigation.enableProgress(progress = any()) }
-            verify { createSharedPreferences.createAccountHasBeenCreatedPreference(value = true) }
             verify { navigation.disableProgress() }
             verify { navigation.navigateToHome() }
         }

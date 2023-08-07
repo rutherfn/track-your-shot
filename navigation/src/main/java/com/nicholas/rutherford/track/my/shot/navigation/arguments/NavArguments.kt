@@ -10,4 +10,7 @@ object NavArguments {
         ) { type = NavType.StringType },
         navArgument(NamedArguments.EMAIL) { type = NavType.StringType }
     )
+    val home = listOf(
+        navArgument(NamedArguments.EMAIL) { type = NavType.StringType }
+    )
 }

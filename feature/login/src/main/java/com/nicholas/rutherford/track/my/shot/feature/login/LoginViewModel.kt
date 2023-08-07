@@ -56,7 +56,7 @@ class LoginViewModel(
                                 onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
                                 onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
                                 navigation.disableProgress()
-                                navigation.navigateToHome()
+                                navigation.navigateToHome(email = userEmail)
                             } else {
                                 navigation.disableProgress()
                                 navigation.alert(alert = unableToLoginToAccountAlert())

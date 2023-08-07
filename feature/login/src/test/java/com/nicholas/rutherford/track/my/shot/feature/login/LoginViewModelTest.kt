@@ -168,7 +168,7 @@ class LoginViewModelTest {
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
-            verify { navigation.navigateToHome() }
+            verify { navigation.navigateToHome(email = emailTest) }
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,

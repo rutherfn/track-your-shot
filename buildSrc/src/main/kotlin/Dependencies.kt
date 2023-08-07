@@ -37,6 +37,10 @@ object Dependencies {
         const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.Dependencies.Compose.viewModel}"
     }
 
+    object CoreTesting {
+        const val core = "androidx.arch.core:core-testing:${Versions.Dependencies.CoreTesting.core}"
+    }
+
     object Coroutine {
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Dependencies.Coroutine.core}"
         const val jvm = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${Versions.Dependencies.Coroutine.jvm}"
@@ -55,6 +59,7 @@ object Dependencies {
     }
 
     object Junit {
+        const val core = "junit:junit:${Versions.Dependencies.Junit.core}"
         const val ext = "androidx.test.ext:junit:${Versions.Dependencies.JunitJupiter.ext}"
         const val junit = "de.mannodermaus.gradle.plugins:android-junit5:${Versions.Dependencies.JunitJupiter.junit}"
 
@@ -75,6 +80,7 @@ object Dependencies {
 
     object Lifecycle {
         const val compose = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.Dependencies.Lifecycle.core}"
+        const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.Dependencies.Lifecycle.runtimeKtx}"
         const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.Dependencies.Lifecycle.core}"
     }
 
@@ -87,12 +93,19 @@ object Dependencies {
     }
 
     object Room {
-        const val compiler = "androidx.room:room-runtime:${Versions.Dependencies.Room.core}"
+        const val compiler = "androidx.room:room-compiler:${Versions.Dependencies.Room.core}"
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Dependencies.Room.coroutines}"
         const val kaptCompiler = "androidx.room:room-compiler:${Versions.Dependencies.Room.core}"
+        const val ktx = "androidx.room:room-ktx:${Versions.Dependencies.Room.core}"
+        const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.Dependencies.Room.core}"
         const val runtime = "androidx.room:room-runtime:${Versions.Dependencies.Room.core}"
     }
 
     object Timber {
         const val core = "com.jakewharton.timber:timber:${Versions.Dependencies.Timber.core}"
+    }
+
+    object Truth {
+        const val core = "com.google.truth:truth:${Versions.Dependencies.Truth.core}"
     }
 }

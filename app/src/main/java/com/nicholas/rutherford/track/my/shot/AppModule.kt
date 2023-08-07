@@ -1,12 +1,16 @@
 package com.nicholas.rutherford.track.my.shot
 
 import android.app.Application
+import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.my.shot.app.center.AppCenterImpl
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
 import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
+import com.nicholas.rutherford.track.my.shot.data.room.database.AppDatabase
+import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepositoryImpl
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigation
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
@@ -33,6 +37,7 @@ import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.Authen
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebaseImpl
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebaseImpl
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.my.shot.helper.constants.SharedPreferencesConstants
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
 import com.nicholas.rutherford.track.my.shot.helper.network.NetworkImpl
@@ -51,6 +56,22 @@ class AppModule {
     val modules = module {
         single {
             getSharedPreferences(androidApplication())
+        }
+        single<AppDatabase> {
+            Room.databaseBuilder(
+                androidApplication(),
+                AppDatabase::class.java,
+                Constants.APP_DATABASE_NAME
+            )
+                .fallbackToDestructiveMigration()
+                .build()
+        }
+
+        single {
+            get<AppDatabase>().activeUserDao()
+        }
+        single<ActiveUserRepository> {
+            ActiveUserRepositoryImpl(activeUserDao = get())
         }
 
         single<android.content.SharedPreferences.Editor> {
@@ -115,9 +136,9 @@ class AppModule {
         }
         viewModel {
             SplashViewModel(
-                readSharedPreferences = get(),
                 navigation = get(),
-                readFirebaseUserInfo = get()
+                readFirebaseUserInfo = get(),
+                activeUserRepository = get()
             )
         }
         viewModel {
@@ -129,7 +150,12 @@ class AppModule {
             )
         }
         viewModel {
-            HomeViewModel(navigation = get(), existingUserFirebase = get())
+            HomeViewModel(
+                navigation = get(),
+                existingUserFirebase = get(),
+                activeUserRepository = get(),
+                readFirebaseUserInfo = get()
+            )
         }
         viewModel {
             ForgotPasswordViewModel(
@@ -153,8 +179,8 @@ class AppModule {
                 navigation = get(),
                 application = androidApplication(),
                 authenticationFirebase = get(),
-                createSharedPreferences = get(),
-                createFirebaseUserInfo = get()
+                createFirebaseUserInfo = get(),
+                activeUserRepository = get()
             )
         }
     }

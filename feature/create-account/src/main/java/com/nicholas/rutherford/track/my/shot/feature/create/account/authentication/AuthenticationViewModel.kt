@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account.authenticat
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
@@ -10,8 +12,8 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
-import com.nicholas.rutherford.track.my.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -22,8 +24,8 @@ class AuthenticationViewModel(
     private val navigation: AuthenticationNavigation,
     private val application: Application,
     private val authenticationFirebase: AuthenticationFirebase,
-    private val createSharedPreferences: CreateSharedPreferences,
-    private val createFirebaseUserInfo: CreateFirebaseUserInfo
+    private val createFirebaseUserInfo: CreateFirebaseUserInfo,
+    private val activeUserRepository: ActiveUserRepository
 ) : ViewModel() {
 
     internal var username: String? = null
@@ -34,16 +36,25 @@ class AuthenticationViewModel(
     internal val shouldShowDialogWithTextFieldMutableStateFlow = MutableStateFlow(value = false)
     val shouldShowDialogWithTextFieldFlow = shouldShowDialogWithTextFieldMutableStateFlow.asStateFlow()
 
-    internal fun updateUsernameAndEmail(usernameArgument: String?, emailArgument: String?) {
+    suspend fun updateUsernameAndEmail(usernameArgument: String?, emailArgument: String?) {
         this.username = usernameArgument
         this.email = emailArgument
-        createSharedPreferencesForUnAuthenticatedUser()
+
+        safeLet(emailArgument, usernameArgument) { email, username ->
+            attemptToCreateActiveUser(email = email, username = username)
+        }
     }
 
-    internal fun createSharedPreferencesForUnAuthenticatedUser() {
-        safeLet(username, email) { usernameArgument, emailArgument ->
-            createSharedPreferences.createUnverifiedUsernamePreference(value = usernameArgument)
-            createSharedPreferences.createUnverifiedEmailPreference(value = emailArgument)
+    suspend fun attemptToCreateActiveUser(email: String, username: String) {
+        if (activeUserRepository.fetchActiveUser() == null) {
+            activeUserRepository.createActiveUser(
+                activeUser = ActiveUser(
+                    id = Constants.ACTIVE_USER_ID,
+                    accountHasBeenCreated = false,
+                    username = username,
+                    email = email
+                )
+            )
         }
     }
 
@@ -99,8 +110,13 @@ class AuthenticationViewModel(
                                 email = emailArgument
                             ).collectLatest { isSuccessful ->
                                 if (isSuccessful) {
-                                    createSharedPreferences.createAccountHasBeenCreatedPreference(
-                                        value = true
+                                    activeUserRepository.updateActiveUser(
+                                        activeUser = ActiveUser(
+                                            id = Constants.ACTIVE_USER_ID,
+                                            accountHasBeenCreated = true,
+                                            email = emailArgument,
+                                            username = usernameArgument
+                                        )
                                     )
                                     navigation.disableProgress()
                                     navigation.navigateToHome()
