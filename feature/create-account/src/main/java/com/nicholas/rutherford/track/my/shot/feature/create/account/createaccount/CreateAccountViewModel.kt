@@ -3,12 +3,12 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccou
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
-import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
@@ -33,17 +33,22 @@ class CreateAccountViewModel(
     private val application: Application,
     private val network: Network,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
-    private val readFirebaseUserInfo: ReadFirebaseUserInfo,
-    private val authenticationFirebase: AuthenticationFirebase
+    private val authenticationFirebase: AuthenticationFirebase,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     internal var isUsernameEmptyOrNull: Boolean = false
     internal var isUsernameInNotCorrectFormat: Boolean = false
+    internal var isUsernameStoredInFirebase: Boolean = false
     internal var isEmailEmptyOrNull: Boolean = false
     internal var isEmailInNotCorrectFormat: Boolean = false
+    internal var isEmailStoredInFirebase: Boolean = false
     internal var isPasswordEmptyOrNull: Boolean = false
     internal var isPasswordInNotCorrectFormat: Boolean = false
     internal var isTwoOrMoreFieldsEmptyOrNull: Boolean = false
+
+    internal var allStoredUsernamesArrayList: ArrayList<String> = arrayListOf()
+    internal var allStoredEmailsArrayList: ArrayList<String> = arrayListOf()
 
     private val createAccountMutableStateFlow = MutableStateFlow(
         value = CreateAccountState(
@@ -63,6 +68,17 @@ class CreateAccountViewModel(
         )
     )
 
+    init {
+        viewModelScope.launch { updateStoredUsernamesAndEmailsArrayList() }
+    }
+
+    suspend fun updateStoredUsernamesAndEmailsArrayList() {
+        userRepository.fetchAllUsers().map { user ->
+            allStoredEmailsArrayList.add(user.email)
+            allStoredUsernamesArrayList.add(user.username)
+        }
+    }
+
     fun onBackButtonClicked() = navigation.pop()
 
     fun onCreateAccountButtonClicked() {
@@ -72,9 +88,11 @@ class CreateAccountViewModel(
 
         setIsUsernameEmptyOrNull(username = createAccountState.username)
         setIsUsernameInNotCorrectFormat(username = createAccountState.username)
+        setIsUsernameStoredInFirebase(username = createAccountState.username)
 
         setIsEmailEmptyOrNull(email = createAccountState.email)
         setIsEmailInNotCorrectFormat(email = createAccountState.email)
+        setIsEmailStoredInFirebase(email = createAccountState.email)
 
         setIsPasswordEmptyOrNull(password = createAccountState.password)
         setIsPasswordNotInCorrectFormat(password = createAccountState.password)
@@ -113,6 +131,14 @@ class CreateAccountViewModel(
         }
     }
 
+    internal fun setIsUsernameStoredInFirebase(username: String?) {
+        username?.let { value ->
+            isUsernameStoredInFirebase = allStoredUsernamesArrayList.contains(value)
+        } ?: run {
+            isUsernameStoredInFirebase = false
+        }
+    }
+
     internal fun setIsEmailEmptyOrNull(email: String?) {
         email?.let { value ->
             isEmailEmptyOrNull = value.isEmpty()
@@ -126,6 +152,14 @@ class CreateAccountViewModel(
             isEmailInNotCorrectFormat = !EMAIL_PATTERN.toRegex().matches(value)
         } ?: run {
             isEmailInNotCorrectFormat = true
+        }
+    }
+
+    internal fun setIsEmailStoredInFirebase(email: String?) {
+        email?.let { value ->
+            isEmailStoredInFirebase = allStoredEmailsArrayList.contains(value)
+        } ?: run {
+            isEmailStoredInFirebase = false
         }
     }
 
@@ -205,6 +239,17 @@ class CreateAccountViewModel(
             return defaultAlert.copy(
                 title = application.getString(StringsIds.emptyField),
                 description = application.getString(StringsIds.passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat)
+            )
+        } else if (isUsernameStoredInFirebase) {
+            return defaultAlert.copy(
+                title = application.getString(StringsIds.usernameInUse),
+                description = application.getString(StringsIds.thisUsernameIsAlreadyUsedForAnotherAccountPleaseEnterANewUsername)
+            )
+            // show some alert here for user
+        } else if (isEmailStoredInFirebase) {
+            return defaultAlert.copy(
+                title = application.getString(StringsIds.emailInUse),
+                description = application.getString(StringsIds.thisEmailIsAlreadyUsedForAnotherAccountPleaseEnterANewEmail)
             )
         } else {
             return null

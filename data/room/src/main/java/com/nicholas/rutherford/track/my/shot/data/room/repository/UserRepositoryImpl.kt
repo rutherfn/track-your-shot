@@ -9,7 +9,11 @@ class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
 
     override suspend fun createUser(user: User) = userDao.insert(userEntity = user.toUserEntity())
 
+    override suspend fun createUsers(userList: List<User>) = userDao.insertUsers(users = userList.map { it.toUserEntity() })
+
     override suspend fun updateUser(user: User) = userDao.update(userEntity = user.toUserEntity())
+
+    override suspend fun deleteAllUsers() = userDao.deleteAllUsers()
 
     override suspend fun deleteUser(user: User) = userDao.delete(userEntity = user.toUserEntity())
 

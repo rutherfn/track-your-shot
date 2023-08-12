@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.my.shot.feature.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.response.User
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -15,13 +17,14 @@ const val SPLASH_IMAGE_SCALE = 1f
 class SplashViewModel(
     private val navigation: SplashNavigation,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
-    private val activeUserRepository: ActiveUserRepository
+    private val activeUserRepository: ActiveUserRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     fun navigateToHomeLoginOrAuthentication() {
         viewModelScope.launch {
-            readFirebaseUserInfo.isLoggedInFlow()
-                .combine(readFirebaseUserInfo.isEmailVerifiedFlow()) { isLoggedIn, isEmailVerified ->
+            readFirebaseUserInfo.isEmailVerifiedFlow()
+                .combine(readFirebaseUserInfo.isLoggedInFlow()) { isLoggedIn, isEmailVerified ->
                     val activeUser = activeUserRepository.fetchActiveUser()
                     if (isLoggedIn) {
                         if (isEmailVerified && activeUser != null && activeUser.accountHasBeenCreated) {
@@ -37,7 +40,35 @@ class SplashViewModel(
                     } else {
                         delayAndNavigateToHomeOrLogin(isLoggedIn = false, email = activeUser?.email)
                     }
-                }.collectLatest {}
+                }
+                .combine(readFirebaseUserInfo.getAccountInfoListFlow()) { _, accountInfoRealtimeResponse ->
+                    // todo -> check to see when was the last time we updated the firebase database
+                    // todo -> if the date of now is within 4 hours and the user instance in room is not null
+                    // we wouldn't need to check it, or i should say wouldn't need to update the table.
+                    // however if its greater then 4 hours then update the room table
+                    // Trello ticket:
+
+                    val userArrayList: ArrayList<User> = arrayListOf()
+
+                    accountInfoRealtimeResponse?.mapIndexed { index, accountInfo ->
+                        userArrayList.add(
+                            User(
+                                id = index,
+                                username = accountInfo.userName,
+                                email = accountInfo.email
+                            )
+                        )
+                    }
+
+                    if (userRepository.fetchAllUsers().isNotEmpty()) {
+                        userRepository.deleteAllUsers()
+                    }
+
+                    if (userArrayList.isNotEmpty()) {
+                        userRepository.createUsers(userList = userArrayList.toList())
+                    }
+                }
+                .collectLatest {}
         }
     }
 
