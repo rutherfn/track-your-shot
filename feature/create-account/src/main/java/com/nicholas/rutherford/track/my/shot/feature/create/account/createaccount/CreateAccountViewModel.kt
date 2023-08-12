@@ -8,6 +8,7 @@ import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDi
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.my.shot.helper.network.Network
@@ -32,6 +33,7 @@ class CreateAccountViewModel(
     private val application: Application,
     private val network: Network,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
+    private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val authenticationFirebase: AuthenticationFirebase
 ) : ViewModel() {
 
