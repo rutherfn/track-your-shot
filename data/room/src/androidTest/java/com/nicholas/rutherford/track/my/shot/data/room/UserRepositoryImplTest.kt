@@ -50,6 +50,15 @@ class UserRepositoryImplTest {
     }
 
     @Test
+    fun createUsers() = runBlocking {
+        val userList = listOf(user, user.copy(id = 2, username = "test"))
+
+        userRepositoryImpl.createUsers(userList = userList)
+
+        assertThat(userRepositoryImpl.fetchAllUsers(), CoreMatchers.equalTo(userList))
+    }
+
+    @Test
     fun updateUser() = runBlocking {
         userRepositoryImpl.createUser(user = user)
 
@@ -62,11 +71,28 @@ class UserRepositoryImplTest {
 
     @Test
     fun deleteUser() = runBlocking {
-        userRepositoryImpl.createUser(user = user)
+        val secondUser = user.copy(id = 2, username = "test")
 
-        assertThat(userRepositoryImpl.fetchAllUsers(), CoreMatchers.equalTo(listOf(user)))
+        userRepositoryImpl.createUser(user = user)
+        userRepositoryImpl.createUser(user = secondUser)
+
+        assertThat(userRepositoryImpl.fetchAllUsers(), CoreMatchers.equalTo(listOf(user, secondUser)))
 
         userRepositoryImpl.deleteUser(user = user)
+
+        assertThat(userRepositoryImpl.fetchAllUsers(), CoreMatchers.equalTo(listOf(secondUser)))
+    }
+
+    @Test
+    fun deleteAllUsers() = runBlocking {
+        val secondUser = user.copy(id = 2, username = "test")
+
+        userRepositoryImpl.createUser(user = user)
+        userRepositoryImpl.createUser(user = secondUser)
+
+        assertThat(userRepositoryImpl.fetchAllUsers(), CoreMatchers.equalTo(listOf(user, secondUser)))
+
+        userRepositoryImpl.deleteAllUsers()
 
         assertThat(userRepositoryImpl.fetchAllUsers(), CoreMatchers.equalTo(emptyList()))
     }
