@@ -45,6 +45,18 @@ class UserEntityDaoTest {
     }
 
     @Test
+    fun insertUsers() = runBlocking {
+        val users = listOf(
+            userEntity,
+            userEntity.copy(id = 2, username = "test11", email = "email@test.com"),
+            userEntity.copy(id = 3, username = "test112", email = "email2@test.com")
+        )
+        userDao.insertUsers(users = users)
+
+        MatcherAssert.assertThat(users, equalTo(userDao.getAllUsers()))
+    }
+
+    @Test
     fun update() = runBlocking {
         userDao.insert(userEntity)
 
@@ -57,11 +69,28 @@ class UserEntityDaoTest {
 
     @Test
     fun delete() = runBlocking {
-        userDao.insert(userEntity)
+        val secondUserEntity = userEntity.copy(id = 2, username = "test11", email = "email@test.com")
 
-        MatcherAssert.assertThat(listOf(userEntity), equalTo(userDao.getAllUsers()))
+        userDao.insert(userEntity)
+        userDao.insert(secondUserEntity)
+
+        MatcherAssert.assertThat(listOf(userEntity, secondUserEntity), equalTo(userDao.getAllUsers()))
 
         userDao.delete(userEntity)
+
+        MatcherAssert.assertThat(listOf(secondUserEntity), equalTo(userDao.getAllUsers()))
+    }
+
+    @Test
+    fun deleteAll() = runBlocking {
+        val secondUserEntity = userEntity.copy(id = 2, username = "test11", email = "email@test.com")
+
+        userDao.insert(userEntity)
+        userDao.insert(secondUserEntity)
+
+        MatcherAssert.assertThat(listOf(userEntity, secondUserEntity), equalTo(userDao.getAllUsers()))
+
+        userDao.deleteAllUsers()
 
         MatcherAssert.assertThat(emptyList(), equalTo(userDao.getAllUsers()))
     }
