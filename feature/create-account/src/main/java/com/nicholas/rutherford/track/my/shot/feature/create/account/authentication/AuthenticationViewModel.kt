@@ -2,7 +2,6 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account.authenticat
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
@@ -14,10 +13,7 @@ import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
@@ -30,11 +26,6 @@ class AuthenticationViewModel(
 
     internal var username: String? = null
     internal var email: String? = null
-
-    internal var usernameIsContainedInFirebase: Boolean = false
-
-    internal val shouldShowDialogWithTextFieldMutableStateFlow = MutableStateFlow(value = false)
-    val shouldShowDialogWithTextFieldFlow = shouldShowDialogWithTextFieldMutableStateFlow.asStateFlow()
 
     suspend fun updateUsernameAndEmail(usernameArgument: String?, emailArgument: String?) {
         this.username = usernameArgument
@@ -84,53 +75,36 @@ class AuthenticationViewModel(
         collectIfUserIsVerifiedAndAttemptToCreateAccount(shouldShowAccountIsNotVerifiedAlert = false)
     }
 
-    private suspend fun collectIfUserIsVerifiedAndAttemptToCreateAccount(
-        shouldShowAccountIsNotVerifiedAlert: Boolean,
-        newUsername: String? = null
-    ) {
-        val accountUsername = newUsername ?: username
+    private suspend fun collectIfUserIsVerifiedAndAttemptToCreateAccount(shouldShowAccountIsNotVerifiedAlert: Boolean) {
+        readFirebaseUserInfo.isEmailVerifiedFlow().collectLatest { isVerified ->
+            if (isVerified) {
+                safeLet(username, email) { usernameArgument, emailArgument ->
+                    navigation.enableProgress(progress = Progress(onDismissClicked = {}))
 
-        readFirebaseUserInfo.getAccountInfoListFlow().collectLatest { accountInfoRealtimeResponseList ->
-            val allUsernamesList = accountInfoRealtimeResponseList?.map { accountInfoRealtimeResponse -> accountInfoRealtimeResponse.userName } ?: emptyList()
-            accountUsername?.let { value ->
-                usernameIsContainedInFirebase = allUsernamesList.contains(value)
-            } ?: run {
-                usernameIsContainedInFirebase = false
-            }
-            if (usernameIsContainedInFirebase) {
-                shouldShowDialogWithTextFieldMutableStateFlow.value = true
-            } else {
-                readFirebaseUserInfo.isEmailVerifiedFlow().collectLatest { isVerified ->
-                    if (isVerified) {
-                        safeLet(accountUsername, email) { usernameArgument, emailArgument ->
-                            navigation.enableProgress(progress = Progress(onDismissClicked = {}))
-
-                            createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(
-                                userName = usernameArgument,
-                                email = emailArgument
-                            ).collectLatest { isSuccessful ->
-                                if (isSuccessful) {
-                                    activeUserRepository.updateActiveUser(
-                                        activeUser = ActiveUser(
-                                            id = Constants.ACTIVE_USER_ID,
-                                            accountHasBeenCreated = true,
-                                            email = emailArgument,
-                                            username = usernameArgument
-                                        )
-                                    )
-                                    navigation.disableProgress()
-                                    navigation.navigateToHome()
-                                } else {
-                                    navigation.disableProgress()
-                                    navigation.alert(alert = errorCreatingAccountAlert())
-                                }
-                            }
-                        }
-                    } else {
-                        if (shouldShowAccountIsNotVerifiedAlert) {
-                            navigation.alert(alert = errorVerifyingAccount())
+                    createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(
+                        userName = usernameArgument,
+                        email = emailArgument
+                    ).collectLatest { isSuccessful ->
+                        if (isSuccessful) {
+                            activeUserRepository.updateActiveUser(
+                                activeUser = ActiveUser(
+                                    id = Constants.ACTIVE_USER_ID,
+                                    accountHasBeenCreated = true,
+                                    email = emailArgument,
+                                    username = usernameArgument
+                                )
+                            )
+                            navigation.disableProgress()
+                            navigation.navigateToHome()
+                        } else {
+                            navigation.disableProgress()
+                            navigation.alert(alert = errorCreatingAccountAlert())
                         }
                     }
+                }
+            } else {
+                if (shouldShowAccountIsNotVerifiedAlert) {
+                    navigation.alert(alert = errorVerifyingAccount())
                 }
             }
         }
@@ -193,43 +167,6 @@ class AuthenticationViewModel(
             ),
             description = application.getString(StringsIds.weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain)
         )
-    }
-
-    internal fun newUsernameIsEmptyAlert(): Alert {
-        return Alert(
-            onDismissClicked = {},
-            title = application.getString(StringsIds.unableToSetNewUsername),
-            confirmButton = AlertConfirmAndDismissButton(
-                onButtonClicked = { shouldShowDialogWithTextFieldMutableStateFlow.value = true },
-                buttonText = application.getString(StringsIds.tryAgain)
-            ),
-            description = application.getString(StringsIds.weWereUnableToSetNewUsernameSinceTheUsernameIsEmptyPleaseClickTryAgainToSetNewUsername)
-        )
-    }
-
-    internal fun newUsernameIsDuplicateAlert(): Alert {
-        return Alert(
-            onDismissClicked = {},
-            title = application.getString(StringsIds.unableToSetNewUsername),
-            confirmButton = AlertConfirmAndDismissButton(
-                onButtonClicked = { shouldShowDialogWithTextFieldMutableStateFlow.value = true },
-                buttonText = application.getString(StringsIds.tryAgain)
-            ),
-            description = application.getString(StringsIds.weWereUnableToSetNewUsernameSinceTheUsernameIsTheSameAsTheCurrentUsernamePleaseClickTryAgainToSetNewUsername)
-        )
-    }
-
-    internal fun onConfirmNewUsernameClicked(newUsername: String) {
-        shouldShowDialogWithTextFieldMutableStateFlow.value = false
-        if (newUsername.isEmpty()) {
-            navigation.alert(alert = newUsernameIsEmptyAlert())
-        } else if (newUsername == username) {
-            navigation.alert(alert = newUsernameIsDuplicateAlert())
-        } else {
-            viewModelScope.launch {
-                onCheckIfAccountHaBeenVerifiedClicked()
-            }
-        }
     }
 
     internal fun onOpenEmailClicked() = navigation.openEmail()

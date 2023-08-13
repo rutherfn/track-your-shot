@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount
 
 import android.app.Application
+import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
@@ -36,6 +37,8 @@ class CreateAccountViewModelTest {
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
     private val authenticationFirebase = mockk<AuthenticationFirebase>(relaxed = true)
 
+    private val userRepository = mockk<UserRepository>(relaxed = true)
+
     private val state = CreateAccountState(username = null, email = null, password = null)
 
     private val createAccountFirebaseAuthResponse = TestCreateAccountFirebaseAuthResponse().create()
@@ -53,7 +56,8 @@ class CreateAccountViewModelTest {
             application = application,
             network = network,
             createFirebaseUserInfo = createFirebaseUserInfo,
-            authenticationFirebase = authenticationFirebase
+            authenticationFirebase = authenticationFirebase,
+            userRepository = userRepository
         )
     }
 
