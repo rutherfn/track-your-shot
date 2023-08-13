@@ -65,7 +65,7 @@ class ActiveUserRepositoryImplTest {
 
         assertThat(activeUserRepositoryImpl.fetchActiveUser(), equalTo(activeUser))
 
-        activeUserRepositoryImpl.deleteActiveUser(activeUser = activeUser)
+        activeUserRepositoryImpl.deleteActiveUser()
 
         assertThat(activeUserRepositoryImpl.fetchActiveUser(), equalTo(null))
     }

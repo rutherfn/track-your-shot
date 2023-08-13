@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun NavigationComponent(
-    activity: MainActivityWrapper,
+    activity: MainActivity,
     navHostController: NavHostController,
     navigator: Navigator,
     viewModels: ViewModels
@@ -148,13 +148,10 @@ fun NavigationComponent(
                 )
             )
         }
-        composable(
-            route = NavigationDestinations.HOME_SCREEN_WITH_PARAMS,
-            arguments = NavArguments.home
-        ) {
+        composable(route = NavigationDestinations.HOME_SCREEN) {
             HomeScreen(
                 viewModel = viewModels.homeViewModel,
-                emailArgument = it.arguments?.getString(NamedArguments.EMAIL)
+                emailArgument = "email"
             )
         }
         composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {

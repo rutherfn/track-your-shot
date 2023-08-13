@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -61,7 +63,7 @@ class LoginViewModel(
                                 onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
                                 navigation.disableProgress()
 
-                                // add a new active user here
+                                updateActiveUserFromLoggedInUser(email = userEmail)
 
                                 navigation.navigateToHome()
                             } else {
@@ -75,6 +77,21 @@ class LoginViewModel(
             }
         } ?: run {
             navigation.alert(alert = emailEmptyAlert())
+        }
+    }
+
+    suspend fun updateActiveUserFromLoggedInUser(email: String) {
+        userRepository.fetchUserByEmail(email = email)?.let { user ->
+            if (activeUserRepository.fetchActiveUser() == null) {
+                activeUserRepository.createActiveUser(
+                    activeUser = ActiveUser(
+                        id = Constants.ACTIVE_USER_ID,
+                        accountHasBeenCreated = true,
+                        username = user.username,
+                        email = user.email
+                    )
+                )
+            }
         }
     }
 

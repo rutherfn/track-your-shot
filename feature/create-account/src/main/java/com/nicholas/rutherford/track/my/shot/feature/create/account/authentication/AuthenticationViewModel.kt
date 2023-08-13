@@ -27,6 +27,10 @@ class AuthenticationViewModel(
     internal var username: String? = null
     internal var email: String? = null
 
+    init {
+
+    }
+
     suspend fun updateUsernameAndEmail(usernameArgument: String?, emailArgument: String?) {
         this.username = usernameArgument
         this.email = emailArgument

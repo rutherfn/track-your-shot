@@ -11,7 +11,7 @@ class ActiveUserRepositoryImpl(private val activeUserDao: ActiveUserDao) : Activ
 
     override suspend fun updateActiveUser(activeUser: ActiveUser) = activeUserDao.update(activeUserEntity = activeUser.toActiveUserEntity())
 
-    override suspend fun deleteActiveUser(activeUser: ActiveUser) = activeUserDao.delete(activeUserEntity = activeUser.toActiveUserEntity())
+    override suspend fun deleteActiveUser() = activeUserDao.delete()
 
     override suspend fun fetchActiveUser(): ActiveUser? = activeUserDao.getActiveUser()?.toActiveUser()
 }

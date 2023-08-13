@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.data.room.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -15,8 +14,8 @@ interface ActiveUserDao {
     @Update
     suspend fun update(activeUserEntity: ActiveUserEntity)
 
-    @Delete
-    suspend fun delete(activeUserEntity: ActiveUserEntity)
+    @Query("DELETE FROM activeUsers")
+    suspend fun delete()
 
     @Query("SELECT * FROM activeUsers")
     suspend fun getActiveUser(): ActiveUserEntity?
