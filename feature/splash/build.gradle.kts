@@ -84,9 +84,10 @@ dependencies {
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
 
-    testImplementation(Dependencies.Coroutine.test)
+    testImplementation(project(path = ":data-test:account-info"))
+    testImplementation(project(path = ":data-test:room"))
 
-    testImplementation(project(mapOf("path" to ":data-test:room")))
+    testImplementation(Dependencies.Coroutine.test)
 
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)

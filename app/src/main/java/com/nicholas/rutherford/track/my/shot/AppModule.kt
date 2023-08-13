@@ -11,6 +11,8 @@ import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.my.shot.data.room.database.AppDatabase
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepositoryImpl
+import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepositoryImpl
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigation
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
@@ -57,7 +59,7 @@ class AppModule {
         single {
             getSharedPreferences(androidApplication())
         }
-        single<AppDatabase> {
+        single {
             Room.databaseBuilder(
                 androidApplication(),
                 AppDatabase::class.java,
@@ -66,14 +68,18 @@ class AppModule {
                 .fallbackToDestructiveMigration()
                 .build()
         }
-
         single {
             get<AppDatabase>().activeUserDao()
+        }
+        single {
+            get<AppDatabase>().userDao()
         }
         single<ActiveUserRepository> {
             ActiveUserRepositoryImpl(activeUserDao = get())
         }
-
+        single<UserRepository> {
+            UserRepositoryImpl(userDao = get())
+        }
         single<android.content.SharedPreferences.Editor> {
             getSharedPreferences(androidApplication()).edit()
         }
@@ -138,7 +144,8 @@ class AppModule {
             SplashViewModel(
                 navigation = get(),
                 readFirebaseUserInfo = get(),
-                activeUserRepository = get()
+                activeUserRepository = get(),
+                userRepository = get()
             )
         }
         viewModel {
@@ -170,7 +177,8 @@ class AppModule {
                 application = androidApplication(),
                 network = get(),
                 createFirebaseUserInfo = get(),
-                authenticationFirebase = get()
+                authenticationFirebase = get(),
+                userRepository = get()
             )
         }
         viewModel {

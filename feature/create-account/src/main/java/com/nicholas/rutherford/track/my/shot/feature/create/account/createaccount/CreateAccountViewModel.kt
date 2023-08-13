@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccou
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
@@ -32,16 +33,22 @@ class CreateAccountViewModel(
     private val application: Application,
     private val network: Network,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
-    private val authenticationFirebase: AuthenticationFirebase
+    private val authenticationFirebase: AuthenticationFirebase,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     internal var isUsernameEmptyOrNull: Boolean = false
     internal var isUsernameInNotCorrectFormat: Boolean = false
+    internal var isUsernameStoredInFirebase: Boolean = false
     internal var isEmailEmptyOrNull: Boolean = false
     internal var isEmailInNotCorrectFormat: Boolean = false
+    internal var isEmailStoredInFirebase: Boolean = false
     internal var isPasswordEmptyOrNull: Boolean = false
     internal var isPasswordInNotCorrectFormat: Boolean = false
     internal var isTwoOrMoreFieldsEmptyOrNull: Boolean = false
+
+    internal var allStoredUsernamesArrayList: ArrayList<String> = arrayListOf()
+    internal var allStoredEmailsArrayList: ArrayList<String> = arrayListOf()
 
     private val createAccountMutableStateFlow = MutableStateFlow(
         value = CreateAccountState(
@@ -61,24 +68,43 @@ class CreateAccountViewModel(
         )
     )
 
+    init {
+        viewModelScope.launch { updateStoredUsernamesAndEmailsArrayList() }
+    }
+
+    suspend fun updateStoredUsernamesAndEmailsArrayList() {
+        userRepository.fetchAllUsers().map { user ->
+            allStoredEmailsArrayList.add(user.email)
+            allStoredUsernamesArrayList.add(user.username)
+        }
+    }
+
     fun onBackButtonClicked() = navigation.pop()
 
     fun onCreateAccountButtonClicked() {
         val createAccountState = createAccountMutableStateFlow.value
 
+        // Enable progress and prepare for field validation
         navigation.enableProgress(progress = Progress(onDismissClicked = {}))
 
+        // Validate username
         setIsUsernameEmptyOrNull(username = createAccountState.username)
         setIsUsernameInNotCorrectFormat(username = createAccountState.username)
+        setIsUsernameStoredInFirebase(username = createAccountState.username)
 
+        // Validate email
         setIsEmailEmptyOrNull(email = createAccountState.email)
         setIsEmailInNotCorrectFormat(email = createAccountState.email)
+        setIsEmailStoredInFirebase(email = createAccountState.email)
 
+        // Validate password
         setIsPasswordEmptyOrNull(password = createAccountState.password)
         setIsPasswordNotInCorrectFormat(password = createAccountState.password)
 
+        // Check if multiple fields are empty
         setIsTwoOrMoreFieldsEmptyOrNull()
 
+        // Attempt to show error alert or create Firebase Auth
         viewModelScope.launch {
             attemptToShowErrorAlertOrCreateFirebaseAuth(createAccountState = createAccountState)
         }
@@ -111,6 +137,14 @@ class CreateAccountViewModel(
         }
     }
 
+    internal fun setIsUsernameStoredInFirebase(username: String?) {
+        username?.let { value ->
+            isUsernameStoredInFirebase = allStoredUsernamesArrayList.contains(value) == true
+        } ?: run {
+            isUsernameStoredInFirebase = false
+        }
+    }
+
     internal fun setIsEmailEmptyOrNull(email: String?) {
         email?.let { value ->
             isEmailEmptyOrNull = value.isEmpty()
@@ -124,6 +158,14 @@ class CreateAccountViewModel(
             isEmailInNotCorrectFormat = !EMAIL_PATTERN.toRegex().matches(value)
         } ?: run {
             isEmailInNotCorrectFormat = true
+        }
+    }
+
+    internal fun setIsEmailStoredInFirebase(email: String?) {
+        email?.let { value ->
+            isEmailStoredInFirebase = allStoredEmailsArrayList.contains(value)
+        } ?: run {
+            isEmailStoredInFirebase = false
         }
     }
 
@@ -160,53 +202,28 @@ class CreateAccountViewModel(
     }
 
     internal suspend fun validateFieldsWithOptionalAlert(): Alert? {
-        if (!network.isDeviceConnectedToInternet()) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.notConnectedToInternet),
-                description = application.getString(StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
-            )
-        } else if (isTwoOrMoreFieldsEmptyOrNull) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyFields),
-                description = application.getString(StringsIds.multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields)
-            )
-        } else if (isUsernameEmptyOrNull) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyField),
-                description = application.getString(StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
-            )
-        } else if (isUsernameInNotCorrectFormat) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyField),
-                description = application.getString(StringsIds.usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat)
-            )
-        } else if (isEmailEmptyOrNull) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyField),
-                description = application.getString(
-                    StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount
-                )
-            )
-        } else if (isEmailInNotCorrectFormat) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyField),
-                description = application.getString(
-                    StringsIds.emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat
-                )
-            )
-        } else if (isPasswordEmptyOrNull) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyField),
-                description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
-            )
-        } else if (isPasswordInNotCorrectFormat) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyField),
-                description = application.getString(StringsIds.passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat)
-            )
-        } else {
-            return null
+        val alertTitle = application.getString(StringsIds.emptyField)
+
+        return when {
+            !network.isDeviceConnectedToInternet() -> createAlert(alertTitle, StringsIds.notConnectedToInternet)
+            isTwoOrMoreFieldsEmptyOrNull -> createAlert(alertTitle, StringsIds.emptyFields)
+            isUsernameEmptyOrNull -> createAlert(alertTitle, StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
+            isUsernameInNotCorrectFormat -> createAlert(alertTitle, StringsIds.usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat)
+            isEmailEmptyOrNull -> createAlert(alertTitle, StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount)
+            isEmailInNotCorrectFormat -> createAlert(alertTitle, StringsIds.emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat)
+            isPasswordEmptyOrNull -> createAlert(alertTitle, StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
+            isPasswordInNotCorrectFormat -> createAlert(alertTitle, StringsIds.passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat)
+            isUsernameStoredInFirebase -> createAlert(alertTitle, StringsIds.usernameInUse)
+            isEmailStoredInFirebase -> createAlert(alertTitle, StringsIds.emailInUse)
+            else -> null
         }
+    }
+
+    private fun createAlert(title: String, descriptionId: Int): Alert {
+        return defaultAlert.copy(
+            title = title,
+            description = application.getString(descriptionId)
+        )
     }
 
     internal suspend fun attemptToCreateFirebaseAuthAndSendEmailVerification(email: String, username: String, password: String) {

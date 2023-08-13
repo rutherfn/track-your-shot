@@ -4,8 +4,6 @@ import android.app.Application
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
-import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.TestAccountInfoRealTimeResponse
-import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.USER_NAME_ACCOUNT_INFO_REALTIME_RESPONSE
 import com.nicholas.rutherford.track.my.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
@@ -234,64 +232,6 @@ class AuthenticationViewModelTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when getAccountInfoListFlow returns back as empty should set usernameIsContainedInFirebase to false`() = runTest {
-            viewModel.username = username
-
-            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(emptyList())
-
-            viewModel.onResume()
-
-            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
-            Assertions.assertFalse(viewModel.usernameIsContainedInFirebase)
-        }
-
-        @OptIn(ExperimentalCoroutinesApi::class)
-        @Test
-        fun `when getAccountInfoListFlow returns back as valid response but it is not contained in username should set usernameIsContainedInFirebase to false`() = runTest {
-            viewModel.username = username
-
-            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(
-                listOf(TestAccountInfoRealTimeResponse().create())
-            )
-
-            viewModel.onResume()
-
-            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
-            Assertions.assertFalse(viewModel.usernameIsContainedInFirebase)
-        }
-
-        @OptIn(ExperimentalCoroutinesApi::class)
-        @Test
-        fun `when getAccountInfoListFlow returns back as valid response but username is null should set usernameIsContainedInFirebase to false`() = runTest {
-            viewModel.username = null
-
-            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(
-                listOf(TestAccountInfoRealTimeResponse().create())
-            )
-
-            viewModel.onResume()
-
-            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
-            Assertions.assertFalse(viewModel.usernameIsContainedInFirebase)
-        }
-
-        @OptIn(ExperimentalCoroutinesApi::class)
-        @Test
-        fun `when getAccountInfoListFlow returns back as valid response with included username should set usernameIsContainedInFirebase to true`() = runTest {
-            viewModel.username = USER_NAME_ACCOUNT_INFO_REALTIME_RESPONSE
-
-            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(
-                listOf(TestAccountInfoRealTimeResponse().create())
-            )
-
-            viewModel.onResume()
-
-            Assertions.assertTrue(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
-            Assertions.assertTrue(viewModel.usernameIsContainedInFirebase)
-        }
-
-        @OptIn(ExperimentalCoroutinesApi::class)
-        @Test
         fun `when isEmailVerified returns back false should not attempt to create account`() = runTest {
             every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = false)
 
@@ -299,8 +239,6 @@ class AuthenticationViewModelTest {
             viewModel.email = email
 
             viewModel.onResume()
-
-            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
 
             verify(exactly = 0) { navigation.alert(alert = viewModel.errorVerifyingAccount()) }
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
@@ -316,8 +254,6 @@ class AuthenticationViewModelTest {
 
             viewModel.onResume()
 
-            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
-
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
         }
 
@@ -331,7 +267,6 @@ class AuthenticationViewModelTest {
 
             viewModel.onResume()
 
-            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
         }
 
@@ -357,8 +292,6 @@ class AuthenticationViewModelTest {
             viewModel.email = email
 
             viewModel.onResume()
-
-            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
@@ -387,8 +320,6 @@ class AuthenticationViewModelTest {
             viewModel.email = email
 
             viewModel.onResume()
-
-            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
@@ -488,61 +419,6 @@ class AuthenticationViewModelTest {
             application.getString(StringsIds.weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain),
             viewModel.unsuccessfullySendEmailVerificationAlert().description
         )
-    }
-
-    @Test
-    fun `newUsernameIsEmptyAlert() content should match`() {
-        Assertions.assertEquals(
-            application.getString(StringsIds.unableToSetNewUsername),
-            viewModel.newUsernameIsEmptyAlert().title
-        )
-        Assertions.assertEquals(
-            application.getString(StringsIds.tryAgain),
-            viewModel.newUsernameIsEmptyAlert().confirmButton!!.buttonText
-        )
-        Assertions.assertEquals(
-            application.getString(StringsIds.weWereUnableToSetNewUsernameSinceTheUsernameIsEmptyPleaseClickTryAgainToSetNewUsername),
-            viewModel.newUsernameIsEmptyAlert().description
-        )
-    }
-
-    @Test
-    fun `newUsernameIsDuplicateAlert() content should match`() {
-        Assertions.assertEquals(
-            application.getString(StringsIds.unableToSetNewUsername),
-            viewModel.newUsernameIsDuplicateAlert().title
-        )
-        Assertions.assertEquals(
-            application.getString(StringsIds.tryAgain),
-            viewModel.newUsernameIsDuplicateAlert().confirmButton!!.buttonText
-        )
-        Assertions.assertEquals(
-            application.getString(StringsIds.weWereUnableToSetNewUsernameSinceTheUsernameIsTheSameAsTheCurrentUsernamePleaseClickTryAgainToSetNewUsername),
-            viewModel.newUsernameIsDuplicateAlert().description
-        )
-    }
-
-    @Nested
-    inner class OnConfirmNewUsernameClicked {
-        private val defaultUsername = "defaultUsername"
-
-        @Test
-        fun `when newUsername is empty should call alert`() {
-            viewModel.onConfirmNewUsernameClicked(newUsername = "")
-
-            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
-            verify { navigation.alert(alert = any()) }
-        }
-
-        @Test
-        fun `when newUsername is equal to the existing username should call alert`() {
-            viewModel.username = defaultUsername
-
-            viewModel.onConfirmNewUsernameClicked(newUsername = defaultUsername)
-
-            Assertions.assertFalse(viewModel.shouldShowDialogWithTextFieldMutableStateFlow.value)
-            verify { navigation.alert(alert = any()) }
-        }
     }
 
     @Test
