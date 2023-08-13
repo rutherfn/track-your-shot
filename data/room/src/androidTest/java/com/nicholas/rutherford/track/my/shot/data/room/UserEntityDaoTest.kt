@@ -96,6 +96,18 @@ class UserEntityDaoTest {
     }
 
     @Test
+    fun getUserByEmail() = runBlocking {
+        val secondUserEntity = userEntity.copy(id = 2, username = "test11", email = "email@test.com")
+
+        userDao.insert(userEntity)
+        userDao.insert(secondUserEntity)
+
+        MatcherAssert.assertThat(listOf(userEntity, secondUserEntity), equalTo(userDao.getAllUsers()))
+
+        MatcherAssert.assertThat(secondUserEntity, equalTo(userDao.getUserByEmail(email = secondUserEntity.email)))
+    }
+
+    @Test
     fun getAllUsers() = runBlocking {
         userDao.insert(userEntity)
 

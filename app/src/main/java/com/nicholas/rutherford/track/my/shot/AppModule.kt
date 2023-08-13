@@ -153,15 +153,16 @@ class AppModule {
                 application = androidApplication(),
                 existingUserFirebase = get(),
                 navigation = get(),
-                buildType = get()
+                buildType = get(),
+                activeUserRepository = get(),
+                userRepository = get()
             )
         }
         viewModel {
             HomeViewModel(
                 navigation = get(),
                 existingUserFirebase = get(),
-                activeUserRepository = get(),
-                readFirebaseUserInfo = get()
+                activeUserRepository = get()
             )
         }
         viewModel {

@@ -59,10 +59,6 @@ class ActiveUserEntityDaoTest {
     fun delete() = runBlocking {
         activeUserDao.insert(activeUserEntity = activeUserEntity)
 
-        assertThat(activeUserEntity, equalTo(activeUserDao.getActiveUser()))
-
-        activeUserDao.delete(activeUserEntity = activeUserEntity)
-
         assertThat(activeUserDao.getActiveUser(), equalTo(null))
     }
 

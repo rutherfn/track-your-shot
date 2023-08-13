@@ -7,7 +7,7 @@ interface LoginNavigation {
     fun alert(alert: Alert)
     fun disableProgress()
     fun enableProgress(progress: Progress)
-    fun navigateToHome(email: String)
+    fun navigateToHome()
     fun navigateToForgotPassword()
     fun navigateToCreateAccount()
 }

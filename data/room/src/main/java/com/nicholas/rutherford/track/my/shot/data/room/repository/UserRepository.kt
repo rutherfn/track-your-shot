@@ -9,5 +9,7 @@ interface UserRepository {
     suspend fun updateUser(user: User)
     suspend fun deleteUser(user: User)
     suspend fun deleteAllUsers()
+
+    suspend fun fetchUserByEmail(email: String): User?
     suspend fun fetchAllUsers(): List<User>
 }

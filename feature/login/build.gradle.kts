@@ -72,6 +72,7 @@ android {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":data:room")))
     androidTestImplementation(Dependencies.Compose.uiTestJunit4)
 
     api(project(path = ":base-resources"))
@@ -79,6 +80,7 @@ dependencies {
     api(project(path = ":compose:components"))
     api(project(path = ":firebase:util"))
     api(project(path = ":helper:compose-content-test-rule"))
+    api(project(path = ":helper:constants"))
     api(project(path = ":helper:extensions"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))

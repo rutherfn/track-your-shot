@@ -17,7 +17,7 @@ open class MainActivity : ComponentActivity() {
         viewModel.initAppCenter()
         setContent {
             NavigationComponent(
-                activity = MainActivityWrapper(),
+                activity = this,
                 navHostController = rememberNavController(),
                 navigator = get(),
                 viewModels = ViewModels(

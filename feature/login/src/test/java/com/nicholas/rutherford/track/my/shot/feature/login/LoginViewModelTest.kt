@@ -2,6 +2,8 @@ package com.nicholas.rutherford.track.my.shot.feature.login
 
 import android.app.Application
 import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
+import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
@@ -25,6 +27,9 @@ class LoginViewModelTest {
     private var navigation = mockk<LoginNavigation>(relaxed = true)
     private var application = mockk<Application>(relaxed = true)
 
+    private var activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
+    private var userRepository = mockk<UserRepository>(relaxed = true)
+
     private val debugVersionName = "debug"
     private val releaseVersionName = "release"
     private val stageVersionName = "stage"
@@ -41,7 +46,9 @@ class LoginViewModelTest {
             existingUserFirebase = existingUserFirebase,
             navigation = navigation,
             buildType = buildTypeDebug,
-            application = application
+            application = application,
+            activeUserRepository = activeUserRepository,
+            userRepository = userRepository
         )
     }
 
@@ -59,7 +66,9 @@ class LoginViewModelTest {
                 existingUserFirebase = existingUserFirebase,
                 navigation = navigation,
                 buildType = buildTypeDebug,
-                application = application
+                application = application,
+                activeUserRepository = activeUserRepository,
+                userRepository = userRepository
             )
 
             Assertions.assertEquals(
@@ -73,7 +82,9 @@ class LoginViewModelTest {
                 existingUserFirebase = existingUserFirebase,
                 navigation = navigation,
                 buildType = buildTypeStage,
-                application = application
+                application = application,
+                activeUserRepository = activeUserRepository,
+                userRepository = userRepository
             )
 
             Assertions.assertEquals(
@@ -87,7 +98,9 @@ class LoginViewModelTest {
                 existingUserFirebase = existingUserFirebase,
                 navigation = navigation,
                 buildType = buildTypeRelease,
-                application = application
+                application = application,
+                activeUserRepository = activeUserRepository,
+                userRepository = userRepository
             )
 
             Assertions.assertEquals(
@@ -168,7 +181,7 @@ class LoginViewModelTest {
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
-            verify { navigation.navigateToHome(email = emailTest) }
+            verify { navigation.navigateToHome() }
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,

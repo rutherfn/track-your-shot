@@ -3,12 +3,16 @@ package com.nicholas.rutherford.track.my.shot.feature.login
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
+import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -17,7 +21,9 @@ class LoginViewModel(
     private val application: Application,
     private val existingUserFirebase: ExistingUserFirebase,
     private val navigation: LoginNavigation,
-    private val buildType: BuildType
+    private val buildType: BuildType,
+    private val activeUserRepository: ActiveUserRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     internal val _loginStateFlow = MutableStateFlow(LoginState())
@@ -56,7 +62,10 @@ class LoginViewModel(
                                 onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
                                 onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
                                 navigation.disableProgress()
-                                navigation.navigateToHome(email = userEmail)
+
+                                updateActiveUserFromLoggedInUser(email = userEmail)
+
+                                navigation.navigateToHome()
                             } else {
                                 navigation.disableProgress()
                                 navigation.alert(alert = unableToLoginToAccountAlert())
@@ -68,6 +77,21 @@ class LoginViewModel(
             }
         } ?: run {
             navigation.alert(alert = emailEmptyAlert())
+        }
+    }
+
+    suspend fun updateActiveUserFromLoggedInUser(email: String) {
+        userRepository.fetchUserByEmail(email = email)?.let { user ->
+            if (activeUserRepository.fetchActiveUser() == null) {
+                activeUserRepository.createActiveUser(
+                    activeUser = ActiveUser(
+                        id = Constants.ACTIVE_USER_ID,
+                        accountHasBeenCreated = true,
+                        username = user.username,
+                        email = user.email
+                    )
+                )
+            }
         }
     }
 

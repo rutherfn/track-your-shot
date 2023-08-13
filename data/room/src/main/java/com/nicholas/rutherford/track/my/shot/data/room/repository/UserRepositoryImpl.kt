@@ -17,6 +17,9 @@ class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
 
     override suspend fun deleteUser(user: User) = userDao.delete(userEntity = user.toUserEntity())
 
+    override suspend fun fetchUserByEmail(email: String): User? =
+        userDao.getUserByEmail(email = email)?.toUser()
+
     override suspend fun fetchAllUsers(): List<User> {
         return userDao.getAllUsers().map { it.toUser() }
     }

@@ -248,7 +248,7 @@ class SplashViewModelTest {
 
                     delay(delayTime)
 
-                    coVerify { navigation.navigateToHome(email = activeUser.email) }
+                    coVerify { navigation.navigateToHome() }
                 }
         }
     }
