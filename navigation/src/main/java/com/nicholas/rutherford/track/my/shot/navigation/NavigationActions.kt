@@ -5,8 +5,8 @@ import androidx.navigation.NavOptions
 object NavigationActions {
 
     object SplashScreen {
-        fun home(email: String) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.homeWithParams(email = email)
+        fun home() = object : NavigationAction {
+            override val destination = NavigationDestinations.HOME_SCREEN
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(0, true)
                 .build()
@@ -28,8 +28,8 @@ object NavigationActions {
     }
 
     object LoginScreen {
-        fun home(email: String) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.homeWithParams(email = email)
+        fun home() = object : NavigationAction {
+            override val destination = NavigationDestinations.HOME_SCREEN
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(0, true)
                 .setLaunchSingleTop(true)

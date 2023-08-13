@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.my.shot.feature.login
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
+import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
@@ -17,7 +19,9 @@ class LoginViewModel(
     private val application: Application,
     private val existingUserFirebase: ExistingUserFirebase,
     private val navigation: LoginNavigation,
-    private val buildType: BuildType
+    private val buildType: BuildType,
+    private val activeUserRepository: ActiveUserRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     internal val _loginStateFlow = MutableStateFlow(LoginState())
@@ -56,7 +60,10 @@ class LoginViewModel(
                                 onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
                                 onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
                                 navigation.disableProgress()
-                                navigation.navigateToHome(email = userEmail)
+
+                                // add a new active user here
+
+                                navigation.navigateToHome()
                             } else {
                                 navigation.disableProgress()
                                 navigation.alert(alert = unableToLoginToAccountAlert())

@@ -98,6 +98,16 @@ class UserRepositoryImplTest {
     }
 
     @Test
+    fun fetchUserByEmaik() = runBlocking {
+        val secondUser = user.copy(id = 2, email = "emailtest@gmail.com", username = "test")
+
+        userRepositoryImpl.createUser(user = user)
+        userRepositoryImpl.createUser(user = secondUser)
+
+        assertThat(userRepositoryImpl.fetchUserByEmail(email = secondUser.email), CoreMatchers.equalTo(secondUser))
+    }
+
+    @Test
     fun fetchAllUsers() = runBlocking {
         userRepositoryImpl.createUser(user = user)
 

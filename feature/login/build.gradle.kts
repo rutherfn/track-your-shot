@@ -72,6 +72,7 @@ android {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":data:room")))
     androidTestImplementation(Dependencies.Compose.uiTestJunit4)
 
     api(project(path = ":base-resources"))
