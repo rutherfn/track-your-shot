@@ -68,6 +68,7 @@ android {
 }
 
 dependencies {
+    testImplementation(project(mapOf("path" to ":data-test:account-info")))
     androidTestImplementation(Dependencies.Compose.uiTestJunit4)
 
     api(project(path = ":base-resources"))
@@ -85,8 +86,6 @@ dependencies {
     implementation(Dependencies.Compose.viewModel)
 
     testImplementation(Dependencies.Coroutine.test)
-
-    testImplementation(project(mapOf("path" to ":data-test:room")))
 
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)

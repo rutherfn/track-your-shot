@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.my.shot.feature.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.response.User
@@ -24,7 +25,7 @@ class SplashViewModel(
     fun navigateToHomeLoginOrAuthentication() {
         viewModelScope.launch {
             readFirebaseUserInfo.isEmailVerifiedFlow()
-                .combine(readFirebaseUserInfo.isLoggedInFlow()) { isLoggedIn, isEmailVerified ->
+                .combine(readFirebaseUserInfo.isLoggedInFlow()) { isEmailVerified, isLoggedIn ->
                     val activeUser = activeUserRepository.fetchActiveUser()
                     if (isLoggedIn) {
                         if (isEmailVerified && activeUser != null && activeUser.accountHasBeenCreated) {
@@ -42,31 +43,13 @@ class SplashViewModel(
                     }
                 }
                 .combine(readFirebaseUserInfo.getAccountInfoListFlow()) { _, accountInfoRealtimeResponse ->
+                    println("get here")
                     // todo -> check to see when was the last time we updated the firebase database
                     // todo -> if the date of now is within 4 hours and the user instance in room is not null
                     // we wouldn't need to check it, or i should say wouldn't need to update the table.
                     // however if its greater then 4 hours then update the room table
                     // Trello ticket:
-
-                    val userArrayList: ArrayList<User> = arrayListOf()
-
-                    accountInfoRealtimeResponse?.mapIndexed { index, accountInfo ->
-                        userArrayList.add(
-                            User(
-                                id = index,
-                                username = accountInfo.userName,
-                                email = accountInfo.email
-                            )
-                        )
-                    }
-
-                    if (userRepository.fetchAllUsers().isNotEmpty()) {
-                        userRepository.deleteAllUsers()
-                    }
-
-                    if (userArrayList.isNotEmpty()) {
-                        userRepository.createUsers(userList = userArrayList.toList())
-                    }
+                    attemptToUpdateDatabaseUsers(accountInfoRealtimeResponse = accountInfoRealtimeResponse)
                 }
                 .collectLatest {}
         }
@@ -92,6 +75,28 @@ class SplashViewModel(
             } ?: navigation.navigateToLogin()
         } else {
             navigation.navigateToLogin()
+        }
+    }
+
+    private suspend fun attemptToUpdateDatabaseUsers(accountInfoRealtimeResponse: List<AccountInfoRealtimeResponse>?) {
+        val userArrayList: ArrayList<User> = arrayListOf()
+
+        accountInfoRealtimeResponse?.mapIndexed { index, accountInfo ->
+            userArrayList.add(
+                User(
+                    id = index,
+                    username = accountInfo.userName,
+                    email = accountInfo.email
+                )
+            )
+        }
+
+        if (userRepository.fetchAllUsers().isNotEmpty()) {
+            userRepository.deleteAllUsers()
+        }
+
+        if (userArrayList.isNotEmpty()) {
+            userRepository.createUsers(userList = userArrayList.toList())
         }
     }
 }
