@@ -84,21 +84,27 @@ class CreateAccountViewModel(
     fun onCreateAccountButtonClicked() {
         val createAccountState = createAccountMutableStateFlow.value
 
+        // Enable progress and prepare for field validation
         navigation.enableProgress(progress = Progress(onDismissClicked = {}))
 
+        // Validate username
         setIsUsernameEmptyOrNull(username = createAccountState.username)
         setIsUsernameInNotCorrectFormat(username = createAccountState.username)
         setIsUsernameStoredInFirebase(username = createAccountState.username)
 
+        // Validate email
         setIsEmailEmptyOrNull(email = createAccountState.email)
         setIsEmailInNotCorrectFormat(email = createAccountState.email)
         setIsEmailStoredInFirebase(email = createAccountState.email)
 
+        // Validate password
         setIsPasswordEmptyOrNull(password = createAccountState.password)
         setIsPasswordNotInCorrectFormat(password = createAccountState.password)
 
+        // Check if multiple fields are empty
         setIsTwoOrMoreFieldsEmptyOrNull()
 
+        // Attempt to show error alert or create Firebase Auth
         viewModelScope.launch {
             attemptToShowErrorAlertOrCreateFirebaseAuth(createAccountState = createAccountState)
         }
@@ -133,7 +139,7 @@ class CreateAccountViewModel(
 
     internal fun setIsUsernameStoredInFirebase(username: String?) {
         username?.let { value ->
-            isUsernameStoredInFirebase = allStoredUsernamesArrayList.contains(value)
+            isUsernameStoredInFirebase = allStoredUsernamesArrayList.contains(value) == true
         } ?: run {
             isUsernameStoredInFirebase = false
         }
@@ -196,64 +202,28 @@ class CreateAccountViewModel(
     }
 
     internal suspend fun validateFieldsWithOptionalAlert(): Alert? {
-        if (!network.isDeviceConnectedToInternet()) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.notConnectedToInternet),
-                description = application.getString(StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
-            )
-        } else if (isTwoOrMoreFieldsEmptyOrNull) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyFields),
-                description = application.getString(StringsIds.multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields)
-            )
-        } else if (isUsernameEmptyOrNull) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyField),
-                description = application.getString(StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
-            )
-        } else if (isUsernameInNotCorrectFormat) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyField),
-                description = application.getString(StringsIds.usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat)
-            )
-        } else if (isEmailEmptyOrNull) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyField),
-                description = application.getString(
-                    StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount
-                )
-            )
-        } else if (isEmailInNotCorrectFormat) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyField),
-                description = application.getString(
-                    StringsIds.emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat
-                )
-            )
-        } else if (isPasswordEmptyOrNull) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyField),
-                description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
-            )
-        } else if (isPasswordInNotCorrectFormat) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emptyField),
-                description = application.getString(StringsIds.passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat)
-            )
-        } else if (isUsernameStoredInFirebase) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.usernameInUse),
-                description = application.getString(StringsIds.thisUsernameIsAlreadyUsedForAnotherAccountPleaseEnterANewUsername)
-            )
-            // show some alert here for user
-        } else if (isEmailStoredInFirebase) {
-            return defaultAlert.copy(
-                title = application.getString(StringsIds.emailInUse),
-                description = application.getString(StringsIds.thisEmailIsAlreadyUsedForAnotherAccountPleaseEnterANewEmail)
-            )
-        } else {
-            return null
+        val alertTitle = application.getString(StringsIds.emptyField)
+
+        return when {
+            !network.isDeviceConnectedToInternet() -> createAlert(alertTitle, StringsIds.notConnectedToInternet)
+            isTwoOrMoreFieldsEmptyOrNull -> createAlert(alertTitle, StringsIds.emptyFields)
+            isUsernameEmptyOrNull -> createAlert(alertTitle, StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
+            isUsernameInNotCorrectFormat -> createAlert(alertTitle, StringsIds.usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat)
+            isEmailEmptyOrNull -> createAlert(alertTitle, StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount)
+            isEmailInNotCorrectFormat -> createAlert(alertTitle, StringsIds.emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat)
+            isPasswordEmptyOrNull -> createAlert(alertTitle, StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
+            isPasswordInNotCorrectFormat -> createAlert(alertTitle, StringsIds.passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat)
+            isUsernameStoredInFirebase -> createAlert(alertTitle, StringsIds.usernameInUse)
+            isEmailStoredInFirebase -> createAlert(alertTitle, StringsIds.emailInUse)
+            else -> null
         }
+    }
+
+    private fun createAlert(title: String, descriptionId: Int): Alert {
+        return defaultAlert.copy(
+            title = title,
+            description = application.getString(descriptionId)
+        )
     }
 
     internal suspend fun attemptToCreateFirebaseAuthAndSendEmailVerification(email: String, username: String, password: String) {
