@@ -43,7 +43,6 @@ class SplashViewModel(
                     }
                 }
                 .combine(readFirebaseUserInfo.getAccountInfoListFlow()) { _, accountInfoRealtimeResponse ->
-                    println("get here")
                     // todo -> check to see when was the last time we updated the firebase database
                     // todo -> if the date of now is within 4 hours and the user instance in room is not null
                     // we wouldn't need to check it, or i should say wouldn't need to update the table.

@@ -68,7 +68,6 @@ android {
 }
 
 dependencies {
-    testImplementation(project(mapOf("path" to ":data-test:account-info")))
     androidTestImplementation(Dependencies.Compose.uiTestJunit4)
 
     api(project(path = ":base-resources"))
