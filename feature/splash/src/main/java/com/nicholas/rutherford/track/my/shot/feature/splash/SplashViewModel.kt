@@ -68,14 +68,11 @@ class SplashViewModel(
     }
 
     private fun navigateToLoginOrHome(isLoggedIn: Boolean, email: String?) {
-        println("get here")
         if (isLoggedIn) {
             email?.let {
-                // do this here
                 navigation.navigateToHome()
             } ?: navigation.navigateToLogin()
         } else {
-            println("navigate to login test")
             navigation.navigateToLogin()
         }
     }

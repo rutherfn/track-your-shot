@@ -98,7 +98,7 @@ class UserRepositoryImplTest {
     }
 
     @Test
-    fun fetchUserByEmaik() = runBlocking {
+    fun fetchUserByEmail() = runBlocking {
         val secondUser = user.copy(id = 2, email = "emailtest@gmail.com", username = "test")
 
         userRepositoryImpl.createUser(user = user)
