@@ -5,7 +5,6 @@ import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.Existing
 import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
