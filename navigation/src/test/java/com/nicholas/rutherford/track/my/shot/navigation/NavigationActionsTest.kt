@@ -79,7 +79,7 @@ class NavigationActionsTest {
             @Test fun createAccount() {
                 Assertions.assertEquals(
                     Actions.LoginScreen.createAccount().destination,
-                    NavigationDestinations.HOME_SCREEN
+                    NavigationDestinations.CREATE_ACCOUNT_SCREEN
                 )
                 Assertions.assertEquals(
                     Actions.LoginScreen.createAccount().navOptions,
