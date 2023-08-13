@@ -162,8 +162,7 @@ class AppModule {
             HomeViewModel(
                 navigation = get(),
                 existingUserFirebase = get(),
-                activeUserRepository = get(),
-                readFirebaseUserInfo = get()
+                activeUserRepository = get()
             )
         }
         viewModel {

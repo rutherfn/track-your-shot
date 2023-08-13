@@ -149,10 +149,7 @@ fun NavigationComponent(
             )
         }
         composable(route = NavigationDestinations.HOME_SCREEN) {
-            HomeScreen(
-                viewModel = viewModels.homeViewModel,
-                emailArgument = "email"
-            )
+            HomeScreen(viewModel = viewModels.homeViewModel)
         }
         composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {
             ForgotPasswordScreen(
