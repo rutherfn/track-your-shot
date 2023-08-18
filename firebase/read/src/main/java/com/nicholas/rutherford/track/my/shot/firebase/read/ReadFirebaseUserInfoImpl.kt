@@ -6,14 +6,11 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
-
-const val ACCOUNT_INFO = "accountInfo"
-const val EMAIL = "email"
-const val USERS = "users"
 
 class ReadFirebaseUserInfoImpl(
     private val firebaseAuth: FirebaseAuth,
@@ -36,9 +33,9 @@ class ReadFirebaseUserInfoImpl(
         return callbackFlow {
             var accountInfoRealTimeResponse: AccountInfoRealtimeResponse? = null
 
-            firebaseDatabase.getReference(USERS)
-                .child(ACCOUNT_INFO)
-                .orderByChild(EMAIL)
+            firebaseDatabase.getReference(Constants.USERS)
+                .child(Constants.ACCOUNT_INFO)
+                .orderByChild(Constants.EMAIL)
                 .equalTo(email)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
@@ -71,8 +68,8 @@ class ReadFirebaseUserInfoImpl(
         return callbackFlow {
             val accountInfoRealTimeResponseArrayList: ArrayList<AccountInfoRealtimeResponse> = arrayListOf()
 
-            firebaseDatabase.getReference(USERS)
-                .child(ACCOUNT_INFO)
+            firebaseDatabase.getReference(Constants.USERS)
+                .child(Constants.ACCOUNT_INFO)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {

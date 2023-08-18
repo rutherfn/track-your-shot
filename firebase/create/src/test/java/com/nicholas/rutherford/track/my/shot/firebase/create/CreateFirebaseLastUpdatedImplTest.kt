@@ -4,6 +4,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.FirebaseDatabase
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -30,12 +31,6 @@ class CreateFirebaseLastUpdatedImplTest {
         createLastUpdatedImpl = CreateFirebaseLastUpdatedImpl(firebaseDatabase = firebaseDatabase)
     }
 
-    @Test
-    fun constants() {
-        Assertions.assertEquals(LAST_UPDATED, "lastUpdated")
-        Assertions.assertEquals(CONTENT_LAST_UPDATED_PATH, "contentLastUpdated")
-    }
-
     @Nested
     inner class AttemptToCreateAccountFirebaseAuthResponseFlow {
 
@@ -47,13 +42,13 @@ class CreateFirebaseLastUpdatedImplTest {
 
             val values = hashMapOf<String, Long>()
 
-            values[LAST_UPDATED] = lastUpdatedDate.time
+            values[Constants.LAST_UPDATED] = lastUpdatedDate.time
 
             mockkStatic(Tasks::class)
 
             every { mockTaskVoidResult.isSuccessful } returns false
 
-            every { firebaseDatabase.reference.child(CONTENT_LAST_UPDATED_PATH).setValue(values).addOnCompleteListener(capture(slot)) } answers {
+            every { firebaseDatabase.reference.child(Constants.CONTENT_LAST_UPDATED_PATH).setValue(values).addOnCompleteListener(capture(slot)) } answers {
                 slot.captured.onComplete(mockTaskVoidResult)
                 mockTaskVoidResult
             }
@@ -71,13 +66,13 @@ class CreateFirebaseLastUpdatedImplTest {
 
             val values = hashMapOf<String, Long>()
 
-            values[LAST_UPDATED] = lastUpdatedDate.time
+            values[Constants.LAST_UPDATED] = lastUpdatedDate.time
 
             mockkStatic(Tasks::class)
 
             every { mockTaskVoidResult.isSuccessful } returns true
 
-            every { firebaseDatabase.reference.child(CONTENT_LAST_UPDATED_PATH).setValue(values).addOnCompleteListener(capture(slot)) } answers {
+            every { firebaseDatabase.reference.child(Constants.CONTENT_LAST_UPDATED_PATH).setValue(values).addOnCompleteListener(capture(slot)) } answers {
                 slot.captured.onComplete(mockTaskVoidResult)
                 mockTaskVoidResult
             }

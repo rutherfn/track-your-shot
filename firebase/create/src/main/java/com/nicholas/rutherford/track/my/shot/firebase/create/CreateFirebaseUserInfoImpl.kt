@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.account.info.CreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.my.shot.account.info.realtime.CreateAccountFirebaseRealtimeDatabaseResult
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -11,10 +12,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.Date
 
-const val ACCOUNT_INFO = "accountInfo"
-const val EMAIL = "email"
-const val USERS_PATH = "users"
-const val USERNAME = "userName"
 
 class CreateFirebaseUserInfoImpl(
     private val firebaseAuth: FirebaseAuth,
@@ -22,7 +19,7 @@ class CreateFirebaseUserInfoImpl(
     firebaseDatabase: FirebaseDatabase
 ) : CreateFirebaseUserInfo {
 
-    private val userReference = firebaseDatabase.getReference(USERS_PATH)
+    private val userReference = firebaseDatabase.getReference(Constants.USERS_PATH)
 
     override fun attemptToCreateAccountFirebaseAuthResponseFlow(email: String, password: String): Flow<CreateAccountFirebaseAuthResponse> {
         return callbackFlow {
@@ -57,10 +54,10 @@ class CreateFirebaseUserInfoImpl(
             val createAccountResult = CreateAccountFirebaseRealtimeDatabaseResult(username = userName, email = email)
             val values = hashMapOf<String, String>()
 
-            values[USERNAME] = createAccountResult.username
-            values[EMAIL] = createAccountResult.email
+            values[Constants.USERNAME] = createAccountResult.username
+            values[Constants.EMAIL] = createAccountResult.email
 
-            userReference.child(ACCOUNT_INFO).push().setValue(values)
+            userReference.child(Constants.ACCOUNT_INFO).push().setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val currentDate = Date()

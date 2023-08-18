@@ -10,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.TestAccountInfoRealTimeResponse
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -34,13 +35,6 @@ class ReadFirebaseUserInfoImplTest {
     @BeforeEach
     fun beforeEach() {
         readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
-    }
-
-    @Test
-    fun constants() {
-        Assertions.assertEquals(ACCOUNT_INFO, "accountInfo")
-        Assertions.assertEquals(EMAIL, "email")
-        Assertions.assertEquals(USERS, "users")
     }
 
     @Nested
@@ -84,8 +78,8 @@ class ReadFirebaseUserInfoImplTest {
             val slot = slot<ValueEventListener>()
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
                 slot.captured.onCancelled(mockDatabaseError)
@@ -109,8 +103,8 @@ class ReadFirebaseUserInfoImplTest {
             mockkStatic(DataSnapshot::class)
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
                 slot.captured.onDataChange(mockDataSnapshot)
@@ -134,8 +128,8 @@ class ReadFirebaseUserInfoImplTest {
             mockkStatic(DataSnapshot::class)
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
                 slot.captured.onDataChange(mockDataSnapshot)
@@ -155,9 +149,9 @@ class ReadFirebaseUserInfoImplTest {
             val slot = slot<ValueEventListener>()
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
-                    .orderByChild(EMAIL)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .orderByChild(Constants.EMAIL)
                     .equalTo(accountInfoRealtimeResponse.email)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
@@ -182,9 +176,9 @@ class ReadFirebaseUserInfoImplTest {
             mockkStatic(DataSnapshot::class)
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
-                    .orderByChild(EMAIL)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .orderByChild(Constants.EMAIL)
                     .equalTo(accountInfoRealtimeResponse.email)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
@@ -209,9 +203,9 @@ class ReadFirebaseUserInfoImplTest {
             mockkStatic(DataSnapshot::class)
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
-                    .orderByChild(EMAIL)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .orderByChild(Constants.EMAIL)
                     .equalTo(accountInfoRealtimeResponse.email)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
@@ -236,9 +230,9 @@ class ReadFirebaseUserInfoImplTest {
             mockkStatic(DataSnapshot::class)
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
-                    .orderByChild(EMAIL)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .orderByChild(Constants.EMAIL)
                     .equalTo(accountInfoRealtimeResponse.email)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
@@ -263,9 +257,9 @@ class ReadFirebaseUserInfoImplTest {
             mockkStatic(DataSnapshot::class)
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
-                    .orderByChild(EMAIL)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .orderByChild(Constants.EMAIL)
                     .equalTo(accountInfoRealtimeResponse.email)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
