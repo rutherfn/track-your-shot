@@ -9,6 +9,7 @@ import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDi
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseLastUpdated
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
@@ -21,6 +22,7 @@ class AuthenticationViewModel(
     private val application: Application,
     private val authenticationFirebase: AuthenticationFirebase,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
+    private val createFirebaseLastUpdated: CreateFirebaseLastUpdated,
     private val activeUserRepository: ActiveUserRepository
 ) : ViewModel() {
 

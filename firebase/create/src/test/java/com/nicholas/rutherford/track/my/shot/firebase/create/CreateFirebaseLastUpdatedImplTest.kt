@@ -17,17 +17,21 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.util.Date
 
-class CreateLastUpdatedImplTest {
+class CreateFirebaseLastUpdatedImplTest {
 
-    private lateinit var createLastUpdatedImpl: CreateLastUpdatedImpl
+    private lateinit var createLastUpdatedImpl: CreateFirebaseLastUpdatedImpl
 
+    private val createFirebaseLastUpdated = mockk<CreateFirebaseLastUpdated>(relaxed = true)
     private val firebaseDatabase = mockk<FirebaseDatabase>(relaxed = true)
 
     private val lastUpdatedDate = Date()
 
     @BeforeEach
     fun beforeEach() {
-        createLastUpdatedImpl = CreateLastUpdatedImpl(firebaseDatabase = firebaseDatabase)
+        createLastUpdatedImpl = CreateFirebaseLastUpdatedImpl(
+            createFirebaseLastUpdated = createFirebaseLastUpdated,
+            firebaseDatabase = firebaseDatabase
+        )
     }
 
     @Test

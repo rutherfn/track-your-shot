@@ -33,8 +33,8 @@ import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfoImpl
-import com.nicholas.rutherford.track.my.shot.firebase.create.CreateLastUpdated
-import com.nicholas.rutherford.track.my.shot.firebase.create.CreateLastUpdatedImpl
+import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseLastUpdated
+import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseLastUpdatedImpl
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
@@ -100,8 +100,8 @@ class AppModule {
         single<CreateFirebaseUserInfo> {
             CreateFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
-        single<CreateLastUpdated> {
-            CreateLastUpdatedImpl(firebaseDatabase = get())
+        single<CreateFirebaseLastUpdated> {
+            CreateFirebaseLastUpdatedImpl(createFirebaseLastUpdated = get(), firebaseDatabase = get())
         }
         single<AuthenticationFirebase> {
             AuthenticationFirebaseImpl(firebaseAuth = get())
