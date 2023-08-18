@@ -11,6 +11,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
+import java.util.Date
 
 class ReadFirebaseUserInfoImpl(
     private val firebaseAuth: FirebaseAuth,
@@ -88,6 +89,37 @@ class ReadFirebaseUserInfoImpl(
 
                     override fun onCancelled(error: DatabaseError) {
                         Timber.e(message = "Error(getAccountInfoListFlow) -> Database error when attempting to get account info")
+                        trySend(element = null)
+                    }
+                })
+            awaitClose()
+        }
+    }
+
+    override fun getLastUpdatedDateFlow(): Flow<Date?> {
+        return callbackFlow {
+            firebaseDatabase.getReference(Constants.CONTENT_LAST_UPDATED_PATH)
+                .child(Constants.LAST_UPDATED)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            val lastUpdatedValue = snapshot.getValue(Long::class.java)
+
+                            if (lastUpdatedValue != null) {
+                                val lastUpdatedDate = Date(lastUpdatedValue)
+                                trySend(lastUpdatedDate)
+                            } else {
+                                Timber.e(message = "Error(getLastUpdatedDateFlow) -> Value is null")
+                                trySend(element = null)
+                            }
+                        } else {
+                            Timber.e(message = "Error(getLastUpdatedDateFlow) -> Current snapshot does not exist")
+                            trySend(element = null)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Timber.e(message = "Error(getLastUpdatedDateFlow) -> Database error when attempting to get updated date info")
                         trySend(element = null)
                     }
                 })
