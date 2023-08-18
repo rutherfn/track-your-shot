@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.Date
 
-
 class CreateFirebaseUserInfoImpl(
     private val firebaseAuth: FirebaseAuth,
     private val createFirebaseLastUpdated: CreateFirebaseLastUpdated,

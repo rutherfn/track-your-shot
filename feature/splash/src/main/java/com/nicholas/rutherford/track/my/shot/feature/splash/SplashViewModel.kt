@@ -50,6 +50,8 @@ class SplashViewModel(
                     // Trello ticket:
                     attemptToUpdateDatabaseUsers(accountInfoRealtimeResponse = accountInfoRealtimeResponse)
                 }
+                .combine(readFirebaseUserInfo.getLastUpdatedDateFlow()) { _, lastUpdatedDate ->
+                }
                 .collectLatest {}
         }
     }
