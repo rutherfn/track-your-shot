@@ -21,22 +21,19 @@ class CreateFirebaseLastUpdatedImplTest {
 
     private lateinit var createLastUpdatedImpl: CreateFirebaseLastUpdatedImpl
 
-    private val createFirebaseLastUpdated = mockk<CreateFirebaseLastUpdated>(relaxed = true)
     private val firebaseDatabase = mockk<FirebaseDatabase>(relaxed = true)
 
     private val lastUpdatedDate = Date()
 
     @BeforeEach
     fun beforeEach() {
-        createLastUpdatedImpl = CreateFirebaseLastUpdatedImpl(
-            createFirebaseLastUpdated = createFirebaseLastUpdated,
-            firebaseDatabase = firebaseDatabase
-        )
+        createLastUpdatedImpl = CreateFirebaseLastUpdatedImpl(firebaseDatabase = firebaseDatabase)
     }
 
     @Test
     fun constants() {
         Assertions.assertEquals(LAST_UPDATED, "lastUpdated")
+        Assertions.assertEquals(CONTENT_LAST_UPDATED_PATH, "contentLastUpdated")
     }
 
     @Nested
@@ -56,7 +53,7 @@ class CreateFirebaseLastUpdatedImplTest {
 
             every { mockTaskVoidResult.isSuccessful } returns false
 
-            every { firebaseDatabase.reference.push().setValue(values).addOnCompleteListener(capture(slot)) } answers {
+            every { firebaseDatabase.reference.child(CONTENT_LAST_UPDATED_PATH).setValue(values).addOnCompleteListener(capture(slot)) } answers {
                 slot.captured.onComplete(mockTaskVoidResult)
                 mockTaskVoidResult
             }
@@ -80,7 +77,7 @@ class CreateFirebaseLastUpdatedImplTest {
 
             every { mockTaskVoidResult.isSuccessful } returns true
 
-            every { firebaseDatabase.reference.push().setValue(values).addOnCompleteListener(capture(slot)) } answers {
+            every { firebaseDatabase.reference.child(CONTENT_LAST_UPDATED_PATH).setValue(values).addOnCompleteListener(capture(slot)) } answers {
                 slot.captured.onComplete(mockTaskVoidResult)
                 mockTaskVoidResult
             }

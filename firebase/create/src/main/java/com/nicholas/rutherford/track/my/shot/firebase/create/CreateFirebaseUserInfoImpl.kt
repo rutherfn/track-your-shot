@@ -7,13 +7,20 @@ import com.nicholas.rutherford.track.my.shot.account.info.realtime.CreateAccount
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import java.util.Date
 
 const val ACCOUNT_INFO = "accountInfo"
 const val EMAIL = "email"
 const val USERS_PATH = "users"
 const val USERNAME = "userName"
 
-class CreateFirebaseUserInfoImpl(private val firebaseAuth: FirebaseAuth, firebaseDatabase: FirebaseDatabase) : CreateFirebaseUserInfo {
+class CreateFirebaseUserInfoImpl(
+    private val firebaseAuth: FirebaseAuth,
+    private val createFirebaseLastUpdated: CreateFirebaseLastUpdated,
+    firebaseDatabase: FirebaseDatabase
+) : CreateFirebaseUserInfo {
 
     private val userReference = firebaseDatabase.getReference(USERS_PATH)
 
@@ -55,6 +62,10 @@ class CreateFirebaseUserInfoImpl(private val firebaseAuth: FirebaseAuth, firebas
 
             userReference.child(ACCOUNT_INFO).push().setValue(values)
                 .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val currentDate = Date()
+                        launch { createFirebaseLastUpdated.attemptToCreateLastUpdatedFlow(date = currentDate).collect() }
+                    }
                     trySend(task.isSuccessful)
                 }
             awaitClose()

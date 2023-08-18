@@ -24,6 +24,7 @@ class CreateFirebaseUserInfoImplTest {
 
     private lateinit var createFirebaseUserInfoImpl: CreateFirebaseUserInfoImpl
 
+    private val createFirebaseLastUpdated = mockk<CreateFirebaseLastUpdated>(relaxed = true)
     private val firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
     private val firebaseDatabase = mockk<FirebaseDatabase>(relaxed = true)
 
@@ -35,7 +36,7 @@ class CreateFirebaseUserInfoImplTest {
 
     @BeforeEach
     fun beforeEach() {
-        createFirebaseUserInfoImpl = CreateFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
+        createFirebaseUserInfoImpl = CreateFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, createFirebaseLastUpdated = createFirebaseLastUpdated, firebaseDatabase = firebaseDatabase)
     }
 
     @Nested

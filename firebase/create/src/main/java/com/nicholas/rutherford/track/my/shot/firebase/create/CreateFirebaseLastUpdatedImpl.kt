@@ -4,18 +4,14 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.util.Date
 
 const val LAST_UPDATED = "lastUpdated"
+const val CONTENT_LAST_UPDATED_PATH = "contentLastUpdated"
 
-class CreateFirebaseLastUpdatedImpl(
-    private val createFirebaseLastUpdated: CreateFirebaseLastUpdated,
-    firebaseDatabase: FirebaseDatabase
-) : CreateFirebaseLastUpdated {
+class CreateFirebaseLastUpdatedImpl(firebaseDatabase: FirebaseDatabase) : CreateFirebaseLastUpdated {
 
-    private val reference = firebaseDatabase.reference
+    private val reference = firebaseDatabase.reference.child(CONTENT_LAST_UPDATED_PATH)
 
     override fun attemptToCreateLastUpdatedFlow(date: Date): Flow<Boolean> {
         return callbackFlow {
@@ -23,12 +19,8 @@ class CreateFirebaseLastUpdatedImpl(
 
             values[LAST_UPDATED] = date.time
 
-            reference.push().setValue(values)
+            reference.setValue(values)
                 .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val currentDate = Date()
-                        launch { createFirebaseLastUpdated.attemptToCreateLastUpdatedFlow(date = currentDate).collect() }
-                    }
                     trySend(task.isSuccessful)
                 }
             awaitClose()
