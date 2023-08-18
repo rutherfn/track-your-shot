@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 const val SPLASH_DELAY_IN_MILLIS = 4000L
-const val SPLASH_IMAGE_SCALE = 1f
 
 class SplashViewModel(
     private val navigation: SplashNavigation,

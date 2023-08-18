@@ -13,6 +13,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.nicholas.rutherford.track.my.shot.compose.components.Content
 
+const val SPLASH_IMAGE_SCALE = 1f
+
 @Composable
 fun SplashScreen(navigateToHomeLoginOrAuthentication: () -> Unit) {
     Content(
