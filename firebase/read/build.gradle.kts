@@ -61,6 +61,7 @@ android {
 
 dependencies {
     api(project(path = ":data:account-info"))
+    api(project(path = ":helper:constants"))
 
     implementation(Dependencies.Firebase.authKtx)
     implementation(Dependencies.Firebase.databaseKtx)

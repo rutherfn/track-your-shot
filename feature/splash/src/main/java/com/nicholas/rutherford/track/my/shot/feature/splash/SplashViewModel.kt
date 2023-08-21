@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 const val SPLASH_DELAY_IN_MILLIS = 4000L
-const val SPLASH_IMAGE_SCALE = 1f
 
 class SplashViewModel(
     private val navigation: SplashNavigation,
@@ -49,6 +48,8 @@ class SplashViewModel(
                     // however if its greater then 4 hours then update the room table
                     // Trello ticket:
                     attemptToUpdateDatabaseUsers(accountInfoRealtimeResponse = accountInfoRealtimeResponse)
+                }
+                .combine(readFirebaseUserInfo.getLastUpdatedDateFlow()) { _, lastUpdatedDate ->
                 }
                 .collectLatest {}
         }

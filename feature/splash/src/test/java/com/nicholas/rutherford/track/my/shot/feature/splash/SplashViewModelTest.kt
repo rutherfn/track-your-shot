@@ -57,18 +57,9 @@ class SplashViewModelTest {
         Dispatchers.resetMain()
     }
 
-    @Nested
-    inner class Constants {
-
-        @Test
-        fun `splash delay in millis`() {
-            Assertions.assertEquals(SPLASH_DELAY_IN_MILLIS, 4000L)
-        }
-
-        @Test
-        fun `splash image scale`() {
-            Assertions.assertEquals(SPLASH_IMAGE_SCALE, 1f)
-        }
+    @Test
+    fun constants() {
+        Assertions.assertEquals(SPLASH_DELAY_IN_MILLIS, 4000L)
     }
 
     @Nested

@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.TestCreateAccountFirebaseRealtimeDatabaseResult
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -24,6 +25,7 @@ class CreateFirebaseUserInfoImplTest {
 
     private lateinit var createFirebaseUserInfoImpl: CreateFirebaseUserInfoImpl
 
+    private val createFirebaseLastUpdated = mockk<CreateFirebaseLastUpdated>(relaxed = true)
     private val firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
     private val firebaseDatabase = mockk<FirebaseDatabase>(relaxed = true)
 
@@ -35,31 +37,7 @@ class CreateFirebaseUserInfoImplTest {
 
     @BeforeEach
     fun beforeEach() {
-        createFirebaseUserInfoImpl = CreateFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
-    }
-
-    @Nested
-    inner class Constants {
-
-        @Test
-        fun `account info`() {
-            Assertions.assertEquals("accountInfo", ACCOUNT_INFO)
-        }
-
-        @Test
-        fun email() {
-            Assertions.assertEquals("email", EMAIL)
-        }
-
-        @Test
-        fun `users path`() {
-            Assertions.assertEquals("users", USERS_PATH)
-        }
-
-        @Test
-        fun `user name`() {
-            Assertions.assertEquals("userName", USERNAME)
-        }
+        createFirebaseUserInfoImpl = CreateFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, createFirebaseLastUpdated = createFirebaseLastUpdated, firebaseDatabase = firebaseDatabase)
     }
 
     @Nested
@@ -141,14 +119,14 @@ class CreateFirebaseUserInfoImplTest {
 
         val values = hashMapOf<String, String>()
 
-        values[USERNAME] = createAccountResult.username
-        values[EMAIL] = createAccountResult.email
+        values[Constants.USERNAME] = createAccountResult.username
+        values[Constants.EMAIL] = createAccountResult.email
 
         mockkStatic(Tasks::class)
 
         every { mockTaskVoidResult.isSuccessful } returns false
 
-        every { firebaseDatabase.getReference(USERS_PATH).child(ACCOUNT_INFO).push().setValue(values).addOnCompleteListener(capture(slot)) } answers {
+        every { firebaseDatabase.getReference(Constants.USERS_PATH).child(Constants.ACCOUNT_INFO).push().setValue(values).addOnCompleteListener(capture(slot)) } answers {
             slot.captured.onComplete(mockTaskVoidResult)
             mockTaskVoidResult
         }

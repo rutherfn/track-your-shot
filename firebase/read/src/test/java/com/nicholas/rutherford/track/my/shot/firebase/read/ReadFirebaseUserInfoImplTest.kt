@@ -10,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.TestAccountInfoRealTimeResponse
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import java.util.Date
 
 class ReadFirebaseUserInfoImplTest {
 
@@ -30,17 +32,11 @@ class ReadFirebaseUserInfoImplTest {
     var firebaseDatabase = mockk<FirebaseDatabase>(relaxed = true)
 
     val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create()
+    val currentDate = Date()
 
     @BeforeEach
     fun beforeEach() {
         readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
-    }
-
-    @Test
-    fun constants() {
-        Assertions.assertEquals(ACCOUNT_INFO, "accountInfo")
-        Assertions.assertEquals(EMAIL, "email")
-        Assertions.assertEquals(USERS, "users")
     }
 
     @Nested
@@ -84,8 +80,8 @@ class ReadFirebaseUserInfoImplTest {
             val slot = slot<ValueEventListener>()
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
                 slot.captured.onCancelled(mockDatabaseError)
@@ -109,8 +105,8 @@ class ReadFirebaseUserInfoImplTest {
             mockkStatic(DataSnapshot::class)
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
                 slot.captured.onDataChange(mockDataSnapshot)
@@ -134,14 +130,100 @@ class ReadFirebaseUserInfoImplTest {
             mockkStatic(DataSnapshot::class)
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
 
             Assertions.assertEquals(listOf(accountInfoRealtimeResponse), readFirebaseUserInfoImpl.getAccountInfoListFlow().first())
+        }
+    }
+
+    @Nested
+    inner class GetLastUpdatedDateFlow {
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when onCancelled is called should return null`() = runTest {
+            val mockDatabaseError = mockk<DatabaseError>()
+            val slot = slot<ValueEventListener>()
+
+            every {
+                firebaseDatabase.getReference(Constants.CONTENT_LAST_UPDATED_PATH)
+                    .child(Constants.LAST_UPDATED)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onCancelled(mockDatabaseError)
+            }
+
+            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getLastUpdatedDateFlow().first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when onDataChange is called but snapshot does not exist should return null`() = runTest {
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns false
+
+            mockkStatic(DataSnapshot::class)
+
+            every {
+                firebaseDatabase.getReference(Constants.CONTENT_LAST_UPDATED_PATH)
+                    .child(Constants.LAST_UPDATED)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getLastUpdatedDateFlow().first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when onDataChange is called, snapshot exists, and value returns null should return null`() = runTest {
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.getValue(Long::class.java) } returns null
+
+            mockkStatic(DataSnapshot::class)
+
+            every {
+                firebaseDatabase.getReference(Constants.CONTENT_LAST_UPDATED_PATH)
+                    .child(Constants.LAST_UPDATED)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getLastUpdatedDateFlow().first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when onDataChange is called, snapshot exists, and value returns date should return valid date`() = runTest {
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.getValue(Long::class.java) } returns currentDate.time
+
+            mockkStatic(DataSnapshot::class)
+
+            every {
+                firebaseDatabase.getReference(Constants.CONTENT_LAST_UPDATED_PATH)
+                    .child(Constants.LAST_UPDATED)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(currentDate, readFirebaseUserInfoImpl.getLastUpdatedDateFlow().first())
         }
     }
 
@@ -155,9 +237,9 @@ class ReadFirebaseUserInfoImplTest {
             val slot = slot<ValueEventListener>()
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
-                    .orderByChild(EMAIL)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .orderByChild(Constants.EMAIL)
                     .equalTo(accountInfoRealtimeResponse.email)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
@@ -182,9 +264,9 @@ class ReadFirebaseUserInfoImplTest {
             mockkStatic(DataSnapshot::class)
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
-                    .orderByChild(EMAIL)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .orderByChild(Constants.EMAIL)
                     .equalTo(accountInfoRealtimeResponse.email)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
@@ -209,9 +291,9 @@ class ReadFirebaseUserInfoImplTest {
             mockkStatic(DataSnapshot::class)
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
-                    .orderByChild(EMAIL)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .orderByChild(Constants.EMAIL)
                     .equalTo(accountInfoRealtimeResponse.email)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
@@ -236,9 +318,9 @@ class ReadFirebaseUserInfoImplTest {
             mockkStatic(DataSnapshot::class)
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
-                    .orderByChild(EMAIL)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .orderByChild(Constants.EMAIL)
                     .equalTo(accountInfoRealtimeResponse.email)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {
@@ -263,9 +345,9 @@ class ReadFirebaseUserInfoImplTest {
             mockkStatic(DataSnapshot::class)
 
             every {
-                firebaseDatabase.getReference(USERS)
-                    .child(ACCOUNT_INFO)
-                    .orderByChild(EMAIL)
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .orderByChild(Constants.EMAIL)
                     .equalTo(accountInfoRealtimeResponse.email)
                     .addListenerForSingleValueEvent(capture(slot))
             } answers {

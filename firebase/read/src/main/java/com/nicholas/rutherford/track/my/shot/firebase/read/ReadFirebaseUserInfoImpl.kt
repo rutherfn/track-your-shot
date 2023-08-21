@@ -6,14 +6,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
-
-const val ACCOUNT_INFO = "accountInfo"
-const val EMAIL = "email"
-const val USERS = "users"
+import java.util.Date
 
 class ReadFirebaseUserInfoImpl(
     private val firebaseAuth: FirebaseAuth,
@@ -36,9 +34,9 @@ class ReadFirebaseUserInfoImpl(
         return callbackFlow {
             var accountInfoRealTimeResponse: AccountInfoRealtimeResponse? = null
 
-            firebaseDatabase.getReference(USERS)
-                .child(ACCOUNT_INFO)
-                .orderByChild(EMAIL)
+            firebaseDatabase.getReference(Constants.USERS)
+                .child(Constants.ACCOUNT_INFO)
+                .orderByChild(Constants.EMAIL)
                 .equalTo(email)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
@@ -71,8 +69,8 @@ class ReadFirebaseUserInfoImpl(
         return callbackFlow {
             val accountInfoRealTimeResponseArrayList: ArrayList<AccountInfoRealtimeResponse> = arrayListOf()
 
-            firebaseDatabase.getReference(USERS)
-                .child(ACCOUNT_INFO)
+            firebaseDatabase.getReference(Constants.USERS)
+                .child(Constants.ACCOUNT_INFO)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
@@ -91,6 +89,37 @@ class ReadFirebaseUserInfoImpl(
 
                     override fun onCancelled(error: DatabaseError) {
                         Timber.e(message = "Error(getAccountInfoListFlow) -> Database error when attempting to get account info")
+                        trySend(element = null)
+                    }
+                })
+            awaitClose()
+        }
+    }
+
+    override fun getLastUpdatedDateFlow(): Flow<Date?> {
+        return callbackFlow {
+            firebaseDatabase.getReference(Constants.CONTENT_LAST_UPDATED_PATH)
+                .child(Constants.LAST_UPDATED)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            val lastUpdatedValue = snapshot.getValue(Long::class.java)
+
+                            if (lastUpdatedValue != null) {
+                                val lastUpdatedDate = Date(lastUpdatedValue)
+                                trySend(lastUpdatedDate)
+                            } else {
+                                Timber.e(message = "Error(getLastUpdatedDateFlow) -> Value is null")
+                                trySend(element = null)
+                            }
+                        } else {
+                            Timber.e(message = "Error(getLastUpdatedDateFlow) -> Current snapshot does not exist")
+                            trySend(element = null)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Timber.e(message = "Error(getLastUpdatedDateFlow) -> Database error when attempting to get updated date info")
                         trySend(element = null)
                     }
                 })
