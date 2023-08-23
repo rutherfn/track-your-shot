@@ -7,7 +7,7 @@ import com.nicholas.rutherford.track.my.shot.data.room.response.Player
 import com.nicholas.rutherford.track.my.shot.data.room.response.PlayerPositions
 
 @Entity(tableName = "players")
-data class PlayerEntity (
+data class PlayerEntity(
     @PrimaryKey
     val id: Int,
     @ColumnInfo(name = "firstName")
