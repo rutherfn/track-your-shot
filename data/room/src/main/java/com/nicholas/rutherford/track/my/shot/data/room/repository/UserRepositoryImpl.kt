@@ -20,7 +20,7 @@ class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
     override suspend fun fetchUserByEmail(email: String): User? =
         userDao.getUserByEmail(email = email)?.toUser()
 
-    override suspend fun fetchAllUsers(): List<User> {
-        return userDao.getAllUsers().map { it.toUser() }
+    override suspend fun fetchAllUsers(): List<User>? {
+        return userDao.getAllUsers()?.map { it.toUser() }
     }
 }

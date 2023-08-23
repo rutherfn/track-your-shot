@@ -66,6 +66,8 @@ android {
 }
 
 dependencies {
+    api(project(path = ":helper:constants"))
+    
     androidTestImplementation(Dependencies.Junit.ext)
     androidTestImplementation(Dependencies.CoreTesting.core)
     androidTestImplementation(Dependencies.Espresso.core)

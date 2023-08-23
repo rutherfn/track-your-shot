@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.data.room
+package com.nicholas.rutherford.track.my.shot.data.room.daos
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider

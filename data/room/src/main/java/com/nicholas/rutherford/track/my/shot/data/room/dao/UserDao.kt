@@ -30,5 +30,5 @@ interface UserDao {
     suspend fun getUserByEmail(email: String): UserEntity?
 
     @Query("SELECT * FROM users")
-    suspend fun getAllUsers(): List<UserEntity>
+    suspend fun getAllUsers(): List<UserEntity>?
 }
