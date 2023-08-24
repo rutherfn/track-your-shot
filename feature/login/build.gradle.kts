@@ -73,6 +73,7 @@ android {
 
 dependencies {
     implementation(project(mapOf("path" to ":data:room")))
+    implementation(project(mapOf("path" to ":firebase:read")))
     androidTestImplementation(Dependencies.Compose.uiTestJunit4)
 
     api(project(path = ":base-resources"))

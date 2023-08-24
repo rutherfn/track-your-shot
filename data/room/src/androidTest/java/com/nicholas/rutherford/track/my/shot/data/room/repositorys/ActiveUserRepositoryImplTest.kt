@@ -54,9 +54,9 @@ class ActiveUserRepositoryImplTest {
 
         assertThat(activeUserRepositoryImpl.fetchActiveUser(), equalTo(activeUser))
 
-        activeUserRepositoryImpl.updateActiveUser(activeUser = activeUser.copy(username = "test"))
+        activeUserRepositoryImpl.updateActiveUser(activeUser = activeUser.copy(email = "testemail@yahoo.com"))
 
-        assertThat(activeUserRepositoryImpl.fetchActiveUser(), equalTo(activeUser.copy(username = "test")))
+        assertThat(activeUserRepositoryImpl.fetchActiveUser(), equalTo(activeUser.copy(email = "testemail@yahoo.com")))
     }
 
     @Test

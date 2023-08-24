@@ -11,5 +11,5 @@ interface UserRepository {
     suspend fun deleteAllUsers()
 
     suspend fun fetchUserByEmail(email: String): User?
-    suspend fun fetchAllUsers(): List<User>?
+    suspend fun fetchAllUsers(): List<User>
 }

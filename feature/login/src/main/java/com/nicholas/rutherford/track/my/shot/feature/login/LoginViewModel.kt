@@ -4,13 +4,13 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
 import com.nicholas.rutherford.track.my.shot.data.room.repository.activeuser.ActiveUserRepository
-import com.nicholas.rutherford.track.my.shot.data.room.repository.user.UserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +22,8 @@ class LoginViewModel(
     private val existingUserFirebase: ExistingUserFirebase,
     private val navigation: LoginNavigation,
     private val buildType: BuildType,
-    private val activeUserRepository: ActiveUserRepository,
-    private val userRepository: UserRepository
+    private val readFirebaseUserInfo: ReadFirebaseUserInfo,
+    private val activeUserRepository: ActiveUserRepository
 ) : ViewModel() {
 
     internal val _loginStateFlow = MutableStateFlow(LoginState())
@@ -43,55 +43,66 @@ class LoginViewModel(
         }
     }
 
+    fun fieldsErrorAlert(email: String?, password: String?): Alert? {
+        if (email.isNullOrEmpty()) {
+            return emailEmptyAlert()
+        }
+
+        if (password.isNullOrEmpty()) {
+            return passwordEmptyAlert()
+        }
+
+        return null
+    }
+
     suspend fun onLoginButtonClicked() {
-        loginStateFlow.value.email?.let { userEmail ->
-            loginStateFlow.value.password?.let { userPassword ->
-                if (userEmail.isEmpty()) {
-                    navigation.alert(alert = emailEmptyAlert())
-                } else if (userPassword.isEmpty()) {
-                    navigation.alert(alert = passwordEmptyAlert())
-                } else {
-                    navigation.enableProgress(progress = Progress(onDismissClicked = {}))
+        val email = loginStateFlow.value.email
+        val password = loginStateFlow.value.password
 
-                    existingUserFirebase.logInFlow(
-                        email = userEmail.filterNot { it.isWhitespace() },
-                        password = userPassword.filterNot { it.isWhitespace() }
-                    )
-                        .collectLatest { isSuccessful ->
-                            if (isSuccessful) {
-                                onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
-                                onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
-                                navigation.disableProgress()
-
-                                updateActiveUserFromLoggedInUser(email = userEmail)
-
-                                navigation.navigateToHome()
-                            } else {
-                                navigation.disableProgress()
-                                navigation.alert(alert = unableToLoginToAccountAlert())
-                            }
-                        }
-                }
-            } ?: run {
-                navigation.alert(alert = passwordEmptyAlert())
-            }
+        fieldsErrorAlert(email = email, password = password)?.let { alert ->
+            navigation.alert(alert = alert)
         } ?: run {
-            navigation.alert(alert = emailEmptyAlert())
+            val newEmail = email?.filterNot { it.isWhitespace() } ?: ""
+            val newPassword = password?.filterNot { it.isWhitespace() } ?: ""
+
+            navigation.enableProgress(progress = Progress(onDismissClicked = {}))
+
+            existingUserFirebase.logInFlow(
+                email = newEmail,
+                password = newPassword
+            )
+                .collectLatest { isSuccessful ->
+                    if (isSuccessful) {
+
+                        onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
+                        onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
+
+                        readFirebaseUserInfo.getAccountInfoFlowByEmail(email = newEmail)
+                            .collectLatest { accountInfoRealtimeResponse ->
+                                accountInfoRealtimeResponse?.let { accountInfo ->
+                                    updateActiveUserFromLoggedInUser(email = accountInfo.email, username = accountInfo.userName)
+                                    navigation.disableProgress()
+                                    navigation.navigateToHome()
+                                }
+                            }
+                    } else {
+                        navigation.disableProgress()
+                        navigation.alert(alert = unableToLoginToAccountAlert())
+                    }
+                }
         }
     }
 
-    suspend fun updateActiveUserFromLoggedInUser(email: String) {
-        userRepository.fetchUserByEmail(email = email)?.let { user ->
-            if (activeUserRepository.fetchActiveUser() == null) {
-                activeUserRepository.createActiveUser(
-                    activeUser = ActiveUser(
-                        id = Constants.ACTIVE_USER_ID,
-                        accountHasBeenCreated = true,
-                        username = user.username,
-                        email = user.email
-                    )
+    suspend fun updateActiveUserFromLoggedInUser(email: String, username: String) {
+        if (activeUserRepository.fetchActiveUser() == null) {
+            activeUserRepository.createActiveUser(
+                activeUser = ActiveUser(
+                    id = Constants.ACTIVE_USER_ID,
+                    accountHasBeenCreated = true,
+                    username = username,
+                    email = email
                 )
-            }
+            )
         }
     }
 

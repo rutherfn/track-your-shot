@@ -8,8 +8,7 @@ class TestActiveUserEntity {
         return ActiveUserEntity(
             id = ID,
             accountHasBeenCreated = ACCOUNT_HAS_BEEN_CREATED,
-            email = EMAIL,
-            username = USERNAME
+            email = EMAIL
         )
     }
 }
@@ -17,4 +16,3 @@ class TestActiveUserEntity {
 const val ID = Constants.ACTIVE_USER_ID
 const val ACCOUNT_HAS_BEEN_CREATED = false
 const val EMAIL = "unverifiedemail@test.org"
-const val USERNAME = "unverifiedUsername"

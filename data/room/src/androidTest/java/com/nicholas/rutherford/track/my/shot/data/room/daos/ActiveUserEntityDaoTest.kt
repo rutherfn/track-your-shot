@@ -50,9 +50,9 @@ class ActiveUserEntityDaoTest {
 
         assertThat(activeUserEntity, equalTo(activeUserDao.getActiveUser()))
 
-        activeUserDao.update(activeUserEntity = activeUserEntity.copy(username = "Username11"))
+        activeUserDao.update(activeUserEntity = activeUserEntity.copy(email = "emailtest@outlook.com"))
 
-        assertThat(activeUserDao.getActiveUser(), equalTo(activeUserEntity.copy(username = "Username11")))
+        assertThat(activeUserDao.getActiveUser(), equalTo(activeUserEntity.copy(email = "emailtest@outlook.com")))
     }
 
     @Test

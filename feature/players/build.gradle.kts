@@ -69,8 +69,10 @@ android {
 
 dependencies {
     api(project(path = ":compose:components"))
+    api(project(path = ":data:room"))
     api(project(path = ":navigation"))
 
+    implementation(Dependencies.Compose.coil)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
 }
