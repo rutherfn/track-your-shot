@@ -7,6 +7,7 @@ import java.util.Date
 interface ReadFirebaseUserInfo {
     fun getLoggedInAccountEmail(): Flow<String?>
     fun getAccountInfoFlowByEmail(email: String): Flow<AccountInfoRealtimeResponse?>
+    //fun getPlayersInfoFlowByEmail(email: String): Flow<Acc>
     fun getAccountInfoListFlow(): Flow<List<AccountInfoRealtimeResponse>?>
     fun getLastUpdatedDateFlow(): Flow<Date?>
     fun isEmailVerifiedFlow(): Flow<Boolean>

@@ -7,7 +7,6 @@ import com.nicholas.rutherford.track.my.shot.MainActivity
 import com.nicholas.rutherford.track.my.shot.TestUtil
 import com.nicholas.rutherford.track.my.shot.fakes.FakeReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.fakes.FakeReadSharedPreferences
-import com.nicholas.rutherford.track.my.shot.feature.home.HomeTags
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.robots.AuthenticationRobot
 import com.nicholas.rutherford.track.my.shot.robots.LoginRobot
