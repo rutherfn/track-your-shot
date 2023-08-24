@@ -15,11 +15,13 @@ class PlayerRepositoryImpl(
 
     override suspend fun deletePlayer(player: Player) = playerDao.delete(playerEntity = player.toPlayerEntity())
 
-    override suspend fun deleteAllPlayers() = playerDao.deleteAllPlayers()
+    override suspend fun deleteAllPlayers() {
+        playerDao.deleteAllPlayers()
+    }
 
     override suspend fun fetchPlayerById(id: Int): Player? = playerDao.getPlayerById(id = id)?.toPlayer()
 
-    override suspend fun getPlayerByName(firstName: String, lastName: String): Player? {
+    override suspend fun fetchPlayerByName(firstName: String, lastName: String): Player? {
         return if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
             playerDao.getPlayersByName(firstName = firstName, lastName = lastName)?.toPlayer()
         } else {
@@ -27,5 +29,5 @@ class PlayerRepositoryImpl(
         }
     }
 
-    override suspend fun getAllPlayers(): List<Player>? = playerDao.getAllPlayers()?.map { it.toPlayer() }
+    override suspend fun fetchAllPlayers(): List<Player> = playerDao.getAllPlayers()?.map { it.toPlayer() } ?: emptyList()
 }
