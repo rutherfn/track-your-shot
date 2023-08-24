@@ -3,7 +3,7 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccou
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.user.UserRepository
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress

@@ -3,8 +3,8 @@ package com.nicholas.rutherford.track.my.shot.feature.login
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
-import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
-import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.activeuser.ActiveUserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.user.UserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton

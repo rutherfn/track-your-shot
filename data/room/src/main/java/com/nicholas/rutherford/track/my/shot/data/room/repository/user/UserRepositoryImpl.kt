@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.data.room.repository
+package com.nicholas.rutherford.track.my.shot.data.room.repository.user
 
 import com.nicholas.rutherford.track.my.shot.data.room.dao.UserDao
 import com.nicholas.rutherford.track.my.shot.data.room.entities.toUser

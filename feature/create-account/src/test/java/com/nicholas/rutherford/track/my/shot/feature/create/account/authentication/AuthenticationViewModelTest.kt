@@ -1,7 +1,7 @@
 package com.nicholas.rutherford.track.my.shot.feature.create.account.authentication
 
 import android.app.Application
-import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.activeuser.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.my.shot.data.test.room.TestActiveUser

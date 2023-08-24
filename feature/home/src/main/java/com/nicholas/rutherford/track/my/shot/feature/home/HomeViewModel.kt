@@ -2,7 +2,7 @@ package com.nicholas.rutherford.track.my.shot.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.activeuser.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
 import kotlinx.coroutines.launch
 

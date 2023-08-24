@@ -5,7 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nicholas.rutherford.track.my.shot.data.room.dao.ActiveUserDao
 import com.nicholas.rutherford.track.my.shot.data.room.database.AppDatabase
-import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepositoryImpl
+import com.nicholas.rutherford.track.my.shot.data.room.repository.activeuser.ActiveUserRepositoryImpl
 import com.nicholas.rutherford.track.my.shot.data.test.room.TestActiveUser
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo

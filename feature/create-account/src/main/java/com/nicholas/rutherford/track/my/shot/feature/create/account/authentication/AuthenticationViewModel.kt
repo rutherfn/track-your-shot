@@ -2,7 +2,7 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account.authenticat
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
-import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.activeuser.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton

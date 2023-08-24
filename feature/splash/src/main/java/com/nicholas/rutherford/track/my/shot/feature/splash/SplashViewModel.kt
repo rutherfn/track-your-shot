@@ -3,8 +3,8 @@ package com.nicholas.rutherford.track.my.shot.feature.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRealtimeResponse
-import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
-import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.activeuser.ActiveUserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.user.UserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.response.User
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import kotlinx.coroutines.delay
