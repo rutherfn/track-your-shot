@@ -17,9 +17,10 @@ import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccoun
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountScreenParams
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordScreen
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordScreenParams
-import com.nicholas.rutherford.track.my.shot.feature.home.HomeScreen
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreenParams
+import com.nicholas.rutherford.track.my.shot.feature.players.PlayersListScreen
+import com.nicholas.rutherford.track.my.shot.feature.players.PlayersListScreenParams
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.my.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
@@ -69,6 +70,7 @@ fun NavigationComponent(
     val createAccountViewModel = viewModels.createAccountViewModel
     val loginViewModel = viewModels.loginViewModel
     val forgotPasswordViewModel = viewModels.forgotPasswordViewModel
+    val playersListViewModel = viewModels.playersListViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -148,8 +150,10 @@ fun NavigationComponent(
                 )
             )
         }
-        composable(route = NavigationDestinations.HOME_SCREEN) {
-            HomeScreen(viewModel = viewModels.homeViewModel)
+        composable(route = NavigationDestinations.PLAYERS_LIST_SCREEN) {
+            PlayersListScreen(
+                playerListScreenParams = PlayersListScreenParams(state = playersListViewModel.playerListStateFlow.collectAsState().value)
+            )
         }
         composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {
             ForgotPasswordScreen(

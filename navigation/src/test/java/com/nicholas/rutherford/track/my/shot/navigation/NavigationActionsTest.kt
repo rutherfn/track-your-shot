@@ -18,13 +18,13 @@ class NavigationActionsTest {
         inner class SplashScreen {
 
             @Test
-            fun home() {
+            fun playersList() {
                 Assertions.assertEquals(
-                    Actions.SplashScreen.home().destination,
-                    NavigationDestinations.HOME_SCREEN
+                    Actions.SplashScreen.playersList().destination,
+                    NavigationDestinations.PLAYERS_LIST_SCREEN
                 )
                 Assertions.assertEquals(
-                    Actions.SplashScreen.home().navOptions,
+                    Actions.SplashScreen.playersList().navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
                         .build()
@@ -62,13 +62,13 @@ class NavigationActionsTest {
 
         @Nested inner class LoginScreen {
 
-            @Test fun home() {
+            @Test fun playersList() {
                 Assertions.assertEquals(
-                    Actions.LoginScreen.home().destination,
-                    NavigationDestinations.HOME_SCREEN
+                    Actions.LoginScreen.playersList().destination,
+                    NavigationDestinations.PLAYERS_LIST_SCREEN
                 )
                 Assertions.assertEquals(
-                    Actions.LoginScreen.home().navOptions,
+                    Actions.LoginScreen.playersList().navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
                         .setLaunchSingleTop(true)
@@ -114,6 +114,24 @@ class NavigationActionsTest {
                     Actions.CreateAccountScreen.authentication(email = testEmail, username = testUsername).navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
+                        .build()
+                )
+            }
+        }
+
+        @Nested
+        inner class AuthenticationScreen {
+
+            @Test
+            fun playersList() {
+                Assertions.assertEquals(
+                    Actions.AuthenticationScreen.playersList().destination,
+                    NavigationDestinations.PLAYERS_LIST_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.AuthenticationScreen.playersList().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(0, false)
                         .build()
                 )
             }

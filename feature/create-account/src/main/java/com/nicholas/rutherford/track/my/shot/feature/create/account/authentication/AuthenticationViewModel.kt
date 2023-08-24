@@ -95,7 +95,7 @@ class AuthenticationViewModel(
                                 )
                             )
                             navigation.disableProgress()
-                            navigation.navigateToHome()
+                            navigation.navigateToPlayersList()
                         } else {
                             navigation.disableProgress()
                             navigation.alert(alert = errorCreatingAccountAlert())

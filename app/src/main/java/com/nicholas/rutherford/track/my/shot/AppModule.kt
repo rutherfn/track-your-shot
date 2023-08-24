@@ -11,6 +11,8 @@ import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.my.shot.data.room.database.AppDatabase
 import com.nicholas.rutherford.track.my.shot.data.room.repository.activeuser.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.repository.activeuser.ActiveUserRepositoryImpl
+import com.nicholas.rutherford.track.my.shot.data.room.repository.player.PlayerRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.player.PlayerRepositoryImpl
 import com.nicholas.rutherford.track.my.shot.data.room.repository.user.UserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.repository.user.UserRepositoryImpl
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigation
@@ -28,6 +30,7 @@ import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
+import com.nicholas.rutherford.track.my.shot.feature.players.PlayersListViewModel
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
@@ -76,11 +79,17 @@ class AppModule {
         single {
             get<AppDatabase>().userDao()
         }
+        single {
+            get<AppDatabase>().playerDao()
+        }
         single<ActiveUserRepository> {
             ActiveUserRepositoryImpl(activeUserDao = get())
         }
         single<UserRepository> {
             UserRepositoryImpl(userDao = get())
+        }
+        single<PlayerRepository> {
+            PlayerRepositoryImpl(playerDao = get())
         }
         single<android.content.SharedPreferences.Editor> {
             getSharedPreferences(androidApplication()).edit()
@@ -194,6 +203,11 @@ class AppModule {
                 authenticationFirebase = get(),
                 createFirebaseUserInfo = get(),
                 activeUserRepository = get()
+            )
+        }
+        viewModel {
+            PlayersListViewModel(
+                playerRepository = get()
             )
         }
     }

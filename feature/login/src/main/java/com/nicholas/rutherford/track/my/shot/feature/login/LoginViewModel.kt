@@ -82,7 +82,7 @@ class LoginViewModel(
                                 accountInfoRealtimeResponse?.let { accountInfo ->
                                     updateActiveUserFromLoggedInUser(email = accountInfo.email, username = accountInfo.userName)
                                     navigation.disableProgress()
-                                    navigation.navigateToHome()
+                                    navigation.navigateToPlayersList()
                                 }
                             }
                     } else {
