@@ -7,7 +7,12 @@ object Constants {
     const val CENTER = 4
     const val CONTENT_LAST_UPDATED_PATH = "contentLastUpdated"
     const val EMAIL = "email"
+    const val FIRST_NAME = "firstName"
+    const val IMAGE_URL = "imageUrl"
+    const val LAST_NAME = "lastName"
     const val LAST_UPDATED = "lastUpdated"
+    const val PLAYERS = "players"
+    const val POSITION_VALUE = "positionValue"
     const val POINT_GUARD_VALUE = 0
     const val SHOOTING_GUARD_VALUE = 1
     const val SMALL_FORWARD_VALUE = 2

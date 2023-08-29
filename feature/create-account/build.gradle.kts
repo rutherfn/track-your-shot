@@ -99,6 +99,5 @@ dependencies {
     testImplementation(project(mapOf("path" to ":data-test:room")))
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
-
-    testImplementation(project(path = ":data-test:account-info"))
+    testImplementation(project(":data-test:firebase"))
 }

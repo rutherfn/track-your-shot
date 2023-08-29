@@ -8,8 +8,8 @@ import com.nicholas.rutherford.track.my.shot.data.room.response.PlayerPositions
 
 @Entity(tableName = "players")
 data class PlayerEntity(
-    @PrimaryKey
-    val id: Int,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     @ColumnInfo(name = "firstName")
     val firstName: String,
     @ColumnInfo(name = "lastName")
@@ -22,7 +22,6 @@ data class PlayerEntity(
 
 fun PlayerEntity.toPlayer(): Player {
     return Player(
-        id = id,
         firstName = firstName,
         lastName = lastName,
         position = position,

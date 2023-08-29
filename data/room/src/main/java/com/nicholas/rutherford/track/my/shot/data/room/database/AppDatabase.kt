@@ -11,7 +11,7 @@ import com.nicholas.rutherford.track.my.shot.data.room.entities.ActiveUserEntity
 import com.nicholas.rutherford.track.my.shot.data.room.entities.PlayerEntity
 import com.nicholas.rutherford.track.my.shot.data.room.entities.UserEntity
 
-@Database(entities = [ActiveUserEntity::class, PlayerEntity::class, UserEntity::class], version = 4, exportSchema = false)
+@Database(entities = [ActiveUserEntity::class, PlayerEntity::class, UserEntity::class], version = 5, exportSchema = false)
 @TypeConverters(PlayerPositionsConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun activeUserDao(): ActiveUserDao

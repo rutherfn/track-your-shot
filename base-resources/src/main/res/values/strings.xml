@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_has_not_been_verified">Account Has Not Been Verified</string>
-    <string name="add_players">Add Players</string>
+    <string name="add_player">Add Player</string>
     <string name="are_you_sure_you_want_to_leave_track_my_shot">Are you sure you want to leave Track My Shot?</string>
     <string name="check_if_account_has_been_verified">Check if account has been verified</string>
     <string name="confirm">Confirm</string>

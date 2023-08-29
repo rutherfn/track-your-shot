@@ -27,7 +27,7 @@ import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPassw
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
-import com.nicholas.rutherford.track.my.shot.feature.players.PlayersListViewModel
+import com.nicholas.rutherford.track.my.shot.feature.players.list.PlayersListViewModel
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
@@ -194,6 +194,9 @@ class AppModule {
         }
         viewModel {
             PlayersListViewModel(
+                activeUserRepository = get(),
+                createFirebaseUserInfo = get(),
+                readFirebaseUserInfo = get(),
                 playerRepository = get()
             )
         }

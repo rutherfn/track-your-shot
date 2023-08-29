@@ -70,6 +70,8 @@ android {
 dependencies {
     api(project(path = ":compose:components"))
     api(project(path = ":data:room"))
+    api(project(path = ":firebase:create"))
+    api(project(path = ":firebase:read"))
     api(project(path = ":navigation"))
 
     implementation(Dependencies.Compose.coil)

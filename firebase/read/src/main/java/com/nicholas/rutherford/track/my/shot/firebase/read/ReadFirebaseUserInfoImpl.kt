@@ -5,7 +5,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.data.firebase.AccountInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -43,7 +43,9 @@ class ReadFirebaseUserInfoImpl(
                         if (snapshot.exists()) {
                             if (snapshot.children.count() == 1) {
                                 snapshot.children.map { child ->
-                                    accountInfoRealTimeResponse = child.getValue(AccountInfoRealtimeResponse::class.java)
+                                    accountInfoRealTimeResponse = child.getValue(
+                                        AccountInfoRealtimeResponse::class.java
+                                    )
                                 }
                                 trySend(element = accountInfoRealTimeResponse)
                             } else {
@@ -58,6 +60,34 @@ class ReadFirebaseUserInfoImpl(
 
                     override fun onCancelled(error: DatabaseError) {
                         Timber.e(message = "Error(getAccountInfoFlowByEmail) -> Database error when attempting to get account info")
+                        trySend(element = null)
+                    }
+                })
+            awaitClose()
+        }
+    }
+
+    override fun getAccountInfoKeyByEmail(email: String): Flow<String?> {
+        return callbackFlow {
+            firebaseDatabase.getReference(Constants.USERS)
+                .child(Constants.ACCOUNT_INFO)
+                .orderByChild(Constants.EMAIL)
+                .equalTo(email)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            snapshot.children.firstOrNull()?.key?.let { childKey ->
+                                trySend(element = childKey)
+                            } ?: run {
+                                Timber.w(message = "Warning(getAccountInfoKeyByEmail) -> Current snapshot exists but key does not exist")
+                            }
+                        } else {
+                            Timber.w(message = "Warning(getAccountInfoKeyByEmail) -> Current snapshot does not exist")
+                        }
+                    }
+
+                    override fun onCancelled(p0: DatabaseError) {
+                        Timber.e(message = "Error(getAccountInfoKeyByEmail) -> Database error when attempting to get account info key by email")
                         trySend(element = null)
                     }
                 })

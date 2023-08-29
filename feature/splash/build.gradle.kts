@@ -83,8 +83,8 @@ dependencies {
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
+    testImplementation(project(":data-test:firebase"))
 
-    testImplementation(project(path = ":data-test:account-info"))
     testImplementation(project(path = ":data-test:room"))
 
     testImplementation(Dependencies.Coroutine.test)

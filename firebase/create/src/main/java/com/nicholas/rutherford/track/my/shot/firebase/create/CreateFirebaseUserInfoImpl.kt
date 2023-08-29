@@ -2,8 +2,9 @@ package com.nicholas.rutherford.track.my.shot.firebase.create
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.nicholas.rutherford.track.my.shot.account.info.CreateAccountFirebaseAuthResponse
-import com.nicholas.rutherford.track.my.shot.account.info.realtime.CreateAccountFirebaseRealtimeDatabaseResult
+import com.nicholas.rutherford.track.my.shot.data.firebase.CreateAccountFirebaseAuthResponse
+import com.nicholas.rutherford.track.my.shot.data.firebase.CreateAccountFirebaseRealtimeDatabaseResult
+import com.nicholas.rutherford.track.my.shot.data.firebase.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -50,7 +51,11 @@ class CreateFirebaseUserInfoImpl(
 
     override fun attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName: String, email: String): Flow<Boolean> {
         return callbackFlow {
-            val createAccountResult = CreateAccountFirebaseRealtimeDatabaseResult(username = userName, email = email)
+            val createAccountResult =
+                CreateAccountFirebaseRealtimeDatabaseResult(
+                    username = userName,
+                    email = email
+                )
             val values = hashMapOf<String, String>()
 
             values[Constants.USERNAME] = createAccountResult.username
@@ -62,6 +67,34 @@ class CreateFirebaseUserInfoImpl(
                         val currentDate = Date()
                         launch { createFirebaseLastUpdated.attemptToCreateLastUpdatedFlow(date = currentDate).collect() }
                     }
+                    trySend(task.isSuccessful)
+                }
+            awaitClose()
+        }
+    }
+
+    override fun attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
+        key: String,
+        playerInfoRealtimeResponse: PlayerInfoRealtimeResponse
+    ): Flow<Boolean> {
+        return callbackFlow {
+            val userAccountInfoDatabaseReference =
+                FirebaseDatabase.getInstance()
+                    .getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .child(key)
+                    .child(Constants.PLAYERS)
+
+            val newPlayerReference = userAccountInfoDatabaseReference.push()
+            val values = hashMapOf<String, Any>()
+
+            values[Constants.FIRST_NAME] = playerInfoRealtimeResponse.firstName
+            values[Constants.LAST_NAME] = playerInfoRealtimeResponse.lastName
+            values[Constants.POSITION_VALUE] = playerInfoRealtimeResponse.positionValue
+            values[Constants.IMAGE_URL] = playerInfoRealtimeResponse.imageUrl
+
+            newPlayerReference.setValue(values)
+                .addOnCompleteListener { task ->
                     trySend(task.isSuccessful)
                 }
             awaitClose()

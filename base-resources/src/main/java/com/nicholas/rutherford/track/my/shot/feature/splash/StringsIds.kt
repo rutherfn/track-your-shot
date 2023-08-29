@@ -4,7 +4,7 @@ import com.nicholas.rutherford.track.my.shot.base.resources.R
 
 object StringsIds {
     val accountHasNotBeenVerified = R.string.account_has_not_been_verified
-    val addPlayers = R.string.add_players
+    val addPlayer = R.string.add_player
     val areYouSureYouWantLeaveTrackMyShot = R.string.are_you_sure_you_want_to_leave_track_my_shot
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
     val confirm = R.string.confirm

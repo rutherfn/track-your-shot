@@ -1,25 +1,43 @@
 package com.nicholas.rutherford.track.my.shot.firebase.util.authentication
 
 import com.google.firebase.auth.FirebaseAuth
-import com.nicholas.rutherford.track.my.shot.account.info.AuthenticateUserViaEmailFirebaseResponse
+import com.nicholas.rutherford.track.my.shot.data.firebase.AuthenticateUserViaEmailFirebaseResponse
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
 class AuthenticationFirebaseImpl(private val firebaseAuth: FirebaseAuth) : AuthenticationFirebase {
 
-    override fun attemptToSendEmailVerificationForCurrentUser(): Flow<AuthenticateUserViaEmailFirebaseResponse> {
+    override fun attemptToSendEmailVerificationForCurrentUser(): Flow<com.nicholas.rutherford.track.my.shot.data.firebase.AuthenticateUserViaEmailFirebaseResponse> {
         return callbackFlow {
             firebaseAuth.currentUser?.let { firebaseUser ->
                 if (firebaseUser.isEmailVerified) {
-                    trySend(element = AuthenticateUserViaEmailFirebaseResponse(isSuccessful = false, isAlreadyAuthenticated = true, isUserExist = true))
+                    trySend(
+                        element = com.nicholas.rutherford.track.my.shot.data.firebase.AuthenticateUserViaEmailFirebaseResponse(
+                            isSuccessful = false,
+                            isAlreadyAuthenticated = true,
+                            isUserExist = true
+                        )
+                    )
                 } else {
                     firebaseUser.sendEmailVerification().addOnCompleteListener { task ->
-                        trySend(element = AuthenticateUserViaEmailFirebaseResponse(isSuccessful = task.isSuccessful, isAlreadyAuthenticated = false, isUserExist = true))
+                        trySend(
+                            element = com.nicholas.rutherford.track.my.shot.data.firebase.AuthenticateUserViaEmailFirebaseResponse(
+                                isSuccessful = task.isSuccessful,
+                                isAlreadyAuthenticated = false,
+                                isUserExist = true
+                            )
+                        )
                     }
                 }
             } ?: run {
-                trySend(element = AuthenticateUserViaEmailFirebaseResponse(isSuccessful = false, isAlreadyAuthenticated = false, isUserExist = false))
+                trySend(
+                    element = com.nicholas.rutherford.track.my.shot.data.firebase.AuthenticateUserViaEmailFirebaseResponse(
+                        isSuccessful = false,
+                        isAlreadyAuthenticated = false,
+                        isUserExist = false
+                    )
+                )
             }
             awaitClose()
         }
