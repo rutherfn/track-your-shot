@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.data.test.firebase.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.my.shot.data.test.firebase.TestCreateAccountFirebaseRealtimeDatabaseResult
+import com.nicholas.rutherford.track.my.shot.data.test.firebase.TestPlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
@@ -31,9 +32,12 @@ class CreateFirebaseUserInfoImplTest {
 
     private val createAccountResponse = TestCreateAccountFirebaseAuthResponse().create()
     private val createAccountResult = TestCreateAccountFirebaseRealtimeDatabaseResult().create()
+    private val playerInfoRealtimeResponse = TestPlayerInfoRealtimeResponse().create()
 
     private val testEmail = "testemail@yahoo.com"
     private val testPassword = "passwordTest112"
+
+    val key = "-ATT82121"
 
     @BeforeEach
     fun beforeEach() {
@@ -111,28 +115,131 @@ class CreateFirebaseUserInfoImplTest {
             }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow when add on complete listener is executed should set flow to false when isSuccessful returns back false`() = runTest {
-        val mockTaskVoidResult = mockk<Task<Void>>()
-        val slot = slot<OnCompleteListener<Void>>()
+    @Nested
+    inner class AttemptToCreateAccountFirebaseRealtimeDatabaseResponseFlow {
 
-        val values = hashMapOf<String, String>()
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when add on complete listener is executed should set flow to false when isSuccessful returns back false`() = runTest {
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val slot = slot<OnCompleteListener<Void>>()
 
-        values[Constants.USERNAME] = createAccountResult.username
-        values[Constants.EMAIL] = createAccountResult.email
+            val values = hashMapOf<String, String>()
 
-        mockkStatic(Tasks::class)
+            values[Constants.USERNAME] = createAccountResult.username
+            values[Constants.EMAIL] = createAccountResult.email
 
-        every { mockTaskVoidResult.isSuccessful } returns false
+            mockkStatic(Tasks::class)
 
-        every { firebaseDatabase.getReference(Constants.USERS_PATH).child(Constants.ACCOUNT_INFO).push().setValue(values).addOnCompleteListener(capture(slot)) } answers {
-            slot.captured.onComplete(mockTaskVoidResult)
-            mockTaskVoidResult
+            every { mockTaskVoidResult.isSuccessful } returns false
+
+            every { firebaseDatabase.getReference(Constants.USERS_PATH).child(Constants.ACCOUNT_INFO).push().setValue(values).addOnCompleteListener(capture(slot)) } answers {
+                slot.captured.onComplete(mockTaskVoidResult)
+                mockTaskVoidResult
+            }
+
+            val value = createFirebaseUserInfoImpl.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = createAccountResult.username, email = createAccountResult.email).first()
+
+            Assertions.assertEquals(false, value)
         }
 
-        val value = createFirebaseUserInfoImpl.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = createAccountResult.username, email = createAccountResult.email).first()
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when add on complete listener is executed should set flow to true when isSuccessful returns back true`() = runTest {
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val slot = slot<OnCompleteListener<Void>>()
 
-        Assertions.assertEquals(false, value)
+            val values = hashMapOf<String, String>()
+
+            values[Constants.USERNAME] = createAccountResult.username
+            values[Constants.EMAIL] = createAccountResult.email
+
+            mockkStatic(Tasks::class)
+
+            every { mockTaskVoidResult.isSuccessful } returns true
+
+            every { firebaseDatabase.getReference(Constants.USERS_PATH).child(Constants.ACCOUNT_INFO).push().setValue(values).addOnCompleteListener(capture(slot)) } answers {
+                slot.captured.onComplete(mockTaskVoidResult)
+                mockTaskVoidResult
+            }
+
+            val value = createFirebaseUserInfoImpl.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = createAccountResult.username, email = createAccountResult.email).first()
+
+            Assertions.assertEquals(true, value)
+        }
+    }
+
+    @Nested
+    inner class AttemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow {
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when add on complete listener is executed should set flow to false when isSuccessful returns back false`() = runTest {
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val slot = slot<OnCompleteListener<Void>>()
+
+            val values = hashMapOf<String, Any>()
+
+            values[Constants.FIRST_NAME] = playerInfoRealtimeResponse.firstName
+            values[Constants.LAST_NAME] = playerInfoRealtimeResponse.lastName
+            values[Constants.POSITION_VALUE] = playerInfoRealtimeResponse.positionValue
+            values[Constants.IMAGE_URL] = playerInfoRealtimeResponse.imageUrl
+
+            mockkStatic(Tasks::class)
+
+            every { mockTaskVoidResult.isSuccessful } returns false
+
+            every {
+                firebaseDatabase.getReference(Constants.USERS_PATH)
+                    .child(Constants.ACCOUNT_INFO)
+                    .child(key)
+                    .child(Constants.PLAYERS).push().setValue(values).addOnCompleteListener(capture(slot))
+            } answers {
+                slot.captured.onComplete(mockTaskVoidResult)
+                mockTaskVoidResult
+            }
+
+            val value = createFirebaseUserInfoImpl.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
+                key = key,
+                playerInfoRealtimeResponse = playerInfoRealtimeResponse
+            ).first()
+
+            Assertions.assertEquals(false, value)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when add on complete listener is executed should set flow to true when isSuccessful returns back true`() = runTest {
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val slot = slot<OnCompleteListener<Void>>()
+
+            val values = hashMapOf<String, Any>()
+
+            values[Constants.FIRST_NAME] = playerInfoRealtimeResponse.firstName
+            values[Constants.LAST_NAME] = playerInfoRealtimeResponse.lastName
+            values[Constants.POSITION_VALUE] = playerInfoRealtimeResponse.positionValue
+            values[Constants.IMAGE_URL] = playerInfoRealtimeResponse.imageUrl
+
+            mockkStatic(Tasks::class)
+
+            every { mockTaskVoidResult.isSuccessful } returns true
+
+            every {
+                firebaseDatabase.getReference(Constants.USERS_PATH)
+                    .child(Constants.ACCOUNT_INFO)
+                    .child(key)
+                    .child(Constants.PLAYERS).push().setValue(values).addOnCompleteListener(capture(slot))
+            } answers {
+                slot.captured.onComplete(mockTaskVoidResult)
+                mockTaskVoidResult
+            }
+
+            val value = createFirebaseUserInfoImpl.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
+                key = key,
+                playerInfoRealtimeResponse = playerInfoRealtimeResponse
+            ).first()
+
+            Assertions.assertEquals(true, value)
+        }
     }
 }

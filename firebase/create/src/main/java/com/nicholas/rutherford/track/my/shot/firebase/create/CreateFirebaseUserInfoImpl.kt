@@ -79,8 +79,7 @@ class CreateFirebaseUserInfoImpl(
     ): Flow<Boolean> {
         return callbackFlow {
             val userAccountInfoDatabaseReference =
-                FirebaseDatabase.getInstance()
-                    .getReference(Constants.USERS)
+                userReference
                     .child(Constants.ACCOUNT_INFO)
                     .child(key)
                     .child(Constants.PLAYERS)
