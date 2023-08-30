@@ -9,7 +9,7 @@ interface ReadFirebaseUserInfo {
     fun getAccountInfoFlowByEmail(email: String): Flow<AccountInfoRealtimeResponse?>
     // fun getPlayersInfoFlowByEmail(email: String): Flow<Acc>
     fun getAccountInfoListFlow(): Flow<List<AccountInfoRealtimeResponse>?>
-    fun getAccountInfoKeyByEmail(email: String): Flow<String?>
+    fun getAccountInfoKeyFlowByEmail(email: String): Flow<String?>
     fun getLastUpdatedDateFlow(): Flow<Date?>
     fun isEmailVerifiedFlow(): Flow<Boolean>
     fun isLoggedInFlow(): Flow<Boolean>

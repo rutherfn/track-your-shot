@@ -31,14 +31,12 @@ buildSrc/build
 compose/components/build
 compose/theme/build
 
-data/account-info/build
+data/firebase/build
 data/room/build
 data/shared/build
-data/user/build
 
-data-test/account-info/build
+data-test/firebse/build
 data-test/room/build
-data-test/user/build
 
 feature/create-account/build
 feature/forgot-password/build

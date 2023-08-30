@@ -67,7 +67,7 @@ class ReadFirebaseUserInfoImpl(
         }
     }
 
-    override fun getAccountInfoKeyByEmail(email: String): Flow<String?> {
+    override fun getAccountInfoKeyFlowByEmail(email: String): Flow<String?> {
         return callbackFlow {
             firebaseDatabase.getReference(Constants.USERS)
                 .child(Constants.ACCOUNT_INFO)
@@ -80,9 +80,11 @@ class ReadFirebaseUserInfoImpl(
                                 trySend(element = childKey)
                             } ?: run {
                                 Timber.w(message = "Warning(getAccountInfoKeyByEmail) -> Current snapshot exists but key does not exist")
+                                trySend(element = null)
                             }
                         } else {
                             Timber.w(message = "Warning(getAccountInfoKeyByEmail) -> Current snapshot does not exist")
+                            trySend(element = null)
                         }
                     }
 

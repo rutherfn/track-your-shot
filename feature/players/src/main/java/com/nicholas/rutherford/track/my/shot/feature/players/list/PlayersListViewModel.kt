@@ -38,11 +38,9 @@ class PlayersListViewModel(
         val activeUser = activeUserRepository.fetchActiveUser()
 
         activeUser?.let { user ->
-            println("here is the user ")
             readFirebaseUserInfo.getAccountInfoKeyByEmail(user.email)
                 .collectLatest { test ->
                     test?.let { test2 ->
-                        println("non let")
                         createFirebaseUserInfo
                             .attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
                                 key = test2,
