@@ -35,7 +35,7 @@ data/firebase/build
 data/room/build
 data/shared/build
 
-data-test/firebse/build
+data-test/firebase/build
 data-test/room/build
 
 feature/create-account/build
