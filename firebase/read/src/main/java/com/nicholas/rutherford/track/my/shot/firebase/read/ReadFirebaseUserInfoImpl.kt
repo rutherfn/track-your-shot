@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.my.shot.data.firebase.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.data.firebase.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -91,6 +92,39 @@ class ReadFirebaseUserInfoImpl(
                     override fun onCancelled(p0: DatabaseError) {
                         Timber.e(message = "Error(getAccountInfoKeyByEmail) -> Database error when attempting to get account info key by email")
                         trySend(element = null)
+                    }
+                })
+            awaitClose()
+        }
+    }
+
+    override fun getPlayerInfoList(accountKey: String): Flow<List<PlayerInfoRealtimeResponse>> {
+        return callbackFlow {
+            val playerInfoRealtimeResponseArrayList: ArrayList<PlayerInfoRealtimeResponse> = arrayListOf()
+
+            firebaseDatabase.getReference(Constants.USERS)
+                .child(Constants.ACCOUNT_INFO)
+                .child(accountKey)
+                .child(Constants.PLAYERS)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            for (playerSnapshot in snapshot.children) {
+                                val playerInfo =
+                                    playerSnapshot.getValue(PlayerInfoRealtimeResponse::class.java)
+                                playerInfo?.let {
+                                    playerInfoRealtimeResponseArrayList.add(it)
+                                }
+                            }
+
+                            trySend(element = playerInfoRealtimeResponseArrayList.toList())
+                        } else {
+                            trySend(element = emptyList())
+                        }
+                    }
+
+                    override fun onCancelled(p0: DatabaseError) {
+                        trySend(element = emptyList())
                     }
                 })
             awaitClose()

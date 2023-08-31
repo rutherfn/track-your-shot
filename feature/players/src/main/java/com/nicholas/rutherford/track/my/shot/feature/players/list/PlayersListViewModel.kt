@@ -10,6 +10,7 @@ import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class PlayersListViewModel(
@@ -29,37 +30,28 @@ class PlayersListViewModel(
 
     init {
         viewModelScope.launch {
-            fetchActiveUser()
-            //  updatePlayerListStateValue()
         }
     }
 
-    private suspend fun fetchActiveUser() {
-        val activeUser = activeUserRepository.fetchActiveUser()
+    private suspend fun updateFromFirebaseActivePlayers() {
+        // call this function if the players room db is empty
+        // then were gotta try to get the instance from firebase
+        //
+        val activeUser = activeUserRepository.fetchActiveUser() ?: return
 
-        activeUser?.let { user ->
-            readFirebaseUserInfo.getAccountInfoKeyByEmail(user.email)
-                .collectLatest { test ->
-                    test?.let { test2 ->
-                        createFirebaseUserInfo
-                            .attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
-                                key = test2,
-                                playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
-                                    firstName = "first",
-                                    lastName = "last",
-                                    positionValue = 1,
-                                    imageUrl = ""
-                                )
-                            ).collectLatest {
-                                it2 ->
-                                if (it2) {
-                                    println("it works")
-                                } else {
-                                    println("nope")
-                                }
-                            }
+        val email = activeUser.email
+        val accountInfoKeyFlow = readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email)
+
+        accountInfoKeyFlow.collectLatest { accountKey ->
+            accountKey?.let { key ->
+                readFirebaseUserInfo.getPlayerInfoList(accountKey)
+                    .collectLatest {
+                        // do stuff here
+                        // if the value were collecting come back as true
+                        // we should still update the rooms read data but update it with a empty list
+                        // the empty list would then still be treated as something
                     }
-                }
+            }
         }
     }
 
