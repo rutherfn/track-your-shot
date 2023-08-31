@@ -109,11 +109,14 @@ class ReadFirebaseUserInfoImpl(
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
-                            for (playerSnapshot in snapshot.children) {
-                                val playerInfo =
+                            if (snapshot.childrenCount == 0L) {
+                                trySend(element = emptyList())
+                            } else {
+                                for (playerSnapshot in snapshot.children) {
                                     playerSnapshot.getValue(PlayerInfoRealtimeResponse::class.java)
-                                playerInfo?.let {
-                                    playerInfoRealtimeResponseArrayList.add(it)
+                                        ?.let {
+                                            playerInfoRealtimeResponseArrayList.add(it)
+                                        }
                                 }
                             }
 

@@ -9,7 +9,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.my.shot.data.firebase.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.data.firebase.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.data.test.firebase.TestAccountInfoRealTimeResponse
+import com.nicholas.rutherford.track.my.shot.data.test.firebase.TestPlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
@@ -33,6 +35,8 @@ class ReadFirebaseUserInfoImplTest {
 
     val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create()
     val currentDate = Date()
+
+    val firebaseAccountKey = "-kTE1212D"
 
     @BeforeEach
     fun beforeEach() {
@@ -299,7 +303,6 @@ class ReadFirebaseUserInfoImplTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onDataChange is called, snapshot exists, and children key returns info should return null`() = runTest {
-            val key = "-kTE1212D"
             val mockDataSnapshot = mockk<DataSnapshot>()
             val mockChildDataSnapshot = mockk<DataSnapshot>()
 
@@ -307,7 +310,7 @@ class ReadFirebaseUserInfoImplTest {
 
             every { mockDataSnapshot.exists() } returns true
             every { mockDataSnapshot.children } returns listOf(mockChildDataSnapshot)
-            every { mockChildDataSnapshot.key } returns key
+            every { mockChildDataSnapshot.key } returns firebaseAccountKey
 
             mockkStatic(DataSnapshot::class)
 
@@ -321,7 +324,113 @@ class ReadFirebaseUserInfoImplTest {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
 
-            Assertions.assertEquals(key, readFirebaseUserInfoImpl.getAccountInfoKeyFlowByEmail(accountInfoRealtimeResponse.email).first())
+            Assertions.assertEquals(firebaseAccountKey, readFirebaseUserInfoImpl.getAccountInfoKeyFlowByEmail(accountInfoRealtimeResponse.email).first())
+        }
+    }
+
+    @Nested
+    inner class GetPlayerInfoList {
+        private val playerInfoRealtimeResponseEmptyList: List<PlayerInfoRealtimeResponse> = emptyList()
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when onCancelled is called should return empty list`() = runTest {
+            val mockDatabaseError = mockk<DatabaseError>()
+            val slot = slot<ValueEventListener>()
+
+            every {
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .child(firebaseAccountKey)
+                    .child(Constants.PLAYERS)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onCancelled(mockDatabaseError)
+            }
+
+            Assertions.assertEquals(playerInfoRealtimeResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when on data change is called but snapshot does not exist should return empty list`() = runTest {
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns false
+
+            mockkStatic(DataSnapshot::class)
+
+            every {
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .child(firebaseAccountKey)
+                    .child(Constants.PLAYERS)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(playerInfoRealtimeResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when snapshot exists but children count is zero should return empty list`() = runTest {
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.childrenCount } returns 0
+
+            mockkStatic(DataSnapshot::class)
+
+            every {
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .child(firebaseAccountKey)
+                    .child(Constants.PLAYERS)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(playerInfoRealtimeResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when snapshot exists and has children should return list of player info`() = runTest {
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val slot = slot<ValueEventListener>()
+
+            val playerInfoRealtimeResponseList = listOf(
+                TestPlayerInfoRealtimeResponse().create(),
+                TestPlayerInfoRealtimeResponse().create().copy(firstName = "firstName2")
+            )
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.childrenCount } returns playerInfoRealtimeResponseList.size.toLong()
+
+            every { mockDataSnapshot.children } returns playerInfoRealtimeResponseList.map { playerInfo ->
+                val mockChildSnapshot = mockk<DataSnapshot>()
+                every { mockChildSnapshot.getValue(PlayerInfoRealtimeResponse::class.java) } returns playerInfo
+                mockChildSnapshot
+            }
+
+            mockkStatic(DataSnapshot::class)
+
+            every {
+                firebaseDatabase.getReference(Constants.USERS)
+                    .child(Constants.ACCOUNT_INFO)
+                    .child(firebaseAccountKey)
+                    .child(Constants.PLAYERS)
+                    .addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(playerInfoRealtimeResponseList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
         }
     }
 
