@@ -44,6 +44,7 @@ feature/create-account/build
 feature/forgot-password/build
 feature/home/build
 feature/login/build
+feature/players/build
 feature/splash/build
 
 firebase/create/build
