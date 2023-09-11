@@ -7,7 +7,7 @@ data class ActiveUser(
     val accountHasBeenCreated: Boolean,
     val email: String,
     val username: String,
-    val firebaseAccountInfoKey: String
+    val firebaseAccountInfoKey: String?
 )
 
 fun ActiveUser.toActiveUserEntity(): ActiveUserEntity {

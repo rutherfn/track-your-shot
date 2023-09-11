@@ -43,7 +43,8 @@ class AuthenticationViewModel(
                     id = Constants.ACTIVE_USER_ID,
                     accountHasBeenCreated = false,
                     username = username,
-                    email = email
+                    email = email,
+                    firebaseAccountInfoKey = null
                 )
             )
         }
@@ -85,14 +86,17 @@ class AuthenticationViewModel(
                         userName = usernameArgument,
                         email = emailArgument
                     ).collectLatest { response ->
-                        if (response.first) {
-                            println("here is the key ${response.second}")
+                        val isSuccessful = response.first
+                        val firebaseAccountInfoKey = response.second
+
+                        if (isSuccessful) {
                             activeUserRepository.updateActiveUser(
                                 activeUser = ActiveUser(
                                     id = Constants.ACTIVE_USER_ID,
                                     accountHasBeenCreated = true,
                                     email = emailArgument,
-                                    username = usernameArgument
+                                    username = usernameArgument,
+                                    firebaseAccountInfoKey = firebaseAccountInfoKey
                                 )
                             )
                             navigation.disableProgress()

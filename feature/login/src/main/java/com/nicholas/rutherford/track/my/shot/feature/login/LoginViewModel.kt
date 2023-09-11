@@ -83,12 +83,14 @@ class LoginViewModel(
     suspend fun updateActiveUserFromLoggedInUser(email: String) {
         userRepository.fetchUserByEmail(email = email)?.let { user ->
             if (activeUserRepository.fetchActiveUser() == null) {
+                // get the account info key here
                 activeUserRepository.createActiveUser(
                     activeUser = ActiveUser(
                         id = Constants.ACTIVE_USER_ID,
                         accountHasBeenCreated = true,
                         username = user.username,
-                        email = user.email
+                        email = user.email,
+                        firebaseAccountInfoKey = "todo"
                     )
                 )
             }
