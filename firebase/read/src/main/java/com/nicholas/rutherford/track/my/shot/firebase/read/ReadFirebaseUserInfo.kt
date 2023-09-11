@@ -8,6 +8,7 @@ interface ReadFirebaseUserInfo {
     fun getLoggedInAccountEmail(): Flow<String?>
     fun getAccountInfoFlowByEmail(email: String): Flow<AccountInfoRealtimeResponse?>
     fun getAccountInfoListFlow(): Flow<List<AccountInfoRealtimeResponse>?>
+    fun getAccountInfoKeyFlowByEmail(email: String): Flow<String?>
     fun getLastUpdatedDateFlow(): Flow<Date?>
     fun isEmailVerifiedFlow(): Flow<Boolean>
     fun isLoggedInFlow(): Flow<Boolean>

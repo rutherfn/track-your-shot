@@ -127,6 +127,36 @@ class ReadFirebaseUserInfoImpl(
         }
     }
 
+    override fun getAccountInfoKeyFlowByEmail(email: String): Flow<String?> {
+        return callbackFlow {
+            firebaseDatabase.getReference(Constants.USERS)
+                .child(Constants.ACCOUNT_INFO)
+                .orderByChild(Constants.EMAIL)
+                .equalTo(email)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            snapshot.children.firstOrNull()?.key?.let { childKey ->
+                                trySend(element = childKey)
+                            } ?: run {
+                                Timber.w(message = "Warning(getAccountInfoKeyByEmail) -> Current snapshot exists but key does not exist")
+                                trySend(element = null)
+                            }
+                        } else {
+                            Timber.w(message = "Warning(getAccountInfoKeyByEmail) -> Current snapshot does not exist")
+                            trySend(element = null)
+                        }
+                    }
+
+                    override fun onCancelled(p0: DatabaseError) {
+                        Timber.e(message = "Error(getAccountInfoKeyByEmail) -> Database error when attempting to get account info key by email")
+                        trySend(element = null)
+                    }
+                })
+            awaitClose()
+        }
+    }
+
     override fun isEmailVerifiedFlow(): Flow<Boolean> {
         return callbackFlow {
             firebaseAuth.currentUser?.let { firebaseUser ->
