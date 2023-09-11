@@ -19,12 +19,9 @@ object Dependencies {
         const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${Versions.Dependencies.SystemUiController.core}"
     }
 
-    object Coil {
-        const val core = "io.coil-kt:coil:${Versions.Dependencies.Coil.core}"
-    }
-
     object Compose {
         const val activity = "androidx.activity:activity-compose:${Versions.Dependencies.Compose.activity}"
+        const val coil = "io.coil-kt:coil-compose:${Versions.Dependencies.Compose.coil}"
         const val foundation = "androidx.compose.foundation:foundation:${Versions.Dependencies.Compose.core}"
         const val material = "androidx.compose.material:material:${Versions.Dependencies.Compose.core}"
         const val materialDesignIconsCore = "androidx.compose.material:material-icons-core:${Versions.Dependencies.Compose.core}"

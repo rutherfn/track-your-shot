@@ -21,10 +21,9 @@ object Versions {
             const val core = "4.3.1"
         }
 
-        object Coil { const val core = "2.2.2" }
-
         object Compose {
             const val activity = "1.5.1"
+            const val coil = "1.3.2"
             const val core = "1.2.1"
             const val navigation = "2.5.3"
             const val viewModel = "1.5.1"
