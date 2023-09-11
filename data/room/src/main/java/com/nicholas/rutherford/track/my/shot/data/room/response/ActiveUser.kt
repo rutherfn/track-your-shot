@@ -6,7 +6,8 @@ data class ActiveUser(
     val id: Int,
     val accountHasBeenCreated: Boolean,
     val email: String,
-    val username: String
+    val username: String,
+    val firebaseAccountInfoKey: String
 )
 
 fun ActiveUser.toActiveUserEntity(): ActiveUserEntity {
@@ -14,6 +15,7 @@ fun ActiveUser.toActiveUserEntity(): ActiveUserEntity {
         id = id,
         accountHasBeenCreated = accountHasBeenCreated,
         email = email,
-        username = username
+        username = username,
+        firebaseAccountInfoKey = firebaseAccountInfoKey
     )
 }

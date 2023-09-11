@@ -84,8 +84,9 @@ class AuthenticationViewModel(
                     createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(
                         userName = usernameArgument,
                         email = emailArgument
-                    ).collectLatest { isSuccessful ->
-                        if (isSuccessful) {
+                    ).collectLatest { response ->
+                        if (response.first) {
+                            println("here is the key ${response.second}")
                             activeUserRepository.updateActiveUser(
                                 activeUser = ActiveUser(
                                     id = Constants.ACTIVE_USER_ID,

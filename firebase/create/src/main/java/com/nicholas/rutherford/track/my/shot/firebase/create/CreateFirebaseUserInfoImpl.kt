@@ -48,7 +48,7 @@ class CreateFirebaseUserInfoImpl(
         }
     }
 
-    override fun attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName: String, email: String): Flow<Boolean> {
+    override fun attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName: String, email: String): Flow<Pair<Boolean, String?>> {
         return callbackFlow {
             val createAccountResult = CreateAccountFirebaseRealtimeDatabaseResult(username = userName, email = email)
             val values = hashMapOf<String, String>()
@@ -56,13 +56,17 @@ class CreateFirebaseUserInfoImpl(
             values[Constants.USERNAME] = createAccountResult.username
             values[Constants.EMAIL] = createAccountResult.email
 
-            userReference.child(Constants.ACCOUNT_INFO).push().setValue(values)
+            val pushReference = userReference.child(Constants.ACCOUNT_INFO).push()
+
+            pushReference.setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val currentDate = Date()
                         launch { createFirebaseLastUpdated.attemptToCreateLastUpdatedFlow(date = currentDate).collect() }
+                        trySend(Pair(task.isSuccessful, pushReference.key))
+                    } else {
+                        trySend(Pair(task.isSuccessful, null))
                     }
-                    trySend(task.isSuccessful)
                 }
             awaitClose()
         }
