@@ -42,6 +42,7 @@ class AuthenticationViewModelTest {
 
     private val username = activeUser.username
     private val email = activeUser.email
+    private val firebaseAccountInfoKey = activeUser.firebaseAccountInfoKey
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val dispatcher = StandardTestDispatcher()
@@ -84,7 +85,8 @@ class AuthenticationViewModelTest {
             id = 1,
             accountHasBeenCreated = false,
             username = username,
-            email = email
+            email = email,
+            firebaseAccountInfoKey = firebaseAccountInfoKey
         )
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -94,7 +96,7 @@ class AuthenticationViewModelTest {
 
             viewModel.attemptToCreateActiveUser(email = email, username = username)
 
-            coVerify(exactly = 0) { activeUserRepository.createActiveUser(activeUser = newActiveUser) }
+            coVerify(exactly = 0) { activeUserRepository.createActiveUser(activeUser = newActiveUser.copy(firebaseAccountInfoKey = null)) }
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -104,7 +106,7 @@ class AuthenticationViewModelTest {
 
             viewModel.attemptToCreateActiveUser(email = email, username = username)
 
-            coVerify { activeUserRepository.createActiveUser(activeUser = activeUser) }
+            coVerify { activeUserRepository.createActiveUser(activeUser = activeUser.copy(firebaseAccountInfoKey = null)) }
         }
     }
 
@@ -161,7 +163,7 @@ class AuthenticationViewModelTest {
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
-            } returns flowOf(value = false)
+            } returns flowOf(value = Pair(first = false, second = null))
 
             viewModel = AuthenticationViewModel(
                 readFirebaseUserInfo = readFirebaseUserInfo,
@@ -189,7 +191,7 @@ class AuthenticationViewModelTest {
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
-            } returns flowOf(value = true)
+            } returns flowOf(value = Pair(first = true, second = activeUser.firebaseAccountInfoKey))
 
             viewModel = AuthenticationViewModel(
                 readFirebaseUserInfo = readFirebaseUserInfo,
@@ -277,7 +279,7 @@ class AuthenticationViewModelTest {
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
-            } returns flowOf(value = false)
+            } returns flowOf(value = Pair(first = false, second = null))
 
             viewModel = AuthenticationViewModel(
                 readFirebaseUserInfo = readFirebaseUserInfo,
@@ -305,7 +307,7 @@ class AuthenticationViewModelTest {
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
-            } returns flowOf(value = true)
+            } returns flowOf(value = Pair(first = true, second = activeUser.firebaseAccountInfoKey))
 
             viewModel = AuthenticationViewModel(
                 readFirebaseUserInfo = readFirebaseUserInfo,
