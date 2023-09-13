@@ -119,7 +119,7 @@ class LoginViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when email is set to null should call email empty alert`() = runTest {
-            viewModel._loginStateFlow.value = LoginState(email = null, password = passwordTest)
+            viewModel.loginMutableStateFlow.value = LoginState(email = null, password = passwordTest)
 
             viewModel.onLoginButtonClicked()
 
@@ -129,7 +129,7 @@ class LoginViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when password is set to null should call password empty alert`() = runTest {
-            viewModel._loginStateFlow.value = LoginState(email = emailTest, password = null)
+            viewModel.loginMutableStateFlow.value = LoginState(email = emailTest, password = null)
 
             viewModel.onLoginButtonClicked()
 
@@ -139,7 +139,7 @@ class LoginViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when email is set to empty should call email empty alert`() = runTest {
-            viewModel._loginStateFlow.value = LoginState(email = "", password = passwordTest)
+            viewModel.loginMutableStateFlow.value = LoginState(email = "", password = passwordTest)
 
             viewModel.onLoginButtonClicked()
 
@@ -149,7 +149,7 @@ class LoginViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when password is set to empty should call password empty alert`() = runTest {
-            viewModel._loginStateFlow.value = LoginState(email = emailTest, password = "")
+            viewModel.loginMutableStateFlow.value = LoginState(email = emailTest, password = "")
 
             viewModel.onLoginButtonClicked()
 
@@ -161,7 +161,7 @@ class LoginViewModelTest {
         fun `when email and password has valid values and loginFlow returns back not successful should call unable to login to account alert`() = runTest {
             coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = false)
 
-            viewModel._loginStateFlow.value = LoginState(email = emailTest, password = passwordTest)
+            viewModel.loginMutableStateFlow.value = LoginState(email = emailTest, password = passwordTest)
 
             viewModel.onLoginButtonClicked()
 
@@ -175,7 +175,7 @@ class LoginViewModelTest {
         fun `when email and password has valid values and loginFlow returns back successful should call navigate to home`() = runTest {
             coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = true)
 
-            viewModel._loginStateFlow.value = LoginState(email = emailTest, password = passwordTest)
+            viewModel.loginMutableStateFlow.value = LoginState(email = emailTest, password = passwordTest)
 
             viewModel.onLoginButtonClicked()
 
