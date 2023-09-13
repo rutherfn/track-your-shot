@@ -111,28 +111,80 @@ class CreateFirebaseUserInfoImplTest {
             }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow when add on complete listener is executed should set flow to false when isSuccessful returns back false`() = runTest {
-        val mockTaskVoidResult = mockk<Task<Void>>()
-        val slot = slot<OnCompleteListener<Void>>()
+    @Nested
+    inner class AttemptToCreateFirebaseRealtimeDatabaseResponseFlow {
 
-        val values = hashMapOf<String, String>()
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when add on complete lisetener is executed should set flow to true and value Pair when isSucessful returns back true`() =
+            runTest {
+                val mockTaskVoidResult = mockk<Task<Void>>()
+                val slot = slot<OnCompleteListener<Void>>()
 
-        values[Constants.USERNAME] = createAccountResult.username
-        values[Constants.EMAIL] = createAccountResult.email
+                val values = hashMapOf<String, String>()
 
-        mockkStatic(Tasks::class)
+                values[Constants.USERNAME] = createAccountResult.username
+                values[Constants.EMAIL] = createAccountResult.email
 
-        every { mockTaskVoidResult.isSuccessful } returns false
+                mockkStatic(Tasks::class)
 
-        every { firebaseDatabase.getReference(Constants.USERS_PATH).child(Constants.ACCOUNT_INFO).push().setValue(values).addOnCompleteListener(capture(slot)) } answers {
-            slot.captured.onComplete(mockTaskVoidResult)
-            mockTaskVoidResult
-        }
+                every { mockTaskVoidResult.isSuccessful } returns true
 
-        val value = createFirebaseUserInfoImpl.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = createAccountResult.username, email = createAccountResult.email).first()
+                every {
+                    firebaseDatabase.getReference(Constants.USERS_PATH)
+                        .child(Constants.ACCOUNT_INFO).push().setValue(values)
+                        .addOnCompleteListener(capture(slot))
+                } answers {
+                    slot.captured.onComplete(mockTaskVoidResult)
+                    mockTaskVoidResult
+                }
 
-        Assertions.assertEquals(false, value)
+                val reference = firebaseDatabase.getReference(Constants.USERS_PATH)
+                    .child(Constants.ACCOUNT_INFO).push()
+
+                every { reference.setValue(values, any()) }
+
+                val value =
+                    createFirebaseUserInfoImpl.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(
+                        userName = createAccountResult.username,
+                        email = createAccountResult.email
+                    ).first()
+
+                Assertions.assertEquals(Pair(true, reference.key), value)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when add on complete listener is executed should set flow to false and null Pair when isSuccessful returns back false`() =
+            runTest {
+                val mockTaskVoidResult = mockk<Task<Void>>()
+                val slot = slot<OnCompleteListener<Void>>()
+
+                val values = hashMapOf<String, String>()
+
+                values[Constants.USERNAME] = createAccountResult.username
+                values[Constants.EMAIL] = createAccountResult.email
+
+                mockkStatic(Tasks::class)
+
+                every { mockTaskVoidResult.isSuccessful } returns false
+
+                every {
+                    firebaseDatabase.getReference(Constants.USERS_PATH)
+                        .child(Constants.ACCOUNT_INFO).push().setValue(values)
+                        .addOnCompleteListener(capture(slot))
+                } answers {
+                    slot.captured.onComplete(mockTaskVoidResult)
+                    mockTaskVoidResult
+                }
+
+                val value =
+                    createFirebaseUserInfoImpl.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(
+                        userName = createAccountResult.username,
+                        email = createAccountResult.email
+                    ).first()
+
+                Assertions.assertEquals(Pair(false, null), value)
+            }
     }
 }

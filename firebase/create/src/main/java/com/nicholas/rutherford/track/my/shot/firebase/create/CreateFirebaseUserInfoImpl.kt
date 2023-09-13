@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.Date
 
 class CreateFirebaseUserInfoImpl(
@@ -34,6 +35,7 @@ class CreateFirebaseUserInfoImpl(
                             )
                         )
                     } else {
+                        Timber.w(message = "Warning(attemptToCreateAccountFirebaseAuthResponseFlow) -> Creating account failed to create in Firebase Authentication")
                         trySend(
                             CreateAccountFirebaseAuthResponse(
                                 isSuccessful = false,
@@ -48,7 +50,7 @@ class CreateFirebaseUserInfoImpl(
         }
     }
 
-    override fun attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName: String, email: String): Flow<Boolean> {
+    override fun attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName: String, email: String): Flow<Pair<Boolean, String?>> {
         return callbackFlow {
             val createAccountResult = CreateAccountFirebaseRealtimeDatabaseResult(username = userName, email = email)
             val values = hashMapOf<String, String>()
@@ -56,13 +58,18 @@ class CreateFirebaseUserInfoImpl(
             values[Constants.USERNAME] = createAccountResult.username
             values[Constants.EMAIL] = createAccountResult.email
 
-            userReference.child(Constants.ACCOUNT_INFO).push().setValue(values)
+            val accountInfoReference = userReference.child(Constants.ACCOUNT_INFO).push()
+
+            accountInfoReference.setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val currentDate = Date()
                         launch { createFirebaseLastUpdated.attemptToCreateLastUpdatedFlow(date = currentDate).collect() }
+                        trySend(Pair(first = task.isSuccessful, second = accountInfoReference.key))
+                    } else {
+                        Timber.w(message = "Warning(attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow) -> Creating account failed to create in Firebase Realtime Database")
+                        trySend(Pair(first = false, second = null))
                     }
-                    trySend(task.isSuccessful)
                 }
             awaitClose()
         }
