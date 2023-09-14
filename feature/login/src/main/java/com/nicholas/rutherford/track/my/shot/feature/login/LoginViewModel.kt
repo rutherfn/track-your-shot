@@ -4,13 +4,13 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.my.shot.build.type.BuildType
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
-import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,76 +22,95 @@ class LoginViewModel(
     private val existingUserFirebase: ExistingUserFirebase,
     private val navigation: LoginNavigation,
     private val buildType: BuildType,
-    private val activeUserRepository: ActiveUserRepository,
-    private val userRepository: UserRepository
+    private val readFirebaseUserInfo: ReadFirebaseUserInfo,
+    private val activeUserRepository: ActiveUserRepository
 ) : ViewModel() {
 
-    internal val _loginStateFlow = MutableStateFlow(LoginState())
-    val loginStateFlow = _loginStateFlow.asStateFlow()
+    internal val loginMutableStateFlow = MutableStateFlow(LoginState())
+    val loginStateFlow = loginMutableStateFlow.asStateFlow()
 
     init {
         updateLauncherDrawableIdState()
     }
 
-    private fun updateLauncherDrawableIdState() {
+    internal fun updateLauncherDrawableIdState() {
         if (buildType.isDebug()) {
-            _loginStateFlow.value = _loginStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundTest)
+            loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundTest)
         } else if (buildType.isStage()) {
-            _loginStateFlow.value = _loginStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundStage)
+            loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundStage)
         } else if (buildType.isRelease()) {
-            _loginStateFlow.value = _loginStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRound)
+            loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRound)
         }
+    }
+
+    internal fun fieldsErrorAlert(email: String?, password: String?): Alert? {
+        if (email.isNullOrEmpty()) {
+            return emailEmptyAlert()
+        }
+
+        if (password.isNullOrEmpty()) {
+            return passwordEmptyAlert()
+        }
+
+        return null
     }
 
     suspend fun onLoginButtonClicked() {
-        loginStateFlow.value.email?.let { userEmail ->
-            loginStateFlow.value.password?.let { userPassword ->
-                if (userEmail.isEmpty()) {
-                    navigation.alert(alert = emailEmptyAlert())
-                } else if (userPassword.isEmpty()) {
-                    navigation.alert(alert = passwordEmptyAlert())
-                } else {
-                    navigation.enableProgress(progress = Progress(onDismissClicked = {}))
+        val email = loginStateFlow.value.email
+        val password = loginStateFlow.value.password
 
-                    existingUserFirebase.logInFlow(
-                        email = userEmail.filterNot { it.isWhitespace() },
-                        password = userPassword.filterNot { it.isWhitespace() }
-                    )
-                        .collectLatest { isSuccessful ->
-                            if (isSuccessful) {
-                                onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
-                                onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
-                                navigation.disableProgress()
-
-                                updateActiveUserFromLoggedInUser(email = userEmail)
-
-                                navigation.navigateToHome()
-                            } else {
-                                navigation.disableProgress()
-                                navigation.alert(alert = unableToLoginToAccountAlert())
-                            }
-                        }
-                }
-            } ?: run {
-                navigation.alert(alert = passwordEmptyAlert())
-            }
+        fieldsErrorAlert(email = email, password = password)?.let { alert ->
+            navigation.alert(alert = alert)
         } ?: run {
-            navigation.alert(alert = emailEmptyAlert())
+            attemptToLoginToAccount(email = email, password = password)
         }
     }
 
-    suspend fun updateActiveUserFromLoggedInUser(email: String) {
-        userRepository.fetchUserByEmail(email = email)?.let { user ->
-            if (activeUserRepository.fetchActiveUser() == null) {
-                activeUserRepository.createActiveUser(
-                    activeUser = ActiveUser(
-                        id = Constants.ACTIVE_USER_ID,
-                        accountHasBeenCreated = true,
-                        username = user.username,
-                        email = user.email
-                    )
-                )
+    internal suspend fun attemptToLoginToAccount(email: String?, password: String?) {
+        val emptyString = application.getString(StringsIds.empty)
+        val newEmail = email?.filterNot { it.isWhitespace() } ?: emptyString
+        val newPassword = password?.filterNot { it.isWhitespace() } ?: emptyString
+
+        navigation.enableProgress(progress = Progress(onDismissClicked = {}))
+
+        existingUserFirebase.logInFlow(
+            email = newEmail,
+            password = newPassword
+        )
+            .collectLatest { isSuccessful ->
+                if (isSuccessful) {
+                    onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
+                    onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
+
+                    readFirebaseUserInfo.getAccountInfoFlowByEmail(email = newEmail)
+                        .collectLatest { accountInfoRealtimeResponse ->
+                            accountInfoRealtimeResponse?.let { accountInfo ->
+                                updateActiveUserFromLoggedInUser(email = accountInfo.email, username = accountInfo.userName)
+                                navigation.disableProgress()
+                                navigation.navigateToHome()
+                            } ?: disableProgressAndShowUnableToLoginAlert()
+                        }
+                } else {
+                    disableProgressAndShowUnableToLoginAlert()
+                }
             }
+    }
+
+    internal suspend fun updateActiveUserFromLoggedInUser(email: String, username: String) {
+        readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email).collectLatest { key ->
+            key?.let { firebaseAccountInfoKey ->
+                if (activeUserRepository.fetchActiveUser() == null) {
+                    activeUserRepository.createActiveUser(
+                        activeUser = ActiveUser(
+                            id = Constants.ACTIVE_USER_ID,
+                            accountHasBeenCreated = true,
+                            username = username,
+                            email = email,
+                            firebaseAccountInfoKey = firebaseAccountInfoKey
+                        )
+                    )
+                }
+            } ?: disableProgressAndShowUnableToLoginAlert()
         }
     }
 
@@ -100,11 +119,11 @@ class LoginViewModel(
     fun onCreateAccountClicked() = navigation.navigateToCreateAccount()
 
     fun onEmailValueChanged(newEmail: String) {
-        _loginStateFlow.value = _loginStateFlow.value.copy(email = newEmail)
+        loginMutableStateFlow.value = loginMutableStateFlow.value.copy(email = newEmail)
     }
 
     fun onPasswordValueChanged(newPassword: String) {
-        _loginStateFlow.value = _loginStateFlow.value.copy(password = newPassword)
+        loginMutableStateFlow.value = loginMutableStateFlow.value.copy(password = newPassword)
     }
 
     internal fun emailEmptyAlert(): Alert {
@@ -129,6 +148,11 @@ class LoginViewModel(
             ),
             description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount)
         )
+    }
+
+    internal fun disableProgressAndShowUnableToLoginAlert() {
+        navigation.disableProgress()
+        navigation.alert(alert = unableToLoginToAccountAlert())
     }
 
     internal fun unableToLoginToAccountAlert(): Alert {

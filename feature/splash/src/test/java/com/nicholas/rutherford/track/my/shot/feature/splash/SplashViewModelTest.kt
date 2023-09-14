@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.feature.splash
 
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
-import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.my.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import io.mockk.coEvery
@@ -30,7 +29,6 @@ class SplashViewModelTest {
     internal var readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
 
     internal var activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
-    internal var userRepository = mockk<UserRepository>(relaxed = true)
 
     internal val delayTime = 4001L // needs 1 extra millisecond to account for function below call
 
@@ -46,8 +44,7 @@ class SplashViewModelTest {
         viewModel = SplashViewModel(
             navigation = navigation,
             readFirebaseUserInfo = readFirebaseUserInfo,
-            activeUserRepository = activeUserRepository,
-            userRepository = userRepository
+            activeUserRepository = activeUserRepository
         )
     }
 
@@ -83,8 +80,7 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        userRepository = userRepository
+                        activeUserRepository = activeUserRepository
                     )
 
                     viewModel.navigateToHomeLoginOrAuthentication()
@@ -114,8 +110,7 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        userRepository = userRepository
+                        activeUserRepository = activeUserRepository
                     )
 
                     viewModel.navigateToHomeLoginOrAuthentication()
@@ -140,8 +135,7 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        userRepository = userRepository
+                        activeUserRepository = activeUserRepository
                     )
 
                     viewModel.navigateToHomeLoginOrAuthentication()
@@ -170,8 +164,7 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        userRepository = userRepository
+                        activeUserRepository = activeUserRepository
                     )
 
                     viewModel.navigateToHomeLoginOrAuthentication()
@@ -205,8 +198,7 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        userRepository = userRepository
+                        activeUserRepository = activeUserRepository
                     )
 
                     viewModel.navigateToHomeLoginOrAuthentication()
@@ -231,8 +223,7 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        userRepository = userRepository
+                        activeUserRepository = activeUserRepository
                     )
 
                     viewModel.navigateToHomeLoginOrAuthentication()

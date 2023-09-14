@@ -9,7 +9,8 @@ class TestActiveUserEntity {
             id = ID,
             accountHasBeenCreated = ACCOUNT_HAS_BEEN_CREATED,
             email = EMAIL,
-            username = USERNAME
+            username = USERNAME,
+            firebaseAccountInfoKey = FIREBASE_ACCOUNT_INFO_KEY
         )
     }
 }
@@ -18,3 +19,4 @@ const val ID = Constants.ACTIVE_USER_ID
 const val ACCOUNT_HAS_BEEN_CREATED = false
 const val EMAIL = "unverifiedemail@test.org"
 const val USERNAME = "unverifiedUsername"
+const val FIREBASE_ACCOUNT_INFO_KEY = "-Ne4L6shsEBIH-zX9wld"

@@ -14,7 +14,9 @@ data class ActiveUserEntity(
     @ColumnInfo(name = "email")
     val email: String,
     @ColumnInfo(name = "username")
-    val username: String
+    val username: String,
+    @ColumnInfo(name = "firebaseAccountInfoKey")
+    val firebaseAccountInfoKey: String?
 )
 
 fun ActiveUserEntity.toActiveUser(): ActiveUser {
@@ -22,6 +24,7 @@ fun ActiveUserEntity.toActiveUser(): ActiveUser {
         id = id,
         accountHasBeenCreated = accountHasBeenCreated,
         email = email,
-        username = username
+        username = username,
+        firebaseAccountInfoKey = firebaseAccountInfoKey
     )
 }

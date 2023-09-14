@@ -67,6 +67,8 @@ dependencies {
     implementation(Dependencies.Firebase.bom)
     implementation(Dependencies.Firebase.databaseKtx)
 
+    implementation(Dependencies.Timber.core)
+
     testImplementation(Dependencies.Coroutine.test)
 
     testImplementation(Dependencies.Junit.Jupiter.api)

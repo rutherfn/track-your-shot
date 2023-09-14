@@ -72,12 +72,13 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":data:room")))
     androidTestImplementation(Dependencies.Compose.uiTestJunit4)
 
     api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
     api(project(path = ":compose:components"))
+    api(project(path = ":data:room"))
+    api(project(path = ":firebase:read"))
     api(project(path = ":firebase:util"))
     api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:constants"))
@@ -97,6 +98,9 @@ dependencies {
     testImplementation(Dependencies.Junit.junit)
 
     testImplementation(Dependencies.Mockk.core)
+
+    testImplementation(project(path = ":data-test:account-info"))
+    testImplementation(project(path = ":data-test:room"))
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }
