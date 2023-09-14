@@ -33,7 +33,7 @@ class LoginViewModel(
         updateLauncherDrawableIdState()
     }
 
-    private fun updateLauncherDrawableIdState() {
+    internal fun updateLauncherDrawableIdState() {
         if (buildType.isDebug()) {
             loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundTest)
         } else if (buildType.isStage()) {
@@ -43,7 +43,7 @@ class LoginViewModel(
         }
     }
 
-    private fun fieldsErrorAlert(email: String?, password: String?): Alert? {
+    internal fun fieldsErrorAlert(email: String?, password: String?): Alert? {
         if (email.isNullOrEmpty()) {
             return emailEmptyAlert()
         }
@@ -66,7 +66,7 @@ class LoginViewModel(
         }
     }
 
-    private suspend fun attemptToLoginToAccount(email: String?, password: String?) {
+    internal suspend fun attemptToLoginToAccount(email: String?, password: String?) {
         val emptyString = application.getString(StringsIds.empty)
         val newEmail = email?.filterNot { it.isWhitespace() } ?: emptyString
         val newPassword = password?.filterNot { it.isWhitespace() } ?: emptyString
@@ -79,7 +79,6 @@ class LoginViewModel(
         )
             .collectLatest { isSuccessful ->
                 if (isSuccessful) {
-
                     onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
                     onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
 
@@ -89,16 +88,16 @@ class LoginViewModel(
                                 updateActiveUserFromLoggedInUser(email = accountInfo.email, username = accountInfo.userName)
                                 navigation.disableProgress()
                                 navigation.navigateToHome()
-                            }
+                            } ?: disableProgressAndShowUnableToLoginAlert()
                         }
                 } else {
-                    dismissProgressAndShowUnableToLoginAlert()
+                    disableProgressAndShowUnableToLoginAlert()
                 }
             }
     }
 
-    suspend fun updateActiveUserFromLoggedInUser(email: String, username: String) {
-        readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email).collectLatest {key ->
+    internal suspend fun updateActiveUserFromLoggedInUser(email: String, username: String) {
+        readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email).collectLatest { key ->
             key?.let { firebaseAccountInfoKey ->
                 if (activeUserRepository.fetchActiveUser() == null) {
                     activeUserRepository.createActiveUser(
@@ -111,7 +110,7 @@ class LoginViewModel(
                         )
                     )
                 }
-            } ?: dismissProgressAndShowUnableToLoginAlert()
+            } ?: disableProgressAndShowUnableToLoginAlert()
         }
     }
 
@@ -151,7 +150,7 @@ class LoginViewModel(
         )
     }
 
-    internal fun dismissProgressAndShowUnableToLoginAlert() {
+    internal fun disableProgressAndShowUnableToLoginAlert() {
         navigation.disableProgress()
         navigation.alert(alert = unableToLoginToAccountAlert())
     }

@@ -99,5 +99,8 @@ dependencies {
 
     testImplementation(Dependencies.Mockk.core)
 
+    testImplementation(project(path = ":data-test:account-info"))
+    testImplementation(project(path = ":data-test:room"))
+
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }

@@ -3,11 +3,16 @@ package com.nicholas.rutherford.track.my.shot.feature.login
 import android.app.Application
 import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
-import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
+import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
+import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.TestAccountInfoRealTimeResponse
+import com.nicholas.rutherford.track.my.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
+import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,12 +32,16 @@ class LoginViewModelTest {
     private var navigation = mockk<LoginNavigation>(relaxed = true)
     private var application = mockk<Application>(relaxed = true)
 
+    private var readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
+
     private var activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
-    private var userRepository = mockk<UserRepository>(relaxed = true)
 
     private val debugVersionName = "debug"
     private val releaseVersionName = "release"
     private val stageVersionName = "stage"
+
+    private val emailTest = "newuser@yahoo.com"
+    private val passwordTest = "password1"
 
     private val buildTypeDebug = BuildTypeImpl(buildTypeValue = debugVersionName)
     private val buildTypeRelease = BuildTypeImpl(buildTypeValue = releaseVersionName)
@@ -47,8 +56,8 @@ class LoginViewModelTest {
             navigation = navigation,
             buildType = buildTypeDebug,
             application = application,
-            activeUserRepository = activeUserRepository,
-            userRepository = userRepository
+            readFirebaseUserInfo = readFirebaseUserInfo,
+            activeUserRepository = activeUserRepository
         )
     }
 
@@ -67,9 +76,11 @@ class LoginViewModelTest {
                 navigation = navigation,
                 buildType = buildTypeDebug,
                 application = application,
-                activeUserRepository = activeUserRepository,
-                userRepository = userRepository
+                readFirebaseUserInfo = readFirebaseUserInfo,
+                activeUserRepository = activeUserRepository
             )
+
+            viewModel.updateLauncherDrawableIdState()
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
@@ -83,9 +94,11 @@ class LoginViewModelTest {
                 navigation = navigation,
                 buildType = buildTypeStage,
                 application = application,
-                activeUserRepository = activeUserRepository,
-                userRepository = userRepository
+                readFirebaseUserInfo = readFirebaseUserInfo,
+                activeUserRepository = activeUserRepository
             )
+
+            viewModel.updateLauncherDrawableIdState()
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
@@ -99,9 +112,11 @@ class LoginViewModelTest {
                 navigation = navigation,
                 buildType = buildTypeRelease,
                 application = application,
-                activeUserRepository = activeUserRepository,
-                userRepository = userRepository
+                readFirebaseUserInfo = readFirebaseUserInfo,
+                activeUserRepository = activeUserRepository
             )
+
+            viewModel.updateLauncherDrawableIdState()
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
@@ -111,10 +126,51 @@ class LoginViewModelTest {
     }
 
     @Nested
-    inner class OnLoginButtonClicked {
+    inner class FieldsErrorAlert {
 
-        private val emailTest = "newuser@yahoo.com"
-        private val passwordTest = "password1"
+        @Test
+        fun `when email is null should return back email empty alert`() {
+            Assertions.assertEquals(
+                viewModel.fieldsErrorAlert(email = null, password = passwordTest),
+                viewModel.emailEmptyAlert()
+            )
+        }
+
+        @Test
+        fun `when email is empty should return back email empty alert`() {
+            Assertions.assertEquals(
+                viewModel.fieldsErrorAlert(email = "", password = passwordTest),
+                viewModel.emailEmptyAlert()
+            )
+        }
+
+        @Test
+        fun `when password is empty should return back password empty alert`() {
+            Assertions.assertEquals(
+                viewModel.fieldsErrorAlert(email = emailTest, password = ""),
+                viewModel.passwordEmptyAlert()
+            )
+        }
+
+        @Test
+        fun `when password is null should return back password empty alert`() {
+            Assertions.assertEquals(
+                viewModel.fieldsErrorAlert(email = emailTest, password = null),
+                viewModel.passwordEmptyAlert()
+            )
+        }
+
+        @Test
+        fun `when password or email is not null or empty should return back null`() {
+            Assertions.assertEquals(
+                viewModel.fieldsErrorAlert(email = emailTest, password = passwordTest),
+                null
+            )
+        }
+    }
+
+    @Nested
+    inner class OnLoginButtonClicked {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
@@ -173,7 +229,10 @@ class LoginViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when email and password has valid values and loginFlow returns back successful should call navigate to home`() = runTest {
+            val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create()
+
             coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = true)
+            coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = emailTest) } returns flowOf(value = accountInfoRealtimeResponse)
 
             viewModel.loginMutableStateFlow.value = LoginState(email = emailTest, password = passwordTest)
 
@@ -187,6 +246,111 @@ class LoginViewModelTest {
                 viewModel.loginStateFlow.value,
                 state.copy(email = "", password = "")
             )
+        }
+    }
+
+    @Nested
+    inner class AttemptToLoginToAccount {
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when login flow returns back as not successful should call unable to login alert`() = runTest {
+            coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = false)
+
+            viewModel.attemptToLoginToAccount(email = emailTest, password = passwordTest)
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { viewModel.disableProgressAndShowUnableToLoginAlert() }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when login flow returns back as sucessful but get account info flow by email returns back as null should call unable to login alert`() = runTest {
+            coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = true)
+            coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = emailTest) } returns flowOf(value = null)
+
+            viewModel.attemptToLoginToAccount(email = emailTest, password = passwordTest)
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { viewModel.disableProgressAndShowUnableToLoginAlert() }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when login flow returns back as sucessful and get account info flow by email returns back data should call navigate to home`() = runTest {
+            val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create().copy(email = emailTest)
+
+            coEvery { existingUserFirebase.logInFlow(email = accountInfoRealtimeResponse.email, password = passwordTest) } returns flowOf(value = true)
+            coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = accountInfoRealtimeResponse)
+
+            viewModel.attemptToLoginToAccount(email = accountInfoRealtimeResponse.email, password = passwordTest)
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.navigateToHome() }
+        }
+    }
+
+    @Nested
+    inner class UpdateActiveUserFromLoggedInUser {
+        private val key = "testKey"
+        private val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create().copy(email = emailTest)
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when get account info flow key by email returns back null should call disableProgressAndShowUnableToLoginAlert`() = runTest {
+            coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = null)
+
+            viewModel.updateActiveUserFromLoggedInUser(
+                email = accountInfoRealtimeResponse.email,
+                username = accountInfoRealtimeResponse.userName
+            )
+
+            verify { viewModel.disableProgressAndShowUnableToLoginAlert() }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when get account info flow key by email returns back data and fetch active user is not set to null should not call create active user`() = runTest {
+            val activeUser = TestActiveUser().create()
+
+            coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = key)
+            coEvery { activeUserRepository.fetchActiveUser() } returns activeUser
+
+            viewModel.updateActiveUserFromLoggedInUser(
+                email = accountInfoRealtimeResponse.email,
+                username = accountInfoRealtimeResponse.userName
+            )
+
+            coVerify(exactly = 0) {
+                activeUserRepository.createActiveUser(
+                    activeUser = any()
+                )
+            }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when get account info flow key by email returns back data and fetch active user is set to null should call create active user`() = runTest {
+            coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = key)
+            coEvery { activeUserRepository.fetchActiveUser() } returns null
+
+            viewModel.updateActiveUserFromLoggedInUser(
+                email = accountInfoRealtimeResponse.email,
+                username = accountInfoRealtimeResponse.userName
+            )
+
+            coVerify {
+                activeUserRepository.createActiveUser(
+                    activeUser = ActiveUser(
+                        id = Constants.ACTIVE_USER_ID,
+                        accountHasBeenCreated = true,
+                        username = accountInfoRealtimeResponse.userName,
+                        email = accountInfoRealtimeResponse.email,
+                        firebaseAccountInfoKey = key
+                    )
+                )
+            }
         }
     }
 
@@ -254,6 +418,14 @@ class LoginViewModelTest {
             viewModel.passwordEmptyAlert().dismissButton!!.buttonText,
             application.getString(StringsIds.gotIt)
         )
+    }
+
+    @Test
+    fun `disableProgressAndShowUnableToLoginAlert should call disable progress and unable to login alert`() {
+        viewModel.disableProgressAndShowUnableToLoginAlert()
+
+        verify { navigation.disableProgress() }
+        verify { navigation.alert(alert = viewModel.unableToLoginToAccountAlert()) }
     }
 
     @Test
