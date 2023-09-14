@@ -150,7 +150,6 @@ class AppModule {
                 navigation = get(),
                 readFirebaseUserInfo = get(),
                 activeUserRepository = get(),
-                userRepository = get()
             )
         }
         viewModel {
@@ -159,8 +158,8 @@ class AppModule {
                 existingUserFirebase = get(),
                 navigation = get(),
                 buildType = get(),
-                activeUserRepository = get(),
-                userRepository = get()
+                readFirebaseUserInfo = get(),
+                activeUserRepository = get()
             )
         }
         viewModel {
