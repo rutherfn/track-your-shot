@@ -20,6 +20,8 @@ import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPassw
 import com.nicholas.rutherford.track.my.shot.feature.home.HomeScreen
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreenParams
+import com.nicholas.rutherford.track.my.shot.feature.players.PlayersListScreen
+import com.nicholas.rutherford.track.my.shot.feature.players.PlayersListScreenParams
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.my.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
@@ -150,6 +152,9 @@ fun NavigationComponent(
         }
         composable(route = NavigationDestinations.HOME_SCREEN) {
             HomeScreen(viewModel = viewModels.homeViewModel)
+        }
+        composable(route = NavigationDestinations.PLAYERS_LIST_SCREEN) {
+            PlayersListScreen(playerListScreenParams = PlayersListScreenParams(state = viewModels.playersListViewModel.playerListStateFlow.collectAsState().value))
         }
         composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {
             ForgotPasswordScreen(

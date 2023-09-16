@@ -75,6 +75,7 @@ dependencies {
     api(project(path = ":helper:constants"))
     api(project(path = ":navigation"))
 
+    implementation(Dependencies.Compose.coil)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
 
