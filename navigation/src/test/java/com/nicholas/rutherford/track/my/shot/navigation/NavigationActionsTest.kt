@@ -76,6 +76,20 @@ class NavigationActionsTest {
                 )
             }
 
+            @Test fun playersList() {
+                Assertions.assertEquals(
+                    Actions.LoginScreen.playersList().destination,
+                    NavigationDestinations.PLAYERS_LIST_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.LoginScreen.playersList().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(0, true)
+                        .setLaunchSingleTop(true)
+                        .build()
+                )
+            }
+
             @Test fun createAccount() {
                 Assertions.assertEquals(
                     Actions.LoginScreen.createAccount().destination,
