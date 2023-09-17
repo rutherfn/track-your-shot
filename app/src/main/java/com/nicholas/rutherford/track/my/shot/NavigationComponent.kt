@@ -129,8 +129,8 @@ fun NavigationComponent(
         startDestination = NavigationDestinations.SPLASH_SCREEN
     ) {
         composable(route = NavigationDestinations.SPLASH_SCREEN) {
-            SplashScreen(navigateToHomeLoginOrAuthentication = {
-                viewModels.splashViewModel.navigateToHomeLoginOrAuthentication()
+            SplashScreen(navigateToPlayersListLoginOrAuthentication = {
+                viewModels.splashViewModel.navigateToPlayersListLoginOrAuthentication()
             })
         }
         composable(route = NavigationDestinations.LOGIN_SCREEN) {

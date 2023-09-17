@@ -17,7 +17,7 @@ class SplashViewModel(
     private val activeUserRepository: ActiveUserRepository
 ) : ViewModel() {
 
-    fun navigateToHomeLoginOrAuthentication() {
+    fun navigateToPlayersListLoginOrAuthentication() {
         viewModelScope.launch {
             combine(
                 readFirebaseUserInfo.isEmailVerifiedFlow(),
@@ -27,7 +27,7 @@ class SplashViewModel(
 
                 if (isLoggedIn) {
                     if (isEmailVerified && activeUser != null && activeUser.accountHasBeenCreated) {
-                        delayAndNavigateToHomeOrLogin(isLoggedIn = true, email = activeUser.email)
+                        delayAndNavigateToPlayersListOrLogin(isLoggedIn = true, email = activeUser.email)
                     } else {
                         activeUser?.let { user ->
                             delayAndNavigateToAuthentication(
@@ -37,15 +37,15 @@ class SplashViewModel(
                         }
                     }
                 } else {
-                    delayAndNavigateToHomeOrLogin(isLoggedIn = false, email = activeUser?.email)
+                    delayAndNavigateToPlayersListOrLogin(isLoggedIn = false, email = activeUser?.email)
                 }
             }.collectLatest { }
         }
     }
 
-    private suspend fun delayAndNavigateToHomeOrLogin(isLoggedIn: Boolean, email: String?) {
+    private suspend fun delayAndNavigateToPlayersListOrLogin(isLoggedIn: Boolean, email: String?) {
         delay(timeMillis = SPLASH_DELAY_IN_MILLIS)
-        navigateToLoginOrHome(isLoggedIn = isLoggedIn, email = email)
+        navigateToLoginOrPlayersList(isLoggedIn = isLoggedIn, email = email)
     }
 
     private suspend fun delayAndNavigateToAuthentication(username: String, email: String) {
@@ -56,10 +56,10 @@ class SplashViewModel(
         )
     }
 
-    private fun navigateToLoginOrHome(isLoggedIn: Boolean, email: String?) {
+    private fun navigateToLoginOrPlayersList(isLoggedIn: Boolean, email: String?) {
         if (isLoggedIn) {
             email?.let {
-                navigation.navigateToHome()
+                navigation.navigateToPlayersList()
             } ?: navigation.navigateToLogin()
         } else {
             navigation.navigateToLogin()

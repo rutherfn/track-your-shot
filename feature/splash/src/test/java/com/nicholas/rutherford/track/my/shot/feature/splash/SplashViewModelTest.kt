@@ -83,7 +83,7 @@ class SplashViewModelTest {
                         activeUserRepository = activeUserRepository
                     )
 
-                    viewModel.navigateToHomeLoginOrAuthentication()
+                    viewModel.navigateToPlayersListLoginOrAuthentication()
 
                     delay(delayTime)
 
@@ -113,7 +113,7 @@ class SplashViewModelTest {
                         activeUserRepository = activeUserRepository
                     )
 
-                    viewModel.navigateToHomeLoginOrAuthentication()
+                    viewModel.navigateToPlayersListLoginOrAuthentication()
 
                     delay(delayTime)
 
@@ -138,7 +138,7 @@ class SplashViewModelTest {
                         activeUserRepository = activeUserRepository
                     )
 
-                    viewModel.navigateToHomeLoginOrAuthentication()
+                    viewModel.navigateToPlayersListLoginOrAuthentication()
 
                     delay(delayTime)
 
@@ -167,7 +167,7 @@ class SplashViewModelTest {
                         activeUserRepository = activeUserRepository
                     )
 
-                    viewModel.navigateToHomeLoginOrAuthentication()
+                    viewModel.navigateToPlayersListLoginOrAuthentication()
 
                     delay(delayTime)
 
@@ -181,7 +181,7 @@ class SplashViewModelTest {
         }
 
         @Nested
-        inner class NavigateToHomeOrLogin {
+        inner class NavigateToPlayersListOrLogin {
 
             @OptIn(ExperimentalCoroutinesApi::class)
             @Test
@@ -201,7 +201,7 @@ class SplashViewModelTest {
                         activeUserRepository = activeUserRepository
                     )
 
-                    viewModel.navigateToHomeLoginOrAuthentication()
+                    viewModel.navigateToPlayersListLoginOrAuthentication()
 
                     delay(delayTime)
 
@@ -210,7 +210,7 @@ class SplashViewModelTest {
 
             @OptIn(ExperimentalCoroutinesApi::class)
             @Test
-            fun `should delay for 4 seconds and verifies it calls navigateToHome when isLoggedIn is set to true`() =
+            fun `should delay for 4 seconds and verifies it calls navigateToPlayersList when isLoggedIn is set to true`() =
                 runTest {
                     every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(true)
                     every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(true)
@@ -226,11 +226,11 @@ class SplashViewModelTest {
                         activeUserRepository = activeUserRepository
                     )
 
-                    viewModel.navigateToHomeLoginOrAuthentication()
+                    viewModel.navigateToPlayersListLoginOrAuthentication()
 
                     delay(delayTime)
 
-                    coVerify { navigation.navigateToHome() }
+                    coVerify { navigation.navigateToPlayersList() }
                 }
         }
     }
