@@ -44,7 +44,8 @@ class ReadFirebaseUserInfoImpl(
                             if (snapshot.children.count() == 1) {
                                 snapshot.children.map { child ->
                                     accountInfoRealTimeResponse = child.getValue(
-                                        AccountInfoRealtimeResponse::class.java)
+                                        AccountInfoRealtimeResponse::class.java
+                                    )
                                 }
                                 trySend(element = accountInfoRealTimeResponse)
                             } else {

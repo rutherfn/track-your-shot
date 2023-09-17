@@ -7,7 +7,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountFirebaseAuthResponse
-import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.TestCreateAccountFirebaseRealtimeDatabaseResult
+import com.nicholas.rutherford.track.my.shot.firebase.realtime.TestCreateAccountFirebaseRealtimeDatabaseResult
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
