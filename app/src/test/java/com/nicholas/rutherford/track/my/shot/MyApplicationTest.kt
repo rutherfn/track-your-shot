@@ -50,7 +50,6 @@ class MyApplicationTest : KoinTest {
     private val forgotPasswordNavigation: ForgotPasswordNavigation by inject()
     private val createAccountNavigation: CreateAccountNavigation by inject()
     private val authenticationNavigation: AuthenticationNavigation by inject()
-    private val homeNavigation: HomeNavigation by inject()
 
     private val mainActivityViewModel: MainActivityViewModel by inject()
     private val loginViewModel: LoginViewModel by inject()
@@ -99,7 +98,6 @@ class MyApplicationTest : KoinTest {
         assertNotNull(forgotPasswordNavigation)
         assertNotNull(createAccountNavigation)
         assertNotNull(authenticationNavigation)
-        assertNotNull(homeNavigation)
 
         assertNotNull(mainActivityViewModel)
         assertNotNull(loginViewModel)
