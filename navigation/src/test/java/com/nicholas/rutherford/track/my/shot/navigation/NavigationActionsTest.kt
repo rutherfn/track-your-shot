@@ -32,6 +32,20 @@ class NavigationActionsTest {
             }
 
             @Test
+            fun playersList() {
+                Assertions.assertEquals(
+                    Actions.SplashScreen.playersList().destination,
+                    NavigationDestinations.PLAYERS_LIST_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.SplashScreen.playersList().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(0, true)
+                        .build()
+                )
+            }
+
+            @Test
             fun login() {
                 Assertions.assertEquals(
                     Actions.SplashScreen.login().destination,

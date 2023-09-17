@@ -66,6 +66,8 @@ android {
 }
 
 dependencies {
+    api(project(path = ":helper:constants"))
+
     androidTestImplementation(Dependencies.Junit.ext)
     androidTestImplementation(Dependencies.CoreTesting.core)
     androidTestImplementation(Dependencies.Espresso.core)
@@ -74,6 +76,7 @@ dependencies {
     implementation(Dependencies.Room.ktx)
     implementation(Dependencies.Room.runtime)
     implementation(Dependencies.Room.coroutines)
+
     kapt(Dependencies.Room.compiler)
 
     testImplementation(Dependencies.Junit.core)

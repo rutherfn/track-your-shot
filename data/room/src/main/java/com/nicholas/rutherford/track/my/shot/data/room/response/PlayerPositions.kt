@@ -2,7 +2,6 @@ package com.nicholas.rutherford.track.my.shot.data.room.response
 
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 
-
 sealed class PlayerPositions(val value: Int) {
     object PointGuard : PlayerPositions(value = Constants.POINT_GUARD_VALUE)
     object ShootingGuard : PlayerPositions(value = Constants.SHOOTING_GUARD_VALUE)

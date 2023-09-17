@@ -6,13 +6,3 @@ data class Player(
     val position: PlayerPositions,
     val imageUrl: String?
 )
-
-fun Player.toPlayerEntity(): PlayerEntity {
-    return PlayerEntity(
-        id = 0,
-        firstName = firstName,
-        lastName = lastName,
-        position = position,
-        imageUrl = imageUrl
-    )
-}
