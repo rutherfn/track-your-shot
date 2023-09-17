@@ -132,6 +132,7 @@ class NavigationActionsTest {
                     Actions.AuthenticationScreen.playersList().navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
+                        .setLaunchSingleTop(true)
                         .build()
                 )
             }
