@@ -81,13 +81,10 @@ class LoginViewModel(
                 if (isSuccessful) {
                     onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
                     onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
-
                     readFirebaseUserInfo.getAccountInfoFlowByEmail(email = newEmail)
                         .collectLatest { accountInfoRealtimeResponse ->
                             accountInfoRealtimeResponse?.let { accountInfo ->
                                 updateActiveUserFromLoggedInUser(email = accountInfo.email, username = accountInfo.userName)
-                                navigation.disableProgress()
-                                navigation.navigateToPlayersList()
                             } ?: disableProgressAndShowUnableToLoginAlert()
                         }
                 } else {
@@ -109,6 +106,10 @@ class LoginViewModel(
                             firebaseAccountInfoKey = firebaseAccountInfoKey
                         )
                     )
+                    navigation.disableProgress()
+                    navigation.navigateToPlayersList()
+                } else {
+                    disableProgressAndShowUnableToLoginAlert()
                 }
             } ?: disableProgressAndShowUnableToLoginAlert()
         }

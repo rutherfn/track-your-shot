@@ -137,9 +137,6 @@ class AppModule {
         single<AuthenticationNavigation> {
             AuthenticationNavigationImpl(navigator = get())
         }
-        single<HomeNavigation> {
-            HomeNavigationImpl(navigator = get())
-        }
         viewModel {
             MainActivityViewModel(appCenter = get())
         }
