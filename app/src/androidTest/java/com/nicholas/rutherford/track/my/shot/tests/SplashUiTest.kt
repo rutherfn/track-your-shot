@@ -7,13 +7,11 @@ import com.nicholas.rutherford.track.my.shot.MainActivity
 import com.nicholas.rutherford.track.my.shot.TestUtil
 import com.nicholas.rutherford.track.my.shot.fakes.FakeReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.fakes.FakeReadSharedPreferences
-import com.nicholas.rutherford.track.my.shot.feature.home.HomeTags
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.robots.AuthenticationRobot
 import com.nicholas.rutherford.track.my.shot.robots.LoginRobot
 import com.nicholas.rutherford.track.my.shot.robots.SplashRobot
 import com.nicholas.rutherford.track.my.shot.shared.preference.read.ReadSharedPreferences
-import com.nicholas.rutherford.track.myshot.compose.content.test.rule.verifyTagIsDisplayed
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -60,7 +58,6 @@ class SplashUiTest {
         splashRobot.verifySplashImageIsDisplayed()
 
         // todo verify home content once created
-        composeRule.verifyTagIsDisplayed(testTag = HomeTags.TEST_BUTTON)
     }
 
     @Test

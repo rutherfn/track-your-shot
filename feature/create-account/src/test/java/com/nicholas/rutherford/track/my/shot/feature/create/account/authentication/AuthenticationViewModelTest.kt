@@ -186,7 +186,7 @@ class AuthenticationViewModelTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back successful should navigate to home`() = runTest {
+        fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back successful should navigate to players list`() = runTest {
             every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
@@ -210,7 +210,7 @@ class AuthenticationViewModelTest {
             verify { navigation.enableProgress(progress = any()) }
             coVerify { activeUserRepository.updateActiveUser(activeUser = activeUser.copy(accountHasBeenCreated = true)) }
             verify { navigation.disableProgress() }
-            verify { navigation.navigateToHome() }
+            verify { navigation.navigateToPlayersList() }
         }
     }
 
@@ -302,7 +302,7 @@ class AuthenticationViewModelTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back successful should navigate to home`() = runTest {
+        fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back successful should navigate to players list`() = runTest {
             every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
@@ -325,7 +325,7 @@ class AuthenticationViewModelTest {
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
-            verify { navigation.navigateToHome() }
+            verify { navigation.navigateToPlayersList() }
         }
     }
 

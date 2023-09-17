@@ -150,9 +150,6 @@ fun NavigationComponent(
                 )
             )
         }
-        composable(route = NavigationDestinations.HOME_SCREEN) {
-            HomeScreen(viewModel = viewModels.homeViewModel)
-        }
         composable(route = NavigationDestinations.PLAYERS_LIST_SCREEN) {
             PlayersListScreen(playerListScreenParams = PlayersListScreenParams(state = viewModels.playersListViewModel.playerListStateFlow.collectAsState().value))
         }

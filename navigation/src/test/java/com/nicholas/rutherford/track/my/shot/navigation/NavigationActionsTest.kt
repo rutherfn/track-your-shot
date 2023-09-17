@@ -18,20 +18,6 @@ class NavigationActionsTest {
         inner class SplashScreen {
 
             @Test
-            fun home() {
-                Assertions.assertEquals(
-                    Actions.SplashScreen.home().destination,
-                    NavigationDestinations.HOME_SCREEN
-                )
-                Assertions.assertEquals(
-                    Actions.SplashScreen.home().navOptions,
-                    NavOptions.Builder()
-                        .setPopUpTo(0, true)
-                        .build()
-                )
-            }
-
-            @Test
             fun playersList() {
                 Assertions.assertEquals(
                     Actions.SplashScreen.playersList().destination,
@@ -75,20 +61,6 @@ class NavigationActionsTest {
         }
 
         @Nested inner class LoginScreen {
-
-            @Test fun home() {
-                Assertions.assertEquals(
-                    Actions.LoginScreen.home().destination,
-                    NavigationDestinations.HOME_SCREEN
-                )
-                Assertions.assertEquals(
-                    Actions.LoginScreen.home().navOptions,
-                    NavOptions.Builder()
-                        .setPopUpTo(0, true)
-                        .setLaunchSingleTop(true)
-                        .build()
-                )
-            }
 
             @Test fun playersList() {
                 Assertions.assertEquals(
@@ -148,18 +120,18 @@ class NavigationActionsTest {
         }
 
         @Nested
-        inner class HomeScreen {
+        inner class AuthenticationScreen {
 
             @Test
-            fun login() {
+            fun playersList() {
                 Assertions.assertEquals(
-                    Actions.HomeScreen.login().destination,
-                    NavigationDestinations.LOGIN_SCREEN
+                    Actions.AuthenticationScreen.playersList().destination,
+                    NavigationDestinations.PLAYERS_LIST_SCREEN
                 )
                 Assertions.assertEquals(
-                    Actions.HomeScreen.login().navOptions,
+                    Actions.AuthenticationScreen.playersList().navOptions,
                     NavOptions.Builder()
-                        .setPopUpTo(0, false)
+                        .setPopUpTo(0, true)
                         .build()
                 )
             }

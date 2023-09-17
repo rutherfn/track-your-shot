@@ -7,8 +7,8 @@ import androidx.test.core.app.ApplicationProvider
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordViewModel
-import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
+import com.nicholas.rutherford.track.my.shot.feature.players.PlayersListViewModel
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 import org.koin.android.ext.koin.androidContext
@@ -45,8 +45,8 @@ class TestUtil(private val composeRule: ComposeContentTestRule) {
 
             val splashViewModel = get<SplashViewModel>()
             val loginViewModel = get<LoginViewModel>()
-            val homeViewModel = get<HomeViewModel>()
             val forgotPasswordViewModel = get<ForgotPasswordViewModel>()
+            val playersListViewModel = get<PlayersListViewModel>()
             val createAccountViewModel = get<CreateAccountViewModel>()
             val authenticationViewModel = get<AuthenticationViewModel>()
 
@@ -57,9 +57,9 @@ class TestUtil(private val composeRule: ComposeContentTestRule) {
                 viewModels = ViewModels(
                     splashViewModel = splashViewModel,
                     loginViewModel = loginViewModel,
-                    homeViewModel = homeViewModel,
                     forgotPasswordViewModel = forgotPasswordViewModel,
                     createAccountViewModel = createAccountViewModel,
+                    playersListViewModel = playersListViewModel,
                     authenticationViewModel = authenticationViewModel
                 )
             )

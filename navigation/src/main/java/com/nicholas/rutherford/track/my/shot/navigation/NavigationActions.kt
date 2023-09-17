@@ -59,21 +59,11 @@ object NavigationActions {
 
     object AuthenticationScreen {
 
-        fun home() = object : NavigationAction {
-            override val destination = NavigationDestinations.HOME_SCREEN
+        fun playersList() = object : NavigationAction {
+            override val destination = NavigationDestinations.PLAYERS_LIST_SCREEN
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(0, true)
                 .setLaunchSingleTop(true)
-                .build()
-        }
-    }
-
-    object HomeScreen {
-
-        fun login() = object : NavigationAction {
-            override val destination = NavigationDestinations.LOGIN_SCREEN
-            override val navOptions = NavOptions.Builder()
-                .setPopUpTo(0, false)
                 .build()
         }
     }

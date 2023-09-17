@@ -23,7 +23,6 @@ open class MainActivity : ComponentActivity() {
                 viewModels = ViewModels(
                     splashViewModel = getViewModel(),
                     loginViewModel = getViewModel(),
-                    homeViewModel = getViewModel(),
                     playersListViewModel = getViewModel(),
                     forgotPasswordViewModel = getViewModel(),
                     createAccountViewModel = getViewModel(),
