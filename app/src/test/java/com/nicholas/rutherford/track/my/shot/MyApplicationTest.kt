@@ -8,8 +8,6 @@ import com.nicholas.rutherford.track.my.shot.feature.create.account.authenticati
 import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountNavigation
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordNavigation
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordViewModel
-import com.nicholas.rutherford.track.my.shot.feature.home.HomeNavigation
-import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashNavigation
@@ -52,11 +50,9 @@ class MyApplicationTest : KoinTest {
     private val forgotPasswordNavigation: ForgotPasswordNavigation by inject()
     private val createAccountNavigation: CreateAccountNavigation by inject()
     private val authenticationNavigation: AuthenticationNavigation by inject()
-    private val homeNavigation: HomeNavigation by inject()
 
     private val mainActivityViewModel: MainActivityViewModel by inject()
     private val loginViewModel: LoginViewModel by inject()
-    private val homeViewModel: HomeViewModel by inject()
     private val forgotPasswordViewModel: ForgotPasswordViewModel by inject()
 
     private val myApplication = MyApplication()
@@ -102,11 +98,9 @@ class MyApplicationTest : KoinTest {
         assertNotNull(forgotPasswordNavigation)
         assertNotNull(createAccountNavigation)
         assertNotNull(authenticationNavigation)
-        assertNotNull(homeNavigation)
 
         assertNotNull(mainActivityViewModel)
         assertNotNull(loginViewModel)
-        assertNotNull(homeViewModel)
         assertNotNull(forgotPasswordViewModel)
 
         // todo figure out a way to mock shared preferences in classes that it gets used

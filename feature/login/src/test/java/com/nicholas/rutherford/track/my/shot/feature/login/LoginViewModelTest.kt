@@ -43,6 +43,8 @@ class LoginViewModelTest {
     private val emailTest = "newuser@yahoo.com"
     private val passwordTest = "password1"
 
+    private val key = "testKey"
+
     private val buildTypeDebug = BuildTypeImpl(buildTypeValue = debugVersionName)
     private val buildTypeRelease = BuildTypeImpl(buildTypeValue = releaseVersionName)
     private val buildTypeStage = BuildTypeImpl(buildTypeValue = stageVersionName)
@@ -221,31 +223,7 @@ class LoginViewModelTest {
 
             viewModel.onLoginButtonClicked()
 
-            verify { navigation.enableProgress(progress = any()) }
-            verify { navigation.disableProgress() }
             verify { navigation.alert(alert = viewModel.unableToLoginToAccountAlert()) }
-        }
-
-        @OptIn(ExperimentalCoroutinesApi::class)
-        @Test
-        fun `when email and password has valid values and loginFlow returns back successful should call navigate to home`() = runTest {
-            val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create()
-
-            coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = true)
-            coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = emailTest) } returns flowOf(value = accountInfoRealtimeResponse)
-
-            viewModel.loginMutableStateFlow.value = LoginState(email = emailTest, password = passwordTest)
-
-            viewModel.onLoginButtonClicked()
-
-            verify { navigation.enableProgress(progress = any()) }
-            verify { navigation.disableProgress() }
-            verify { navigation.navigateToHome() }
-
-            Assertions.assertEquals(
-                viewModel.loginStateFlow.value,
-                state.copy(email = "", password = "")
-            )
         }
     }
 
@@ -265,7 +243,7 @@ class LoginViewModelTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when login flow returns back as sucessful but get account info flow by email returns back as null should call unable to login alert`() = runTest {
+        fun `when login flow returns back as successful but get account info flow by email returns back as null should call unable to login alert`() = runTest {
             coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = true)
             coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = emailTest) } returns flowOf(value = null)
 
@@ -274,26 +252,10 @@ class LoginViewModelTest {
             verify { navigation.enableProgress(progress = any()) }
             verify { viewModel.disableProgressAndShowUnableToLoginAlert() }
         }
-
-        @OptIn(ExperimentalCoroutinesApi::class)
-        @Test
-        fun `when login flow returns back as sucessful and get account info flow by email returns back data should call navigate to home`() = runTest {
-            val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create().copy(email = emailTest)
-
-            coEvery { existingUserFirebase.logInFlow(email = accountInfoRealtimeResponse.email, password = passwordTest) } returns flowOf(value = true)
-            coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = accountInfoRealtimeResponse)
-
-            viewModel.attemptToLoginToAccount(email = accountInfoRealtimeResponse.email, password = passwordTest)
-
-            verify { navigation.enableProgress(progress = any()) }
-            verify { navigation.disableProgress() }
-            verify { navigation.navigateToHome() }
-        }
     }
 
     @Nested
     inner class UpdateActiveUserFromLoggedInUser {
-        private val key = "testKey"
         private val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create().copy(email = emailTest)
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -327,6 +289,7 @@ class LoginViewModelTest {
                     activeUser = any()
                 )
             }
+            verify { viewModel.disableProgressAndShowUnableToLoginAlert() }
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -351,6 +314,8 @@ class LoginViewModelTest {
                     )
                 )
             }
+            verify { navigation.disableProgress() }
+            verify { navigation.navigateToPlayersList() }
         }
     }
 

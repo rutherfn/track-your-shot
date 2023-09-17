@@ -22,9 +22,6 @@ import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccoun
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordNavigation
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordViewModel
-import com.nicholas.rutherford.track.my.shot.feature.home.HomeNavigation
-import com.nicholas.rutherford.track.my.shot.feature.home.HomeNavigationImpl
-import com.nicholas.rutherford.track.my.shot.feature.home.HomeViewModel
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginNavigationImpl
 import com.nicholas.rutherford.track.my.shot.feature.login.LoginViewModel
@@ -140,9 +137,6 @@ class AppModule {
         single<AuthenticationNavigation> {
             AuthenticationNavigationImpl(navigator = get())
         }
-        single<HomeNavigation> {
-            HomeNavigationImpl(navigator = get())
-        }
         viewModel {
             MainActivityViewModel(appCenter = get())
         }
@@ -160,13 +154,6 @@ class AppModule {
                 navigation = get(),
                 buildType = get(),
                 readFirebaseUserInfo = get(),
-                activeUserRepository = get()
-            )
-        }
-        viewModel {
-            HomeViewModel(
-                navigation = get(),
-                existingUserFirebase = get(),
                 activeUserRepository = get()
             )
         }
