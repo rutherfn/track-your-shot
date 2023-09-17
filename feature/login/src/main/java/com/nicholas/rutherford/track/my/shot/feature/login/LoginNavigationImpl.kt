@@ -12,7 +12,7 @@ class LoginNavigationImpl(private val navigator: Navigator) : LoginNavigation {
 
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
 
-    override fun navigateToHome() = navigator.navigate(navigationAction = NavigationActions.LoginScreen.home())
+    override fun navigateToPlayersList() = navigator.navigate(navigationAction = NavigationActions.LoginScreen.playersList())
 
     override fun navigateToCreateAccount() = navigator.navigate(navigationAction = NavigationActions.LoginScreen.createAccount())
 

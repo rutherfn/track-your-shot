@@ -228,7 +228,7 @@ class LoginViewModelTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when email and password has valid values and loginFlow returns back successful should call navigate to home`() = runTest {
+        fun `when email and password has valid values and loginFlow returns back successful should call navigate to players list`() = runTest {
             val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create()
 
             coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = true)
@@ -240,7 +240,7 @@ class LoginViewModelTest {
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
-            verify { navigation.navigateToHome() }
+            verify { navigation.navigateToPlayersList() }
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
@@ -265,7 +265,7 @@ class LoginViewModelTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when login flow returns back as sucessful but get account info flow by email returns back as null should call unable to login alert`() = runTest {
+        fun `when login flow returns back as successful but get account info flow by email returns back as null should call unable to login alert`() = runTest {
             coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = true)
             coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = emailTest) } returns flowOf(value = null)
 
@@ -277,7 +277,7 @@ class LoginViewModelTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when login flow returns back as sucessful and get account info flow by email returns back data should call navigate to home`() = runTest {
+        fun `when login flow returns back as sucessful and get account info flow by email returns back data should call navigate to players list`() = runTest {
             val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create().copy(email = emailTest)
 
             coEvery { existingUserFirebase.logInFlow(email = accountInfoRealtimeResponse.email, password = passwordTest) } returns flowOf(value = true)
@@ -287,7 +287,7 @@ class LoginViewModelTest {
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
-            verify { navigation.navigateToHome() }
+            verify { navigation.navigateToPlayersList() }
         }
     }
 
