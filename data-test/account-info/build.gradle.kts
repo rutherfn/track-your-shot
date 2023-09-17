@@ -58,7 +58,7 @@ android {
 
     tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
-
 dependencies {
-    api(project(path = ":data:account-info"))
+    api(project(":data:firebase"))
 }
+

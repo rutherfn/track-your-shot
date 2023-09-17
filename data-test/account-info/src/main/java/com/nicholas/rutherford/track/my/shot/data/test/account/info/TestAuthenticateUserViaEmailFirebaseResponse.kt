@@ -1,6 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.data.test.account.info
 
-import com.nicholas.rutherford.track.my.shot.account.info.AuthenticateUserViaEmailFirebaseResponse
+import com.nicholas.rutherford.track.my.shot.firebase.AuthenticateUserViaEmailFirebaseResponse
 
 class TestAuthenticateUserViaEmailFirebaseResponse {
     fun create(): AuthenticateUserViaEmailFirebaseResponse {

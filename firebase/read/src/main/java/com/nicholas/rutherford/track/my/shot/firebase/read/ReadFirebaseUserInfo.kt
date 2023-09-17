@@ -1,6 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.firebase.read
 
-import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.firebase.realtime.AccountInfoRealtimeResponse
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 

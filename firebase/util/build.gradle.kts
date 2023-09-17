@@ -60,8 +60,8 @@ android {
 }
 
 dependencies {
-    api(project(path = ":data:account-info"))
 
+    api(project(":data:firebase"))
     implementation(Dependencies.Firebase.authKtx)
     implementation(Dependencies.Firebase.bom)
 

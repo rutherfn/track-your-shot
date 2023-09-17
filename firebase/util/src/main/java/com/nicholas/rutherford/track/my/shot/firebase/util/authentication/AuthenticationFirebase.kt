@@ -1,6 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.firebase.util.authentication
 
-import com.nicholas.rutherford.track.my.shot.account.info.AuthenticateUserViaEmailFirebaseResponse
+import com.nicholas.rutherford.track.my.shot.firebase.AuthenticateUserViaEmailFirebaseResponse
 import kotlinx.coroutines.flow.Flow
 
 interface AuthenticationFirebase {

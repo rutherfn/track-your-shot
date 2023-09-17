@@ -1,6 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime
 
-import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.firebase.realtime.AccountInfoRealtimeResponse
 
 class TestAccountInfoRealTimeResponse {
 
