@@ -3,9 +3,9 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account.authenticat
 import android.app.Application
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
-import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.my.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.my.shot.firebase.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
