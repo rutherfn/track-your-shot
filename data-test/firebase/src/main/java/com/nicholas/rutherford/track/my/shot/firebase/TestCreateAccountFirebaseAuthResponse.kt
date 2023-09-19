@@ -1,7 +1,5 @@
 package com.nicholas.rutherford.track.my.shot.firebase
 
-import com.nicholas.rutherford.track.my.shot.firebase.CreateAccountFirebaseAuthResponse
-
 class TestCreateAccountFirebaseAuthResponse {
     fun create(): CreateAccountFirebaseAuthResponse {
         return CreateAccountFirebaseAuthResponse(
