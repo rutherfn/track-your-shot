@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.firebase.CreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.my.shot.firebase.realtime.CreateAccountFirebaseRealtimeDatabaseResult
+import com.nicholas.rutherford.track.my.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -70,6 +71,33 @@ class CreateFirebaseUserInfoImpl(
                         Timber.w(message = "Warning(attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow) -> Creating account failed to create in Firebase Realtime Database")
                         trySend(Pair(first = false, second = null))
                     }
+                }
+            awaitClose()
+        }
+    }
+
+    override fun attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
+        key: String,
+        playerInfoRealtimeResponse: PlayerInfoRealtimeResponse
+    ): Flow<Boolean> {
+        return callbackFlow {
+            val userAccountInfoDatabaseReference =
+                userReference
+                    .child(Constants.ACCOUNT_INFO)
+                    .child(key)
+                    .child(Constants.PLAYERS)
+
+            val newPlayerReference = userAccountInfoDatabaseReference.push()
+            val values = hashMapOf<String, Any>()
+
+            values[Constants.FIRST_NAME] = playerInfoRealtimeResponse.firstName
+            values[Constants.LAST_NAME] = playerInfoRealtimeResponse.lastName
+            values[Constants.POSITION_VALUE] = playerInfoRealtimeResponse.positionValue
+            values[Constants.IMAGE_URL] = playerInfoRealtimeResponse.imageUrl
+
+            newPlayerReference.setValue(values)
+                .addOnCompleteListener { task ->
+                    trySend(task.isSuccessful)
                 }
             awaitClose()
         }
