@@ -7,6 +7,7 @@ object Constants {
     const val CENTER = 4
     const val CONTENT_LAST_UPDATED_PATH = "contentLastUpdated"
     const val EMAIL = "email"
+    const val FIREBASE_CHILDREN_COUNT_ZERO = 0L
     const val FIRST_NAME = "firstName"
     const val IMAGE_URL = "imageUrl"
     const val LAST_NAME = "lastName"
