@@ -6,8 +6,8 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountFirebaseAuthResponse
-import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.TestCreateAccountFirebaseRealtimeDatabaseResult
+import com.nicholas.rutherford.track.my.shot.firebase.TestCreateAccountFirebaseAuthResponse
+import com.nicholas.rutherford.track.my.shot.firebase.realtime.TestCreateAccountFirebaseRealtimeDatabaseResult
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
@@ -116,7 +116,7 @@ class CreateFirebaseUserInfoImplTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when add on complete lisetener is executed should set flow to true and value Pair when isSucessful returns back true`() =
+        fun `when add on complete listener is executed should set flow to true and value Pair when isSuccessful returns back true`() =
             runTest {
                 val mockTaskVoidResult = mockk<Task<Void>>()
                 val slot = slot<OnCompleteListener<Void>>()

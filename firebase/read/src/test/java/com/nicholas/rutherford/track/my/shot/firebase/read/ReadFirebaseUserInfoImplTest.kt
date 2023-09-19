@@ -8,8 +8,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRealtimeResponse
-import com.nicholas.rutherford.track.my.shot.data.test.account.info.realtime.TestAccountInfoRealTimeResponse
+import com.nicholas.rutherford.track.my.shot.firebase.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.firebase.realtime.TestAccountInfoRealTimeResponse
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk

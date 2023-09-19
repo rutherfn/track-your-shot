@@ -2,10 +2,10 @@ package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccou
 
 import android.app.Application
 import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
-import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestAuthenticateUserViaEmailFirebaseResponse
-import com.nicholas.rutherford.track.my.shot.data.test.account.info.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.my.shot.data.test.room.TestUser
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.my.shot.firebase.TestAuthenticateUserViaEmailFirebaseResponse
+import com.nicholas.rutherford.track.my.shot.firebase.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.helper.network.Network

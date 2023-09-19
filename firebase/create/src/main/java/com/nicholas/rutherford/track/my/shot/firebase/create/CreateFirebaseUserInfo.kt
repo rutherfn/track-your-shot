@@ -1,6 +1,6 @@
 package com.nicholas.rutherford.track.my.shot.firebase.create
 
-import com.nicholas.rutherford.track.my.shot.account.info.CreateAccountFirebaseAuthResponse
+import com.nicholas.rutherford.track.my.shot.firebase.CreateAccountFirebaseAuthResponse
 import kotlinx.coroutines.flow.Flow
 
 interface CreateFirebaseUserInfo {

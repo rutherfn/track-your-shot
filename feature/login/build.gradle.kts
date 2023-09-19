@@ -98,8 +98,8 @@ dependencies {
     testImplementation(Dependencies.Junit.junit)
 
     testImplementation(Dependencies.Mockk.core)
+    testImplementation(project(":data-test:firebase"))
 
-    testImplementation(project(path = ":data-test:account-info"))
     testImplementation(project(path = ":data-test:room"))
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)

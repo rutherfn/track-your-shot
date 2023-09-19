@@ -5,7 +5,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.nicholas.rutherford.track.my.shot.account.info.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.firebase.realtime.AccountInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -43,7 +43,9 @@ class ReadFirebaseUserInfoImpl(
                         if (snapshot.exists()) {
                             if (snapshot.children.count() == 1) {
                                 snapshot.children.map { child ->
-                                    accountInfoRealTimeResponse = child.getValue(AccountInfoRealtimeResponse::class.java)
+                                    accountInfoRealTimeResponse = child.getValue(
+                                        AccountInfoRealtimeResponse::class.java
+                                    )
                                 }
                                 trySend(element = accountInfoRealTimeResponse)
                             } else {
