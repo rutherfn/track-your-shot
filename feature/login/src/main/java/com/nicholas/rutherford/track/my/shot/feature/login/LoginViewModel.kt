@@ -141,7 +141,6 @@ class LoginViewModel(
         return Alert(
             title = application.getString(StringsIds.emptyField),
             dismissButton = AlertConfirmAndDismissButton(
-                onButtonClicked = {},
                 buttonText = application.getString(StringsIds.gotIt)
             ),
             description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount)
@@ -157,7 +156,6 @@ class LoginViewModel(
         return Alert(
             title = application.getString(StringsIds.unableToLoginToAccount),
             dismissButton = AlertConfirmAndDismissButton(
-                onButtonClicked = {},
                 buttonText = application.getString(StringsIds.gotIt)
             ),
             description = application.getString(StringsIds.havingTroubleLoggingIntoYourAccountPleaseTryAgainAndEnsureCredentialsExistAndAreValid)
