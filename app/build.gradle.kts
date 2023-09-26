@@ -4,6 +4,7 @@ plugins {
     id(BuildIds.kotlinKapt)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
     id(BuildIds.gmsGoogleServices)
+    id("org.jetbrains.kotlinx.kover")
 }
 
 android {
@@ -111,6 +112,8 @@ dependencies {
     api(project(path = ":helper:network"))
 
     debugImplementation(Dependencies.Compose.uiTestManifest)
+
+    kover(project(":feature:login"))
 
     implementation(Dependencies.Android.appCompat)
     implementation(Dependencies.Android.ktx)

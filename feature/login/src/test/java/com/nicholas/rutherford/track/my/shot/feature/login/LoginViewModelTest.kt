@@ -356,15 +356,19 @@ class LoginViewModelTest {
     @Test
     fun `emailEmptyAlert should have valid values`() {
         Assertions.assertEquals(
-            viewModel.emailEmptyAlert().title,
+            viewModel.passwordEmptyAlert().title,
             application.getString(StringsIds.emptyField)
         )
         Assertions.assertEquals(
-            viewModel.emailEmptyAlert().description,
+            viewModel.passwordEmptyAlert().description,
             application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToLoginToExistingAccount)
         )
         Assertions.assertEquals(
-            viewModel.emailEmptyAlert().dismissButton!!.buttonText,
+            viewModel.passwordEmptyAlert().dismissButton!!.buttonText,
+            application.getString(StringsIds.gotIt)
+        )
+        Assertions.assertEquals(
+            viewModel.passwordEmptyAlert().dismissButton!!.buttonText,
             application.getString(StringsIds.gotIt)
         )
     }

@@ -67,14 +67,14 @@ fun DialogWithTextField(
                 ) {
                     confirmButton?.let { button ->
                         TextButton(
-                            onClick = { button.onButtonClicked.invoke() },
+                            onClick = { button.onButtonClicked?.invoke() },
                             content = { Text(text = button.buttonText) }
                         )
                     }
 
                     dismissButton?.let { button ->
                         TextButton(
-                            onClick = { button.onButtonClicked.invoke() },
+                            onClick = { button.onButtonClicked?.invoke() },
                             content = { Text(text = button.buttonText) }
                         )
                     }

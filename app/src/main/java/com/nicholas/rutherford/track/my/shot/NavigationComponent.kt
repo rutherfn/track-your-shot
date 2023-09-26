@@ -193,7 +193,7 @@ fun NavigationComponent(
             onDismissClicked = {
                 navigator.alert(alertAction = null)
                 alert = null
-                newAlert.onDismissClicked.invoke()
+                newAlert.onDismissClicked?.invoke()
             },
             title = newAlert.title,
             confirmButton = newAlert.confirmButton?.let { confirmButton ->
@@ -201,7 +201,7 @@ fun NavigationComponent(
                     onButtonClicked = {
                         navigator.alert(alertAction = null)
                         alert = null
-                        confirmButton.onButtonClicked.invoke()
+                        confirmButton.onButtonClicked?.invoke()
                     },
                     buttonText = confirmButton.buttonText
                 )
@@ -211,7 +211,7 @@ fun NavigationComponent(
                     onButtonClicked = {
                         navigator.alert(alertAction = null)
                         alert = null
-                        dismissButton.onButtonClicked.invoke()
+                        dismissButton.onButtonClicked?.invoke()
                     },
                     buttonText = dismissButton.buttonText
                 )

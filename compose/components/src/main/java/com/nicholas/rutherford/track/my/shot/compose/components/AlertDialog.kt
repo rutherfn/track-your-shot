@@ -31,7 +31,7 @@ fun AlertDialog(
         confirmButton = {
             confirmButton?.let { button ->
                 TextButton(
-                    onClick = { button.onButtonClicked.invoke() },
+                    onClick = { button.onButtonClicked?.invoke() },
                     content = { Text(text = button.buttonText) }
                 )
             }
@@ -39,7 +39,7 @@ fun AlertDialog(
         dismissButton = {
             dismissButton?.let { button ->
                 TextButton(
-                    onClick = { button.onButtonClicked.invoke() },
+                    onClick = { button.onButtonClicked?.invoke() },
                     content = { Text(text = button.buttonText) }
                 )
             }

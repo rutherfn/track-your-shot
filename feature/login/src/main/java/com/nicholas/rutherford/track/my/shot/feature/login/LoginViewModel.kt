@@ -129,10 +129,8 @@ class LoginViewModel(
 
     internal fun emailEmptyAlert(): Alert {
         return Alert(
-            onDismissClicked = {},
             title = application.getString(StringsIds.emptyField),
             dismissButton = AlertConfirmAndDismissButton(
-                onButtonClicked = {},
                 buttonText = application.getString(StringsIds.gotIt)
             ),
             description = application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToLoginToExistingAccount)
@@ -141,7 +139,6 @@ class LoginViewModel(
 
     internal fun passwordEmptyAlert(): Alert {
         return Alert(
-            onDismissClicked = {},
             title = application.getString(StringsIds.emptyField),
             dismissButton = AlertConfirmAndDismissButton(
                 onButtonClicked = {},
@@ -158,7 +155,6 @@ class LoginViewModel(
 
     internal fun unableToLoginToAccountAlert(): Alert {
         return Alert(
-            onDismissClicked = {},
             title = application.getString(StringsIds.unableToLoginToAccount),
             dismissButton = AlertConfirmAndDismissButton(
                 onButtonClicked = {},
