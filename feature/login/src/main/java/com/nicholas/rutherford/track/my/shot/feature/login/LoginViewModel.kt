@@ -38,7 +38,7 @@ class LoginViewModel(
             loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundTest)
         } else if (buildType.isStage()) {
             loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundStage)
-        } else if (buildType.isRelease()) {
+        } else {
             loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRound)
         }
     }
