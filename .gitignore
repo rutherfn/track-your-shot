@@ -19,6 +19,8 @@ gen/
 # Ignore gradle files
 .gradle/
 build/kotlin
+build/kover
+build/reports
 app-center/build
 build-type/build
 
