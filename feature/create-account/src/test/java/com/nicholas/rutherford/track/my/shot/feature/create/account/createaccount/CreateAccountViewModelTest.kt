@@ -999,6 +999,37 @@ class CreateAccountViewModelTest {
             }
     }
 
+    @Test
+    fun `onCreateAccountButton clicked verify functions are called`() {
+        viewModel.onCreateAccountButtonClicked()
+
+        verify { navigation.enableProgress(any()) }
+    }
+
+    @Nested
+    inner class showUnableToCreateFirebaseAuthAlert() {
+
+        @Test
+        fun `should call dismiss progress and alert with given message`() {
+            val message = "hello world"
+
+            viewModel.showUnableToCreateFirebaseAuthAlert(message = message)
+
+            verify { navigation.disableProgress() }
+
+            verify { navigation.alert(alert = viewModel.defaultAlert.copy(title = application.getString(StringsIds.unableToCreateAccount), description = message)) }
+        }
+
+        @Test
+        fun `should call dismiss progress and alert with default message if passed in message is null`() {
+            viewModel.showUnableToCreateFirebaseAuthAlert(message = null)
+
+            verify { navigation.disableProgress() }
+
+            verify { navigation.alert(alert = viewModel.defaultAlert.copy(title = application.getString(StringsIds.unableToCreateAccount), description = application.getString(StringsIds.havingTroubleCreatingYourAccountPleaseTryAgain))) }
+        }
+    }
+
     @Test fun `on user name value changed should update username state value`() {
         val usernameTest = "user name 1"
 
