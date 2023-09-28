@@ -118,7 +118,11 @@ dependencies {
     kover(project(":feature:create-account"))
     kover(project(":feature:forgot-password"))
     kover(project(":feature:login"))
+    kover(project(":feature:splash"))
     kover(project(":firebase:create"))
+    kover(project(":firebase:read"))
+    kover(project(":firebase:util"))
+    kover(project(":helper:network"))
 
     implementation(Dependencies.Android.appCompat)
     implementation(Dependencies.Android.ktx)

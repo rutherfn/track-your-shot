@@ -1007,7 +1007,7 @@ class CreateAccountViewModelTest {
     }
 
     @Nested
-    inner class showUnableToCreateFirebaseAuthAlert() {
+    inner class ShowUnableToCreateFirebaseAuthAlert {
 
         @Test
         fun `should call dismiss progress and alert with given message`() {

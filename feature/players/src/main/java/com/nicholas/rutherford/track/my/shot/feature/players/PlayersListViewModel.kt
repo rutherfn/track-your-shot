@@ -16,4 +16,8 @@ class PlayersListViewModel(
     )
 
     val playerListStateFlow = playerListMutableStateFlow.asStateFlow()
+
+    fun updatePlayersList() {
+
+    }
 }

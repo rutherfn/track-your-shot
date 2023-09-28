@@ -1,6 +1,5 @@
 plugins {
     id(BuildIds.androidLibrary)
-    id("kotlin-kapt")
     kotlin(BuildIds.pluginKotlin)
     kotlin(BuildIds.pluginKapt)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
