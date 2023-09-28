@@ -83,7 +83,7 @@ class LoginNavigationImplTest {
     }
 
     @Test
-    fun `alert`() {
+    fun `alert action`() {
         val alert = Alert(title = "title")
 
         loginNavigationImpl.alert(alert = alert)
