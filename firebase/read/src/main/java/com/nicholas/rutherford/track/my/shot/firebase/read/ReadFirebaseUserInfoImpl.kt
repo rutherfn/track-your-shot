@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.my.shot.firebase.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -153,6 +154,44 @@ class ReadFirebaseUserInfoImpl(
                     override fun onCancelled(p0: DatabaseError) {
                         Timber.e(message = "Error(getAccountInfoKeyByEmail) -> Database error when attempting to get account info key by email")
                         trySend(element = null)
+                    }
+                })
+            awaitClose()
+        }
+    }
+
+    override fun getPlayerInfoList(accountKey: String): Flow<List<PlayerInfoRealtimeResponse>> {
+        return callbackFlow {
+            val playerInfoRealtimeResponseArrayList: ArrayList<PlayerInfoRealtimeResponse> = arrayListOf()
+
+            firebaseDatabase.getReference(Constants.USERS)
+                .child(Constants.ACCOUNT_INFO)
+                .child(accountKey)
+                .child(Constants.PLAYERS)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            if (snapshot.childrenCount == Constants.FIREBASE_CHILDREN_COUNT_ZERO) {
+                                Timber.w("Warning(getPlayerInfoList) -> No players currently exist for this account")
+                                trySend(element = emptyList())
+                            } else {
+                                for (playerSnapshot in snapshot.children) {
+                                    playerSnapshot.getValue(PlayerInfoRealtimeResponse::class.java)
+                                        ?.let {
+                                            playerInfoRealtimeResponseArrayList.add(it)
+                                        }
+                                }
+                            }
+
+                            trySend(element = playerInfoRealtimeResponseArrayList.toList())
+                        } else {
+                            trySend(element = emptyList())
+                        }
+                    }
+
+                    override fun onCancelled(p0: DatabaseError) {
+                        Timber.e(message = "Error(getPlayerInfoList) -> Database error when attempting to get user player list")
+                        trySend(element = emptyList())
                     }
                 })
             awaitClose()
