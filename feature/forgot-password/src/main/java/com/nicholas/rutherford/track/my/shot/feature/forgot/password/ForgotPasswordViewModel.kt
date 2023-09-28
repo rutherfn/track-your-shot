@@ -27,7 +27,7 @@ class ForgotPasswordViewModel(
             if (email.isEmpty()) {
                 navigation.alert(alert = emailEmptyAlert())
             } else {
-                navigation.enableProgress(progress = Progress(onDismissClicked = {}))
+                navigation.enableProgress(progress = Progress())
                 authenticationFirebase.attemptToSendPasswordResetFlow(email = email.filterNot { it.isWhitespace() })
                     .collectLatest { isSuccessful ->
                         navigation.disableProgress()
@@ -50,10 +50,8 @@ class ForgotPasswordViewModel(
 
     internal fun emailEmptyAlert(): Alert {
         return Alert(
-            onDismissClicked = {},
             title = application.getString(StringsIds.emptyField),
             dismissButton = AlertConfirmAndDismissButton(
-                onButtonClicked = {},
                 buttonText = application.getString(StringsIds.gotIt)
             ),
             description = application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToResetPasswordForExistingAccount)
@@ -62,10 +60,8 @@ class ForgotPasswordViewModel(
 
     internal fun successSendingRestPasswordAlert(): Alert {
         return Alert(
-            onDismissClicked = {},
             title = application.getString(StringsIds.resetPasswordEmailSent),
             dismissButton = AlertConfirmAndDismissButton(
-                onButtonClicked = {},
                 buttonText = application.getString(StringsIds.gotIt)
             ),
             description = application.getString(StringsIds.emailHasBeenSentToRestPasswordPleaseFollowDirectionsToResetPassword)
@@ -74,10 +70,8 @@ class ForgotPasswordViewModel(
 
     internal fun unableToSendResetPasswordAlert(): Alert {
         return Alert(
-            onDismissClicked = {},
             title = application.getString(StringsIds.unableToResetPassword),
             dismissButton = AlertConfirmAndDismissButton(
-                onButtonClicked = {},
                 buttonText = application.getString(StringsIds.gotIt)
             ),
             description = application.getString(StringsIds.havingTroubleResettingPasswordForThisAccountPleaseTryAgainAndOrEnsureCredentialsExistAndAreValid)

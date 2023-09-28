@@ -4,7 +4,7 @@ plugins {
     id(BuildIds.kotlinKapt)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
     id(BuildIds.gmsGoogleServices)
-    id("org.jetbrains.kotlinx.kover")
+    id(BuildIds.kover)
 }
 
 android {
@@ -113,7 +113,12 @@ dependencies {
 
     debugImplementation(Dependencies.Compose.uiTestManifest)
 
+    kover(project(":app-center"))
+    kover(project(":build-type"))
+    kover(project(":feature:create-account"))
+    kover(project(":feature:forgot-password"))
     kover(project(":feature:login"))
+    kover(project(":firebase:create"))
 
     implementation(Dependencies.Android.appCompat)
     implementation(Dependencies.Android.ktx)
@@ -148,4 +153,27 @@ dependencies {
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 
     testImplementation(Dependencies.Mockk.core)
+}
+
+koverReport {
+    // filters for all report types of all build variants
+    filters {
+        excludes {
+            classes(
+                "*ScreenKt\$*",
+                "*ScreenKt",
+                "*ScreenParams\$*",
+                "*ScreenParams",
+                "*Tags\$*",
+                "*Tags",
+                "*.NavigationComponentKt",
+                "*NavigationComponentKt\$*",
+                "*.ViewModels",
+                "*.MainActivityWrapper",
+                "*Activity",
+                "*Activity\$*",
+                "*.BuildConfig"
+            )
+        }
+    }
 }

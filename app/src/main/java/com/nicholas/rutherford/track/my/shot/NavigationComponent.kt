@@ -227,7 +227,7 @@ fun NavigationComponent(
                     navigator.progress(progressAction = null)
                     progress = null
                 }
-                newProgress.onDismissClicked.invoke()
+                newProgress.onDismissClicked?.invoke()
             },
             title = newProgress.title
         )

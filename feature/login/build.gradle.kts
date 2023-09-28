@@ -2,7 +2,7 @@ plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
-    id("org.jetbrains.kotlinx.kover")
+    id(BuildIds.kover)
 }
 
 android {

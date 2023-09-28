@@ -38,7 +38,7 @@ class LoginViewModel(
             loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundTest)
         } else if (buildType.isStage()) {
             loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundStage)
-        } else {
+        } else if (buildType.isRelease()) {
             loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRound)
         }
     }
@@ -71,7 +71,7 @@ class LoginViewModel(
         val newEmail = email?.filterNot { it.isWhitespace() } ?: emptyString
         val newPassword = password?.filterNot { it.isWhitespace() } ?: emptyString
 
-        navigation.enableProgress(progress = Progress(onDismissClicked = {}))
+        navigation.enableProgress(progress = Progress())
 
         existingUserFirebase.logInFlow(
             email = newEmail,
