@@ -60,10 +60,8 @@ class CreateAccountViewModel(
     val createAccountStateFlow = createAccountMutableStateFlow.asStateFlow()
 
     internal val defaultAlert = Alert(
-        onDismissClicked = {},
         title = application.getString(StringsIds.empty),
         dismissButton = AlertConfirmAndDismissButton(
-            onButtonClicked = {},
             buttonText = application.getString(StringsIds.gotIt)
         )
     )
