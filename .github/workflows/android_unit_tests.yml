@@ -1,0 +1,11 @@
+name: Unit Tests
+on: [pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
+      - name: Run All Unit Tests in the app
+        run: ./gradlew test

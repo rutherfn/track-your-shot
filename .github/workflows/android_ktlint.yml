@@ -1,0 +1,11 @@
+name: KtLint
+on: [pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
+      - name: KtLint format app
+        run:  ./gradlew ktlintCheck
