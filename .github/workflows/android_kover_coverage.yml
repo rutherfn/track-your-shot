@@ -1,32 +1,17 @@
-name: Measure coverage
-
-on:
-  pull_request:
+name: Kover Upload Coverage To Codecov
+on: [pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: 11
-      - name: Set up Gradle
-        uses: gradle/gradle-build-action@v2
-      - name: Generate kover coverage report
-        run: ./gradlew koverXmlReport
+      - name: Checkout the code
+        uses: actions/checkout@v2
 
-      - name: Add coverage report to PR
-        id: kover
-        uses: mi-kas/kover-report@v1
-        with:
-          path: |
-            ${{ github.workspace }}/project1/build/reports/kover/report.xml
-            ${{ github.workspace }}/project2/build/reports/kover/report.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: Code Coverage
-          update-comment: true
-          min-coverage-overall: 80
-          min-coverage-changed-files: 80
-          coverage-counter-type: LINE
+      - name: Run verify Kover code coverage
+        uses: ./gradlew koverVerifyRelease
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
