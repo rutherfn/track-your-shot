@@ -118,6 +118,7 @@ dependencies {
     kover(project(":feature:create-account"))
     kover(project(":feature:forgot-password"))
     kover(project(":feature:login"))
+    kover(project(":feature:players"))
     kover(project(":feature:splash"))
     kover(project(":firebase:create"))
     kover(project(":firebase:read"))
@@ -162,22 +163,18 @@ dependencies {
 koverReport {
     // filters for all report types of all build variants
     filters {
-        excludes {
-            classes(
-                "*ScreenKt\$*",
-                "*ScreenKt",
-                "*ScreenParams\$*",
-                "*ScreenParams",
-                "*Tags\$*",
-                "*Tags",
-                "*.NavigationComponentKt",
-                "*NavigationComponentKt\$*",
-                "*.ViewModels",
-                "*.MainActivityWrapper",
-                "*Activity",
-                "*Activity\$*",
-                "*.BuildConfig"
-            )
+        includes {
+            classes("com.example.Class1", "com.example.Class3")
+        }
+    }
+}
+
+koverReport {
+    androidReports("release") {
+        filters {
+            includes {
+                classes("com.example.Class1", "com.example.Class3")
+            }
         }
     }
 }

@@ -55,7 +55,6 @@ class AuthenticationViewModel(
     internal fun onNavigateClose() {
         navigation.alert(
             alert = Alert(
-                onDismissClicked = {},
                 title = application.getString(StringsIds.areYouSureYouWantLeaveTrackMyShot),
                 description = application.getString(StringsIds.leavingTheAppWillResultInYouNotFinishingTheAccountCreationProcessDescription),
                 confirmButton = AlertConfirmAndDismissButton(
@@ -63,7 +62,6 @@ class AuthenticationViewModel(
                     buttonText = application.getString(StringsIds.yes)
                 ),
                 dismissButton = AlertConfirmAndDismissButton(
-                    onButtonClicked = {},
                     buttonText = application.getString(StringsIds.no)
                 )
             )
@@ -128,10 +126,8 @@ class AuthenticationViewModel(
 
     internal fun errorCreatingAccountAlert(): Alert {
         return Alert(
-            onDismissClicked = {},
             title = application.getString(StringsIds.errorCreatingAccount),
             dismissButton = AlertConfirmAndDismissButton(
-                onButtonClicked = {},
                 buttonText = application.getString(StringsIds.gotIt)
             ),
             description = application.getString(StringsIds.thereWasAErrorCreatingYourAccountPleaseTryAgain)
@@ -140,10 +136,8 @@ class AuthenticationViewModel(
 
     internal fun errorVerifyingAccount(): Alert {
         return Alert(
-            onDismissClicked = {},
             title = application.getString(StringsIds.accountHasNotBeenVerified),
             dismissButton = AlertConfirmAndDismissButton(
-                onButtonClicked = {},
                 buttonText = application.getString(StringsIds.gotIt)
             ),
             description = application.getString(StringsIds.currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount)
@@ -152,10 +146,8 @@ class AuthenticationViewModel(
 
     internal fun successfullySentEmailVerificationAlert(): Alert {
         return Alert(
-            onDismissClicked = {},
             title = application.getString(StringsIds.successfullySendEmailVerification),
             dismissButton = AlertConfirmAndDismissButton(
-                onButtonClicked = {},
                 buttonText = application.getString(StringsIds.gotIt)
             ),
             description = application.getString(StringsIds.weWereAbleToSendEmailVerificationPleaseCheckYourEmailToVerifyAccount)
@@ -164,10 +156,8 @@ class AuthenticationViewModel(
 
     internal fun unsuccessfullySendEmailVerificationAlert(): Alert {
         return Alert(
-            onDismissClicked = {},
             title = application.getString(StringsIds.unableToSendEmailVerification),
             dismissButton = AlertConfirmAndDismissButton(
-                onButtonClicked = {},
                 buttonText = application.getString(StringsIds.gotIt)
             ),
             description = application.getString(StringsIds.weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain)
