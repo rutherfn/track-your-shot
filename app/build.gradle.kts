@@ -163,18 +163,22 @@ dependencies {
 koverReport {
     // filters for all report types of all build variants
     filters {
-        includes {
-            classes("com.example.Class1", "com.example.Class3")
-        }
-    }
-}
-
-koverReport {
-    androidReports("release") {
-        filters {
-            includes {
-                classes("com.example.Class1", "com.example.Class3")
-            }
+        excludes {
+            classes(
+                "*ScreenKt\$*",
+                "*ScreenKt",
+                "*ScreenParams\$*",
+                "*ScreenParams",
+                "*Tags\$*",
+                "*Tags",
+                "*.NavigationComponentKt",
+                "*NavigationComponentKt\$*",
+                "*.ViewModels",
+                "*.MainActivityWrapper",
+                "*Activity",
+                "*Activity\$*",
+                "*.BuildConfig"
+            )
         }
     }
 }
