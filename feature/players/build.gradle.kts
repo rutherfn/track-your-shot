@@ -2,6 +2,7 @@ plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.kover)
 }
 
 android {
@@ -70,6 +71,7 @@ android {
 dependencies {
     api(project(path = ":compose:components"))
     api(project(path = ":data:room"))
+    api(project(path = ":firebase:create"))
     api(project(path = ":firebase:read"))
     api(project(path = ":firebase:util"))
     api(project(path = ":helper:constants"))

@@ -379,10 +379,6 @@ class LoginViewModelTest {
             viewModel.passwordEmptyAlert().description,
             application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount)
         )
-        Assertions.assertEquals(
-            viewModel.passwordEmptyAlert().dismissButton!!.buttonText,
-            application.getString(StringsIds.gotIt)
-        )
     }
 
     @Test

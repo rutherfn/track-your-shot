@@ -60,10 +60,8 @@ class CreateAccountViewModel(
     val createAccountStateFlow = createAccountMutableStateFlow.asStateFlow()
 
     internal val defaultAlert = Alert(
-        onDismissClicked = {},
         title = application.getString(StringsIds.empty),
         dismissButton = AlertConfirmAndDismissButton(
-            onButtonClicked = {},
             buttonText = application.getString(StringsIds.gotIt)
         )
     )
@@ -85,7 +83,7 @@ class CreateAccountViewModel(
         val createAccountState = createAccountMutableStateFlow.value
 
         // Enable progress and prepare for field validation
-        navigation.enableProgress(progress = Progress(onDismissClicked = {}))
+        navigation.enableProgress(progress = Progress())
 
         // Validate username
         setIsUsernameEmptyOrNull(username = createAccountState.username)
@@ -260,7 +258,7 @@ class CreateAccountViewModel(
         navigation.navigateToAuthentication(email = email, username = username)
     }
 
-    private fun showUnableToCreateFirebaseAuthAlert(message: String?) {
+    internal fun showUnableToCreateFirebaseAuthAlert(message: String?) {
         navigation.disableProgress()
         navigation.alert(
             alert = defaultAlert.copy(
