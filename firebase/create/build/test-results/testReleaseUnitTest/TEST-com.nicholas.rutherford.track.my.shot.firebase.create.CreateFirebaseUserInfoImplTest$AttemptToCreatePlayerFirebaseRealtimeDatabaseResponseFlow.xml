@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfoImplTest$AttemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-09-29T14:29:04" hostname="Nicholass-MBP.lan" time="0.115">
-  <properties/>
-  <testcase name="when add on complete listener is executed should set flow to true when isSuccessful returns back true()" classname="com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfoImplTest$AttemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow" time="0.071"/>
-  <testcase name="when add on complete listener is executed should set flow to false when isSuccessful returns back false()" classname="com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfoImplTest$AttemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow" time="0.039"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

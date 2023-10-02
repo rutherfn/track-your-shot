@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$IsLoggedInFlow" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-09-29T14:30:41" hostname="Nicholass-MBP.lan" time="0.018">
-  <properties/>
-  <testcase name="when currentUser is not set to null should be set to true()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$IsLoggedInFlow" time="0.013"/>
-  <testcase name="when currentUser is set to null should set to false()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$IsLoggedInFlow" time="0.003"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

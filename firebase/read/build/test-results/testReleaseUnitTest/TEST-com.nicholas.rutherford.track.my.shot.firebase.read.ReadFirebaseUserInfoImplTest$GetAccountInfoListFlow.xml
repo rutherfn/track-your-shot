@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetAccountInfoListFlow" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-09-29T14:30:30" hostname="Nicholass-MBP.lan" time="6.92">
-  <properties/>
-  <testcase name="when onDataChange is called with snapshot exists return back as true with snapshot child data should return info()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetAccountInfoListFlow" time="6.154"/>
-  <testcase name="when onCancelled is called should return null()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetAccountInfoListFlow" time="0.616"/>
-  <testcase name="when onDataChange is called with snapshot exists return back as false should return null()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetAccountInfoListFlow" time="0.099"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
