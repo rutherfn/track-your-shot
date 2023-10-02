@@ -9,14 +9,6 @@ android {
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
-    buildFeatures {
-        compose = ComposeData.Enabled.value
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
-    }
-
     compileOptions {
         sourceCompatibility = types.BuildTypes.CompileOptions.sourceCompatibility
         targetCompatibility = types.BuildTypes.CompileOptions.targetCompatibility
@@ -69,18 +61,17 @@ android {
 }
 
 dependencies {
-    api(project(path = ":compose:components"))
-    api(project(path = ":data:room"))
-    api(project(path = ":firebase:core"))
-    api(project(path = ":firebase:util"))
+    api(project(":data:firebase"))
     api(project(path = ":helper:constants"))
-    api(project(path = ":navigation"))
 
-    implementation(Dependencies.Compose.coil)
-    implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.viewModel)
+    implementation(Dependencies.Firebase.authKtx)
+    implementation(Dependencies.Firebase.bom)
+    implementation(Dependencies.Firebase.databaseKtx)
+
+    implementation(Dependencies.Timber.core)
 
     testImplementation(Dependencies.Coroutine.test)
+
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)
     testImplementation(Dependencies.Junit.junit)
@@ -88,7 +79,6 @@ dependencies {
     testImplementation(Dependencies.Mockk.core)
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
-    testImplementation(project(":data-test:firebase"))
 
-    testImplementation(project(path = ":data-test:room"))
+    testImplementation(project(":data-test:firebase"))
 }

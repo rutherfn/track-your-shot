@@ -49,9 +49,7 @@ feature/login/build
 feature/players/build
 feature/splash/build
 
-firebase/create/build
-firebase/delete/build
-firebase/read/build
+firebase/core/build
 firebase/util/build
 
 helper/compose-content-test-rule/build

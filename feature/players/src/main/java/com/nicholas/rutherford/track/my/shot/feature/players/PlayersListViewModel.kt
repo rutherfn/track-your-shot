@@ -2,7 +2,7 @@ package com.nicholas.rutherford.track.my.shot.feature.players
 
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.my.shot.data.room.response.Player
-import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

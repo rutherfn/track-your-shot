@@ -120,9 +120,7 @@ dependencies {
     kover(project(":feature:login"))
     kover(project(":feature:players"))
     kover(project(":feature:splash"))
-    kover(project(":firebase:create"))
-    kover(project(":firebase:read"))
-    kover(project(":firebase:util"))
+    kover(project(":firebase:core"))
     kover(project(":helper:network"))
 
     implementation(Dependencies.Android.appCompat)
