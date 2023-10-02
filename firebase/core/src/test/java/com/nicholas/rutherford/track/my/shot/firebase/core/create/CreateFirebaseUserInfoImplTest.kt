@@ -7,8 +7,6 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.my.shot.firebase.TestCreateAccountFirebaseAuthResponse
-import com.nicholas.rutherford.track.my.shot.firebase.core.create.CreateFirebaseLastUpdated
-import com.nicholas.rutherford.track.my.shot.firebase.core.create.CreateFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.my.shot.firebase.realtime.TestCreateAccountFirebaseRealtimeDatabaseResult
 import com.nicholas.rutherford.track.my.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants

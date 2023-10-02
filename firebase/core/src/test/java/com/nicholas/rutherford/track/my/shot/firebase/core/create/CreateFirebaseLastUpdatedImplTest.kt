@@ -4,7 +4,6 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.FirebaseDatabase
-import com.nicholas.rutherford.track.my.shot.firebase.core.create.CreateFirebaseLastUpdatedImpl
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
