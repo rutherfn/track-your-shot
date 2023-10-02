@@ -2,7 +2,7 @@ package com.nicholas.rutherford.track.my.shot.feature.players
 
 import com.nicholas.rutherford.track.my.shot.data.room.response.Player
 import com.nicholas.rutherford.track.my.shot.data.room.response.PlayerPositions
-import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.core.read.ReadFirebaseUserInfo
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
