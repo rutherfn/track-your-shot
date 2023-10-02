@@ -1,0 +1,32 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.nicholas.rutherford.track.my.shot.firebase.delete.test" >
+4
+5    <uses-sdk
+5-->/Users/nicholasrutherford/Desktop/track-my-shot/firebase/delete/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest1163868718774229080.xml:5:5-74
+6        android:minSdkVersion="21"
+6-->/Users/nicholasrutherford/Desktop/track-my-shot/firebase/delete/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest1163868718774229080.xml:5:15-41
+7        android:targetSdkVersion="31" />
+7-->/Users/nicholasrutherford/Desktop/track-my-shot/firebase/delete/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest1163868718774229080.xml:5:42-71
+8
+9    <instrumentation
+9-->/Users/nicholasrutherford/Desktop/track-my-shot/firebase/delete/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest1163868718774229080.xml:11:5-15:108
+10        android:name="androidx.test.runner.AndroidJUnitRunner"
+10-->/Users/nicholasrutherford/Desktop/track-my-shot/firebase/delete/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest1163868718774229080.xml:11:22-76
+11        android:functionalTest="false"
+11-->/Users/nicholasrutherford/Desktop/track-my-shot/firebase/delete/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest1163868718774229080.xml:14:22-52
+12        android:handleProfiling="false"
+12-->/Users/nicholasrutherford/Desktop/track-my-shot/firebase/delete/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest1163868718774229080.xml:13:22-53
+13        android:label="Tests for com.nicholas.rutherford.track.my.shot.firebase.delete.test"
+13-->/Users/nicholasrutherford/Desktop/track-my-shot/firebase/delete/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest1163868718774229080.xml:15:22-106
+14        android:targetPackage="com.nicholas.rutherford.track.my.shot.firebase.delete.test" />
+14-->/Users/nicholasrutherford/Desktop/track-my-shot/firebase/delete/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest1163868718774229080.xml:12:22-104
+15
+16    <application android:debuggable="true" >
+16-->/Users/nicholasrutherford/Desktop/track-my-shot/firebase/delete/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest1163868718774229080.xml:7:5-9:19
+17        <uses-library android:name="android.test.runner" />
+17-->/Users/nicholasrutherford/Desktop/track-my-shot/firebase/delete/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest1163868718774229080.xml:8:9-60
+17-->/Users/nicholasrutherford/Desktop/track-my-shot/firebase/delete/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest1163868718774229080.xml:8:23-57
+18    </application>
+19
+20</manifest>

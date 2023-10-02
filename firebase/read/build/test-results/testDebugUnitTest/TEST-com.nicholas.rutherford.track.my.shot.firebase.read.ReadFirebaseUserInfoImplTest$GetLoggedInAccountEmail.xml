@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetLoggedInAccountEmail" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-09-28T21:12:05" hostname="Nicholass-MBP.lan" time="3.231">
+  <properties/>
+  <testcase name="when currentUser email is set to null should set to null()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetLoggedInAccountEmail" time="3.186"/>
+  <testcase name="when currentUser is set to null should set to null()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetLoggedInAccountEmail" time="0.02"/>
+  <testcase name="when currentUser and email is not set to null should set value to returned email()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetLoggedInAccountEmail" time="0.008"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

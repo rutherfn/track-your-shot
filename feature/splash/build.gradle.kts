@@ -76,7 +76,7 @@ dependencies {
     api(project(path = ":data:room"))
     api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:extensions"))
-    api(project(path = ":firebase:read"))
+    api(project(path = ":firebase:core"))
     api(project(path = ":navigation"))
     api(project(path = ":shared-preference"))
 
@@ -84,8 +84,8 @@ dependencies {
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
-    testImplementation(project(":data-test:firebase"))
 
+    testImplementation(project(":data-test:firebase"))
     testImplementation(project(path = ":data-test:room"))
 
     testImplementation(Dependencies.Coroutine.test)

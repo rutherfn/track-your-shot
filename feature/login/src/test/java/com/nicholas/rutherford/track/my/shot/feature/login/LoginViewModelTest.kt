@@ -7,7 +7,7 @@ import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.my.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.realtime.TestAccountInfoRealTimeResponse
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants

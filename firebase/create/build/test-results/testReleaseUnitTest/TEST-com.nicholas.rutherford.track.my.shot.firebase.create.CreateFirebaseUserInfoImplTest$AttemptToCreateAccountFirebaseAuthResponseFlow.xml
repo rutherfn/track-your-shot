@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfoImplTest$AttemptToCreateAccountFirebaseAuthResponseFlow" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-09-29T14:28:55" hostname="Nicholass-MBP.lan" time="6.813">
+  <properties/>
+  <testcase name="when add on complete listener is executed and isSuccessful returns false should set flow to valid create account response flow()" classname="com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfoImplTest$AttemptToCreateAccountFirebaseAuthResponseFlow" time="5.189"/>
+  <testcase name="when add on complete listener is executed and isSuccessful returns true should set flow to valid create account response flow()" classname="com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfoImplTest$AttemptToCreateAccountFirebaseAuthResponseFlow" time="1.614"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

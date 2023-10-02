@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetPlayerInfoList" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-09-28T21:12:16" hostname="Nicholass-MBP.lan" time="0.942">
+  <properties/>
+  <testcase name="when snapshot exists and has children should return list of player info()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetPlayerInfoList" time="0.839"/>
+  <testcase name="when on data change is called but snapshot does not exist should return empty list()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetPlayerInfoList" time="0.04"/>
+  <testcase name="when onCancelled is called should return empty list()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetPlayerInfoList" time="0.013"/>
+  <testcase name="when snapshot exists but children count is zero should return empty list()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetPlayerInfoList" time="0.018"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

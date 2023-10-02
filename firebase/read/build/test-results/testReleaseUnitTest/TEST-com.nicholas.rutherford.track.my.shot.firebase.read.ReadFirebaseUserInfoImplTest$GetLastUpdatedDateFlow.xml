@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetLastUpdatedDateFlow" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-09-29T14:30:37" hostname="Nicholass-MBP.lan" time="0.113">
+  <properties/>
+  <testcase name="when onDataChange is called but snapshot does not exist should return null()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetLastUpdatedDateFlow" time="0.038"/>
+  <testcase name="when onCancelled is called should return null()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetLastUpdatedDateFlow" time="0.019"/>
+  <testcase name="when onDataChange is called, snapshot exists, and value returns null should return null()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetLastUpdatedDateFlow" time="0.027"/>
+  <testcase name="when onDataChange is called, snapshot exists, and value returns date should return valid date()" classname="com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfoImplTest$GetLastUpdatedDateFlow" time="0.023"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

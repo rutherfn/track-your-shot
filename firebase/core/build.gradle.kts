@@ -1,44 +1,84 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id(BuildIds.androidLibrary)
+    kotlin(BuildIds.pluginKotlin)
+    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.kover)
 }
 
 android {
-    namespace = "com.nicholas.rutherford.track.my.shot.firebase.core"
-    compileSdk = 33
+    buildToolsVersion = ConfigurationData.buildToolsVersion
+    compileSdk = ConfigurationData.compileSdk
+
+    compileOptions {
+        sourceCompatibility = types.BuildTypes.CompileOptions.sourceCompatibility
+        targetCompatibility = types.BuildTypes.CompileOptions.targetCompatibility
+    }
 
     defaultConfig {
-        minSdk = 24
-        targetSdk = 33
+        minSdk = ConfigurationData.minSdk
+        targetSdk = ConfigurationData.targetSdk
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
+        testInstrumentationRunner = ConfigurationData.testInstrumentationRunner
     }
 
     buildTypes {
-        release {
-            isMinifyEnabled = false
+        getByName(types.BuildTypes.UniqueBuilds.Release.buildName) {
+            isMinifyEnabled = types.BuildTypes.UniqueBuilds.Release.isMinifyEnabled
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile(types.BuildTypes.proguardAndroidOptimizeTxt),
+                types.BuildTypes.proguardRulesPro
             )
         }
+
+        getByName(types.BuildTypes.UniqueBuilds.Debug.buildName) {
+            isMinifyEnabled = types.BuildTypes.UniqueBuilds.Debug.isMinifyEnabled
+        }
+
+        create(types.BuildTypes.UniqueBuilds.Stage.buildName) {
+            initWith(getByName(types.BuildTypes.UniqueBuilds.Debug.buildName))
+            isMinifyEnabled = types.BuildTypes.UniqueBuilds.Stage.isMinifyEnabled
+        }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+    sourceSets {
+        getByName("main") {
+            java {
+                srcDirs("src/main/java", "src/main/test")
+            }
+        }
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = KotlinOptions.jvmTarget
+        }
     }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
 dependencies {
+    api(project(":data:firebase"))
+    api(project(path = ":helper:constants"))
 
-    implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(Dependencies.Firebase.authKtx)
+    implementation(Dependencies.Firebase.bom)
+    implementation(Dependencies.Firebase.databaseKtx)
+
+    implementation(Dependencies.Timber.core)
+
+    testImplementation(Dependencies.Coroutine.test)
+
+    testImplementation(Dependencies.Junit.Jupiter.api)
+    testImplementation(Dependencies.Junit.Jupiter.params)
+    testImplementation(Dependencies.Junit.junit)
+
+    testImplementation(Dependencies.Mockk.core)
+
+    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+
+    testImplementation(project(":data-test:firebase"))
 }

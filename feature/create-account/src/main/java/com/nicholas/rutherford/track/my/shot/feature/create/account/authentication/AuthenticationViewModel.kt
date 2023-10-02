@@ -8,8 +8,8 @@ import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.my.shot.firebase.create.CreateFirebaseUserInfo
-import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.core.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet

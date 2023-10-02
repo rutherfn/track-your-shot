@@ -2,7 +2,7 @@ package com.nicholas.rutherford.track.my.shot.feature.splash
 
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.data.test.room.TestActiveUser
-import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.core.read.ReadFirebaseUserInfo
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
