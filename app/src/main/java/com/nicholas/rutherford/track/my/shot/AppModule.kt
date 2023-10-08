@@ -37,6 +37,8 @@ import com.nicholas.rutherford.track.my.shot.firebase.core.delete.DeleteFirebase
 import com.nicholas.rutherford.track.my.shot.firebase.core.delete.DeleteFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.my.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.core.read.ReadFirebaseUserInfoImpl
+import com.nicholas.rutherford.track.my.shot.firebase.core.update.UpdateFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.core.update.UpdateFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebaseImpl
 import com.nicholas.rutherford.track.my.shot.firebase.util.existinguser.ExistingUserFirebase
@@ -111,6 +113,9 @@ class AppModule {
         }
         single<ReadFirebaseUserInfo> {
             ReadFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
+        }
+        single<UpdateFirebaseUserInfo> {
+            UpdateFirebaseUserInfoImpl(firebaseDatabase = get())
         }
         single<DeleteFirebaseUserInfo> {
             DeleteFirebaseUserInfoImpl(firebaseDatabase = get())
