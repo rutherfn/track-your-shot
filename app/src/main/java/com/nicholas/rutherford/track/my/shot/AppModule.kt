@@ -164,9 +164,7 @@ class AppModule {
         }
         viewModel {
             PlayersListViewModel(
-                get(),
-                get(),
-                get()
+                readFirebaseUserInfo = get()
             )
         }
         viewModel {
