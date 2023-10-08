@@ -33,6 +33,8 @@ import com.nicholas.rutherford.track.my.shot.firebase.core.create.CreateFirebase
 import com.nicholas.rutherford.track.my.shot.firebase.core.create.CreateFirebaseLastUpdatedImpl
 import com.nicholas.rutherford.track.my.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.core.create.CreateFirebaseUserInfoImpl
+import com.nicholas.rutherford.track.my.shot.firebase.core.delete.DeleteFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.core.delete.DeleteFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.my.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.core.read.ReadFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
@@ -110,6 +112,9 @@ class AppModule {
         single<ReadFirebaseUserInfo> {
             ReadFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
+        single<DeleteFirebaseUserInfo> {
+            DeleteFirebaseUserInfoImpl(firebaseDatabase = get())
+        }
         single<Network> {
             NetworkImpl()
         }
@@ -159,7 +164,8 @@ class AppModule {
         }
         viewModel {
             PlayersListViewModel(
-                readFirebaseUserInfo = get()
+                get(),
+                get()
             )
         }
         viewModel {
