@@ -539,16 +539,16 @@ class ReadFirebaseUserInfoImplTest {
 
             val playerInfoRealtimeWithKeyResponseList = listOf(
                 TestPlayerInfoRealtimeWithKeyResponse().create(),
-                TestPlayerInfoRealtimeWithKeyResponse().create().copy(playerInfo = TestPlayerInfoRealtimeResponse().create().copy(firstName = "firstName2"))
+                TestPlayerInfoRealtimeWithKeyResponse().create().copy(playerFirebaseKey = "-NgBwuq_5kti8ChLDuhc", playerInfo = TestPlayerInfoRealtimeResponse().create().copy(firstName = "firstName2"))
             )
 
             every { mockDataSnapshot.exists() } returns true
             every { mockDataSnapshot.childrenCount } returns playerInfoRealtimeWithKeyResponseList.size.toLong()
 
-            every { mockDataSnapshot.key } returns playerInfoRealtimeWithKeyResponseList[0].playerFirebaseKey
-            every { mockDataSnapshot.children } returns playerInfoRealtimeWithKeyResponseList.map { playerInfo ->
+            every { mockDataSnapshot.children } returns playerInfoRealtimeWithKeyResponseList.map { playerInfoRealtimeWithKey ->
                 val mockChildSnapshot = mockk<DataSnapshot>()
-                every { mockChildSnapshot.getValue(PlayerInfoRealtimeResponse::class.java) } returns playerInfo.playerInfo
+                every { mockChildSnapshot.key } returns playerInfoRealtimeWithKey.playerFirebaseKey
+                every { mockChildSnapshot.getValue(PlayerInfoRealtimeResponse::class.java) } returns playerInfoRealtimeWithKey.playerInfo
                 mockChildSnapshot
             }
 
