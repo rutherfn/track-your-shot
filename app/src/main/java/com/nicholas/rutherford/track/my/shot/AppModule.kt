@@ -165,6 +165,7 @@ class AppModule {
         viewModel {
             PlayersListViewModel(
                 get(),
+                get(),
                 get()
             )
         }

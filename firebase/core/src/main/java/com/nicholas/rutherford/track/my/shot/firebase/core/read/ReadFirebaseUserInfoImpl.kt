@@ -7,7 +7,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.my.shot.firebase.realtime.AccountInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.firebase.realtime.PlayerInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -160,9 +162,10 @@ class ReadFirebaseUserInfoImpl(
         }
     }
 
-    override fun getPlayerInfoList(accountKey: String): Flow<List<PlayerInfoRealtimeResponse>> {
+    override fun getPlayerInfoList(accountKey: String): Flow<List<PlayerInfoRealtimeWithKeyResponse>> {
         return callbackFlow {
             val playerInfoRealtimeResponseArrayList: ArrayList<PlayerInfoRealtimeResponse> = arrayListOf()
+            val playerInfoRealtimeWithKeyResponseArrayList: ArrayList<PlayerInfoRealtimeWithKeyResponse> = arrayListOf()
 
             firebaseDatabase.getReference(Constants.USERS)
                 .child(Constants.ACCOUNT_INFO)
@@ -176,14 +179,20 @@ class ReadFirebaseUserInfoImpl(
                                 trySend(element = emptyList())
                             } else {
                                 for (playerSnapshot in snapshot.children) {
-                                    playerSnapshot.getValue(PlayerInfoRealtimeResponse::class.java)
-                                        ?.let {
-                                            playerInfoRealtimeResponseArrayList.add(it)
-                                        }
+                                    val key = playerSnapshot.key
+                                    val info = playerSnapshot.getValue(PlayerInfoRealtimeResponse::class.java)
+
+                                    safeLet(key, info) { playerFirebaseKey, playerInfo ->
+                                        playerInfoRealtimeWithKeyResponseArrayList.add(
+                                            PlayerInfoRealtimeWithKeyResponse(playerFirebaseKey = playerFirebaseKey, playerInfo = playerInfo)
+                                        )
+                                    } ?: run {
+                                        // one of the values were null when we looped thorugh
+                                    }
                                 }
                             }
 
-                            trySend(element = playerInfoRealtimeResponseArrayList.toList())
+                            trySend(element = playerInfoRealtimeWithKeyResponseArrayList.toList())
                         } else {
                             trySend(element = emptyList())
                         }

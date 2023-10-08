@@ -63,6 +63,7 @@ android {
 dependencies {
     api(project(":data:firebase"))
     api(project(path = ":helper:constants"))
+    api(project(path = ":helper:extensions"))
 
     implementation(Dependencies.Firebase.authKtx)
     implementation(Dependencies.Firebase.bom)
