@@ -10,8 +10,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.my.shot.firebase.realtime.AccountInfoRealtimeResponse
 import com.nicholas.rutherford.track.my.shot.firebase.realtime.PlayerInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.my.shot.firebase.realtime.TestAccountInfoRealTimeResponse
 import com.nicholas.rutherford.track.my.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
@@ -461,7 +463,7 @@ class ReadFirebaseUserInfoImplTest {
 
     @Nested
     inner class GetPlayerInfoList {
-        private val playerInfoRealtimeResponseEmptyList: List<PlayerInfoRealtimeResponse> = emptyList()
+        private val playerInfoRealtimeWithKeyResponseEmptyList: List<PlayerInfoRealtimeWithKeyResponse> = emptyList()
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
@@ -479,7 +481,7 @@ class ReadFirebaseUserInfoImplTest {
                 slot.captured.onCancelled(mockDatabaseError)
             }
 
-            Assertions.assertEquals(playerInfoRealtimeResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
+            Assertions.assertEquals(playerInfoRealtimeWithKeyResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -502,7 +504,7 @@ class ReadFirebaseUserInfoImplTest {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
 
-            Assertions.assertEquals(playerInfoRealtimeResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
+            Assertions.assertEquals(playerInfoRealtimeWithKeyResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -526,7 +528,7 @@ class ReadFirebaseUserInfoImplTest {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
 
-            Assertions.assertEquals(playerInfoRealtimeResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
+            Assertions.assertEquals(playerInfoRealtimeWithKeyResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -535,17 +537,18 @@ class ReadFirebaseUserInfoImplTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
             val slot = slot<ValueEventListener>()
 
-            val playerInfoRealtimeResponseList = listOf(
-                TestPlayerInfoRealtimeResponse().create(),
-                TestPlayerInfoRealtimeResponse().create().copy(firstName = "firstName2")
+            val playerInfoRealtimeWithKeyResponseList = listOf(
+                TestPlayerInfoRealtimeWithKeyResponse().create(),
+                TestPlayerInfoRealtimeWithKeyResponse().create().copy(playerInfo = TestPlayerInfoRealtimeResponse().create().copy(firstName = "firstName2"))
             )
 
             every { mockDataSnapshot.exists() } returns true
-            every { mockDataSnapshot.childrenCount } returns playerInfoRealtimeResponseList.size.toLong()
+            every { mockDataSnapshot.childrenCount } returns playerInfoRealtimeWithKeyResponseList.size.toLong()
 
-            every { mockDataSnapshot.children } returns playerInfoRealtimeResponseList.map { playerInfo ->
+            every { mockDataSnapshot.key } returns playerInfoRealtimeWithKeyResponseList[0].playerFirebaseKey
+            every { mockDataSnapshot.children } returns playerInfoRealtimeWithKeyResponseList.map { playerInfo ->
                 val mockChildSnapshot = mockk<DataSnapshot>()
-                every { mockChildSnapshot.getValue(PlayerInfoRealtimeResponse::class.java) } returns playerInfo
+                every { mockChildSnapshot.getValue(PlayerInfoRealtimeResponse::class.java) } returns playerInfo.playerInfo
                 mockChildSnapshot
             }
 
@@ -561,7 +564,7 @@ class ReadFirebaseUserInfoImplTest {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
 
-            Assertions.assertEquals(playerInfoRealtimeResponseList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
+            Assertions.assertEquals(playerInfoRealtimeWithKeyResponseList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
         }
     }
 
