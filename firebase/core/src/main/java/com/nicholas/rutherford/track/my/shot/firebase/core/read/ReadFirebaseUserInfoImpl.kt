@@ -186,8 +186,6 @@ class ReadFirebaseUserInfoImpl(
                                         playerInfoRealtimeWithKeyResponseArrayList.add(
                                             PlayerInfoRealtimeWithKeyResponse(playerFirebaseKey = playerFirebaseKey, playerInfo = playerInfo)
                                         )
-                                    } ?: run {
-                                        // one of the values were null when we looped thorugh
                                     }
                                 }
                             }
