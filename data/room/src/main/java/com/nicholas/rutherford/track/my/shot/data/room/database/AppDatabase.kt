@@ -9,7 +9,7 @@ import com.nicholas.rutherford.track.my.shot.data.room.entities.ActiveUserEntity
 import com.nicholas.rutherford.track.my.shot.data.room.entities.PlayerEntity
 import com.nicholas.rutherford.track.my.shot.data.room.entities.UserEntity
 
-@Database(entities = [ActiveUserEntity::class, PlayerEntity::class,  UserEntity::class], version = 5, exportSchema = false)
+@Database(entities = [ActiveUserEntity::class, PlayerEntity::class, UserEntity::class], version = 5, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun activeUserDao(): ActiveUserDao
 

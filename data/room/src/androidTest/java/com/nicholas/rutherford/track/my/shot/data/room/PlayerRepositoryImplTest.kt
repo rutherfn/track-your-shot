@@ -101,8 +101,7 @@ class PlayerRepositoryImplTest {
 
     @Test
     fun fetchPlayerByName() = runBlocking {
-        val playerWithEmptyFclear
-        irstName = player.copy(id = 2, firstName = "", lastName = "name2")
+        val playerWithEmptyFirstName = player.copy(id = 2, firstName = "", lastName = "name2")
         val playerWithEmptyLastName = player.copy(id = 3, firstName = "name2", lastName = "")
 
         val validPlayer1 = player.copy(id = 1, firstName = "name1", lastName = "name1")
