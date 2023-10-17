@@ -11,6 +11,8 @@ import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.my.shot.data.room.database.AppDatabase
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepositoryImpl
+import com.nicholas.rutherford.track.my.shot.data.room.repository.PlayerRepository
+import com.nicholas.rutherford.track.my.shot.data.room.repository.PlayerRepositoryImpl
 import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepositoryImpl
 import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationNavigation
@@ -78,11 +80,17 @@ class AppModule {
         single {
             get<AppDatabase>().userDao()
         }
+        single {
+            get<AppDatabase>().playerDao()
+        }
         single<ActiveUserRepository> {
             ActiveUserRepositoryImpl(activeUserDao = get())
         }
         single<UserRepository> {
             UserRepositoryImpl(userDao = get())
+        }
+        single<PlayerRepository> {
+            PlayerRepositoryImpl(playerDao = get())
         }
         single<android.content.SharedPreferences.Editor> {
             getSharedPreferences(androidApplication()).edit()
