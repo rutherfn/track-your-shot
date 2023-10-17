@@ -24,4 +24,6 @@ class PlayerRepositoryImpl(private val playerDao: PlayerDao) : PlayerRepository 
     }
 
     override suspend fun fetchAllPlayers(): List<Player> = playerDao.getAllPlayers()?.map { it.toPlayer() } ?: emptyList()
+
+    override suspend fun fetchPlayerCount(): Int = playerDao.getPlayerCount()
 }

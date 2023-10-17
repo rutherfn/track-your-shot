@@ -122,4 +122,14 @@ class PlayerRepositoryImplTest {
 
         assertThat(playerRepositoryImpl.fetchAllPlayers(), equalTo(listOf(player, newPlayer)))
     }
+
+    @Test
+    fun fetchPlayerCount() = runBlocking {
+        val newPlayer = player.copy(id = 2, firstName = "name1", lastName = "name2")
+
+        playerRepositoryImpl.createPlayer(player = player)
+        playerRepositoryImpl.createPlayer(player = newPlayer)
+
+        assertThat(2, equalTo(playerRepositoryImpl.fetchPlayerCount()))
+    }
 }

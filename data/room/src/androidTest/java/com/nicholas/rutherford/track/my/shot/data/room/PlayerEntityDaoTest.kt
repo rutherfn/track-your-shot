@@ -101,4 +101,14 @@ class PlayerEntityDaoTest {
 
         assertThat(listOf(playerEntity, newPlayerEnity), equalTo(playerDao.getAllPlayers()))
     }
+
+    @Test
+    fun getPlayerCount() = runBlocking {
+        val newPlayerEntity = playerEntity.copy(id = 2, firstName = "first1", lastName = "last1")
+
+        playerDao.insert(playerEntity = playerEntity)
+        playerDao.insert(playerEntity = newPlayerEntity)
+
+        assertThat(2, equalTo(playerDao.getPlayerCount()))
+    }
 }

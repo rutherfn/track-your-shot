@@ -27,4 +27,7 @@ interface PlayerDao {
 
     @Query("SELECT * FROM players")
     suspend fun getAllPlayers(): List<PlayerEntity>?
+
+    @Query("SELECT COUNT(*) FROM players")
+    suspend fun getPlayerCount(): Int
 }

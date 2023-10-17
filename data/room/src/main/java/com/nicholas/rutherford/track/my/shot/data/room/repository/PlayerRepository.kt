@@ -9,4 +9,5 @@ interface PlayerRepository {
     suspend fun deleteAllPlayers()
     suspend fun fetchPlayerByName(firstName: String, lastName: String): Player?
     suspend fun fetchAllPlayers(): List<Player>
+    suspend fun fetchPlayerCount(): Int
 }
