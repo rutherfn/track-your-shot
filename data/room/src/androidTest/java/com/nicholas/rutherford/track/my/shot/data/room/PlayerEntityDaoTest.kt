@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.data.room.daos
+package com.nicholas.rutherford.track.my.shot.data.room
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
@@ -41,67 +41,55 @@ class PlayerEntityDaoTest {
     fun insert() = runBlocking {
         playerDao.insert(playerEntity = playerEntity)
 
-        assertThat(playerEntity, equalTo(playerDao.getPlayerById(id = playerEntity.id)))
+        assertThat(listOf(playerEntity), equalTo(playerDao.getAllPlayers()))
     }
 
     @Test
     fun update() = runBlocking {
-        val newPlayerEnity = playerEntity.copy(firstName = "first1", lastName = "last1")
+        val newPlayerEntity = playerEntity.copy(firstName = "first1", lastName = "last1")
 
         playerDao.insert(playerEntity = playerEntity)
 
-        assertThat(playerEntity, equalTo(playerDao.getPlayerById(id = playerEntity.id)))
+        assertThat(listOf(playerEntity), equalTo(playerDao.getAllPlayers()))
 
-        playerDao.update(playerEntity = newPlayerEnity)
+        playerDao.update(playerEntity = newPlayerEntity)
 
-        assertThat(playerDao.getPlayerById(id = newPlayerEnity.id), equalTo(newPlayerEnity))
+        assertThat(listOf(newPlayerEntity), equalTo(playerDao.getAllPlayers()))
     }
 
     @Test
     fun delete() = runBlocking {
         playerDao.insert(playerEntity = playerEntity)
 
-        assertThat(playerEntity, equalTo(playerDao.getPlayerById(id = playerEntity.id)))
+        assertThat(listOf(playerEntity), equalTo(playerDao.getAllPlayers()))
 
         playerDao.delete(playerEntity = playerEntity)
 
-        assertThat(null, equalTo(playerDao.getPlayerById(id = playerEntity.id)))
+        assertThat(emptyList(), equalTo(playerDao.getAllPlayers()))
     }
 
     @Test
     fun deleteAllPlayers() = runBlocking {
-        val newPlayerEnity = playerEntity.copy(id = 2, firstName = "first1", lastName = "last1")
+        val newPlayerEntity = playerEntity.copy(id = 2, firstName = "first1", lastName = "last1")
 
         playerDao.insert(playerEntity = playerEntity)
-        playerDao.insert(playerEntity = newPlayerEnity)
+        playerDao.insert(playerEntity = newPlayerEntity)
 
-        assertThat(playerEntity, equalTo(playerDao.getPlayerById(id = playerEntity.id)))
-        assertThat(newPlayerEnity, equalTo(playerDao.getPlayerById(id = newPlayerEnity.id)))
+        assertThat(listOf(playerEntity, newPlayerEntity), equalTo(playerDao.getAllPlayers()))
 
         playerDao.deleteAllPlayers()
 
-        assertThat(null, equalTo(playerDao.getPlayerById(id = playerEntity.id)))
-        assertThat(null, equalTo(playerDao.getPlayerById(id = newPlayerEnity.id)))
-    }
-
-    @Test
-    fun getPlayerById() = runBlocking {
-        val newPlayerEnity = playerEntity.copy(id = 2, firstName = "first1", lastName = "last1")
-
-        playerDao.insert(playerEntity = playerEntity)
-        playerDao.insert(playerEntity = newPlayerEnity)
-
-        assertThat(playerEntity, equalTo(playerDao.getPlayerById(id = playerEntity.id)))
+        assertThat(emptyList(), equalTo(playerDao.getAllPlayers()))
     }
 
     @Test
     fun getPlayerByName() = runBlocking {
-        val newPlayerEnity = playerEntity.copy(id = 2, firstName = "first1", lastName = "last1")
+        val newPlayerEntity = playerEntity.copy(id = 2, firstName = "first1", lastName = "last1")
 
         playerDao.insert(playerEntity = playerEntity)
-        playerDao.insert(playerEntity = newPlayerEnity)
+        playerDao.insert(playerEntity = newPlayerEntity)
 
-        assertThat(newPlayerEnity, equalTo(playerDao.getPlayersByName(firstName = newPlayerEnity.firstName, lastName = newPlayerEnity.lastName)))
+        assertThat(newPlayerEntity, equalTo(playerDao.getPlayersByName(firstName = newPlayerEntity.firstName, lastName = newPlayerEntity.lastName)))
     }
 
     @Test
