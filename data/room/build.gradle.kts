@@ -1,6 +1,6 @@
 plugins {
     id(BuildIds.androidLibrary)
-    id("com.google.devtools.ksp")
+    id(BuildIds.ksp)
     kotlin(BuildIds.pluginKotlin)
     kotlin(BuildIds.pluginKapt)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint

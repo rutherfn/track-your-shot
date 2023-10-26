@@ -91,6 +91,7 @@ dependencies {
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
+
     debugImplementation(Dependencies.Compose.tooling)
 
     testImplementation(Dependencies.Coroutine.test)

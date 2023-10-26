@@ -3,7 +3,7 @@ plugins {
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
     id(BuildIds.gmsGoogleServices)
-    id("com.google.devtools.ksp")
+    id(BuildIds.ksp)
     id(BuildIds.kover)
 }
 
@@ -141,7 +141,7 @@ dependencies {
 
     implementation(Dependencies.Material.material)
 
-    // ksp(Dependencies.Room.compiler)
+    ksp(Dependencies.Room.compiler)
 
     testImplementation(Dependencies.Coroutine.test)
 
