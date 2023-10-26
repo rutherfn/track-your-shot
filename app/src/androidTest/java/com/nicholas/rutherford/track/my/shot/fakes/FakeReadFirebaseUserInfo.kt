@@ -1,9 +1,11 @@
 package com.nicholas.rutherford.track.my.shot.fakes
 
-import com.nicholas.rutherford.track.my.shot.firebase.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.my.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.my.shot.firebase.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.my.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import java.util.Date
 
 class FakeReadFirebaseUserInfo(
     private val loggedInAccountEmail: String? = null,
@@ -20,6 +22,18 @@ class FakeReadFirebaseUserInfo(
 
     override fun getAccountInfoListFlow(): Flow<List<AccountInfoRealtimeResponse>?> =
         flowOf(accountInfoList)
+
+    override fun getAccountInfoKeyFlowByEmail(email: String): Flow<String?> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getPlayerInfoList(accountKey: String): Flow<List<PlayerInfoRealtimeWithKeyResponse>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLastUpdatedDateFlow(): Flow<Date?> {
+        TODO("Not yet implemented")
+    }
 
     override fun isEmailVerifiedFlow(): Flow<Boolean> = flowOf(isEmailVerified)
 

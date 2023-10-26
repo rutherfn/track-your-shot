@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.my.shot.feature.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -24,9 +26,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.nicholas.rutherford.track.my.shot.AppColors
 import com.nicholas.rutherford.track.my.shot.compose.components.Content
 import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
+import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
@@ -43,7 +48,7 @@ fun LoginScreen(loginScreenParams: LoginScreenParams) {
 }
 
 @Composable
-fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
+private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -143,6 +148,28 @@ fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
             onClick = { loginScreenParams.onCreateAccountClicked.invoke() },
             style = TextStyles.hyperLink,
             modifier = Modifier.testTag(tag = LoginTags.CLICK_ME_TO_CREATE_ACCOUNT_TEXT)
+        )
+    }
+}
+
+@Preview
+@Composable
+fun LoginScreenPreview() {
+    Column(modifier = Modifier.background(AppColors.White)) {
+        LoginScreen(
+            loginScreenParams = LoginScreenParams(
+                state = LoginState(
+                    launcherDrawableId = DrawablesIds.launcherRoundTest,
+                    email = "emailtest@gmail.com",
+                    password = "Password"
+                ),
+                onEmailValueChanged = {},
+                onPasswordValueChanged = {},
+                onLoginButtonClicked = {},
+                onForgotPasswordClicked = {},
+                onCreateAccountClicked = {},
+                coroutineScope = rememberCoroutineScope()
+            )
         )
     }
 }

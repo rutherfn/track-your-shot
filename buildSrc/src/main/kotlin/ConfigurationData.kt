@@ -2,7 +2,7 @@
 /**
  * To define configuration data */
 object ConfigurationData {
-    const val compileSdk = 33
+    const val compileSdk = 34
     const val buildToolsVersion = "30.0.3"
     const val minSdk = 21
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
