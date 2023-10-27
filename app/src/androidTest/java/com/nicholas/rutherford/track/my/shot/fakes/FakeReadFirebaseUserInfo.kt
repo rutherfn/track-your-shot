@@ -11,6 +11,9 @@ class FakeReadFirebaseUserInfo(
     private val loggedInAccountEmail: String? = null,
     private val accountInfoByEmail: AccountInfoRealtimeResponse? = null,
     private val accountInfoList: List<AccountInfoRealtimeResponse>? = null,
+    private val accountInfoKey: String = "",
+    private val playerInfoList: List<PlayerInfoRealtimeWithKeyResponse> = emptyList(),
+    private val lastUpdatedDate: Date? = null,
     private val isEmailVerified: Boolean = false,
     private val isLoggedIn: Boolean = false
 ) : ReadFirebaseUserInfo {
@@ -23,17 +26,13 @@ class FakeReadFirebaseUserInfo(
     override fun getAccountInfoListFlow(): Flow<List<AccountInfoRealtimeResponse>?> =
         flowOf(accountInfoList)
 
-    override fun getAccountInfoKeyFlowByEmail(email: String): Flow<String?> {
-        TODO("Not yet implemented")
-    }
+    override fun getAccountInfoKeyFlowByEmail(email: String): Flow<String?> =
+        flowOf(accountInfoKey)
 
-    override fun getPlayerInfoList(accountKey: String): Flow<List<PlayerInfoRealtimeWithKeyResponse>> {
-        TODO("Not yet implemented")
-    }
+    override fun getPlayerInfoList(accountKey: String): Flow<List<PlayerInfoRealtimeWithKeyResponse>> =
+        flowOf(playerInfoList)
 
-    override fun getLastUpdatedDateFlow(): Flow<Date?> {
-        TODO("Not yet implemented")
-    }
+    override fun getLastUpdatedDateFlow(): Flow<Date?> = flowOf(lastUpdatedDate)
 
     override fun isEmailVerifiedFlow(): Flow<Boolean> = flowOf(isEmailVerified)
 
