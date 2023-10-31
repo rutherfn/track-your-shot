@@ -6,6 +6,6 @@ object ComposeData {
     }
 
     object KotlinCompiler {
-        const val extensionVersion = "1.5.3"
+        const val extensionVersion = "1.5.1"
     }
 }
