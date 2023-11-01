@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.utils.toSetOrEmpty
-
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
