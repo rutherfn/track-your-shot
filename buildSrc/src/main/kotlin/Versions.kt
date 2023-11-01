@@ -23,6 +23,7 @@ object Versions {
 
         object Compose {
             const val activity = "1.5.1"
+            const val bom = "2023.10.01"
             const val coil = "1.3.2"
             const val core = "1.5.3"
             const val navigation = "2.5.3"

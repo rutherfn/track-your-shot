@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.utils.toSetOrEmpty
+
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
@@ -87,12 +89,15 @@ dependencies {
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
 
-    debugImplementation(Dependencies.Compose.uiTestManifest)
+    implementation(platform(Dependencies.Compose.bom))
+
+    debugImplementation(Dependencies.Compose.uiTooling)
+    implementation(Dependencies.Compose.uiToolingPreview)
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
 
-    debugImplementation(Dependencies.Compose.tooling)
+    debugImplementation(Dependencies.Compose.toolingPreview)
 
     testImplementation(Dependencies.Coroutine.test)
 
