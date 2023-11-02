@@ -4,7 +4,7 @@ object Versions {
      * To define plugins versions */
     object Plugins {
         const val gradlePlugin = "7.2.0"
-        const val kotlin = "1.7.10"
+        const val kotlin = "1.9.10"
     }
 
     /**
@@ -23,8 +23,9 @@ object Versions {
 
         object Compose {
             const val activity = "1.5.1"
+            const val bom = "2023.10.01"
             const val coil = "1.3.2"
-            const val core = "1.2.1"
+            const val core = "1.5.3"
             const val navigation = "2.5.3"
             const val viewModel = "1.5.1"
             const val uiTest = "1.3.0"
@@ -72,8 +73,8 @@ object Versions {
         object Mockk { const val core = "1.13.2" }
 
         object Room {
-            const val core = "2.5.0-alpha02"
-            const val coroutines = "1.5.2"
+            const val core = "2.5.2"
+            const val coroutines = "1.7.3"
         }
         object SystemUiController { const val core = "0.27.0" }
 

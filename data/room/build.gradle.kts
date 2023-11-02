@@ -1,13 +1,9 @@
 plugins {
     id(BuildIds.androidLibrary)
-    id(BuildIds.kotlinKapt)
+    id(BuildIds.ksp)
     kotlin(BuildIds.pluginKotlin)
     kotlin(BuildIds.pluginKapt)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
-}
-
-kapt {
-    correctErrorTypes = true
 }
 
 android {
@@ -77,7 +73,7 @@ dependencies {
     implementation(Dependencies.Room.runtime)
     implementation(Dependencies.Room.coroutines)
 
-    kapt(Dependencies.Room.compiler)
+    ksp(Dependencies.Room.compiler)
 
     testImplementation(Dependencies.Junit.core)
 
