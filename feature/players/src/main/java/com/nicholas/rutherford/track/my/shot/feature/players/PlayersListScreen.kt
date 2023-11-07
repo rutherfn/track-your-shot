@@ -17,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,8 +31,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.nicholas.rutherford.track.my.shot.base.resources.R
 import com.nicholas.rutherford.track.my.shot.compose.components.Content
 import com.nicholas.rutherford.track.my.shot.data.room.response.Player
+import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
@@ -50,7 +54,13 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             } else {
                 AddNewPlayerEmptyState()
             }
-        }
+        },
+        appBar = AppBar(
+            toolbarTitle = stringResource(id = R.string.players),
+            shouldShowMiddleContentAppBar = true
+        ),
+        imageVector = Icons.Filled.CheckCircle,
+        secondaryImageVector = Icons.Filled.CheckCircle
     )
 }
 

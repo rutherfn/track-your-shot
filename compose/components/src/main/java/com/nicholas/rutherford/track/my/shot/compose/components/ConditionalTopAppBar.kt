@@ -63,16 +63,16 @@ private fun SimpleTopAppBar(
                 style = TextStyles.toolbar
             )
         }, navigationIcon = {
-            IconButton(
-                onClick = { appBar.onIconButtonClicked?.invoke() },
-                modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
-            ) {
-                Icon(
-                    imageVector = imageVector ?: Icons.Filled.ArrowBack,
-                    contentDescription = appBar.iconContentDescription
-                )
-            }
+        IconButton(
+            onClick = { appBar.onIconButtonClicked?.invoke() },
+            modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
+        ) {
+            Icon(
+                imageVector = imageVector ?: Icons.Filled.ArrowBack,
+                contentDescription = appBar.iconContentDescription
+            )
         }
+    }
     )
     Spacer(modifier = Modifier.height(Padding.eight))
 }
