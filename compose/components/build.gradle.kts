@@ -77,5 +77,8 @@ dependencies {
     api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:ui"))
 
+    debugImplementation(Dependencies.Compose.uiTooling)
+
     implementation(Dependencies.Compose.material)
+    implementation(Dependencies.Compose.uiToolingPreview)
 }
