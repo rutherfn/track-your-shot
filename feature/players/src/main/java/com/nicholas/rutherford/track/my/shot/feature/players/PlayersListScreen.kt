@@ -17,8 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,9 +41,10 @@ import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
 
 @Composable
 fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
+    val isPlayerListEmpty = playerListScreenParams.state.playerList.isEmpty()
     Content(
         ui = {
-            if (playerListScreenParams.state.playerList.isNotEmpty()) {
+            if (!isPlayerListEmpty) {
                 LazyColumn {
                     items(playerListScreenParams.state.playerList) { player ->
                         PlayerItem(player = player)
@@ -59,12 +58,9 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             toolbarTitle = stringResource(id = R.string.players),
             shouldShowMiddleContentAppBar = true,
             onIconButtonClicked = {
-                println("get here drawer statedadad ")
                 playerListScreenParams.onToolbarMenuClicked.invoke()
             }
-        ),
-        imageVector = Icons.Filled.CheckCircle,
-        secondaryImageVector = Icons.Filled.CheckCircle,
+        )
     )
 }
 

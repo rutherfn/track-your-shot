@@ -39,7 +39,7 @@ object TextStyles {
     )
 
     val toolbar = TextStyle(
-        fontSize = 18.sp,
+        fontSize = 22.sp,
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
         color = Colors.primaryColor
