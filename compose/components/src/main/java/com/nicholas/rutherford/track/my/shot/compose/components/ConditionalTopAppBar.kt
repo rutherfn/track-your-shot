@@ -92,7 +92,9 @@ private fun ComplexTopAppBar(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                    appBar.onIconButtonClicked?.invoke()
+                }) {
                     Icon(
                         imageVector = imageVector ?: Icons.Filled.ArrowBack,
                         contentDescription = appBar.iconContentDescription
@@ -106,7 +108,7 @@ private fun ComplexTopAppBar(
                 )
 
                 secondaryImageVector?.let { currentImageVector ->
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { appBar.onSecondaryIconButtonClicked?.invoke() }) {
                         Icon(
                             imageVector = currentImageVector,
                             contentDescription = appBar.secondaryIconContentDescription

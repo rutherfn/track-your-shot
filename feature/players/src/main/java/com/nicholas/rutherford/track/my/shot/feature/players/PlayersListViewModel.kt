@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class PlayersListViewModel(
+    private val navigation: PlayersListNavigation,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo
 ) : ViewModel() {
 
@@ -29,4 +30,6 @@ class PlayersListViewModel(
             isValidPlayer = false
         }
     }
+
+    fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
 }

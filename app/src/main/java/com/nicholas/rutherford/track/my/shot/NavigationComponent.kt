@@ -2,9 +2,13 @@ package com.nicholas.rutherford.track.my.shot
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import androidx.compose.material.DrawerValue
+import androidx.compose.material.ModalDrawer
+import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nicholas.rutherford.track.my.shot.compose.components.AlertDialog
@@ -22,6 +26,7 @@ import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreenParams
 import com.nicholas.rutherford.track.my.shot.feature.players.PlayersListScreen
 import com.nicholas.rutherford.track.my.shot.feature.players.PlayersListScreenParams
 import com.nicholas.rutherford.track.my.shot.feature.splash.SplashScreen
+import com.nicholas.rutherford.track.my.shot.navigation.DrawerScreens
 import com.nicholas.rutherford.track.my.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.my.shot.navigation.Navigator
 import com.nicholas.rutherford.track.my.shot.navigation.arguments.NamedArguments
@@ -38,6 +43,10 @@ fun NavigationComponent(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val lifecycleOwner = LocalLifecycleOwner.current
+
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+
+    val scope = rememberCoroutineScope()
 
     val alertState by navigator.alertActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
@@ -63,12 +72,17 @@ fun NavigationComponent(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
+    val navigationDrawerState by navigator.navigationDrawerAction.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
 
     var alert: Alert? by remember { mutableStateOf(value = null) }
     var progress: Progress? by remember { mutableStateOf(value = null) }
 
     val createAccountViewModel = viewModels.createAccountViewModel
     val loginViewModel = viewModels.loginViewModel
+    val playersListViewModel = viewModels.playersListViewModel
     val forgotPasswordViewModel = viewModels.forgotPasswordViewModel
 
     LaunchedEffect(alertState) {
@@ -123,68 +137,139 @@ fun NavigationComponent(
         }
     }
 
-    NavHost(
-        navController = navHostController,
-        startDestination = NavigationDestinations.SPLASH_SCREEN
+    LaunchedEffect(navigationDrawerState) {
+        navigationDrawerState?.let { shouldOpenNavigationDrawer ->
+            scope.launch {
+                if (shouldOpenNavigationDrawer) {
+                    drawerState.open()
+                } else {
+                    drawerState.close()
+                }
+                navigator.showNavigationDrawer(navigationDrawerAction = null)
+            }
+        }
+    }
+
+    ModalDrawer(
+        drawerState = drawerState,
+        gesturesEnabled = drawerState.isOpen,
+        drawerContent = {
+            DrawerContent(
+                screens = listOf(
+                    DrawerScreens.PlayersList,
+                    DrawerScreens.Settings
+                ),
+                onDestinationClicked = {
+                    scope.launch {
+                        drawerState.close()
+                        navHostController.navigate(
+                            it, NavOptions.Builder()
+                                .setPopUpTo(0, true)
+                                .setLaunchSingleTop(true)
+                                .build()
+                        )
+                    }
+                }
+            )
+        }
     ) {
-        composable(route = NavigationDestinations.SPLASH_SCREEN) {
-            SplashScreen(navigateToPlayersListLoginOrAuthentication = {
-                viewModels.splashViewModel.navigateToPlayersListLoginOrAuthentication()
-            })
-        }
-        composable(route = NavigationDestinations.LOGIN_SCREEN) {
-            LoginScreen(
-                loginScreenParams = LoginScreenParams(
-                    state = loginViewModel.loginStateFlow.collectAsState().value,
-                    onEmailValueChanged = { newEmail -> loginViewModel.onEmailValueChanged(newEmail = newEmail) },
-                    onPasswordValueChanged = { newPassword -> loginViewModel.onPasswordValueChanged(newPassword = newPassword) },
-                    onLoginButtonClicked = {
-                        coroutineScope.launch {
-                            loginViewModel.onLoginButtonClicked()
-                        }
-                    },
-                    onForgotPasswordClicked = { loginViewModel.onForgotPasswordClicked() },
-                    onCreateAccountClicked = { loginViewModel.onCreateAccountClicked() },
-                    coroutineScope = coroutineScope
-                )
-            )
-        }
-        composable(route = NavigationDestinations.PLAYERS_LIST_SCREEN) {
-            PlayersListScreen(playerListScreenParams = PlayersListScreenParams(state = viewModels.playersListViewModel.playerListStateFlow.collectAsState().value))
-        }
-        composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {
-            ForgotPasswordScreen(
-                forgotPasswordScreenParams = ForgotPasswordScreenParams(
-                    state = forgotPasswordViewModel.forgotPasswordStateFlow.collectAsState().value,
-                    onEmailValueChanged = { newEmail -> forgotPasswordViewModel.onEmailValueChanged(newEmail = newEmail) },
-                    onSendPasswordResetButtonClicked = { newEmail ->
-                        coroutineScope.launch { forgotPasswordViewModel.onSendPasswordResetButtonClicked(newEmail = newEmail) }
-                    },
-                    onBackButtonClicked = { forgotPasswordViewModel.onBackButtonClicked() }
-                )
-            )
-        }
-        composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
-            CreateAccountScreen(
-                createAccountScreenParams = CreateAccountScreenParams(
-                    state = createAccountViewModel.createAccountStateFlow.collectAsState().value,
-                    onUsernameValueChanged = { newUsername -> createAccountViewModel.onUsernameValueChanged(newUsername = newUsername) },
-                    onEmailValueChanged = { newEmail -> createAccountViewModel.onEmailValueChanged(newEmail = newEmail) },
-                    onPasswordValueChanged = { newPassword -> createAccountViewModel.onPasswordValueChanged(newPassword = newPassword) },
-                    onCreateAccountButtonClicked = { createAccountViewModel.onCreateAccountButtonClicked() },
-                    onBackButtonClicked = { createAccountViewModel.onBackButtonClicked() }
-                )
-            )
-        }
-        composable(
-            route = NavigationDestinations.AUTHENTICATION_SCREEN_WITH_PARAMS,
-            arguments = NavArguments.authentication
+
+        NavHost(
+            navController = navHostController,
+            startDestination = NavigationDestinations.SPLASH_SCREEN
         ) {
-            AuthenticationScreen(
-                viewModel = viewModels.authenticationViewModel,
-                usernameArgument = it.arguments?.getString(NamedArguments.USERNAME),
-                emailArgument = it.arguments?.getString(NamedArguments.EMAIL)
-            )
+            composable(route = NavigationDestinations.SPLASH_SCREEN) {
+                SplashScreen(navigateToPlayersListLoginOrAuthentication = {
+                    viewModels.splashViewModel.navigateToPlayersListLoginOrAuthentication()
+                })
+            }
+            composable(route = NavigationDestinations.LOGIN_SCREEN) {
+                LoginScreen(
+                    loginScreenParams = LoginScreenParams(
+                        state = loginViewModel.loginStateFlow.collectAsState().value,
+                        onEmailValueChanged = { newEmail ->
+                            loginViewModel.onEmailValueChanged(
+                                newEmail = newEmail
+                            )
+                        },
+                        onPasswordValueChanged = { newPassword ->
+                            loginViewModel.onPasswordValueChanged(
+                                newPassword = newPassword
+                            )
+                        },
+                        onLoginButtonClicked = {
+                            coroutineScope.launch {
+                                loginViewModel.onLoginButtonClicked()
+                            }
+                        },
+                        onForgotPasswordClicked = { loginViewModel.onForgotPasswordClicked() },
+                        onCreateAccountClicked = { loginViewModel.onCreateAccountClicked() },
+                        coroutineScope = coroutineScope
+                    )
+                )
+            }
+            composable(route = NavigationDestinations.PLAYERS_LIST_SCREEN) {
+                PlayersListScreen(
+                    playerListScreenParams = PlayersListScreenParams(
+                        state = playersListViewModel.playerListStateFlow.collectAsState().value,
+                        onToolbarMenuClicked = { playersListViewModel.onToolbarMenuClicked() }
+                    )
+                )
+            }
+            composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {
+                ForgotPasswordScreen(
+                    forgotPasswordScreenParams = ForgotPasswordScreenParams(
+                        state = forgotPasswordViewModel.forgotPasswordStateFlow.collectAsState().value,
+                        onEmailValueChanged = { newEmail ->
+                            forgotPasswordViewModel.onEmailValueChanged(
+                                newEmail = newEmail
+                            )
+                        },
+                        onSendPasswordResetButtonClicked = { newEmail ->
+                            coroutineScope.launch {
+                                forgotPasswordViewModel.onSendPasswordResetButtonClicked(
+                                    newEmail = newEmail
+                                )
+                            }
+                        },
+                        onBackButtonClicked = { forgotPasswordViewModel.onBackButtonClicked() }
+                    )
+                )
+            }
+            composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
+                CreateAccountScreen(
+                    createAccountScreenParams = CreateAccountScreenParams(
+                        state = createAccountViewModel.createAccountStateFlow.collectAsState().value,
+                        onUsernameValueChanged = { newUsername ->
+                            createAccountViewModel.onUsernameValueChanged(
+                                newUsername = newUsername
+                            )
+                        },
+                        onEmailValueChanged = { newEmail ->
+                            createAccountViewModel.onEmailValueChanged(
+                                newEmail = newEmail
+                            )
+                        },
+                        onPasswordValueChanged = { newPassword ->
+                            createAccountViewModel.onPasswordValueChanged(
+                                newPassword = newPassword
+                            )
+                        },
+                        onCreateAccountButtonClicked = { createAccountViewModel.onCreateAccountButtonClicked() },
+                        onBackButtonClicked = { createAccountViewModel.onBackButtonClicked() }
+                    )
+                )
+            }
+            composable(
+                route = NavigationDestinations.AUTHENTICATION_SCREEN_WITH_PARAMS,
+                arguments = NavArguments.authentication
+            ) {
+                AuthenticationScreen(
+                    viewModel = viewModels.authenticationViewModel,
+                    usernameArgument = it.arguments?.getString(NamedArguments.USERNAME),
+                    emailArgument = it.arguments?.getString(NamedArguments.EMAIL)
+                )
+            }
         }
     }
 

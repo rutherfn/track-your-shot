@@ -11,6 +11,7 @@ interface Navigator {
     val navActions: StateFlow<NavigationAction?>
     val popRouteActions: StateFlow<String?>
     val progressActions: StateFlow<Progress?>
+    val navigationDrawerAction: StateFlow<Boolean?>
 
     fun alert(alertAction: Alert?)
     fun emailAction(emailAction: Boolean?)
@@ -18,4 +19,5 @@ interface Navigator {
     fun navigate(navigationAction: NavigationAction?)
     fun pop(popRouteAction: String?)
     fun progress(progressAction: Progress?)
+    fun showNavigationDrawer(navigationDrawerAction: Boolean?)
 }

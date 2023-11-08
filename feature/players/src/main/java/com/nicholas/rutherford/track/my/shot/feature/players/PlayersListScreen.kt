@@ -57,10 +57,14 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
         },
         appBar = AppBar(
             toolbarTitle = stringResource(id = R.string.players),
-            shouldShowMiddleContentAppBar = true
+            shouldShowMiddleContentAppBar = true,
+            onIconButtonClicked = {
+                println("get here drawer statedadad ")
+                playerListScreenParams.onToolbarMenuClicked.invoke()
+            }
         ),
         imageVector = Icons.Filled.CheckCircle,
-        secondaryImageVector = Icons.Filled.CheckCircle
+        secondaryImageVector = Icons.Filled.CheckCircle,
     )
 }
 
