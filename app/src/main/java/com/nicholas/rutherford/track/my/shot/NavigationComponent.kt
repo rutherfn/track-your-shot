@@ -5,10 +5,16 @@ import android.content.Intent
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.rememberDrawerState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nicholas.rutherford.track.my.shot.compose.components.AlertDialog
@@ -43,7 +49,6 @@ fun NavigationComponent(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val lifecycleOwner = LocalLifecycleOwner.current
-
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     val scope = rememberCoroutineScope()
@@ -159,16 +164,11 @@ fun NavigationComponent(
                     DrawerScreens.PlayersList,
                     DrawerScreens.Settings
                 ),
-                onDestinationClicked = {
+                onDestinationClicked = { route, navOptions ->
                     scope.launch {
                         drawerState.close()
-                        navHostController.navigate(
-                            it, NavOptions.Builder()
-                                .setPopUpTo(0, true)
-                                .setLaunchSingleTop(true)
-                                .build()
-                        )
                     }
+                    navHostController.navigate(route, navOptions)
                 }
             )
         }

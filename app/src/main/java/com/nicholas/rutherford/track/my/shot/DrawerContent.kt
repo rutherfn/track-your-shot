@@ -16,6 +16,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavOptions
 import com.nicholas.rutherford.track.my.shot.base.resources.R
 import com.nicholas.rutherford.track.my.shot.navigation.DrawerScreens
 
@@ -23,7 +24,7 @@ import com.nicholas.rutherford.track.my.shot.navigation.DrawerScreens
 fun DrawerContent(
     screens: List<DrawerScreens>,
     modifier: Modifier = Modifier,
-    onDestinationClicked: (route: String) -> Unit
+    onDestinationClicked: (route: String, navOptions: NavOptions) -> Unit
 ) {
     TrackMyShotTheme {
         Column(
@@ -43,7 +44,7 @@ fun DrawerContent(
                     text = screen.title,
                     style = MaterialTheme.typography.h4,
                     modifier = Modifier.clickable {
-                        onDestinationClicked(screen.route)
+                        onDestinationClicked(screen.route, screen.navOptions)
                     }
                 )
             }
@@ -59,7 +60,7 @@ fun DrawerContentPreview() {
     Column(modifier = Modifier.background(AppColors.White)) {
         DrawerContent(
             screens = screens,
-            onDestinationClicked = {}
+            onDestinationClicked = { _, _ -> }
         )
     }
 }
