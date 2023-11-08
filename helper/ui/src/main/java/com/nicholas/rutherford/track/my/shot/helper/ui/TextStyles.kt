@@ -16,7 +16,7 @@ object TextStyles {
     )
 
     val subLarge = TextStyle(
-        fontSize = 32.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Bold, color = Colors.primaryColor
+        fontSize = 28.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Bold, color = Colors.primaryColor
     )
 
     val medium = TextStyle(
@@ -24,7 +24,11 @@ object TextStyles {
     )
 
     val small = TextStyle(
-        fontSize = 19.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Medium, color = Colors.primaryColor
+        fontSize = 18.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Medium, color = Colors.primaryColor
+    )
+
+    val smallBold = TextStyle(
+        fontSize = 18.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Bold, color = Colors.primaryColor
     )
 
     val body = TextStyle(

@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.my.shot
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import androidx.compose.material.DrawerValue
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -158,11 +159,16 @@ fun NavigationComponent(
     ModalDrawer(
         drawerState = drawerState,
         gesturesEnabled = drawerState.isOpen,
+        drawerShape = MaterialTheme.shapes.medium,
         drawerContent = {
             DrawerContent(
                 screens = listOf(
                     DrawerScreens.PlayersList,
-                    DrawerScreens.Settings
+                    DrawerScreens.Stats,
+                    DrawerScreens.ComparePlayersStats,
+                    DrawerScreens.VoiceCommands,
+                    DrawerScreens.Settings,
+                    DrawerScreens.Logout
                 ),
                 onDestinationClicked = { route, navOptions ->
                     scope.launch {

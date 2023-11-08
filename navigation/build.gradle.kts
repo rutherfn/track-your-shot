@@ -77,6 +77,8 @@ dependencies {
 
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
+    implementation(Dependencies.Compose.materialDesignIconsCore)
+    implementation(Dependencies.Compose.materialDesignIconsExtended)
 
     implementation(Dependencies.Coroutine.jvm)
 

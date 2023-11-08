@@ -9,7 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +27,7 @@ import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
  * @param appBar optional param that is responsible for creating a [TopAppBar] with set properties if not null
  * @param imageVector optional param that will set a new default [ImageVector] if not null to the [TopAppBar]
  * @param [imageVector] optional param that will set a [ImageVector] to the [appBar] if not null
- * If the [imageVector] is null then go ahead and set the vector image to [Icons.Filled.ArrowBack]
+ * If the [imageVector] is null then go ahead and set a preset image vector
  * @param [secondaryImageVector] optional param that will set a [ImageVector] to the right inside of the [appBar] if not null
  * @param invokeFunctionOnInit optional param that will invoke a function on the [Content] function invoke state
  */
