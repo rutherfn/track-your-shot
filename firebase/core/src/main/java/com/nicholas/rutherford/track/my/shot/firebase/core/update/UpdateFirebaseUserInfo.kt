@@ -1,6 +1,6 @@
-package com.nicholas.rutherford.track.my.shot.firebase.core.update
+package com.nicholas.rutherford.track.your.shot.firebase.core.update
 
-import com.nicholas.rutherford.track.my.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import kotlinx.coroutines.flow.Flow
 
 interface UpdateFirebaseUserInfo {

@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.helper.constants
+package com.nicholas.rutherford.track.your.shot.helper.constants
 
 object Constants {
     const val APP_DATABASE_NAME = "app_database.db"

@@ -1,6 +1,6 @@
-package com.nicholas.rutherford.track.my.shot.data.shared.dialogtextfield
+package com.nicholas.rutherford.track.your.shot.data.shared.dialogtextfield
 
-import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 
 data class DialogTextField(
     val onDismissClicked: () -> Unit,

@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.build.type
+package com.nicholas.rutherford.track.your.shot.build.type
 
 interface BuildType {
     fun isDebug(): Boolean

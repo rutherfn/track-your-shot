@@ -1,18 +1,18 @@
-package com.nicholas.rutherford.track.my.shot.feature.create.account.authentication
+package com.nicholas.rutherford.track.your.shot.feature.create.account.authentication
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
-import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
-import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
-import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
-import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.my.shot.firebase.core.create.CreateFirebaseUserInfo
-import com.nicholas.rutherford.track.my.shot.firebase.core.read.ReadFirebaseUserInfo
-import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
-import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
+import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import kotlinx.coroutines.flow.collectLatest
 
 class AuthenticationViewModel(

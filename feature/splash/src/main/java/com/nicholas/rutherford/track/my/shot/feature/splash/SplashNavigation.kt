@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.feature.splash
+package com.nicholas.rutherford.track.your.shot.feature.splash
 
 interface SplashNavigation {
     fun navigateToAuthentication(username: String, email: String)

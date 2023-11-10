@@ -1,6 +1,6 @@
-package com.nicholas.rutherford.track.my.shot.feature.players
+package com.nicholas.rutherford.track.your.shot.feature.players
 
-import com.nicholas.rutherford.track.my.shot.navigation.Navigator
+import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
 class PlayersListNavigationImpl(
     private val navigator: Navigator

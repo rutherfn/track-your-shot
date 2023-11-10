@@ -1,11 +1,11 @@
-package com.nicholas.rutherford.track.my.shot.data.room.dao
+package com.nicholas.rutherford.track.your.shot.data.room.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.nicholas.rutherford.track.my.shot.data.room.entities.PlayerEntity
+import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerEntity
 
 @Dao
 interface PlayerDao {

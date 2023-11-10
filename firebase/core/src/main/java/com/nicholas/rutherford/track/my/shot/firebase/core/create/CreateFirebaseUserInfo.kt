@@ -1,7 +1,7 @@
-package com.nicholas.rutherford.track.my.shot.firebase.core.create
+package com.nicholas.rutherford.track.your.shot.firebase.core.create
 
-import com.nicholas.rutherford.track.my.shot.firebase.CreateAccountFirebaseAuthResponse
-import com.nicholas.rutherford.track.my.shot.firebase.realtime.PlayerInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAuthResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import kotlinx.coroutines.flow.Flow
 
 interface CreateFirebaseUserInfo {

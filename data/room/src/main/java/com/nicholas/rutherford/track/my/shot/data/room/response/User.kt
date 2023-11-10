@@ -1,6 +1,6 @@
-package com.nicholas.rutherford.track.my.shot.data.room.response
+package com.nicholas.rutherford.track.your.shot.data.room.response
 
-import com.nicholas.rutherford.track.my.shot.data.room.entities.UserEntity
+import com.nicholas.rutherford.track.your.shot.data.room.entities.UserEntity
 
 data class User(
     val id: Int,

@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.firebase.core.delete
+package com.nicholas.rutherford.track.your.shot.firebase.core.delete
 
 import kotlinx.coroutines.flow.Flow
 

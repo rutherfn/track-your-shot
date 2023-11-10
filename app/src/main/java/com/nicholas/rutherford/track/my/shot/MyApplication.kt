@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot
+package com.nicholas.rutherford.track.your.shot
 
 import android.app.Application
 import org.koin.android.ext.koin.androidContext

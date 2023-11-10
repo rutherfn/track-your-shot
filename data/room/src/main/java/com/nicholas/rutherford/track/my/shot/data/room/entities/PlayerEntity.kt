@@ -1,10 +1,10 @@
-package com.nicholas.rutherford.track.my.shot.data.room.entities
+package com.nicholas.rutherford.track.your.shot.data.room.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.nicholas.rutherford.track.my.shot.data.room.response.Player
-import com.nicholas.rutherford.track.my.shot.data.room.response.PlayerPositions
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 
 @Entity(tableName = "players")
 data class PlayerEntity(

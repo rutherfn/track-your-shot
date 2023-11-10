@@ -1,7 +1,7 @@
-package com.nicholas.rutherford.track.my.shot.firebase.core.read
+package com.nicholas.rutherford.track.your.shot.firebase.core.read
 
-import com.nicholas.rutherford.track.my.shot.firebase.realtime.AccountInfoRealtimeResponse
-import com.nicholas.rutherford.track.my.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 

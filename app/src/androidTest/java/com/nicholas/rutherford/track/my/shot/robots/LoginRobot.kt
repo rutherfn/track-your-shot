@@ -1,10 +1,10 @@
-package com.nicholas.rutherford.track.my.shot.robots
+package com.nicholas.rutherford.track.your.shot.robots
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import com.nicholas.rutherford.track.my.shot.feature.login.LoginTags
-import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
-import com.nicholas.rutherford.track.myshot.compose.content.test.rule.verifyTagWithImageResIsDisplayed
-import com.nicholas.rutherford.track.myshot.compose.content.test.rule.verifyTagWithTextIsDisplayed
+import com.nicholas.rutherford.track.your.shot.feature.login.LoginTags
+import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
+import com.nicholas.rutherford.track.yourshot.compose.content.test.rule.verifyTagWithImageResIsDisplayed
+import com.nicholas.rutherford.track.yourshot.compose.content.test.rule.verifyTagWithTextIsDisplayed
 
 class LoginRobot(private val composeRule: ComposeContentTestRule) {
     fun verifyLoginTestContent() {

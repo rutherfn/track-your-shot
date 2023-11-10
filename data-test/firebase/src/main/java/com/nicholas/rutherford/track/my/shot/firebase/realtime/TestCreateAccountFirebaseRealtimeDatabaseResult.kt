@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.firebase.realtime
+package com.nicholas.rutherford.track.your.shot.firebase.realtime
 
 class TestCreateAccountFirebaseRealtimeDatabaseResult {
     fun create(): CreateAccountFirebaseRealtimeDatabaseResult {

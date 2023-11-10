@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.firebase.util.existinguser
+package com.nicholas.rutherford.track.your.shot.firebase.util.existinguser
 
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task

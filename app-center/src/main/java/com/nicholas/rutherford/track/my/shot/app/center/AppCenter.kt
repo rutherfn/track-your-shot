@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.app.center
+package com.nicholas.rutherford.track.your.shot.app.center
 
 interface AppCenter {
     fun start()

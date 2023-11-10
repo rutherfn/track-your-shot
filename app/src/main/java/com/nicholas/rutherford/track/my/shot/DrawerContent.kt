@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot
+package com.nicholas.rutherford.track.your.shot
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,10 +23,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavOptions
-import com.nicholas.rutherford.track.my.shot.base.resources.R
-import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
-import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
-import com.nicholas.rutherford.track.my.shot.navigation.DrawerScreens
+import com.nicholas.rutherford.track.your.shot.base.resources.R
+import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
+import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
+import com.nicholas.rutherford.track.your.shot.navigation.DrawerScreens
 
 @Composable
 fun DrawerContent(

@@ -1,6 +1,6 @@
-package com.nicholas.rutherford.track.my.shot.feature.splash
+package com.nicholas.rutherford.track.your.shot.feature.splash
 
-import com.nicholas.rutherford.track.my.shot.base.resources.R
+import com.nicholas.rutherford.track.your.shot.base.resources.R
 
 object DrawablesIds {
     val email = R.mipmap.ic_email

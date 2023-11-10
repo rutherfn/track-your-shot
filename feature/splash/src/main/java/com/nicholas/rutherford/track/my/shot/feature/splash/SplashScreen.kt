@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.feature.splash
+package com.nicholas.rutherford.track.your.shot.feature.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,7 +11,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.nicholas.rutherford.track.my.shot.compose.components.Content
+import com.nicholas.rutherford.track.your.shot.compose.components.Content
 
 const val SPLASH_IMAGE_SCALE = 1f
 

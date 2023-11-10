@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.navigation
+package com.nicholas.rutherford.track.your.shot.navigation
 
 object NavigationDestinations {
     const val AUTHENTICATION_SCREEN = "authenticationScreen"

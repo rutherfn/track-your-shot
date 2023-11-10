@@ -1,10 +1,10 @@
-package com.nicholas.rutherford.track.my.shot.navigation
+package com.nicholas.rutherford.track.your.shot.navigation
 
 import androidx.navigation.NavOptions
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import com.nicholas.rutherford.track.my.shot.navigation.NavigationActions as Actions
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions as Actions
 
 class NavigationActionsTest {
 

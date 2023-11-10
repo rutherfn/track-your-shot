@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.data.shared.alert
+package com.nicholas.rutherford.track.your.shot.data.shared.alert
 
 data class AlertConfirmAndDismissButton(
     val buttonText: String,

@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.feature.login
+package com.nicholas.rutherford.track.your.shot.feature.login
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested

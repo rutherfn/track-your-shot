@@ -1,7 +1,7 @@
-package com.nicholas.rutherford.track.my.shot.feature.splash
+package com.nicholas.rutherford.track.your.shot.feature.splash
 
-import com.nicholas.rutherford.track.my.shot.navigation.NavigationActions
-import com.nicholas.rutherford.track.my.shot.navigation.Navigator
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
+import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
 class SplashNavigationImpl(private val navigator: Navigator) : SplashNavigation {
 

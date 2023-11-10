@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.build.type
+package com.nicholas.rutherford.track.your.shot.build.type
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach

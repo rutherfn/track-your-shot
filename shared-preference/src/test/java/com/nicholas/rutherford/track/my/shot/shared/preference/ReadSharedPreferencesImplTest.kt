@@ -1,8 +1,8 @@
-package com.nicholas.rutherford.track.my.shot.shared.preference
+package com.nicholas.rutherford.track.your.shot.shared.preference
 
 import android.content.SharedPreferences
-import com.nicholas.rutherford.track.my.shot.helper.constants.SharedPreferencesConstants
-import com.nicholas.rutherford.track.my.shot.shared.preference.read.ReadSharedPreferencesImpl
+import com.nicholas.rutherford.track.your.shot.helper.constants.SharedPreferencesConstants
+import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferencesImpl
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.mockkStatic

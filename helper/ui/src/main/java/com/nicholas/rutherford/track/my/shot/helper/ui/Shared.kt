@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.helper.ui
+package com.nicholas.rutherford.track.your.shot.helper.ui
 
 import androidx.compose.ui.unit.dp
 

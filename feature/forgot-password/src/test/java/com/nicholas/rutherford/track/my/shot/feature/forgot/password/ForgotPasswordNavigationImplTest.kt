@@ -1,9 +1,9 @@
-package com.nicholas.rutherford.track.my.shot.feature.forgot.password
+package com.nicholas.rutherford.track.your.shot.feature.forgot.password
 
-import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
-import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.my.shot.navigation.NavigationDestinations
-import com.nicholas.rutherford.track.my.shot.navigation.Navigator
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
+import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot
 import io.mockk.mockk
 import io.mockk.slot

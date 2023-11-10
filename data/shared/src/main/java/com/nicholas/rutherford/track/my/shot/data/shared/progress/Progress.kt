@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.data.shared.progress
+package com.nicholas.rutherford.track.your.shot.data.shared.progress
 
 data class Progress(
     val onDismissClicked: (() -> Unit)? = null,

@@ -1,9 +1,9 @@
-package com.nicholas.rutherford.track.my.shot.data.room.repository
+package com.nicholas.rutherford.track.your.shot.data.room.repository
 
-import com.nicholas.rutherford.track.my.shot.data.room.dao.ActiveUserDao
-import com.nicholas.rutherford.track.my.shot.data.room.entities.toActiveUser
-import com.nicholas.rutherford.track.my.shot.data.room.response.ActiveUser
-import com.nicholas.rutherford.track.my.shot.data.room.response.toActiveUserEntity
+import com.nicholas.rutherford.track.your.shot.data.room.dao.ActiveUserDao
+import com.nicholas.rutherford.track.your.shot.data.room.entities.toActiveUser
+import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
+import com.nicholas.rutherford.track.your.shot.data.room.response.toActiveUserEntity
 
 class ActiveUserRepositoryImpl(private val activeUserDao: ActiveUserDao) : ActiveUserRepository {
 

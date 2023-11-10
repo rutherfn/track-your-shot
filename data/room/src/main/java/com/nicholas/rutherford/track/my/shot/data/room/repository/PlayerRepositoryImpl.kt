@@ -1,9 +1,9 @@
-package com.nicholas.rutherford.track.my.shot.data.room.repository
+package com.nicholas.rutherford.track.your.shot.data.room.repository
 
-import com.nicholas.rutherford.track.my.shot.data.room.dao.PlayerDao
-import com.nicholas.rutherford.track.my.shot.data.room.entities.toPlayer
-import com.nicholas.rutherford.track.my.shot.data.room.response.Player
-import com.nicholas.rutherford.track.my.shot.data.room.response.toPlayerEntity
+import com.nicholas.rutherford.track.your.shot.data.room.dao.PlayerDao
+import com.nicholas.rutherford.track.your.shot.data.room.entities.toPlayer
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.toPlayerEntity
 
 class PlayerRepositoryImpl(private val playerDao: PlayerDao) : PlayerRepository {
 

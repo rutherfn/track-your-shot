@@ -1,14 +1,14 @@
-package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount
+package com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount
 
 import android.app.Application
-import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
-import com.nicholas.rutherford.track.my.shot.data.test.room.TestUser
-import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.my.shot.firebase.TestAuthenticateUserViaEmailFirebaseResponse
-import com.nicholas.rutherford.track.my.shot.firebase.TestCreateAccountFirebaseAuthResponse
-import com.nicholas.rutherford.track.my.shot.firebase.core.create.CreateFirebaseUserInfo
-import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
-import com.nicholas.rutherford.track.my.shot.helper.network.Network
+import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestUser
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.firebase.TestAuthenticateUserViaEmailFirebaseResponse
+import com.nicholas.rutherford.track.your.shot.firebase.TestCreateAccountFirebaseAuthResponse
+import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
+import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

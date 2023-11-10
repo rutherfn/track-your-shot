@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.feature.login
+package com.nicholas.rutherford.track.your.shot.feature.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,14 +28,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nicholas.rutherford.track.my.shot.AppColors
-import com.nicholas.rutherford.track.my.shot.compose.components.Content
-import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
-import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
-import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
-import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
-import com.nicholas.rutherford.track.myshot.compose.content.test.rule.drawableId
+import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.compose.components.Content
+import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
+import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
+import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
+import com.nicholas.rutherford.track.yourshot.compose.content.test.rule.drawableId
 import kotlinx.coroutines.launch
 
 @Composable

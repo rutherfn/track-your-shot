@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.feature.players
+package com.nicholas.rutherford.track.your.shot.feature.players
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -29,15 +29,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import com.nicholas.rutherford.track.my.shot.base.resources.R
-import com.nicholas.rutherford.track.my.shot.compose.components.Content
-import com.nicholas.rutherford.track.my.shot.data.room.response.Player
-import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
-import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
-import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
-import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
-import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
+import com.nicholas.rutherford.track.your.shot.base.resources.R
+import com.nicholas.rutherford.track.your.shot.compose.components.Content
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
+import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
+import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
+import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {

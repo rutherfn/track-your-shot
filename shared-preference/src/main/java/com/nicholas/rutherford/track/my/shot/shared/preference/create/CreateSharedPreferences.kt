@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.shared.preference.create
+package com.nicholas.rutherford.track.your.shot.shared.preference.create
 
 interface CreateSharedPreferences {
     fun createAccountHasBeenCreatedPreference(value: Boolean)

@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.firebase.util.existinguser
+package com.nicholas.rutherford.track.your.shot.firebase.util.existinguser
 
 import kotlinx.coroutines.flow.Flow
 

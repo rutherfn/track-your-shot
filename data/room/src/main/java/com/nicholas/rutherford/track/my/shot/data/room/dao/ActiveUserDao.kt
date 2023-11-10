@@ -1,10 +1,10 @@
-package com.nicholas.rutherford.track.my.shot.data.room.dao
+package com.nicholas.rutherford.track.your.shot.data.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.nicholas.rutherford.track.my.shot.data.room.entities.ActiveUserEntity
+import com.nicholas.rutherford.track.your.shot.data.room.entities.ActiveUserEntity
 
 @Dao
 interface ActiveUserDao {

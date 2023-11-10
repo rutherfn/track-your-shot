@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.firebase.core.read
+package com.nicholas.rutherford.track.your.shot.firebase.core.read
 
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -8,13 +8,13 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.nicholas.rutherford.track.my.shot.firebase.realtime.AccountInfoRealtimeResponse
-import com.nicholas.rutherford.track.my.shot.firebase.realtime.PlayerInfoRealtimeResponse
-import com.nicholas.rutherford.track.my.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
-import com.nicholas.rutherford.track.my.shot.firebase.realtime.TestAccountInfoRealTimeResponse
-import com.nicholas.rutherford.track.my.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
-import com.nicholas.rutherford.track.my.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
-import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestAccountInfoRealTimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic

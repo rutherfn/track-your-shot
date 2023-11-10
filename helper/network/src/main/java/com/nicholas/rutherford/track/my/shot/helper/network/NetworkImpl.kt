@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.helper.network
+package com.nicholas.rutherford.track.your.shot.helper.network
 
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope

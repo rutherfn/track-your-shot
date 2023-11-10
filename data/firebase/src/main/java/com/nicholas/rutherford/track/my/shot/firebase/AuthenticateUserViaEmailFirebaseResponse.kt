@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.firebase
+package com.nicholas.rutherford.track.your.shot.firebase
 
 data class AuthenticateUserViaEmailFirebaseResponse(
     val isSuccessful: Boolean,

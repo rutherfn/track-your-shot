@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.navigation
+package com.nicholas.rutherford.track.your.shot.navigation
 
 object NavigationDestinationsWithParams {
     fun authenticationWithParams(username: String, email: String): String {

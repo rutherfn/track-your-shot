@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.feature.create.account.authentication
+package com.nicholas.rutherford.track.your.shot.feature.create.account.authentication
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -32,16 +32,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
-import com.nicholas.rutherford.track.my.shot.compose.components.Content
-import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
-import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
-import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
-import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
-import com.nicholas.rutherford.track.my.shot.helper.ui.Shared
-import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
-import com.nicholas.rutherford.track.my.shot.navigation.OnLifecycleEvent
-import com.nicholas.rutherford.track.myshot.compose.content.test.rule.drawableId
+import com.nicholas.rutherford.track.your.shot.compose.components.Content
+import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
+import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
+import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
+import com.nicholas.rutherford.track.your.shot.helper.ui.Shared
+import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
+import com.nicholas.rutherford.track.your.shot.navigation.OnLifecycleEvent
+import com.nicholas.rutherford.track.yourshot.compose.content.test.rule.drawableId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

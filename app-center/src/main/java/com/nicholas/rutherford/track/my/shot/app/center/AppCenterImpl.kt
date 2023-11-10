@@ -1,9 +1,9 @@
-package com.nicholas.rutherford.track.my.shot.app.center
+package com.nicholas.rutherford.track.your.shot.app.center
 
 import android.app.Application
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
-import com.nicholas.rutherford.track.my.shot.build.type.BuildType
+import com.nicholas.rutherford.track.your.shot.build.type.BuildType
 import com.microsoft.appcenter.AppCenter as MicrosoftAppCenter
 
 // TODO https://trello.com/c/0DbVGVAQ/37-figure-out-a-way-to-hide-app-center-api-keys

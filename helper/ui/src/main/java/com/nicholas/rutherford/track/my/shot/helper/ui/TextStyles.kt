@@ -1,11 +1,11 @@
-package com.nicholas.rutherford.track.my.shot.helper.ui
+package com.nicholas.rutherford.track.your.shot.helper.ui
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
-import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
+import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
 
 object TextStyles {
 

@@ -1,7 +1,7 @@
-package com.nicholas.rutherford.track.my.shot.app.center
+package com.nicholas.rutherford.track.your.shot.app.center
 
 import android.app.Application
-import com.nicholas.rutherford.track.my.shot.build.type.BuildTypeImpl
+import com.nicholas.rutherford.track.your.shot.build.type.BuildTypeImpl
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested

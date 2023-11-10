@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.feature.create.account.authentication
+package com.nicholas.rutherford.track.your.shot.feature.create.account.authentication
 
 object AuthenticationTags {
     const val CHECK_IF_ACCOUNT_HAS_BEEN_VERIFIED_TEXT = "check_if_account_has_been_verified_text"

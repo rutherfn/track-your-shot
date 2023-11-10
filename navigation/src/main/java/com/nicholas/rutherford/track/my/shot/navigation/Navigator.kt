@@ -1,7 +1,7 @@
-package com.nicholas.rutherford.track.my.shot.navigation
+package com.nicholas.rutherford.track.your.shot.navigation
 
-import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
-import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import kotlinx.coroutines.flow.StateFlow
 
 interface Navigator {

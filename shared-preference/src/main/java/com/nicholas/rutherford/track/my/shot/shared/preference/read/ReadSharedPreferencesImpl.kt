@@ -1,7 +1,7 @@
-package com.nicholas.rutherford.track.my.shot.shared.preference.read
+package com.nicholas.rutherford.track.your.shot.shared.preference.read
 
 import android.content.SharedPreferences
-import com.nicholas.rutherford.track.my.shot.helper.constants.SharedPreferencesConstants
+import com.nicholas.rutherford.track.your.shot.helper.constants.SharedPreferencesConstants
 
 class ReadSharedPreferencesImpl(private val sharedPreferences: SharedPreferences) : ReadSharedPreferences {
 

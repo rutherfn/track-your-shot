@@ -1,6 +1,6 @@
-package com.nicholas.rutherford.track.my.shot.data.room.response
+package com.nicholas.rutherford.track.your.shot.data.room.response
 
-import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 
 sealed class PlayerPositions(val value: Int) {
     object PointGuard : PlayerPositions(value = Constants.POINT_GUARD_VALUE)

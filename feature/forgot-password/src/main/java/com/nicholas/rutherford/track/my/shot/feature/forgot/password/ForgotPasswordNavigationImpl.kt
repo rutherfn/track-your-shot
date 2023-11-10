@@ -1,9 +1,9 @@
-package com.nicholas.rutherford.track.my.shot.feature.forgot.password
+package com.nicholas.rutherford.track.your.shot.feature.forgot.password
 
-import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
-import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.my.shot.navigation.NavigationDestinations
-import com.nicholas.rutherford.track.my.shot.navigation.Navigator
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
+import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
 class ForgotPasswordNavigationImpl(private val navigator: Navigator) : ForgotPasswordNavigation {
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)

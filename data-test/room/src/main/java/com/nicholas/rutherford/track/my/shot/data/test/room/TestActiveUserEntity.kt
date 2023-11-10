@@ -1,7 +1,7 @@
-package com.nicholas.rutherford.track.my.shot.data.test.room
+package com.nicholas.rutherford.track.your.shot.data.test.room
 
-import com.nicholas.rutherford.track.my.shot.data.room.entities.ActiveUserEntity
-import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.data.room.entities.ActiveUserEntity
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 
 class TestActiveUserEntity {
     fun create(): ActiveUserEntity {

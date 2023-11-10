@@ -1,11 +1,11 @@
-package com.nicholas.rutherford.track.my.shot.firebase.util.authentication
+package com.nicholas.rutherford.track.your.shot.firebase.util.authentication
 
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.nicholas.rutherford.track.my.shot.firebase.TestAuthenticateUserViaEmailFirebaseResponse
+import com.nicholas.rutherford.track.your.shot.firebase.TestAuthenticateUserViaEmailFirebaseResponse
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic

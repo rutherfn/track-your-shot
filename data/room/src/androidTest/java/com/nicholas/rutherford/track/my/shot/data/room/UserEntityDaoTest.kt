@@ -1,11 +1,11 @@
-package com.nicholas.rutherford.track.my.shot.data.room
+package com.nicholas.rutherford.track.your.shot.data.room
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.nicholas.rutherford.track.my.shot.data.room.dao.UserDao
-import com.nicholas.rutherford.track.my.shot.data.room.database.AppDatabase
-import com.nicholas.rutherford.track.my.shot.data.test.room.TestUserEntity
+import com.nicholas.rutherford.track.your.shot.data.room.dao.UserDao
+import com.nicholas.rutherford.track.your.shot.data.room.database.AppDatabase
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestUserEntity
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert

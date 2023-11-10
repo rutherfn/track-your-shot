@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.feature.create.account.authentication
+package com.nicholas.rutherford.track.your.shot.feature.create.account.authentication
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested

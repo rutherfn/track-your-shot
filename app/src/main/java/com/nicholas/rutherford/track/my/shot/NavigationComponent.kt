@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot
+package com.nicholas.rutherford.track.your.shot
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -18,27 +18,27 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.nicholas.rutherford.track.my.shot.compose.components.AlertDialog
-import com.nicholas.rutherford.track.my.shot.compose.components.ProgressDialog
-import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
-import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.my.shot.feature.create.account.authentication.AuthenticationScreen
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountScreen
-import com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount.CreateAccountScreenParams
-import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordScreen
-import com.nicholas.rutherford.track.my.shot.feature.forgot.password.ForgotPasswordScreenParams
-import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreen
-import com.nicholas.rutherford.track.my.shot.feature.login.LoginScreenParams
-import com.nicholas.rutherford.track.my.shot.feature.players.PlayersListScreen
-import com.nicholas.rutherford.track.my.shot.feature.players.PlayersListScreenParams
-import com.nicholas.rutherford.track.my.shot.feature.splash.SplashScreen
-import com.nicholas.rutherford.track.my.shot.navigation.DrawerScreens
-import com.nicholas.rutherford.track.my.shot.navigation.NavigationDestinations
-import com.nicholas.rutherford.track.my.shot.navigation.Navigator
-import com.nicholas.rutherford.track.my.shot.navigation.arguments.NamedArguments
-import com.nicholas.rutherford.track.my.shot.navigation.arguments.NavArguments
-import com.nicholas.rutherford.track.my.shot.navigation.asLifecycleAwareState
+import com.nicholas.rutherford.track.your.shot.compose.components.AlertDialog
+import com.nicholas.rutherford.track.your.shot.compose.components.ProgressDialog
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationScreen
+import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountScreen
+import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordScreen
+import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreen
+import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListScreen
+import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
+import com.nicholas.rutherford.track.your.shot.navigation.DrawerScreens
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
+import com.nicholas.rutherford.track.your.shot.navigation.Navigator
+import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArguments
+import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
+import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
 import kotlinx.coroutines.launch
 
 @Composable

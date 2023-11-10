@@ -1,7 +1,7 @@
-package com.nicholas.rutherford.track.my.shot.data.test.room
+package com.nicholas.rutherford.track.your.shot.data.test.room
 
-import com.nicholas.rutherford.track.my.shot.data.room.entities.toPlayer
-import com.nicholas.rutherford.track.my.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.entities.toPlayer
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 
 class TestPlayer {
 

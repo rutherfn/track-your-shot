@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount
+package com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -25,14 +25,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.nicholas.rutherford.track.my.shot.compose.components.Content
-import com.nicholas.rutherford.track.my.shot.compose.components.TextFieldNoPadding
-import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
-import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
-import com.nicholas.rutherford.track.my.shot.feature.splash.DrawablesIds
-import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
-import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
+import com.nicholas.rutherford.track.your.shot.compose.components.Content
+import com.nicholas.rutherford.track.your.shot.compose.components.TextFieldNoPadding
+import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
+import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
+import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
+import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun CreateAccountScreen(createAccountScreenParams: CreateAccountScreenParams) {

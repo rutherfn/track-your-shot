@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.navigation.arguments
+package com.nicholas.rutherford.track.your.shot.navigation.arguments
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

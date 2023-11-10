@@ -1,7 +1,7 @@
-package com.nicholas.rutherford.track.my.shot.firebase.util.authentication
+package com.nicholas.rutherford.track.your.shot.firebase.util.authentication
 
 import com.google.firebase.auth.FirebaseAuth
-import com.nicholas.rutherford.track.my.shot.firebase.AuthenticateUserViaEmailFirebaseResponse
+import com.nicholas.rutherford.track.your.shot.firebase.AuthenticateUserViaEmailFirebaseResponse
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow

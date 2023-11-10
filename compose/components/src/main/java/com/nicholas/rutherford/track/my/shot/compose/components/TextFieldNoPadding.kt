@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.compose.components
+package com.nicholas.rutherford.track.your.shot.compose.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -19,11 +19,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nicholas.rutherford.track.my.shot.AppColors
-import com.nicholas.rutherford.track.my.shot.feature.splash.Colors
-import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
-import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
+import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
+import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
  * Default lightweight TextField with no default start padding

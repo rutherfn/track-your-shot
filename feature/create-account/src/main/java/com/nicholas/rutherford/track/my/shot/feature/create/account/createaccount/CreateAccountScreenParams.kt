@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount
+package com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount
 
 data class CreateAccountScreenParams(
     val state: CreateAccountState,

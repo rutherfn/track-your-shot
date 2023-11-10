@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.data.shared.appbar
+package com.nicholas.rutherford.track.your.shot.data.shared.appbar
 
 data class AppBar(
     val toolbarTitle: String,

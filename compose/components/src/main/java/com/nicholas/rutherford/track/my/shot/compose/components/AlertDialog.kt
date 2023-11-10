@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.compose.components
+package com.nicholas.rutherford.track.your.shot.compose.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 
 /**
  * Default [AlertDialog] with given params to build alerts used in [Content]

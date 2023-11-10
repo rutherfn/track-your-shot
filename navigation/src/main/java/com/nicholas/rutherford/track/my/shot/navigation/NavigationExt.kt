@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.navigation
+package com.nicholas.rutherford.track.your.shot.navigation
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalLifecycleOwner

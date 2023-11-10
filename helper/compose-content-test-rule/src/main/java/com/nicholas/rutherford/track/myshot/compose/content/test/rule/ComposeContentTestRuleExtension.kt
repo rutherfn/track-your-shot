@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.myshot.compose.content.test.rule
+package com.nicholas.rutherford.track.yourshot.compose.content.test.rule
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.semantics.SemanticsPropertyKey

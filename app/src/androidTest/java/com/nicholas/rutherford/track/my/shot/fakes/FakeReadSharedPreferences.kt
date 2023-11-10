@@ -1,6 +1,6 @@
-package com.nicholas.rutherford.track.my.shot.fakes
+package com.nicholas.rutherford.track.your.shot.fakes
 
-import com.nicholas.rutherford.track.my.shot.shared.preference.read.ReadSharedPreferences
+import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 
 class FakeReadSharedPreferences(
     private val accountHasBeenCreated: Boolean = false,

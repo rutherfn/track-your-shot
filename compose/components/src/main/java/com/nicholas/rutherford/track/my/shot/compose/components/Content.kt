@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.compose.components
+package com.nicholas.rutherford.track.your.shot.compose.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nicholas.rutherford.track.my.shot.AppColors
-import com.nicholas.rutherford.track.my.shot.TrackMyShotTheme
-import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
+import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.TrackMyShotTheme
+import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 
 /**
  * Default Content with optional back [TopAppBar]. Used for default content views inside of [Composable]

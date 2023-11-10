@@ -1,9 +1,9 @@
-package com.nicholas.rutherford.track.my.shot.feature.create.account.authentication
+package com.nicholas.rutherford.track.your.shot.feature.create.account.authentication
 
-import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.my.shot.navigation.NavigationAction
-import com.nicholas.rutherford.track.my.shot.navigation.NavigationActions
-import com.nicholas.rutherford.track.my.shot.navigation.Navigator
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationAction
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
+import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot
 import io.mockk.mockk
 import io.mockk.slot

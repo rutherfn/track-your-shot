@@ -1,9 +1,9 @@
-package com.nicholas.rutherford.track.my.shot.feature.splash
+package com.nicholas.rutherford.track.your.shot.feature.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nicholas.rutherford.track.my.shot.data.room.repository.ActiveUserRepository
-import com.nicholas.rutherford.track.my.shot.firebase.core.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine

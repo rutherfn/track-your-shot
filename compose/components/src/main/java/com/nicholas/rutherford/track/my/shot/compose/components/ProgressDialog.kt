@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.compose.components
+package com.nicholas.rutherford.track.your.shot.compose.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
+import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 
 /**
  * Default [Dialog] with given params to build dialogs with [CircularProgressIndicator] used in [Content]

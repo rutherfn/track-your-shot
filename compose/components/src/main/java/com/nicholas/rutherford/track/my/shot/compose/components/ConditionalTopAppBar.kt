@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.compose.components
+package com.nicholas.rutherford.track.your.shot.compose.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -21,9 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
-import com.nicholas.rutherford.track.my.shot.data.shared.appbar.AppBar
-import com.nicholas.rutherford.track.my.shot.helper.ui.Padding
-import com.nicholas.rutherford.track.my.shot.helper.ui.TextStyles
+import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
+import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
+import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
  * Custom [TopAppBar] that will either draw a [ComplexTopAppBar] or [SimpleTopAppBar]

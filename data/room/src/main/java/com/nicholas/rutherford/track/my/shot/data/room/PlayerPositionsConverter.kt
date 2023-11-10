@@ -1,8 +1,8 @@
-package com.nicholas.rutherford.track.my.shot.data.room.converters
+package com.nicholas.rutherford.track.your.shot.data.room.converters
 
 import androidx.room.TypeConverter
-import com.nicholas.rutherford.track.my.shot.data.room.response.PlayerPositions
-import com.nicholas.rutherford.track.my.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 
 class PlayerPositionsConverter {
     @TypeConverter

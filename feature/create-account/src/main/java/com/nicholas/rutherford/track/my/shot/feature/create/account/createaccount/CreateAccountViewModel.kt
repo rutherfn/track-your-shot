@@ -1,17 +1,17 @@
-package com.nicholas.rutherford.track.my.shot.feature.create.account.createaccount
+package com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nicholas.rutherford.track.my.shot.data.room.repository.UserRepository
-import com.nicholas.rutherford.track.my.shot.data.shared.alert.Alert
-import com.nicholas.rutherford.track.my.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.my.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.my.shot.firebase.core.create.CreateFirebaseUserInfo
-import com.nicholas.rutherford.track.my.shot.firebase.util.authentication.AuthenticationFirebase
-import com.nicholas.rutherford.track.my.shot.helper.extensions.safeLet
-import com.nicholas.rutherford.track.my.shot.helper.network.Network
+import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
+import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
+import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest

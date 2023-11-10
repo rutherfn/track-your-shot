@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot
+package com.nicholas.rutherford.track.your.shot
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

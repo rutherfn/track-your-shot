@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.navigation
+package com.nicholas.rutherford.track.your.shot.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Analytics
@@ -9,7 +9,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SportsBasketball
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavOptions
-import com.nicholas.rutherford.track.my.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 
 sealed class DrawerScreens(
     val titleId: Int,

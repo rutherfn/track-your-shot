@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.my.shot.robots
+package com.nicholas.rutherford.track.your.shot.robots
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 

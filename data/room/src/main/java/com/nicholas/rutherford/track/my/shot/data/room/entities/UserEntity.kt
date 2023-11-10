@@ -1,9 +1,9 @@
-package com.nicholas.rutherford.track.my.shot.data.room.entities
+package com.nicholas.rutherford.track.your.shot.data.room.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.nicholas.rutherford.track.my.shot.data.room.response.User
+import com.nicholas.rutherford.track.your.shot.data.room.response.User
 
 @Entity(tableName = "users")
 data class UserEntity(
