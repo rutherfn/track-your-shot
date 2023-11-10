@@ -21,7 +21,7 @@ object BuildTypes {
 
     object UniqueBuilds {
         object Debug : Build {
-            override var appName: String = "Debug - TMS"
+            override var appName: String = "Debug - TYS"
             override var applicationIdSuffix: String = ".debug"
             override var buildName: String = "debug"
             override var isDebuggable: Boolean = true
@@ -31,7 +31,7 @@ object BuildTypes {
         }
 
         object Release : Build {
-            override var appName: String = "Track My Shot"
+            override var appName: String = "Track Your Shot"
             override var applicationIdSuffix: String = ".release"
             override var buildName: String = "release"
             override var isDebuggable: Boolean = false
@@ -41,7 +41,7 @@ object BuildTypes {
         }
 
         object Stage : Build {
-            override var appName: String = "Stage - TMS"
+            override var appName: String = "Stage - TYS"
             override var applicationIdSuffix: String = ".stage"
             override var buildName: String = "stage"
             override var isDebuggable: Boolean = true

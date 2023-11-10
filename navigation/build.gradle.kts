@@ -64,8 +64,6 @@ android {
         useJUnitPlatform()
     }
 
-    tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
-
     ktlint {
         disabledRules.value(mutableListOf("no-wildcard-imports"))
     }
@@ -77,6 +75,8 @@ dependencies {
 
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
+    implementation(Dependencies.Compose.materialDesignIconsCore)
+    implementation(Dependencies.Compose.materialDesignIconsExtended)
 
     implementation(Dependencies.Coroutine.jvm)
 

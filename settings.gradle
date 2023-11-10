@@ -13,7 +13,7 @@ dependencyResolutionManagement {
         gradlePluginPortal()
     }
 }
-rootProject.name = "TrackMyShot"
+rootProject.name = "TrackYourShot"
 
 include ':app'
 include ':app-center'

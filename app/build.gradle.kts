@@ -90,8 +90,6 @@ android {
     ktlint {
         disabledRules.value(mutableListOf("no-wildcard-imports"))
     }
-
-    tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
 dependencies {
@@ -112,6 +110,7 @@ dependencies {
     api(project(path = ":helper:network"))
 
     debugImplementation(Dependencies.Compose.uiTestManifest)
+    debugImplementation(Dependencies.Compose.uiTooling)
 
     kover(project(":app-center"))
     kover(project(":build-type"))
@@ -129,6 +128,7 @@ dependencies {
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
+    implementation(Dependencies.Compose.uiToolingPreview)
 
     implementation(Dependencies.Firebase.authKtx)
     implementation(Dependencies.Firebase.bom)
