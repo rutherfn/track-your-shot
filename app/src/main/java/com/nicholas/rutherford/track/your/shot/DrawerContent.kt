@@ -26,11 +26,13 @@ import androidx.navigation.NavOptions
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
-import com.nicholas.rutherford.track.your.shot.navigation.DrawerScreens
+import com.nicholas.rutherford.track.your.shot.navigation.DrawerAction
+import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
+import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
 
 @Composable
 fun DrawerContent(
-    screens: List<DrawerScreens>,
+    actions: List<DrawerAction>,
     modifier: Modifier = Modifier,
     onDestinationClicked: (route: String, navOptions: NavOptions) -> Unit?
 ) {
@@ -69,7 +71,7 @@ fun DrawerContent(
             )
             Spacer(Modifier.height(4.dp))
 
-            screens.forEach { screen ->
+            actions.forEach { action ->
                 Spacer(Modifier.height(12.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -77,18 +79,18 @@ fun DrawerContent(
                         .fillMaxWidth()
                         .padding(top = 8.dp, end = 8.dp, bottom = 8.dp)
                         .clickable {
-                            safeLet(screen.route, screen.navOptions) { route, navOptions ->
+                            safeLet(action.route, action.navOptions) { route, navOptions ->
                                 onDestinationClicked(route, navOptions)
                             }
                         }
                 ) {
                     Icon(
-                        imageVector = screen.imageVector,
+                        imageVector = action.imageVector,
                         contentDescription = "Icon"
                     )
                     Spacer(Modifier.width(16.dp))
                     Text(
-                        text = stringResource(id = screen.titleId),
+                        text = stringResource(id = action.titleId),
                         style = TextStyles.small
                     )
                 }
@@ -100,11 +102,11 @@ fun DrawerContent(
 @Preview
 @Composable
 fun DrawerContentPreview() {
-    val screens = listOf(DrawerScreens.PlayersList, DrawerScreens.Settings)
+    val actions = listOf(PlayersListAction, SettingsAction)
 
     Column(modifier = Modifier.background(AppColors.White)) {
         DrawerContent(
-            screens = screens,
+            actions = actions,
             onDestinationClicked = { _, _ -> }
         )
     }

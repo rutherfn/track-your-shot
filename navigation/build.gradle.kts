@@ -64,8 +64,6 @@ android {
         useJUnitPlatform()
     }
 
-    tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
-
     ktlint {
         disabledRules.value(mutableListOf("no-wildcard-imports"))
     }

@@ -8,4 +8,8 @@ object NavigationDestinations {
     const val PLAYERS_LIST_SCREEN = "playersListScreen"
     const val LOGIN_SCREEN = "loginScreen"
     const val SPLASH_SCREEN = "splashScreen"
+    const val COMPARE_PLAYERS_SCREEN = "comparePlayersScreen"
+    const val SETTINGS_SCREEN = "settingsScreen"
+    const val STATS_SCREEN = "statsScreen"
+    const val VOICE_COMMANDS_SCREEN = "voiceCommandsScreen"
 }

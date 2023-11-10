@@ -33,9 +33,14 @@ import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
-import com.nicholas.rutherford.track.your.shot.navigation.DrawerScreens
+import com.nicholas.rutherford.track.your.shot.navigation.ComparePlayersStatsAction
+import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
+import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
+import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
+import com.nicholas.rutherford.track.your.shot.navigation.StatsAction
+import com.nicholas.rutherford.track.your.shot.navigation.VoiceCommandsAction
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArguments
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
 import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
@@ -162,13 +167,13 @@ fun NavigationComponent(
         drawerShape = MaterialTheme.shapes.medium,
         drawerContent = {
             DrawerContent(
-                screens = listOf(
-                    DrawerScreens.PlayersList,
-                    DrawerScreens.Stats,
-                    DrawerScreens.ComparePlayersStats,
-                    DrawerScreens.VoiceCommands,
-                    DrawerScreens.Settings,
-                    DrawerScreens.Logout
+                actions = listOf(
+                    PlayersListAction,
+                    StatsAction,
+                    ComparePlayersStatsAction,
+                    VoiceCommandsAction,
+                    SettingsAction,
+                    LogoutAction
                 ),
                 onDestinationClicked = { route, navOptions ->
                     scope.launch {

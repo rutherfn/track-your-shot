@@ -109,12 +109,12 @@ private fun ComplexTopAppBar(
                     style = TextStyles.toolbar
                 )
 
-                    IconButton(onClick = { appBar.onSecondaryIconButtonClicked?.invoke() }) {
-                        Icon(
-                            imageVector = secondaryImageVector ?: Icons.Filled.Add,
-                            contentDescription = appBar.secondaryIconContentDescription
-                        )
-                    }
+                IconButton(onClick = { appBar.onSecondaryIconButtonClicked?.invoke() }) {
+                    Icon(
+                        imageVector = secondaryImageVector ?: Icons.Filled.Add,
+                        contentDescription = appBar.secondaryIconContentDescription
+                    )
+                }
             }
         },
     )

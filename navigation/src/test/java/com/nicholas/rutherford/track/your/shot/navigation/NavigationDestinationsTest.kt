@@ -15,6 +15,10 @@ class NavigationDestinationsTest {
     internal val playersListScreen = "playersListScreen"
     internal val loginScreen = "loginScreen"
     internal val splashScreen = "splashScreen"
+    internal val comparePlayersScreen = "comparePlayersScreen"
+    internal val settingsScreen = "settingsScreen"
+    internal val statsScreen = "statsScreen"
+    internal val voiceCommandsScreen = "voiceCommandsScreen"
 
     @BeforeEach
     fun beforeEach() {
@@ -23,6 +27,22 @@ class NavigationDestinationsTest {
 
     @Nested
     inner class Constants {
+
+        @Test fun `voice commands screen should result in voice commands screen`() {
+            Assertions.assertEquals(navigationDestinations.VOICE_COMMANDS_SCREEN, voiceCommandsScreen)
+        }
+
+        @Test fun `stats screen should result in stats screen`() {
+            Assertions.assertEquals(navigationDestinations.STATS_SCREEN, statsScreen)
+        }
+
+        @Test fun `settings screen should result in settings screen`() {
+            Assertions.assertEquals(navigationDestinations.SETTINGS_SCREEN, settingsScreen)
+        }
+
+        @Test fun `compare players screen should result in compare players screen`() {
+            Assertions.assertEquals(navigationDestinations.COMPARE_PLAYERS_SCREEN, comparePlayersScreen)
+        }
 
         @Test fun `forgot password screen name should result in forgot screen`() {
             Assertions.assertEquals(navigationDestinations.FORGOT_PASSWORD_SCREEN, forgotPasswordScreen)
@@ -48,7 +68,7 @@ class NavigationDestinationsTest {
         }
 
         @Test
-        fun `authetnication screen should result in authentication screen`() {
+        fun `authentication screen should result in authentication screen`() {
             Assertions.assertEquals(navigationDestinations.AUTHENTICATION_SCREEN, authenticationScreen)
         }
     }
