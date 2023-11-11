@@ -91,6 +91,7 @@ fun NavigationComponent(
     var alert: Alert? by remember { mutableStateOf(value = null) }
     var progress: Progress? by remember { mutableStateOf(value = null) }
 
+    val mainActivityViewModel = viewModels.mainActivityViewModel
     val createAccountViewModel = viewModels.createAccountViewModel
     val loginViewModel = viewModels.loginViewModel
     val playersListViewModel = viewModels.playersListViewModel
@@ -175,11 +176,15 @@ fun NavigationComponent(
                     SettingsAction,
                     LogoutAction
                 ),
-                onDestinationClicked = { route, navOptions ->
+                onDestinationClicked = { route, navOptions, titleId ->
                     scope.launch {
                         drawerState.close()
                     }
-                    navHostController.navigate(route, navOptions)
+                    if (route.isEmpty()) {
+                        mainActivityViewModel.logout(titleId = titleId)
+                    } else {
+                        navHostController.navigate(route, navOptions)
+                    }
                 }
             )
         }

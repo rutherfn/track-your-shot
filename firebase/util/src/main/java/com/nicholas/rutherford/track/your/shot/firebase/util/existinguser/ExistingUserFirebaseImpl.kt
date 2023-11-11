@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.callbackFlow
 
 class ExistingUserFirebaseImpl(private val firebaseAuth: FirebaseAuth) : ExistingUserFirebase {
 
-    override fun logOut() = firebaseAuth.signOut()
+    override fun logout() = firebaseAuth.signOut()
 
     override fun logInFlow(email: String, password: String): Flow<Boolean> {
         return callbackFlow {

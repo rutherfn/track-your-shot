@@ -47,6 +47,8 @@ import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.Auth
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebaseImpl
 import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.ExistingUserFirebase
 import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.ExistingUserFirebaseImpl
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManagerImpl
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.constants.SharedPreferencesConstants
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
@@ -57,11 +59,17 @@ import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSh
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferencesImpl
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferencesImpl
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 class AppModule {
+    val mainCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    val ioCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    val defaultCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     val modules = module {
         single {
@@ -142,6 +150,16 @@ class AppModule {
         single<Navigator> {
             NavigatorImpl()
         }
+        single<AccountAuthManager> {
+            AccountAuthManagerImpl(
+                scope = defaultCoroutineScope,
+                navigator = get(),
+                activeUserRepository = get(),
+                playerRepository = get(),
+                userRepository = get(),
+                existingUserFirebase = get()
+            )
+        }
         single<SplashNavigation> {
             SplashNavigationImpl(navigator = get())
         }
@@ -161,7 +179,7 @@ class AppModule {
             PlayersListNavigationImpl(navigator = get())
         }
         viewModel {
-            MainActivityViewModel(appCenter = get())
+            MainActivityViewModel(appCenter = get(), accountAuthManager = get())
         }
         viewModel {
             SplashViewModel(

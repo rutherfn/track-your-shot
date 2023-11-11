@@ -52,6 +52,7 @@ feature/splash/build
 firebase/core/build
 firebase/util/build
 
+helper/account/build
 helper/compose-content-test-rule/build
 helper/constants/build
 helper/extensions/build
