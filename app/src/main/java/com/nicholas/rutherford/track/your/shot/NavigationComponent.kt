@@ -33,7 +33,6 @@ import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.navigation.ComparePlayersStatsAction
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
@@ -177,18 +176,14 @@ fun NavigationComponent(
                     SettingsAction,
                     LogoutAction
                 ),
-                onDestinationClicked = { route, navOptions ->
+                onDestinationClicked = { route, navOptions, titleId ->
                     scope.launch {
                         drawerState.close()
                     }
-                    navHostController.navigate(route, navOptions)
-                },
-                onItemClicked = {
-                    if (it == StringsIds.logout) {
-                        scope.launch {
-                            drawerState.close()
-                        }
-                        mainActivityViewModel.logout()
+                    if (route.isEmpty()) {
+                        mainActivityViewModel.logout(titleId = titleId)
+                    } else {
+                        navHostController.navigate(route, navOptions)
                     }
                 }
             )

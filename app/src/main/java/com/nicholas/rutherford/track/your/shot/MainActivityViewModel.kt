@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot
 
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.app.center.AppCenter
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
 
 class MainActivityViewModel(
@@ -11,5 +12,9 @@ class MainActivityViewModel(
 
     fun initAppCenter() = appCenter.start()
 
-    fun logout() = accountAuthManager.logout()
+    fun logout(titleId: Int) {
+        if (titleId == StringsIds.logout) {
+            accountAuthManager.logout()
+        }
+    }
 }
