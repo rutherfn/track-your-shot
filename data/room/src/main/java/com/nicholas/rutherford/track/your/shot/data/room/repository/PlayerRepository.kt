@@ -4,6 +4,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 
 interface PlayerRepository {
     suspend fun createPlayer(player: Player)
+    suspend fun createListOfPlayers(playerList: List<Player>)
     suspend fun updatePlayer(player: Player)
     suspend fun deletePlayer(player: Player)
     suspend fun deleteAllPlayers()

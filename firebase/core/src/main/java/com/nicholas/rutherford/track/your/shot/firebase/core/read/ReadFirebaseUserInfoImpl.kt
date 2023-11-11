@@ -164,7 +164,6 @@ class ReadFirebaseUserInfoImpl(
 
     override fun getPlayerInfoList(accountKey: String): Flow<List<PlayerInfoRealtimeWithKeyResponse>> {
         return callbackFlow {
-            val playerInfoRealtimeResponseArrayList: ArrayList<PlayerInfoRealtimeResponse> = arrayListOf()
             val playerInfoRealtimeWithKeyResponseArrayList: ArrayList<PlayerInfoRealtimeWithKeyResponse> = arrayListOf()
 
             firebaseDatabase.getReference(Constants.USERS)

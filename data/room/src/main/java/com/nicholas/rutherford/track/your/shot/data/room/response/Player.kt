@@ -3,7 +3,6 @@ package com.nicholas.rutherford.track.your.shot.data.room.response
 import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerEntity
 
 data class Player(
-    val id: Int,
     val firstName: String,
     val lastName: String,
     val position: PlayerPositions,
@@ -12,7 +11,7 @@ data class Player(
 
 fun Player.toPlayerEntity(): PlayerEntity {
     return PlayerEntity(
-        id = id,
+        id = 1,
         firstName = firstName,
         lastName = lastName,
         position = position,

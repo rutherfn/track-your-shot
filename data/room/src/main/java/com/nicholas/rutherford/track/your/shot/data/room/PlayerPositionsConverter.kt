@@ -13,7 +13,7 @@ class PlayerPositionsConverter {
             Constants.SMALL_FORWARD_VALUE -> PlayerPositions.SmallForward
             Constants.POWER_FORWARD_VALUE -> PlayerPositions.PowerForward
             Constants.CENTER -> PlayerPositions.Center
-            else -> throw IllegalArgumentException("Unknown player position value: $value")
+            else -> PlayerPositions.None
         }
     }
 
@@ -25,6 +25,7 @@ class PlayerPositionsConverter {
             is PlayerPositions.SmallForward -> Constants.SMALL_FORWARD_VALUE
             is PlayerPositions.PowerForward -> Constants.POWER_FORWARD_VALUE
             is PlayerPositions.Center -> Constants.CENTER
+            is PlayerPositions.None -> Constants.POSITION_NA
         }
     }
 }

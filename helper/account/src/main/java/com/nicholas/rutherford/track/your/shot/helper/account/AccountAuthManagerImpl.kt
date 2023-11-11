@@ -1,10 +1,13 @@
 package com.nicholas.rutherford.track.your.shot.helper.account
 
 import android.app.Application
+import com.nicholas.rutherford.track.your.shot.data.room.converters.PlayerPositionsConverter
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
@@ -84,7 +87,24 @@ class AccountAuthManagerImpl(
                             firebaseAccountInfoKey = firebaseAccountInfoKey
                         )
                     )
-                    disableProcessAndNavigateToPlayersList()
+                    readFirebaseUserInfo.getPlayerInfoList(accountKey = firebaseAccountInfoKey)
+                        .collectLatest { playerInfoRealtimeWithKeyResponseList ->
+                            if (playerInfoRealtimeWithKeyResponseList.isNotEmpty()) {
+                                if (playerRepository.fetchAllPlayers().isEmpty()) {
+                                    val playerList =
+                                        playerInfoRealtimeWithKeyResponseList.map {
+                                                    Player(
+                                                        firstName = it.playerInfo.firstName,
+                                                        lastName = it.playerInfo.lastName,
+                                                        position = PlayerPositions.fromValue(it.playerInfo.positionValue),
+                                                        imageUrl = it.playerInfo.imageUrl
+                                                    )
+                                        }
+                                    playerRepository.createListOfPlayers(playerList = playerList)
+                                }
+                            }
+                            disableProcessAndNavigateToPlayersList()
+                        }
                 } else {
                     disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
                 }
