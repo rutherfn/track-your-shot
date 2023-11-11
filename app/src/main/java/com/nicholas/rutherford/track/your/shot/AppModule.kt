@@ -68,7 +68,7 @@ import org.koin.dsl.module
 
 class AppModule {
     val mainCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-    val ioCoroutineScope: CoroutineScope =  CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    val ioCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     val defaultCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     val modules = module {
