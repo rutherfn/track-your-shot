@@ -153,10 +153,12 @@ class AppModule {
         single<AccountAuthManager> {
             AccountAuthManagerImpl(
                 scope = defaultCoroutineScope,
+                application = get(),
                 navigator = get(),
                 activeUserRepository = get(),
                 playerRepository = get(),
                 userRepository = get(),
+                readFirebaseUserInfo = get(),
                 existingUserFirebase = get()
             )
         }
@@ -194,6 +196,7 @@ class AppModule {
                 existingUserFirebase = get(),
                 navigation = get(),
                 buildType = get(),
+                accountAuthManager = get(),
                 readFirebaseUserInfo = get(),
                 activeUserRepository = get()
             )

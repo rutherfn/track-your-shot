@@ -54,7 +54,7 @@ class ExistingUserFirebaseImplTest {
                     mockAuthResult
                 }
 
-                val value = existingUserFirebaseImpl.logInFlow(email = testEmail, password = testPassword).first()
+                val value = existingUserFirebaseImpl.loginFlow(email = testEmail, password = testPassword).first()
 
                 Assertions.assertEquals(true, value)
             }
@@ -73,7 +73,7 @@ class ExistingUserFirebaseImplTest {
                     mockAuthResult
                 }
 
-                val value = existingUserFirebaseImpl.logInFlow(email = testEmail, password = testPassword).first()
+                val value = existingUserFirebaseImpl.loginFlow(email = testEmail, password = testPassword).first()
 
                 Assertions.assertEquals(false, value)
             }

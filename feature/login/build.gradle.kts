@@ -65,8 +65,6 @@ android {
         useJUnitPlatform()
     }
 
-    tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
-
     ktlint {
         disabledRules.value(mutableListOf("no-wildcard-imports"))
     }
@@ -81,6 +79,7 @@ dependencies {
     api(project(path = ":data:room"))
     api(project(path = ":firebase:core"))
     api(project(path = ":firebase:util"))
+    api(project(path = ":helper:account"))
     api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:constants"))
     api(project(path = ":helper:extensions"))

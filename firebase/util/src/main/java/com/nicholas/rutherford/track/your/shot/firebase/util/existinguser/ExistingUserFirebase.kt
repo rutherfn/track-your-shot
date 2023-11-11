@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ExistingUserFirebase {
     fun logout()
-    fun logInFlow(email: String, password: String): Flow<Boolean>
+    fun loginFlow(email: String, password: String): Flow<Boolean>
 }

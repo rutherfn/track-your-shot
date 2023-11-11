@@ -217,7 +217,7 @@ class LoginViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when email and password has valid values and loginFlow returns back not successful should call unable to login to account alert`() = runTest {
-            coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = false)
+            coEvery { existingUserFirebase.loginFlow(email = emailTest, password = passwordTest) } returns flowOf(value = false)
 
             viewModel.loginMutableStateFlow.value = LoginState(email = emailTest, password = passwordTest)
 
@@ -233,7 +233,7 @@ class LoginViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when login flow returns back as not successful should call unable to login alert`() = runTest {
-            coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = false)
+            coEvery { existingUserFirebase.loginFlow(email = emailTest, password = passwordTest) } returns flowOf(value = false)
 
             viewModel.attemptToLoginToAccount(email = emailTest, password = passwordTest)
 
@@ -244,7 +244,7 @@ class LoginViewModelTest {
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when login flow returns back as successful but get account info flow by email returns back as null should call unable to login alert`() = runTest {
-            coEvery { existingUserFirebase.logInFlow(email = emailTest, password = passwordTest) } returns flowOf(value = true)
+            coEvery { existingUserFirebase.loginFlow(email = emailTest, password = passwordTest) } returns flowOf(value = true)
             coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = emailTest) } returns flowOf(value = null)
 
             viewModel.attemptToLoginToAccount(email = emailTest, password = passwordTest)

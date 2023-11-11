@@ -77,5 +77,13 @@ object NavigationActions {
                 .setLaunchSingleTop(true)
                 .build()
         }
+
+        fun playersList() = object : NavigationAction {
+            override val destination = NavigationDestinations.PLAYERS_LIST_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .setLaunchSingleTop(true)
+                .build()
+        }
     }
 }

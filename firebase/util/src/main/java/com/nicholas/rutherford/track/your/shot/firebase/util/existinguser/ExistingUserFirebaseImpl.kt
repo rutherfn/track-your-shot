@@ -9,7 +9,7 @@ class ExistingUserFirebaseImpl(private val firebaseAuth: FirebaseAuth) : Existin
 
     override fun logout() = firebaseAuth.signOut()
 
-    override fun logInFlow(email: String, password: String): Flow<Boolean> {
+    override fun loginFlow(email: String, password: String): Flow<Boolean> {
         return callbackFlow {
             firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
