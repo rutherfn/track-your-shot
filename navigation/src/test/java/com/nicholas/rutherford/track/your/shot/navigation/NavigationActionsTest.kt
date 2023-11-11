@@ -137,5 +137,24 @@ class NavigationActionsTest {
                 )
             }
         }
+
+        @Nested
+        inner class DrawerScreen {
+
+            @Test
+            fun logout() {
+                Assertions.assertEquals(
+                    Actions.DrawerScreen.logout().destination,
+                    NavigationDestinations.LOGIN_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.DrawerScreen.logout().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(0, true)
+                        .setLaunchSingleTop(true)
+                        .build()
+                )
+            }
+        }
     }
 }
