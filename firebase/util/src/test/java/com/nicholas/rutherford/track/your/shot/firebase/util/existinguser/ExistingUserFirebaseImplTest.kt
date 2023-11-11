@@ -29,7 +29,7 @@ class ExistingUserFirebaseImplTest {
 
     @Test
     fun `logout should call firebaseAuth signOut`() {
-        existingUserFirebaseImpl.logOut()
+        existingUserFirebaseImpl.logout()
 
         verify { firebaseAuth.signOut() }
     }

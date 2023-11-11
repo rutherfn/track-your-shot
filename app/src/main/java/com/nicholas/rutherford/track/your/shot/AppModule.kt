@@ -67,7 +67,9 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 class AppModule {
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    val mainCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    val ioCoroutineScope: CoroutineScope =  CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    val defaultCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     val modules = module {
         single {
@@ -150,7 +152,7 @@ class AppModule {
         }
         single<AccountAuthManager> {
             AccountAuthManagerImpl(
-                scope = scope,
+                scope = defaultCoroutineScope,
                 navigator = get(),
                 activeUserRepository = get(),
                 playerRepository = get(),
@@ -177,7 +179,7 @@ class AppModule {
             PlayersListNavigationImpl(navigator = get())
         }
         viewModel {
-            MainActivityViewModel(appCenter = get())
+            MainActivityViewModel(appCenter = get(), accountAuthManager = get())
         }
         viewModel {
             SplashViewModel(

@@ -21,6 +21,7 @@ open class MainActivity : ComponentActivity() {
                 navHostController = rememberNavController(),
                 navigator = get(),
                 viewModels = ViewModels(
+                    mainActivityViewModel = viewModel,
                     splashViewModel = getViewModel(),
                     loginViewModel = getViewModel(),
                     playersListViewModel = getViewModel(),

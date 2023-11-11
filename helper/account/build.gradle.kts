@@ -63,8 +63,20 @@ android {
 
 dependencies {
     api(project(path = ":data:room"))
+    api(project(path = ":helper:constants"))
+    api(project(path = ":helper:extensions"))
     api(project(path = ":firebase:util"))
     api(project(path = ":navigation"))
 
     implementation(Dependencies.Coroutine.jvm)
+
+    testImplementation(Dependencies.Coroutine.test)
+
+    testImplementation(Dependencies.Junit.Jupiter.api)
+    testImplementation(Dependencies.Junit.Jupiter.params)
+    testImplementation(Dependencies.Junit.junit)
+
+    testImplementation(Dependencies.Mockk.core)
+
+    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }

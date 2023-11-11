@@ -67,4 +67,15 @@ object NavigationActions {
                 .build()
         }
     }
+
+    object DrawerScreen {
+
+        fun logout() = object : NavigationAction {
+            override val destination = NavigationDestinations.LOGIN_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .setLaunchSingleTop(true)
+                .build()
+        }
+    }
 }

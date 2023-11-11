@@ -33,6 +33,7 @@ import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.navigation.ComparePlayersStatsAction
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
@@ -91,6 +92,7 @@ fun NavigationComponent(
     var alert: Alert? by remember { mutableStateOf(value = null) }
     var progress: Progress? by remember { mutableStateOf(value = null) }
 
+    val mainActivityViewModel = viewModels.mainActivityViewModel
     val createAccountViewModel = viewModels.createAccountViewModel
     val loginViewModel = viewModels.loginViewModel
     val playersListViewModel = viewModels.playersListViewModel
@@ -180,6 +182,14 @@ fun NavigationComponent(
                         drawerState.close()
                     }
                     navHostController.navigate(route, navOptions)
+                },
+                onItemClicked = {
+                    if (it == StringsIds.logout) {
+                        scope.launch {
+                            drawerState.close()
+                        }
+                        mainActivityViewModel.logout()
+                    }
                 }
             )
         }

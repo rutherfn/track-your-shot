@@ -8,6 +8,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListViewMo
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 
 data class ViewModels(
+    val mainActivityViewModel: MainActivityViewModel,
     val splashViewModel: SplashViewModel,
     val loginViewModel: LoginViewModel,
     val playersListViewModel: PlayersListViewModel,

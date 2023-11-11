@@ -34,7 +34,8 @@ import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
 fun DrawerContent(
     actions: List<DrawerAction>,
     modifier: Modifier = Modifier,
-    onDestinationClicked: (route: String, navOptions: NavOptions) -> Unit?
+    onDestinationClicked: (route: String, navOptions: NavOptions) -> Unit?,
+    onItemClicked: (titleId: Int) -> Unit?,
 ) {
     TrackMyShotTheme {
         Column(
@@ -79,6 +80,7 @@ fun DrawerContent(
                         .fillMaxWidth()
                         .padding(top = 8.dp, end = 8.dp, bottom = 8.dp)
                         .clickable {
+                            onItemClicked.invoke(action.titleId)
                             safeLet(action.route, action.navOptions) { route, navOptions ->
                                 onDestinationClicked(route, navOptions)
                             }
@@ -107,7 +109,8 @@ fun DrawerContentPreview() {
     Column(modifier = Modifier.background(AppColors.White)) {
         DrawerContent(
             actions = actions,
-            onDestinationClicked = { _, _ -> }
+            onDestinationClicked = { _, _ -> },
+            onItemClicked = {}
         )
     }
 }
