@@ -121,7 +121,6 @@ dependencies {
     kover(project(":feature:players"))
     kover(project(":feature:splash"))
     kover(project(":firebase:core"))
-    kover(project(":helper:account"))
     kover(project(":helper:network"))
 
     implementation(Dependencies.Android.appCompat)
