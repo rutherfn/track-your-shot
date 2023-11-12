@@ -16,17 +16,13 @@ class PlayersListViewModel(
     private val playerRepository: PlayerRepository
 ) : ViewModel() {
 
-    private val playerListMutableStateFlow = MutableStateFlow(
+    internal val playerListMutableStateFlow = MutableStateFlow(
         value = PlayersListState(
             playerList = emptyList()
         )
     )
 
     val playerListStateFlow = playerListMutableStateFlow.asStateFlow()
-
-    init {
-        updatePlayerListState()
-    }
 
     fun updatePlayerListState() {
         scope.launch {

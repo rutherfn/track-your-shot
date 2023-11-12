@@ -36,12 +36,16 @@ class AccountAuthManagerImpl(
     override fun logout() {
         scope.launch {
             navigator.progress(progressAction = Progress())
-            existingUserFirebase.logout()
-            clearOutDatabase()
 
             delay(Constants.DELAY_IN_MILLISECONDS_BEFORE_LOGGING_OUT)
+
             navigator.progress(progressAction = null)
             navigator.navigate(navigationAction = NavigationActions.DrawerScreen.logout())
+
+            delay(1000L)
+
+            existingUserFirebase.logout()
+            clearOutDatabase()
         }
     }
 
