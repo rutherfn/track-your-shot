@@ -1,15 +1,19 @@
 package com.nicholas.rutherford.track.your.shot.feature.players
 
 import androidx.lifecycle.ViewModel
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class PlayersListViewModel(
+    private val scope: CoroutineScope,
     private val navigation: PlayersListNavigation,
-    private val readFirebaseUserInfo: ReadFirebaseUserInfo
+    private val playerRepository: PlayerRepository
 ) : ViewModel() {
 
     private val playerListMutableStateFlow = MutableStateFlow(
@@ -18,16 +22,15 @@ class PlayersListViewModel(
         )
     )
 
-    var isValidPlayer: Boolean = false
-    var playerList: List<PlayerInfoRealtimeResponse> = emptyList()
-
     val playerListStateFlow = playerListMutableStateFlow.asStateFlow()
 
-    fun validatePlayer(player: Player) {
-        if (player.firstName.isNotEmpty() && player.lastName.isNotEmpty()) {
-            isValidPlayer = true
-        } else {
-            isValidPlayer = false
+    init {
+        updatePlayerListState()
+    }
+
+    fun updatePlayerListState() {
+        scope.launch {
+            playerListMutableStateFlow.value = PlayersListState(playerList = playerRepository.fetchAllPlayers())
         }
     }
 

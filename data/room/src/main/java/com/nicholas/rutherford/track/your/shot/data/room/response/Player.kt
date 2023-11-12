@@ -11,7 +11,7 @@ data class Player(
 
 fun Player.toPlayerEntity(): PlayerEntity {
     return PlayerEntity(
-        id = 1,
+        id = 0,
         firstName = firstName,
         lastName = lastName,
         position = position,

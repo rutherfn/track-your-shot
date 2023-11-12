@@ -60,7 +60,10 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             onIconButtonClicked = {
                 playerListScreenParams.onToolbarMenuClicked.invoke()
             }
-        )
+        ),
+        invokeFunctionOnInit = {
+            playerListScreenParams.updatePlayerListState.invoke()
+        }
     )
 }
 

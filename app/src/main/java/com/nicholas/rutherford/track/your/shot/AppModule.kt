@@ -69,7 +69,7 @@ import org.koin.dsl.module
 class AppModule {
     val mainCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     val ioCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    val defaultCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val defaultCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     val modules = module {
         single {
@@ -203,8 +203,9 @@ class AppModule {
         }
         viewModel {
             PlayersListViewModel(
-                readFirebaseUserInfo = get(),
-                navigation = get()
+                scope = defaultCoroutineScope,
+                navigation = get(),
+                playerRepository = get()
             )
         }
         viewModel {

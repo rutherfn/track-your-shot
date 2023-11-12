@@ -32,6 +32,7 @@ class LoginViewModel(
     val loginStateFlow = loginMutableStateFlow.asStateFlow()
 
     init {
+        println("get here 121")
         updateLauncherDrawableIdState()
     }
 

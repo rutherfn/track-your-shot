@@ -228,7 +228,8 @@ fun NavigationComponent(
                 PlayersListScreen(
                     playerListScreenParams = PlayersListScreenParams(
                         state = playersListViewModel.playerListStateFlow.collectAsState().value,
-                        onToolbarMenuClicked = { playersListViewModel.onToolbarMenuClicked() }
+                        onToolbarMenuClicked = { playersListViewModel.onToolbarMenuClicked() },
+                        updatePlayerListState = { playersListViewModel.updatePlayerListState()}
                     )
                 )
             }

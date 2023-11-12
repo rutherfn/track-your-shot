@@ -100,6 +100,7 @@ class AccountAuthManagerImpl(
                                                         imageUrl = it.playerInfo.imageUrl
                                                     )
                                         }
+
                                     playerRepository.createListOfPlayers(playerList = playerList)
                                 }
                             }
