@@ -214,9 +214,7 @@ fun NavigationComponent(
                             )
                         },
                         onLoginButtonClicked = {
-                            coroutineScope.launch {
-                                loginViewModel.onLoginButtonClicked()
-                            }
+                            loginViewModel.onLoginButtonClicked()
                         },
                         onForgotPasswordClicked = { loginViewModel.onForgotPasswordClicked() },
                         onCreateAccountClicked = { loginViewModel.onCreateAccountClicked() },

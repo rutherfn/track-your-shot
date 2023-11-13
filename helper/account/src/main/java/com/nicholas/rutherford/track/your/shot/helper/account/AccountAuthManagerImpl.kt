@@ -76,12 +76,20 @@ class AccountAuthManagerImpl(
         }
     }
 
+    internal suspend fun checkForActiveUserAndPlayers() {
+        if (activeUserRepository.fetchActiveUser() != null) {
+            activeUserRepository.deleteActiveUser()
+        }
+        if (playerRepository.fetchAllPlayers().isNotEmpty()) {
+            playerRepository.deleteAllPlayers()
+        }
+    }
+
     internal suspend fun updateActiveUserFromLoggedInUser(email: String, username: String) {
         readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email).collectLatest { key ->
             key?.let { firebaseAccountInfoKey ->
-                if (activeUserRepository.fetchActiveUser() != null) {
-                    activeUserRepository.deleteActiveUser()
-                }
+                checkForActiveUserAndPlayers()
+
                 activeUserRepository.createActiveUser(
                     activeUser = ActiveUser(
                         id = Constants.ACTIVE_USER_ID,
@@ -91,40 +99,40 @@ class AccountAuthManagerImpl(
                         firebaseAccountInfoKey = firebaseAccountInfoKey
                     )
                 )
-                readFirebaseUserInfo.getPlayerInfoList(accountKey = firebaseAccountInfoKey)
-                    .collectLatest { playerInfoRealtimeWithKeyResponseList ->
-                        if (playerInfoRealtimeWithKeyResponseList.isNotEmpty()) {
-                            if (playerRepository.fetchAllPlayers().isEmpty()) {
-                                val playerList =
-                                    playerInfoRealtimeWithKeyResponseList.map { player ->
-                                        Player(
-                                            firstName = player.playerInfo.firstName,
-                                            lastName = player.playerInfo.lastName,
-                                            position = PlayerPositions.fromValue(player.playerInfo.positionValue),
-                                            imageUrl = player.playerInfo.imageUrl
-                                        )
-                                    }
-
-                                playerRepository.createListOfPlayers(playerList = playerList)
-                            }
-                        }
-                        disableProcessAndNavigateToPlayersList()
-                    }
+                collectPlayerInfoList(firebaseAccountInfoKey = firebaseAccountInfoKey)
             } ?: disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
         }
     }
 
-    internal fun disableProcessAndNavigateToPlayersList() {
+    internal suspend fun collectPlayerInfoList(firebaseAccountInfoKey: String) {
+        readFirebaseUserInfo.getPlayerInfoList(accountKey = firebaseAccountInfoKey)
+            .collectLatest { playerInfoRealtimeWithKeyResponseList ->
+                if (playerInfoRealtimeWithKeyResponseList.isNotEmpty()) {
+                    val playerList =
+                        playerInfoRealtimeWithKeyResponseList.map { player ->
+                            Player(
+                                firstName = player.playerInfo.firstName,
+                                lastName = player.playerInfo.lastName,
+                                position = PlayerPositions.fromValue(player.playerInfo.positionValue),
+                                imageUrl = player.playerInfo.imageUrl
+                            )
+                        }
+
+                    playerRepository.createListOfPlayers(playerList = playerList)
+                }
+                disableProcessAndNavigateToPlayersList()
+            }
+    }
+
+    private fun disableProcessAndNavigateToPlayersList() {
         navigator.progress(progressAction = null)
         navigator.navigate(navigationAction = NavigationActions.DrawerScreen.playersList())
     }
 
-    internal fun disableProgressAndShowUnableToLoginAlert(isLoggedIn: Boolean = false) {
+    suspend fun disableProgressAndShowUnableToLoginAlert(isLoggedIn: Boolean = false) {
         if (isLoggedIn) {
-            scope.launch {
-                existingUserFirebase.logout()
-                clearOutDatabase()
-            }
+            existingUserFirebase.logout()
+            clearOutDatabase()
         }
         navigator.progress(progressAction = null)
         navigator.alert(alertAction = null)
