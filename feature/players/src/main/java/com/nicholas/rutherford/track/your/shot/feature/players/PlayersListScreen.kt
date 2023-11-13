@@ -1,7 +1,9 @@
 package com.nicholas.rutherford.track.your.shot.feature.players
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -107,20 +109,30 @@ fun AddNewPlayerEmptyState() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Button(
-            onClick = { },
-            shape = RoundedCornerShape(size = 32.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(Padding.twelve),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
-            contentPadding = PaddingValues(16.dp),
-            content = {
-                Text(
-                    text = stringResource(id = StringsIds.addPlayer),
-                    color = Color.White
-                )
-            }
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_basketball_player_empty_state),
+                contentDescription = null,
+                modifier = Modifier.size(120.dp)
+            )
+
+            Text(
+                text = stringResource(id = StringsIds.noCurrentPlayersAdded),
+                style = TextStyles.medium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+
+            Text(
+                text = stringResource(id = StringsIds.hintAddNewPlayer),
+                style = TextStyles.smallBold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+        }
     }
 }
