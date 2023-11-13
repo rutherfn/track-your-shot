@@ -7,7 +7,6 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRe
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
@@ -32,7 +31,6 @@ class LoginViewModel(
     val loginStateFlow = loginMutableStateFlow.asStateFlow()
 
     init {
-        println("get here 121")
         updateLauncherDrawableIdState()
     }
 
@@ -73,6 +71,9 @@ class LoginViewModel(
         val emptyString = application.getString(StringsIds.empty)
         val newEmail = email?.filterNot { it.isWhitespace() } ?: emptyString
         val newPassword = password?.filterNot { it.isWhitespace() } ?: emptyString
+
+        onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
+        onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
 
         accountAuthManager.login(
             email = newEmail,

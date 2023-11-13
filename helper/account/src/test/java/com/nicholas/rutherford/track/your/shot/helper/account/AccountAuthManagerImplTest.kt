@@ -5,6 +5,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRe
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestAccountInfoRealTimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.ExistingUserFirebase
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
@@ -12,9 +13,11 @@ import io.mockk.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -38,6 +41,9 @@ class AccountAuthManagerImplTest {
     private val readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
     private val existingUserFirebase = mockk<ExistingUserFirebase>(relaxed = true)
 
+    private val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create()
+    private val password = "Password$1"
+
     @BeforeEach
     fun beforeEach() {
         accountAuthManagerImpl = AccountAuthManagerImpl(
@@ -57,18 +63,22 @@ class AccountAuthManagerImplTest {
     fun `logout verify should call functions in order`() = runTest {
         accountAuthManagerImpl.logout()
 
-        verifyOrder {
+        verify {
             navigator.progress(progressAction = any())
-            existingUserFirebase.logout()
         }
 
-        coVerify { accountAuthManagerImpl.clearOutDatabase() }
-
-        testDispatcher.scheduler.apply { advanceTimeBy(Constants.DELAY_IN_MILLISECONDS_BEFORE_LOGGING_OUT); runCurrent() }
+        testDispatcher.scheduler.apply { advanceTimeBy(9000); runCurrent() }
 
         verifyOrder {
-            navigator.progress(progressAction = null)
+            navigator.progress(progressAction = any())
             navigator.navigate(navigationAction = any())
+        }
+
+        testDispatcher.scheduler.apply { advanceTimeBy(Constants.DELAY_IN_MILLISECONDS_TO_SHOW_PROGRESS_MASK_ON_LOG_OUT); runCurrent() }
+
+        coVerifyOrder {
+            existingUserFirebase.logout()
+            accountAuthManagerImpl.clearOutDatabase()
         }
     }
 
@@ -80,6 +90,62 @@ class AccountAuthManagerImplTest {
             activeUserRepository.deleteActiveUser()
             playerRepository.deleteAllPlayers()
             userRepository.deleteAllUsers()
+        }
+    }
+
+    @Nested
+    inner class Login {
+        @Test
+        fun `when loginFlow returns as not successful should call disableProgressAndShowUnableToLoginAlert`() {
+            coEvery { existingUserFirebase.loginFlow(email = accountInfoRealtimeResponse.email, password = password) } returns flowOf(value = false)
+            accountAuthManagerImpl.login(email = accountInfoRealtimeResponse.email, password = password)
+
+            verify { navigator.progress(progressAction = any()) }
+            verify { accountAuthManagerImpl.disableProgressAndShowUnableToLoginAlert() }
+        }
+
+        @Test
+        fun `when loginFlow returns as successful and get account info flow by email returns null should call disableProgressAndShowUnableToLoginAlert`() {
+            coEvery { existingUserFirebase.loginFlow(email = accountInfoRealtimeResponse.email, password = password) } returns flowOf(value = true)
+            coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = null)
+            accountAuthManagerImpl.login(email = accountInfoRealtimeResponse.email, password = password)
+
+            verify { navigator.progress(progressAction = any()) }
+            verify { accountAuthManagerImpl.disableProgressAndShowUnableToLoginAlert() }
+        }
+
+        @Test
+        fun `when loginFlow returns as successful and get account info flow by email returns info should not call disableProgressAndShowUnableToLoginAlert`() {
+            coEvery { existingUserFirebase.loginFlow(email = accountInfoRealtimeResponse.email, password = password) } returns flowOf(value = true)
+            coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = accountInfoRealtimeResponse)
+            accountAuthManagerImpl.login(email = accountInfoRealtimeResponse.email, password = password)
+
+            verify { navigator.progress(progressAction = any()) }
+
+            verify(exactly = 0) { accountAuthManagerImpl.disableProgressAndShowUnableToLoginAlert() }
+        }
+    }
+
+    @Nested
+    inner class UpdateActiveUserFromLoggedInUser {
+        val key = "key"
+        val activeUser = TestAC
+
+        @Test
+        fun `when getAccountInfoKeyFlowByEmail returns null should call disableProgressAndShowUnableToLoginAlert`() = runTest {
+            coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = null)
+
+            accountAuthManagerImpl.updateActiveUserFromLoggedInUser(email = accountInfoRealtimeResponse.email, username = accountInfoRealtimeResponse.userName)
+
+            verify { accountAuthManagerImpl.disableProgressAndShowUnableToLoginAlert(isLoggedIn = true) }
+        }
+
+        @Test
+        fun `when getAccountInfoKeyFlowByEmail returns value and fetchActiveUser returns info should call delete active user`() = runTest {
+            coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = key)
+
+
+            accountAuthManagerImpl.updateActiveUserFromLoggedInUser(email = accountInfoRealtimeResponse.email, username = accountInfoRealtimeResponse.userName)
         }
     }
 }

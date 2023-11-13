@@ -78,6 +78,7 @@ dependencies {
     testImplementation(Dependencies.Junit.junit)
 
     testImplementation(Dependencies.Mockk.core)
+    testImplementation(project(mapOf("path" to ":data-test:firebase")))
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }

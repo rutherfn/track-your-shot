@@ -6,7 +6,8 @@ object Constants {
     const val ACCOUNT_INFO = "accountInfo"
     const val CENTER = 4
     const val CONTENT_LAST_UPDATED_PATH = "contentLastUpdated"
-    const val DELAY_IN_MILLISECONDS_BEFORE_LOGGING_OUT = 3000L
+    const val DELAY_IN_MILLISECONDS_BEFORE_LOGGING_OUT = 1000L
+    const val DELAY_IN_MILLISECONDS_TO_SHOW_PROGRESS_MASK_ON_LOG_OUT = 3000L
     const val EMAIL = "email"
     const val FIREBASE_CHILDREN_COUNT_ZERO = 0L
     const val FIRST_NAME = "firstName"

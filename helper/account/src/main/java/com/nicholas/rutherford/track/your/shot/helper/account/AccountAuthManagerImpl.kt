@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.helper.account
 
 import android.app.Application
-import com.nicholas.rutherford.track.your.shot.data.room.converters.PlayerPositionsConverter
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
@@ -37,12 +36,12 @@ class AccountAuthManagerImpl(
         scope.launch {
             navigator.progress(progressAction = Progress())
 
-            delay(Constants.DELAY_IN_MILLISECONDS_BEFORE_LOGGING_OUT)
+            delay(Constants.DELAY_IN_MILLISECONDS_TO_SHOW_PROGRESS_MASK_ON_LOG_OUT)
 
             navigator.progress(progressAction = null)
             navigator.navigate(navigationAction = NavigationActions.DrawerScreen.logout())
 
-            delay(1000L)
+            delay(Constants.DELAY_IN_MILLISECONDS_BEFORE_LOGGING_OUT)
 
             existingUserFirebase.logout()
             clearOutDatabase()
@@ -69,7 +68,6 @@ class AccountAuthManagerImpl(
                             accountInfoRealtimeResponse?.let { accountInfo ->
                                 updateActiveUserFromLoggedInUser(email = accountInfo.email, username = accountInfo.userName)
                             } ?: disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
-
                         }
                 } else {
                     disableProgressAndShowUnableToLoginAlert()
@@ -81,45 +79,44 @@ class AccountAuthManagerImpl(
     internal suspend fun updateActiveUserFromLoggedInUser(email: String, username: String) {
         readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email).collectLatest { key ->
             key?.let { firebaseAccountInfoKey ->
-                if (activeUserRepository.fetchActiveUser() == null) {
-                    activeUserRepository.createActiveUser(
-                        activeUser = ActiveUser(
-                            id = Constants.ACTIVE_USER_ID,
-                            accountHasBeenCreated = true,
-                            username = username,
-                            email = email,
-                            firebaseAccountInfoKey = firebaseAccountInfoKey
-                        )
-                    )
-                    readFirebaseUserInfo.getPlayerInfoList(accountKey = firebaseAccountInfoKey)
-                        .collectLatest { playerInfoRealtimeWithKeyResponseList ->
-                            if (playerInfoRealtimeWithKeyResponseList.isNotEmpty()) {
-                                if (playerRepository.fetchAllPlayers().isEmpty()) {
-                                    val playerList =
-                                        playerInfoRealtimeWithKeyResponseList.map {
-                                                    Player(
-                                                        firstName = it.playerInfo.firstName,
-                                                        lastName = it.playerInfo.lastName,
-                                                        position = PlayerPositions.fromValue(it.playerInfo.positionValue),
-                                                        imageUrl = it.playerInfo.imageUrl
-                                                    )
-                                        }
-
-                                    playerRepository.createListOfPlayers(playerList = playerList)
-                                }
-                            }
-                            disableProcessAndNavigateToPlayersList()
-                        }
-                } else {
-                    disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
+                if (activeUserRepository.fetchActiveUser() != null) {
+                    activeUserRepository.deleteActiveUser()
                 }
+                activeUserRepository.createActiveUser(
+                    activeUser = ActiveUser(
+                        id = Constants.ACTIVE_USER_ID,
+                        accountHasBeenCreated = true,
+                        username = username,
+                        email = email,
+                        firebaseAccountInfoKey = firebaseAccountInfoKey
+                    )
+                )
+                readFirebaseUserInfo.getPlayerInfoList(accountKey = firebaseAccountInfoKey)
+                    .collectLatest { playerInfoRealtimeWithKeyResponseList ->
+                        if (playerInfoRealtimeWithKeyResponseList.isNotEmpty()) {
+                            if (playerRepository.fetchAllPlayers().isEmpty()) {
+                                val playerList =
+                                    playerInfoRealtimeWithKeyResponseList.map { player ->
+                                        Player(
+                                            firstName = player.playerInfo.firstName,
+                                            lastName = player.playerInfo.lastName,
+                                            position = PlayerPositions.fromValue(player.playerInfo.positionValue),
+                                            imageUrl = player.playerInfo.imageUrl
+                                        )
+                                    }
+
+                                playerRepository.createListOfPlayers(playerList = playerList)
+                            }
+                        }
+                        disableProcessAndNavigateToPlayersList()
+                    }
             } ?: disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
         }
     }
 
     internal fun disableProcessAndNavigateToPlayersList() {
         navigator.progress(progressAction = null)
-        navigator.navigate(navigationAction =NavigationActions.DrawerScreen.playersList())
+        navigator.navigate(navigationAction = NavigationActions.DrawerScreen.playersList())
     }
 
     internal fun disableProgressAndShowUnableToLoginAlert(isLoggedIn: Boolean = false) {
