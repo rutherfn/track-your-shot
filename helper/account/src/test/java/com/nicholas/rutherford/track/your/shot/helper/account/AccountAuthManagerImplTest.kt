@@ -154,7 +154,7 @@ class AccountAuthManagerImplTest {
 
             accountAuthManagerImpl.checkForActiveUserAndPlayers()
 
-            coVerify(exactly = 0 ) { activeUserRepository.deleteActiveUser() }
+            coVerify(exactly = 0) { activeUserRepository.deleteActiveUser() }
         }
 
         @Test
