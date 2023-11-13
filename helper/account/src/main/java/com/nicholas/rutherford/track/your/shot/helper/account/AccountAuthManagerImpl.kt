@@ -76,12 +76,20 @@ class AccountAuthManagerImpl(
         }
     }
 
+    internal suspend fun checkForActiveUserAndPlayers() {
+        if (activeUserRepository.fetchActiveUser() != null) {
+            activeUserRepository.deleteActiveUser()
+        }
+        if (playerRepository.fetchAllPlayers().isNotEmpty()) {
+            playerRepository.deleteAllPlayers()
+        }
+    }
+
     internal suspend fun updateActiveUserFromLoggedInUser(email: String, username: String) {
         readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email).collectLatest { key ->
             key?.let { firebaseAccountInfoKey ->
-                if (activeUserRepository.fetchActiveUser() != null) {
-                    activeUserRepository.deleteActiveUser()
-                }
+                checkForActiveUserAndPlayers()
+
                 activeUserRepository.createActiveUser(
                     activeUser = ActiveUser(
                         id = Constants.ACTIVE_USER_ID,
@@ -94,19 +102,17 @@ class AccountAuthManagerImpl(
                 readFirebaseUserInfo.getPlayerInfoList(accountKey = firebaseAccountInfoKey)
                     .collectLatest { playerInfoRealtimeWithKeyResponseList ->
                         if (playerInfoRealtimeWithKeyResponseList.isNotEmpty()) {
-                            if (playerRepository.fetchAllPlayers().isEmpty()) {
-                                val playerList =
-                                    playerInfoRealtimeWithKeyResponseList.map { player ->
-                                        Player(
-                                            firstName = player.playerInfo.firstName,
-                                            lastName = player.playerInfo.lastName,
-                                            position = PlayerPositions.fromValue(player.playerInfo.positionValue),
-                                            imageUrl = player.playerInfo.imageUrl
-                                        )
-                                    }
+                            val playerList =
+                                playerInfoRealtimeWithKeyResponseList.map { player ->
+                                    Player(
+                                        firstName = player.playerInfo.firstName,
+                                        lastName = player.playerInfo.lastName,
+                                        position = PlayerPositions.fromValue(player.playerInfo.positionValue),
+                                        imageUrl = player.playerInfo.imageUrl
+                                    )
+                                }
 
-                                playerRepository.createListOfPlayers(playerList = playerList)
-                            }
+                            playerRepository.createListOfPlayers(playerList = playerList)
                         }
                         disableProcessAndNavigateToPlayersList()
                     }
