@@ -1,8 +1,9 @@
 package com.nicholas.rutherford.track.your.shot.feature.players
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,15 +14,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,10 +30,8 @@ import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
-import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
@@ -107,20 +102,30 @@ fun AddNewPlayerEmptyState() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Button(
-            onClick = { },
-            shape = RoundedCornerShape(size = 32.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(Padding.twelve),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
-            contentPadding = PaddingValues(16.dp),
-            content = {
-                Text(
-                    text = stringResource(id = StringsIds.addPlayer),
-                    color = Color.White
-                )
-            }
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_basketball_player_empty_state),
+                contentDescription = null,
+                modifier = Modifier.size(120.dp)
+            )
+
+            Text(
+                text = stringResource(id = StringsIds.noCurrentPlayersAdded),
+                style = TextStyles.medium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+
+            Text(
+                text = stringResource(id = StringsIds.hintAddNewPlayer),
+                style = TextStyles.smallBold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+        }
     }
 }
