@@ -1,9 +1,11 @@
 package com.nicholas.rutherford.track.your.shot.helper.account
 
 import android.app.Application
+import com.nicholas.rutherford.track.your.shot.data.room.entities.toActiveUser
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUserEntity
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestAccountInfoRealTimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.ExistingUserFirebase
@@ -128,8 +130,8 @@ class AccountAuthManagerImplTest {
 
     @Nested
     inner class UpdateActiveUserFromLoggedInUser {
-        val key = "key"
-        val activeUser = TestAC
+        private val key = "key"
+        private val activeUserEntity = TestActiveUserEntity().create()
 
         @Test
         fun `when getAccountInfoKeyFlowByEmail returns null should call disableProgressAndShowUnableToLoginAlert`() = runTest {
@@ -143,9 +145,12 @@ class AccountAuthManagerImplTest {
         @Test
         fun `when getAccountInfoKeyFlowByEmail returns value and fetchActiveUser returns info should call delete active user`() = runTest {
             coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = key)
+            coEvery { activeUserRepository.fetchActiveUser() } returns activeUserEntity.toActiveUser()
 
 
             accountAuthManagerImpl.updateActiveUserFromLoggedInUser(email = accountInfoRealtimeResponse.email, username = accountInfoRealtimeResponse.userName)
+
+            coVerify { activeUserRepository.deleteActiveUser() }
         }
     }
 }
