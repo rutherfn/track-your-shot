@@ -187,6 +187,20 @@ class LoginViewModelTest {
         }
     }
 
+    @Test fun `attempt to login to account should call login function`() {
+        viewModel.attemptToLoginToAccount(email = emailTest, password = passwordTest)
+
+        Assertions.assertEquals(
+            LoginState(
+                launcherDrawableId = DrawablesIds.launcherRoundTest,
+                email = "",
+                password = ""
+            ),
+            viewModel.loginMutableStateFlow.value
+        )
+        verify { accountAuthManager.login(email = emailTest, password = passwordTest) }
+    }
+
     @Test fun `on forgot password clicked should call navigate to forgot password`() {
         viewModel.onForgotPasswordClicked()
 
