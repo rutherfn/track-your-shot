@@ -57,7 +57,7 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             if (!isPlayerListEmpty) {
                 LazyColumn {
                     items(playerListScreenParams.state.playerList) { player ->
-                        PlayerItem(player = player)
+                        PlayerItem(player = player, onDeletePlayerClicked = playerListScreenParams.onDeletePlayerClicked)
                     }
                 }
             } else {
@@ -79,7 +79,11 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun PlayerItem(player: Player) {
+fun PlayerItem(
+    player: Player,
+    onDeletePlayerClicked: (player: Player) -> Unit
+) {
+    val fullPlayerName = "${player.firstName} ${player.lastName}"
     val imagePainter = if (!player.imageUrl.isNullOrEmpty()) {
         rememberImagePainter(data = player.imageUrl)
     } else {
@@ -147,15 +151,16 @@ fun PlayerItem(player: Player) {
                             expanded = false
                         }) {
                             Text(
-                                text = stringResource(id = R.string.view_x, "${player.firstName} ${player.lastName}")
+                                text = stringResource(id = R.string.view_x, fullPlayerName)
                             )
                         }
 
                         DropdownMenuItem(onClick = {
                             expanded = false
+                            onDeletePlayerClicked.invoke(player)
                         }) {
                             Text(
-                                text = stringResource(id = R.string.delete_x, "${player.firstName} ${player.lastName}")
+                                text = stringResource(id = R.string.delete_x, fullPlayerName)
                             )
                         }
                     }

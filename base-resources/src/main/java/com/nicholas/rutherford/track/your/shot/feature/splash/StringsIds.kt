@@ -4,7 +4,8 @@ import com.nicholas.rutherford.track.your.shot.base.resources.R
 
 object StringsIds {
     val accountHasNotBeenVerified = R.string.account_has_not_been_verified
-    val areYouSureYouWantLeaveTrackMyShot = R.string.are_you_sure_you_want_to_leave_track_my_shot
+    val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
+    val areYouSureYouWantLeaveTrackYourShot = R.string.are_you_sure_you_want_to_leave_track_your_shot
     val center = R.string.center
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
     val comparePlayersStats = R.string.compare_players_stats
@@ -13,6 +14,7 @@ object StringsIds {
     val createAccount = R.string.create_account
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount =
         R.string.current_account_has_not_been_verified_please_open_email_to_verify_account
+    val deleteX = R.string.delete_x
     val deviceIsCurrentlyNotConnectedToInternetDesc =
         R.string.device_is_currently_not_connected_to_internet_desc
     val emailHasBeenSentToRestPasswordPleaseFollowDirectionsToResetPassword =
