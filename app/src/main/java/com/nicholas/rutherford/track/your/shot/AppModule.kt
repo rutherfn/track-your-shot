@@ -200,6 +200,7 @@ class AppModule {
         }
         viewModel {
             PlayersListViewModel(
+                application = androidApplication(),
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 playerRepository = get()
