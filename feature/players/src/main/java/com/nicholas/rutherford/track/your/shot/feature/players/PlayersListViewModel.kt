@@ -20,7 +20,7 @@ class PlayersListViewModel(
     private val application: Application,
     private val scope: CoroutineScope,
     private val navigation: PlayersListNavigation,
-    private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo
+    private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val activeUserRepository: ActiveUserRepository,
     private val playerRepository: PlayerRepository
 ) : ViewModel() {
