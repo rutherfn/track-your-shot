@@ -16,6 +16,8 @@ data class PlayerEntity(
     val lastName: String,
     @ColumnInfo(name = "position")
     val position: PlayerPositions,
+    @ColumnInfo(name = "firebaseKey")
+    val firebaseKey: String,
     @ColumnInfo(name = "imageUrl")
     val imageUrl: String?
 )
@@ -25,6 +27,7 @@ fun PlayerEntity.toPlayer(): Player {
         firstName = firstName,
         lastName = lastName,
         position = position,
+        firebaseKey = firebaseKey,
         imageUrl = imageUrl
     )
 }
