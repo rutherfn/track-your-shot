@@ -95,7 +95,5 @@ object StringsIds {
         R.string.we_were_able_to_send_email_verification_please_check_your_email_to_verify_account
     val weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain =
         R.string.we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again
-    val xPositionxPlayerName =
-        R.string.x_position_x_player_name
     val yes = R.string.yes
 }

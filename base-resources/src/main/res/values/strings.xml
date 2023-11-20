@@ -11,6 +11,7 @@
     <string name="click_me_to_create_account">Click me to create account</string>
     <string name="create_account">Create Account</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
+    <string name="delete_x">Delete %s</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="email">Email</string>
@@ -81,6 +82,7 @@
     <string name="we_were_unable_to_set_new_username_since_the_username_is_empty_please_click_try_again_to_set_new_username">We were unable to set new username since the username is empty. Please click try again to set new username</string>
     <string name="we_were_unable_to_set_new_username_since_the_username_is_the_same_as_the_current_username_please_click_try_again_to_set_new_username">We were unable to set new username since the username is the same as the current username. Please click try again to set new username</string>
     <string name="verify_account">Verify Account</string>
+    <string name="view_x">View %s</string>
     <string name="voice_commands">Voice Commands</string>
     <string name="x_position_x_player_name">%s , %s</string>
     <string name="yes">Yes</string>

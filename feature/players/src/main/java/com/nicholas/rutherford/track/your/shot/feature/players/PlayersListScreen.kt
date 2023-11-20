@@ -7,10 +7,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -35,11 +33,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
@@ -62,7 +58,7 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             if (!isPlayerListEmpty) {
                 LazyColumn {
                     items(playerListScreenParams.state.playerList) { player ->
-                        PlayerItem(player = player, playerListScreenParams = playerListScreenParams)
+                        PlayerItem(player = player)
                     }
                 }
             } else {
@@ -84,7 +80,7 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun PlayerItem(player: Player, playerListScreenParams: PlayersListScreenParams) {
+fun PlayerItem(player: Player) {
     val imagePainter = if (!player.imageUrl.isNullOrEmpty()) {
         rememberImagePainter(data = player.imageUrl)
     } else {
@@ -95,9 +91,10 @@ fun PlayerItem(player: Player, playerListScreenParams: PlayersListScreenParams) 
 
     Card(
         modifier = Modifier
+            .background(AppColors.White)
             .fillMaxWidth()
             .padding(16.dp),
-        elevation = 4.dp
+        elevation = 2.dp
     ) {
         Column {
             Row(
@@ -150,13 +147,17 @@ fun PlayerItem(player: Player, playerListScreenParams: PlayersListScreenParams) 
                         DropdownMenuItem(onClick = {
                             expanded = false
                         }) {
-                            Text("Menu Item 1")
+                            Text(
+                                text = stringResource(id = R.string.view_x, "${player.firstName} ${player.lastName}")
+                            )
                         }
 
                         DropdownMenuItem(onClick = {
                             expanded = false
                         }) {
-                            Text("Menu Item 2")
+                            Text(
+                                text = stringResource(id = R.string.delete_x, "${player.firstName} ${player.lastName}")
+                            )
                         }
                     }
                 }
