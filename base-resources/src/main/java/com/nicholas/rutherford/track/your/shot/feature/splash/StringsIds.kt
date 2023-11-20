@@ -5,6 +5,7 @@ import com.nicholas.rutherford.track.your.shot.base.resources.R
 object StringsIds {
     val accountHasNotBeenVerified = R.string.account_has_not_been_verified
     val areYouSureYouWantLeaveTrackMyShot = R.string.are_you_sure_you_want_to_leave_track_my_shot
+    val center = R.string.center
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
     val comparePlayersStats = R.string.compare_players_stats
     val continueText = R.string.continue_text
@@ -61,12 +62,16 @@ object StringsIds {
         R.string.password_is_required_please_enter_a_password_to_create_a_account
     val passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount =
         R.string.password_is_required_please_enter_a_password_to_login_to_existing_account
+    val pg = R.string.pg
+    val pf = R.string.pf
     val players = R.string.players
     val proceedWithYourAccount = R.string.proceed_with_your_account
     val resetPassword = R.string.reset_password
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email
     val settings = R.string.settings
+    val sf = R.string.sf
+    val sg = R.string.sg
     val stats = R.string.stats
     val splashIconDescription = R.string.splash_icon_description
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification

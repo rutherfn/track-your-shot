@@ -3,13 +3,15 @@
     <string name="account_has_not_been_verified">Account Has Not Been Verified</string>
     <string name="add_player">Add Player</string>
     <string name="are_you_sure_you_want_to_leave_track_my_shot">Are you sure you want to leave Track My Shot?</string>
-    <string name="by_nicholas_rutherford">By, Nicholas Rutherford</string>
+    <string name="by_nicholas_rutherford">By Nicholas Rutherford</string>
+    <string name="center">Center</string>
     <string name="check_if_account_has_been_verified">Check if account has been verified</string>
     <string name="compare_players_stats">Compare Players &amp; Stats</string>
     <string name="continue_text">Continue</string>
     <string name="click_me_to_create_account">Click me to create account</string>
     <string name="create_account">Create Account</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
+    <string name="delete_x">Delete %s</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="email">Email</string>
@@ -48,9 +50,13 @@
     <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">Password is not in correct format. Please enter password in correct format</string>
     <string name="password_is_required_please_enter_a_password_to_create_a_account">Password is required. Please enter a password to create a account.</string>
     <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">Password is required. Please enter a password to login to existing account.</string>
+    <string name="pg" translatable="false">pg</string>
+    <string name="pf" translatable="false">pf</string>
     <string name="players">Players</string>
     <string name="proceed_with_your_account">Proceed With Your Account</string>
     <string name="settings">Settings</string>
+    <string name="sf" translatable="false">sf</string>
+    <string name="sg" translatable="false">sg</string>
     <string name="stats">Stats</string>
     <string name="splash_icon_description">This is a splash image for the splash screen that gets displayed before app is triggered</string>
     <string name="successfully_sent_email_verification">Successfully sent verification</string>
@@ -75,6 +81,8 @@
     <string name="we_were_unable_to_set_new_username_since_the_username_is_empty_please_click_try_again_to_set_new_username">We were unable to set new username since the username is empty. Please click try again to set new username</string>
     <string name="we_were_unable_to_set_new_username_since_the_username_is_the_same_as_the_current_username_please_click_try_again_to_set_new_username">We were unable to set new username since the username is the same as the current username. Please click try again to set new username</string>
     <string name="verify_account">Verify Account</string>
+    <string name="view_x">View %s</string>
     <string name="voice_commands">Voice Commands</string>
+    <string name="x_position_x_player_name">%s , %s</string>
     <string name="yes">Yes</string>
 </resources>

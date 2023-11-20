@@ -57,4 +57,13 @@ android {
     }
 }
 
-dependencies {}
+dependencies {
+    api(project(path = ":base-resources"))
+    api(project(path = ":data:room"))
+
+    testImplementation(Dependencies.Junit.Jupiter.api)
+    testImplementation(Dependencies.Junit.Jupiter.params)
+    testImplementation(Dependencies.Junit.junit)
+
+    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+}

@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.players
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,8 +15,20 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Card
+import androidx.compose.material.Divider
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,12 +39,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPositionAbvId
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
@@ -70,36 +85,94 @@ fun PlayerItem(player: Player) {
     } else {
         painterResource(id = DrawablesIds.launcherRound)
     }
-    Row(
+
+    var expanded by remember { mutableStateOf(false) }
+
+    Card(
         modifier = Modifier
+            .background(AppColors.White)
             .fillMaxWidth()
             .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        elevation = 2.dp
     ) {
-        Image(
-            painter = imagePainter,
-            contentDescription = null,
-            modifier = Modifier
-                .size(48.dp)
-                .clip(CircleShape)
-                .padding(4.dp),
-            contentScale = ContentScale.Crop
-        )
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = imagePainter,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .padding(4.dp),
+                    contentScale = ContentScale.Crop
+                )
 
-        Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(16.dp))
 
-        Text(
-            text = player.firstName,
-            style = TextStyles.body,
-            textAlign = TextAlign.Start
-        )
+                player.position.value.toPlayerPositionAbvId()?.let { positionId ->
+                    Text(
+                        text = stringResource(
+                            id =
+                            R.string.x_position_x_player_name,
+                            stringResource(id = positionId),
+                            "${player.firstName} ${player.lastName}"
+                        ),
+                        style = TextStyles.body,
+                        textAlign = TextAlign.Start
+                    )
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Box {
+                    IconButton(
+                        onClick = { expanded = true }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.MoreVert,
+                            contentDescription = ""
+                        )
+                    }
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        DropdownMenuItem(onClick = {
+                            expanded = false
+                        }) {
+                            Text(
+                                text = stringResource(id = R.string.view_x, "${player.firstName} ${player.lastName}")
+                            )
+                        }
+
+                        DropdownMenuItem(onClick = {
+                            expanded = false
+                        }) {
+                            Text(
+                                text = stringResource(id = R.string.delete_x, "${player.firstName} ${player.lastName}")
+                            )
+                        }
+                    }
+                }
+            }
+
+            Divider()
+        }
     }
 }
 
 @Composable
 fun AddNewPlayerEmptyState() {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppColors.White),
         contentAlignment = Alignment.Center
     ) {
         Column(
