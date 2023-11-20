@@ -5,6 +5,7 @@ import com.nicholas.rutherford.track.your.shot.base.resources.R
 object StringsIds {
     val accountHasNotBeenVerified = R.string.account_has_not_been_verified
     val areYouSureYouWantLeaveTrackMyShot = R.string.are_you_sure_you_want_to_leave_track_my_shot
+    val center = R.string.center
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
     val comparePlayersStats = R.string.compare_players_stats
     val continueText = R.string.continue_text
@@ -49,6 +50,7 @@ object StringsIds {
     val logout = R.string.logout
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
+    val na = R.string.na
     val no = R.string.no
     val noCurrentPlayersAdded = R.string.no_current_players_added
     val notConnectedToInternet = R.string.not_connected_to_internet
@@ -61,12 +63,16 @@ object StringsIds {
         R.string.password_is_required_please_enter_a_password_to_create_a_account
     val passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount =
         R.string.password_is_required_please_enter_a_password_to_login_to_existing_account
+    val pg = R.string.pg
+    val pf = R.string.pf
     val players = R.string.players
     val proceedWithYourAccount = R.string.proceed_with_your_account
     val resetPassword = R.string.reset_password
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email
     val settings = R.string.settings
+    val sf = R.string.sf
+    val sg = R.string.sg
     val stats = R.string.stats
     val splashIconDescription = R.string.splash_icon_description
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
@@ -89,5 +95,7 @@ object StringsIds {
         R.string.we_were_able_to_send_email_verification_please_check_your_email_to_verify_account
     val weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain =
         R.string.we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again
+    val xPositionxPlayerName =
+        R.string.x_position_x_player_name
     val yes = R.string.yes
 }

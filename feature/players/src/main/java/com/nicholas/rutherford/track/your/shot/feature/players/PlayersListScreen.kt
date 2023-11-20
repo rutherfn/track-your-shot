@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -17,19 +19,27 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
@@ -40,7 +50,9 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPositionAbvId
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
+import java.util.Locale
 
 @Composable
 fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
@@ -50,7 +62,7 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             if (!isPlayerListEmpty) {
                 LazyColumn {
                     items(playerListScreenParams.state.playerList) { player ->
-                        PlayerItem(player = player)
+                        PlayerItem(player = player, playerListScreenParams = playerListScreenParams)
                     }
                 }
             } else {
@@ -72,63 +84,100 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun PlayerItem(player: Player) {
+fun PlayerItem(player: Player, playerListScreenParams: PlayersListScreenParams) {
     val imagePainter = if (!player.imageUrl.isNullOrEmpty()) {
         rememberImagePainter(data = player.imageUrl)
     } else {
         painterResource(id = DrawablesIds.launcherRound)
     }
 
+    var expanded by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(.dp),
-        elevation = 4.dp // Add elevation for a shadow effect
+            .padding(16.dp),
+        elevation = 4.dp
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                painter = imagePainter,
-                contentDescription = null,
+        Column {
+            Row(
                 modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .padding(4.dp),
-                contentScale = ContentScale.Crop
-            )
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Text(
-                text = player.firstName,
-                style = TextStyles.body,
-                textAlign = TextAlign.Start
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            IconButton(
-                onClick = { /* Handle click */ }
+                    .fillMaxSize()
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = Icons.Filled.MoreVert,
-                    contentDescription = ""
+                Image(
+                    painter = imagePainter,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .padding(4.dp),
+                    contentScale = ContentScale.Crop
                 )
-            }
-        }
 
-        Divider()
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Text(
+                    text = stringResource(
+                        id =
+                        R.string.x_position_x_player_name,
+                        stringResource(id = player.position.value.toPlayerPositionAbvId()).uppercase(
+                            Locale.ROOT
+                        ),
+                        "${player.firstName} ${player.lastName}"
+                    ),
+                    style = TextStyles.body,
+                    textAlign = TextAlign.Start
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Box {
+                    IconButton(
+                        onClick = { expanded = true }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.MoreVert,
+                            contentDescription = ""
+                        )
+                    }
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        DropdownMenuItem(onClick = {
+                            expanded = false
+                        }) {
+                            Text("Menu Item 1")
+                        }
+
+                        DropdownMenuItem(onClick = {
+                            expanded = false
+                        }) {
+                            Text("Menu Item 2")
+                        }
+                    }
+                }
+            }
+
+            Divider()
+        }
     }
 }
+
+
+
+
+
 
 @Composable
 fun AddNewPlayerEmptyState() {
     Box(
-        modifier = Modifier.fillMaxSize().background(AppColors.White),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppColors.White),
         contentAlignment = Alignment.Center
     ) {
         Column(

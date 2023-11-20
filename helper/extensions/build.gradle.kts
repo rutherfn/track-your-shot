@@ -57,4 +57,7 @@ android {
     }
 }
 
-dependencies {}
+dependencies {
+    api(project(path = ":base-resources"))
+    api(project(path = ":data:room"))
+}
