@@ -16,7 +16,7 @@ inline fun <T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, R : Any> safeLet(p
     return if (p1 != null && p2 != null && p3 != null && p4 != null && p5 != null) block(p1, p2, p3, p4, p5) else null
 }
 
-fun Int.toPlayerPositionAbvId(): Int {
+fun Int.toPlayerPositionAbvId(): Int? {
     return when (this) {
         PlayerPositions.PointGuard.value -> {
             StringsIds.pg
@@ -33,8 +33,6 @@ fun Int.toPlayerPositionAbvId(): Int {
         PlayerPositions.Center.value -> {
             StringsIds.center
         }
-        else -> {
-            StringsIds.na
-        }
+        else -> { null }
     }
 }

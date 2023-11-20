@@ -48,7 +48,6 @@ import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPositionAbvId
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
-import java.util.Locale
 
 @Composable
 fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
@@ -115,18 +114,18 @@ fun PlayerItem(player: Player) {
 
                 Spacer(modifier = Modifier.width(16.dp))
 
-                Text(
-                    text = stringResource(
-                        id =
-                        R.string.x_position_x_player_name,
-                        stringResource(id = player.position.value.toPlayerPositionAbvId()).uppercase(
-                            Locale.ROOT
+                player.position.value.toPlayerPositionAbvId()?.let { positionId ->
+                    Text(
+                        text = stringResource(
+                            id =
+                            R.string.x_position_x_player_name,
+                            stringResource(id = positionId),
+                            "${player.firstName} ${player.lastName}"
                         ),
-                        "${player.firstName} ${player.lastName}"
-                    ),
-                    style = TextStyles.body,
-                    textAlign = TextAlign.Start
-                )
+                        style = TextStyles.body,
+                        textAlign = TextAlign.Start
+                    )
+                }
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -167,11 +166,6 @@ fun PlayerItem(player: Player) {
         }
     }
 }
-
-
-
-
-
 
 @Composable
 fun AddNewPlayerEmptyState() {

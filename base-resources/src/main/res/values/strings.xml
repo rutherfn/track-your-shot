@@ -3,8 +3,8 @@
     <string name="account_has_not_been_verified">Account Has Not Been Verified</string>
     <string name="add_player">Add Player</string>
     <string name="are_you_sure_you_want_to_leave_track_my_shot">Are you sure you want to leave Track My Shot?</string>
-    <string name="center">Center</string>
     <string name="by_nicholas_rutherford">By Nicholas Rutherford</string>
+    <string name="center">Center</string>
     <string name="check_if_account_has_been_verified">Check if account has been verified</string>
     <string name="compare_players_stats">Compare Players &amp; Stats</string>
     <string name="continue_text">Continue</string>
@@ -38,7 +38,6 @@
     <string name="logout">Logout</string>
     <string name="menu">Menu</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
-    <string name="na"></string>
     <string name="no">No</string>
     <string name="not_connected_to_internet">Not connected to internet</string>
     <string name="no_current_players_added">No Current Players Added</string>

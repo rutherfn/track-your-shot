@@ -2,8 +2,6 @@ package com.nicholas.rutherford.track.your.shot.feature.players
 
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
-import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -50,7 +50,6 @@ object StringsIds {
     val logout = R.string.logout
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
-    val na = R.string.na
     val no = R.string.no
     val noCurrentPlayersAdded = R.string.no_current_players_added
     val notConnectedToInternet = R.string.not_connected_to_internet
