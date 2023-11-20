@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.data.room.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -19,8 +18,8 @@ interface PlayerDao {
     @Update
     suspend fun update(playerEntity: PlayerEntity)
 
-    @Delete
-    suspend fun delete(playerEntity: PlayerEntity)
+    @Query("DELETE FROM players WHERE firstName = :firstName AND lastName = :lastName")
+    suspend fun deletePlayerByName(firstName: String, lastName: String)
 
     @Query("DELETE FROM players")
     suspend fun deleteAllPlayers()

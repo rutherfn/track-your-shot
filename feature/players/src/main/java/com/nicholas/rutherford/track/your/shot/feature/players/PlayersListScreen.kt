@@ -48,6 +48,7 @@ import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPositionAbvId
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
+import java.util.Locale
 
 @Composable
 fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
@@ -123,7 +124,7 @@ fun PlayerItem(
                         text = stringResource(
                             id =
                             R.string.x_position_x_player_name,
-                            stringResource(id = positionId),
+                            stringResource(id = positionId).uppercase(Locale.ROOT),
                             "${player.firstName} ${player.lastName}"
                         ),
                         style = TextStyles.body,

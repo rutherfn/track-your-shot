@@ -10,10 +10,10 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAnd
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class PlayersListViewModel(
@@ -44,9 +44,22 @@ class PlayersListViewModel(
     fun deletePlayer(player: Player) {
         navigation.enableProgress(progress = Progress())
         scope.launch {
-            activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey.let { accountInfoKey ->
-
-                playerRepository.deletePlayer(player = player)
+            activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey?.let { accountKey ->
+                deleteFirebaseUserInfo.deletePlayer(accountKey = accountKey, playerKey = player.firebaseKey)
+                    .collectLatest { isSuccessful ->
+                        if (isSuccessful) {
+                            playerRepository.deletePlayerByName(
+                                firstName = player.firstName,
+                                lastName = player.lastName
+                            )
+                            updatePlayerListState()
+                            navigation.disableProgress()
+                        } else {
+                            navigation.disableProgress()
+                        }
+                    }
+            } ?: run {
+                navigation.disableProgress()
             }
         }
     }
@@ -63,7 +76,7 @@ class PlayersListViewModel(
                 dismissButton = AlertConfirmAndDismissButton(
                     buttonText = application.getString(StringsIds.no)
                 ),
-                description =application.getString(StringsIds.areYouCertainYouWishToRemoveX, fullPlayerName)
+                description = application.getString(StringsIds.areYouCertainYouWishToRemoveX, fullPlayerName)
             )
         )
     }
