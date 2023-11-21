@@ -65,22 +65,25 @@ class PlayerRepositoryImplTest {
 
     @Test
     fun deletePlayer() = runBlocking {
-        val player1 = Player(id = 0, firstName = "name1", lastName = "name2", position = PlayerPositions.Center, imageUrl = null)
-        val player2 = Player(id = 1, firstName = "name3", lastName = "name4", position = PlayerPositions.SmallForward, imageUrl = null)
+        val player1 = Player(firstName = "name1", lastName = "name2", position = PlayerPositions.Center, imageUrl = null, firebaseKey = "key1")
+        val player2 = Player(firstName = "name3", lastName = "name4", position = PlayerPositions.SmallForward, imageUrl = null, firebaseKey = "ley2")
 
         playerRepositoryImpl.createPlayer(player = player1)
         playerRepositoryImpl.createPlayer(player = player2)
 
         assertThat(playerRepositoryImpl.fetchAllPlayers(), equalTo(listOf(player1, player2)))
 
-        playerRepositoryImpl.deletePlayer(player = player1)
+        playerRepositoryImpl.deletePlayerByName(
+            firstName = player1.firstName,
+            lastName = player1.lastName
+        )
 
         assertThat(playerRepositoryImpl.fetchAllPlayers(), equalTo(listOf(player2)))
     }
 
     @Test
     fun deleteAllPlayers() = runBlocking {
-        val newPlayer = player.copy(id = 2, firstName = "name1", lastName = "name2")
+        val newPlayer = player.copy(firstName = "name1", lastName = "name2")
 
         playerRepositoryImpl.createPlayer(player = player)
         playerRepositoryImpl.createPlayer(player = newPlayer)
@@ -94,11 +97,11 @@ class PlayerRepositoryImplTest {
 
     @Test
     fun fetchPlayerByName() = runBlocking {
-        val playerWithEmptyFirstName = player.copy(id = 2, firstName = "", lastName = "name2")
-        val playerWithEmptyLastName = player.copy(id = 3, firstName = "name2", lastName = "")
+        val playerWithEmptyFirstName = player.copy(firstName = "", lastName = "name2")
+        val playerWithEmptyLastName = player.copy(firstName = "name2", lastName = "")
 
-        val validPlayer1 = player.copy(id = 1, firstName = "name1", lastName = "name1")
-        val validPlayer2 = player.copy(id = 4, firstName = "name2", lastName = "name2")
+        val validPlayer1 = player.copy(firstName = "name1", lastName = "name1")
+        val validPlayer2 = player.copy(firstName = "name2", lastName = "name2")
 
         playerRepositoryImpl.createPlayer(playerWithEmptyFirstName)
         playerRepositoryImpl.createPlayer(playerWithEmptyLastName)
@@ -115,7 +118,7 @@ class PlayerRepositoryImplTest {
 
     @Test
     fun fetchAllPlayers() = runBlocking {
-        val newPlayer = player.copy(id = 2, firstName = "name1", lastName = "name2")
+        val newPlayer = player.copy(firstName = "name1", lastName = "name2")
 
         playerRepositoryImpl.createPlayer(player = player)
         playerRepositoryImpl.createPlayer(player = newPlayer)
@@ -125,7 +128,7 @@ class PlayerRepositoryImplTest {
 
     @Test
     fun fetchPlayerCount() = runBlocking {
-        val newPlayer = player.copy(id = 2, firstName = "name1", lastName = "name2")
+        val newPlayer = player.copy(firstName = "name1", lastName = "name2")
 
         playerRepositoryImpl.createPlayer(player = player)
         playerRepositoryImpl.createPlayer(player = newPlayer)
