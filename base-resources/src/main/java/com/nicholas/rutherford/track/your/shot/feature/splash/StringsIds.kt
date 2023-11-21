@@ -56,6 +56,7 @@ object StringsIds {
     val noCurrentPlayersAdded = R.string.no_current_players_added
     val notConnectedToInternet = R.string.not_connected_to_internet
     val openEmail = R.string.open_email
+    val ok = R.string.ok
     val password = R.string.password
     val passwordRequired = R.string.password_required
     val passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat =
@@ -81,6 +82,7 @@ object StringsIds {
     val thereWasAErrorCreatingYourAccountPleaseTryAgain =
         R.string.there_was_a_error_creating_your_account_please_try_again
     val unableToCreateAccount = R.string.unable_to_create_account
+    val unableToDeletePlayerPleaseContactSupport = R.string.unable_to_delete_player_please_contact_support
     val unableToLoginToAccount = R.string.unable_to_login_to_account
     val unableToResetPassword = R.string.unable_to_reset_password
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
@@ -92,6 +94,7 @@ object StringsIds {
         R.string.username_is_required_please_enter_a_username_to_create_a_account
     val verifyAccount = R.string.verify_account
     val voiceCommands = R.string.voice_commands
+    val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue = R.string.we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue
     val weWereAbleToSendEmailVerificationPleaseCheckYourEmailToVerifyAccount =
         R.string.we_were_able_to_send_email_verification_please_check_your_email_to_verify_account
     val weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain =

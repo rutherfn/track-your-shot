@@ -5,21 +5,27 @@ import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+const val DELETE_PLAYER_DELAY_IN_MILLIS = 2000L
+
 class PlayersListViewModel(
     private val application: Application,
     private val scope: CoroutineScope,
     private val navigation: PlayersListNavigation,
+    private val network: Network,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val activeUserRepository: ActiveUserRepository,
     private val playerRepository: PlayerRepository
@@ -42,33 +48,60 @@ class PlayersListViewModel(
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
 
     fun deletePlayer(player: Player) {
-        navigation.enableProgress(progress = Progress())
         scope.launch {
-            activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey?.let { accountKey ->
-                deleteFirebaseUserInfo.deletePlayer(accountKey = accountKey, playerKey = player.firebaseKey)
-                    .collectLatest { isSuccessful ->
-                        if (isSuccessful) {
-                            playerRepository.deletePlayerByName(
-                                firstName = player.firstName,
-                                lastName = player.lastName
-                            )
-                            updatePlayerListState()
-                            navigation.disableProgress()
-                        } else {
-                            navigation.disableProgress()
+            navigation.enableProgress(progress = Progress())
+
+            delay(DELETE_PLAYER_DELAY_IN_MILLIS)
+
+            if (network.isDeviceConnectedToInternet()) {
+                activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey?.let { accountKey ->
+                    deleteFirebaseUserInfo.deletePlayer(
+                        accountKey = accountKey,
+                        playerKey = player.firebaseKey
+                    )
+                        .collectLatest { isSuccessful ->
+                            if (isSuccessful) {
+                                playerRepository.deletePlayerByName(
+                                    firstName = player.firstName,
+                                    lastName = player.lastName
+                                )
+                                updatePlayerListState()
+                                navigation.disableProgress()
+                            } else {
+                                navigation.disableProgress()
+                                navigation.alert(alert = Alert(
+                                    title = application.getString(StringsIds.empty),
+                                    description = application.getString(StringsIds.unableToDeletePlayerPleaseContactSupport),
+                                    dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.openEmail))
+                                )
+                                )
+                            }
                         }
-                    }
-            } ?: run {
+                } ?: run {
+                    navigation.disableProgress()
+                    navigation.alert(alert = Alert(
+                        title = application.getString(StringsIds.empty),
+                        description = application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue),
+                        dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.openEmail))
+                    )
+                    )
+                }
+            } else {
                 navigation.disableProgress()
+                navigation.alert(alert = Alert(
+                    title = application.getString(StringsIds.empty),
+                    description = application.getString(StringsIds.notConnectedToInternet),
+                    dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
+                )
+                )
             }
         }
     }
 
     fun onDeletePlayerClicked(player: Player) {
-        val fullPlayerName = "${player.firstName} ${player.lastName}"
         navigation.alert(
             alert = Alert(
-                title = application.getString(StringsIds.deleteX, fullPlayerName),
+                title = application.getString(StringsIds.deleteX, player.fullName()),
                 confirmButton = AlertConfirmAndDismissButton(
                     buttonText = application.getString(StringsIds.yes),
                     onButtonClicked = { deletePlayer(player = player) }
@@ -76,7 +109,7 @@ class PlayersListViewModel(
                 dismissButton = AlertConfirmAndDismissButton(
                     buttonText = application.getString(StringsIds.no)
                 ),
-                description = application.getString(StringsIds.areYouCertainYouWishToRemoveX, fullPlayerName)
+                description = application.getString(StringsIds.areYouCertainYouWishToRemoveX, player.fullName())
             )
         )
     }

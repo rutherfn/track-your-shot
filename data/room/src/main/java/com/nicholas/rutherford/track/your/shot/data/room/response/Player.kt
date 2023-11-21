@@ -10,6 +10,10 @@ data class Player(
     val imageUrl: String?
 )
 
+fun Player.fullName(): String {
+    return "$firstName $lastName"
+}
+
 fun Player.toPlayerEntity(): PlayerEntity {
     return PlayerEntity(
         id = 0,

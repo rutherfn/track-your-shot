@@ -43,6 +43,7 @@ import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
@@ -84,7 +85,6 @@ fun PlayerItem(
     player: Player,
     onDeletePlayerClicked: (player: Player) -> Unit
 ) {
-    val fullPlayerName = "${player.firstName} ${player.lastName}"
     val imagePainter = if (!player.imageUrl.isNullOrEmpty()) {
         rememberImagePainter(data = player.imageUrl)
     } else {
@@ -152,7 +152,7 @@ fun PlayerItem(
                             expanded = false
                         }) {
                             Text(
-                                text = stringResource(id = R.string.view_x, fullPlayerName)
+                                text = stringResource(id = R.string.view_x, player.fullName())
                             )
                         }
 
@@ -161,7 +161,7 @@ fun PlayerItem(
                             onDeletePlayerClicked.invoke(player)
                         }) {
                             Text(
-                                text = stringResource(id = R.string.delete_x, fullPlayerName)
+                                text = stringResource(id = R.string.delete_x, player.fullName())
                             )
                         }
                     }
