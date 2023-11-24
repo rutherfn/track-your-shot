@@ -31,6 +31,7 @@ class PlayersListViewModel(
     private val playerRepository: PlayerRepository
 ) : ViewModel() {
 
+    internal var currentPlayerArrayList: ArrayList<Player> = arrayListOf()
     internal val playerListMutableStateFlow = MutableStateFlow(
         value = PlayersListState(
             playerList = emptyList()
@@ -41,18 +42,26 @@ class PlayersListViewModel(
 
     fun updatePlayerListState() {
         scope.launch {
-            playerListMutableStateFlow.value = PlayersListState(playerList = playerRepository.fetchAllPlayers())
+            playerRepository.fetchAllPlayers().forEach { player ->
+                currentPlayerArrayList.add(player)
+            }
         }
+        playerListMutableStateFlow.value = PlayersListState(playerList = currentPlayerArrayList.toList())
     }
 
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
 
-    fun deletePlayer(player: Player) {
-        scope.launch {
-            navigation.enableProgress(progress = Progress())
+    suspend fun onYesDeletePlayerClicked(player: Player) {
+        enableProgressAndDelay()
+        deletePlayer(player = player)
+    }
 
-            delay(DELETE_PLAYER_DELAY_IN_MILLIS)
+    internal suspend fun enableProgressAndDelay() {
+        navigation.enableProgress(progress = Progress())
+        delay(DELETE_PLAYER_DELAY_IN_MILLIS)
+    }
 
+    internal suspend fun deletePlayer(player: Player) {
             if (network.isDeviceConnectedToInternet()) {
                 activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey?.let { accountKey ->
                     deleteFirebaseUserInfo.deletePlayer(
@@ -65,52 +74,61 @@ class PlayersListViewModel(
                                     firstName = player.firstName,
                                     lastName = player.lastName
                                 )
-                                updatePlayerListState()
+                                currentPlayerArrayList.remove(player)
+                                playerListMutableStateFlow.value = PlayersListState(playerList = currentPlayerArrayList.toList())
                                 navigation.disableProgress()
                             } else {
                                 navigation.disableProgress()
-                                navigation.alert(alert = Alert(
-                                    title = application.getString(StringsIds.empty),
-                                    description = application.getString(StringsIds.unableToDeletePlayerPleaseContactSupport),
-                                    dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.openEmail))
-                                )
-                                )
+                                navigation.alert(alert = unableToDeletePlayerAlert())
                             }
                         }
                 } ?: run {
                     navigation.disableProgress()
-                    navigation.alert(alert = Alert(
-                        title = application.getString(StringsIds.empty),
-                        description = application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue),
-                        dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.openEmail))
-                    )
-                    )
+                    navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
                 }
             } else {
                 navigation.disableProgress()
-                navigation.alert(alert = Alert(
-                    title = application.getString(StringsIds.empty),
-                    description = application.getString(StringsIds.notConnectedToInternet),
-                    dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
-                )
-                )
+                navigation.alert(alert = notConnectedToInternetAlert())
             }
-        }
     }
 
-    fun onDeletePlayerClicked(player: Player) {
-        navigation.alert(
-            alert = Alert(
-                title = application.getString(StringsIds.deleteX, player.fullName()),
-                confirmButton = AlertConfirmAndDismissButton(
-                    buttonText = application.getString(StringsIds.yes),
-                    onButtonClicked = { deletePlayer(player = player) }
-                ),
-                dismissButton = AlertConfirmAndDismissButton(
-                    buttonText = application.getString(StringsIds.no)
-                ),
-                description = application.getString(StringsIds.areYouCertainYouWishToRemoveX, player.fullName())
-            )
+    fun onDeletePlayerClicked(player: Player) = navigation.alert(alert = deletePlayerAlert(player = player))
+
+    private fun deletePlayerAlert(player: Player): Alert {
+        return Alert(
+            title = application.getString(StringsIds.deleteX, player.fullName()),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.yes),
+                onButtonClicked = { scope.launch {  onYesDeletePlayerClicked(player = player) } }
+            ),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.no)
+            ),
+            description = application.getString(StringsIds.areYouCertainYouWishToRemoveX, player.fullName())
+        )
+    }
+
+    private fun notConnectedToInternetAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.empty),
+            description = application.getString(StringsIds.notConnectedToInternet),
+            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
+        )
+    }
+
+    private fun weHaveDetectedAProblemWithYourAccountAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.empty),
+            description = application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue),
+            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
+        )
+    }
+
+    private fun unableToDeletePlayerAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.empty),
+            description = application.getString(StringsIds.unableToDeletePlayerPleaseContactSupport),
+            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
         )
     }
 }

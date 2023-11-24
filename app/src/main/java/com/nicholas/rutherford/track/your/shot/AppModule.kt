@@ -203,6 +203,7 @@ class AppModule {
                 application = androidApplication(),
                 scope = defaultCoroutineScope,
                 navigation = get(),
+                network = get(),
                 deleteFirebaseUserInfo = get(),
                 activeUserRepository = get(),
                 playerRepository = get()
