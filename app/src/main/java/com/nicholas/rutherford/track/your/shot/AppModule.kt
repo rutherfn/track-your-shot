@@ -200,8 +200,12 @@ class AppModule {
         }
         viewModel {
             PlayersListViewModel(
+                application = androidApplication(),
                 scope = defaultCoroutineScope,
                 navigation = get(),
+                network = get(),
+                deleteFirebaseUserInfo = get(),
+                activeUserRepository = get(),
                 playerRepository = get()
             )
         }

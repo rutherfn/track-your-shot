@@ -114,6 +114,7 @@ class AccountAuthManagerImpl(
                                 firstName = player.playerInfo.firstName,
                                 lastName = player.playerInfo.lastName,
                                 position = PlayerPositions.fromValue(player.playerInfo.positionValue),
+                                firebaseKey = player.playerFirebaseKey,
                                 imageUrl = player.playerInfo.imageUrl
                             )
                         }

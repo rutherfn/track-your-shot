@@ -55,7 +55,7 @@ class AuthenticationViewModel(
     internal fun onNavigateClose() {
         navigation.alert(
             alert = Alert(
-                title = application.getString(StringsIds.areYouSureYouWantLeaveTrackMyShot),
+                title = application.getString(StringsIds.areYouSureYouWantLeaveTrackYourShot),
                 description = application.getString(StringsIds.leavingTheAppWillResultInYouNotFinishingTheAccountCreationProcessDescription),
                 confirmButton = AlertConfirmAndDismissButton(
                     onButtonClicked = { onAlertConfirmButtonClicked() },

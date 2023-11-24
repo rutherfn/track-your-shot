@@ -13,7 +13,7 @@ class PlayerRepositoryImpl(private val playerDao: PlayerDao) : PlayerRepository 
 
     override suspend fun updatePlayer(player: Player) = playerDao.update(playerEntity = player.toPlayerEntity())
 
-    override suspend fun deletePlayer(player: Player) = playerDao.delete(playerEntity = player.toPlayerEntity())
+    override suspend fun deletePlayerByName(firstName: String, lastName: String) = playerDao.deletePlayerByName(firstName = firstName, lastName = lastName)
 
     override suspend fun deleteAllPlayers() = playerDao.deleteAllPlayers()
 

@@ -73,6 +73,7 @@ dependencies {
     api(project(path = ":firebase:util"))
     api(project(path = ":helper:constants"))
     api(project(path = ":helper:extensions"))
+    api(project(path = ":helper:network"))
     api(project(path = ":navigation"))
 
     implementation(Dependencies.Compose.coil)

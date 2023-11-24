@@ -58,12 +58,15 @@ class PlayerEntityDaoTest {
     }
 
     @Test
-    fun delete() = runBlocking {
+    fun deletePlayerByName() = runBlocking {
         playerDao.insert(playerEntity = playerEntity)
 
         assertThat(listOf(playerEntity), equalTo(playerDao.getAllPlayers()))
 
-        playerDao.delete(playerEntity = playerEntity)
+        playerDao.deletePlayerByName(
+            firstName = playerEntity.firstName,
+            lastName = playerEntity.lastName
+        )
 
         assertThat(emptyList(), equalTo(playerDao.getAllPlayers()))
     }

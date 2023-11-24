@@ -43,11 +43,13 @@ import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPositionAbvId
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
+import java.util.Locale
 
 @Composable
 fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
@@ -57,7 +59,7 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             if (!isPlayerListEmpty) {
                 LazyColumn {
                     items(playerListScreenParams.state.playerList) { player ->
-                        PlayerItem(player = player)
+                        PlayerItem(player = player, onDeletePlayerClicked = playerListScreenParams.onDeletePlayerClicked)
                     }
                 }
             } else {
@@ -79,7 +81,10 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun PlayerItem(player: Player) {
+fun PlayerItem(
+    player: Player,
+    onDeletePlayerClicked: (player: Player) -> Unit
+) {
     val imagePainter = if (!player.imageUrl.isNullOrEmpty()) {
         rememberImagePainter(data = player.imageUrl)
     } else {
@@ -119,7 +124,7 @@ fun PlayerItem(player: Player) {
                         text = stringResource(
                             id =
                             R.string.x_position_x_player_name,
-                            stringResource(id = positionId),
+                            stringResource(id = positionId).uppercase(Locale.ROOT),
                             "${player.firstName} ${player.lastName}"
                         ),
                         style = TextStyles.body,
@@ -147,15 +152,16 @@ fun PlayerItem(player: Player) {
                             expanded = false
                         }) {
                             Text(
-                                text = stringResource(id = R.string.view_x, "${player.firstName} ${player.lastName}")
+                                text = stringResource(id = R.string.view_x, player.fullName())
                             )
                         }
 
                         DropdownMenuItem(onClick = {
                             expanded = false
+                            onDeletePlayerClicked.invoke(player)
                         }) {
                             Text(
-                                text = stringResource(id = R.string.delete_x, "${player.firstName} ${player.lastName}")
+                                text = stringResource(id = R.string.delete_x, player.fullName())
                             )
                         }
                     }
