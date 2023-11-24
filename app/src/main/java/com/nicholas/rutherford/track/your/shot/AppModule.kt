@@ -27,9 +27,9 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListNavigation
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListNavigationImpl
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel

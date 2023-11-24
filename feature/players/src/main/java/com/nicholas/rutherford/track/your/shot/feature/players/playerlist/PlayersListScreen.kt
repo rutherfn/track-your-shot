@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.players
+package com.nicholas.rutherford.track.your.shot.feature.players.playerlist
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
