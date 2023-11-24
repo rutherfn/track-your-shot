@@ -62,34 +62,34 @@ class PlayersListViewModel(
     }
 
     internal suspend fun deletePlayer(player: Player) {
-            if (network.isDeviceConnectedToInternet()) {
-                activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey?.let { accountKey ->
-                    deleteFirebaseUserInfo.deletePlayer(
-                        accountKey = accountKey,
-                        playerKey = player.firebaseKey
-                    )
-                        .collectLatest { isSuccessful ->
-                            if (isSuccessful) {
-                                playerRepository.deletePlayerByName(
-                                    firstName = player.firstName,
-                                    lastName = player.lastName
-                                )
-                                currentPlayerArrayList.remove(player)
-                                playerListMutableStateFlow.value = PlayersListState(playerList = currentPlayerArrayList.toList())
-                                navigation.disableProgress()
-                            } else {
-                                navigation.disableProgress()
-                                navigation.alert(alert = unableToDeletePlayerAlert())
-                            }
+        if (network.isDeviceConnectedToInternet()) {
+            activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey?.let { accountKey ->
+                deleteFirebaseUserInfo.deletePlayer(
+                    accountKey = accountKey,
+                    playerKey = player.firebaseKey
+                )
+                    .collectLatest { isSuccessful ->
+                        if (isSuccessful) {
+                            playerRepository.deletePlayerByName(
+                                firstName = player.firstName,
+                                lastName = player.lastName
+                            )
+                            currentPlayerArrayList.remove(player)
+                            playerListMutableStateFlow.value = PlayersListState(playerList = currentPlayerArrayList.toList())
+                            navigation.disableProgress()
+                        } else {
+                            navigation.disableProgress()
+                            navigation.alert(alert = unableToDeletePlayerAlert())
                         }
-                } ?: run {
-                    navigation.disableProgress()
-                    navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
-                }
-            } else {
+                    }
+            } ?: run {
                 navigation.disableProgress()
-                navigation.alert(alert = notConnectedToInternetAlert())
+                navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
             }
+        } else {
+            navigation.disableProgress()
+            navigation.alert(alert = notConnectedToInternetAlert())
+        }
     }
 
     fun onDeletePlayerClicked(player: Player) = navigation.alert(alert = deletePlayerAlert(player = player))
@@ -99,7 +99,7 @@ class PlayersListViewModel(
             title = application.getString(StringsIds.deleteX, player.fullName()),
             confirmButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.yes),
-                onButtonClicked = { scope.launch {  onYesDeletePlayerClicked(player = player) } }
+                onButtonClicked = { scope.launch { onYesDeletePlayerClicked(player = player) } }
             ),
             dismissButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.no)

@@ -4,31 +4,23 @@ import android.app.Application
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
-import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
-import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListState
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListViewModel
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -216,7 +208,7 @@ class PlayersListViewModelTest {
 
         @Test
         fun `when all conditions are met should delete player`() = runTest {
-            playersListViewModel.playerListMutableStateFlow.value =  PlayersListState(playerList = listOf(player))
+            playersListViewModel.playerListMutableStateFlow.value = PlayersListState(playerList = listOf(player))
             playersListViewModel.currentPlayerArrayList = arrayListOf(player)
 
             Assertions.assertEquals(
