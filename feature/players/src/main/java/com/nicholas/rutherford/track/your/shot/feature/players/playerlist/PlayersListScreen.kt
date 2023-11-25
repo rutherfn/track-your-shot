@@ -36,6 +36,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
@@ -43,6 +44,7 @@ import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
@@ -124,8 +126,8 @@ fun PlayerItem(
                         text = stringResource(
                             id =
                             R.string.x_position_x_player_name,
-                            stringResource(id = positionId).uppercase(Locale.ROOT),
-                            "${player.firstName} ${player.lastName}"
+                            stringResource(id = positionId),
+                            player.fullName()
                         ),
                         style = TextStyles.body,
                         textAlign = TextAlign.Start
@@ -207,4 +209,40 @@ fun AddNewPlayerEmptyState() {
             )
         }
     }
+}
+
+@Composable
+@Preview
+fun PlayersListScreenWithItemsPreview() {
+    PlayersListScreen(
+        playerListScreenParams = PlayersListScreenParams(
+            state = PlayersListState(
+                playerList = listOf(
+                    Player(
+                        firstName = "first",
+                        lastName = "last",
+                        position = PlayerPositions.Center,
+                        firebaseKey = "key",
+                        imageUrl = null
+                    )
+                )
+            ),
+            onToolbarMenuClicked = {},
+            updatePlayerListState = {},
+            onDeletePlayerClicked = {}
+        )
+    )
+}
+
+@Composable
+@Preview
+fun PlayerListScreenEmptyStatePreview() {
+    PlayersListScreen(
+        playerListScreenParams = PlayersListScreenParams(
+            state = PlayersListState(playerList = emptyList()),
+            onToolbarMenuClicked = {},
+            updatePlayerListState = {},
+            onDeletePlayerClicked = {}
+        )
+    )
 }

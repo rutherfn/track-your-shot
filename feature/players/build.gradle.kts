@@ -76,8 +76,11 @@ dependencies {
     api(project(path = ":helper:network"))
     api(project(path = ":navigation"))
 
+    debugImplementation(Dependencies.Compose.uiToolingPreview)
+
     implementation(Dependencies.Compose.coil)
     implementation(Dependencies.Compose.material)
+    implementation(Dependencies.Compose.uiToolingPreview)
     implementation(Dependencies.Compose.viewModel)
 
     testImplementation(Dependencies.Coroutine.test)
