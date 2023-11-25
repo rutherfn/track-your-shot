@@ -51,7 +51,6 @@ import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPositionAbvId
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
-import java.util.Locale
 
 @Composable
 fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
@@ -73,6 +72,9 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             shouldShowMiddleContentAppBar = true,
             onIconButtonClicked = {
                 playerListScreenParams.onToolbarMenuClicked.invoke()
+            },
+            onSecondaryIconButtonClicked = {
+                playerListScreenParams.onAddPlayerClicked.invoke()
             }
         ),
         invokeFunctionOnInit = {
@@ -229,6 +231,7 @@ fun PlayersListScreenWithItemsPreview() {
             ),
             onToolbarMenuClicked = {},
             updatePlayerListState = {},
+            onAddPlayerClicked = {},
             onDeletePlayerClicked = {}
         )
     )
@@ -242,6 +245,7 @@ fun PlayerListScreenEmptyStatePreview() {
             state = PlayersListState(playerList = emptyList()),
             onToolbarMenuClicked = {},
             updatePlayerListState = {},
+            onAddPlayerClicked = {},
             onDeletePlayerClicked = {}
         )
     )

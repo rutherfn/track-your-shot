@@ -27,6 +27,9 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerNavigation
+import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
@@ -180,6 +183,9 @@ class AppModule {
         single<PlayersListNavigation> {
             PlayersListNavigationImpl(navigator = get())
         }
+        single<CreatePlayerNavigation> {
+            CreatePlayerNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(appCenter = get(), accountAuthManager = get())
         }
@@ -207,6 +213,16 @@ class AppModule {
                 deleteFirebaseUserInfo = get(),
                 activeUserRepository = get(),
                 playerRepository = get()
+            )
+        }
+        viewModel {
+            CreatePlayerViewModel(
+                application = androidApplication(),
+                createFirebaseUserInfo = get(),
+                playerRepository = get(),
+                scope = defaultCoroutineScope,
+                navigation = get(),
+                network = get()
             )
         }
         viewModel {

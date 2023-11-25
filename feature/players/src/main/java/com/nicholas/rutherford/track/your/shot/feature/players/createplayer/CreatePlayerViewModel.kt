@@ -6,6 +6,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerReposi
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class CreatePlayerViewModel(
     private val application: Application,
@@ -16,5 +18,18 @@ class CreatePlayerViewModel(
     private val network: Network
 ) : ViewModel() {
 
+    internal val createPlayerMutableStateFlow = MutableStateFlow(value = CreatePlayerState())
+    val createPlayerStateFlow = createPlayerMutableStateFlow.asStateFlow()
 
+    fun onToolbarMenuClicked() {
+
+    }
+
+    fun onImageUploadClicked() {
+
+    }
+
+    fun onCreatePlayerClicked() {
+
+    }
 }

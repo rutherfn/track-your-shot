@@ -30,6 +30,8 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerParams
+import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
@@ -95,6 +97,7 @@ fun NavigationComponent(
     val createAccountViewModel = viewModels.createAccountViewModel
     val loginViewModel = viewModels.loginViewModel
     val playersListViewModel = viewModels.playersListViewModel
+    val createPlayerViewModel = viewModels.createPlayerViewModel
     val forgotPasswordViewModel = viewModels.forgotPasswordViewModel
 
     LaunchedEffect(alertState) {
@@ -228,8 +231,18 @@ fun NavigationComponent(
                         state = playersListViewModel.playerListStateFlow.collectAsState().value,
                         onToolbarMenuClicked = { playersListViewModel.onToolbarMenuClicked() },
                         updatePlayerListState = { playersListViewModel.updatePlayerListState() },
+                        onAddPlayerClicked = { playersListViewModel.onAddPlayerClicked() },
                         onDeletePlayerClicked = { player -> playersListViewModel.onDeletePlayerClicked(player = player) }
                     )
+                )
+            }
+            composable(route = NavigationDestinations.CREATE_PLAYER_SCREEN) {
+                CreatePlayerScreen(createPlayerParams = CreatePlayerParams(
+                    state = createPlayerViewModel.createPlayerStateFlow.collectAsState().value,
+                    onToolbarMenuClicked = { createPlayerViewModel.onToolbarMenuClicked() },
+                    onImageUploadClicked = { createPlayerViewModel.onImageUploadClicked() },
+                    onCreatePlayerClicked = { createPlayerViewModel.onCreatePlayerClicked() }
+                )
                 )
             }
             composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {

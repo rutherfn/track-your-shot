@@ -32,12 +32,8 @@ class PlayersListViewModel(
 ) : ViewModel() {
 
     internal var currentPlayerArrayList: ArrayList<Player> = arrayListOf()
-    internal val playerListMutableStateFlow = MutableStateFlow(
-        value = PlayersListState(
-            playerList = emptyList()
-        )
-    )
 
+    internal val playerListMutableStateFlow = MutableStateFlow(value = PlayersListState())
     val playerListStateFlow = playerListMutableStateFlow.asStateFlow()
 
     fun updatePlayerListState() {
@@ -50,6 +46,8 @@ class PlayersListViewModel(
     }
 
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
+
+    fun onAddPlayerClicked() = navigation.navigateToCreatePlayer()
 
     suspend fun onYesDeletePlayerClicked(player: Player) {
         enableProgressAndDelay()
