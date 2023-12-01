@@ -91,10 +91,7 @@ object NavigationActions {
 
         fun createPlayer() = object : NavigationAction {
             override val destination = NavigationDestinations.CREATE_PLAYER_SCREEN
-            override val navOptions = NavOptions.Builder()
-                .setPopUpTo(0, true)
-                .setLaunchSingleTop(true)
-                .build()
+            override val navOptions = NavOptions.Builder().build()
         }
     }
 }

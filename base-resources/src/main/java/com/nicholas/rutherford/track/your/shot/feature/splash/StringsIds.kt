@@ -6,6 +6,7 @@ object StringsIds {
     val accountHasNotBeenVerified = R.string.account_has_not_been_verified
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
     val areYouSureYouWantLeaveTrackYourShot = R.string.are_you_sure_you_want_to_leave_track_your_shot
+    val c = R.string.c
     val center = R.string.center
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
     val comparePlayersStats = R.string.compare_players_stats
@@ -21,6 +22,7 @@ object StringsIds {
         R.string.email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password
     val emailHasBeenSentToVerifyAccountPleaseOpenEmailSentEmailToVerifyAccount =
         R.string.email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account
+    val firstName = R.string.first_name
     val forgotPassword = R.string.forgot_password
     val empty = R.string.empty
     val emptyField = R.string.empty_field
@@ -45,6 +47,7 @@ object StringsIds {
     val havingTroubleResettingPasswordForThisAccountPleaseTryAgainAndOrEnsureCredentialsExistAndAreValid =
         R.string.having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid
     val hintAddNewPlayer = R.string.hint_add_new_player
+    val lastName = R.string.last_name
     val leavingTheAppWillResultInYouNotFinishingTheAccountCreationProcessDescription =
         R.string.leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description
     val login = R.string.login
@@ -66,14 +69,19 @@ object StringsIds {
     val passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount =
         R.string.password_is_required_please_enter_a_password_to_login_to_existing_account
     val pg = R.string.pg
+    val pointGuard = R.string.point_guard
     val pf = R.string.pf
+    val powerForward = R.string.power_forward
+    val playerImage = R.string.player_image
     val players = R.string.players
     val proceedWithYourAccount = R.string.proceed_with_your_account
     val resetPassword = R.string.reset_password
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email
     val settings = R.string.settings
+    val smallForward = R.string.small_forward
     val sf = R.string.sf
+    val shootingGuard = R.string.shooting_guard
     val sg = R.string.sg
     val stats = R.string.stats
     val splashIconDescription = R.string.splash_icon_description
@@ -86,6 +94,7 @@ object StringsIds {
     val unableToLoginToAccount = R.string.unable_to_login_to_account
     val unableToResetPassword = R.string.unable_to_reset_password
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
+    val uploadPlayerImage = R.string.upload_player_image
     val usernameRequired = R.string.username_required
     val usernameInUse = R.string.username_in_use
     val usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat =

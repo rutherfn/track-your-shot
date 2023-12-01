@@ -31,7 +31,7 @@ fun Int.toPlayerPositionAbvId(): Int? {
             StringsIds.pf
         }
         PlayerPositions.Center.value -> {
-            StringsIds.center
+            StringsIds.c
         }
         else -> { null }
     }

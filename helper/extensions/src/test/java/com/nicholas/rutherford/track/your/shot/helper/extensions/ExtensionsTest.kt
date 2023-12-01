@@ -131,9 +131,9 @@ class ExtensionsTest {
         }
 
         @Test
-        fun `when value is 4 should return center value`() {
+        fun `when value is 4 should return c value`() {
             val playerPosition = 4
-            Assertions.assertEquals(playerPosition.toPlayerPositionAbvId(), StringsIds.center)
+            Assertions.assertEquals(playerPosition.toPlayerPositionAbvId(), StringsIds.c)
         }
 
         @Test

@@ -30,7 +30,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
  *
  * @param appBar builds out the actual content for displaying [TopAppBar]
  * @param imageVector [ImageVector] used for both app bars for displaying [Icon] left of title
- * @param secondaryImageVector [ImageVector] used for [ComplexTopAppBar] for displaying [Icon] right of title  vgy
+ * @param secondaryImageVector [ImageVector] used for [ComplexTopAppBar] for displaying [Icon] right of title
  */
 @Composable
 fun ConditionalTopAppBar(
@@ -76,7 +76,9 @@ private fun SimpleTopAppBar(
         }
     }
     )
-    Spacer(modifier = Modifier.height(Padding.eight))
+    if (appBar.shouldIncludeSpaceAfterDeclaration) {
+        Spacer(modifier = Modifier.height(Padding.eight))
+    }
 }
 
 @Composable
@@ -118,7 +120,10 @@ private fun ComplexTopAppBar(
             }
         },
     )
-    Spacer(modifier = Modifier.height(Padding.eight))
+
+    if (appBar.shouldIncludeSpaceAfterDeclaration) {
+        Spacer(modifier = Modifier.height(Padding.eight))
+    }
 }
 
 @Preview

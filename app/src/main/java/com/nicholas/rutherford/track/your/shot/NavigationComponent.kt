@@ -139,6 +139,7 @@ fun NavigationComponent(
 
     LaunchedEffect(popRouteState) {
         popRouteState?.let { route ->
+            println("get here pop route")
             navHostController.popBackStack(route = route, inclusive = false)
             navigator.pop(popRouteAction = null) // need to set this to null to listen to next pop action
         }
@@ -237,12 +238,15 @@ fun NavigationComponent(
                 )
             }
             composable(route = NavigationDestinations.CREATE_PLAYER_SCREEN) {
-                CreatePlayerScreen(createPlayerParams = CreatePlayerParams(
-                    state = createPlayerViewModel.createPlayerStateFlow.collectAsState().value,
-                    onToolbarMenuClicked = { createPlayerViewModel.onToolbarMenuClicked() },
-                    onImageUploadClicked = { createPlayerViewModel.onImageUploadClicked() },
-                    onCreatePlayerClicked = { createPlayerViewModel.onCreatePlayerClicked() }
-                )
+                CreatePlayerScreen(
+                    createPlayerParams = CreatePlayerParams(
+                        state = createPlayerViewModel.createPlayerStateFlow.collectAsState().value,
+                        onToolbarMenuClicked = { createPlayerViewModel.onToolbarMenuClicked() },
+                        onFirstNameValueChanged = { newFirstName -> createPlayerViewModel.onFirstNameValueChanged(newFirstName) },
+                        onLastNameValueChanged = { newLastName -> createPlayerViewModel.onLastNameValueChanged(newLastName) },
+                        onImageUploadClicked = { createPlayerViewModel.onImageUploadClicked() },
+                        onCreatePlayerClicked = { createPlayerViewModel.onCreatePlayerClicked() }
+                    )
                 )
             }
             composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {
