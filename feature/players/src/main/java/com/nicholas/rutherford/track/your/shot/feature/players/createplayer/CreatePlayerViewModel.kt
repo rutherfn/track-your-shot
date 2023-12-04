@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.createplayer
 
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
@@ -27,9 +28,9 @@ class CreatePlayerViewModel(
     fun onToolbarMenuClicked() = navigation.pop()
 
     fun onImageUploadClicked() {
-        val imageBitmap = createPlayerMutableStateFlow.value.imageBitmap
+        val uri = createPlayerStateFlow.value.imageUri
 
-        if (imageBitmap == null) {
+        if (uri == null) {
             createPlayerMutableStateFlow.value = createPlayerMutableStateFlow.value.copy(
                 sheet = Sheet(
                     title = application.getString(StringsIds.chooseOption),
@@ -47,12 +48,16 @@ class CreatePlayerViewModel(
     fun onImageOptionSelected(option: String) {
         when (option) {
             application.getString(StringsIds.chooseImageFromGallery) -> {
-
+                println("choose image from gallery")
             }
             else -> {
 
             }
         }
+    }
+
+    fun onUpdateImageUriState(uri: Uri) {
+        createPlayerMutableStateFlow.value = createPlayerMutableStateFlow.value.copy(imageUri = uri)
     }
 
     fun onCreatePlayerClicked() {

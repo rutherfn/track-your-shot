@@ -2,7 +2,13 @@
 
 package com.nicholas.rutherford.track.your.shot.feature.players.createplayer
 
-import androidx.compose.foundation.Image
+import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +28,6 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -38,8 +43,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
@@ -48,8 +55,9 @@ import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
+
 
 @Composable
 fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
@@ -68,20 +76,81 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
     )
 }
 
+fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
+    val bytes = ByteArrayOutputStream()
+    inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+    val path =
+        MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+    return Uri.parse(path)
+}
+
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun CreatePlayerScreenContent(createPlayerParams: CreatePlayerParams) {
     val bottomState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
+    var hasImage by remember {
+        mutableStateOf(false)
+    }
+    var imageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+    val context = LocalContext.current
 
     ModalBottomSheetLayout(
         sheetState = bottomState,
         sheetContent = {
             createPlayerParams.state.sheet?.let { sheet ->
-                BottomSheetContent(
-                    title = sheet.title,
-                    values = sheet.values,
-                    scope = scope,
-                    bottomState = bottomState
+                val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.GetContent(),
+                    onResult = { uri ->
+                        hasImage = uri != null || imageUri != null
+                        imageUri = uri ?: imageUri
+                    }
+                )
+                val cameraLauncher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.TakePicturePreview(),
+                    onResult = { bitmap ->
+                        hasImage = bitmap != null || imageUri != null
+                        imageUri = bitmap?.let { getImageUri(context, it) } ?: imageUri
+                    }
+                )
+
+                Text(
+                    text = sheet.title,
+                    modifier = Modifier.padding(vertical = 12.dp, horizontal = 20.dp),
+                    style = TextStyles.smallBold
+                )
+                LazyColumn {
+                    items(sheet.values) { value ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 12.dp, horizontal = 20.dp)
+                                .clickable {
+                                    scope.launch { bottomState.hide() }
+                                    if (value == "Choose Image From Gallery") {
+                                        singlePhotoPickerLauncher.launch("image/*")
+                                    } else if (value == "Take A Picture") {
+                                        cameraLauncher.launch()
+                                    }
+                                    //  createPlayerParams.onImageOptionSelected(value)
+                                }
+                        ) {
+                            Text(
+                                text = value,
+                                modifier = Modifier.padding(end = 20.dp),
+                                style = TextStyles.body
+                            )
+                        }
+                    }
+                }
+                Text(
+                    text = stringResource(id = R.string.cancel),
+                    modifier = Modifier
+                        .padding(vertical = 12.dp, horizontal = 20.dp)
+                        .clickable { scope.launch { bottomState.hide() } },
+                    style = TextStyles.body.copy(color = AppColors.Red)
                 )
             }
         }
@@ -127,11 +196,42 @@ private fun CreatePlayerScreenContent(createPlayerParams: CreatePlayerParams) {
 
             Spacer(modifier = Modifier.height(Padding.sixteen))
 
-            UploadPlayerImageContent(
-                createPlayerParams = createPlayerParams,
-                scope = scope,
-                bottomState = bottomState
-            )
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = stringResource(id = StringsIds.uploadPlayerImage),
+                    modifier = Modifier.padding(start = Padding.four),
+                    style = TextStyles.body
+                )
+                Spacer(modifier = Modifier.height(Padding.eight))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (hasImage && imageUri != null) {
+                            AsyncImage(
+                                model = imageUri,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clickable {
+                                        createPlayerParams.onImageUploadClicked.invoke()
+                                        scope.launch { bottomState.show() }
+                                    },
+                                contentScale = ContentScale.Crop
+                            )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.AddAPhoto,
+                            contentDescription = "Add a photo",
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clickable {
+                                    createPlayerParams.onImageUploadClicked.invoke()
+                                    scope.launch { bottomState.show() }
+                                }
+                        )
+                    }
+                }
+            }
 
             Spacer(modifier = Modifier.height(Padding.sixteen))
 
@@ -144,44 +244,6 @@ private fun CreatePlayerScreenContent(createPlayerParams: CreatePlayerParams) {
             )
         }
     }
-}
-
-@Composable
-private fun BottomSheetContent(
-    title: String,
-    values: List<String>,
-    scope: CoroutineScope,
-    bottomState: ModalBottomSheetState
-) {
-    Text(
-        text = title,
-        modifier = Modifier.padding(vertical = 12.dp, horizontal = 20.dp),
-        style = TextStyles.smallBold
-    )
-    LazyColumn {
-        items(values) { value ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp, horizontal = 20.dp)
-                    .clickable {
-                        scope.launch { bottomState.hide() }
-
-                    }
-            ) {
-                Text(
-                    text = value,
-                    modifier = Modifier.padding(end = 20.dp),
-                    style = TextStyles.body
-                )
-            }
-        }
-    }
-    Text(
-        text = stringResource(id = R.string.cancel),
-        modifier = Modifier.padding(vertical = 12.dp, horizontal = 20.dp).clickable { scope.launch { bottomState.hide() } },
-        style = TextStyles.body.copy(color = AppColors.Red)
-    )
 }
 
 @Composable
@@ -243,50 +305,6 @@ private fun PositionChooser(createPlayerParams: CreatePlayerParams) {
                         .padding(start = 4.dp)
                         .size(20.dp)
                         .clickable { isDropdownExpanded = !isDropdownExpanded }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun UploadPlayerImageContent(
-    createPlayerParams: CreatePlayerParams,
-    scope: CoroutineScope,
-    bottomState: ModalBottomSheetState
-) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = stringResource(id = StringsIds.uploadPlayerImage),
-            modifier = Modifier.padding(start = Padding.four),
-            style = TextStyles.body
-        )
-        Spacer(modifier = Modifier.height(Padding.eight))
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            createPlayerParams.state.imageBitmap?.let { bitmap ->
-                Image(
-                    bitmap = bitmap,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clickable {
-                            createPlayerParams.onImageUploadClicked.invoke()
-                            scope.launch { bottomState.show() }
-                        },
-                    contentScale = ContentScale.Crop
-                )
-            } ?: run {
-                Icon(
-                    imageVector = Icons.Default.AddAPhoto,
-                    contentDescription = "Add a photo",
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clickable {
-                            createPlayerParams.onImageUploadClicked.invoke()
-                            scope.launch { bottomState.show() }
-                        }
                 )
             }
         }

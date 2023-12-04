@@ -242,10 +242,12 @@ fun NavigationComponent(
                     createPlayerParams = CreatePlayerParams(
                         state = createPlayerViewModel.createPlayerStateFlow.collectAsState().value,
                         onToolbarMenuClicked = { createPlayerViewModel.onToolbarMenuClicked() },
-                        onFirstNameValueChanged = { newFirstName -> createPlayerViewModel.onFirstNameValueChanged(newFirstName) },
-                        onLastNameValueChanged = { newLastName -> createPlayerViewModel.onLastNameValueChanged(newLastName) },
+                        onFirstNameValueChanged = { newFirstName -> createPlayerViewModel.onFirstNameValueChanged(newFirstName = newFirstName) },
+                        onLastNameValueChanged = { newLastName -> createPlayerViewModel.onLastNameValueChanged(newLastName = newLastName) },
                         onImageUploadClicked = { createPlayerViewModel.onImageUploadClicked() },
-                        onCreatePlayerClicked = { createPlayerViewModel.onCreatePlayerClicked() }
+                        onCreatePlayerClicked = { createPlayerViewModel.onCreatePlayerClicked() },
+                        onImageOptionSelected = { option -> createPlayerViewModel.onImageOptionSelected(option) },
+                        onUpdateImageUriState = { uri -> createPlayerViewModel.onUpdateImageUriState(uri = uri) }
                     )
                 )
             }

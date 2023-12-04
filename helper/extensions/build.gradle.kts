@@ -60,6 +60,7 @@ android {
 dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":data:room"))
+    implementation("androidx.core:core:1.12.0")
 
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)
