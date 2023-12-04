@@ -9,6 +9,8 @@ object StringsIds {
     val c = R.string.c
     val center = R.string.center
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
+    val chooseImageFromGallery = R.string.choose_image_from_gallery
+    val chooseOption = R.string.choose_option
     val comparePlayersStats = R.string.compare_players_stats
     val continueText = R.string.continue_text
     val clickMeToCreateAccount = R.string.click_me_to_create_account
@@ -86,6 +88,7 @@ object StringsIds {
     val stats = R.string.stats
     val splashIconDescription = R.string.splash_icon_description
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
+    val takeAPicture = R.string.take_a_picture
     val termsConditions = R.string.terms_conditions
     val thereWasAErrorCreatingYourAccountPleaseTryAgain =
         R.string.there_was_a_error_creating_your_account_please_try_again

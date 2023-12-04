@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
+import com.nicholas.rutherford.track.your.shot.feature.players.R
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.CoroutineScope
@@ -27,12 +29,29 @@ class CreatePlayerViewModel(
     fun onImageUploadClicked() {
         val imageBitmap = createPlayerMutableStateFlow.value.imageBitmap
 
-        createPlayerMutableStateFlow.value = createPlayerMutableStateFlow.value.copy(sheet = Sheet("test", listOf("test")))
-
         if (imageBitmap == null) {
-            // give the user a option
+            createPlayerMutableStateFlow.value = createPlayerMutableStateFlow.value.copy(
+                sheet = Sheet(
+                    title = application.getString(StringsIds.chooseOption),
+                    values = listOf(
+                        application.getString(StringsIds.chooseImageFromGallery),
+                        application.getString(StringsIds.takeAPicture)
+                        )
+                )
+            )
         } else {
             // give the user another option
+        }
+    }
+
+    fun onImageOptionSelected(option: String) {
+        when (option) {
+            application.getString(StringsIds.chooseImageFromGallery) -> {
+
+            }
+            else -> {
+
+            }
         }
     }
 

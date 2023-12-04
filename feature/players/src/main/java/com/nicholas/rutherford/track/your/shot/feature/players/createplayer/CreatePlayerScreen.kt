@@ -17,18 +17,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,13 +40,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
-import com.nicholas.rutherford.track.your.shot.compose.components.TextFieldNoPadding
+import com.nicholas.rutherford.track.your.shot.compose.components.CoreTextField
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -55,7 +56,7 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
     Content(
         ui = {
             CreatePlayerScreenContent(createPlayerParams = createPlayerParams)
-             },
+        },
         appBar = AppBar(
             toolbarTitle = stringResource(id = R.string.create_player),
             shouldShowMiddleContentAppBar = false,
@@ -75,17 +76,16 @@ private fun CreatePlayerScreenContent(createPlayerParams: CreatePlayerParams) {
     ModalBottomSheetLayout(
         sheetState = bottomState,
         sheetContent = {
-            createPlayerParams.state.sheet?.let {
-                BottomSheetContent(it.title, it.values)
+            createPlayerParams.state.sheet?.let { sheet ->
+                BottomSheetContent(
+                    title = sheet.title,
+                    values = sheet.values,
+                    scope = scope,
+                    bottomState = bottomState
+                )
             }
         }
     ) {
-
-        Text(
-            text = stringResource(id = R.string.add_player_info),
-            modifier = Modifier.padding(top = Padding.eight, start = Padding.twenty),
-            style = TextStyles.smallBold
-        )
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -93,22 +93,32 @@ private fun CreatePlayerScreenContent(createPlayerParams: CreatePlayerParams) {
                 .padding(start = Padding.twenty, end = Padding.twenty, bottom = Padding.twenty),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TextFieldNoPadding(
-                label = stringResource(id = StringsIds.firstName),
-                value = createPlayerParams.state.firstName,
-                onValueChange = { newFirstName ->
-                    createPlayerParams.onFirstNameValueChanged.invoke(newFirstName)
-                }
+            Text(
+                text = stringResource(id = R.string.general_information),
+                style = TextStyles.small,
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(top = Padding.twelve, start = Padding.four)
             )
 
-            Spacer(modifier = Modifier.height(Padding.four))
+            Spacer(modifier = Modifier.height(Padding.eight))
 
-            TextFieldNoPadding(
-                label = stringResource(id = StringsIds.lastName),
+            CoreTextField(
+                value = createPlayerParams.state.firstName,
+                onValueChange = {
+                    createPlayerParams.onFirstNameValueChanged.invoke(it)
+                },
+                placeholderValue = stringResource(id = R.string.enter_first_name)
+            )
+
+            Spacer(modifier = Modifier.height(Padding.sixteen))
+
+            CoreTextField(
                 value = createPlayerParams.state.lastName,
-                onValueChange = { newLastName ->
-                    createPlayerParams.onLastNameValueChanged.invoke(newLastName)
-                }
+                onValueChange = {
+                    createPlayerParams.onLastNameValueChanged.invoke(it)
+                },
+                placeholderValue = stringResource(id = R.string.enter_last_name)
             )
 
             Spacer(modifier = Modifier.height(Padding.sixteen))
@@ -117,44 +127,32 @@ private fun CreatePlayerScreenContent(createPlayerParams: CreatePlayerParams) {
 
             Spacer(modifier = Modifier.height(Padding.sixteen))
 
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text(text = stringResource(id = StringsIds.uploadPlayerImage))
-                Spacer(modifier = Modifier.height(Padding.eight))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    createPlayerParams.state.imageBitmap?.let { bitmap ->
-                        Image(
-                            bitmap = bitmap,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clickable {
-                                    createPlayerParams.onImageUploadClicked.invoke()
-                                    //isBottomSheetVisible = !isBottomSheetVisible
-                                },
-                            contentScale = ContentScale.Crop
-                        )
-                    } ?: run {
-                        Icon(
-                            imageVector = Icons.Default.AddAPhoto,
-                            contentDescription = "Add a photo",
-                            modifier = Modifier
-                                .size(48.dp)
-                                .clickable {
-                                    createPlayerParams.onImageUploadClicked.invoke()
-                                    scope.launch { bottomState.show() }
-                                }
-                        )
-                    }
-                }
-            }
+            UploadPlayerImageContent(
+                createPlayerParams = createPlayerParams,
+                scope = scope,
+                bottomState = bottomState
+            )
+
+            Spacer(modifier = Modifier.height(Padding.sixteen))
+
+            Text(
+                text = stringResource(id = R.string.general_information),
+                style = TextStyles.small,
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(top = Padding.twelve, start = Padding.four)
+            )
         }
     }
 }
 
 @Composable
-fun BottomSheetContent(title: String, values: List<String>) {
+private fun BottomSheetContent(
+    title: String,
+    values: List<String>,
+    scope: CoroutineScope,
+    bottomState: ModalBottomSheetState
+) {
     Text(
         text = title,
         modifier = Modifier.padding(vertical = 12.dp, horizontal = 20.dp),
@@ -166,7 +164,10 @@ fun BottomSheetContent(title: String, values: List<String>) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 12.dp, horizontal = 20.dp)
-                    .clickable { }
+                    .clickable {
+                        scope.launch { bottomState.hide() }
+
+                    }
             ) {
                 Text(
                     text = value,
@@ -176,6 +177,11 @@ fun BottomSheetContent(title: String, values: List<String>) {
             }
         }
     }
+    Text(
+        text = stringResource(id = R.string.cancel),
+        modifier = Modifier.padding(vertical = 12.dp, horizontal = 20.dp).clickable { scope.launch { bottomState.hide() } },
+        style = TextStyles.body.copy(color = AppColors.Red)
+    )
 }
 
 @Composable
@@ -205,20 +211,30 @@ private fun PositionChooser(createPlayerParams: CreatePlayerParams) {
                         isDropdownExpanded = false
                     }
                 ) {
-                    Text(text = option)
+                    Text(
+                        text = option,
+                        style = TextStyles.body
+                    )
                 }
             }
         }
 
         Column(modifier = Modifier.fillMaxWidth()) {
-            Text(text = stringResource(id = R.string.position))
+            Text(
+                text = stringResource(id = R.string.position),
+                modifier = Modifier.padding(start = Padding.four),
+                style = TextStyles.body
+            )
             Spacer(modifier = Modifier.height(Padding.eight))
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = selectedOption,
-                    modifier = Modifier.clickable { isDropdownExpanded = !isDropdownExpanded }
+                    modifier = Modifier
+                        .padding(start = Padding.four)
+                        .clickable { isDropdownExpanded = !isDropdownExpanded },
+                    style = TextStyles.body
                 )
                 Icon(
                     imageVector = Icons.Default.ArrowDropDown,
@@ -227,6 +243,50 @@ private fun PositionChooser(createPlayerParams: CreatePlayerParams) {
                         .padding(start = 4.dp)
                         .size(20.dp)
                         .clickable { isDropdownExpanded = !isDropdownExpanded }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun UploadPlayerImageContent(
+    createPlayerParams: CreatePlayerParams,
+    scope: CoroutineScope,
+    bottomState: ModalBottomSheetState
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = stringResource(id = StringsIds.uploadPlayerImage),
+            modifier = Modifier.padding(start = Padding.four),
+            style = TextStyles.body
+        )
+        Spacer(modifier = Modifier.height(Padding.eight))
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            createPlayerParams.state.imageBitmap?.let { bitmap ->
+                Image(
+                    bitmap = bitmap,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable {
+                            createPlayerParams.onImageUploadClicked.invoke()
+                            scope.launch { bottomState.show() }
+                        },
+                    contentScale = ContentScale.Crop
+                )
+            } ?: run {
+                Icon(
+                    imageVector = Icons.Default.AddAPhoto,
+                    contentDescription = "Add a photo",
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clickable {
+                            createPlayerParams.onImageUploadClicked.invoke()
+                            scope.launch { bottomState.show() }
+                        }
                 )
             }
         }
