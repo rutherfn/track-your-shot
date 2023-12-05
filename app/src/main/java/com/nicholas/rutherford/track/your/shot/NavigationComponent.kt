@@ -244,10 +244,9 @@ fun NavigationComponent(
                         onToolbarMenuClicked = { createPlayerViewModel.onToolbarMenuClicked() },
                         onFirstNameValueChanged = { newFirstName -> createPlayerViewModel.onFirstNameValueChanged(newFirstName = newFirstName) },
                         onLastNameValueChanged = { newLastName -> createPlayerViewModel.onLastNameValueChanged(newLastName = newLastName) },
-                        onImageUploadClicked = { createPlayerViewModel.onImageUploadClicked() },
+                        onImageUploadClicked = { uri -> createPlayerViewModel.onImageUploadClicked(uri) },
                         onCreatePlayerClicked = { createPlayerViewModel.onCreatePlayerClicked() },
-                        onImageOptionSelected = { option -> createPlayerViewModel.onImageOptionSelected(option) },
-                        onUpdateImageUriState = { uri -> createPlayerViewModel.onUpdateImageUriState(uri = uri) }
+                        onSelectedCreateEditImageOption = { option -> createPlayerViewModel.onSelectedCreateEditImageOption(option) }
                     )
                 )
             }

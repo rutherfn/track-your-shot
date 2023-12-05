@@ -7,8 +7,7 @@ data class CreatePlayerParams(
     val onToolbarMenuClicked: () -> Unit,
     val onFirstNameValueChanged: (newFirstName: String) -> Unit,
     val onLastNameValueChanged: (newFirstName: String) -> Unit,
-    val onImageUploadClicked: () -> Unit,
+    val onImageUploadClicked: (uri: Uri?) -> Unit,
     val onCreatePlayerClicked: () -> Unit,
-    val onImageOptionSelected: (option: String) -> Unit,
-    val onUpdateImageUriState:(uri: Uri) -> Unit
+    val onSelectedCreateEditImageOption: (uri: String) -> CreateEditImageOption
 )

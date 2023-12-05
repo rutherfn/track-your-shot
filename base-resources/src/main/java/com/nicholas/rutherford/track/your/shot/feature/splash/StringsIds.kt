@@ -77,6 +77,7 @@ object StringsIds {
     val playerImage = R.string.player_image
     val players = R.string.players
     val proceedWithYourAccount = R.string.proceed_with_your_account
+    val removeImage = R.string.remove_image
     val resetPassword = R.string.reset_password
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email

@@ -1,5 +1,10 @@
 package com.nicholas.rutherford.track.your.shot.helper.extensions
 
+import android.content.ContentValues
+import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
+import android.provider.MediaStore
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 
@@ -35,4 +40,29 @@ fun Int.toPlayerPositionAbvId(): Int? {
         }
         else -> { null }
     }
+}
+
+fun getImageUri(context: Context, image: Bitmap): Uri? {
+    val values = ContentValues().apply {
+        put(MediaStore.Images.Media.TITLE, "title")
+        put(MediaStore.Images.Media.DESCRIPTION, "description")
+    }
+
+    val contentResolver = context.contentResolver
+    val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+    try {
+        if (uri != null) {
+            val outputStream = contentResolver.openOutputStream(uri)
+            if (outputStream != null) {
+                image.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            }
+            outputStream?.close()
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return null
+    }
+
+    return uri
 }

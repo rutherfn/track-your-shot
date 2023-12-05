@@ -9,6 +9,5 @@ data class CreatePlayerState(
     val firstName: String = "",
     val lastName: String = "",
     val playerPositionStringResId: Int = StringsIds.pointGuard,
-    val imageUri: Uri? = null,
     val sheet: Sheet? = null
 )

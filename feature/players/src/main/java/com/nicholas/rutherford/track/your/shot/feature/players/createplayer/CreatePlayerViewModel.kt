@@ -5,7 +5,6 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
-import com.nicholas.rutherford.track.your.shot.feature.players.R
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
@@ -27,9 +26,7 @@ class CreatePlayerViewModel(
 
     fun onToolbarMenuClicked() = navigation.pop()
 
-    fun onImageUploadClicked() {
-        val uri = createPlayerStateFlow.value.imageUri
-
+    fun onImageUploadClicked(uri: Uri?) {
         if (uri == null) {
             createPlayerMutableStateFlow.value = createPlayerMutableStateFlow.value.copy(
                 sheet = Sheet(
@@ -37,27 +34,34 @@ class CreatePlayerViewModel(
                     values = listOf(
                         application.getString(StringsIds.chooseImageFromGallery),
                         application.getString(StringsIds.takeAPicture)
-                        )
+                    )
                 )
             )
         } else {
-            // give the user another option
+            createPlayerMutableStateFlow.value = createPlayerMutableStateFlow.value.copy(
+                sheet = Sheet(
+                    title = application.getString(StringsIds.chooseOption),
+                    values = listOf(application.getString(StringsIds.removeImage))
+                )
+            )
         }
     }
 
-    fun onImageOptionSelected(option: String) {
-        when (option) {
+    fun onSelectedCreateEditImageOption(option: String): CreateEditImageOption {
+        return when (option) {
             application.getString(StringsIds.chooseImageFromGallery) -> {
-                println("choose image from gallery")
+                CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY
+            }
+            application.getString(StringsIds.takeAPicture) -> {
+                CreateEditImageOption.TAKE_A_PICTURE
+            }
+            application.getString(StringsIds.removeImage) -> {
+                CreateEditImageOption.REMOVE_IMAGE
             }
             else -> {
-
+                CreateEditImageOption.CANCEL
             }
         }
-    }
-
-    fun onUpdateImageUriState(uri: Uri) {
-        createPlayerMutableStateFlow.value = createPlayerMutableStateFlow.value.copy(imageUri = uri)
     }
 
     fun onCreatePlayerClicked() {
