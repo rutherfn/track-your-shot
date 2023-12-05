@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,17 +65,31 @@ private fun SimpleTopAppBar(
                 modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_TITLE),
                 style = TextStyles.toolbar
             )
-        }, navigationIcon = {
-        IconButton(
-            onClick = { appBar.onIconButtonClicked?.invoke() },
-            modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
-        ) {
-            Icon(
-                imageVector = imageVector ?: Icons.Filled.ArrowBack,
-                contentDescription = appBar.iconContentDescription
-            )
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = { appBar.onIconButtonClicked?.invoke() },
+                modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
+            ) {
+                Icon(
+                    imageVector = imageVector ?: Icons.Filled.ArrowBack,
+                    contentDescription = appBar.iconContentDescription
+                )
+            }
+        },
+        actions = {
+            if (appBar.shouldShowSecondaryButton) {
+                IconButton(
+                    onClick = { appBar.onSecondaryIconButtonClicked?.invoke() },
+                    modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Save,
+                        contentDescription = "Save icon"
+                    )
+                }
+            }
         }
-    }
     )
     if (appBar.shouldIncludeSpaceAfterDeclaration) {
         Spacer(modifier = Modifier.height(Padding.eight))

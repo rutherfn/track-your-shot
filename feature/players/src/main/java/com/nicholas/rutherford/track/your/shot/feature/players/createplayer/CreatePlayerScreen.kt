@@ -69,7 +69,11 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
             toolbarTitle = stringResource(id = R.string.create_player),
             shouldShowMiddleContentAppBar = false,
             shouldIncludeSpaceAfterDeclaration = false,
+            shouldShowSecondaryButton = true,
             onIconButtonClicked = {
+                createPlayerParams.onToolbarMenuClicked.invoke()
+            },
+            onSecondaryIconButtonClicked = {
                 createPlayerParams.onToolbarMenuClicked.invoke()
             }
         )
