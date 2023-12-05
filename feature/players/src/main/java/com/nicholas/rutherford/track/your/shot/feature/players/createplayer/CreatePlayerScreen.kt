@@ -6,9 +6,13 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +24,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
@@ -42,9 +49,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.nicholas.rutherford.track.your.shot.AppColors
@@ -52,6 +62,8 @@ import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.CoreTextField
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
+import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.getImageUri
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
@@ -103,13 +115,22 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                                         .clickable {
                                             scope.launch { bottomState.hide() }
 
-                                            when (createPlayerParams.onSelectedCreateEditImageOption(value)) {
-                                                CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY -> { singlePhotoPickerLauncher.launch(Constants.IMAGE) }
-                                                CreateEditImageOption.TAKE_A_PICTURE -> { cameraLauncher.launch() }
+                                            when (createPlayerParams.onSelectedCreateEditImageOption(
+                                                value
+                                            )) {
+                                                CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY -> {
+                                                    singlePhotoPickerLauncher.launch(Constants.IMAGE)
+                                                }
+
+                                                CreateEditImageOption.TAKE_A_PICTURE -> {
+                                                    cameraLauncher.launch()
+                                                }
+
                                                 CreateEditImageOption.REMOVE_IMAGE -> {
                                                     imageUri = null
                                                     hasUploadedImage = false
                                                 }
+
                                                 else -> {}
                                             }
                                         }
@@ -137,7 +158,11 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
-                        .padding(start = Padding.twenty, end = Padding.twenty, bottom = Padding.twenty),
+                        .padding(
+                            start = Padding.twenty,
+                            end = Padding.twenty,
+                            bottom = Padding.twenty
+                        ),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
@@ -184,12 +209,9 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
 
                     Spacer(modifier = Modifier.height(Padding.sixteen))
 
-                    Text(
-                        text = stringResource(id = R.string.general_information),
-                        style = TextStyles.small,
-                        modifier = Modifier
-                            .align(Alignment.Start)
-                            .padding(top = Padding.twelve, start = Padding.four)
+                    LogShotsContent(
+                        firstName = createPlayerParams.state.firstName,
+                        lastName = createPlayerParams.state.lastName
                     )
                 }
             }
@@ -243,6 +265,86 @@ private fun UploadPlayerImageContent(
                     }
             )
         }
+    }
+}
+
+@Composable
+private fun ColumnScope.LogShotsContent(
+    isEmpty: Boolean = true,
+    firstName: String,
+    lastName: String
+) {
+    val hintLogNewShot = if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
+        stringResource(id = R.string.hint_log_new_shots_for_player_x, "$firstName $lastName")
+    } else if (firstName.isNotEmpty()) {
+        stringResource(id = R.string.hint_log_new_shots_for_player_x, firstName)
+    } else if (lastName.isNotEmpty()) {
+        stringResource(id = R.string.hint_log_new_shots_for_player_x, lastName)
+    } else {
+        stringResource(id = StringsIds.hintLogNewShots)
+    }
+
+    Text(
+        text = stringResource(id = R.string.log_shots),
+        style = TextStyles.small,
+        modifier = Modifier
+            .align(Alignment.Start)
+            .padding(top = Padding.twelve, start = Padding.four)
+    )
+
+    if (isEmpty) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(AppColors.White),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_basketball_log_shot_empty_state),
+                    contentDescription = null,
+                    modifier = Modifier.size(90.dp)
+                )
+
+                Text(
+                    text = stringResource(id = StringsIds.noCurrentShotsLoggedForPlayer),
+                    style = TextStyles.smallBold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+
+                Text(
+                    text = hintLogNewShot,
+                    style = TextStyles.small,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+
+                Button(
+                    onClick = {
+                        // todo -> take user to list to log new shots
+                    },
+                    shape = RoundedCornerShape(size = 50.dp),
+                    modifier = Modifier
+                        .padding(vertical = Padding.twelve)
+                        .fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor)
+                ) {
+                    Text(
+                        text = "Log Shots",
+                        style = TextStyles.smallBold,
+                        textAlign = TextAlign.Center,
+                        color = Color.White
+                    )
+                }
+            }
+        }
+    } else {
+        // todo -> show list of shots users logged
     }
 }
 

@@ -49,6 +49,8 @@ object StringsIds {
     val havingTroubleResettingPasswordForThisAccountPleaseTryAgainAndOrEnsureCredentialsExistAndAreValid =
         R.string.having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid
     val hintAddNewPlayer = R.string.hint_add_new_player
+    val hintLogNewShots = R.string.hint_log_new_shots
+    val hintLogNewShotsForPlayerX = R.string.hint_log_new_shots_for_player_x
     val lastName = R.string.last_name
     val leavingTheAppWillResultInYouNotFinishingTheAccountCreationProcessDescription =
         R.string.leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description
@@ -59,6 +61,7 @@ object StringsIds {
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
     val no = R.string.no
     val noCurrentPlayersAdded = R.string.no_current_players_added
+    val noCurrentShotsLoggedForPlayer = R.string.no_current_shots_logged_for_player
     val notConnectedToInternet = R.string.not_connected_to_internet
     val openEmail = R.string.open_email
     val ok = R.string.ok

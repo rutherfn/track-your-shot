@@ -38,8 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
@@ -83,14 +82,13 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
     )
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun PlayerItem(
     player: Player,
     onDeletePlayerClicked: (player: Player) -> Unit
 ) {
     val imagePainter = if (!player.imageUrl.isNullOrEmpty()) {
-        rememberImagePainter(data = player.imageUrl)
+        rememberAsyncImagePainter(model = player.imageUrl)
     } else {
         painterResource(id = DrawablesIds.launcherRound)
     }

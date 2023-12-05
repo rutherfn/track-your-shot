@@ -49,18 +49,10 @@ class CreatePlayerViewModel(
 
     fun onSelectedCreateEditImageOption(option: String): CreateEditImageOption {
         return when (option) {
-            application.getString(StringsIds.chooseImageFromGallery) -> {
-                CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY
-            }
-            application.getString(StringsIds.takeAPicture) -> {
-                CreateEditImageOption.TAKE_A_PICTURE
-            }
-            application.getString(StringsIds.removeImage) -> {
-                CreateEditImageOption.REMOVE_IMAGE
-            }
-            else -> {
-                CreateEditImageOption.CANCEL
-            }
+            application.getString(StringsIds.chooseImageFromGallery) -> { CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY }
+            application.getString(StringsIds.takeAPicture) -> { CreateEditImageOption.TAKE_A_PICTURE }
+            application.getString(StringsIds.removeImage) -> { CreateEditImageOption.REMOVE_IMAGE }
+            else -> { CreateEditImageOption.CANCEL }
         }
     }
 
