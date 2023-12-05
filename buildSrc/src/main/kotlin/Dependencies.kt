@@ -55,6 +55,7 @@ object Dependencies {
         const val authKtx = "com.google.firebase:firebase-auth-ktx:${Versions.Dependencies.Firebase.authKtx}"
         const val bom = "com.google.firebase:firebase-bom:${Versions.Dependencies.Firebase.bom}"
         const val databaseKtx = "com.google.firebase:firebase-database-ktx:${Versions.Dependencies.Firebase.ktx}"
+        const val storageKtx = "com.google.firebase:firebase-storage-ktx:${Versions.Dependencies.Firebase.ktx}"
     }
 
     object Junit {

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import com.nicholas.rutherford.track.your.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.your.shot.app.center.AppCenterImpl
 import com.nicholas.rutherford.track.your.shot.build.type.BuildType
@@ -120,8 +121,16 @@ class AppModule {
         single {
             FirebaseDatabase.getInstance()
         }
+        single {
+            FirebaseStorage.getInstance()
+        }
         single<CreateFirebaseUserInfo> {
-            CreateFirebaseUserInfoImpl(firebaseAuth = get(), createFirebaseLastUpdated = get(), firebaseDatabase = get())
+            CreateFirebaseUserInfoImpl(
+                firebaseAuth = get(),
+                createFirebaseLastUpdated = get(),
+                firebaseStorage = get(),
+                firebaseDatabase = get()
+            )
         }
         single<CreateFirebaseLastUpdated> {
             CreateFirebaseLastUpdatedImpl(firebaseDatabase = get())
