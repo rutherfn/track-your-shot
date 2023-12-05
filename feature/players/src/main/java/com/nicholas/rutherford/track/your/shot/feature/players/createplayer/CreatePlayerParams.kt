@@ -8,6 +8,6 @@ data class CreatePlayerParams(
     val onFirstNameValueChanged: (newFirstName: String) -> Unit,
     val onLastNameValueChanged: (newFirstName: String) -> Unit,
     val onImageUploadClicked: (uri: Uri?) -> Unit,
-    val onCreatePlayerClicked: () -> Unit,
+    val onCreatePlayerClicked: (uri: Uri?) -> Unit,
     val onSelectedCreateEditImageOption: (uri: String) -> CreateEditImageOption
 )

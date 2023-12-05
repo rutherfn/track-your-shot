@@ -98,7 +98,6 @@ object StringsIds {
     val unableToLoginToAccount = R.string.unable_to_login_to_account
     val unableToResetPassword = R.string.unable_to_reset_password
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
-    val uploadPlayerImage = R.string.upload_player_image
     val usernameRequired = R.string.username_required
     val usernameInUse = R.string.username_in_use
     val usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat =

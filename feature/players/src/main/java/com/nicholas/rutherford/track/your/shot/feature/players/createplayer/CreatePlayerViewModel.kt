@@ -64,7 +64,7 @@ class CreatePlayerViewModel(
         }
     }
 
-    fun onCreatePlayerClicked() {
+    fun onCreatePlayerClicked(uri: Uri?) {
     }
 
     fun onFirstNameValueChanged(newFirstName: String) {

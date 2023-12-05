@@ -50,15 +50,15 @@ fun CoreTextField(
     }
 
     TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .onFocusChanged { isFocused = it.isFocused },
-            value = value,
-            onValueChange = { onValueChange.invoke(it) },
-            textStyle = TextStyles.body,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            singleLine = true
-        ) { innerTextField ->
+        modifier = Modifier
+            .fillMaxWidth()
+            .onFocusChanged { isFocused = it.isFocused },
+        value = value,
+        onValueChange = { onValueChange.invoke(it) },
+        textStyle = TextStyles.body,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        singleLine = true
+    ) { innerTextField ->
         TextFieldDefaults.TextFieldDecorationBox(
             value = value,
             visualTransformation = VisualTransformation.None,
@@ -71,7 +71,7 @@ fun CoreTextField(
                     text = placeholderValue,
                     style = TextStyles.body
                 )
-                          },
+            },
             contentPadding = PaddingValues(Padding.four),
             colors = TextFieldDefaults.textFieldColors(
                 cursorColor = AppColors.Black,

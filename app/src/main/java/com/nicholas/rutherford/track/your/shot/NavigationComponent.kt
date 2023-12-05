@@ -245,7 +245,7 @@ fun NavigationComponent(
                         onFirstNameValueChanged = { newFirstName -> createPlayerViewModel.onFirstNameValueChanged(newFirstName = newFirstName) },
                         onLastNameValueChanged = { newLastName -> createPlayerViewModel.onLastNameValueChanged(newLastName = newLastName) },
                         onImageUploadClicked = { uri -> createPlayerViewModel.onImageUploadClicked(uri) },
-                        onCreatePlayerClicked = { createPlayerViewModel.onCreatePlayerClicked() },
+                        onCreatePlayerClicked = { uri -> createPlayerViewModel.onCreatePlayerClicked(uri) },
                         onSelectedCreateEditImageOption = { option -> createPlayerViewModel.onSelectedCreateEditImageOption(option) }
                     )
                 )
