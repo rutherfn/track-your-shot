@@ -2,6 +2,9 @@ package com.nicholas.rutherford.track.your.shot
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalDrawer
@@ -65,6 +68,10 @@ fun NavigationComponent(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
+    val appSettingsState by navigator.appSettingsActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
     val emailState by navigator.emailActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
@@ -103,6 +110,19 @@ fun NavigationComponent(
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
             alert = newAlert
+        }
+    }
+    LaunchedEffect(appSettingsState) {
+        appSettingsState?.let { shouldOpenAppSettings ->
+            val intent = Intent()
+
+            intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            val uri = Uri.fromParts("package", "com.nicholas.rutherford.track.your.shot", null)
+            intent.data = uri
+
+            activity.startActivity(intent)
+
+            navigator.appSettings(appSettingsAction = null)
         }
     }
     LaunchedEffect(emailState) {
@@ -246,6 +266,7 @@ fun NavigationComponent(
                         onLastNameValueChanged = { newLastName -> createPlayerViewModel.onLastNameValueChanged(newLastName = newLastName) },
                         onImageUploadClicked = { uri -> createPlayerViewModel.onImageUploadClicked(uri) },
                         onCreatePlayerClicked = { uri -> createPlayerViewModel.onCreatePlayerClicked(uri) },
+                        permissionNotGrantedForCameraAlert = { createPlayerViewModel.permissionNotGrantedForCameraAlert() },
                         onSelectedCreateEditImageOption = { option -> createPlayerViewModel.onSelectedCreateEditImageOption(option) }
                     )
                 )

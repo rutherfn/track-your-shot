@@ -78,6 +78,7 @@ dependencies {
 
     debugImplementation(Dependencies.Compose.uiToolingPreview)
 
+    implementation(Dependencies.Accompanist.permissions)
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.coil)
     implementation(Dependencies.Compose.material)

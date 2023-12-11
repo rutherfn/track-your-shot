@@ -16,7 +16,8 @@ object Dependencies {
     }
 
     object Accompanist {
-        const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${Versions.Dependencies.SystemUiController.core}"
+        const val permissions = "com.google.accompanist:accompanist-permissions:${Versions.Dependencies.Accompanist.permissions}"
+        const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${Versions.Dependencies.Accompanist.systemUiController}"
     }
 
     object Compose {

@@ -7,6 +7,7 @@
     <string name="are_you_sure_you_want_to_leave_track_your_shot">Are you sure you want to leave Track Your Shot?</string>
     <string name="by_nicholas_rutherford">By Nicholas Rutherford</string>
     <string name="c" translatable="false">C</string>
+    <string name="camera_permission_has_been_denied_description">Camera permission has been denied. To manually grant permission for the camera and upload pictures for the Player, kindly navigate to Settings.</string>
     <string name="cancel">Cancel</string>
     <string name="center">Center</string>
     <string name="check_if_account_has_been_verified">Check if account has been verified</string>
@@ -55,6 +56,7 @@
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
     <string name="no">No</string>
     <string name="not_connected_to_internet">Not connected to internet</string>
+    <string name="not_now">Not Now</string>
     <string name="no_current_players_added">No Current Players Added</string>
     <string name="no_current_shots_logged_for_player">No Current Shots Logged For Player</string>
     <string name="open_email">Open Email</string>
@@ -67,6 +69,7 @@
     <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">Password is not in correct format. Please enter password in correct format</string>
     <string name="password_is_required_please_enter_a_password_to_create_a_account">Password is required. Please enter a password to create a account.</string>
     <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">Password is required. Please enter a password to login to existing account.</string>
+    <string name="permission_has_been_declined">Permission has been declined</string>
     <string name="pg" translatable="false">pg</string>
     <string name="point_guard">Point Guard</string>
     <string name="power_forward">Power Forward</string>

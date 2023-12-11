@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface Navigator {
     val alertActions: StateFlow<Alert?>
+    val appSettingsActions: StateFlow<Boolean?>
     val emailActions: StateFlow<Boolean?>
     val finishActions: StateFlow<Boolean?>
     val navActions: StateFlow<NavigationAction?>
@@ -14,6 +15,7 @@ interface Navigator {
     val navigationDrawerAction: StateFlow<Boolean?>
 
     fun alert(alertAction: Alert?)
+    fun appSettings(appSettingsAction: Boolean?)
     fun emailAction(emailAction: Boolean?)
     fun finish(finishAction: Boolean?)
     fun navigate(navigationAction: NavigationAction?)

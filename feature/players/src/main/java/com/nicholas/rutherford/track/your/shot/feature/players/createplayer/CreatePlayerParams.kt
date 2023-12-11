@@ -9,5 +9,6 @@ data class CreatePlayerParams(
     val onLastNameValueChanged: (newFirstName: String) -> Unit,
     val onImageUploadClicked: (uri: Uri?) -> Unit,
     val onCreatePlayerClicked: (uri: Uri?) -> Unit,
+    val permissionNotGrantedForCameraAlert: () -> Unit,
     val onSelectedCreateEditImageOption: (uri: String) -> CreateEditImageOption
 )

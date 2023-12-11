@@ -4,6 +4,8 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
@@ -54,6 +56,27 @@ class CreatePlayerViewModel(
             application.getString(StringsIds.removeImage) -> { CreateEditImageOption.REMOVE_IMAGE }
             else -> { CreateEditImageOption.CANCEL }
         }
+    }
+
+    internal fun onNavigateToAppSettings() = navigation.appSettings()
+
+    fun permissionNotGrantedForCameraAlert() {
+        val alert = cameraPermissionNotGrantedAlert()
+        navigation.alert(alert = alert)
+    }
+
+    fun cameraPermissionNotGrantedAlert() : Alert {
+        return Alert(
+            title = application.getString(StringsIds.permissionHasBeenDeclined),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.settings),
+                onButtonClicked = { onNavigateToAppSettings() }
+            ),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.notNow)
+            ),
+            description = application.getString(StringsIds.cameraPermissionHasBeenDeniedDescription)
+        )
     }
 
     fun onCreatePlayerClicked(uri: Uri?) {

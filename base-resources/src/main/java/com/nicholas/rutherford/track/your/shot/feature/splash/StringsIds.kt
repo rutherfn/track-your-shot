@@ -7,6 +7,7 @@ object StringsIds {
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
     val areYouSureYouWantLeaveTrackYourShot = R.string.are_you_sure_you_want_to_leave_track_your_shot
     val c = R.string.c
+    val cameraPermissionHasBeenDeniedDescription = R.string.camera_permission_has_been_denied_description
     val center = R.string.center
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
     val chooseImageFromGallery = R.string.choose_image_from_gallery
@@ -63,6 +64,7 @@ object StringsIds {
     val noCurrentPlayersAdded = R.string.no_current_players_added
     val noCurrentShotsLoggedForPlayer = R.string.no_current_shots_logged_for_player
     val notConnectedToInternet = R.string.not_connected_to_internet
+    val notNow = R.string.not_now
     val openEmail = R.string.open_email
     val ok = R.string.ok
     val password = R.string.password
@@ -73,6 +75,7 @@ object StringsIds {
         R.string.password_is_required_please_enter_a_password_to_create_a_account
     val passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount =
         R.string.password_is_required_please_enter_a_password_to_login_to_existing_account
+    val permissionHasBeenDeclined = R.string.permission_has_been_declined
     val pg = R.string.pg
     val pointGuard = R.string.point_guard
     val pf = R.string.pf

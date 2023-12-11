@@ -9,6 +9,8 @@ class CreatePlayerNavigationImpl(
     private val navigator: Navigator
 ) : CreatePlayerNavigation {
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
+
+    override fun appSettings() = navigator.appSettings(appSettingsAction = true)
     override fun disableProgress() = navigator.progress(progressAction = null)
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
     override fun pop() = navigator.pop(popRouteAction = NavigationDestinations.PLAYERS_LIST_SCREEN)

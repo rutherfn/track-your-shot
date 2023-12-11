@@ -2,6 +2,8 @@
 
 package com.nicholas.rutherford.track.your.shot.feature.players.createplayer
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -56,6 +58,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
@@ -78,6 +81,7 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
     val scope = rememberCoroutineScope()
     var hasUploadedImage by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var shouldAskForCameraPermission by remember { mutableStateOf(value = false) }
     val context = LocalContext.current
 
     Content(
@@ -100,6 +104,21 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                                 imageUri = bitmap?.let { getImageUri(context = context, image = it) } ?: imageUri
                             }
                         )
+                        val cameraPermissionLauncher = rememberLauncherForActivityResult(
+                            contract = ActivityResultContracts.RequestPermission(),
+                            onResult = { isGranted ->
+                                if (isGranted) {
+                                    singlePhotoPickerLauncher.launch(Constants.IMAGE)
+                                } else {
+                                    createPlayerParams.permissionNotGrantedForCameraAlert.invoke()
+                                }
+                            }
+                        )
+
+                        if (shouldAskForCameraPermission) {
+                            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                            shouldAskForCameraPermission = false
+                        }
 
                         Text(
                             text = sheet.title,
@@ -119,11 +138,27 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                                                 value
                                             )) {
                                                 CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY -> {
-                                                    singlePhotoPickerLauncher.launch(Constants.IMAGE)
+                                                    if (ContextCompat.checkSelfPermission(
+                                                            context,
+                                                            Manifest.permission.CAMERA
+                                                        ) == PackageManager.PERMISSION_GRANTED
+                                                    ) {
+                                                        singlePhotoPickerLauncher.launch(Constants.IMAGE)
+                                                    } else {
+                                                        // get here
+                                                    }
                                                 }
 
                                                 CreateEditImageOption.TAKE_A_PICTURE -> {
-                                                    cameraLauncher.launch()
+                                                    if (ContextCompat.checkSelfPermission(
+                                                            context,
+                                                            Manifest.permission.CAMERA
+                                                        ) == PackageManager.PERMISSION_GRANTED
+                                                    ) {
+                                                        cameraLauncher.launch()
+                                                    } else {
+                                                        shouldAskForCameraPermission = true
+                                                    }
                                                 }
 
                                                 CreateEditImageOption.REMOVE_IMAGE -> {
