@@ -1,10 +1,14 @@
 package com.nicholas.rutherford.track.your.shot.helper.extensions
 
+import android.Manifest
 import android.content.ContentValues
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
+import androidx.core.content.ContextCompat
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 
@@ -65,4 +69,33 @@ fun getImageUri(context: Context, image: Bitmap): Uri? {
     }
 
     return uri
+}
+
+fun hasCameraPermissionEnabled(context: Context) = ContextCompat.checkSelfPermission(
+    context,
+    Manifest.permission.CAMERA
+) == PackageManager.PERMISSION_GRANTED
+
+fun hasReadImagePermissionEnabled(context: Context): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.READ_MEDIA_IMAGES
+        ) == PackageManager.PERMISSION_GRANTED
+    } else {
+        ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+}
+
+fun shouldAskForReadMediaImages() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
+fun readMediaImagesOrExternalStoragePermission(): String {
+    return if (shouldAskForReadMediaImages()) {
+        Manifest.permission.READ_MEDIA_IMAGES
+    } else {
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    }
 }

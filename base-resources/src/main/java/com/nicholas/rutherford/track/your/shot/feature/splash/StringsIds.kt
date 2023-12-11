@@ -83,6 +83,8 @@ object StringsIds {
     val playerImage = R.string.player_image
     val players = R.string.players
     val proceedWithYourAccount = R.string.proceed_with_your_account
+    val readExternalStorageDescription = R.string.read_external_storage_description
+    val readMediaImagesDescription = R.string.read_media_images_description
     val removeImage = R.string.remove_image
     val resetPassword = R.string.reset_password
     val resetPasswordEmailSent = R.string.reset_password_email_sent

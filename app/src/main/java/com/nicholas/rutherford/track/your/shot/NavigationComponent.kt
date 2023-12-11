@@ -117,7 +117,7 @@ fun NavigationComponent(
             val intent = Intent()
 
             intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-            val uri = Uri.fromParts("package", "com.nicholas.rutherford.track.your.shot", null)
+            val uri = Uri.fromParts("package", activity.packageName, null)
             intent.data = uri
 
             activity.startActivity(intent)
@@ -267,6 +267,7 @@ fun NavigationComponent(
                         onImageUploadClicked = { uri -> createPlayerViewModel.onImageUploadClicked(uri) },
                         onCreatePlayerClicked = { uri -> createPlayerViewModel.onCreatePlayerClicked(uri) },
                         permissionNotGrantedForCameraAlert = { createPlayerViewModel.permissionNotGrantedForCameraAlert() },
+                        permissionNotGrantedForReadMediaOrExternalStorageAlert = { createPlayerViewModel.permissionNotGrantedForReadMediaOrExternalStorageAlert() },
                         onSelectedCreateEditImageOption = { option -> createPlayerViewModel.onSelectedCreateEditImageOption(option) }
                     )
                 )

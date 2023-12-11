@@ -9,6 +9,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAnd
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.helper.extensions.shouldAskForReadMediaImages
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,8 +62,11 @@ class CreatePlayerViewModel(
     internal fun onNavigateToAppSettings() = navigation.appSettings()
 
     fun permissionNotGrantedForCameraAlert() {
-        val alert = cameraPermissionNotGrantedAlert()
-        navigation.alert(alert = alert)
+        navigation.alert(alert = cameraPermissionNotGrantedAlert())
+    }
+
+    fun permissionNotGrantedForReadMediaOrExternalStorageAlert() {
+        navigation.alert(alert = mediaOrExternalStorageNotGrantedAlert())
     }
 
     fun cameraPermissionNotGrantedAlert() : Alert {
@@ -76,6 +80,24 @@ class CreatePlayerViewModel(
                 buttonText = application.getString(StringsIds.notNow)
             ),
             description = application.getString(StringsIds.cameraPermissionHasBeenDeniedDescription)
+        )
+    }
+
+    fun mediaOrExternalStorageNotGrantedAlert() : Alert {
+        return Alert(
+            title = application.getString(StringsIds.permissionHasBeenDeclined),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.settings),
+                onButtonClicked = { onNavigateToAppSettings() }
+            ),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.notNow)
+            ),
+            description = if (!shouldAskForReadMediaImages()) {
+                application.getString(StringsIds.readExternalStorageDescription)
+            } else {
+                application.getString(StringsIds.readMediaImagesDescription)
+            }
         )
     }
 

@@ -10,5 +10,6 @@ data class CreatePlayerParams(
     val onImageUploadClicked: (uri: Uri?) -> Unit,
     val onCreatePlayerClicked: (uri: Uri?) -> Unit,
     val permissionNotGrantedForCameraAlert: () -> Unit,
+    val permissionNotGrantedForReadMediaOrExternalStorageAlert: () -> Unit,
     val onSelectedCreateEditImageOption: (uri: String) -> CreateEditImageOption
 )

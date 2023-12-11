@@ -78,6 +78,8 @@
     <string name="players">Players</string>
     <string name="position">Position</string>
     <string name="proceed_with_your_account">Proceed With Your Account</string>
+    <string name="read_external_storage_description">Permission to read external storage has been declined. To manually enable the "Read External Storage" permission and select an image from the gallery for the Player, please navigate to settings.</string>
+    <string name="read_media_images_description">Permission to read media images has been declined. To manually enable the "Read Media Images" permission and select an image from the gallery for the Player, please navigate to settings.</string>
     <string name="remove_image">Remove Image</string>
     <string name="settings">Settings</string>
     <string name="sf" translatable="false">sf</string>
