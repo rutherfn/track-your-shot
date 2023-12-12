@@ -3,7 +3,6 @@ package com.nicholas.rutherford.track.your.shot
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.provider.Settings
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.MaterialTheme
@@ -272,7 +271,9 @@ fun NavigationComponent(
                     )
                 )
             }
-            composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {
+            composable(
+                route = NavigationDestinations.FORGOT_PASSWORD_SCREEN
+            ) {
                 ForgotPasswordScreen(
                     forgotPasswordScreenParams = ForgotPasswordScreenParams(
                         state = forgotPasswordViewModel.forgotPasswordStateFlow.collectAsState().value,

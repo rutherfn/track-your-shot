@@ -25,9 +25,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,6 +56,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 @Composable
 fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
     val isPlayerListEmpty = playerListScreenParams.state.playerList.isEmpty()
+
     Content(
         ui = {
             if (!isPlayerListEmpty) {
@@ -75,10 +78,7 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             onSecondaryIconButtonClicked = {
                 playerListScreenParams.onAddPlayerClicked.invoke()
             }
-        ),
-        invokeFunctionOnInit = {
-            playerListScreenParams.updatePlayerListState.invoke()
-        }
+        )
     )
 }
 
@@ -92,6 +92,8 @@ fun PlayerItem(
     } else {
         painterResource(id = DrawablesIds.launcherRound)
     }
+
+    println(player.imageUrl)
 
     var expanded by remember { mutableStateOf(false) }
 

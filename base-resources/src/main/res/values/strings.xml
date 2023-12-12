@@ -56,6 +56,8 @@
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
     <string name="no">No</string>
     <string name="not_connected_to_internet">Not connected to internet</string>
+    <string name="no_first_name_entered">No First Name Entered</string>
+    <string name="no_last_name_entered">No Last Name Entered</string>
     <string name="not_now">Not Now</string>
     <string name="no_current_players_added">No Current Players Added</string>
     <string name="no_current_shots_logged_for_player">No Current Shots Logged For Player</string>
@@ -76,6 +78,8 @@
     <string name="pf" translatable="false">pf</string>
     <string name="player_image">Player Image</string>
     <string name="players">Players</string>
+    <string name="players_first_name_empty_description">The player\'s first name is missing. Kindly provide a first name to proceed.</string>
+    <string name="players_last_name_empty_description">The player\'s last name is missing. Kindly provide a first name to proceed.</string>
     <string name="position">Position</string>
     <string name="proceed_with_your_account">Proceed With Your Account</string>
     <string name="read_external_storage_description">Permission to read external storage has been declined. To manually enable the "Read External Storage" permission and select an image from the gallery for the Player, please navigate to settings.</string>

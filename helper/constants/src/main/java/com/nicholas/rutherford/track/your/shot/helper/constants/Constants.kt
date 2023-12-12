@@ -13,6 +13,7 @@ object Constants {
     const val FIRST_NAME = "firstName"
     const val IMAGE = "image/*"
     const val IMAGES = "images"
+    const val IMAGES_DIR = "/images/"
     const val IMAGE_URL = "imageUrl"
     const val LAST_NAME = "lastName"
     const val LAST_UPDATED = "lastUpdated"

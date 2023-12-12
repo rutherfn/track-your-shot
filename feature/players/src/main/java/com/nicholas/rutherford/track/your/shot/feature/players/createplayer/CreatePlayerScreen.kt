@@ -128,9 +128,11 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                                         .clickable {
                                             scope.launch { bottomState.hide() }
 
-                                            when (createPlayerParams.onSelectedCreateEditImageOption(
-                                                value
-                                            )) {
+                                            when (
+                                                createPlayerParams.onSelectedCreateEditImageOption(
+                                                    value
+                                                )
+                                            ) {
                                                 CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY -> {
                                                     if (hasReadImagePermissionEnabled(context = context)) {
                                                         singlePhotoPickerLauncher.launch(Constants.IMAGE)

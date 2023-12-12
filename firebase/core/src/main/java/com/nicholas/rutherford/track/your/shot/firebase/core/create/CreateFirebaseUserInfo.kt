@@ -9,5 +9,5 @@ interface CreateFirebaseUserInfo {
     fun attemptToCreateAccountFirebaseAuthResponseFlow(email: String, password: String): Flow<CreateAccountFirebaseAuthResponse>
     fun attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName: String, email: String): Flow<Pair<Boolean, String?>>
     fun attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(key: String, playerInfoRealtimeResponse: PlayerInfoRealtimeResponse): Flow<Boolean>
-    fun attemptToCreateImageFirebaseStorageResponseFlow(uri: Uri): Flow<Boolean>
+    fun attemptToCreateImageFirebaseStorageResponseFlow(uri: Uri): Flow<String?>
 }

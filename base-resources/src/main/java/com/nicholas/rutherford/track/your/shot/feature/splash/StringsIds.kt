@@ -63,6 +63,8 @@ object StringsIds {
     val no = R.string.no
     val noCurrentPlayersAdded = R.string.no_current_players_added
     val noCurrentShotsLoggedForPlayer = R.string.no_current_shots_logged_for_player
+    val noFirstNameEntered = R.string.no_first_name_entered
+    val noLastNameEntered = R.string.no_last_name_entered
     val notConnectedToInternet = R.string.not_connected_to_internet
     val notNow = R.string.not_now
     val openEmail = R.string.open_email
@@ -82,6 +84,8 @@ object StringsIds {
     val powerForward = R.string.power_forward
     val playerImage = R.string.player_image
     val players = R.string.players
+    val playersFirstNameEmptyDescription = R.string.players_first_name_empty_description
+    val playersLastNameEmptyDescription = R.string.players_last_name_empty_description
     val proceedWithYourAccount = R.string.proceed_with_your_account
     val readExternalStorageDescription = R.string.read_external_storage_description
     val readMediaImagesDescription = R.string.read_media_images_description

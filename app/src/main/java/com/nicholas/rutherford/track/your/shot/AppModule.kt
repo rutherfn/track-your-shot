@@ -28,6 +28,8 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
+import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdatesImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerViewModel
@@ -174,6 +176,9 @@ class AppModule {
                 existingUserFirebase = get()
             )
         }
+        single<PlayersAdditionUpdates> {
+            PlayersAdditionUpdatesImpl()
+        }
         single<SplashNavigation> {
             SplashNavigationImpl(navigator = get())
         }
@@ -221,6 +226,7 @@ class AppModule {
                 network = get(),
                 deleteFirebaseUserInfo = get(),
                 activeUserRepository = get(),
+                playersAdditionUpdates = get(),
                 playerRepository = get()
             )
         }
@@ -228,9 +234,12 @@ class AppModule {
             CreatePlayerViewModel(
                 application = androidApplication(),
                 createFirebaseUserInfo = get(),
+                readFirebaseUserInfo = get(),
                 playerRepository = get(),
+                activeUserRepository = get(),
                 scope = defaultCoroutineScope,
                 navigation = get(),
+                playersAdditionUpdates = get(),
                 network = get()
             )
         }

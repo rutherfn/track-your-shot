@@ -1,6 +1,9 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.playerlist
 
 import android.app.Application
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
@@ -9,6 +12,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
@@ -28,6 +32,7 @@ class PlayersListViewModel(
     private val network: Network,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val activeUserRepository: ActiveUserRepository,
+    private val playersAdditionUpdates: PlayersAdditionUpdates,
     private val playerRepository: PlayerRepository
 ) : ViewModel() {
 
@@ -36,18 +41,40 @@ class PlayersListViewModel(
     internal val playerListMutableStateFlow = MutableStateFlow(value = PlayersListState())
     val playerListStateFlow = playerListMutableStateFlow.asStateFlow()
 
+    init {
+        updatePlayerListState()
+        collectTest()
+    }
+
     fun updatePlayerListState() {
         scope.launch {
-            playerRepository.fetchAllPlayers().forEach { player ->
-                currentPlayerArrayList.add(player)
+                playerRepository.fetchAllPlayers().forEach { player ->
+                    currentPlayerArrayList.add(player)
+                }
+                playerListMutableStateFlow.value =
+                    PlayersListState(playerList = currentPlayerArrayList.toList())
+        }
+    }
+
+    fun collectTest() {
+        scope.launch {
+            playersAdditionUpdates.newPlayerAddedStateFlow.collectLatest { test ->
+                test?.let { test2 ->
+                    if (!currentPlayerArrayList.contains(test)) {
+                        currentPlayerArrayList.add(test2)
+                        playerListMutableStateFlow.value =
+                            PlayersListState(playerList = currentPlayerArrayList.toList())
+                    }
+                }
             }
         }
-        playerListMutableStateFlow.value = PlayersListState(playerList = currentPlayerArrayList.toList())
     }
 
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
 
-    fun onAddPlayerClicked() = navigation.navigateToCreatePlayer()
+    fun onAddPlayerClicked() {
+        navigation.navigateToCreatePlayer()
+    }
 
     suspend fun onYesDeletePlayerClicked(player: Player) {
         enableProgressAndDelay()

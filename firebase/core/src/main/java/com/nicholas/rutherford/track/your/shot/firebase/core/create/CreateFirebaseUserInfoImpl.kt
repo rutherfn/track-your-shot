@@ -106,16 +106,30 @@ class CreateFirebaseUserInfoImpl(
         }
     }
 
-    override fun attemptToCreateImageFirebaseStorageResponseFlow(uri: Uri): Flow<Boolean> {
+    override fun attemptToCreateImageFirebaseStorageResponseFlow(uri: Uri): Flow<String?> {
         return callbackFlow {
-            firebaseStorage.getReference(Constants.IMAGES).child(System.currentTimeMillis().toString())
-                .putFile(uri)
+            val storageReference = firebaseStorage.getReference(Constants.IMAGES)
+                .child(System.currentTimeMillis().toString())
+
+            storageReference.putFile(uri)
+                .continueWithTask { task ->
+                    if (!task.isSuccessful) {
+                        task.exception?.let { throw it }
+                    }
+                    storageReference.downloadUrl
+                }
                 .addOnCompleteListener { task ->
-                    trySend(task.isSuccessful)
+                    if (task.isSuccessful) {
+                        val downloadUrl = task.result.toString()
+                        trySend(downloadUrl)
+                    } else {
+                        trySend(null)
+                    }
                 }
                 .addOnFailureListener {
-                    trySend(false)
+                    trySend(null)
                 }
+
             awaitClose()
         }
     }
