@@ -7,11 +7,9 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class PlayersAdditionUpdatesImpl : PlayersAdditionUpdates {
 
-    private val _newPlayerAddedStateFlow: MutableStateFlow<Player?> = MutableStateFlow(value = null)
+    internal val newPlayerAddedMutableStateFlow: MutableStateFlow<Player?> = MutableStateFlow(value = null)
 
-    override val newPlayerAddedStateFlow: StateFlow<Player?> = _newPlayerAddedStateFlow.asStateFlow()
+    override val newPlayerAddedStateFlow: StateFlow<Player?> = newPlayerAddedMutableStateFlow.asStateFlow()
 
-    override fun updateNewPlayerAddedFlow(player: Player) {
-        _newPlayerAddedStateFlow.value = player
-    }
+    override fun updateNewPlayerAddedFlow(player: Player) { newPlayerAddedMutableStateFlow.value = player }
 }

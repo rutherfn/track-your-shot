@@ -158,7 +158,6 @@ fun NavigationComponent(
 
     LaunchedEffect(popRouteState) {
         popRouteState?.let { route ->
-            println("get here pop route")
             navHostController.popBackStack(route = route, inclusive = false)
             navigator.pop(popRouteAction = null) // need to set this to null to listen to next pop action
         }
