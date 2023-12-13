@@ -263,6 +263,7 @@ fun NavigationComponent(
                         onToolbarMenuClicked = { createPlayerViewModel.onToolbarMenuClicked() },
                         onFirstNameValueChanged = { newFirstName -> createPlayerViewModel.onFirstNameValueChanged(newFirstName = newFirstName) },
                         onLastNameValueChanged = { newLastName -> createPlayerViewModel.onLastNameValueChanged(newLastName = newLastName) },
+                        onPlayerPositionStringResIdValueChanged = { newPositionStringResId -> createPlayerViewModel.onPlayerPositionStringResIdValueChanged(newPositionStringResId) },
                         onImageUploadClicked = { uri -> createPlayerViewModel.onImageUploadClicked(uri) },
                         onCreatePlayerClicked = { uri -> createPlayerViewModel.onCreatePlayerClicked(uri) },
                         permissionNotGrantedForCameraAlert = { createPlayerViewModel.permissionNotGrantedForCameraAlert() },

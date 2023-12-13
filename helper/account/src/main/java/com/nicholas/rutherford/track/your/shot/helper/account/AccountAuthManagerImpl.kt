@@ -110,6 +110,7 @@ class AccountAuthManagerImpl(
                 if (playerInfoRealtimeWithKeyResponseList.isNotEmpty()) {
                     val playerList =
                         playerInfoRealtimeWithKeyResponseList.map { player ->
+                            println("here is the player ${player.playerInfo}")
                             Player(
                                 firstName = player.playerInfo.firstName,
                                 lastName = player.playerInfo.lastName,
@@ -119,9 +120,13 @@ class AccountAuthManagerImpl(
                             )
                         }
 
-                    playerRepository.createListOfPlayers(playerList = playerList)
+                    playerList.map { player ->
+                        playerRepository.createPlayer(player = player)
+                    }
+
+                   // playerRepository.createListOfPlayers(playerList = playerList)
+                    disableProcessAndNavigateToPlayersList()
                 }
-                disableProcessAndNavigateToPlayersList()
             }
     }
 

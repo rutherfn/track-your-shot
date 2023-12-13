@@ -131,7 +131,7 @@ class CreatePlayerViewModel(
                 playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
                     firstName = state.firstName,
                     lastName = state.lastName,
-                    positionValue = state.playerPositionStringResId.toPlayerPositionAbvId() ?: PlayerPositions.None.value,
+                    positionValue = state.playerPositionStringResId.toPlayerPosition().value,
                     imageUrl = imageUrl ?: ""
                 )
             )
@@ -182,6 +182,10 @@ class CreatePlayerViewModel(
 
     fun onLastNameValueChanged(newLastName: String) {
         createPlayerMutableStateFlow.value = createPlayerMutableStateFlow.value.copy(lastName = newLastName)
+    }
+
+    fun onPlayerPositionStringResIdValueChanged(newPositionStringResId: Int) {
+        createPlayerMutableStateFlow.value = createPlayerMutableStateFlow.value.copy(playerPositionStringResId = newPositionStringResId)
     }
 
     fun cameraPermissionNotGrantedAlert(): Alert {

@@ -49,10 +49,22 @@ fun PositionChooser(createPlayerParams: CreatePlayerParams) {
             expanded = isDropdownExpanded,
             onDismissRequest = { isDropdownExpanded = false },
         ) {
-            options.forEach { option ->
+            options.forEachIndexed { index, option ->
                 DropdownMenuItem(
                     onClick = {
                         selectedOption = option
+                        val test = if (index == 0 ) {
+                            R.string.point_guard
+                        } else if (index == 1) {
+                            R.string.shooting_guard
+                        } else if (index == 2) {
+                            R.string.small_forward
+                        } else if (index == 3) {
+                            R.string.power_forward
+                        } else {
+                            R.string.center
+                        }
+                        createPlayerParams.onPlayerPositionStringResIdValueChanged(test)
                         isDropdownExpanded = false
                     }
                 ) {

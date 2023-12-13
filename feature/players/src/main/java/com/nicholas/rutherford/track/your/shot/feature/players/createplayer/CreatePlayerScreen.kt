@@ -87,7 +87,7 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                             contract = ActivityResultContracts.RequestPermission(),
                             onResult = { isGranted ->
                                 if (isGranted) {
-                                    singlePhotoPickerLauncher.launch(Constants.IMAGE)
+                                    cameraLauncher.launch()
                                 } else {
                                     createPlayerParams.permissionNotGrantedForCameraAlert.invoke()
                                 }
@@ -97,7 +97,7 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                             contract = ActivityResultContracts.RequestPermission(),
                             onResult = { isGranted ->
                                 if (isGranted) {
-                                    cameraLauncher.launch()
+                                    singlePhotoPickerLauncher.launch(Constants.IMAGE)
                                 } else {
                                     createPlayerParams.permissionNotGrantedForReadMediaOrExternalStorageAlert.invoke()
                                 }
@@ -128,11 +128,7 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                                         .clickable {
                                             scope.launch { bottomState.hide() }
 
-                                            when (
-                                                createPlayerParams.onSelectedCreateEditImageOption(
-                                                    value
-                                                )
-                                            ) {
+                                            when (createPlayerParams.onSelectedCreateEditImageOption(value)) {
                                                 CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY -> {
                                                     if (hasReadImagePermissionEnabled(context = context)) {
                                                         singlePhotoPickerLauncher.launch(Constants.IMAGE)
