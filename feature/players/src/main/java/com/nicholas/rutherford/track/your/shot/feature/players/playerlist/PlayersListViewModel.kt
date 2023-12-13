@@ -150,8 +150,8 @@ class PlayersListViewModel(
 
     private fun notConnectedToInternetAlert(): Alert {
         return Alert(
-            title = application.getString(StringsIds.empty),
-            description = application.getString(StringsIds.notConnectedToInternet),
+            title = application.getString(StringsIds.notConnectedToInternet),
+            description = application.getString(StringsIds.weHaveDetectedCurrentlyNotConnectedToInternetDescription),
             dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
         )
     }

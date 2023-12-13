@@ -52,6 +52,7 @@ object StringsIds {
     val hintAddNewPlayer = R.string.hint_add_new_player
     val hintLogNewShots = R.string.hint_log_new_shots
     val hintLogNewShotsForPlayerX = R.string.hint_log_new_shots_for_player_x
+    val issueOccurred = R.string.issue_occurred
     val lastName = R.string.last_name
     val leavingTheAppWillResultInYouNotFinishingTheAccountCreationProcessDescription =
         R.string.leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description
@@ -82,6 +83,8 @@ object StringsIds {
     val pointGuard = R.string.point_guard
     val pf = R.string.pf
     val powerForward = R.string.power_forward
+    val playerAlreadyHasBeenAddedDescription = R.string.player_already_has_been_added_description
+    val playerCreationFailedPleaseTryAgain = R.string.player_creation_failed_please_try_again
     val playerImage = R.string.player_image
     val players = R.string.players
     val playersFirstNameEmptyDescription = R.string.players_first_name_empty_description
@@ -103,6 +106,7 @@ object StringsIds {
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
     val takeAPicture = R.string.take_a_picture
     val termsConditions = R.string.terms_conditions
+    val theImageUploadWasUnsuccessful = R.string.the_image_upload_was_unsuccessful
     val thereWasAErrorCreatingYourAccountPleaseTryAgain =
         R.string.there_was_a_error_creating_your_account_please_try_again
     val unableToCreateAccount = R.string.unable_to_create_account
@@ -110,6 +114,7 @@ object StringsIds {
     val unableToLoginToAccount = R.string.unable_to_login_to_account
     val unableToResetPassword = R.string.unable_to_reset_password
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
+    val unableToUploadImage = R.string.unable_to_upload_image
     val usernameRequired = R.string.username_required
     val usernameInUse = R.string.username_in_use
     val usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat =
@@ -119,9 +124,11 @@ object StringsIds {
     val verifyAccount = R.string.verify_account
     val voiceCommands = R.string.voice_commands
     val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue = R.string.we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue
+    val weHaveDetectedCurrentlyNotConnectedToInternetDescription = R.string.we_have_detected_currently_not_connected_to_internet_description
     val weWereAbleToSendEmailVerificationPleaseCheckYourEmailToVerifyAccount =
         R.string.we_were_able_to_send_email_verification_please_check_your_email_to_verify_account
     val weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain =
         R.string.we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again
     val yes = R.string.yes
+    val yourPlayerCouldNotBeRetrievedDescription = R.string.your_player_could_not_be_retrieved_description
 }
