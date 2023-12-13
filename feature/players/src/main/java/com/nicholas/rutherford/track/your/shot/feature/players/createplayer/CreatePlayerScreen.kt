@@ -145,12 +145,10 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                                                     }
                                                 }
 
-                                                CreateEditImageOption.REMOVE_IMAGE -> {
+                                                else -> {
                                                     imageUri = null
                                                     hasUploadedImage = false
                                                 }
-
-                                                else -> {}
                                             }
                                         }
                                 ) {
