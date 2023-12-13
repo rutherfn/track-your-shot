@@ -224,6 +224,7 @@ class AppModule {
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 network = get(),
+                accountAuthManager = get(),
                 deleteFirebaseUserInfo = get(),
                 activeUserRepository = get(),
                 playersAdditionUpdates = get(),

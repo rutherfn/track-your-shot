@@ -15,6 +15,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -30,6 +31,7 @@ class PlayersListViewModel(
     private val scope: CoroutineScope,
     private val navigation: PlayersListNavigation,
     private val network: Network,
+    private val accountAuthManager: AccountAuthManager,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val activeUserRepository: ActiveUserRepository,
     private val playersAdditionUpdates: PlayersAdditionUpdates,
@@ -44,6 +46,7 @@ class PlayersListViewModel(
     init {
         updatePlayerListState()
         collectTest()
+        collectTest2()
     }
 
     fun updatePlayerListState() {
@@ -65,6 +68,18 @@ class PlayersListViewModel(
                         playerListMutableStateFlow.value =
                             PlayersListState(playerList = currentPlayerArrayList.toList())
                     }
+                }
+            }
+        }
+    }
+
+    fun collectTest2() {
+        scope.launch {
+            accountAuthManager.loggedInPlayerListStateFlow.collectLatest { test ->
+                if (test.isNotEmpty() && playerListMutableStateFlow.value.playerList.isEmpty()) {
+                    currentPlayerArrayList.addAll(test)
+                    playerListMutableStateFlow.value =
+                        PlayersListState(playerList = currentPlayerArrayList.toList())
                 }
             }
         }
