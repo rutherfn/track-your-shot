@@ -47,7 +47,7 @@ class PlayersListViewModel(
         collectLoggedInPlayerListStateFlow()
     }
 
-    internal fun updatePlayerListState() {
+    fun updatePlayerListState() {
         scope.launch {
                 playerRepository.fetchAllPlayers().forEach { player ->
                     currentPlayerArrayList.add(player)
