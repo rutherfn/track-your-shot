@@ -195,7 +195,7 @@ class CreatePlayerViewModel(
                         playerRepository.createPlayer(player = player)
                         playersAdditionUpdates.updateNewPlayerAddedFlow(player = player)
                         navigation.disableProgress()
-                        navigation.navigateToPlayersList()
+                        navigation.pop()
                     } ?: run  {
                         navigation.disableProgress()
                         navigation.alert(alert = yourPlayerCouldNotBeRetrievedAlert())

@@ -96,10 +96,6 @@ object NavigationActions {
     }
 
     object CreatePlayer {
-
-        fun playersList() = object : NavigationAction {
-            override val destination = NavigationDestinations.PLAYERS_LIST_SCREEN
-            override val navOptions = NavOptions.Builder().build()
-        }
+        // todo add actions
     }
 }

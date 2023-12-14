@@ -14,6 +14,5 @@ class CreatePlayerNavigationImpl(
     override fun appSettings() = navigator.appSettings(appSettingsAction = true)
     override fun disableProgress() = navigator.progress(progressAction = null)
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
-    override fun navigateToPlayersList() = navigator.navigate(navigationAction = NavigationActions.CreatePlayer.playersList())
     override fun pop() = navigator.pop(popRouteAction = NavigationDestinations.PLAYERS_LIST_SCREEN)
 }

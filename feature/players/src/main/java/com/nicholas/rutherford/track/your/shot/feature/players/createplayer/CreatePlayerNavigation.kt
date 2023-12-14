@@ -8,6 +8,5 @@ interface CreatePlayerNavigation {
     fun appSettings()
     fun disableProgress()
     fun enableProgress(progress: Progress)
-    fun navigateToPlayersList()
     fun pop()
 }
