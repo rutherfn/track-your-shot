@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.players.createplayer.ext
+package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -25,13 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.base.resources.R
-import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerParams
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
-fun PositionChooser(createPlayerParams: CreatePlayerParams) {
-    val currentPlayerPosition = stringResource(id = createPlayerParams.state.playerPositionStringResId)
+fun PositionChooser(createEditPlayerParams: CreateEditPlayerParams) {
+    val currentPlayerPosition = stringResource(id = createEditPlayerParams.state.playerPositionStringResId)
     var selectedOption by remember { mutableStateOf(value = currentPlayerPosition) }
     var isDropdownExpanded by remember { mutableStateOf(value = false) }
 
@@ -64,7 +64,7 @@ fun PositionChooser(createPlayerParams: CreatePlayerParams) {
                         } else {
                             R.string.center
                         }
-                        createPlayerParams.onPlayerPositionStringResIdValueChanged(test)
+                        createEditPlayerParams.onPlayerPositionStringResIdValueChanged(test)
                         isDropdownExpanded = false
                     }
                 ) {

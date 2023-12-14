@@ -2,9 +2,7 @@ package com.nicholas.rutherford.track.your.shot.players.createplayer
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerNavigationImpl
-import com.nicholas.rutherford.track.your.shot.navigation.NavigationAction
-import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigationImpl
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot
@@ -15,36 +13,36 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class CreatePlayerNavigationImplTest {
+class CreateEditPlayerNavigationImplTest {
 
-    private lateinit var createPlayerNavigationImpl: CreatePlayerNavigationImpl
+    private lateinit var createEditPlayerNavigationImpl: CreateEditPlayerNavigationImpl
 
     private var navigator = mockk<Navigator>(relaxed = true)
 
     @BeforeEach
     fun beforeEach() {
-        createPlayerNavigationImpl = CreatePlayerNavigationImpl(navigator = navigator)
+        createEditPlayerNavigationImpl = CreateEditPlayerNavigationImpl(navigator = navigator)
     }
 
     @Test
     fun `alert action`() {
         val alert = Alert(title = "title")
 
-        createPlayerNavigationImpl.alert(alert = alert)
+        createEditPlayerNavigationImpl.alert(alert = alert)
 
         verify { navigator.alert(alertAction = alert) }
     }
 
     @Test
     fun `app settings action`() {
-        createPlayerNavigationImpl.appSettings()
+        createEditPlayerNavigationImpl.appSettings()
 
         verify { navigator.appSettings(appSettingsAction = true) }
     }
 
     @Test
     fun `disable progress`() {
-        createPlayerNavigationImpl.disableProgress()
+        createEditPlayerNavigationImpl.disableProgress()
 
         verify { navigator.progress(progressAction = null) }
     }
@@ -52,30 +50,16 @@ class CreatePlayerNavigationImplTest {
     @Test
     fun `enable progress`() {
         val progress = Progress()
-        createPlayerNavigationImpl.enableProgress(progress = progress)
+        createEditPlayerNavigationImpl.enableProgress(progress = progress)
 
         verify { navigator.progress(progressAction = progress) }
-    }
-
-    @Test
-    fun `navigate to players list`() {
-        val argumentCapture: CapturingSlot<NavigationAction> = slot()
-
-        createPlayerNavigationImpl.navigateToPlayersList()
-
-        verify { navigator.navigate(capture(argumentCapture)) }
-
-        val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationActions.CreatePlayer.playersList()
-
-        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }
 
     @Test
     fun `pop action`() {
         val argumentCapture: CapturingSlot<String> = slot()
 
-        createPlayerNavigationImpl.pop()
+        createEditPlayerNavigationImpl.pop()
 
         verify { navigator.pop(capture(argumentCapture)) }
 

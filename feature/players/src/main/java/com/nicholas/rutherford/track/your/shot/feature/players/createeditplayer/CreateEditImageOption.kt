@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.players.createplayer
+package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 
 enum class CreateEditImageOption {
     CHOOSE_IMAGE_FROM_GALLERY,

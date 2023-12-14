@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterialApi::class)
 
-package com.nicholas.rutherford.track.your.shot.feature.players.createplayer
+package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 
 import android.Manifest
 import android.net.Uri
@@ -40,9 +40,9 @@ import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.CoreTextField
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
-import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.ext.LogShotsContent
-import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.ext.PositionChooser
-import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.ext.UploadPlayerImageContent
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.LogShotsContent
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.PositionChooser
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.UploadPlayerImageContent
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.getImageUri
 import com.nicholas.rutherford.track.your.shot.helper.extensions.hasCameraPermissionEnabled
@@ -54,7 +54,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
+fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
     val bottomState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
     var hasUploadedImage by remember { mutableStateOf(false) }
@@ -68,7 +68,7 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
             ModalBottomSheetLayout(
                 sheetState = bottomState,
                 sheetContent = {
-                    createPlayerParams.state.sheet?.let { sheet ->
+                    createEditPlayerParams.state.sheet?.let { sheet ->
                         val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
                             contract = ActivityResultContracts.GetContent(),
                             onResult = { uri ->
@@ -89,7 +89,7 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                                 if (isGranted) {
                                     cameraLauncher.launch()
                                 } else {
-                                    createPlayerParams.permissionNotGrantedForCameraAlert.invoke()
+                                    createEditPlayerParams.permissionNotGrantedForCameraAlert.invoke()
                                 }
                             }
                         )
@@ -99,7 +99,7 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                                 if (isGranted) {
                                     singlePhotoPickerLauncher.launch(Constants.IMAGE)
                                 } else {
-                                    createPlayerParams.permissionNotGrantedForReadMediaOrExternalStorageAlert.invoke()
+                                    createEditPlayerParams.permissionNotGrantedForReadMediaOrExternalStorageAlert.invoke()
                                 }
                             }
                         )
@@ -128,7 +128,7 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                                         .clickable {
                                             scope.launch { bottomState.hide() }
 
-                                            when (createPlayerParams.onSelectedCreateEditImageOption(value)) {
+                                            when (createEditPlayerParams.onSelectedCreateEditImageOption(value)) {
                                                 CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY -> {
                                                     if (hasReadImagePermissionEnabled(context = context)) {
                                                         singlePhotoPickerLauncher.launch(Constants.IMAGE)
@@ -193,9 +193,9 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                     Spacer(modifier = Modifier.height(Padding.eight))
 
                     CoreTextField(
-                        value = createPlayerParams.state.firstName,
+                        value = createEditPlayerParams.state.firstName,
                         onValueChange = {
-                            createPlayerParams.onFirstNameValueChanged.invoke(it)
+                            createEditPlayerParams.onFirstNameValueChanged.invoke(it)
                         },
                         placeholderValue = stringResource(id = R.string.enter_first_name)
                     )
@@ -203,16 +203,16 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                     Spacer(modifier = Modifier.height(Padding.sixteen))
 
                     CoreTextField(
-                        value = createPlayerParams.state.lastName,
+                        value = createEditPlayerParams.state.lastName,
                         onValueChange = {
-                            createPlayerParams.onLastNameValueChanged.invoke(it)
+                            createEditPlayerParams.onLastNameValueChanged.invoke(it)
                         },
                         placeholderValue = stringResource(id = R.string.enter_last_name)
                     )
 
                     Spacer(modifier = Modifier.height(Padding.sixteen))
 
-                    PositionChooser(createPlayerParams = createPlayerParams)
+                    PositionChooser(createEditPlayerParams = createEditPlayerParams)
 
                     Spacer(modifier = Modifier.height(Padding.sixteen))
 
@@ -220,15 +220,15 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
                         hasUploadedImage = hasUploadedImage,
                         scope = scope,
                         bottomState = bottomState,
-                        createPlayerParams = createPlayerParams,
+                        createEditPlayerParams = createEditPlayerParams,
                         imageUri = imageUri
                     )
 
                     Spacer(modifier = Modifier.height(Padding.sixteen))
 
                     LogShotsContent(
-                        firstName = createPlayerParams.state.firstName,
-                        lastName = createPlayerParams.state.lastName
+                        firstName = createEditPlayerParams.state.firstName,
+                        lastName = createEditPlayerParams.state.lastName
                     )
                 }
             }
@@ -239,10 +239,10 @@ fun CreatePlayerScreen(createPlayerParams: CreatePlayerParams) {
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = true,
             onIconButtonClicked = {
-                createPlayerParams.onToolbarMenuClicked.invoke()
+                createEditPlayerParams.onToolbarMenuClicked.invoke()
             },
             onSecondaryIconButtonClicked = {
-                createPlayerParams.onCreatePlayerClicked.invoke(imageUri)
+                createEditPlayerParams.onCreatePlayerClicked.invoke(imageUri)
             }
         )
     )

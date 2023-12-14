@@ -1,9 +1,9 @@
-package com.nicholas.rutherford.track.your.shot.feature.players.createplayer
+package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 
 import android.net.Uri
 
-data class CreatePlayerParams(
-    val state: CreatePlayerState,
+data class CreateEditPlayerParams(
+    val state: CreateEditPlayerState,
     val onToolbarMenuClicked: () -> Unit,
     val onFirstNameValueChanged: (newFirstName: String) -> Unit,
     val onLastNameValueChanged: (newFirstName: String) -> Unit,

@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.players.createplayer
+package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 
 import android.app.Application
 import android.net.Uri
@@ -25,19 +25,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class CreatePlayerViewModel(
+class CreateEditPlayerViewModel(
     private val application: Application,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val playerRepository: PlayerRepository,
     private val activeUserRepository: ActiveUserRepository,
     private val scope: CoroutineScope,
-    private val navigation: CreatePlayerNavigation,
+    private val navigation: CreateEditPlayerNavigation,
     private val playersAdditionUpdates: PlayersAdditionUpdates,
     private val network: Network
 ) : ViewModel() {
 
-    internal val createPlayerMutableStateFlow = MutableStateFlow(value = CreatePlayerState())
+    internal val createPlayerMutableStateFlow = MutableStateFlow(value = CreateEditPlayerState())
     val createPlayerStateFlow = createPlayerMutableStateFlow.asStateFlow()
 
     fun onToolbarMenuClicked() = navigation.pop()
@@ -97,7 +97,7 @@ class CreatePlayerViewModel(
         }
     }
 
-    fun validatePlayer(state: CreatePlayerState, uri: Uri?) {
+    fun validatePlayer(state: CreateEditPlayerState, uri: Uri?) {
         if (state.firstName.isEmpty()) {
             navigation.disableProgress()
             navigation.alert(alert = firstNameEmptyAlert())
@@ -109,7 +109,7 @@ class CreatePlayerViewModel(
         }
     }
 
-    fun checkIfPlayerAlreadyExists(state: CreatePlayerState, uri: Uri?) {
+    fun checkIfPlayerAlreadyExists(state: CreateEditPlayerState, uri: Uri?) {
         scope.launch {
             val player = playerRepository.fetchPlayerByName(
                 firstName = state.firstName,
@@ -125,7 +125,7 @@ class CreatePlayerViewModel(
         }
     }
 
-    fun checkImageUri(state: CreatePlayerState, uri: Uri?) {
+    fun checkImageUri(state: CreateEditPlayerState, uri: Uri?) {
         scope.launch {
             uri?.let { playerUri ->
                 createFirebaseUserInfo.attemptToCreateImageFirebaseStorageResponseFlow(uri = playerUri)
@@ -143,7 +143,7 @@ class CreatePlayerViewModel(
         }
     }
 
-    suspend fun createUserInFirebase(state: CreatePlayerState, imageUrl: String?) {
+    suspend fun createUserInFirebase(state: CreateEditPlayerState, imageUrl: String?) {
         val key = activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey ?: ""
 
         if (key.isNotEmpty()) {
@@ -173,7 +173,7 @@ class CreatePlayerViewModel(
         }
     }
 
-    suspend fun updatePlayerInstance(key: String, state: CreatePlayerState, imageUrl: String?) {
+    suspend fun updatePlayerInstance(key: String, state: CreateEditPlayerState, imageUrl: String?) {
         readFirebaseUserInfo.getPlayerInfoList(key)
             .collectLatest { playerInfoRealtimeWithKeyResponse ->
                 if (playerInfoRealtimeWithKeyResponse.isNotEmpty()) {

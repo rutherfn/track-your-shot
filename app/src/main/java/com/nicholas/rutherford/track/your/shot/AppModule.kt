@@ -30,9 +30,9 @@ import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdatesImpl
-import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerNavigation
-import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerNavigationImpl
-import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigation
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
@@ -197,8 +197,8 @@ class AppModule {
         single<PlayersListNavigation> {
             PlayersListNavigationImpl(navigator = get())
         }
-        single<CreatePlayerNavigation> {
-            CreatePlayerNavigationImpl(navigator = get())
+        single<CreateEditPlayerNavigation> {
+            CreateEditPlayerNavigationImpl(navigator = get())
         }
         viewModel {
             MainActivityViewModel(appCenter = get(), accountAuthManager = get())
@@ -232,7 +232,7 @@ class AppModule {
             )
         }
         viewModel {
-            CreatePlayerViewModel(
+            CreateEditPlayerViewModel(
                 application = androidApplication(),
                 createFirebaseUserInfo = get(),
                 readFirebaseUserInfo = get(),

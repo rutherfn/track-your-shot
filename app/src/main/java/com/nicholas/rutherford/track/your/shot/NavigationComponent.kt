@@ -32,8 +32,8 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerParams
-import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerScreen
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreatePlayerScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
@@ -103,7 +103,7 @@ fun NavigationComponent(
     val createAccountViewModel = viewModels.createAccountViewModel
     val loginViewModel = viewModels.loginViewModel
     val playersListViewModel = viewModels.playersListViewModel
-    val createPlayerViewModel = viewModels.createPlayerViewModel
+    val createPlayerViewModel = viewModels.createEditPlayerViewModel
     val forgotPasswordViewModel = viewModels.forgotPasswordViewModel
 
     LaunchedEffect(alertState) {
@@ -257,7 +257,7 @@ fun NavigationComponent(
             }
             composable(route = NavigationDestinations.CREATE_PLAYER_SCREEN) {
                 CreatePlayerScreen(
-                    createPlayerParams = CreatePlayerParams(
+                    createEditPlayerParams = CreateEditPlayerParams(
                         state = createPlayerViewModel.createPlayerStateFlow.collectAsState().value,
                         onToolbarMenuClicked = { createPlayerViewModel.onToolbarMenuClicked() },
                         onFirstNameValueChanged = { newFirstName -> createPlayerViewModel.onFirstNameValueChanged(newFirstName = newFirstName) },

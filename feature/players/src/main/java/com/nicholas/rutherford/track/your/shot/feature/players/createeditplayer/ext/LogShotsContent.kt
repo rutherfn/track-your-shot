@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.players.createplayer.ext
+package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

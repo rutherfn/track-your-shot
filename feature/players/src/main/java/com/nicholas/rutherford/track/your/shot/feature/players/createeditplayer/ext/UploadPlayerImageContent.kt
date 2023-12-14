@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.players.createplayer.ext
+package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext
 
 import android.net.Uri
 import androidx.compose.foundation.clickable
@@ -17,7 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.nicholas.rutherford.track.your.shot.feature.players.createplayer.CreatePlayerParams
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -27,7 +27,7 @@ fun UploadPlayerImageContent(
     hasUploadedImage: Boolean,
     scope: CoroutineScope,
     bottomState: ModalBottomSheetState,
-    createPlayerParams: CreatePlayerParams,
+    createEditPlayerParams: CreateEditPlayerParams,
     imageUri: Uri?
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -38,7 +38,7 @@ fun UploadPlayerImageContent(
                 modifier = Modifier
                     .size(90.dp)
                     .clickable {
-                        createPlayerParams.onImageUploadClicked.invoke(imageUri)
+                        createEditPlayerParams.onImageUploadClicked.invoke(imageUri)
                         scope.launch { bottomState.show() }
                     }
                     .clip(CircleShape),
@@ -51,7 +51,7 @@ fun UploadPlayerImageContent(
                 modifier = Modifier
                     .size(48.dp)
                     .clickable {
-                        createPlayerParams.onImageUploadClicked.invoke(imageUri)
+                        createEditPlayerParams.onImageUploadClicked.invoke(imageUri)
                         scope.launch { bottomState.show() }
                     }
             )
