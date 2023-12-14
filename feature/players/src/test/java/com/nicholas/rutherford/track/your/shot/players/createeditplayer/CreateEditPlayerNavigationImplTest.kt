@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.players.createplayer
+package com.nicholas.rutherford.track.your.shot.players.createeditplayer
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
