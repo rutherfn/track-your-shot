@@ -1,9 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.playerlist
 
 import android.app.Application
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
@@ -46,10 +43,11 @@ class PlayersListViewModel(
 
     init {
         updatePlayerListState()
-        collectLoggedInNewPlayerStateFlows()
+        collectPlayerAdditionUpdates()
+        collectLoggedInPlayerListStateFlow()
     }
 
-    fun updatePlayerListState() {
+    internal fun updatePlayerListState() {
         scope.launch {
                 playerRepository.fetchAllPlayers().forEach { player ->
                     currentPlayerArrayList.add(player)
@@ -59,21 +57,25 @@ class PlayersListViewModel(
         }
     }
 
-    fun collectLoggedInNewPlayerStateFlows() {
+    private fun collectPlayerAdditionUpdates() {
         scope.launch {
-            combine(
-                playersAdditionUpdates.newPlayerAddedStateFlow,
-                accountAuthManager.loggedInPlayerListStateFlow
-            ) { playerAdded, loggedInPlayerList ->
+            playersAdditionUpdates.newPlayerAddedStateFlow.collectLatest { playerAdded ->
                 playerAdded?.let { player ->
                     handlePlayerAdded(player = player)
                 }
-                handleLoggedInPlayerList(playerList = loggedInPlayerList)
-            }.collectLatest {}
+            }
         }
     }
 
-    fun handlePlayerAdded(player: Player) {
+    private fun collectLoggedInPlayerListStateFlow() {
+        scope.launch {
+            accountAuthManager.loggedInPlayerListStateFlow.collectLatest { loggedInPlayerList ->
+                handleLoggedInPlayerList(playerList = loggedInPlayerList)
+            }
+        }
+    }
+
+    internal fun handlePlayerAdded(player: Player) {
         if (!currentPlayerArrayList.contains(player)) {
             currentPlayerArrayList.add(player)
             playerListMutableStateFlow.value =
@@ -81,7 +83,7 @@ class PlayersListViewModel(
         }
     }
 
-    fun handleLoggedInPlayerList(playerList: List<Player>) {
+    internal fun handleLoggedInPlayerList(playerList: List<Player>) {
         if (playerList.isNotEmpty() && playerListMutableStateFlow.value.playerList.isEmpty()) {
             currentPlayerArrayList.addAll(playerList)
             playerListMutableStateFlow.value =

@@ -4,6 +4,7 @@ import android.app.Application
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
@@ -15,11 +16,13 @@ import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -91,11 +94,283 @@ class PlayersListViewModelTest {
         )
     }
 
+    @Nested
+    inner class CollectPlayerAdditionUpdates {
+
+        @Test
+        fun `when newPlayerAddedStateFlow emits a null value should not update playerList state value`() = runTest {
+            val playerList: List<Player> = emptyList()
+
+            every { playersAdditionUpdates.newPlayerAddedStateFlow } returns MutableStateFlow<Player?>(null)
+
+            playersListViewModel = PlayersListViewModel(
+                application = application,
+                scope = scope,
+                navigation = navigation,
+                network = network,
+                accountAuthManager = accountAuthManager,
+                deleteFirebaseUserInfo = deleteFirebaseUserInfo,
+                activeUserRepository = activeUserRepository,
+                playersAdditionUpdates = playersAdditionUpdates,
+                playerRepository = playerRepository
+            )
+
+            Assertions.assertEquals(
+                playersListViewModel.playerListMutableStateFlow.value,
+                PlayersListState(playerList = playerList)
+            )
+            Assertions.assertEquals(
+                playersListViewModel.currentPlayerArrayList.toList(),
+                playerList
+            )
+        }
+
+        @Test
+        fun `when newPlayerAddedStateFlow emits a new player should update list and state`() = runTest {
+            val player = Player(
+                firstName = "first1",
+                lastName = "last1",
+                position = PlayerPositions.Center,
+                firebaseKey = "key",
+                imageUrl = "url"
+            )
+            val playerList = listOf(player)
+
+            every { playersAdditionUpdates.newPlayerAddedStateFlow } returns MutableStateFlow<Player?>(player)
+
+            playersListViewModel = PlayersListViewModel(
+                application = application,
+                scope = scope,
+                navigation = navigation,
+                network = network,
+                accountAuthManager = accountAuthManager,
+                deleteFirebaseUserInfo = deleteFirebaseUserInfo,
+                activeUserRepository = activeUserRepository,
+                playersAdditionUpdates = playersAdditionUpdates,
+                playerRepository = playerRepository
+            )
+
+            Assertions.assertEquals(
+                playersListViewModel.playerListMutableStateFlow.value,
+                PlayersListState(playerList = playerList)
+            )
+            Assertions.assertEquals(
+                playersListViewModel.currentPlayerArrayList.toList(),
+                playerList
+            )
+        }
+    }
+
+    @Nested
+    inner class CollectLoggedInPlayerListStateFlow {
+
+        @Test
+        fun `when loggedInPlayerListStateFlow emits a empty list should not update state or list`() = runTest {
+            val playerList: List<Player> = emptyList()
+
+            every { accountAuthManager.loggedInPlayerListStateFlow } returns MutableStateFlow(playerList)
+
+            playersListViewModel = PlayersListViewModel(
+                application = application,
+                scope = scope,
+                navigation = navigation,
+                network = network,
+                accountAuthManager = accountAuthManager,
+                deleteFirebaseUserInfo = deleteFirebaseUserInfo,
+                activeUserRepository = activeUserRepository,
+                playersAdditionUpdates = playersAdditionUpdates,
+                playerRepository = playerRepository
+            )
+
+            Assertions.assertEquals(
+                playersListViewModel.playerListMutableStateFlow.value,
+                PlayersListState(playerList = playerList)
+            )
+            Assertions.assertEquals(
+                playersListViewModel.currentPlayerArrayList.toList(),
+                playerList
+            )
+        }
+
+        @Test
+        fun `when loggedInPlayerListStateFlow emits a list should update state and list`() = runTest {
+            val player = Player(
+                firstName = "first1",
+                lastName = "last1",
+                position = PlayerPositions.Center,
+                firebaseKey = "key",
+                imageUrl = "url"
+            )
+            val playerList = listOf(player)
+
+            every { accountAuthManager.loggedInPlayerListStateFlow } returns MutableStateFlow(playerList)
+
+            playersListViewModel = PlayersListViewModel(
+                application = application,
+                scope = scope,
+                navigation = navigation,
+                network = network,
+                accountAuthManager = accountAuthManager,
+                deleteFirebaseUserInfo = deleteFirebaseUserInfo,
+                activeUserRepository = activeUserRepository,
+                playersAdditionUpdates = playersAdditionUpdates,
+                playerRepository = playerRepository
+            )
+
+            Assertions.assertEquals(
+                playersListViewModel.playerListMutableStateFlow.value,
+                PlayersListState(playerList = playerList)
+            )
+            Assertions.assertEquals(
+                playersListViewModel.currentPlayerArrayList.toList(),
+                playerList
+            )
+        }
+    }
+
+    @Nested
+    inner class HandlePlayerAdded {
+
+        @Test
+        fun `when currentPlayerArrayList contains a player should not update state or list`() {
+            val playerList = listOf(player)
+
+            playersListViewModel.currentPlayerArrayList = arrayListOf(player)
+            playersListViewModel.playerListMutableStateFlow.value =
+                PlayersListState(playerList = listOf(player))
+
+            playersListViewModel.handlePlayerAdded(player = player)
+
+            Assertions.assertEquals(
+                playersListViewModel.playerListMutableStateFlow.value,
+                PlayersListState(playerList = playerList)
+            )
+            Assertions.assertEquals(
+                playersListViewModel.currentPlayerArrayList.toList(),
+                playerList
+            )
+        }
+
+        @Test
+        fun `when currentPlayerList does not contain player should update state and list`() {
+            val newPlayer = Player(
+                firstName = "first1",
+                lastName = "last1",
+                position = PlayerPositions.Center,
+                firebaseKey = "key",
+                imageUrl = "url"
+            )
+            val playerList = listOf(newPlayer)
+
+            playersListViewModel.handlePlayerAdded(player = newPlayer)
+
+            Assertions.assertEquals(
+                playersListViewModel.playerListMutableStateFlow.value,
+                PlayersListState(playerList = playerList)
+            )
+            Assertions.assertEquals(
+                playersListViewModel.currentPlayerArrayList.toList(),
+                playerList
+            )
+        }
+    }
+
+    @Nested
+    inner class HandleLoggedInPlayerList {
+        val newPlayer = Player(
+            firstName = "first1",
+            lastName = "last1",
+            position = PlayerPositions.Center,
+            firebaseKey = "key",
+            imageUrl = "url"
+        )
+
+        @Test
+        fun `when player list is empty should not update state and list`() = runTest {
+            val playerList: List<Player> = emptyList()
+
+            playersListViewModel.currentPlayerArrayList = arrayListOf()
+            playersListViewModel.playerListMutableStateFlow.value =
+                PlayersListState(playerList = playerList)
+
+            playersListViewModel.handleLoggedInPlayerList(playerList = playerList)
+
+            Assertions.assertEquals(
+                playersListViewModel.playerListMutableStateFlow.value,
+                PlayersListState(playerList = playerList)
+            )
+            Assertions.assertEquals(
+                playersListViewModel.currentPlayerArrayList.toList(),
+                playerList
+            )
+        }
+
+        @Test
+        fun `when current state player list is not empty the passed in list should not update state and list`() = runTest {
+            val playerList: List<Player> = listOf(player)
+            val newPlayerList: List<Player> = listOf(newPlayer)
+
+            playersListViewModel.currentPlayerArrayList = arrayListOf(player)
+            playersListViewModel.playerListMutableStateFlow.value =
+                PlayersListState(playerList = playerList)
+
+            playersListViewModel.handleLoggedInPlayerList(playerList = newPlayerList)
+
+            Assertions.assertEquals(
+                playersListViewModel.playerListMutableStateFlow.value,
+                PlayersListState(playerList = playerList)
+            )
+            Assertions.assertEquals(
+                playersListViewModel.currentPlayerArrayList.toList(),
+                playerList
+            )
+        }
+
+        @Test
+        fun `when player list is not empty and current player list state is empty should update state and list`() = runTest {
+            val emptyPlayerList: List<Player> = emptyList()
+            val newPlayerList: List<Player> = listOf(newPlayer)
+
+            playersListViewModel.currentPlayerArrayList = arrayListOf()
+            playersListViewModel.playerListMutableStateFlow.value =
+                PlayersListState(playerList = emptyPlayerList)
+
+
+            playersListViewModel.handleLoggedInPlayerList(playerList = newPlayerList)
+
+            Assertions.assertEquals(
+                playersListViewModel.playerListMutableStateFlow.value,
+                PlayersListState(playerList = newPlayerList)
+            )
+            Assertions.assertEquals(
+                playersListViewModel.currentPlayerArrayList.toList(),
+                newPlayerList
+            )
+        }
+    }
+
     @Test
     fun `on toolbar menu clicked`() {
         playersListViewModel.onToolbarMenuClicked()
 
         verify { navigation.openNavigationDrawer() }
+
+        Assertions.assertEquals(
+            playersListViewModel.playerListMutableStateFlow.value,
+            PlayersListState(playerList = emptyList())
+        )
+        Assertions.assertEquals(
+            playersListViewModel.currentPlayerArrayList.toList(),
+            emptyPlayerList
+        )
+    }
+
+    @Test
+    fun `on add player clicked`() {
+        playersListViewModel.onAddPlayerClicked()
+
+        verify { navigation.navigateToCreatePlayer() }
+
         Assertions.assertEquals(
             playersListViewModel.playerListMutableStateFlow.value,
             PlayersListState(playerList = emptyList())
