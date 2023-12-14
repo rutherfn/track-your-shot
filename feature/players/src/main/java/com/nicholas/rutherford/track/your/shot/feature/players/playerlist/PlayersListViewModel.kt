@@ -22,6 +22,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 const val DELETE_PLAYER_DELAY_IN_MILLIS = 2000L
@@ -45,8 +46,7 @@ class PlayersListViewModel(
 
     init {
         updatePlayerListState()
-        collectTest()
-        collectTest2()
+        collectLoggedInNewPlayerStateFlows()
     }
 
     fun updatePlayerListState() {
@@ -59,29 +59,33 @@ class PlayersListViewModel(
         }
     }
 
-    fun collectTest() {
+    fun collectLoggedInNewPlayerStateFlows() {
         scope.launch {
-            playersAdditionUpdates.newPlayerAddedStateFlow.collectLatest { test ->
-                test?.let { test2 ->
-                    if (!currentPlayerArrayList.contains(test)) {
-                        currentPlayerArrayList.add(test2)
-                        playerListMutableStateFlow.value =
-                            PlayersListState(playerList = currentPlayerArrayList.toList())
-                    }
+            combine(
+                playersAdditionUpdates.newPlayerAddedStateFlow,
+                accountAuthManager.loggedInPlayerListStateFlow
+            ) { playerAdded, loggedInPlayerList ->
+                playerAdded?.let { player ->
+                    handlePlayerAdded(player = player)
                 }
-            }
+                handleLoggedInPlayerList(playerList = loggedInPlayerList)
+            }.collectLatest {}
         }
     }
 
-    fun collectTest2() {
-        scope.launch {
-            accountAuthManager.loggedInPlayerListStateFlow.collectLatest { test ->
-                if (test.isNotEmpty() && playerListMutableStateFlow.value.playerList.isEmpty()) {
-                    currentPlayerArrayList.addAll(test)
-                    playerListMutableStateFlow.value =
-                        PlayersListState(playerList = currentPlayerArrayList.toList())
-                }
-            }
+    fun handlePlayerAdded(player: Player) {
+        if (!currentPlayerArrayList.contains(player)) {
+            currentPlayerArrayList.add(player)
+            playerListMutableStateFlow.value =
+                PlayersListState(playerList = currentPlayerArrayList.toList())
+        }
+    }
+
+    fun handleLoggedInPlayerList(playerList: List<Player>) {
+        if (playerList.isNotEmpty() && playerListMutableStateFlow.value.playerList.isEmpty()) {
+            currentPlayerArrayList.addAll(playerList)
+            playerListMutableStateFlow.value =
+                PlayersListState(playerList = currentPlayerArrayList.toList())
         }
     }
 
