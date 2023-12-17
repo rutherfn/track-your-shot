@@ -4,6 +4,7 @@ import android.app.Application
 import android.net.Uri
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
@@ -15,8 +16,10 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.PLAYER_FIREBASE_KEY
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPosition
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
@@ -439,6 +442,58 @@ class CreateEditPlayerViewModelTest {
                 state = defaultState,
                 imageUrl = null
             ) }
+        }
+    }
+
+    @Nested
+    inner class HandleSavingPlayer {
+
+        @Test
+        fun `when recentlySavedPlayer is null should show alert`() = runTest {
+            val playerInfoRealtimeWithKeyResponseList: List<PlayerInfoRealtimeWithKeyResponse> = listOf(
+                TestPlayerInfoRealtimeWithKeyResponse().create().copy(playerInfo = TestPlayerInfoRealtimeResponse().create().copy(firstName = "firstName1", lastName = "lastName1")
+            )
+            )
+
+            createEditPlayerViewModel.handleSavingPlayer(
+                playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
+                state = defaultState,
+                imageUrl = null
+            )
+
+
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when recentlySavedPlayer is not null should pop and create player instance`() = runTest {
+            val playerInfoRealtimeWithKeyResponseList: List<PlayerInfoRealtimeWithKeyResponse> = listOf(
+                TestPlayerInfoRealtimeWithKeyResponse().create().copy(playerInfo = TestPlayerInfoRealtimeResponse().create().copy(firstName = defaultState.firstName, lastName = defaultState.lastName)
+                )
+            )
+            val key = PLAYER_FIREBASE_KEY
+            val state = defaultState
+
+            createEditPlayerViewModel.handleSavingPlayer(
+                playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
+                state = defaultState,
+                imageUrl = null
+            )
+
+            val player = Player(
+                firstName = state.firstName,
+                lastName = state.lastName,
+                position = state.playerPositionStringResId.toPlayerPosition(),
+                firebaseKey = key,
+                imageUrl = ""
+            )
+
+            coVerify { playerRepository.createPlayer(player = player) }
+            verify { playersAdditionUpdates.updateNewPlayerAddedFlow(player = player) }
+
+            verify { navigation.disableProgress() }
+            verify { navigation.pop() }
         }
     }
 }
