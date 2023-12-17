@@ -53,7 +53,7 @@ fun PositionChooser(createEditPlayerParams: CreateEditPlayerParams) {
                 DropdownMenuItem(
                     onClick = {
                         selectedOption = option
-                        val test = if (index == 0 ) {
+                        val test = if (index == 0) {
                             R.string.point_guard
                         } else if (index == 1) {
                             R.string.shooting_guard

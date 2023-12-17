@@ -1,6 +1,5 @@
 package com.nicholas.rutherford.track.your.shot.players
 
-import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdatesImpl
 import org.junit.jupiter.api.Assertions

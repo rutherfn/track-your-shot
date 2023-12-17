@@ -258,7 +258,7 @@ fun NavigationComponent(
             composable(route = NavigationDestinations.CREATE_PLAYER_SCREEN) {
                 CreatePlayerScreen(
                     createEditPlayerParams = CreateEditPlayerParams(
-                        state = createPlayerViewModel.createPlayerStateFlow.collectAsState().value,
+                        state = createPlayerViewModel.createEditPlayerStateFlow.collectAsState().value,
                         onToolbarMenuClicked = { createPlayerViewModel.onToolbarMenuClicked() },
                         onFirstNameValueChanged = { newFirstName -> createPlayerViewModel.onFirstNameValueChanged(newFirstName = newFirstName) },
                         onLastNameValueChanged = { newLastName -> createPlayerViewModel.onLastNameValueChanged(newLastName = newLastName) },

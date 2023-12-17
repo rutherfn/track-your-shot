@@ -19,7 +19,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 const val DELETE_PLAYER_DELAY_IN_MILLIS = 2000L
@@ -49,11 +48,11 @@ class PlayersListViewModel(
 
     fun updatePlayerListState() {
         scope.launch {
-                playerRepository.fetchAllPlayers().forEach { player ->
-                    currentPlayerArrayList.add(player)
-                }
-                playerListMutableStateFlow.value =
-                    PlayersListState(playerList = currentPlayerArrayList.toList())
+            playerRepository.fetchAllPlayers().forEach { player ->
+                currentPlayerArrayList.add(player)
+            }
+            playerListMutableStateFlow.value =
+                PlayersListState(playerList = currentPlayerArrayList.toList())
         }
     }
 

@@ -46,14 +46,14 @@ class PlayersListViewModelTest {
     private val navigation = mockk<PlayersListNavigation>(relaxed = true)
 
     private val network = mockk<Network>(relaxed = true)
-    
+
     private val accountAuthManager = mockk<AccountAuthManager>(relaxed = true)
 
     private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
     private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
-    
+
     private val playersAdditionUpdates = mockk<PlayersAdditionUpdates>(relaxed = true)
-    
+
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
 
     val user = TestActiveUser().create()
@@ -68,7 +68,7 @@ class PlayersListViewModelTest {
             scope = scope,
             navigation = navigation,
             network = network,
-            accountAuthManager = accountAuthManager, 
+            accountAuthManager = accountAuthManager,
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
             activeUserRepository = activeUserRepository,
             playersAdditionUpdates = playersAdditionUpdates,
@@ -334,7 +334,6 @@ class PlayersListViewModelTest {
             playersListViewModel.currentPlayerArrayList = arrayListOf()
             playersListViewModel.playerListMutableStateFlow.value =
                 PlayersListState(playerList = emptyPlayerList)
-
 
             playersListViewModel.handleLoggedInPlayerList(playerList = newPlayerList)
 
