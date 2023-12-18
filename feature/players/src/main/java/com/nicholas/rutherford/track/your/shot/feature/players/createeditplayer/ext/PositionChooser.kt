@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.base.resources.R
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
@@ -53,18 +54,24 @@ fun PositionChooser(createEditPlayerParams: CreateEditPlayerParams) {
                 DropdownMenuItem(
                     onClick = {
                         selectedOption = option
-                        val test = if (index == 0) {
-                            R.string.point_guard
-                        } else if (index == 1) {
-                            R.string.shooting_guard
-                        } else if (index == 2) {
-                            R.string.small_forward
-                        } else if (index == 3) {
-                            R.string.power_forward
-                        } else {
-                            R.string.center
+                        val newPositionStringResId = when (index) {
+                            PlayerPositions.PointGuard.value -> {
+                                R.string.point_guard
+                            }
+                            PlayerPositions.ShootingGuard.value -> {
+                                R.string.shooting_guard
+                            }
+                            PlayerPositions.SmallForward.value -> {
+                                R.string.small_forward
+                            }
+                            PlayerPositions.PowerForward.value -> {
+                                R.string.power_forward
+                            }
+                            else -> {
+                                R.string.center
+                            }
                         }
-                        createEditPlayerParams.onPlayerPositionStringResIdValueChanged(test)
+                        createEditPlayerParams.onPlayerPositionStringResIdValueChanged(newPositionStringResId)
                         isDropdownExpanded = false
                     }
                 ) {

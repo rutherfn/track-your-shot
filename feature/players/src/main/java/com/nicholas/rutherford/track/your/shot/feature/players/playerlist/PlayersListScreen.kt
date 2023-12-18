@@ -91,8 +91,6 @@ fun PlayerItem(
         painterResource(id = DrawablesIds.launcherRound)
     }
 
-    println(player.imageUrl)
-
     var expanded by remember { mutableStateOf(false) }
 
     Card(
