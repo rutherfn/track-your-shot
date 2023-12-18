@@ -73,11 +73,25 @@ class CreateEditPlayerViewModelTest {
     )
 
     private fun mockStrings() {
+        every { application.getString(StringsIds.theImageUploadWasUnsuccessful) } returns "The image upload was unsuccessful. Please attempt it once more."
+        every { application.getString(StringsIds.ok) } returns "Ok"
+        every { application.getString(StringsIds.unableToUploadImage) } returns "Unable to upload image"
+        every { application.getString(StringsIds.weHaveDetectedCurrentlyNotConnectedToInternetDescription) } returns "We have detected currently not connected to internet. Please connect to service, and try again."
+        every { application.getString(StringsIds.notConnectedToInternet) } returns "Not connected to internet"
+        every { application.getString(StringsIds.noFirstNameEntered) } returns "No First Name Entered"
+        every { application.getString(StringsIds.noLastNameEntered) } returns "No Last Name Entered"
+        every { application.getString(StringsIds.playersFirstNameEmptyDescription) } returns "The player\\'s first name is missing. Kindly provide a first name to proceed."
+        every { application.getString(StringsIds.playersLastNameEmptyDescription) } returns "The player\\'s last name is missing. Kindly provide a first name to proceed."
+        every { application.getString(StringsIds.readMediaImagesDescription) } returns "Permission to read external storage has been declined. To manually enable the \"Read External Storage\" permission and select an image from the gallery for the Player, please navigate to settings."
+        every { application.getString(StringsIds.readExternalStorageDescription) } returns "Permission to read external storage has been declined. To manually enable the \"Read External Storage\" permission and select an image from the gallery for the Player, please navigate to settings."
+        every { application.getString(StringsIds.permissionHasBeenDeclined) } returns "Permission has been declined"
+        every { application.getString(StringsIds.notNow) } returns "Not Now"
+        every { application.getString(StringsIds.cameraPermissionHasBeenDeniedDescription) } returns "Camera permission has been denied. To manually grant permission for the camera and upload pictures for the Player, kindly navigate to Settings."
+        every { application.getString(StringsIds.pg) } returns "Pg"
         every { application.getString(StringsIds.chooseOption) } returns "Choose Option"
         every { application.getString(StringsIds.chooseImageFromGallery) } returns "Choose Image From Gallery"
         every { application.getString(StringsIds.takeAPicture) } returns "Take A Picture"
         every { application.getString(StringsIds.removeImage) } returns "Remove Image"
-        every { application.getString(StringsIds.permissionHasBeenDeclined) } returns "Permission Has Been Declined"
         every { application.getString(StringsIds.settings) } returns "Settings"
         every { application.getString(StringsIds.notNow) } returns "Not Now"
         every { application.getString(StringsIds.cameraPermissionHasBeenDeniedDescription) } returns "Camera permission has been denied. To manually grant permission for the camera and upload pictures for the Player, kindly navigate to Settings."
@@ -268,6 +282,8 @@ class CreateEditPlayerViewModelTest {
             createEditPlayerViewModel.checkIfPlayerAlreadyExists(state = defaultState, uri = null)
 
             verify { createEditPlayerViewModel.checkImageUri(state = defaultState, uri = null) }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
         }
 
         @Test
@@ -437,11 +453,13 @@ class CreateEditPlayerViewModelTest {
                 imageUrl = null
             )
 
-            coVerify { createEditPlayerViewModel.handleSavingPlayer(
-                playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
-                state = defaultState,
-                imageUrl = null
-            ) }
+            coVerify {
+                createEditPlayerViewModel.handleSavingPlayer(
+                    playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
+                    state = defaultState,
+                    imageUrl = null
+                )
+            }
         }
     }
 
@@ -451,8 +469,9 @@ class CreateEditPlayerViewModelTest {
         @Test
         fun `when recentlySavedPlayer is null should show alert`() = runTest {
             val playerInfoRealtimeWithKeyResponseList: List<PlayerInfoRealtimeWithKeyResponse> = listOf(
-                TestPlayerInfoRealtimeWithKeyResponse().create().copy(playerInfo = TestPlayerInfoRealtimeResponse().create().copy(firstName = "firstName1", lastName = "lastName1")
-            )
+                TestPlayerInfoRealtimeWithKeyResponse().create().copy(
+                    playerInfo = TestPlayerInfoRealtimeResponse().create().copy(firstName = "firstName1", lastName = "lastName1")
+                )
             )
 
             createEditPlayerViewModel.handleSavingPlayer(
@@ -461,7 +480,6 @@ class CreateEditPlayerViewModelTest {
                 imageUrl = null
             )
 
-
             verify { navigation.disableProgress() }
             verify { navigation.alert(alert = any()) }
         }
@@ -469,7 +487,8 @@ class CreateEditPlayerViewModelTest {
         @Test
         fun `when recentlySavedPlayer is not null should pop and create player instance`() = runTest {
             val playerInfoRealtimeWithKeyResponseList: List<PlayerInfoRealtimeWithKeyResponse> = listOf(
-                TestPlayerInfoRealtimeWithKeyResponse().create().copy(playerInfo = TestPlayerInfoRealtimeResponse().create().copy(firstName = defaultState.firstName, lastName = defaultState.lastName)
+                TestPlayerInfoRealtimeWithKeyResponse().create().copy(
+                    playerInfo = TestPlayerInfoRealtimeResponse().create().copy(firstName = defaultState.firstName, lastName = defaultState.lastName)
                 )
             )
             val key = PLAYER_FIREBASE_KEY
@@ -495,5 +514,104 @@ class CreateEditPlayerViewModelTest {
             verify { navigation.disableProgress() }
             verify { navigation.pop() }
         }
+    }
+
+    @Test
+    fun `onFirstNameValueChanged should update firstName State property`() {
+        val newFirstName = "newFirstName"
+
+        createEditPlayerViewModel.onFirstNameValueChanged(newFirstName = newFirstName)
+
+        Assertions.assertEquals(createEditPlayerViewModel.createEditPlayerMutableStateFlow.value.firstName, newFirstName)
+    }
+
+    @Test
+    fun `onLastNameValueChanged should update lastName state property`() {
+        val newLastName = "newLastName"
+
+        createEditPlayerViewModel.onLastNameValueChanged(newLastName = newLastName)
+
+        Assertions.assertEquals(createEditPlayerViewModel.createEditPlayerMutableStateFlow.value.lastName, newLastName)
+    }
+
+    @Test
+    fun `onPlayerPositionStringResIdChanged should update playerPositionStringResId state property`() {
+        val newPositionStringResId = StringsIds.pg
+
+        createEditPlayerViewModel.onPlayerPositionStringResIdValueChanged(newPositionStringResId = newPositionStringResId)
+
+        Assertions.assertEquals(createEditPlayerViewModel.createEditPlayerMutableStateFlow.value.playerPositionStringResId, newPositionStringResId)
+    }
+
+    @Test
+    fun `camera permission not granted alert`() {
+        val alert = createEditPlayerViewModel.cameraPermissionNotGrantedAlert()
+
+        Assertions.assertEquals(alert.title, "Permission has been declined")
+        Assertions.assertEquals(alert.confirmButton!!.buttonText, "Settings")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Not Now")
+        Assertions.assertEquals(alert.description, "Camera permission has been denied. To manually grant permission for the camera and upload pictures for the Player, kindly navigate to Settings.")
+    }
+
+    @Test
+    fun `media or external storage not granted alert when should ask for permission is not enabled`() {
+        val alert = createEditPlayerViewModel.mediaOrExternalStorageNotGrantedAlert(shouldAskForPermission = false)
+
+        Assertions.assertEquals(alert.title, "Permission has been declined")
+        Assertions.assertEquals(alert.confirmButton!!.buttonText, "Settings")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Not Now")
+        Assertions.assertEquals(alert.description, "Permission to read external storage has been declined. To manually enable the \"Read External Storage\" permission and select an image from the gallery for the Player, please navigate to settings.")
+    }
+
+    @Test
+    fun `media or external storage not granted alert when should ask for permission is enabled`() {
+        val alert = createEditPlayerViewModel.mediaOrExternalStorageNotGrantedAlert(shouldAskForPermission = true)
+
+        Assertions.assertEquals(alert.title, "Permission has been declined")
+        Assertions.assertEquals(alert.confirmButton!!.buttonText, "Settings")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Not Now")
+        Assertions.assertEquals(alert.description, "Permission to read external storage has been declined. To manually enable the \"Read External Storage\" permission and select an image from the gallery for the Player, please navigate to settings.")
+    }
+
+    @Test
+    fun `first name empty alert`() {
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+
+        val alert = createEditPlayerViewModel.firstNameEmptyAlert()
+
+        Assertions.assertEquals(alert.title, "No First Name Entered")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Got It")
+        Assertions.assertEquals(alert.description, "The player\\'s first name is missing. Kindly provide a first name to proceed.")
+    }
+
+    @Test
+    fun `last name empty alert`() {
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+
+        val alert = createEditPlayerViewModel.lastNameEmptyAlert()
+
+        Assertions.assertEquals(alert.title, "No Last Name Entered")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Got It")
+        Assertions.assertEquals(alert.description, "The player\\'s last name is missing. Kindly provide a first name to proceed.")
+    }
+
+    @Test
+    fun `not connected to internet alert`() {
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+
+        val alert = createEditPlayerViewModel.notConnectedToInternetAlert()
+
+        Assertions.assertEquals(alert.title, "Not connected to internet")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Got It")
+        Assertions.assertEquals(alert.description, "We have detected currently not connected to internet. Please connect to service, and try again.")
+    }
+
+    @Test
+    fun `not able to upload image alert`() {
+        val alert = createEditPlayerViewModel.notAbleToUploadImageAlert()
+
+        Assertions.assertEquals(alert.title, "Unable to upload image")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Ok")
+        Assertions.assertEquals(alert.description, "The image upload was unsuccessful. Please attempt it once more.")
     }
 }

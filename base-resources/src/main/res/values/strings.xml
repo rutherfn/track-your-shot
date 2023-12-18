@@ -116,7 +116,7 @@
     <string name="unable_to_send_email_verification">Unable to send email verification</string>
     <string name="unable_to_upload_image">Unable to upload image</string>
     <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">We have detected a problem with your account. Please contact support to resolve issue.</string>
-    <string name="we_have_detected_currently_not_connected_to_internet_description">We have detected currently not connected to internet. Please conntect to service, and try again.</string>
+    <string name="we_have_detected_currently_not_connected_to_internet_description">We have detected currently not connected to internet. Please connect to service, and try again.</string>
     <string name="username_is_required_please_enter_a_username_to_create_a_account">Username is required. Please enter a username to create a account.</string>
     <string name="we_were_able_to_send_email_verification_please_check_your_email_to_verify_account">We were able to send email verification. Please check your email to verify account</string>
     <string name="we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again">We were unable to send email verification. Please click send email verification to try again.</string>
