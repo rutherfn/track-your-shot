@@ -113,15 +113,17 @@ fun NavigationComponent(
     }
     LaunchedEffect(appSettingsState) {
         appSettingsState?.let { shouldOpenAppSettings ->
-            val intent = Intent()
+            if (shouldOpenAppSettings) {
+                val intent = Intent()
 
-            intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-            val uri = Uri.fromParts("package", activity.packageName, null)
-            intent.data = uri
+                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                val uri = Uri.fromParts("package", activity.packageName, null)
+                intent.data = uri
 
-            activity.startActivity(intent)
+                activity.startActivity(intent)
 
-            navigator.appSettings(appSettingsAction = null)
+                navigator.appSettings(appSettingsAction = null)
+            }
         }
     }
     LaunchedEffect(emailState) {
