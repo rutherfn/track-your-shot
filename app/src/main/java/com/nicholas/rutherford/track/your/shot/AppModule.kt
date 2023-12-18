@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import com.nicholas.rutherford.track.your.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.your.shot.app.center.AppCenterImpl
 import com.nicholas.rutherford.track.your.shot.build.type.BuildType
@@ -27,9 +28,14 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListNavigation
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListNavigationImpl
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
+import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdatesImpl
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigation
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
@@ -117,8 +123,16 @@ class AppModule {
         single {
             FirebaseDatabase.getInstance()
         }
+        single {
+            FirebaseStorage.getInstance()
+        }
         single<CreateFirebaseUserInfo> {
-            CreateFirebaseUserInfoImpl(firebaseAuth = get(), createFirebaseLastUpdated = get(), firebaseDatabase = get())
+            CreateFirebaseUserInfoImpl(
+                firebaseAuth = get(),
+                createFirebaseLastUpdated = get(),
+                firebaseStorage = get(),
+                firebaseDatabase = get()
+            )
         }
         single<CreateFirebaseLastUpdated> {
             CreateFirebaseLastUpdatedImpl(firebaseDatabase = get())
@@ -162,6 +176,9 @@ class AppModule {
                 existingUserFirebase = get()
             )
         }
+        single<PlayersAdditionUpdates> {
+            PlayersAdditionUpdatesImpl()
+        }
         single<SplashNavigation> {
             SplashNavigationImpl(navigator = get())
         }
@@ -179,6 +196,9 @@ class AppModule {
         }
         single<PlayersListNavigation> {
             PlayersListNavigationImpl(navigator = get())
+        }
+        single<CreateEditPlayerNavigation> {
+            CreateEditPlayerNavigationImpl(navigator = get())
         }
         viewModel {
             MainActivityViewModel(appCenter = get(), accountAuthManager = get())
@@ -204,9 +224,24 @@ class AppModule {
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 network = get(),
+                accountAuthManager = get(),
                 deleteFirebaseUserInfo = get(),
                 activeUserRepository = get(),
+                playersAdditionUpdates = get(),
                 playerRepository = get()
+            )
+        }
+        viewModel {
+            CreateEditPlayerViewModel(
+                application = androidApplication(),
+                createFirebaseUserInfo = get(),
+                readFirebaseUserInfo = get(),
+                playerRepository = get(),
+                activeUserRepository = get(),
+                scope = defaultCoroutineScope,
+                navigation = get(),
+                playersAdditionUpdates = get(),
+                network = get()
             )
         }
         viewModel {

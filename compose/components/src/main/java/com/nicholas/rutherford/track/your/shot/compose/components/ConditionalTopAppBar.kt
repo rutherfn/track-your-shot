@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +31,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
  *
  * @param appBar builds out the actual content for displaying [TopAppBar]
  * @param imageVector [ImageVector] used for both app bars for displaying [Icon] left of title
- * @param secondaryImageVector [ImageVector] used for [ComplexTopAppBar] for displaying [Icon] right of title  vgy
+ * @param secondaryImageVector [ImageVector] used for [ComplexTopAppBar] for displaying [Icon] right of title
  */
 @Composable
 fun ConditionalTopAppBar(
@@ -64,19 +65,35 @@ private fun SimpleTopAppBar(
                 modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_TITLE),
                 style = TextStyles.toolbar
             )
-        }, navigationIcon = {
-        IconButton(
-            onClick = { appBar.onIconButtonClicked?.invoke() },
-            modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
-        ) {
-            Icon(
-                imageVector = imageVector ?: Icons.Filled.ArrowBack,
-                contentDescription = appBar.iconContentDescription
-            )
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = { appBar.onIconButtonClicked?.invoke() },
+                modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
+            ) {
+                Icon(
+                    imageVector = imageVector ?: Icons.Filled.ArrowBack,
+                    contentDescription = appBar.iconContentDescription
+                )
+            }
+        },
+        actions = {
+            if (appBar.shouldShowSecondaryButton) {
+                IconButton(
+                    onClick = { appBar.onSecondaryIconButtonClicked?.invoke() },
+                    modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Save,
+                        contentDescription = "Save icon"
+                    )
+                }
+            }
         }
-    }
     )
-    Spacer(modifier = Modifier.height(Padding.eight))
+    if (appBar.shouldIncludeSpaceAfterDeclaration) {
+        Spacer(modifier = Modifier.height(Padding.eight))
+    }
 }
 
 @Composable
@@ -118,7 +135,10 @@ private fun ComplexTopAppBar(
             }
         },
     )
-    Spacer(modifier = Modifier.height(Padding.eight))
+
+    if (appBar.shouldIncludeSpaceAfterDeclaration) {
+        Spacer(modifier = Modifier.height(Padding.eight))
+    }
 }
 
 @Preview

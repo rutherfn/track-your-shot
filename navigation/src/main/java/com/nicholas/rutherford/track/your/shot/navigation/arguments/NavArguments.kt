@@ -13,4 +13,7 @@ object NavArguments {
     val home = listOf(
         navArgument(NamedArguments.EMAIL) { type = NavType.StringType }
     )
+    val playersList = listOf(
+        navArgument(NamedArguments.SHOULD_UPDATE) { type = NavType.BoolType }
+    )
 }

@@ -1,5 +1,14 @@
 package com.nicholas.rutherford.track.your.shot.helper.extensions
 
+import android.Manifest
+import android.content.ContentValues
+import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import androidx.core.content.ContextCompat
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 
@@ -14,6 +23,29 @@ inline fun <T1 : Any, T2 : Any, T3 : Any, T4 : Any, R : Any> safeLet(p1: T1?, p2
 }
 inline fun <T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, R : Any> safeLet(p1: T1?, p2: T2?, p3: T3?, p4: T4?, p5: T5?, block: (T1, T2, T3, T4, T5) -> R?): R? {
     return if (p1 != null && p2 != null && p3 != null && p4 != null && p5 != null) block(p1, p2, p3, p4, p5) else null
+}
+
+fun Int.toPlayerPosition(): PlayerPositions {
+    return when (this) {
+        StringsIds.pointGuard -> {
+            PlayerPositions.PointGuard
+        }
+        StringsIds.shootingGuard -> {
+            PlayerPositions.ShootingGuard
+        }
+        StringsIds.smallForward -> {
+            PlayerPositions.SmallForward
+        }
+        StringsIds.powerForward -> {
+            PlayerPositions.PowerForward
+        }
+        StringsIds.center -> {
+            PlayerPositions.Center
+        }
+        else -> {
+            PlayerPositions.None
+        }
+    }
 }
 
 fun Int.toPlayerPositionAbvId(): Int? {
@@ -31,8 +63,62 @@ fun Int.toPlayerPositionAbvId(): Int? {
             StringsIds.pf
         }
         PlayerPositions.Center.value -> {
-            StringsIds.center
+            StringsIds.c
         }
         else -> { null }
+    }
+}
+
+fun getImageUri(context: Context, image: Bitmap): Uri? {
+    val values = ContentValues().apply {
+        put(MediaStore.Images.Media.TITLE, "title")
+        put(MediaStore.Images.Media.DESCRIPTION, "description")
+    }
+
+    val contentResolver = context.contentResolver
+    val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+    try {
+        if (uri != null) {
+            val outputStream = contentResolver.openOutputStream(uri)
+            if (outputStream != null) {
+                image.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            }
+            outputStream?.close()
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return null
+    }
+
+    return uri
+}
+
+fun hasCameraPermissionEnabled(context: Context) = ContextCompat.checkSelfPermission(
+    context,
+    Manifest.permission.CAMERA
+) == PackageManager.PERMISSION_GRANTED
+
+fun hasReadImagePermissionEnabled(context: Context): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.READ_MEDIA_IMAGES
+        ) == PackageManager.PERMISSION_GRANTED
+    } else {
+        ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+}
+
+fun shouldAskForReadMediaImages() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
+fun readMediaImagesOrExternalStoragePermission(): String {
+    return if (shouldAskForReadMediaImages()) {
+        Manifest.permission.READ_MEDIA_IMAGES
+    } else {
+        Manifest.permission.READ_EXTERNAL_STORAGE
     }
 }

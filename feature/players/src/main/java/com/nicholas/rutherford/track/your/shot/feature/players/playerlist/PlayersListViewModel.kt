@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.players
+package com.nicholas.rutherford.track.your.shot.feature.players.playerlist
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
@@ -9,8 +9,10 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -26,30 +28,73 @@ class PlayersListViewModel(
     private val scope: CoroutineScope,
     private val navigation: PlayersListNavigation,
     private val network: Network,
+    private val accountAuthManager: AccountAuthManager,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val activeUserRepository: ActiveUserRepository,
+    private val playersAdditionUpdates: PlayersAdditionUpdates,
     private val playerRepository: PlayerRepository
 ) : ViewModel() {
 
     internal var currentPlayerArrayList: ArrayList<Player> = arrayListOf()
-    internal val playerListMutableStateFlow = MutableStateFlow(
-        value = PlayersListState(
-            playerList = emptyList()
-        )
-    )
 
+    internal val playerListMutableStateFlow = MutableStateFlow(value = PlayersListState())
     val playerListStateFlow = playerListMutableStateFlow.asStateFlow()
+
+    init {
+        updatePlayerListState()
+        collectPlayerAdditionUpdates()
+        collectLoggedInPlayerListStateFlow()
+    }
 
     fun updatePlayerListState() {
         scope.launch {
             playerRepository.fetchAllPlayers().forEach { player ->
                 currentPlayerArrayList.add(player)
             }
+            playerListMutableStateFlow.value =
+                PlayersListState(playerList = currentPlayerArrayList.toList())
         }
-        playerListMutableStateFlow.value = PlayersListState(playerList = currentPlayerArrayList.toList())
+    }
+
+    private fun collectPlayerAdditionUpdates() {
+        scope.launch {
+            playersAdditionUpdates.newPlayerAddedStateFlow.collectLatest { playerAdded ->
+                playerAdded?.let { player ->
+                    handlePlayerAdded(player = player)
+                }
+            }
+        }
+    }
+
+    private fun collectLoggedInPlayerListStateFlow() {
+        scope.launch {
+            accountAuthManager.loggedInPlayerListStateFlow.collectLatest { loggedInPlayerList ->
+                handleLoggedInPlayerList(playerList = loggedInPlayerList)
+            }
+        }
+    }
+
+    internal fun handlePlayerAdded(player: Player) {
+        if (!currentPlayerArrayList.contains(player)) {
+            currentPlayerArrayList.add(player)
+            playerListMutableStateFlow.value =
+                PlayersListState(playerList = currentPlayerArrayList.toList())
+        }
+    }
+
+    internal fun handleLoggedInPlayerList(playerList: List<Player>) {
+        if (playerList.isNotEmpty() && playerListMutableStateFlow.value.playerList.isEmpty()) {
+            currentPlayerArrayList.addAll(playerList)
+            playerListMutableStateFlow.value =
+                PlayersListState(playerList = currentPlayerArrayList.toList())
+        }
     }
 
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
+
+    fun onAddPlayerClicked() {
+        navigation.navigateToCreatePlayer()
+    }
 
     suspend fun onYesDeletePlayerClicked(player: Player) {
         enableProgressAndDelay()
@@ -110,8 +155,8 @@ class PlayersListViewModel(
 
     private fun notConnectedToInternetAlert(): Alert {
         return Alert(
-            title = application.getString(StringsIds.empty),
-            description = application.getString(StringsIds.notConnectedToInternet),
+            title = application.getString(StringsIds.notConnectedToInternet),
+            description = application.getString(StringsIds.weHaveDetectedCurrentlyNotConnectedToInternetDescription),
             dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
         )
     }

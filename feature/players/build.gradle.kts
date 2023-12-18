@@ -71,13 +71,21 @@ dependencies {
     api(project(path = ":data:room"))
     api(project(path = ":firebase:core"))
     api(project(path = ":firebase:util"))
+    api(project(path = ":helper:account"))
     api(project(path = ":helper:constants"))
     api(project(path = ":helper:extensions"))
     api(project(path = ":helper:network"))
     api(project(path = ":navigation"))
 
+    debugImplementation(Dependencies.Compose.uiToolingPreview)
+
+    implementation(Dependencies.Accompanist.permissions)
+    implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.coil)
     implementation(Dependencies.Compose.material)
+    implementation(Dependencies.Compose.materialDesignIconsCore)
+    implementation(Dependencies.Compose.materialDesignIconsExtended)
+    implementation(Dependencies.Compose.uiToolingPreview)
     implementation(Dependencies.Compose.viewModel)
 
     testImplementation(Dependencies.Coroutine.test)

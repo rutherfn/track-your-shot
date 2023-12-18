@@ -2,18 +2,28 @@
 <resources>
     <string name="account_has_not_been_verified">Account Has Not Been Verified</string>
     <string name="add_player">Add Player</string>
+    <string name="add_player_stats">Add Player Stats</string>
     <string name="are_you_certain_you_wish_to_remove_x">Are you certain you wish to remove %s?</string>
     <string name="are_you_sure_you_want_to_leave_track_your_shot">Are you sure you want to leave Track Your Shot?</string>
     <string name="by_nicholas_rutherford">By Nicholas Rutherford</string>
+    <string name="c" translatable="false">C</string>
+    <string name="camera_permission_has_been_denied_description">Camera permission has been denied. To manually grant permission for the camera and upload pictures for the Player, kindly navigate to Settings.</string>
+    <string name="cancel">Cancel</string>
     <string name="center">Center</string>
     <string name="check_if_account_has_been_verified">Check if account has been verified</string>
+    <string name="choose_image_from_gallery">Choose Image From Gallery</string>
+    <string name="choose_option">Choose Option</string>
     <string name="compare_players_stats">Compare Players &amp; Stats</string>
     <string name="continue_text">Continue</string>
     <string name="click_me_to_create_account">Click me to create account</string>
     <string name="create_account">Create Account</string>
+    <string name="create_player">Create Player</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
     <string name="delete_x">Delete %s</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
+    <string name="enter_first_name">Enter First Name</string>
+    <string name="enter_last_name">Enter Last Name</string>
+    <string name="first_name">First Name</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="email">Email</string>
     <string name="email_in_use">Email in use</string>
@@ -28,20 +38,30 @@
     <string name="empty_field">Empty Field</string>
     <string name="empty_fields">Empty Fields</string>
     <string name="error_creating_account">Error Creating Account</string>
+    <string name="general_information">General Information</string>
     <string name="got_it">Got It</string>
     <string name="having_trouble_creating_your_account_please_try_again">Having trouble creating your account. Please try again</string>
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Having trouble logging into your account. Please try again and or ensure credentials exist and are valid.</string>
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Having trouble resetting password for this account. Please try again and or ensure credentials exist and are valid.</string>
     <string name="hint_add_new_player">Tap the "+" icon in the right-side toolbar to add a new player</string>
+    <string name="hint_log_new_shots">Press the "Log Shots" button to record shots for the player.</string>
+    <string name="hint_log_new_shots_for_player_x">Press the "Log Shots" button to record shots for %s</string>
+    <string name="issue_occurred">Issue Occurred</string>
+    <string name="last_name">Last Name</string>
     <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">Leaving the app will result you in not finishing the account creation process. You will not be able to continue until you verify your email. If you verify your email and then come back to the app, you can continue to create your account.</string>
     <string name="login">Login</string>
     <string name="login_icon_description">This is a login image for the login screen</string>
     <string name="logout">Logout</string>
+    <string name="log_shots">Log Shots</string>
     <string name="menu">Menu</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
     <string name="no">No</string>
     <string name="not_connected_to_internet">Not connected to internet</string>
+    <string name="no_first_name_entered">No First Name Entered</string>
+    <string name="no_last_name_entered">No Last Name Entered</string>
+    <string name="not_now">Not Now</string>
     <string name="no_current_players_added">No Current Players Added</string>
+    <string name="no_current_shots_logged_for_player">No Current Shots Logged For Player</string>
     <string name="open_email">Open Email</string>
     <string name="ok">Ok</string>
     <string name="reset_password">Reset Password</string>
@@ -52,17 +72,33 @@
     <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">Password is not in correct format. Please enter password in correct format</string>
     <string name="password_is_required_please_enter_a_password_to_create_a_account">Password is required. Please enter a password to create a account.</string>
     <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">Password is required. Please enter a password to login to existing account.</string>
+    <string name="permission_has_been_declined">Permission has been declined</string>
     <string name="pg" translatable="false">pg</string>
+    <string name="point_guard">Point Guard</string>
+    <string name="power_forward">Power Forward</string>
     <string name="pf" translatable="false">pf</string>
+    <string name="player_already_has_been_added_description">The specified player name has already been included. Kindly add a new player with a name that has not been added before.</string>
+    <string name="player_creation_failed_please_try_again">Player creation failed. Please try again.</string>
+    <string name="player_image">Player Image</string>
     <string name="players">Players</string>
+    <string name="players_first_name_empty_description">The player\'s first name is missing. Kindly provide a first name to proceed.</string>
+    <string name="players_last_name_empty_description">The player\'s last name is missing. Kindly provide a first name to proceed.</string>
+    <string name="position">Position</string>
     <string name="proceed_with_your_account">Proceed With Your Account</string>
+    <string name="read_external_storage_description">Permission to read external storage has been declined. To manually enable the "Read External Storage" permission and select an image from the gallery for the Player, please navigate to settings.</string>
+    <string name="read_media_images_description">Permission to read media images has been declined. To manually enable the "Read Media Images" permission and select an image from the gallery for the Player, please navigate to settings.</string>
+    <string name="remove_image">Remove Image</string>
     <string name="settings">Settings</string>
     <string name="sf" translatable="false">sf</string>
     <string name="sg" translatable="false">sg</string>
+    <string name="small_forward">Small Forward</string>
+    <string name="shooting_guard">Shooting Guard</string>
     <string name="stats">Stats</string>
     <string name="splash_icon_description">This is a splash image for the splash screen that gets displayed before app is triggered</string>
     <string name="successfully_sent_email_verification">Successfully sent verification</string>
+    <string name="take_a_picture">Take A Picture</string>
     <string name="terms_conditions">Terms &amp; Conditions</string>
+    <string name="the_image_upload_was_unsuccessful">The image upload was unsuccessful. Please attempt it once more.</string>
     <string name="there_was_a_error_creating_your_account_please_try_again">There was a error creating your account. Please try again.</string>
     <string name="this_email_is_already_used_for_another_account_please_enter_a_new_email">This email is already used for another account. Please enter a new email.</string>
     <string name="this_username_is_already_used_for_another_account_please_enter_a_new_username">This username is already used for another account. Please enter a new username.</string>
@@ -78,7 +114,9 @@
     <string name="unable_to_reset_password">Unable to reset password</string>
     <string name="unable_to_set_new_username">Unable to set new username</string>
     <string name="unable_to_send_email_verification">Unable to send email verification</string>
+    <string name="unable_to_upload_image">Unable to upload image</string>
     <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">We have detected a problem with your account. Please contact support to resolve issue.</string>
+    <string name="we_have_detected_currently_not_connected_to_internet_description">We have detected currently not connected to internet. Please connect to service, and try again.</string>
     <string name="username_is_required_please_enter_a_username_to_create_a_account">Username is required. Please enter a username to create a account.</string>
     <string name="we_were_able_to_send_email_verification_please_check_your_email_to_verify_account">We were able to send email verification. Please check your email to verify account</string>
     <string name="we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again">We were unable to send email verification. Please click send email verification to try again.</string>
@@ -89,4 +127,5 @@
     <string name="voice_commands">Voice Commands</string>
     <string name="x_position_x_player_name">%s , %s</string>
     <string name="yes">Yes</string>
+    <string name="your_player_could_not_be_retrieved_description">Your player could not be retrieved. Please try again.</string>
 </resources>

@@ -8,7 +8,7 @@ import com.nicholas.rutherford.track.your.shot.feature.create.account.authentica
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordViewModel
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import org.koin.android.ext.koin.androidContext

@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import com.nicholas.rutherford.track.your.shot.firebase.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestCreateAccountFirebaseRealtimeDatabaseResult
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
@@ -14,7 +15,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.slot
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -29,6 +29,7 @@ class CreateFirebaseUserInfoImplTest {
     private val createFirebaseLastUpdated = mockk<CreateFirebaseLastUpdated>(relaxed = true)
     private val firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
     private val firebaseDatabase = mockk<FirebaseDatabase>(relaxed = true)
+    private val firebaseStorage = mockk<FirebaseStorage>(relaxed = true)
 
     private val createAccountResponse = TestCreateAccountFirebaseAuthResponse().create()
     private val createAccountResult = TestCreateAccountFirebaseRealtimeDatabaseResult().create()
@@ -44,14 +45,14 @@ class CreateFirebaseUserInfoImplTest {
         createFirebaseUserInfoImpl = CreateFirebaseUserInfoImpl(
             firebaseAuth = firebaseAuth,
             createFirebaseLastUpdated = createFirebaseLastUpdated,
-            firebaseDatabase = firebaseDatabase
+            firebaseDatabase = firebaseDatabase,
+            firebaseStorage = firebaseStorage
         )
     }
 
     @Nested
     inner class AttemptToCreateAccountFirebaseAuthResponseFlow {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when add on complete listener is executed and isSuccessful returns true should set flow to valid create account response flow`() =
             runTest {
@@ -85,7 +86,6 @@ class CreateFirebaseUserInfoImplTest {
                 )
             }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when add on complete listener is executed and isSuccessful returns false should set flow to valid create account response flow`() =
             runTest {
@@ -127,7 +127,6 @@ class CreateFirebaseUserInfoImplTest {
     @Nested
     inner class AttemptToCreateFirebaseRealtimeDatabaseResponseFlow {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when add on complete listener is executed should set flow to true and value Pair when isSuccessful returns back true`() =
             runTest {
@@ -166,7 +165,6 @@ class CreateFirebaseUserInfoImplTest {
                 Assertions.assertEquals(Pair(true, reference.key), value)
             }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when add on complete listener is executed should set flow to false and null Pair when isSuccessful returns back false`() =
             runTest {
@@ -204,7 +202,6 @@ class CreateFirebaseUserInfoImplTest {
     @Nested
     inner class AttemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when add on complete listener is executed should set flow to false when isSuccessful returns back false`() = runTest {
             val mockTaskVoidResult = mockk<Task<Void>>()
@@ -239,7 +236,6 @@ class CreateFirebaseUserInfoImplTest {
             Assertions.assertEquals(false, value)
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when add on complete listener is executed should set flow to true when isSuccessful returns back true`() = runTest {
             val mockTaskVoidResult = mockk<Task<Void>>()

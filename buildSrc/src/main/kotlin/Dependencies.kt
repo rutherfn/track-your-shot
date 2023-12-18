@@ -16,7 +16,8 @@ object Dependencies {
     }
 
     object Accompanist {
-        const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${Versions.Dependencies.SystemUiController.core}"
+        const val permissions = "com.google.accompanist:accompanist-permissions:${Versions.Dependencies.Accompanist.permissions}"
+        const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${Versions.Dependencies.Accompanist.systemUiController}"
     }
 
     object Compose {
@@ -55,6 +56,7 @@ object Dependencies {
         const val authKtx = "com.google.firebase:firebase-auth-ktx:${Versions.Dependencies.Firebase.authKtx}"
         const val bom = "com.google.firebase:firebase-bom:${Versions.Dependencies.Firebase.bom}"
         const val databaseKtx = "com.google.firebase:firebase-database-ktx:${Versions.Dependencies.Firebase.ktx}"
+        const val storageKtx = "com.google.firebase:firebase-storage-ktx:${Versions.Dependencies.Firebase.ktx}"
     }
 
     object Junit {

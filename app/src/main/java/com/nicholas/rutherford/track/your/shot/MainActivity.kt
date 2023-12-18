@@ -25,6 +25,7 @@ open class MainActivity : ComponentActivity() {
                     splashViewModel = getViewModel(),
                     loginViewModel = getViewModel(),
                     playersListViewModel = getViewModel(),
+                    createEditPlayerViewModel = getViewModel(),
                     forgotPasswordViewModel = getViewModel(),
                     createAccountViewModel = getViewModel(),
                     authenticationViewModel = getViewModel()

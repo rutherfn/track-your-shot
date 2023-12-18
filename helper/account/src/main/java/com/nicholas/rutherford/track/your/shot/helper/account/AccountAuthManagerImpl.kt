@@ -18,6 +18,9 @@ import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -32,6 +35,8 @@ class AccountAuthManagerImpl(
     private val existingUserFirebase: ExistingUserFirebase
 ) : AccountAuthManager {
 
+    private val _loggedInPlayerListStateFlow: MutableStateFlow<List<Player>> = MutableStateFlow(value = emptyList())
+    override val loggedInPlayerListStateFlow: StateFlow<List<Player>> = _loggedInPlayerListStateFlow.asStateFlow()
     override fun logout() {
         scope.launch {
             navigator.progress(progressAction = Progress())
@@ -119,9 +124,10 @@ class AccountAuthManagerImpl(
                             )
                         }
 
+                    _loggedInPlayerListStateFlow.value = playerList
                     playerRepository.createListOfPlayers(playerList = playerList)
+                    disableProcessAndNavigateToPlayersList()
                 }
-                disableProcessAndNavigateToPlayersList()
             }
     }
 

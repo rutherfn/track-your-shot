@@ -1,7 +1,9 @@
 package com.nicholas.rutherford.track.your.shot.firebase.core.create
 
+import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.CreateAccountFirebaseRealtimeDatabaseResult
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
@@ -17,6 +19,7 @@ import java.util.Date
 class CreateFirebaseUserInfoImpl(
     private val firebaseAuth: FirebaseAuth,
     private val createFirebaseLastUpdated: CreateFirebaseLastUpdated,
+    private val firebaseStorage: FirebaseStorage,
     firebaseDatabase: FirebaseDatabase
 ) : CreateFirebaseUserInfo {
 
@@ -99,6 +102,34 @@ class CreateFirebaseUserInfoImpl(
                 .addOnCompleteListener { task ->
                     trySend(task.isSuccessful)
                 }
+            awaitClose()
+        }
+    }
+
+    override fun attemptToCreateImageFirebaseStorageResponseFlow(uri: Uri): Flow<String?> {
+        return callbackFlow {
+            val storageReference = firebaseStorage.getReference(Constants.IMAGES)
+                .child(System.currentTimeMillis().toString())
+
+            storageReference.putFile(uri)
+                .continueWithTask { task ->
+                    if (!task.isSuccessful) {
+                        task.exception?.let { throw it }
+                    }
+                    storageReference.downloadUrl
+                }
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val downloadUrl = task.result.toString()
+                        trySend(downloadUrl)
+                    } else {
+                        trySend(null)
+                    }
+                }
+                .addOnFailureListener {
+                    trySend(null)
+                }
+
             awaitClose()
         }
     }

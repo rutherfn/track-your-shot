@@ -2,6 +2,8 @@ package com.nicholas.rutherford.track.your.shot
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalDrawer
@@ -30,8 +32,10 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListScreen
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreatePlayerScreen
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreen
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.navigation.ComparePlayersStatsAction
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
@@ -60,6 +64,10 @@ fun NavigationComponent(
     val scope = rememberCoroutineScope()
 
     val alertState by navigator.alertActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
+    val appSettingsState by navigator.appSettingsActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
@@ -95,11 +103,27 @@ fun NavigationComponent(
     val createAccountViewModel = viewModels.createAccountViewModel
     val loginViewModel = viewModels.loginViewModel
     val playersListViewModel = viewModels.playersListViewModel
+    val createPlayerViewModel = viewModels.createEditPlayerViewModel
     val forgotPasswordViewModel = viewModels.forgotPasswordViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
             alert = newAlert
+        }
+    }
+    LaunchedEffect(appSettingsState) {
+        appSettingsState?.let { shouldOpenAppSettings ->
+            if (shouldOpenAppSettings) {
+                val intent = Intent()
+
+                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                val uri = Uri.fromParts("package", activity.packageName, null)
+                intent.data = uri
+
+                activity.startActivity(intent)
+
+                navigator.appSettings(appSettingsAction = null)
+            }
         }
     }
     LaunchedEffect(emailState) {
@@ -228,11 +252,30 @@ fun NavigationComponent(
                         state = playersListViewModel.playerListStateFlow.collectAsState().value,
                         onToolbarMenuClicked = { playersListViewModel.onToolbarMenuClicked() },
                         updatePlayerListState = { playersListViewModel.updatePlayerListState() },
+                        onAddPlayerClicked = { playersListViewModel.onAddPlayerClicked() },
                         onDeletePlayerClicked = { player -> playersListViewModel.onDeletePlayerClicked(player = player) }
                     )
                 )
             }
-            composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {
+            composable(route = NavigationDestinations.CREATE_PLAYER_SCREEN) {
+                CreatePlayerScreen(
+                    createEditPlayerParams = CreateEditPlayerParams(
+                        state = createPlayerViewModel.createEditPlayerStateFlow.collectAsState().value,
+                        onToolbarMenuClicked = { createPlayerViewModel.onToolbarMenuClicked() },
+                        onFirstNameValueChanged = { newFirstName -> createPlayerViewModel.onFirstNameValueChanged(newFirstName = newFirstName) },
+                        onLastNameValueChanged = { newLastName -> createPlayerViewModel.onLastNameValueChanged(newLastName = newLastName) },
+                        onPlayerPositionStringResIdValueChanged = { newPositionStringResId -> createPlayerViewModel.onPlayerPositionStringResIdValueChanged(newPositionStringResId) },
+                        onImageUploadClicked = { uri -> createPlayerViewModel.onImageUploadClicked(uri) },
+                        onCreatePlayerClicked = { uri -> createPlayerViewModel.onCreatePlayerClicked(uri) },
+                        permissionNotGrantedForCameraAlert = { createPlayerViewModel.permissionNotGrantedForCameraAlert() },
+                        permissionNotGrantedForReadMediaOrExternalStorageAlert = { createPlayerViewModel.permissionNotGrantedForReadMediaOrExternalStorageAlert() },
+                        onSelectedCreateEditImageOption = { option -> createPlayerViewModel.onSelectedCreateEditImageOption(option) }
+                    )
+                )
+            }
+            composable(
+                route = NavigationDestinations.FORGOT_PASSWORD_SCREEN
+            ) {
                 ForgotPasswordScreen(
                     forgotPasswordScreenParams = ForgotPasswordScreenParams(
                         state = forgotPasswordViewModel.forgotPasswordStateFlow.collectAsState().value,

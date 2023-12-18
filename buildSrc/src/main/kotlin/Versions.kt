@@ -21,10 +21,15 @@ object Versions {
             const val core = "4.3.1"
         }
 
+        object Accompanist {
+            const val permissions = "0.23.1"
+            const val systemUiController = "0.27.0"
+        }
+
         object Compose {
             const val activity = "1.5.1"
             const val bom = "2023.10.01"
-            const val coil = "1.3.2"
+            const val coil = "2.5.0"
             const val core = "1.5.3"
             const val navigation = "2.5.3"
             const val viewModel = "1.5.1"
@@ -76,7 +81,6 @@ object Versions {
             const val core = "2.5.2"
             const val coroutines = "1.7.3"
         }
-        object SystemUiController { const val core = "0.27.0" }
 
         object Timber { const val core = "5.0.1" }
 

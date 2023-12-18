@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.players
+package com.nicholas.rutherford.track.your.shot.feature.players.playerlist
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,24 +36,25 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPositionAbvId
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
-import java.util.Locale
 
 @Composable
 fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
     val isPlayerListEmpty = playerListScreenParams.state.playerList.isEmpty()
+
     Content(
         ui = {
             if (!isPlayerListEmpty) {
@@ -71,22 +72,21 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             shouldShowMiddleContentAppBar = true,
             onIconButtonClicked = {
                 playerListScreenParams.onToolbarMenuClicked.invoke()
+            },
+            onSecondaryIconButtonClicked = {
+                playerListScreenParams.onAddPlayerClicked.invoke()
             }
-        ),
-        invokeFunctionOnInit = {
-            playerListScreenParams.updatePlayerListState.invoke()
-        }
+        )
     )
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun PlayerItem(
     player: Player,
     onDeletePlayerClicked: (player: Player) -> Unit
 ) {
     val imagePainter = if (!player.imageUrl.isNullOrEmpty()) {
-        rememberImagePainter(data = player.imageUrl)
+        rememberAsyncImagePainter(model = player.imageUrl)
     } else {
         painterResource(id = DrawablesIds.launcherRound)
     }
@@ -124,8 +124,8 @@ fun PlayerItem(
                         text = stringResource(
                             id =
                             R.string.x_position_x_player_name,
-                            stringResource(id = positionId).uppercase(Locale.ROOT),
-                            "${player.firstName} ${player.lastName}"
+                            stringResource(id = positionId),
+                            player.fullName()
                         ),
                         style = TextStyles.body,
                         textAlign = TextAlign.Start
@@ -207,4 +207,42 @@ fun AddNewPlayerEmptyState() {
             )
         }
     }
+}
+
+@Composable
+@Preview
+fun PlayersListScreenWithItemsPreview() {
+    PlayersListScreen(
+        playerListScreenParams = PlayersListScreenParams(
+            state = PlayersListState(
+                playerList = listOf(
+                    Player(
+                        firstName = "first",
+                        lastName = "last",
+                        position = PlayerPositions.Center,
+                        firebaseKey = "key",
+                        imageUrl = null
+                    )
+                )
+            ),
+            onToolbarMenuClicked = {},
+            updatePlayerListState = {},
+            onAddPlayerClicked = {},
+            onDeletePlayerClicked = {}
+        )
+    )
+}
+
+@Composable
+@Preview
+fun PlayerListScreenEmptyStatePreview() {
+    PlayersListScreen(
+        playerListScreenParams = PlayersListScreenParams(
+            state = PlayersListState(playerList = emptyList()),
+            onToolbarMenuClicked = {},
+            updatePlayerListState = {},
+            onAddPlayerClicked = {},
+            onDeletePlayerClicked = {}
+        )
+    )
 }

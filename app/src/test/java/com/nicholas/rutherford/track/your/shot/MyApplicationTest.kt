@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import com.nicholas.rutherford.track.your.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.your.shot.build.type.BuildType
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationNavigation
@@ -77,9 +78,11 @@ class MyApplicationTest : KoinTest {
     fun `start koin on create should inject modules with instances as not null`() {
         mockkStatic(FirebaseAuth::class)
         mockkStatic(FirebaseDatabase::class)
+        mockkStatic(FirebaseStorage::class)
 
         every { FirebaseAuth.getInstance() } returns mockk(relaxed = true)
         every { FirebaseDatabase.getInstance() } returns mockk(relaxed = true)
+        every { FirebaseStorage.getInstance() } returns mockk(relaxed = true)
 
         myApplication.startKoinOnCreate()
 
