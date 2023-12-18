@@ -614,4 +614,79 @@ class CreateEditPlayerViewModelTest {
         Assertions.assertEquals(alert.dismissButton!!.buttonText, "Ok")
         Assertions.assertEquals(alert.description, "The image upload was unsuccessful. Please attempt it once more.")
     }
+
+    @Test
+    fun `we have detected a problem with your account alert`() {
+        every { application.getString(StringsIds.issueOccurred) } returns "Issue Occurred"
+        every { application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue) } returns "We have detected a problem with your account. Please contact support to resolve issue."
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+
+        val alert = createEditPlayerViewModel.weHaveDetectedAProblemWithYourAccountAlert()
+
+        Assertions.assertEquals(alert.title, "Issue Occurred")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Got It")
+        Assertions.assertEquals(alert.description, "We have detected a problem with your account. Please contact support to resolve issue.")
+    }
+
+    @Test
+    fun `we were not able to create the player alert`() {
+        every { application.getString(StringsIds.issueOccurred) } returns "Issue Occurred"
+        every { application.getString(StringsIds.playerCreationFailedPleaseTryAgain) } returns "Player creation failed. Please try again."
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+
+        val alert = createEditPlayerViewModel.weWereNotAbleToCreateThePlayerAlert()
+
+        Assertions.assertEquals(alert.title, "Issue Occurred")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Got It")
+        Assertions.assertEquals(alert.description, "Player creation failed. Please try again.")
+    }
+
+    @Test
+    fun `your player could not be retrieved alert`() {
+        every { application.getString(StringsIds.issueOccurred) } returns "Issue Occurred"
+        every { application.getString(StringsIds.yourPlayerCouldNotBeRetrievedDescription) } returns "Your player could not be retrieved. Please try again."
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+
+        val alert = createEditPlayerViewModel.yourPlayerCouldNotBeRetrievedAlert()
+
+        Assertions.assertEquals(alert.title, "Issue Occurred")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Got It")
+        Assertions.assertEquals(alert.description, "Your player could not be retrieved. Please try again.")
+    }
+
+    @Test
+    fun `player already has been added alert`() {
+        every { application.getString(StringsIds.issueOccurred) } returns "Issue Occurred"
+        every { application.getString(StringsIds.playerAlreadyHasBeenAddedDescription) } returns "The specified player name has already been included. Kindly add a new player with a name that has not been added before."
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+
+        val alert = createEditPlayerViewModel.playerAlreadyHasBeenAddedAlert()
+
+        Assertions.assertEquals(alert.title, "Issue Occurred")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Got It")
+        Assertions.assertEquals(alert.description, "The specified player name has already been included. Kindly add a new player with a name that has not been added before.")
+    }
+
+    @Test
+    fun `remove image sheet`() {
+        every { application.getString(StringsIds.chooseOption) } returns "Choose Option"
+        every { application.getString(StringsIds.removeImage) } returns "Remove Image"
+
+        val sheet = createEditPlayerViewModel.removeImageSheet()
+
+        Assertions.assertEquals(sheet.title, "Choose Option")
+        Assertions.assertEquals(sheet.values, listOf("Remove Image"))
+    }
+
+    @Test
+    fun `choose from gallery or take picture sheet`() {
+        every { application.getString(StringsIds.chooseOption) } returns "Choose Option"
+        every { application.getString(StringsIds.chooseImageFromGallery) } returns "Choose Image From Gallery"
+        every { application.getString(StringsIds.takeAPicture) } returns "Take A Picture"
+
+        val sheet = createEditPlayerViewModel.chooseFromGalleryOrTakePictureSheet()
+
+        Assertions.assertEquals(sheet.title, "Choose Option")
+        Assertions.assertEquals(sheet.values, listOf("Choose Image From Gallery", "Take A Picture"))
+    }
 }
