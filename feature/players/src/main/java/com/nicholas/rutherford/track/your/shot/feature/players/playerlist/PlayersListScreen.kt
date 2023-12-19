@@ -60,7 +60,11 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             if (!isPlayerListEmpty) {
                 LazyColumn {
                     items(playerListScreenParams.state.playerList) { player ->
-                        PlayerItem(player = player, onDeletePlayerClicked = playerListScreenParams.onDeletePlayerClicked)
+                        PlayerItem(
+                            player = player,
+                            onEditPlayerClicked = playerListScreenParams.onEditPlayerClicked,
+                            onDeletePlayerClicked = playerListScreenParams.onDeletePlayerClicked
+                        )
                     }
                 }
             } else {
@@ -83,6 +87,7 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
 @Composable
 fun PlayerItem(
     player: Player,
+    onEditPlayerClicked: (player: Player) -> Unit,
     onDeletePlayerClicked: (player: Player) -> Unit
 ) {
     val imagePainter = if (!player.imageUrl.isNullOrEmpty()) {
@@ -150,9 +155,10 @@ fun PlayerItem(
                     ) {
                         DropdownMenuItem(onClick = {
                             expanded = false
+                            onEditPlayerClicked.invoke(player)
                         }) {
                             Text(
-                                text = stringResource(id = R.string.view_x, player.fullName())
+                                text = stringResource(id = R.string.edit_x, player.fullName())
                             )
                         }
 
@@ -228,6 +234,7 @@ fun PlayersListScreenWithItemsPreview() {
             onToolbarMenuClicked = {},
             updatePlayerListState = {},
             onAddPlayerClicked = {},
+            onEditPlayerClicked = {},
             onDeletePlayerClicked = {}
         )
     )
@@ -242,6 +249,7 @@ fun PlayerListScreenEmptyStatePreview() {
             onToolbarMenuClicked = {},
             updatePlayerListState = {},
             onAddPlayerClicked = {},
+            onEditPlayerClicked = {},
             onDeletePlayerClicked = {}
         )
     )

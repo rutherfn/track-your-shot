@@ -11,6 +11,9 @@ class PlayersListNavigationImpl(
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
     override fun disableProgress() = navigator.progress(progressAction = null)
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
-    override fun navigateToCreatePlayer() = navigator.navigate(navigationAction = NavigationActions.PlayersList.createPlayer())
+    override fun navigateToCreateEditPlayer(
+        firstName: String,
+        lastName: String
+    ) = navigator.navigate(navigationAction = NavigationActions.PlayersList.createEditPlayer(firstName = firstName, lastName = lastName))
     override fun openNavigationDrawer() = navigator.showNavigationDrawer(navigationDrawerAction = true)
 }

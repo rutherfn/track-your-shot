@@ -253,11 +253,21 @@ fun NavigationComponent(
                         onToolbarMenuClicked = { playersListViewModel.onToolbarMenuClicked() },
                         updatePlayerListState = { playersListViewModel.updatePlayerListState() },
                         onAddPlayerClicked = { playersListViewModel.onAddPlayerClicked() },
+                        onEditPlayerClicked = { player -> playersListViewModel.onEditPlayerClicked(player = player) },
                         onDeletePlayerClicked = { player -> playersListViewModel.onDeletePlayerClicked(player = player) }
                     )
                 )
             }
-            composable(route = NavigationDestinations.CREATE_PLAYER_SCREEN) {
+            composable(
+                route = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS,
+                arguments = NavArguments.createEditPlayer
+            ) {
+                val firstName = it.arguments?.getString(NamedArguments.FIRST_NAME)
+                val firstNameArgument = firstName?.let { name -> name.ifEmpty { null } } ?: run { null }
+
+                val lastName = it.arguments?.getString(NamedArguments.LAST_NAME)
+                val lastNameArgument = lastName?.let { name -> name.ifEmpty { null } } ?: run { null }
+
                 CreatePlayerScreen(
                     createEditPlayerParams = CreateEditPlayerParams(
                         state = createPlayerViewModel.createEditPlayerStateFlow.collectAsState().value,
@@ -269,7 +279,9 @@ fun NavigationComponent(
                         onCreatePlayerClicked = { uri -> createPlayerViewModel.onCreatePlayerClicked(uri) },
                         permissionNotGrantedForCameraAlert = { createPlayerViewModel.permissionNotGrantedForCameraAlert() },
                         permissionNotGrantedForReadMediaOrExternalStorageAlert = { createPlayerViewModel.permissionNotGrantedForReadMediaOrExternalStorageAlert() },
-                        onSelectedCreateEditImageOption = { option -> createPlayerViewModel.onSelectedCreateEditImageOption(option) }
+                        onSelectedCreateEditImageOption = { option -> createPlayerViewModel.onSelectedCreateEditImageOption(option) },
+                        firstNameArgument = firstNameArgument,
+                        lastNameArgument = lastNameArgument
                     )
                 )
             }

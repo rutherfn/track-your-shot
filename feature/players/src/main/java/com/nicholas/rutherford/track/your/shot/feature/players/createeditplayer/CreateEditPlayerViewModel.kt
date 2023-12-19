@@ -16,6 +16,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFireba
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.shouldAskForReadMediaImages
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPosition
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
@@ -39,6 +40,23 @@ class CreateEditPlayerViewModel(
 
     internal val createEditPlayerMutableStateFlow = MutableStateFlow(value = CreateEditPlayerState())
     val createEditPlayerStateFlow = createEditPlayerMutableStateFlow.asStateFlow()
+
+    var editedPlayer: Player? = null
+
+    suspend fun checkForExistingPlayer(firstNameArgument: String, lastNameArgument: String) {
+        safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
+            if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
+                println("get here test addada")
+                playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)?.let { player ->
+                    editedPlayer = player
+                    createEditPlayerMutableStateFlow.value = createEditPlayerMutableStateFlow.value.copy(
+                        firstName = player.firstName,
+                        lastName = player.lastName
+                    )
+                }
+            }
+        }
+    }
 
     fun onToolbarMenuClicked() = navigation.pop()
 

@@ -7,6 +7,6 @@ interface PlayersListNavigation {
     fun alert(alert: Alert)
     fun disableProgress()
     fun enableProgress(progress: Progress)
-    fun navigateToCreatePlayer()
+    fun navigateToCreateEditPlayer(firstName: String, lastName: String)
     fun openNavigationDrawer()
 }

@@ -5,7 +5,7 @@ object NavigationDestinationsWithParams {
         return "${NavigationDestinations.AUTHENTICATION_SCREEN}/$username/$email"
     }
 
-    fun playersListWithParams(shouldUpdate: Boolean): String {
-        return "${NavigationDestinations.PLAYERS_LIST_SCREEN}/$shouldUpdate"
+    fun createEditPlayerWithParams(firstName: String, lastName: String): String {
+        return "${NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN}/$firstName/$lastName"
     }
 }

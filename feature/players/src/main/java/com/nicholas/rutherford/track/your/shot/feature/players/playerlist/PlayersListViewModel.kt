@@ -93,7 +93,7 @@ class PlayersListViewModel(
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
 
     fun onAddPlayerClicked() {
-        navigation.navigateToCreatePlayer()
+        navigation.navigateToCreateEditPlayer(firstName = "", lastName = "")
     }
 
     suspend fun onYesDeletePlayerClicked(player: Player) {
@@ -136,6 +136,8 @@ class PlayersListViewModel(
             navigation.alert(alert = notConnectedToInternetAlert())
         }
     }
+
+    fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)
 
     fun onDeletePlayerClicked(player: Player) = navigation.alert(alert = deletePlayerAlert(player = player))
 

@@ -25,6 +25,7 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,6 +63,13 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
     var shouldAskForCameraPermission by remember { mutableStateOf(value = false) }
     var shouldAskGalleryPermission by remember { mutableStateOf(value = false) }
     val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        createEditPlayerParams.checkForExistingPlayer(
+            createEditPlayerParams.firstNameArgument,
+            createEditPlayerParams.lastNameArgument
+        )
+    }
 
     Content(
         ui = {

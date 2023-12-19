@@ -21,6 +21,7 @@
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
     <string name="delete_x">Delete %s</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
+    <string name="edit_x">Edit %s</string>
     <string name="enter_first_name">Enter First Name</string>
     <string name="enter_last_name">Enter Last Name</string>
     <string name="first_name">First Name</string>
