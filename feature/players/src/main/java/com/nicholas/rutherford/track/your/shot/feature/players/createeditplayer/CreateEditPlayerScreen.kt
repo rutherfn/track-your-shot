@@ -4,6 +4,7 @@ package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 
 import android.Manifest
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
@@ -63,6 +64,10 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
     var shouldAskForCameraPermission by remember { mutableStateOf(value = false) }
     var shouldAskGalleryPermission by remember { mutableStateOf(value = false) }
     val context = LocalContext.current
+
+    BackHandler(true) {
+        createEditPlayerParams.onToolbarMenuClicked()
+    }
 
     LaunchedEffect(Unit) {
         createEditPlayerParams.checkForExistingPlayer()
@@ -133,7 +138,11 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
                                         .clickable {
                                             scope.launch { bottomState.hide() }
 
-                                            when (createEditPlayerParams.onSelectedCreateEditImageOption(value)) {
+                                            when (
+                                                createEditPlayerParams.onSelectedCreateEditImageOption(
+                                                    value
+                                                )
+                                            ) {
                                                 CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY -> {
                                                     if (hasReadImagePermissionEnabled(context = context)) {
                                                         singlePhotoPickerLauncher.launch(Constants.IMAGE)
@@ -239,7 +248,7 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
             }
         },
         appBar = AppBar(
-            toolbarTitle = stringResource(id = R.string.create_player),
+            toolbarTitle = stringResource(id = createEditPlayerParams.state.toolbarNameResId),
             shouldShowMiddleContentAppBar = false,
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = true,

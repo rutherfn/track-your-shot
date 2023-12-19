@@ -41,15 +41,15 @@ class CreateEditPlayerViewModel(
     internal val createEditPlayerMutableStateFlow = MutableStateFlow(value = CreateEditPlayerState())
     val createEditPlayerStateFlow = createEditPlayerMutableStateFlow.asStateFlow()
 
-    var editedPlayer: Player? = null
+    private var editedPlayer: Player? = null
 
     fun checkForExistingPlayer(firstNameArgument: String?, lastNameArgument: String?) {
         scope.launch {
             safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
                 if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
-                    println("get here test addada")
                     playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)
                         ?.let { player ->
+                            onClearStateAndUpdateToolbarName(isEditingPlayer = true)
                             editedPlayer = player
                             createEditPlayerMutableStateFlow.value =
                                 createEditPlayerMutableStateFlow.value.copy(
@@ -57,17 +57,26 @@ class CreateEditPlayerViewModel(
                                     lastName = player.lastName
                                 )
                         }
+                } else {
+                    onClearStateAndUpdateToolbarName(isEditingPlayer = false)
                 }
+            } ?: run {
+                onClearStateAndUpdateToolbarName(isEditingPlayer = false)
             }
         }
     }
 
-    fun onClearState() {
-        createEditPlayerMutableStateFlow.value = CreateEditPlayerState()
+    internal fun onClearStateAndUpdateToolbarName(isEditingPlayer: Boolean) {
+        createEditPlayerMutableStateFlow.value = CreateEditPlayerState(
+            toolbarNameResId = if (isEditingPlayer) {
+                StringsIds.editPlayer
+            } else {
+                StringsIds.createPlayer
+            }
+        )
     }
 
     fun onToolbarMenuClicked() {
-        onClearState()
         navigation.pop()
     }
 

@@ -6,6 +6,7 @@ import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 data class CreateEditPlayerState(
     val firstName: String = "",
     val lastName: String = "",
+    val toolbarNameResId: Int = StringsIds.createPlayer,
     val playerPositionStringResId: Int = StringsIds.pointGuard,
     val sheet: Sheet? = null
 )

@@ -16,6 +16,7 @@ object StringsIds {
     val continueText = R.string.continue_text
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val createAccount = R.string.create_account
+    val createPlayer = R.string.create_player
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount =
         R.string.current_account_has_not_been_verified_please_open_email_to_verify_account
     val deleteX = R.string.delete_x
@@ -27,6 +28,7 @@ object StringsIds {
         R.string.email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account
     val firstName = R.string.first_name
     val forgotPassword = R.string.forgot_password
+    val editPlayer = R.string.edit_player
     val empty = R.string.empty
     val emptyField = R.string.empty_field
     val emptyFields = R.string.empty_fields
