@@ -99,11 +99,13 @@ fun NavigationComponent(
     var alert: Alert? by remember { mutableStateOf(value = null) }
     var progress: Progress? by remember { mutableStateOf(value = null) }
 
+    val screenContents = ScreenContents()
+
     val mainActivityViewModel = viewModels.mainActivityViewModel
     val createAccountViewModel = viewModels.createAccountViewModel
     val loginViewModel = viewModels.loginViewModel
     val playersListViewModel = viewModels.playersListViewModel
-    val createPlayerViewModel = viewModels.createEditPlayerViewModel
+    val createEditPlayerViewModel = viewModels.createEditPlayerViewModel
     val forgotPasswordViewModel = viewModels.forgotPasswordViewModel
 
     LaunchedEffect(alertState) {
@@ -261,29 +263,21 @@ fun NavigationComponent(
             composable(
                 route = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS,
                 arguments = NavArguments.createEditPlayer
-            ) {
-                val firstName = it.arguments?.getString(NamedArguments.FIRST_NAME)
-                val firstNameArgument = firstName?.let { name -> name.ifEmpty { null } } ?: run { null }
-
-                val lastName = it.arguments?.getString(NamedArguments.LAST_NAME)
-                val lastNameArgument = lastName?.let { name -> name.ifEmpty { null } } ?: run { null }
-
-                CreatePlayerScreen(
-                    createEditPlayerParams = CreateEditPlayerParams(
-                        state = createPlayerViewModel.createEditPlayerStateFlow.collectAsState().value,
-                        onToolbarMenuClicked = { createPlayerViewModel.onToolbarMenuClicked() },
-                        onFirstNameValueChanged = { newFirstName -> createPlayerViewModel.onFirstNameValueChanged(newFirstName = newFirstName) },
-                        onLastNameValueChanged = { newLastName -> createPlayerViewModel.onLastNameValueChanged(newLastName = newLastName) },
-                        onPlayerPositionStringResIdValueChanged = { newPositionStringResId -> createPlayerViewModel.onPlayerPositionStringResIdValueChanged(newPositionStringResId) },
-                        onImageUploadClicked = { uri -> createPlayerViewModel.onImageUploadClicked(uri) },
-                        onCreatePlayerClicked = { uri -> createPlayerViewModel.onCreatePlayerClicked(uri) },
-                        permissionNotGrantedForCameraAlert = { createPlayerViewModel.permissionNotGrantedForCameraAlert() },
-                        permissionNotGrantedForReadMediaOrExternalStorageAlert = { createPlayerViewModel.permissionNotGrantedForReadMediaOrExternalStorageAlert() },
-                        onSelectedCreateEditImageOption = { option -> createPlayerViewModel.onSelectedCreateEditImageOption(option) },
-                        firstNameArgument = firstNameArgument,
-                        lastNameArgument = lastNameArgument
-                    )
-                )
+            ) { entry ->
+                val firstNameArgument = entry.arguments?.getString(NamedArguments.FIRST_NAME)
+                val lastNameArgument = entry.arguments?.getString(NamedArguments.LAST_NAME)
+                screenContents.createEditPlayerContent(
+                    firstNameArgument = firstNameArgument,
+                    lastNameArgument = lastNameArgument,
+                    createEditPlayerViewModel = createEditPlayerViewModel
+                )(entry)
+            }
+            composable(route = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN) { entry ->
+                screenContents.createEditPlayerContent(
+                    firstNameArgument = null,
+                    lastNameArgument = null,
+                    createEditPlayerViewModel = createEditPlayerViewModel
+                )(entry)
             }
             composable(
                 route = NavigationDestinations.FORGOT_PASSWORD_SCREEN

@@ -65,10 +65,7 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        createEditPlayerParams.checkForExistingPlayer(
-            createEditPlayerParams.firstNameArgument,
-            createEditPlayerParams.lastNameArgument
-        )
+        createEditPlayerParams.checkForExistingPlayer()
     }
 
     Content(

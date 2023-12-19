@@ -43,22 +43,33 @@ class CreateEditPlayerViewModel(
 
     var editedPlayer: Player? = null
 
-    suspend fun checkForExistingPlayer(firstNameArgument: String, lastNameArgument: String) {
-        safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
-            if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
-                println("get here test addada")
-                playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)?.let { player ->
-                    editedPlayer = player
-                    createEditPlayerMutableStateFlow.value = createEditPlayerMutableStateFlow.value.copy(
-                        firstName = player.firstName,
-                        lastName = player.lastName
-                    )
+    fun checkForExistingPlayer(firstNameArgument: String?, lastNameArgument: String?) {
+        scope.launch {
+            safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
+                if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
+                    println("get here test addada")
+                    playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)
+                        ?.let { player ->
+                            editedPlayer = player
+                            createEditPlayerMutableStateFlow.value =
+                                createEditPlayerMutableStateFlow.value.copy(
+                                    firstName = player.firstName,
+                                    lastName = player.lastName
+                                )
+                        }
                 }
             }
         }
     }
 
-    fun onToolbarMenuClicked() = navigation.pop()
+    fun onClearState() {
+        createEditPlayerMutableStateFlow.value = CreateEditPlayerState()
+    }
+
+    fun onToolbarMenuClicked() {
+        onClearState()
+        navigation.pop()
+    }
 
     fun onImageUploadClicked(uri: Uri?) {
         if (uri == null) {

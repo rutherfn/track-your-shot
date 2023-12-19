@@ -4,7 +4,7 @@ import android.net.Uri
 
 data class CreateEditPlayerParams(
     val state: CreateEditPlayerState,
-    val checkForExistingPlayer: (firstNameArgument: String?, lastNameArgument: String?) -> Unit,
+    val checkForExistingPlayer: () -> Unit,
     val onToolbarMenuClicked: () -> Unit,
     val onFirstNameValueChanged: (newFirstName: String) -> Unit,
     val onLastNameValueChanged: (newFirstName: String) -> Unit,
@@ -13,7 +13,5 @@ data class CreateEditPlayerParams(
     val onCreatePlayerClicked: (uri: Uri?) -> Unit,
     val permissionNotGrantedForCameraAlert: () -> Unit,
     val permissionNotGrantedForReadMediaOrExternalStorageAlert: () -> Unit,
-    val onSelectedCreateEditImageOption: (uri: String) -> CreateEditImageOption,
-    val firstNameArgument: String?,
-    val lastNameArgument: String?
+    val onSelectedCreateEditImageOption: (uri: String) -> CreateEditImageOption
 )
