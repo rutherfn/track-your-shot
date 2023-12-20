@@ -4,6 +4,7 @@ import android.net.Uri
 
 data class CreateEditPlayerParams(
     val state: CreateEditPlayerState,
+    val onClearImageState: () -> Unit,
     val checkForExistingPlayer: () -> Unit,
     val onToolbarMenuClicked: () -> Unit,
     val onFirstNameValueChanged: (newFirstName: String) -> Unit,

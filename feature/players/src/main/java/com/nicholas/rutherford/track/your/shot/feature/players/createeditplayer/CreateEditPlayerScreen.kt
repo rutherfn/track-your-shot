@@ -87,12 +87,12 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
                             }
                         )
                         val cameraLauncher = rememberLauncherForActivityResult(
-                            contract = ActivityResultContracts.TakePicturePreview(),
-                            onResult = { bitmap ->
-                                hasUploadedImage = bitmap != null || imageUri != null
-                                imageUri = bitmap?.let { getImageUri(context = context, image = it) } ?: imageUri
-                            }
-                        )
+                            contract = ActivityResultContracts.TakePicturePreview()
+                        ) { bitmap ->
+                            hasUploadedImage = bitmap != null || imageUri != null
+                            imageUri = bitmap?.let { getImageUri(context = context, image = it) }
+                                ?: imageUri
+                        }
                         val cameraPermissionLauncher = rememberLauncherForActivityResult(
                             contract = ActivityResultContracts.RequestPermission(),
                             onResult = { isGranted ->
@@ -162,6 +162,7 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
                                                 else -> {
                                                     imageUri = null
                                                     hasUploadedImage = false
+                                                    createEditPlayerParams.onClearImageState.invoke()
                                                 }
                                             }
                                         }

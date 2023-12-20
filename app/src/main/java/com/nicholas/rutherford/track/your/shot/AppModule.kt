@@ -235,6 +235,7 @@ class AppModule {
             CreateEditPlayerViewModel(
                 application = androidApplication(),
                 createFirebaseUserInfo = get(),
+                updateFirebaseUserInfo = get(),
                 readFirebaseUserInfo = get(),
                 playerRepository = get(),
                 activeUserRepository = get(),

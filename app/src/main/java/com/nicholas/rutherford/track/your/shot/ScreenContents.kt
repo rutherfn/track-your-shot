@@ -17,6 +17,7 @@ class ScreenContents {
         CreatePlayerScreen(
             createEditPlayerParams = CreateEditPlayerParams(
                 state = createEditPlayerViewModel.createEditPlayerStateFlow.collectAsState().value,
+                onClearImageState = { createEditPlayerViewModel.onClearImageState() },
                 checkForExistingPlayer = {
                     createEditPlayerViewModel.checkForExistingPlayer(
                         firstNameArgument = firstNameArgument,

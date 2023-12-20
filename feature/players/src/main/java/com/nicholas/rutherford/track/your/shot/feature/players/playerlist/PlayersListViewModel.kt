@@ -58,10 +58,9 @@ class PlayersListViewModel(
 
     private fun collectPlayerAdditionUpdates() {
         scope.launch {
-            playersAdditionUpdates.newPlayerAddedStateFlow.collectLatest { playerAdded ->
-                playerAdded?.let { player ->
-                    handlePlayerAdded(player = player)
-                }
+            playersAdditionUpdates.newPlayerHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
+                println("has been added $hasBeenAdded")
+                handlePlayerAdded(hasBeenAdded = hasBeenAdded)
             }
         }
     }
@@ -74,11 +73,11 @@ class PlayersListViewModel(
         }
     }
 
-    internal fun handlePlayerAdded(player: Player) {
-        if (!currentPlayerArrayList.contains(player)) {
-            currentPlayerArrayList.add(player)
-            playerListMutableStateFlow.value =
-                PlayersListState(playerList = currentPlayerArrayList.toList())
+    internal fun handlePlayerAdded(hasBeenAdded: Boolean) {
+        if (hasBeenAdded) {
+            currentPlayerArrayList.clear()
+            updatePlayerListState()
+           // playersAdditionUpdates.updateNewPlayerHasBeenAddedFlow(hasBeenAdded = false)
         }
     }
 

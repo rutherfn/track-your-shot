@@ -19,6 +19,7 @@
     <string name="create_account">Create Account</string>
     <string name="create_player">Create Player</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
+    <string name="current_players_has_no_changes_description">There haven\'t been any recent updates or modifications to the current player. Please make adjustments to the existing player to proceed.</string>
     <string name="delete_x">Delete %s</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
     <string name="edit_x">Edit %s</string>
@@ -58,6 +59,7 @@
     <string name="menu">Menu</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
     <string name="no">No</string>
+    <string name="no_changes_made">No Changes Made</string>
     <string name="not_connected_to_internet">Not connected to internet</string>
     <string name="no_first_name_entered">No First Name Entered</string>
     <string name="no_last_name_entered">No Last Name Entered</string>
