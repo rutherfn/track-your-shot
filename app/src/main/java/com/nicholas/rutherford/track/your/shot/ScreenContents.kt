@@ -34,8 +34,8 @@ class ScreenContents {
                         newLastName = newLastName
                     )
                 },
-                onPlayerPositionStringResIdValueChanged = { newPositionStringResId ->
-                    createEditPlayerViewModel.onPlayerPositionStringResIdValueChanged(
+                onPlayerPositionStringChanged = { newPositionStringResId ->
+                    createEditPlayerViewModel.onPlayerPositionStringChanged(
                         newPositionStringResId
                     )
                 },

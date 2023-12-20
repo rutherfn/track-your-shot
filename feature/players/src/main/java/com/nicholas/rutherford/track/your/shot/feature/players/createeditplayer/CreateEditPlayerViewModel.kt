@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.Center.toPlayerPosition
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
@@ -18,7 +19,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealt
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.shouldAskForReadMediaImages
-import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPosition
+import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,36 +50,26 @@ class CreateEditPlayerViewModel(
                 if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
                     playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)
                         ?.let { player ->
-                            onClearStateAndUpdateToolbarName(isEditingPlayer = true)
                             editedPlayer = player
                             createEditPlayerMutableStateFlow.value =
                                 createEditPlayerMutableStateFlow.value.copy(
                                     firstName = player.firstName,
-                                    lastName = player.lastName
+                                    lastName = player.lastName,
+                                    editedPlayerUrl = player.imageUrl ?: "",
+                                    toolbarNameResId = StringsIds.editPlayer,
+                                    playerPositionString = application.getString(player.position.toType())
                                 )
                         }
                 } else {
-                    onClearStateAndUpdateToolbarName(isEditingPlayer = false)
+                    createEditPlayerMutableStateFlow.value = CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
                 }
             } ?: run {
-                onClearStateAndUpdateToolbarName(isEditingPlayer = false)
+                createEditPlayerMutableStateFlow.value = CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
             }
         }
     }
 
-    internal fun onClearStateAndUpdateToolbarName(isEditingPlayer: Boolean) {
-        createEditPlayerMutableStateFlow.value = CreateEditPlayerState(
-            toolbarNameResId = if (isEditingPlayer) {
-                StringsIds.editPlayer
-            } else {
-                StringsIds.createPlayer
-            }
-        )
-    }
-
-    fun onToolbarMenuClicked() {
-        navigation.pop()
-    }
+    fun onToolbarMenuClicked() = navigation.pop()
 
     fun onImageUploadClicked(uri: Uri?) {
         if (uri == null) {
@@ -145,6 +136,10 @@ class CreateEditPlayerViewModel(
         }
     }
 
+    fun hasNotEditedExistingPlayer(existingPlayer: Player, uri: Uri?) {
+     //   val currentPlayerPosition:
+    }
+
     fun checkIfPlayerAlreadyExists(state: CreateEditPlayerState, uri: Uri?) {
         scope.launch {
             val player = playerRepository.fetchPlayerByName(
@@ -188,7 +183,7 @@ class CreateEditPlayerViewModel(
                 playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
                     firstName = state.firstName,
                     lastName = state.lastName,
-                    positionValue = state.playerPositionStringResId.toPlayerPosition().value,
+                    positionValue = state.playerPositionString.toPlayerPosition(application = application).value,
                     imageUrl = imageUrl ?: ""
                 )
             ).collectLatest { isSuccessful ->
@@ -259,7 +254,7 @@ class CreateEditPlayerViewModel(
             val player = Player(
                 firstName = state.firstName,
                 lastName = state.lastName,
-                position = state.playerPositionStringResId.toPlayerPosition(),
+                position = state.playerPositionString.toPlayerPosition(application = application),
                 firebaseKey = playerKey,
                 imageUrl = imageUrl ?: ""
             )
@@ -281,8 +276,8 @@ class CreateEditPlayerViewModel(
         createEditPlayerMutableStateFlow.value = createEditPlayerMutableStateFlow.value.copy(lastName = newLastName)
     }
 
-    fun onPlayerPositionStringResIdValueChanged(newPositionStringResId: Int) {
-        createEditPlayerMutableStateFlow.value = createEditPlayerMutableStateFlow.value.copy(playerPositionStringResId = newPositionStringResId)
+    fun onPlayerPositionStringChanged(newPositionString: String) {
+        createEditPlayerMutableStateFlow.value = createEditPlayerMutableStateFlow.value.copy(playerPositionString = newPositionString)
     }
 
     internal fun cameraPermissionNotGrantedAlert(): Alert {

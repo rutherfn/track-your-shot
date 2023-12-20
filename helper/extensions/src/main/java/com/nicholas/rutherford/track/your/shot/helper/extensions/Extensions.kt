@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.helper.extensions
 
 import android.Manifest
+import android.app.Application
 import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
@@ -25,29 +26,6 @@ inline fun <T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, R : Any> safeLet(p
     return if (p1 != null && p2 != null && p3 != null && p4 != null && p5 != null) block(p1, p2, p3, p4, p5) else null
 }
 
-fun Int.toPlayerPosition(): PlayerPositions {
-    return when (this) {
-        StringsIds.pointGuard -> {
-            PlayerPositions.PointGuard
-        }
-        StringsIds.shootingGuard -> {
-            PlayerPositions.ShootingGuard
-        }
-        StringsIds.smallForward -> {
-            PlayerPositions.SmallForward
-        }
-        StringsIds.powerForward -> {
-            PlayerPositions.PowerForward
-        }
-        StringsIds.center -> {
-            PlayerPositions.Center
-        }
-        else -> {
-            PlayerPositions.None
-        }
-    }
-}
-
 fun Int.toPlayerPositionAbvId(): Int? {
     return when (this) {
         PlayerPositions.PointGuard.value -> {
@@ -66,6 +44,24 @@ fun Int.toPlayerPositionAbvId(): Int? {
             StringsIds.c
         }
         else -> { null }
+    }
+}
+
+fun PlayerPositions.toType(): Int {
+    return when (this) {
+        PlayerPositions.PointGuard -> {
+            StringsIds.pointGuard
+        }
+        PlayerPositions.ShootingGuard -> {
+            StringsIds.shootingGuard
+        }
+        PlayerPositions.SmallForward -> {
+            StringsIds.smallForward
+        }
+        PlayerPositions.PowerForward -> {
+            StringsIds.powerForward
+        }
+        else -> { StringsIds.center }
     }
 }
 

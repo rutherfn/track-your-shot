@@ -31,9 +31,9 @@ fun UploadPlayerImageContent(
     imageUri: Uri?
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        if (hasUploadedImage && imageUri != null) {
+        if (hasUploadedImage && imageUri != null || createEditPlayerParams.state.editedPlayerUrl.isNotEmpty()) {
             AsyncImage(
-                model = imageUri,
+                model = imageUri ?: createEditPlayerParams.state.editedPlayerUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .size(90.dp)
