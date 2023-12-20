@@ -9,5 +9,8 @@ class NamedArgumentsTest {
     fun constants() {
         Assertions.assertEquals(NamedArguments.EMAIL, "email")
         Assertions.assertEquals(NamedArguments.USERNAME, "username")
+
+        Assertions.assertEquals(NamedArguments.FIRST_NAME, "firstName")
+        Assertions.assertEquals(NamedArguments.LAST_NAME, "lastName")
     }
 }

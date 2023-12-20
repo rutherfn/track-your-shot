@@ -11,6 +11,7 @@ class NavigationDestinationsTest {
 
     internal val authenticationScreen = "authenticationScreen"
     internal val createAccountScreen = "createAccountScreen"
+    internal val createEditPlayerScreen = "createEditPlayerscreen"
     internal val forgotPasswordScreen = "forgotPasswordScreen"
     internal val playersListScreen = "playersListScreen"
     internal val loginScreen = "loginScreen"
@@ -65,6 +66,11 @@ class NavigationDestinationsTest {
         @Test
         fun `create account screen name should result in create account screen`() {
             Assertions.assertEquals(navigationDestinations.CREATE_ACCOUNT_SCREEN, createAccountScreen)
+        }
+
+        @Test
+        fun `create edit player screen name should result in create edit player screen`() {
+            Assertions.assertEquals(navigationDestinations.CREATE_EDIT_PLAYER_SCREEN, createEditPlayerScreen)
         }
 
         @Test
