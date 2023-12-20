@@ -58,7 +58,7 @@ class PlayerRepositoryImplTest {
 
         assertThat(playerRepositoryImpl.fetchAllPlayers(), equalTo(listOf(player)))
 
-        playerRepositoryImpl.updatePlayer(player = updatedPlayer)
+        playerRepositoryImpl.updatePlayer(currentPlayer = player, newPlayer = updatedPlayer)
 
         assertThat(playerRepositoryImpl.fetchAllPlayers(), equalTo(listOf(updatedPlayer)))
     }
