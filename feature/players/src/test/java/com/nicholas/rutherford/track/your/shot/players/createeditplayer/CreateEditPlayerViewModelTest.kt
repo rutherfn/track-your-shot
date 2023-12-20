@@ -5,6 +5,7 @@ import android.net.Uri
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.Center.toPlayerPosition
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
@@ -16,12 +17,12 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PLAYER_FIREBASE_KEY
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
-import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPosition
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -47,6 +48,7 @@ class CreateEditPlayerViewModelTest {
     private val application = mockk<Application>(relaxed = true)
 
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
+    private val updateFirebaseUserInfo = mockk<UpdateFirebaseUserInfo>(relaxed = true)
     private val readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
 
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
@@ -68,7 +70,8 @@ class CreateEditPlayerViewModelTest {
     private val defaultState = CreateEditPlayerState(
         firstName = "first",
         lastName = "last",
-        playerPositionStringResId = StringsIds.pg,
+        toolbarNameResId = StringsIds.createPlayer,
+        playerPositionString = "",
         sheet = null
     )
 
@@ -104,6 +107,7 @@ class CreateEditPlayerViewModelTest {
         createEditPlayerViewModel = CreateEditPlayerViewModel(
             application = application,
             createFirebaseUserInfo = createFirebaseUserInfo,
+            updateFirebaseUserInfo = updateFirebaseUserInfo,
             readFirebaseUserInfo = readFirebaseUserInfo,
             playerRepository = playerRepository,
             activeUserRepository = activeUserRepository,
@@ -367,7 +371,7 @@ class CreateEditPlayerViewModelTest {
                     playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
                         firstName = defaultState.firstName,
                         lastName = defaultState.lastName,
-                        positionValue = defaultState.playerPositionStringResId.toPlayerPosition().value,
+                        positionValue = defaultState.playerPositionString.toPlayerPosition(application = application).value,
                         imageUrl = ""
                     )
                 )
@@ -503,13 +507,13 @@ class CreateEditPlayerViewModelTest {
             val player = Player(
                 firstName = state.firstName,
                 lastName = state.lastName,
-                position = state.playerPositionStringResId.toPlayerPosition(),
+                position = state.playerPositionString.toPlayerPosition(application = application),
                 firebaseKey = key,
                 imageUrl = ""
             )
 
             coVerify { playerRepository.createPlayer(player = player) }
-            verify { playersAdditionUpdates.updateNewPlayerAddedFlow(player = player) }
+            coVerify { playersAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = true) }
 
             verify { navigation.disableProgress() }
             verify { navigation.pop() }
@@ -535,12 +539,12 @@ class CreateEditPlayerViewModelTest {
     }
 
     @Test
-    fun `onPlayerPositionStringResIdChanged should update playerPositionStringResId state property`() {
-        val newPositionStringResId = StringsIds.pg
+    fun `onPlayerPositionStringChanged should update playerPositionStringResId state property`() {
+        val newPositionString = "pg"
 
-        createEditPlayerViewModel.onPlayerPositionStringResIdValueChanged(newPositionStringResId = newPositionStringResId)
+        createEditPlayerViewModel.onPlayerPositionStringChanged(newPositionString = newPositionString)
 
-        Assertions.assertEquals(createEditPlayerViewModel.createEditPlayerMutableStateFlow.value.playerPositionStringResId, newPositionStringResId)
+        Assertions.assertEquals(createEditPlayerViewModel.createEditPlayerMutableStateFlow.value.playerPositionString, newPositionString)
     }
 
     @Test

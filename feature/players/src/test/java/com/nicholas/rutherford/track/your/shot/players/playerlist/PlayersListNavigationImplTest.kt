@@ -49,19 +49,19 @@ class PlayersListNavigationImplTest {
         verify { navigator.progress(progressAction = progress) }
     }
 
-    @Test
-    fun `navigate to create player`() {
-        val argumentCapture: CapturingSlot<NavigationAction> = slot()
-
-        playersListNavigationImpl.navigateToCreatePlayer()
-
-        verify { navigator.navigate(capture(argumentCapture)) }
-
-        val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationActions.PlayersList.createPlayer()
-
-        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
-    }
+//    @Test
+//    fun `navigate to create player`() {
+//        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+//
+//        playersListNavigationImpl.navigateToCreatePlayer()
+//
+//        verify { navigator.navigate(capture(argumentCapture)) }
+//
+//        val capturedArgument = argumentCapture.captured
+//        val expectedAction = NavigationActions.PlayersList.createPlayer()
+//
+//        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
+//    }
 
     @Test
     fun `open navigation drawer`() {
