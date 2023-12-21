@@ -51,14 +51,17 @@ class PlayersListNavigationImplTest {
 
     @Test
     fun `navigate to create player`() {
+        val firstName = "firstName"
+        val lastName = "lastName"
+
         val argumentCapture: CapturingSlot<NavigationAction> = slot()
 
-        playersListNavigationImpl.navigateToCreatePlayer()
+        playersListNavigationImpl.navigateToCreateEditPlayer(firstName = firstName, lastName = lastName)
 
         verify { navigator.navigate(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationActions.PlayersList.createPlayer()
+        val expectedAction = NavigationActions.PlayersList.createEditPlayerWithParams(firstName = firstName, lastName = lastName)
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }

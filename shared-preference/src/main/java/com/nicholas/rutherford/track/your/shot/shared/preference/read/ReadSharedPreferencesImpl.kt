@@ -5,6 +5,10 @@ import com.nicholas.rutherford.track.your.shot.helper.constants.SharedPreference
 
 class ReadSharedPreferencesImpl(private val sharedPreferences: SharedPreferences) : ReadSharedPreferences {
 
+    override fun appHasBeenLaunched(): Boolean {
+        return sharedPreferences.getBoolean(SharedPreferencesConstants.Preferences.APP_HAS_LAUNCHED, false)
+    }
+
     override fun accountHasBeenCreated(): Boolean {
         return sharedPreferences.getBoolean(SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED, false)
     }

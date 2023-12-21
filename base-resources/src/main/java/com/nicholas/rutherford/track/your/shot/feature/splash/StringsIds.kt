@@ -16,8 +16,10 @@ object StringsIds {
     val continueText = R.string.continue_text
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val createAccount = R.string.create_account
+    val createPlayer = R.string.create_player
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount =
         R.string.current_account_has_not_been_verified_please_open_email_to_verify_account
+    val currentPlayerHasNoChangesDescription = R.string.current_players_has_no_changes_description
     val deleteX = R.string.delete_x
     val deviceIsCurrentlyNotConnectedToInternetDesc =
         R.string.device_is_currently_not_connected_to_internet_desc
@@ -27,6 +29,7 @@ object StringsIds {
         R.string.email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account
     val firstName = R.string.first_name
     val forgotPassword = R.string.forgot_password
+    val editPlayer = R.string.edit_player
     val empty = R.string.empty
     val emptyField = R.string.empty_field
     val emptyFields = R.string.empty_fields
@@ -62,6 +65,7 @@ object StringsIds {
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
     val no = R.string.no
+    val noChangesMade = R.string.no_changes_made
     val noCurrentPlayersAdded = R.string.no_current_players_added
     val noCurrentShotsLoggedForPlayer = R.string.no_current_shots_logged_for_player
     val noFirstNameEntered = R.string.no_first_name_entered

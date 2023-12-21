@@ -271,6 +271,8 @@ class AccountAuthManagerImplTest {
             accountAuthManagerImpl.collectPlayerInfoList(firebaseAccountInfoKey = key)
 
             coVerify(exactly = 0) { playerRepository.createListOfPlayers(playerList = any()) }
+            verify { navigator.progress(progressAction = null) }
+            verify { navigator.navigate(navigationAction = any()) }
         }
 
         @Test

@@ -1,10 +1,9 @@
 package com.nicholas.rutherford.track.your.shot.feature.players
 
-import com.nicholas.rutherford.track.your.shot.data.room.response.Player
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 interface PlayersAdditionUpdates {
-    val newPlayerAddedStateFlow: StateFlow<Player?>
+    val newPlayerHasBeenAddedSharedFlow: SharedFlow<Boolean>
 
-    fun updateNewPlayerAddedFlow(player: Player)
+    suspend fun updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded: Boolean)
 }

@@ -155,6 +155,52 @@ class NavigationActionsTest {
                         .build()
                 )
             }
+
+            @Test
+            fun playersList() {
+                Assertions.assertEquals(
+                    Actions.DrawerScreen.playersList().destination,
+                    NavigationDestinations.PLAYERS_LIST_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.DrawerScreen.playersList().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(0, true)
+                        .setLaunchSingleTop(true)
+                        .build()
+                )
+            }
+        }
+
+        @Nested
+        inner class PlayersList {
+
+            @Test
+            fun createEditPlayer() {
+                Assertions.assertEquals(
+                    Actions.PlayersList.createEditPlayer().destination,
+                    NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.PlayersList.createEditPlayer().navOptions,
+                    NavOptions.Builder().build()
+                )
+            }
+
+            @Test
+            fun createEditPlayerWithParams() {
+                val firstName = "firstName"
+                val lastName = "lastName"
+
+                Assertions.assertEquals(
+                    Actions.PlayersList.createEditPlayerWithParams(firstName = firstName, lastName = lastName).destination,
+                    NavigationDestinationsWithParams.createEditPlayerWithParams(firstName = firstName, lastName = lastName)
+                )
+                Assertions.assertEquals(
+                    Actions.PlayersList.createEditPlayerWithParams(firstName = firstName, lastName = lastName).navOptions,
+                    NavOptions.Builder().build()
+                )
+            }
         }
     }
 }

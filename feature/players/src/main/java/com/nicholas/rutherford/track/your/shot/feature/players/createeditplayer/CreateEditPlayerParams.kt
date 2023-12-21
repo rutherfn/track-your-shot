@@ -4,10 +4,12 @@ import android.net.Uri
 
 data class CreateEditPlayerParams(
     val state: CreateEditPlayerState,
+    val onClearImageState: () -> Unit,
+    val checkForExistingPlayer: () -> Unit,
     val onToolbarMenuClicked: () -> Unit,
     val onFirstNameValueChanged: (newFirstName: String) -> Unit,
     val onLastNameValueChanged: (newFirstName: String) -> Unit,
-    val onPlayerPositionStringResIdValueChanged: (newPositionStringResId: Int) -> Unit,
+    val onPlayerPositionStringChanged: (newPosition: String) -> Unit,
     val onImageUploadClicked: (uri: Uri?) -> Unit,
     val onCreatePlayerClicked: (uri: Uri?) -> Unit,
     val permissionNotGrantedForCameraAlert: () -> Unit,

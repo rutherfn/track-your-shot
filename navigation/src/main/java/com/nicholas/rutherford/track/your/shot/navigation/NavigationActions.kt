@@ -89,8 +89,13 @@ object NavigationActions {
 
     object PlayersList {
 
-        fun createPlayer() = object : NavigationAction {
-            override val destination = NavigationDestinations.CREATE_PLAYER_SCREEN
+        fun createEditPlayer() = object : NavigationAction {
+            override val destination = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN
+            override val navOptions = NavOptions.Builder().build()
+        }
+
+        fun createEditPlayerWithParams(firstName: String, lastName: String) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.createEditPlayerWithParams(firstName = firstName, lastName = lastName)
             override val navOptions = NavOptions.Builder().build()
         }
     }

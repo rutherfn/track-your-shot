@@ -53,6 +53,15 @@ class AccountAuthManagerImpl(
         }
     }
 
+    override fun checkIfWeNeedToLogoutOnLaunch() {
+        if (existingUserFirebase.isLoggedIn()) {
+            scope.launch {
+                existingUserFirebase.logout()
+                clearOutDatabase()
+            }
+        }
+    }
+
     internal suspend fun clearOutDatabase() {
         activeUserRepository.deleteActiveUser()
         playerRepository.deleteAllPlayers()
@@ -126,6 +135,8 @@ class AccountAuthManagerImpl(
 
                     _loggedInPlayerListStateFlow.value = playerList
                     playerRepository.createListOfPlayers(playerList = playerList)
+                    disableProcessAndNavigateToPlayersList()
+                } else {
                     disableProcessAndNavigateToPlayersList()
                 }
             }

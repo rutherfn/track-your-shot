@@ -5,15 +5,11 @@ import androidx.navigation.navArgument
 
 object NavArguments {
     val authentication = listOf(
-        navArgument(
-            NamedArguments.USERNAME
-        ) { type = NavType.StringType },
+        navArgument(NamedArguments.USERNAME) { type = NavType.StringType },
         navArgument(NamedArguments.EMAIL) { type = NavType.StringType }
     )
-    val home = listOf(
-        navArgument(NamedArguments.EMAIL) { type = NavType.StringType }
-    )
-    val playersList = listOf(
-        navArgument(NamedArguments.SHOULD_UPDATE) { type = NavType.BoolType }
+    val createEditPlayer = listOf(
+        navArgument(NamedArguments.FIRST_NAME) { type = NavType.StringType },
+        navArgument(NamedArguments.LAST_NAME) { type = NavType.StringType }
     )
 }

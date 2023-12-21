@@ -1,7 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.players
 
-import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdatesImpl
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -17,22 +17,24 @@ class PlayersAdditionUpdatesImplTest {
     }
 
     @Nested
-    inner class NewPlayerAddedStateFlow {
+    inner class NewPlayerHasBeenAddedSharedFlow {
         @Test
-        fun `should initially be set to null if not updated`() {
-            val result = playersAdditionUpdatesImpl.newPlayerAddedStateFlow.value
+        fun `should initially be set to null if not updated`() = runTest {
+            val result = playersAdditionUpdatesImpl.newPlayerHasBeenAddedMutableSharedFlow.replayCache.firstOrNull()
 
             Assertions.assertEquals(null, result)
         }
 
         @Test
-        fun `should be updated if updateNewPlayerAddedFlow is called`() {
-            val player = TestPlayer().create()
-            playersAdditionUpdatesImpl.updateNewPlayerAddedFlow(player)
+        fun `should be updated if updateNewPlayerAddedFlow is called`() = runTest {
+            val playersAdditionUpdatesImpl = PlayersAdditionUpdatesImpl()
+            val expectedValue = true
 
-            val result = playersAdditionUpdatesImpl.newPlayerAddedStateFlow.value
+            playersAdditionUpdatesImpl.updateNewPlayerHasBeenAddedSharedFlow(expectedValue)
 
-            Assertions.assertEquals(player, result)
+            val result = playersAdditionUpdatesImpl.newPlayerHasBeenAddedMutableSharedFlow.replayCache.firstOrNull()
+
+            Assertions.assertEquals(expectedValue, result)
         }
     }
 }

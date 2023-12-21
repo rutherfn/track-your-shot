@@ -7,5 +7,6 @@ interface AccountAuthManager {
     val loggedInPlayerListStateFlow: StateFlow<List<Player>>
 
     fun logout()
+    fun checkIfWeNeedToLogoutOnLaunch()
     fun login(email: String, password: String)
 }

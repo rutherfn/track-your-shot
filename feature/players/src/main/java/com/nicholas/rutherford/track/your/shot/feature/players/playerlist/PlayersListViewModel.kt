@@ -56,12 +56,15 @@ class PlayersListViewModel(
         }
     }
 
-    private fun collectPlayerAdditionUpdates() {
+    private fun clearAndUpdatePlayerListState() {
+        currentPlayerArrayList.clear()
+        updatePlayerListState()
+    }
+
+    internal fun collectPlayerAdditionUpdates() {
         scope.launch {
-            playersAdditionUpdates.newPlayerAddedStateFlow.collectLatest { playerAdded ->
-                playerAdded?.let { player ->
-                    handlePlayerAdded(player = player)
-                }
+            playersAdditionUpdates.newPlayerHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
+                handlePlayerAdded(hasBeenAdded = hasBeenAdded)
             }
         }
     }
@@ -74,26 +77,23 @@ class PlayersListViewModel(
         }
     }
 
-    internal fun handlePlayerAdded(player: Player) {
-        if (!currentPlayerArrayList.contains(player)) {
-            currentPlayerArrayList.add(player)
-            playerListMutableStateFlow.value =
-                PlayersListState(playerList = currentPlayerArrayList.toList())
+    private fun handlePlayerAdded(hasBeenAdded: Boolean) {
+        if (hasBeenAdded) {
+            clearAndUpdatePlayerListState()
         }
     }
 
     internal fun handleLoggedInPlayerList(playerList: List<Player>) {
-        if (playerList.isNotEmpty() && playerListMutableStateFlow.value.playerList.isEmpty()) {
-            currentPlayerArrayList.addAll(playerList)
-            playerListMutableStateFlow.value =
-                PlayersListState(playerList = currentPlayerArrayList.toList())
-        }
+        currentPlayerArrayList.clear()
+        currentPlayerArrayList.addAll(playerList)
+        playerListMutableStateFlow.value =
+            PlayersListState(playerList = currentPlayerArrayList.toList())
     }
 
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
 
     fun onAddPlayerClicked() {
-        navigation.navigateToCreatePlayer()
+        navigation.navigateToCreateEditPlayer(firstName = null, lastName = null)
     }
 
     suspend fun onYesDeletePlayerClicked(player: Player) {
@@ -136,6 +136,8 @@ class PlayersListViewModel(
             navigation.alert(alert = notConnectedToInternetAlert())
         }
     }
+
+    fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)
 
     fun onDeletePlayerClicked(player: Player) = navigation.alert(alert = deletePlayerAlert(player = player))
 

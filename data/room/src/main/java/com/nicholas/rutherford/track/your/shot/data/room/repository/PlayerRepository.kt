@@ -5,7 +5,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 interface PlayerRepository {
     suspend fun createPlayer(player: Player)
     suspend fun createListOfPlayers(playerList: List<Player>)
-    suspend fun updatePlayer(player: Player)
+    suspend fun updatePlayer(currentPlayer: Player, newPlayer: Player)
     suspend fun deletePlayerByName(firstName: String, lastName: String)
     suspend fun deleteAllPlayers()
     suspend fun fetchPlayerByName(firstName: String, lastName: String): Player?

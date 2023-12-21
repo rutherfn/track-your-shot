@@ -24,6 +24,9 @@ interface PlayerDao {
     @Query("DELETE FROM players")
     suspend fun deleteAllPlayers()
 
+    @Query("SELECT id FROM players WHERE firstName = :firstName AND lastName = :lastName")
+    suspend fun getPlayerIdByName(firstName: String, lastName: String): Int
+
     @Query("SELECT * FROM PLAYERS WHERE firstName = :firstName AND lastName = :lastName")
     suspend fun getPlayersByName(firstName: String, lastName: String): PlayerEntity?
 

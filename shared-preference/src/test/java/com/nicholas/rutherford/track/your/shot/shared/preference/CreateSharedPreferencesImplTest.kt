@@ -40,6 +40,24 @@ class CreateSharedPreferencesImplTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
+        fun `createAppHasLaunchedPreference should call editor putBoolean and apply`() =
+            runTest {
+                val defaultValue = true
+
+                coEvery { sharedPreferences.edit() } returns editor
+
+                init()
+
+                createSharedPreferencesImpl.createAppHasLaunchedPreference(value = defaultValue)
+
+                verify {
+                    editor.putBoolean(SharedPreferencesConstants.Preferences.APP_HAS_LAUNCHED, defaultValue)
+                }
+                verify { editor.apply() }
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
         fun `createAccountHasBeenCreatedPreference should call editor putBoolean and apply`() =
             runTest {
                 val defaultValue = true

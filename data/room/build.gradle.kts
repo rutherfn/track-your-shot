@@ -62,6 +62,7 @@ android {
 }
 
 dependencies {
+    api(project(path = ":base-resources"))
     api(project(path = ":helper:constants"))
 
     androidTestImplementation(Dependencies.Junit.ext)

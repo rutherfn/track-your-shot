@@ -19,8 +19,10 @@
     <string name="create_account">Create Account</string>
     <string name="create_player">Create Player</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
+    <string name="current_players_has_no_changes_description">There haven\'t been any recent updates or modifications to the current player. Please make adjustments to the existing player to proceed.</string>
     <string name="delete_x">Delete %s</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
+    <string name="edit_x">Edit %s</string>
     <string name="enter_first_name">Enter First Name</string>
     <string name="enter_last_name">Enter Last Name</string>
     <string name="first_name">First Name</string>
@@ -34,6 +36,7 @@
     <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">Email is required. Please enter a email to login to existing account.</string>
     <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">Email is required. Please enter a email to reset password for existing account.</string>
     <string name="email_required">Email*</string>
+    <string name="edit_player">Edit Player</string>
     <string name="empty" translatable="false" />
     <string name="empty_field">Empty Field</string>
     <string name="empty_fields">Empty Fields</string>
@@ -56,6 +59,7 @@
     <string name="menu">Menu</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
     <string name="no">No</string>
+    <string name="no_changes_made">No Changes Made</string>
     <string name="not_connected_to_internet">Not connected to internet</string>
     <string name="no_first_name_entered">No First Name Entered</string>
     <string name="no_last_name_entered">No Last Name Entered</string>
@@ -109,7 +113,7 @@
     <string name="username_in_use">Username in use</string>
     <string name="username_is_not_in_correct_format_please_enter_username_in_correct_format">Username is not in correct format. Please enter username in correct format</string>
     <string name="unable_to_create_account">Unable to create account</string>
-    <string name="unable_to_delete_player_please_contact_support"> Unable to delete player. Please contact support.</string>
+    <string name="unable_to_delete_player_please_contact_support">Unable to delete player. Please contact support.</string>
     <string name="unable_to_login_to_account">Unable to login to account</string>
     <string name="unable_to_reset_password">Unable to reset password</string>
     <string name="unable_to_set_new_username">Unable to set new username</string>

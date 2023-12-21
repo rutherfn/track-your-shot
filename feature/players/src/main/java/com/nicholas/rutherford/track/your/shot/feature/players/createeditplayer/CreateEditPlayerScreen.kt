@@ -4,6 +4,7 @@ package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 
 import android.Manifest
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
@@ -25,6 +26,7 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,6 +65,14 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
     var shouldAskGalleryPermission by remember { mutableStateOf(value = false) }
     val context = LocalContext.current
 
+    BackHandler(true) {
+        createEditPlayerParams.onToolbarMenuClicked()
+    }
+
+    LaunchedEffect(Unit) {
+        createEditPlayerParams.checkForExistingPlayer()
+    }
+
     Content(
         ui = {
             ModalBottomSheetLayout(
@@ -77,12 +87,12 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
                             }
                         )
                         val cameraLauncher = rememberLauncherForActivityResult(
-                            contract = ActivityResultContracts.TakePicturePreview(),
-                            onResult = { bitmap ->
-                                hasUploadedImage = bitmap != null || imageUri != null
-                                imageUri = bitmap?.let { getImageUri(context = context, image = it) } ?: imageUri
-                            }
-                        )
+                            contract = ActivityResultContracts.TakePicturePreview()
+                        ) { bitmap ->
+                            hasUploadedImage = bitmap != null || imageUri != null
+                            imageUri = bitmap?.let { getImageUri(context = context, image = it) }
+                                ?: imageUri
+                        }
                         val cameraPermissionLauncher = rememberLauncherForActivityResult(
                             contract = ActivityResultContracts.RequestPermission(),
                             onResult = { isGranted ->
@@ -128,7 +138,11 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
                                         .clickable {
                                             scope.launch { bottomState.hide() }
 
-                                            when (createEditPlayerParams.onSelectedCreateEditImageOption(value)) {
+                                            when (
+                                                createEditPlayerParams.onSelectedCreateEditImageOption(
+                                                    value
+                                                )
+                                            ) {
                                                 CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY -> {
                                                     if (hasReadImagePermissionEnabled(context = context)) {
                                                         singlePhotoPickerLauncher.launch(Constants.IMAGE)
@@ -148,6 +162,7 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
                                                 else -> {
                                                     imageUri = null
                                                     hasUploadedImage = false
+                                                    createEditPlayerParams.onClearImageState.invoke()
                                                 }
                                             }
                                         }
@@ -234,7 +249,7 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
             }
         },
         appBar = AppBar(
-            toolbarTitle = stringResource(id = R.string.create_player),
+            toolbarTitle = stringResource(id = createEditPlayerParams.state.toolbarNameResId),
             shouldShowMiddleContentAppBar = false,
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = true,

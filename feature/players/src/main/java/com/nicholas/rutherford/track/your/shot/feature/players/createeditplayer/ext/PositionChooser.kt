@@ -32,17 +32,18 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun PositionChooser(createEditPlayerParams: CreateEditPlayerParams) {
-    val currentPlayerPosition = stringResource(id = createEditPlayerParams.state.playerPositionStringResId)
-    var selectedOption by remember { mutableStateOf(value = currentPlayerPosition) }
+    var selectedOption by remember { mutableStateOf(value = "") }
     var isDropdownExpanded by remember { mutableStateOf(value = false) }
 
-    val options = listOf(
-        stringResource(id = R.string.point_guard),
-        stringResource(id = R.string.shooting_guard),
-        stringResource(id = R.string.small_forward),
-        stringResource(id = R.string.power_forward),
-        stringResource(id = R.string.center)
-    )
+    val pointGuard = stringResource(id = R.string.point_guard)
+    val shootingGuard = stringResource(id = R.string.shooting_guard)
+    val smallForward = stringResource(id = R.string.small_forward)
+    val powerForward = stringResource(id = R.string.power_forward)
+    val center = stringResource(id = R.string.center)
+
+    val options = listOf(pointGuard, shootingGuard, smallForward, powerForward, center)
+
+    selectedOption = createEditPlayerParams.state.playerPositionString.ifEmpty { pointGuard }
 
     Box {
         Spacer(modifier = Modifier.height(Padding.sixteen))
@@ -54,24 +55,14 @@ fun PositionChooser(createEditPlayerParams: CreateEditPlayerParams) {
                 DropdownMenuItem(
                     onClick = {
                         selectedOption = option
-                        val newPositionStringResId = when (index) {
-                            PlayerPositions.PointGuard.value -> {
-                                R.string.point_guard
-                            }
-                            PlayerPositions.ShootingGuard.value -> {
-                                R.string.shooting_guard
-                            }
-                            PlayerPositions.SmallForward.value -> {
-                                R.string.small_forward
-                            }
-                            PlayerPositions.PowerForward.value -> {
-                                R.string.power_forward
-                            }
-                            else -> {
-                                R.string.center
-                            }
+                        val newPosition = when (index) {
+                            PlayerPositions.PointGuard.value -> { pointGuard }
+                            PlayerPositions.ShootingGuard.value -> { shootingGuard }
+                            PlayerPositions.SmallForward.value -> { smallForward }
+                            PlayerPositions.PowerForward.value -> { powerForward }
+                            else -> { center }
                         }
-                        createEditPlayerParams.onPlayerPositionStringResIdValueChanged(newPositionStringResId)
+                        createEditPlayerParams.onPlayerPositionStringChanged(newPosition)
                         isDropdownExpanded = false
                     }
                 ) {

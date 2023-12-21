@@ -5,6 +5,11 @@ import com.nicholas.rutherford.track.your.shot.helper.constants.SharedPreference
 
 class CreateSharedPreferencesImpl(private val editor: SharedPreferences.Editor) : CreateSharedPreferences {
 
+    override fun createAppHasLaunchedPreference(value: Boolean) {
+        editor.putBoolean(SharedPreferencesConstants.Preferences.APP_HAS_LAUNCHED, value)
+        editor.apply()
+    }
+
     override fun createAccountHasBeenCreatedPreference(value: Boolean) {
         editor.putBoolean(SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED, value)
         editor.apply()

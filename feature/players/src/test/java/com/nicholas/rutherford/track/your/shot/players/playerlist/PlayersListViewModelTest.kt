@@ -5,12 +5,15 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRe
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListState
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
@@ -22,6 +25,7 @@ import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -98,57 +102,39 @@ class PlayersListViewModelTest {
     inner class CollectPlayerAdditionUpdates {
 
         @Test
-        fun `when newPlayerAddedStateFlow emits a null value should not update playerList state value`() = runTest {
-            val playerList: List<Player> = emptyList()
+        fun `when newPlayerHasBeenAddedSharedFlow emits a false value should not update state`() = runTest {
+            val playerList = listOf(TestPlayer().create())
+            val currentPlayerArrayList: ArrayList<Player> = arrayListOf()
 
-            every { playersAdditionUpdates.newPlayerAddedStateFlow } returns MutableStateFlow<Player?>(null)
+            val newPlayerHasBeenAddedSharedFlow = MutableSharedFlow<Boolean>(replay = Int.MAX_VALUE)
+            newPlayerHasBeenAddedSharedFlow.emit(value = false)
 
-            playersListViewModel = PlayersListViewModel(
-                application = application,
-                scope = scope,
-                navigation = navigation,
-                network = network,
-                accountAuthManager = accountAuthManager,
-                deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-                activeUserRepository = activeUserRepository,
-                playersAdditionUpdates = playersAdditionUpdates,
-                playerRepository = playerRepository
-            )
+            coEvery { playerRepository.fetchAllPlayers() } returns playerList
+            every { playersAdditionUpdates.newPlayerHasBeenAddedSharedFlow } returns newPlayerHasBeenAddedSharedFlow
+
+            playersListViewModel.collectPlayerAdditionUpdates()
 
             Assertions.assertEquals(
                 playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = playerList)
+                PlayersListState(playerList = emptyList())
             )
             Assertions.assertEquals(
                 playersListViewModel.currentPlayerArrayList.toList(),
-                playerList
+                currentPlayerArrayList
             )
         }
 
         @Test
-        fun `when newPlayerAddedStateFlow emits a new player should update list and state`() = runTest {
-            val player = Player(
-                firstName = "first1",
-                lastName = "last1",
-                position = PlayerPositions.Center,
-                firebaseKey = "key",
-                imageUrl = "url"
-            )
-            val playerList = listOf(player)
+        fun `when newPlayerHasBeenAddedSharedFlow emits a true value should update state`() = runTest {
+            val playerList = listOf(TestPlayer().create())
 
-            every { playersAdditionUpdates.newPlayerAddedStateFlow } returns MutableStateFlow<Player?>(player)
+            val newPlayerHasBeenAddedSharedFlow = MutableSharedFlow<Boolean>(replay = Int.MAX_VALUE)
+            newPlayerHasBeenAddedSharedFlow.emit(value = true)
 
-            playersListViewModel = PlayersListViewModel(
-                application = application,
-                scope = scope,
-                navigation = navigation,
-                network = network,
-                accountAuthManager = accountAuthManager,
-                deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-                activeUserRepository = activeUserRepository,
-                playersAdditionUpdates = playersAdditionUpdates,
-                playerRepository = playerRepository
-            )
+            coEvery { playerRepository.fetchAllPlayers() } returns playerList
+            every { playersAdditionUpdates.newPlayerHasBeenAddedSharedFlow } returns newPlayerHasBeenAddedSharedFlow
+
+            playersListViewModel.collectPlayerAdditionUpdates()
 
             Assertions.assertEquals(
                 playersListViewModel.playerListMutableStateFlow.value,
@@ -228,55 +214,8 @@ class PlayersListViewModelTest {
         }
     }
 
-    @Nested
-    inner class HandlePlayerAdded {
-
-        @Test
-        fun `when currentPlayerArrayList contains a player should not update state or list`() {
-            val playerList = listOf(player)
-
-            playersListViewModel.currentPlayerArrayList = arrayListOf(player)
-            playersListViewModel.playerListMutableStateFlow.value =
-                PlayersListState(playerList = listOf(player))
-
-            playersListViewModel.handlePlayerAdded(player = player)
-
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = playerList)
-            )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                playerList
-            )
-        }
-
-        @Test
-        fun `when currentPlayerList does not contain player should update state and list`() {
-            val newPlayer = Player(
-                firstName = "first1",
-                lastName = "last1",
-                position = PlayerPositions.Center,
-                firebaseKey = "key",
-                imageUrl = "url"
-            )
-            val playerList = listOf(newPlayer)
-
-            playersListViewModel.handlePlayerAdded(player = newPlayer)
-
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = playerList)
-            )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                playerList
-            )
-        }
-    }
-
-    @Nested
-    inner class HandleLoggedInPlayerList {
+    @Test
+    fun `HandleLoggedInPlayerList should clear out given list and update state`() = runTest {
         val newPlayer = Player(
             firstName = "first1",
             lastName = "last1",
@@ -284,68 +223,23 @@ class PlayersListViewModelTest {
             firebaseKey = "key",
             imageUrl = "url"
         )
+        val emptyPlayerList: List<Player> = emptyList()
+        val newPlayerList: List<Player> = listOf(newPlayer)
 
-        @Test
-        fun `when player list is empty should not update state and list`() = runTest {
-            val playerList: List<Player> = emptyList()
+        playersListViewModel.currentPlayerArrayList = arrayListOf()
+        playersListViewModel.playerListMutableStateFlow.value =
+            PlayersListState(playerList = emptyPlayerList)
 
-            playersListViewModel.currentPlayerArrayList = arrayListOf()
-            playersListViewModel.playerListMutableStateFlow.value =
-                PlayersListState(playerList = playerList)
+        playersListViewModel.handleLoggedInPlayerList(playerList = newPlayerList)
 
-            playersListViewModel.handleLoggedInPlayerList(playerList = playerList)
-
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = playerList)
-            )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                playerList
-            )
-        }
-
-        @Test
-        fun `when current state player list is not empty the passed in list should not update state and list`() = runTest {
-            val playerList: List<Player> = listOf(player)
-            val newPlayerList: List<Player> = listOf(newPlayer)
-
-            playersListViewModel.currentPlayerArrayList = arrayListOf(player)
-            playersListViewModel.playerListMutableStateFlow.value =
-                PlayersListState(playerList = playerList)
-
-            playersListViewModel.handleLoggedInPlayerList(playerList = newPlayerList)
-
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = playerList)
-            )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                playerList
-            )
-        }
-
-        @Test
-        fun `when player list is not empty and current player list state is empty should update state and list`() = runTest {
-            val emptyPlayerList: List<Player> = emptyList()
-            val newPlayerList: List<Player> = listOf(newPlayer)
-
-            playersListViewModel.currentPlayerArrayList = arrayListOf()
-            playersListViewModel.playerListMutableStateFlow.value =
-                PlayersListState(playerList = emptyPlayerList)
-
-            playersListViewModel.handleLoggedInPlayerList(playerList = newPlayerList)
-
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = newPlayerList)
-            )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                newPlayerList
-            )
-        }
+        Assertions.assertEquals(
+            playersListViewModel.playerListMutableStateFlow.value,
+            PlayersListState(playerList = newPlayerList)
+        )
+        Assertions.assertEquals(
+            playersListViewModel.currentPlayerArrayList.toList(),
+            newPlayerList
+        )
     }
 
     @Test
@@ -368,7 +262,7 @@ class PlayersListViewModelTest {
     fun `on add player clicked`() {
         playersListViewModel.onAddPlayerClicked()
 
-        verify { navigation.navigateToCreatePlayer() }
+        verify { navigation.navigateToCreateEditPlayer(firstName = null, lastName = null) }
 
         Assertions.assertEquals(
             playersListViewModel.playerListMutableStateFlow.value,
@@ -417,13 +311,29 @@ class PlayersListViewModelTest {
 
     @Nested
     inner class DeletePlayer {
+        private val notConnectedToInternet = "Not connected to internet"
+        private val weHaveDetectedCurrentlyNotConnectedToInternetDescription = "We have detected currently not connected to internet. Please connect to service, and try again."
+        private val gotIt = "Got It"
+        private val empty = ""
+        private val unableToDeletePlayerPleaseContactSupport = "Unable to delete player. Please contact support."
+        private val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue = "We have detected a problem with your account. Please contact support to resolve issue."
+
+        @BeforeEach
+        fun beforeEach() {
+            every { application.getString(StringsIds.notConnectedToInternet) } returns notConnectedToInternet
+            every { application.getString(StringsIds.weHaveDetectedCurrentlyNotConnectedToInternetDescription) } returns weHaveDetectedCurrentlyNotConnectedToInternetDescription
+            every { application.getString(StringsIds.gotIt) } returns gotIt
+            every { application.getString(StringsIds.empty) } returns empty
+            every { application.getString(StringsIds.unableToDeletePlayerPleaseContactSupport) } returns unableToDeletePlayerPleaseContactSupport
+            every { application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue) } returns weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue
+        }
         @Test
         fun `when device is connected to internet returns false should show alert`() = runTest {
-//            val expectedAlert = Alert(
-//                title = application.getString(StringsIds.empty),
-//                description = application.getString(StringsIds.notConnectedToInternet),
-//                dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
-//            )
+            val expectedAlert = Alert(
+                title = notConnectedToInternet,
+                description = weHaveDetectedCurrentlyNotConnectedToInternetDescription,
+                dismissButton = AlertConfirmAndDismissButton(buttonText = gotIt)
+            )
             coEvery { network.isDeviceConnectedToInternet() } returns false
 
             playersListViewModel.deletePlayer(player = player)
@@ -437,16 +347,16 @@ class PlayersListViewModelTest {
                 emptyPlayerList
             )
             verify { navigation.disableProgress() }
-            verify { navigation.alert(alert = any()) }
+            verify { navigation.alert(alert = expectedAlert) }
         }
 
         @Test
         fun `when device is connected to internet returns true, and active user returns null should show alert`() = runTest {
-//            val expectedAlert = Alert(
-//                title = application.getString(StringsIds.empty),
-//                description = application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue),
-//                dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
-//            )
+            val expectedAlert = Alert(
+                title = empty,
+                description = weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue,
+                dismissButton = AlertConfirmAndDismissButton(buttonText = gotIt)
+            )
             coEvery { network.isDeviceConnectedToInternet() } returns true
             coEvery { activeUserRepository.fetchActiveUser() } returns null
 
@@ -461,16 +371,16 @@ class PlayersListViewModelTest {
                 emptyPlayerList
             )
             verify { navigation.disableProgress() }
-            verify { navigation.alert(alert = any()) }
+            verify { navigation.alert(alert = expectedAlert) }
         }
 
         @Test
-        fun `when device is connected to internet returns false, active user returns user, and delete player was not sucessful should show alert`() = runTest {
-//            val expectedAlert = Alert(
-//                title = application.getString(StringsIds.empty),
-//                description = application.getString(StringsIds.unableToDeletePlayerPleaseContactSupport),
-//                dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
-//            )
+        fun `when device is connected to internet returns false, active user returns user, and delete player was not successful should show alert`() = runTest {
+            val expectedAlert = Alert(
+                title = empty,
+                description = unableToDeletePlayerPleaseContactSupport,
+                dismissButton = AlertConfirmAndDismissButton(buttonText = gotIt)
+            )
             coEvery { network.isDeviceConnectedToInternet() } returns true
             coEvery { activeUserRepository.fetchActiveUser() } returns user
             coEvery { deleteFirebaseUserInfo.deletePlayer(user.firebaseAccountInfoKey!!, player.firebaseKey) } returns flowOf(false)
@@ -486,7 +396,7 @@ class PlayersListViewModelTest {
                 emptyPlayerList
             )
             verify { navigation.disableProgress() }
-            verify { navigation.alert(alert = any()) }
+            verify { navigation.alert(alert = expectedAlert) }
         }
 
         @Test
@@ -521,5 +431,19 @@ class PlayersListViewModelTest {
             coVerify { playerRepository.deletePlayerByName(player.firstName, player.lastName) }
             verify { navigation.disableProgress() }
         }
+    }
+
+    @Test
+    fun `on edit player clicked`() {
+        playersListViewModel.onEditPlayerClicked(player = player)
+
+        verify { navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName) }
+    }
+
+    @Test
+    fun `on delete player clicked`() {
+        playersListViewModel.onDeletePlayerClicked(player = player)
+
+        verify { navigation.alert(alert = any()) }
     }
 }
