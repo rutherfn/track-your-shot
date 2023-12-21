@@ -491,5 +491,4 @@ class PlayersListViewModelTest {
 
         verify { navigation.alert(alert = any()) }
     }
-
 }

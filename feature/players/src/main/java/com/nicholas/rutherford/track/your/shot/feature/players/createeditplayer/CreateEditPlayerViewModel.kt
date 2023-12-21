@@ -53,7 +53,7 @@ class CreateEditPlayerViewModel(
                     playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)
                         ?.let { player ->
                             updateStateForExistingPlayer(player = player)
-                        }?: run { updateToolbarNameResIdStateToCreatePlayer() }
+                        } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
                 } else {
                     updateToolbarNameResIdStateToCreatePlayer()
                 }
@@ -159,7 +159,7 @@ class CreateEditPlayerViewModel(
                     checkImageUri(uri = uri, state = state)
                 }
             }
-        }?: run {
+        } ?: run {
             checkIfPlayerAlreadyExists(uri = uri, state = state)
         }
     }
@@ -174,7 +174,7 @@ class CreateEditPlayerViewModel(
         val hasSamePosition = application.getString(existingPlayer.position.toType()) == state.playerPositionString
         val hasSamePlacedImage = if (existingPlayer.imageUrl == null) {
             false
-        } else if(uri != null) {
+        } else if (uri != null) {
             false
         } else {
             state.editedPlayerUrl == existingPlayer.imageUrl

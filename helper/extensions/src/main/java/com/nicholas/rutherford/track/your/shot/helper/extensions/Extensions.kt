@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.helper.extensions
 
 import android.Manifest
-import android.app.Application
 import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
