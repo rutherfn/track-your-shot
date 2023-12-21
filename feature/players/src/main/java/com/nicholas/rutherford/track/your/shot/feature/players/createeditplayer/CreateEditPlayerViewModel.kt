@@ -160,6 +160,7 @@ class CreateEditPlayerViewModel(
                 }
             }
         } ?: run {
+            println("get up")
             checkIfPlayerAlreadyExists(uri = uri, state = state)
         }
     }
@@ -192,6 +193,7 @@ class CreateEditPlayerViewModel(
                 navigation.disableProgress()
                 navigation.alert(alert = playerAlreadyHasBeenAddedAlert())
             } else {
+                println("get up22121")
                 checkImageUri(uri = uri, state = state)
             }
         }
@@ -210,6 +212,7 @@ class CreateEditPlayerViewModel(
                         }
                     }
             } ?: run {
+                println("get up121212")
                 determineToUpdateOrCreateUserInFirebase(state = state, imageUrl = null)
             }
         }
@@ -219,6 +222,7 @@ class CreateEditPlayerViewModel(
         if (editedPlayer != null) {
             updateUserInFirebase(state = state, imageUrl = imageUrl)
         } else {
+            println("get up21212121")
             createUserInFirebase(state = state, imageUrl = imageUrl)
         }
     }
@@ -256,9 +260,7 @@ class CreateEditPlayerViewModel(
                 val playerKey =
                     safeLet(player.firstName, player.lastName) { firstName, lastName ->
                         playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)?.firebaseKey ?: ""
-                    } ?: run {
-                        ""
-                    }
+                    } ?: run { "" }
 
                 if (key.isNotEmpty() && playerKey.isNotEmpty()) {
                     updateFirebaseUserInfo.updatePlayer(
@@ -344,13 +346,20 @@ class CreateEditPlayerViewModel(
         }
         recentlySavedPlayer?.let { response ->
             val playerKey = response.playerFirebaseKey
+            val positionString = if (state.playerPositionString.isEmpty()) {
+                application.getString(StringsIds.pointGuard)
+            } else {
+                state.playerPositionString
+            }
             val player = Player(
                 firstName = state.firstName,
                 lastName = state.lastName,
-                position = state.playerPositionString.toPlayerPosition(application = application),
+                position = positionString.toPlayerPosition(application = application),
                 firebaseKey = playerKey,
                 imageUrl = imageUrl ?: ""
             )
+
+            println("here is the first name ${state.firstName}")
             createOrEditPlayerInRoom(player = player)
 
             navigation.disableProgress()
