@@ -44,7 +44,7 @@ class CreateEditPlayerViewModel(
     internal val createEditPlayerMutableStateFlow = MutableStateFlow(value = CreateEditPlayerState())
     val createEditPlayerStateFlow = createEditPlayerMutableStateFlow.asStateFlow()
 
-    private var editedPlayer: Player? = null
+    internal var editedPlayer: Player? = null
 
     fun checkForExistingPlayer(firstNameArgument: String?, lastNameArgument: String?) {
         scope.launch {
@@ -63,7 +63,7 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    fun updateStateForExistingPlayer(player: Player) {
+    internal fun updateStateForExistingPlayer(player: Player) {
         editedPlayer = player
         createEditPlayerMutableStateFlow.value =
             createEditPlayerMutableStateFlow.value.copy(
@@ -135,7 +135,7 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    fun validatePlayer(state: CreateEditPlayerState, uri: Uri?) {
+    internal fun validatePlayer(state: CreateEditPlayerState, uri: Uri?) {
         if (state.firstName.isEmpty()) {
             navigation.disableProgress()
             navigation.alert(alert = firstNameEmptyAlert())
@@ -147,14 +147,14 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    fun determineCreatingOrEditingPlayer(state: CreateEditPlayerState, uri: Uri?) {
+    internal fun determineCreatingOrEditingPlayer(state: CreateEditPlayerState, uri: Uri?) {
         editedPlayer?.let { player ->
-            if (hasNotEditedExistingPlayer(existingPlayer = player, uri = uri)) {
+            if (hasNotEditedExistingPlayer(existingPlayer = player, uri = uri, state = state)) {
                 navigation.disableProgress()
                 navigation.alert(alert = noChangesHaveBeenMadeAlert())
             } else {
                 if (state.editedPlayerUrl.isNotEmpty()) {
-                    scope.launch { updateUserInFirebase(state = state, imageUrl = state.editedPlayerUrl) }
+                    updateUserInFirebase(state = state, imageUrl = state.editedPlayerUrl)
                 } else {
                     checkImageUri(uri = uri, state = state)
                 }
@@ -168,8 +168,7 @@ class CreateEditPlayerViewModel(
         createEditPlayerMutableStateFlow.value = createEditPlayerStateFlow.value.copy(editedPlayerUrl = "")
     }
 
-    fun hasNotEditedExistingPlayer(existingPlayer: Player, uri: Uri?): Boolean {
-        val state = createEditPlayerMutableStateFlow.value
+    internal fun hasNotEditedExistingPlayer(existingPlayer: Player, uri: Uri?, state: CreateEditPlayerState): Boolean {
         val hasSameName = existingPlayer.firstName == state.firstName && existingPlayer.lastName == state.lastName
         val hasSamePosition = application.getString(existingPlayer.position.toType()) == state.playerPositionString
         val hasSamePlacedImage = if (existingPlayer.imageUrl == null) {
@@ -250,46 +249,47 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    suspend fun updateUserInFirebase(state: CreateEditPlayerState, imageUrl: String?,) {
-        editedPlayer?.let { player ->
-            val key = activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey ?: ""
-            val playerKey =
-                safeLet(player.firstName, player.lastName) { firstName, lastName ->
-                    playerRepository.fetchPlayerByName(
-                        firstName = firstName,
-                        lastName = lastName
-                    )?.firebaseKey
-                } ?: run {
-                    ""
-                }
+    internal fun updateUserInFirebase(state: CreateEditPlayerState, imageUrl: String?,) {
+        scope.launch {
+            editedPlayer?.let { player ->
+                val key = activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey ?: ""
+                val playerKey =
+                    safeLet(player.firstName, player.lastName) { firstName, lastName ->
+                        playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)?.firebaseKey ?: ""
+                    } ?: run {
+                        ""
+                    }
 
-            if (key.isNotEmpty() && playerKey.isNotEmpty()) {
-                updateFirebaseUserInfo.updatePlayer(
-                    accountKey = key,
-                    playerInfoRealtimeWithKeyResponse = PlayerInfoRealtimeWithKeyResponse(
-                        playerFirebaseKey = playerKey,
-                        playerInfo = PlayerInfoRealtimeResponse(
-                            firstName = state.firstName,
-                            lastName = state.lastName,
-                            positionValue = state.playerPositionString.toPlayerPosition(application = application).value,
-                            imageUrl = imageUrl ?: ""
+                if (key.isNotEmpty() && playerKey.isNotEmpty()) {
+                    updateFirebaseUserInfo.updatePlayer(
+                        accountKey = key,
+                        playerInfoRealtimeWithKeyResponse = PlayerInfoRealtimeWithKeyResponse(
+                            playerFirebaseKey = playerKey,
+                            playerInfo = PlayerInfoRealtimeResponse(
+                                firstName = state.firstName,
+                                lastName = state.lastName,
+                                positionValue = state.playerPositionString.toPlayerPosition(
+                                    application = application
+                                ).value,
+                                imageUrl = imageUrl ?: ""
+                            )
                         )
-                    )
-                ).collectLatest { isSuccessful ->
-                    handleFirebaseResponseForSavingPlayer(
-                        isSuccessful = isSuccessful,
-                        key = key,
-                        state = state,
-                        imageUrl = imageUrl
-                    )
+                    ).collectLatest { isSuccessful ->
+                        handleFirebaseResponseForSavingPlayer(
+                            isSuccessful = isSuccessful,
+                            key = key,
+                            state = state,
+                            imageUrl = imageUrl
+                        )
+                    }
+                } else {
+                    navigation.disableProgress()
+                    navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
                 }
-            } else {
+            } ?: run {
                 navigation.disableProgress()
                 navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
             }
-        } ?: run {
-            navigation.disableProgress()
-            navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
         }
     }
 
