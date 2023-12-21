@@ -56,10 +56,14 @@ class PlayersListViewModel(
         }
     }
 
-    private fun collectPlayerAdditionUpdates() {
+    private fun clearAndUpdatePlayerListState() {
+        currentPlayerArrayList.clear()
+        updatePlayerListState()
+    }
+
+    internal fun collectPlayerAdditionUpdates() {
         scope.launch {
             playersAdditionUpdates.newPlayerHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
-                println("has been added $hasBeenAdded")
                 handlePlayerAdded(hasBeenAdded = hasBeenAdded)
             }
         }
@@ -73,11 +77,9 @@ class PlayersListViewModel(
         }
     }
 
-    internal fun handlePlayerAdded(hasBeenAdded: Boolean) {
+    private fun handlePlayerAdded(hasBeenAdded: Boolean) {
         if (hasBeenAdded) {
-            currentPlayerArrayList.clear()
-            updatePlayerListState()
-           // playersAdditionUpdates.updateNewPlayerHasBeenAddedFlow(hasBeenAdded = false)
+            clearAndUpdatePlayerListState()
         }
     }
 
