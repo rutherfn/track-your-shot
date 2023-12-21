@@ -44,7 +44,7 @@ sealed class PlayerPositions(val value: Int) {
                 Center
             }
             else -> {
-                None
+                PointGuard
             }
         }
     }

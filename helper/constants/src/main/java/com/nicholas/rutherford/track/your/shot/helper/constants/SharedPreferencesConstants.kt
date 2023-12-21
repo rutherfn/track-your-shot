@@ -8,6 +8,7 @@ object SharedPreferencesConstants {
 
     object Preferences {
         const val ACCOUNT_HAS_BEEN_CREATED = "ACCOUNT_HAS_BEEN_CREATED_PREFERENCE"
+        const val APP_HAS_LAUNCHED = "APP_HAS_LAUNCHED"
         const val UNVERIFIED_EMAIL = "UNVERIFIED_EMAIL"
         const val UNVERIFIED_USERNAME = "UNVERIFIED_USERNAME"
     }

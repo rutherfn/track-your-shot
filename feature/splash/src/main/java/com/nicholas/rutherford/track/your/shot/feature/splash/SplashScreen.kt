@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -17,10 +18,11 @@ const val SPLASH_IMAGE_SCALE = 1f
 
 @Composable
 fun SplashScreen(navigateToPlayersListLoginOrAuthentication: () -> Unit) {
-    Content(
-        ui = { SplashScreenContent() },
-        invokeFunctionOnInit = { navigateToPlayersListLoginOrAuthentication.invoke() }
-    )
+    LaunchedEffect(Unit) {
+        navigateToPlayersListLoginOrAuthentication.invoke()
+    }
+
+    Content(ui = { SplashScreenContent() })
 }
 
 @Composable

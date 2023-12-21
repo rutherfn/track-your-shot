@@ -29,6 +29,40 @@ class ReadSharedPreferencesImplTest {
     }
 
     @Nested
+    inner class AppHasBeenLaunched {
+
+        @BeforeEach
+        fun beforeEach() {
+            mockkStatic(SharedPreferences::class)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return true when getBoolean returns back true`() =
+            runTest {
+                coEvery {
+                    sharedPreferences.getBoolean(
+                        SharedPreferencesConstants.Preferences.APP_HAS_LAUNCHED,
+                        false
+                    )
+                } returns true
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.appHasBeenLaunched(), true)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return false when getBoolean returns back no value`() =
+            runTest {
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.appHasBeenLaunched(), false)
+            }
+    }
+
+    @Nested
     inner class AccountHasBeenCreated {
 
         @BeforeEach

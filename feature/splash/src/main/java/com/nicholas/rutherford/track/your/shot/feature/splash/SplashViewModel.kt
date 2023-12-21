@@ -17,6 +17,12 @@ class SplashViewModel(
     private val activeUserRepository: ActiveUserRepository
 ) : ViewModel() {
 
+    init {
+        // todo -> check if this is the first time a user has launched the app
+        // if it is, check if the firebase instance for that user is logged in if it is,
+        // remove that instance and start over from login screen
+    }
+
     fun navigateToPlayersListLoginOrAuthentication() {
         viewModelScope.launch {
             combine(

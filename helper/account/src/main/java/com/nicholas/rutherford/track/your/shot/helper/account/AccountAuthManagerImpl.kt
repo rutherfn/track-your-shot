@@ -127,6 +127,8 @@ class AccountAuthManagerImpl(
                     _loggedInPlayerListStateFlow.value = playerList
                     playerRepository.createListOfPlayers(playerList = playerList)
                     disableProcessAndNavigateToPlayersList()
+                } else {
+                    disableProcessAndNavigateToPlayersList()
                 }
             }
     }
