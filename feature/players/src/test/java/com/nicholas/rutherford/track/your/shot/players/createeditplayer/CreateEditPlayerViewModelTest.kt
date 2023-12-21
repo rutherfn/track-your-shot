@@ -557,7 +557,7 @@ class CreateEditPlayerViewModelTest {
         private val player = TestPlayer().create()
 
         @Test
-        fun `when first name of player is diffrent then the update player first name should return false`() {
+        fun `when first name of player is different then the update player first name should return false`() {
             val newFirstName = "newFirstName"
             val existingPlayer = player
             val state = CreateEditPlayerState(
@@ -575,7 +575,7 @@ class CreateEditPlayerViewModelTest {
         }
 
         @Test
-        fun `when last name of player is diffrent then the update player last name should return false`() {
+        fun `when last name of player is different then the update player last name should return false`() {
             val newLastName = "newLastName"
             val existingPlayer = player
             val state = CreateEditPlayerState(
@@ -593,7 +593,7 @@ class CreateEditPlayerViewModelTest {
         }
 
         @Test
-        fun `when position of player is diffrent then the update player position should return false`() {
+        fun `when position of player is different then the update player position should return false`() {
             every { application.getString(StringsIds.pointGuard) } returns "Point Guard"
             val existingPlayer = player
             val state = CreateEditPlayerState(
@@ -610,23 +610,79 @@ class CreateEditPlayerViewModelTest {
             )
         }
 
-//        @Test
-//        fun `when position of player is diffrent then the update player position should return false`() {
-//            every { application.getString(StringsIds.pointGuard) } returns "Point Guard"
-//            val existingPlayer = player
-//            val state = CreateEditPlayerState(
-//                firstName = player.firstName,
-//                lastName = player.lastName,
-//                editedPlayerUrl = player.imageUrl!!,
-//                toolbarNameResId = StringsIds.editPlayer,
-//                playerPositionString = "Point Guard"
-//            )
-//
-//            Assertions.assertEquals(
-//                createEditPlayerViewModel.hasNotEditedExistingPlayer(existingPlayer = existingPlayer, uri = null, state = state),
-//                false
-//            )
-//        }
+        @Test
+        fun `when imageUrl is set to null should return false`() {
+            val existingPlayer = player.copy(imageUrl = null)
+            val state = CreateEditPlayerState(
+                firstName = player.firstName,
+                lastName = player.lastName,
+                editedPlayerUrl = player.imageUrl!!,
+                toolbarNameResId = StringsIds.editPlayer,
+                playerPositionString = "Center"
+            )
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.hasNotEditedExistingPlayer(existingPlayer = existingPlayer, uri = null, state = state),
+                false
+            )
+        }
+
+        @Test
+        fun `when uri is not set to null should return false`() {
+            val existingPlayer = player
+            val uriString = "uriString"
+
+            val state = CreateEditPlayerState(
+                firstName = player.firstName,
+                lastName = player.lastName,
+                editedPlayerUrl = player.imageUrl!!,
+                toolbarNameResId = StringsIds.editPlayer,
+                playerPositionString = "Center"
+            )
+
+            every { uri.toString() } returns uriString
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.hasNotEditedExistingPlayer(existingPlayer = existingPlayer, uri = uri, state = state),
+                false
+            )
+        }
+
+        @Test
+        fun `when same url matches for new and existing player should return false`() {
+            val existingPlayer = player
+
+            val state = CreateEditPlayerState(
+                firstName = player.firstName,
+                lastName = player.lastName,
+                editedPlayerUrl = "new image url",
+                toolbarNameResId = StringsIds.editPlayer,
+                playerPositionString = "Center"
+            )
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.hasNotEditedExistingPlayer(existingPlayer = existingPlayer, uri = null, state = state),
+                false
+            )
+        }
+
+        @Test
+        fun `when all conditions are met should return true`() {
+            val existingPlayer = player
+
+            val state = CreateEditPlayerState(
+                firstName = player.firstName,
+                lastName = player.lastName,
+                editedPlayerUrl = player.imageUrl!!,
+                toolbarNameResId = StringsIds.editPlayer,
+                playerPositionString = "Center"
+            )
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.hasNotEditedExistingPlayer(existingPlayer = existingPlayer, uri = null, state = state),
+                true
+            )
+        }
     }
 
     @Nested
@@ -664,13 +720,13 @@ class CreateEditPlayerViewModelTest {
     inner class CheckImageUri {
 
         @Test
-        fun `when uri passed in is set to null should call createUserInFirebase`() = runTest {
+        fun `when uri passed in is set to null should call determineToUpdateOrCreateUserInFirebase`() = runTest {
             coEvery { activeUserRepository.fetchActiveUser() } returns null
             coEvery { activeUserRepository.fetchActiveUser()!!.firebaseAccountInfoKey } returns null
 
             createEditPlayerViewModel.checkImageUri(state = defaultState, uri = null)
 
-            coVerify { createEditPlayerViewModel.createUserInFirebase(state = defaultState, imageUrl = null) }
+            coVerify { createEditPlayerViewModel.determineToUpdateOrCreateUserInFirebase(state = defaultState, imageUrl = null) }
         }
 
         @Test
@@ -687,7 +743,7 @@ class CreateEditPlayerViewModelTest {
         }
 
         @Test
-        fun `when uri passed in is not null and create image firebase storage returns a valid imageUrl should call createUserInFirebase`() = runTest {
+        fun `when uri passed in is not null and create image firebase storage returns a valid imageUrl should call determineToUpdateOrCreateUserInFirebase`() = runTest {
             val uriString = "uriString"
 
             every { uri.toString() } returns uriString
@@ -697,7 +753,49 @@ class CreateEditPlayerViewModelTest {
 
             createEditPlayerViewModel.checkImageUri(state = defaultState, uri = uri)
 
-            coVerify { createEditPlayerViewModel.createUserInFirebase(state = defaultState, imageUrl = uriString) }
+            coVerify { createEditPlayerViewModel.determineToUpdateOrCreateUserInFirebase(state = defaultState, imageUrl = uriString) }
+        }
+    }
+
+    @Nested
+    inner class UpdateUserInFirebase {
+        private val activeUser = TestActiveUser().create()
+        private val player = TestPlayer().create()
+
+        @Test
+        fun `when editedPlayer returns null should call alert`() = runTest {
+            createEditPlayerViewModel.editedPlayer = null
+
+            createEditPlayerViewModel.updateUserInFirebase(state = defaultState, imageUrl = "")
+
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when key is empty should call alert`() = runTest {
+            coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(firebaseAccountInfoKey = "")
+            coEvery { playerRepository.fetchPlayerByName(firstName = player.firstName, lastName = player.lastName) } returns player
+
+            createEditPlayerViewModel.editedPlayer = player
+
+            createEditPlayerViewModel.updateUserInFirebase(state = defaultState, imageUrl = "")
+
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when key is not empty and playerKey is empty should call alert`() = runTest {
+            coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(firebaseAccountInfoKey = "key1")
+            coEvery { playerRepository.fetchPlayerByName(firstName = player.firstName, lastName = player.lastName) } returns null
+
+            createEditPlayerViewModel.editedPlayer = player
+
+            createEditPlayerViewModel.updateUserInFirebase(state = defaultState, imageUrl = "")
+
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
         }
     }
 
@@ -875,6 +973,31 @@ class CreateEditPlayerViewModelTest {
         }
     }
 
+    @Nested
+    inner class CreateOrEditPlayerInRoom {
+        private val player = TestPlayer().create()
+
+        @Test
+        fun `when editedPlayer is set to null should call create player`() = runTest {
+            createEditPlayerViewModel.editedPlayer = null
+
+            createEditPlayerViewModel.createOrEditPlayerInRoom(player = player)
+
+            coVerify { playerRepository.createPlayer(player = player) }
+        }
+
+        @Test
+        fun `when editedPlayer is not set to null should call update player`() = runTest {
+            val currentPlayer = player.copy(firstName = "firsttest1", lastName = "lastNameTest1")
+
+            createEditPlayerViewModel.editedPlayer = currentPlayer
+
+            createEditPlayerViewModel.createOrEditPlayerInRoom(player = player)
+
+            coVerify { playerRepository.updatePlayer(currentPlayer = currentPlayer, newPlayer = player) }
+        }
+    }
+
     @Test
     fun `onFirstNameValueChanged should update firstName State property`() {
         val newFirstName = "newFirstName"
@@ -952,6 +1075,19 @@ class CreateEditPlayerViewModelTest {
         Assertions.assertEquals(alert.title, "No Last Name Entered")
         Assertions.assertEquals(alert.dismissButton!!.buttonText, "Got It")
         Assertions.assertEquals(alert.description, "The player\\'s last name is missing. Kindly provide a first name to proceed.")
+    }
+
+    @Test
+    fun `no changes have been made alert`() {
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+        every { application.getString(StringsIds.noChangesMade) } returns "No Changes Made"
+        every { application.getString(StringsIds.currentPlayerHasNoChangesDescription) } returns "There haven\\'t been any recent updates or modifications to the current player. Please make adjustments to the existing player to proceed."
+
+        val alert = createEditPlayerViewModel.noChangesHaveBeenMadeAlert()
+
+        Assertions.assertEquals(alert.title, "No Changes Made")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Got It")
+        Assertions.assertEquals(alert.description, "There haven\\'t been any recent updates or modifications to the current player. Please make adjustments to the existing player to proceed.")
     }
 
     @Test
