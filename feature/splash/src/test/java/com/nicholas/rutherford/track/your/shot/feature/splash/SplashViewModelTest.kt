@@ -3,10 +3,14 @@ package com.nicholas.rutherford.track.your.shot.feature.splash
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
+import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -29,12 +33,15 @@ class SplashViewModelTest {
     internal var readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
 
     internal var activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
+    internal val accountAuthManager = mockk<AccountAuthManager>(relaxed = true)
+
+    internal val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
+    internal val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
 
     internal val delayTime = 4001L // needs 1 extra millisecond to account for function below call
 
     internal val activeUser = TestActiveUser().create()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val dispatcher = StandardTestDispatcher()
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -44,7 +51,10 @@ class SplashViewModelTest {
         viewModel = SplashViewModel(
             navigation = navigation,
             readFirebaseUserInfo = readFirebaseUserInfo,
-            activeUserRepository = activeUserRepository
+            activeUserRepository = activeUserRepository,
+            accountAuthManager = accountAuthManager,
+            readSharedPreferences = readSharedPreferences,
+            createSharedPreferences = createSharedPreferences
         )
     }
 
@@ -61,6 +71,30 @@ class SplashViewModelTest {
 
     @Nested
     inner class Init {
+
+        @Nested
+        inner class CheckIfAppHasBeenLaunchedBefore {
+
+            @Test
+            fun `when appHasBeenLaunched returns false should call expected functions`() {
+                every { readSharedPreferences.appHasBeenLaunched() } returns false
+
+                viewModel.checkIfAppHasBeenLaunchedBefore()
+
+                verify { accountAuthManager.checkIfWeNeedToLogoutOnLaunch() }
+                verify { createSharedPreferences.createAppHasLaunchedPreference(value = true) }
+            }
+
+            @Test
+            fun `when appHasBeenLaunched returns true should not call expected functions`() {
+                every { readSharedPreferences.appHasBeenLaunched() } returns true
+
+                viewModel.checkIfAppHasBeenLaunchedBefore()
+
+                verify(exactly = 0) { accountAuthManager.checkIfWeNeedToLogoutOnLaunch() }
+                verify(exactly = 0) { createSharedPreferences.createAppHasLaunchedPreference(value = true) }
+            }
+        }
 
         @Nested
         inner class NavigateToAuthentication {
@@ -80,7 +114,10 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository
+                        activeUserRepository = activeUserRepository,
+                        accountAuthManager = accountAuthManager,
+                        readSharedPreferences = readSharedPreferences,
+                        createSharedPreferences = createSharedPreferences
                     )
 
                     viewModel.navigateToPlayersListLoginOrAuthentication()
@@ -110,7 +147,10 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository
+                        activeUserRepository = activeUserRepository,
+                        accountAuthManager = accountAuthManager,
+                        readSharedPreferences = readSharedPreferences,
+                        createSharedPreferences = createSharedPreferences
                     )
 
                     viewModel.navigateToPlayersListLoginOrAuthentication()
@@ -135,7 +175,10 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository
+                        activeUserRepository = activeUserRepository,
+                        accountAuthManager = accountAuthManager,
+                        readSharedPreferences = readSharedPreferences,
+                        createSharedPreferences = createSharedPreferences
                     )
 
                     viewModel.navigateToPlayersListLoginOrAuthentication()
@@ -164,7 +207,10 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository
+                        activeUserRepository = activeUserRepository,
+                        accountAuthManager = accountAuthManager,
+                        readSharedPreferences = readSharedPreferences,
+                        createSharedPreferences = createSharedPreferences
                     )
 
                     viewModel.navigateToPlayersListLoginOrAuthentication()
@@ -198,7 +244,10 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository
+                        activeUserRepository = activeUserRepository,
+                        accountAuthManager = accountAuthManager,
+                        readSharedPreferences = readSharedPreferences,
+                        createSharedPreferences = createSharedPreferences
                     )
 
                     viewModel.navigateToPlayersListLoginOrAuthentication()
@@ -223,7 +272,10 @@ class SplashViewModelTest {
                     viewModel = SplashViewModel(
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository
+                        activeUserRepository = activeUserRepository,
+                        accountAuthManager = accountAuthManager,
+                        readSharedPreferences = readSharedPreferences,
+                        createSharedPreferences = createSharedPreferences
                     )
 
                     viewModel.navigateToPlayersListLoginOrAuthentication()

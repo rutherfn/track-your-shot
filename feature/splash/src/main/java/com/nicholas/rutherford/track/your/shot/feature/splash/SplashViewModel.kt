@@ -23,7 +23,7 @@ class SplashViewModel(
     private val createSharedPreferences: CreateSharedPreferences
 ) : ViewModel() {
 
-    fun checkIfAppHasBeenLaunchedBefore() {
+    internal fun checkIfAppHasBeenLaunchedBefore() {
         if (!readSharedPreferences.appHasBeenLaunched()) {
             accountAuthManager.checkIfWeNeedToLogoutOnLaunch()
             createSharedPreferences.createAppHasLaunchedPreference(value = true)
