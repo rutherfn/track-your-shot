@@ -69,12 +69,12 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":helper:account")))
     androidTestImplementation(Dependencies.Compose.uiTestJunit4)
 
     api(project(path = ":base-resources"))
     api(project(path = ":compose:components"))
     api(project(path = ":data:room"))
+    api(project(path = ":helper:account"))
     api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:extensions"))
     api(project(path = ":firebase:core"))

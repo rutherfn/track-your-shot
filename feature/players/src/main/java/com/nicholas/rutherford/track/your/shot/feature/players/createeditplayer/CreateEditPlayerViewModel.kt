@@ -160,7 +160,6 @@ class CreateEditPlayerViewModel(
                 }
             }
         } ?: run {
-            println("get up")
             checkIfPlayerAlreadyExists(uri = uri, state = state)
         }
     }
@@ -274,7 +273,6 @@ class CreateEditPlayerViewModel(
                             )
                         )
                     ).collectLatest { isSuccessful ->
-                        println("get here test1")
                         handleFirebaseResponseForSavingPlayer(
                             isSuccessful = isSuccessful,
                             key = key,
@@ -309,7 +307,6 @@ class CreateEditPlayerViewModel(
                     )
                 }
         } else {
-            println("get here test2")
             navigation.disableProgress()
             navigation.alert(alert = weWereNotAbleToCreateThePlayerAlert())
         }

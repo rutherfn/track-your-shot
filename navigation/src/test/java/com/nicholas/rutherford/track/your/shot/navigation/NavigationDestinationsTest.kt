@@ -11,7 +11,7 @@ class NavigationDestinationsTest {
 
     internal val authenticationScreen = "authenticationScreen"
     internal val createAccountScreen = "createAccountScreen"
-    internal val createEditPlayerScreen = "createEditPlayerscreen"
+    internal val createEditPlayerScreen = "createEditPlayerScreen"
     internal val forgotPasswordScreen = "forgotPasswordScreen"
     internal val playersListScreen = "playersListScreen"
     internal val loginScreen = "loginScreen"
