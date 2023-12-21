@@ -214,33 +214,33 @@ class PlayersListViewModelTest {
         }
     }
 
-        @Test
-        fun `HandleLoggedInPlayerList should clear out given list and update state`() = runTest {
-            val newPlayer = Player(
-                firstName = "first1",
-                lastName = "last1",
-                position = PlayerPositions.Center,
-                firebaseKey = "key",
-                imageUrl = "url"
-            )
-            val emptyPlayerList: List<Player> = emptyList()
-            val newPlayerList: List<Player> = listOf(newPlayer)
+    @Test
+    fun `HandleLoggedInPlayerList should clear out given list and update state`() = runTest {
+        val newPlayer = Player(
+            firstName = "first1",
+            lastName = "last1",
+            position = PlayerPositions.Center,
+            firebaseKey = "key",
+            imageUrl = "url"
+        )
+        val emptyPlayerList: List<Player> = emptyList()
+        val newPlayerList: List<Player> = listOf(newPlayer)
 
-            playersListViewModel.currentPlayerArrayList = arrayListOf()
-            playersListViewModel.playerListMutableStateFlow.value =
-                PlayersListState(playerList = emptyPlayerList)
+        playersListViewModel.currentPlayerArrayList = arrayListOf()
+        playersListViewModel.playerListMutableStateFlow.value =
+            PlayersListState(playerList = emptyPlayerList)
 
-            playersListViewModel.handleLoggedInPlayerList(playerList = newPlayerList)
+        playersListViewModel.handleLoggedInPlayerList(playerList = newPlayerList)
 
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = newPlayerList)
-            )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                newPlayerList
-            )
-        }
+        Assertions.assertEquals(
+            playersListViewModel.playerListMutableStateFlow.value,
+            PlayersListState(playerList = newPlayerList)
+        )
+        Assertions.assertEquals(
+            playersListViewModel.currentPlayerArrayList.toList(),
+            newPlayerList
+        )
+    }
 
     @Test
     fun `on toolbar menu clicked`() {

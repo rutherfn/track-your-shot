@@ -53,7 +53,6 @@ class AccountAuthManagerImpl(
         }
     }
 
-
     override fun checkIfWeNeedToLogoutOnLaunch() {
         if (existingUserFirebase.isLoggedIn()) {
             scope.launch {
