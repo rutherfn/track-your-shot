@@ -208,9 +208,9 @@ class AppModule {
                 navigation = get(),
                 readFirebaseUserInfo = get(),
                 activeUserRepository = get(),
-                get(),
-                get(),
-                get()
+                accountAuthManager = get(),
+                readSharedPreferences = get(),
+                createSharedPreferences = get()
             )
         }
         viewModel {
