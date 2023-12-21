@@ -53,6 +53,16 @@ class AccountAuthManagerImpl(
         }
     }
 
+
+    override fun checkIfWeNeedToLogoutOnLaunch() {
+        if (existingUserFirebase.isLoggedIn()) {
+            scope.launch {
+                existingUserFirebase.logout()
+                clearOutDatabase()
+            }
+        }
+    }
+
     internal suspend fun clearOutDatabase() {
         activeUserRepository.deleteActiveUser()
         playerRepository.deleteAllPlayers()

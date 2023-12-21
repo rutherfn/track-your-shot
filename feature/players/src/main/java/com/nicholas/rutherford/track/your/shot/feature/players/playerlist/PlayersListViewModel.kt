@@ -84,11 +84,10 @@ class PlayersListViewModel(
     }
 
     internal fun handleLoggedInPlayerList(playerList: List<Player>) {
-        if (playerList.isNotEmpty() && playerListMutableStateFlow.value.playerList.isEmpty()) {
-            currentPlayerArrayList.addAll(playerList)
-            playerListMutableStateFlow.value =
-                PlayersListState(playerList = currentPlayerArrayList.toList())
-        }
+        currentPlayerArrayList.clear()
+        currentPlayerArrayList.addAll(playerList)
+        playerListMutableStateFlow.value =
+            PlayersListState(playerList = currentPlayerArrayList.toList())
     }
 
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()

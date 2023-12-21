@@ -208,6 +208,9 @@ class AppModule {
                 navigation = get(),
                 readFirebaseUserInfo = get(),
                 activeUserRepository = get(),
+                get(),
+                get(),
+                get()
             )
         }
         viewModel {

@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
+import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
@@ -14,16 +17,22 @@ const val SPLASH_DELAY_IN_MILLIS = 4000L
 class SplashViewModel(
     private val navigation: SplashNavigation,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
-    private val activeUserRepository: ActiveUserRepository
+    private val activeUserRepository: ActiveUserRepository,
+    private val accountAuthManager: AccountAuthManager,
+    private val readSharedPreferences: ReadSharedPreferences,
+    private val createSharedPreferences: CreateSharedPreferences
 ) : ViewModel() {
 
-    init {
-        // todo -> check if this is the first time a user has launched the app
-        // if it is, check if the firebase instance for that user is logged in if it is,
-        // remove that instance and start over from login screen
+    fun checkIfAppHasBeenLaunchedBefore() {
+        if (!readSharedPreferences.appHasBeenLaunched()) {
+            accountAuthManager.checkIfWeNeedToLogoutOnLaunch()
+            createSharedPreferences.createAppHasLaunchedPreference(value = true)
+        }
     }
 
     fun navigateToPlayersListLoginOrAuthentication() {
+        checkIfAppHasBeenLaunchedBefore()
+
         viewModelScope.launch {
             combine(
                 readFirebaseUserInfo.isEmailVerifiedFlow(),

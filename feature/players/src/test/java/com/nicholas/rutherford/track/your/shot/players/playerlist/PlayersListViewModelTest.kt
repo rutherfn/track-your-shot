@@ -214,59 +214,15 @@ class PlayersListViewModelTest {
         }
     }
 
-    @Nested
-    inner class HandleLoggedInPlayerList {
-        private val newPlayer = Player(
-            firstName = "first1",
-            lastName = "last1",
-            position = PlayerPositions.Center,
-            firebaseKey = "key",
-            imageUrl = "url"
-        )
-
         @Test
-        fun `when player list is empty should not update state and list`() = runTest {
-            val playerList: List<Player> = emptyList()
-
-            playersListViewModel.currentPlayerArrayList = arrayListOf()
-            playersListViewModel.playerListMutableStateFlow.value =
-                PlayersListState(playerList = playerList)
-
-            playersListViewModel.handleLoggedInPlayerList(playerList = playerList)
-
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = playerList)
+        fun `HandleLoggedInPlayerList should clear out given list and update state`() = runTest {
+            val newPlayer = Player(
+                firstName = "first1",
+                lastName = "last1",
+                position = PlayerPositions.Center,
+                firebaseKey = "key",
+                imageUrl = "url"
             )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                playerList
-            )
-        }
-
-        @Test
-        fun `when current state player list is not empty the passed in list should not update state and list`() = runTest {
-            val playerList: List<Player> = listOf(player)
-            val newPlayerList: List<Player> = listOf(newPlayer)
-
-            playersListViewModel.currentPlayerArrayList = arrayListOf(player)
-            playersListViewModel.playerListMutableStateFlow.value =
-                PlayersListState(playerList = playerList)
-
-            playersListViewModel.handleLoggedInPlayerList(playerList = newPlayerList)
-
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = playerList)
-            )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                playerList
-            )
-        }
-
-        @Test
-        fun `when player list is not empty and current player list state is empty should update state and list`() = runTest {
             val emptyPlayerList: List<Player> = emptyList()
             val newPlayerList: List<Player> = listOf(newPlayer)
 
@@ -285,7 +241,6 @@ class PlayersListViewModelTest {
                 newPlayerList
             )
         }
-    }
 
     @Test
     fun `on toolbar menu clicked`() {
