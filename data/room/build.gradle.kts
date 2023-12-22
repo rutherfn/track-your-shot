@@ -70,6 +70,7 @@ dependencies {
     androidTestImplementation(Dependencies.Espresso.core)
     androidTestImplementation(Dependencies.Truth.core)
 
+    implementation("com.google.code.gson:gson:2.8.8")
     implementation(Dependencies.Room.ktx)
     implementation(Dependencies.Room.runtime)
     implementation(Dependencies.Room.coroutines)

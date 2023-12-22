@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 
 @Entity(tableName = "players")
 data class PlayerEntity(
@@ -19,7 +20,9 @@ data class PlayerEntity(
     @ColumnInfo(name = "firebaseKey")
     val firebaseKey: String,
     @ColumnInfo(name = "imageUrl")
-    val imageUrl: String?
+    val imageUrl: String?,
+    @ColumnInfo(name = "shotsLogged")
+    val shotsLoggedList: List<ShotLogged>
 )
 
 fun PlayerEntity.toPlayer(): Player {
@@ -28,6 +31,7 @@ fun PlayerEntity.toPlayer(): Player {
         lastName = lastName,
         position = position,
         firebaseKey = firebaseKey,
-        imageUrl = imageUrl
+        imageUrl = imageUrl,
+        shotsLoggedList = shotsLoggedList
     )
 }

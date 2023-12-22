@@ -185,7 +185,8 @@ class PlayersListViewModelTest {
                 lastName = "last1",
                 position = PlayerPositions.Center,
                 firebaseKey = "key",
-                imageUrl = "url"
+                imageUrl = "url",
+                shotsLoggedList = emptyList()
             )
             val playerList = listOf(player)
 
@@ -221,7 +222,8 @@ class PlayersListViewModelTest {
             lastName = "last1",
             position = PlayerPositions.Center,
             firebaseKey = "key",
-            imageUrl = "url"
+            imageUrl = "url",
+            shotsLoggedList = emptyList()
         )
         val emptyPlayerList: List<Player> = emptyList()
         val newPlayerList: List<Player> = listOf(newPlayer)

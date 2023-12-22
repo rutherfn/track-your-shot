@@ -227,7 +227,8 @@ fun PlayersListScreenWithItemsPreview() {
                         lastName = "last",
                         position = PlayerPositions.Center,
                         firebaseKey = "key",
-                        imageUrl = null
+                        imageUrl = null, 
+                        shotsLoggedList = emptyList()
                     )
                 )
             ),

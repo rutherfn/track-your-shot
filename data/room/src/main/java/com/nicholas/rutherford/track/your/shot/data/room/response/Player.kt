@@ -7,7 +7,8 @@ data class Player(
     val lastName: String,
     val position: PlayerPositions,
     val firebaseKey: String,
-    val imageUrl: String?
+    val imageUrl: String?,
+    val shotsLoggedList: List<ShotLogged>
 )
 
 fun Player.fullName(): String {
@@ -21,6 +22,7 @@ fun Player.toPlayerEntity(): PlayerEntity {
         lastName = lastName,
         position = position,
         firebaseKey = firebaseKey,
-        imageUrl = imageUrl
+        imageUrl = imageUrl,
+        shotsLoggedList = shotsLoggedList
     )
 }
