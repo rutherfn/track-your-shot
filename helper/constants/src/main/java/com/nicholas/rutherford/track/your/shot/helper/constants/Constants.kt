@@ -23,6 +23,7 @@ object Constants {
     const val USERS_PATH = "users"
     const val POINT_GUARD_VALUE = 0
     const val SHOOTING_GUARD_VALUE = 1
+    const val SHOTS_LOGGED = "shotsLogged"
     const val SMALL_FORWARD_VALUE = 2
     const val POWER_FORWARD_VALUE = 3
     const val USERNAME = "userName"
