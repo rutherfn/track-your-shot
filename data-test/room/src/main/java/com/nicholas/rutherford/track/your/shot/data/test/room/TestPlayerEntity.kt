@@ -12,7 +12,8 @@ class TestPlayerEntity {
             lastName = LAST_NAME,
             position = position,
             firebaseKey = firebaseKey,
-            imageUrl = IMAGE_URL
+            imageUrl = IMAGE_URL,
+            shotsLoggedList = listOf(TestShotLogged.build())
         )
     }
 }

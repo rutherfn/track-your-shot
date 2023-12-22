@@ -59,6 +59,10 @@ object Dependencies {
         const val storageKtx = "com.google.firebase:firebase-storage-ktx:${Versions.Dependencies.Firebase.ktx}"
     }
 
+    object Gson {
+        const val core = "com.google.code.gson:gson:${Versions.Dependencies.Gson.core}"
+    }
+
     object Junit {
         const val core = "junit:junit:${Versions.Dependencies.Junit.core}"
         const val ext = "androidx.test.ext:junit:${Versions.Dependencies.JunitJupiter.ext}"

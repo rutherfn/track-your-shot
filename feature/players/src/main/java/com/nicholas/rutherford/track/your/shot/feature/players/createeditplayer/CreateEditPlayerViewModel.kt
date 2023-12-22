@@ -350,7 +350,8 @@ class CreateEditPlayerViewModel(
                 lastName = state.lastName,
                 position = positionString.toPlayerPosition(application = application),
                 firebaseKey = playerKey,
-                imageUrl = imageUrl ?: ""
+                imageUrl = imageUrl ?: "",
+                shotsLoggedList = emptyList() // todo -> add logic from list state
             )
 
             createOrEditPlayerInRoom(player = player)

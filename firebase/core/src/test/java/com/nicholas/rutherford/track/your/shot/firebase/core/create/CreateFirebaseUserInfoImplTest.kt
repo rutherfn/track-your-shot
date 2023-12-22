@@ -213,6 +213,7 @@ class CreateFirebaseUserInfoImplTest {
             values[Constants.LAST_NAME] = playerInfoRealtimeResponse.lastName
             values[Constants.POSITION_VALUE] = playerInfoRealtimeResponse.positionValue
             values[Constants.IMAGE_URL] = playerInfoRealtimeResponse.imageUrl
+            values[Constants.SHOTS_LOGGED] = playerInfoRealtimeResponse.shotsLogged
 
             mockkStatic(Tasks::class)
 
@@ -247,6 +248,7 @@ class CreateFirebaseUserInfoImplTest {
             values[Constants.LAST_NAME] = playerInfoRealtimeResponse.lastName
             values[Constants.POSITION_VALUE] = playerInfoRealtimeResponse.positionValue
             values[Constants.IMAGE_URL] = playerInfoRealtimeResponse.imageUrl
+            values[Constants.SHOTS_LOGGED] = playerInfoRealtimeResponse.shotsLogged
 
             mockkStatic(Tasks::class)
 

@@ -53,6 +53,8 @@ object Versions {
             const val ktx = "20.1.0"
         }
 
+        object Gson { const val core = "2.9.0" }
+
         object Junit {
             const val core = "4.13.2"
             const val textExt = ""

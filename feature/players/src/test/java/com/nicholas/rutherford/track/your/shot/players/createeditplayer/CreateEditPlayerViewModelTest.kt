@@ -962,7 +962,8 @@ class CreateEditPlayerViewModelTest {
                 lastName = state.lastName,
                 position = state.playerPositionString.toPlayerPosition(application = application),
                 firebaseKey = key,
-                imageUrl = ""
+                imageUrl = "",
+                shotsLoggedList = emptyList()
             )
 
             coVerify { playerRepository.createPlayer(player = player) }
@@ -988,7 +989,7 @@ class CreateEditPlayerViewModelTest {
 
         @Test
         fun `when editedPlayer is not set to null should call update player`() = runTest {
-            val currentPlayer = player.copy(firstName = "firsttest1", lastName = "lastNameTest1")
+            val currentPlayer = player.copy(firstName = "firstTest1", lastName = "lastNameTest1")
 
             createEditPlayerViewModel.editedPlayer = currentPlayer
 

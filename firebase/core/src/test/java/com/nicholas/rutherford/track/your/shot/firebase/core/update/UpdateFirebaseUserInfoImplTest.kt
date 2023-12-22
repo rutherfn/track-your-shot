@@ -10,7 +10,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.slot
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -35,16 +34,16 @@ class UpdateFirebaseUserInfoImplTest {
     @Nested
     inner class UpdatePlayer {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when on complete listener is executed and returns isSuccessful returns true should set flow to true`() = runTest {
             val mockTaskVoidResult = mockk<Task<Void>>()
             val slot = slot<OnCompleteListener<Void>>()
             val playerDataToUpdate = mapOf(
-                "firstName" to playerInfoRealtimeWithKeyResponse.playerInfo.firstName,
-                "lastName" to playerInfoRealtimeWithKeyResponse.playerInfo.lastName,
-                "imageUrl" to playerInfoRealtimeWithKeyResponse.playerInfo.imageUrl,
-                "positionValue" to playerInfoRealtimeWithKeyResponse.playerInfo.positionValue
+                Constants.FIRST_NAME to playerInfoRealtimeWithKeyResponse.playerInfo.firstName,
+                Constants.LAST_NAME to playerInfoRealtimeWithKeyResponse.playerInfo.lastName,
+                Constants.IMAGE_URL to playerInfoRealtimeWithKeyResponse.playerInfo.imageUrl,
+                Constants.POSITION_VALUE to playerInfoRealtimeWithKeyResponse.playerInfo.positionValue,
+                Constants.SHOTS_LOGGED to playerInfoRealtimeWithKeyResponse.playerInfo.shotsLogged
             )
 
             mockkStatic(Tasks::class)
@@ -72,16 +71,16 @@ class UpdateFirebaseUserInfoImplTest {
             Assertions.assertEquals(true, value)
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when on complete listener is executed and returns isSuccessful returns false should set flow to false`() = runTest {
             val mockTaskVoidResult = mockk<Task<Void>>()
             val slot = slot<OnCompleteListener<Void>>()
             val playerDataToUpdate = mapOf(
-                "firstName" to playerInfoRealtimeWithKeyResponse.playerInfo.firstName,
-                "lastName" to playerInfoRealtimeWithKeyResponse.playerInfo.lastName,
-                "imageUrl" to playerInfoRealtimeWithKeyResponse.playerInfo.imageUrl,
-                "positionValue" to playerInfoRealtimeWithKeyResponse.playerInfo.positionValue
+                Constants.FIRST_NAME to playerInfoRealtimeWithKeyResponse.playerInfo.firstName,
+                Constants.LAST_NAME to playerInfoRealtimeWithKeyResponse.playerInfo.lastName,
+                Constants.IMAGE_URL to playerInfoRealtimeWithKeyResponse.playerInfo.imageUrl,
+                Constants.POSITION_VALUE to playerInfoRealtimeWithKeyResponse.playerInfo.positionValue,
+                Constants.SHOTS_LOGGED to playerInfoRealtimeWithKeyResponse.playerInfo.shotsLogged
             )
 
             mockkStatic(Tasks::class)

@@ -9,6 +9,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerReposi
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
@@ -65,8 +66,22 @@ class PlayerRepositoryImplTest {
 
     @Test
     fun deletePlayer() = runBlocking {
-        val player1 = Player(firstName = "name1", lastName = "name2", position = PlayerPositions.Center, imageUrl = null, firebaseKey = "key1")
-        val player2 = Player(firstName = "name3", lastName = "name4", position = PlayerPositions.SmallForward, imageUrl = null, firebaseKey = "ley2")
+        val player1 = Player(
+            firstName = "name1",
+            lastName = "name2",
+            position = PlayerPositions.Center,
+            imageUrl = null,
+            firebaseKey = "key1",
+            shotsLoggedList = listOf(TestShotLogged.build())
+        )
+        val player2 = Player(
+            firstName = "name3",
+            lastName = "name4",
+            position = PlayerPositions.SmallForward,
+            imageUrl = null,
+            firebaseKey = "ley2",
+            shotsLoggedList = emptyList()
+        )
 
         playerRepositoryImpl.createPlayer(player = player1)
         playerRepositoryImpl.createPlayer(player = player2)

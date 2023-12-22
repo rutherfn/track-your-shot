@@ -7,7 +7,8 @@ class TestPlayerInfoRealtimeResponse {
             firstName = FIRST_NAME,
             lastName = LAST_NAME,
             positionValue = POSITION_VALUE,
-            imageUrl = IMAGE_URL
+            imageUrl = IMAGE_URL,
+            shotsLogged = listOf(TestShotLoggedRealtimeResponse.build())
         )
     }
 }

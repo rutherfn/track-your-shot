@@ -97,6 +97,7 @@ class CreateFirebaseUserInfoImpl(
             values[Constants.LAST_NAME] = playerInfoRealtimeResponse.lastName
             values[Constants.POSITION_VALUE] = playerInfoRealtimeResponse.positionValue
             values[Constants.IMAGE_URL] = playerInfoRealtimeResponse.imageUrl
+            values[Constants.SHOTS_LOGGED] = playerInfoRealtimeResponse.shotsLogged
 
             newPlayerReference.setValue(values)
                 .addOnCompleteListener { task ->

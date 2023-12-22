@@ -4,5 +4,6 @@ data class PlayerInfoRealtimeResponse(
     val firstName: String = "",
     val lastName: String = "",
     val positionValue: Int = 0,
-    val imageUrl: String = ""
+    val imageUrl: String = "",
+    val shotsLogged: List<ShotLoggedRealtimeResponse> = emptyList()
 )

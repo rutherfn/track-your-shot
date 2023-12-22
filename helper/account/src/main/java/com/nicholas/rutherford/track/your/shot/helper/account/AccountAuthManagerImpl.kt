@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.UserReposito
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
@@ -129,7 +130,19 @@ class AccountAuthManagerImpl(
                                 lastName = player.playerInfo.lastName,
                                 position = PlayerPositions.fromValue(player.playerInfo.positionValue),
                                 firebaseKey = player.playerFirebaseKey,
-                                imageUrl = player.playerInfo.imageUrl
+                                imageUrl = player.playerInfo.imageUrl,
+                                shotsLoggedList = player.playerInfo.shotsLogged.map { shotLoggedRealtimeResponse ->
+                                    ShotLogged(
+                                        shotType = shotLoggedRealtimeResponse.shotType,
+                                        shotsAttempted = shotLoggedRealtimeResponse.shotsAttempted,
+                                        shotsMade = shotLoggedRealtimeResponse.shotsMade,
+                                        shotsMissed = shotLoggedRealtimeResponse.shotsMissed,
+                                        shotsMadePercentValue = shotLoggedRealtimeResponse.shotsMadePercentValue,
+                                        shotsMissedPercentValue = shotLoggedRealtimeResponse.shotsMissedPercentValue,
+                                        shotsAttemptedMillisecondsValue = shotLoggedRealtimeResponse.shotsAttemptedMillisecondsValue,
+                                        shotsLoggedMillisecondsValue = shotLoggedRealtimeResponse.shotsLoggedMillisecondsValue
+                                    )
+                                }
                             )
                         }
 
