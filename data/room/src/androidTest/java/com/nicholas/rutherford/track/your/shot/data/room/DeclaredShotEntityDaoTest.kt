@@ -68,7 +68,7 @@ class DeclaredShotEntityDaoTest {
 
         val declaredShotEmptyList: List<DeclaredShotEntity> = emptyList()
 
-        assertThat(listOf(declaredShotEmptyList), equalTo(declaredShotDao.getAllDeclaredShots()))
+        assertThat(declaredShotEmptyList, equalTo(declaredShotDao.getAllDeclaredShots()))
     }
 
     @Test
