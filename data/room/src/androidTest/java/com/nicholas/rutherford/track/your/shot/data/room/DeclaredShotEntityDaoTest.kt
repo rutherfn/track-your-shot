@@ -51,7 +51,7 @@ class DeclaredShotEntityDaoTest {
 
         assertThat(listOf(declaredShotEntity), equalTo(declaredShotDao.getAllDeclaredShots()))
 
-        val updatedEntity = declaredShotEntity.copy(value = "value1")
+        val updatedEntity = declaredShotEntity.copy(shotCategory = "value1")
 
         declaredShotDao.update(declaredShotEntity = updatedEntity)
 

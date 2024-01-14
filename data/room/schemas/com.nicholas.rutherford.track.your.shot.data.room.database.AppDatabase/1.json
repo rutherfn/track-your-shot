@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "52c1452dc001a8e17c5243f23c7522cc",
+    "identityHash": "8cb248f4f5c3213a2ee73ecadb233c9c",
     "entities": [
       {
         "tableName": "activeUsers",
@@ -50,18 +50,12 @@
       },
       {
         "tableName": "declaredShots",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `value` TEXT NOT NULL, `shotCategory` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `shotCategory` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "value",
-            "columnName": "value",
-            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -184,7 +178,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '52c1452dc001a8e17c5243f23c7522cc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8cb248f4f5c3213a2ee73ecadb233c9c')"
     ]
   }
 }

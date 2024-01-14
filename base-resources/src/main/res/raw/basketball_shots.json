@@ -1,246 +1,246 @@
 [
   {
-    "value": 1,
+    "id": 1,
     "shotCategory": "inside",
     "title": "Layup",
     "description": "A layup is a fundamental and common inside shot where a player drives towards the basket and releases the ball near the hoop with one hand."
   },
   {
-    "value": 2,
+    "id": 2,
     "shotCategory": "inside",
     "title": "Finger Roll",
     "description": "Similar to a layup, the finger roll is a soft, high-arcing shot where the player uses their fingertips to release the ball gently into the basket."
   },
   {
-    "value": 3,
+    "id": 3,
     "shotCategory": "inside",
     "title": "Hook Shot",
     "description": "A hook shot involves a one-handed shot with a sweeping, hooking motion of the arm. It is often used by post players close to the basket."
   },
   {
-    "value": 4,
+    "id": 4,
     "shotCategory": "inside",
     "title": "Jump Hook",
     "description": "Similar to a hook shot, the jump hook involves a player jumping while executing the hook shot. This adds elevation to the shot and helps avoid defenders."
   },
   {
-    "value": 5,
+    "id": 5,
     "shotCategory": "inside",
     "title": "Baby Hook",
     "description": "A shorter version of the hook shot, typically used when a player is very close to the basket."
   },
   {
-    "value": 6,
+    "id": 6,
     "shotCategory": "inside",
     "title": "Drop Step",
     "description": "A post move where a player, after receiving the ball in the post, makes a quick step towards the baseline to create separation from the defender and takes a close-range shot."
   },
   {
-    "value": 7,
+    "id": 7,
     "shotCategory": "inside",
     "title": "Up-and-Under",
     "description": "A move in which a player fakes a shot in one direction, gets the defender to jump, and then quickly moves under the defender to take a shot on the other side."
   },
   {
-    "value": 8,
+    "id": 8,
     "shotCategory": "inside",
     "title": "Power Move",
     "description": "Involves using physical strength to back down an opponent and take a close-range shot or layup."
   },
   {
-    "value": 9,
+    "id": 9,
     "shotCategory": "inside",
     "title": "Spin Move",
     "description": "A player uses a spin move to create space and take a shot close to the basket, often after driving towards the hoop."
   },
   {
-    "value": 10,
+    "id": 10,
     "shotCategory": "inside",
     "title": "Floaters",
     "description": "While not directly under the basket, floaters are shots taken within the key area but farther away, involving a soft touch to get the ball over defenders."
   },
   {
-    "value": 11,
+    "id": 11,
     "shotCategory": "inside",
     "title": "Reverse Layup",
     "description": "A layup where a player approaches the basket from one side and releases the ball on the opposite side, often used to avoid shot-blockers."
   },
   {
-    "value": 12,
+    "id": 12,
     "shotCategory": "mid",
     "title": "Pull-up Jumper",
     "description": "A player dribbles towards the basket and stops quickly, pulling up for a jump shot before the defense can react. This is often effective for guards who can change pace and direction."
   },
   {
-    "value": 13,
+    "id": 13,
     "shotCategory": "mid",
     "title": "Fadeaway Shot",
     "description": "Similar to a jump shot, a fadeaway involves leaning backward while shooting, creating separation from the defender. Post players often use this shot to shoot over defenders."
   },
   {
-    "value": 14,
+    "id": 14,
     "shotCategory": "mid",
     "title": "Step-back Jumper",
     "description": "The player takes a step back, creating space between them and the defender before taking a jump shot. This move is popular among perimeter players who want to create separation."
   },
   {
-    "value": 15,
+    "id": 15,
     "shotCategory": "mid",
     "title": "Turnaround Jumper",
     "description": "A player catches the ball with their back to the basket, turns around, and shoots in one motion. This is often seen in the post area."
   },
   {
-    "value": 16,
+    "id": 16,
     "shotCategory": "mid",
     "title": "Bank Shot",
     "description": "Shooting the ball off the backboard at an angle to make the shot. This can be effective when a player is close to the basket but not directly in front of it."
   },
   {
-    "value": 17,
+    "id": 17,
     "shotCategory": "mid",
     "title": "Pull-up Bank Shot",
     "description": "Similar to a regular pull-up jumper, but the player aims to bank the ball off the backboard."
   },
   {
-    "value": 18,
+    "id": 18,
     "shotCategory": "mid",
     "title": "Mid-Range Floater",
     "description": "A floater shot taken from the mid-range area, typically used when a player is in motion and needs to release the ball over a defender."
   },
   {
-    "value": 19,
+    "id": 19,
     "shotCategory": "mid",
     "title": "Baseline Jumper",
     "description": "A shot taken from the side of the key along the baseline. Players may use a quick pull-up or a fadeaway from this area."
   },
   {
-    "value": 20,
+    "id": 20,
     "shotCategory": "mid",
     "title": "Elbow Jumper",
     "description": "Shots taken from the elbows of the free-throw line are common mid-range shots. Players often utilize screens or dribble moves to create space for these shots."
   },
   {
-    "value": 21,
+    "id": 21,
     "shotCategory": "mid",
     "title": "Catch-and-Shoot Mid-Range",
     "description": "Players catch a pass and quickly release a jump shot from the mid-range area. This is often seen in catch-and-shoot situations or off screens."
   },
   {
-    "value": 22,
+    "id": 22,
     "shotCategory": "long",
     "title": "Three-Pointers",
     "description": "Three-pointers are shots taken from beyond the three-point arc, which is a specific distance from the basket. In the standard FIBA and NBA basketball court, the three-point line is situated at 6.75 meters (22 feet 1.75 inches) in the corners and 7.24 meters (23 feet 9 inches) elsewhere along the arc."
   },
   {
-    "value": 23,
+    "id": 23,
     "shotCategory": "long",
     "title": "Catch-and-Shoot Three",
     "description": "A player receives a pass and immediately shoots the ball without dribbling. This is often facilitated by good ball movement or by drawing defenders and kicking the ball out."
   },
   {
-    "value": 24,
+    "id": 24,
     "shotCategory": "long",
     "title": "Pull-up Three",
     "description": "A player dribbles towards the three-point line and pulls up for a shot. This move requires a quick release and is effective for guards who can change pace and direction."
   },
   {
-    "value": 25,
+    "id": 25,
     "shotCategory": "long",
     "title": "Step-back Three",
     "description": "Similar to the mid-range step-back, this move involves a player taking a step back to create separation before shooting a three-pointer."
   },
   {
-    "value": 26,
+    "id": 26,
     "shotCategory": "long",
     "title": "Corner Three",
     "description": "Shots taken from the corners of the court, which are the shortest distance to the three-point line. Many shooters specialize in corner threes due to the shorter distance."
   },
   {
-    "value": 27,
+    "id": 27,
     "shotCategory": "long",
     "title": "Top-of-the-Key Three",
     "description": "Three-pointers taken from the center of the three-point line, often following a pick-and-roll or a quick perimeter pass."
   },
   {
-    "value": 28,
+    "id": 28,
     "shotCategory": "long",
     "title": "Transition Three",
     "description": "Players take three-pointers in fast-break situations, capitalizing on a defense that hasn't set up. This requires quick decision-making and shooting accuracy."
   },
   {
-    "value": 29,
+    "id": 29,
     "shotCategory": "long",
     "title": "Spot-up Three",
     "description": "A player positions themselves in an open spot behind the three-point line and waits for a pass to shoot without much movement."
   },
   {
-    "value": 30,
+    "id": 30,
     "shotCategory": "long",
     "title": "Off-the-Dribble Three",
     "description": "Players create their own shot by dribbling and then pulling up for a three-pointer. This requires a combination of ball-handling and shooting skills."
   },
   {
-    "value": 31,
+    "id": 31,
     "shotCategory": "long",
     "title": "Step-in Three",
     "description": "Similar to a pull-up, but the player takes a step forward into the shot, often used to exploit defenders who are expecting a drive."
   },
   {
-    "value": 32,
+    "id": 32,
     "shotCategory": "long",
     "title": "Fadeaway Three",
     "description": "A challenging shot where a player fades away from the defender while shooting a three-pointer. This requires excellent balance and shooting technique."
   },
   {
-    "value": 33,
+    "id": 33,
     "shotCategory": "long",
     "title": "Banked Three",
     "description": "Unconventional but occasionally used, a player intentionally banks the ball off the backboard to score a three-pointer."
   },
   {
-    "value": 34,
+    "id": 34,
     "shotCategory": "other",
     "title": "Half-Court Shot",
     "description": "A long-distance shot taken from beyond the half-court line, typically attempted at the end of quarters or games. It's a low-percentage shot but can be a buzzer-beater."
   },
   {
-    "value": 35,
+    "id": 35,
     "shotCategory": "other",
     "title": "Alley-Oop",
     "description": "A play where a player throws the ball near the basket only for a teammate to jump, catch it mid-air, and score in one motion."
   },
   {
-    "value": 36,
+    "id": 36,
     "shotCategory": "other",
     "title": "Putback or Tip-In",
     "description": "A shot made by tipping the ball into the basket immediately after a teammate's missed shot. This is often done by players with good timing and leaping ability."
   },
   {
-    "value": 37,
+    "id": 37,
     "shotCategory": "other",
     "title": "Hook Shot",
     "description": "While the hook shot is commonly associated with inside play, it can also be used from mid-range distances, particularly by post players facing away from the basket."
   },
   {
-    "value": 38,
+    "id": 38,
     "shotCategory": "other",
     "title": "Pump Fake and Drive",
     "description": "A player fakes a shot to get the defender to jump, then drives past the defender for a closer shot or layup."
   },
   {
-    "value": 39,
+    "id": 39,
     "shotCategory": "other",
     "title": "Euro Step",
     "description": "A move where a player takes a step in one direction and then quickly steps in the opposite direction to evade defenders and get to the basket."
   },
   {
-    "value": 40,
+    "id": 40,
     "shotCategory": "other",
     "title": "Runners or Teardrops",
     "description": "Shots taken on the move, typically from mid-range, using a high release to avoid shot-blockers."
   },
   {
-    "value": 41,
+    "id": 41,
     "shotCategory": "other",
     "title": "Reverse Layup or Dunk",
     "description": "A layup or dunk in which a player approaches the basket from one side but releases the ball on the opposite side, often used to avoid defenders."

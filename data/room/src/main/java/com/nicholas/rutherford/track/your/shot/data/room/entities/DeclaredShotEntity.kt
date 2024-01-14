@@ -9,8 +9,6 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 data class DeclaredShotEntity(
     @PrimaryKey
     val id: Int,
-    @ColumnInfo(name = "value")
-    val value: String,
     @ColumnInfo(name = "shotCategory")
     val shotCategory: String,
     @ColumnInfo(name = "title")
@@ -22,7 +20,6 @@ data class DeclaredShotEntity(
 fun DeclaredShotEntity.toDeclaredShot(): DeclaredShot {
     return DeclaredShot(
         id = id,
-        value = value,
         shotCategory = shotCategory,
         title = title,
         description = description
