@@ -20,8 +20,12 @@ class SplashViewModel(
     private val activeUserRepository: ActiveUserRepository,
     private val accountAuthManager: AccountAuthManager,
     private val readSharedPreferences: ReadSharedPreferences,
-    private val createSharedPreferences: CreateSharedPreferences
+    private val createSharedPreferences: CreateSharedPreferences,
+    private val declaredShots: DeclaredShots
 ) : ViewModel() {
+
+    init {
+    }
 
     internal fun checkIfAppHasBeenLaunchedBefore() {
         if (!readSharedPreferences.appHasBeenLaunched()) {

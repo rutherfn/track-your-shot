@@ -36,6 +36,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.splash.DeclaredShots
+import com.nicholas.rutherford.track.your.shot.feature.splash.DeclaredShotsImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
@@ -80,6 +82,10 @@ class AppModule {
     val modules = module {
         single {
             getSharedPreferences(androidApplication())
+        }
+        single<DeclaredShots> {
+            DeclaredShotsImpl(     application = get(),)
+
         }
         single {
             Room.databaseBuilder(
@@ -210,7 +216,8 @@ class AppModule {
                 activeUserRepository = get(),
                 accountAuthManager = get(),
                 readSharedPreferences = get(),
-                createSharedPreferences = get()
+                createSharedPreferences = get(),
+                declaredShots = get()
             )
         }
         viewModel {
