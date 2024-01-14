@@ -38,11 +38,11 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
-import com.nicholas.rutherford.track.your.shot.feature.splash.DeclaredShotsJson
-import com.nicholas.rutherford.track.your.shot.feature.splash.DeclaredShotsJsonImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
+import com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson.DeclaredShotsJson
+import com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson.DeclaredShotsJsonImpl
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseLastUpdated
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseLastUpdatedImpl
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo

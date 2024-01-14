@@ -6,7 +6,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.dao.DeclaredShotDao
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.toDeclaredShotEntity
-import com.nicholas.rutherford.track.your.shot.feature.splash.DeclaredShotsJson
+import com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson.DeclaredShotsJson
 
 class DeclaredShotRepositoryImpl(
     private val declaredShotDao: DeclaredShotDao,
