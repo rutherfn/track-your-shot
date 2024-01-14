@@ -1,6 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.splash
 
-interface DeclaredShots {
+interface DeclaredShotsJson {
 
     fun fetchJsonDeclaredShots(): String
     fun writeToJsonDeclaredShots()

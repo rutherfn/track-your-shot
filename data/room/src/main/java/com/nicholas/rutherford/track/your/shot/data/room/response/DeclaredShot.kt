@@ -2,7 +2,7 @@ package com.nicholas.rutherford.track.your.shot.data.room.response
 
 import com.nicholas.rutherford.track.your.shot.data.room.entities.DeclaredShotEntity
 
-data class DeclaredShot (
+data class DeclaredShot(
     val id: Int,
     val value: String,
     val shotCategory: String,

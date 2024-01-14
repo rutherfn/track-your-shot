@@ -21,7 +21,7 @@ class SplashViewModel(
     private val accountAuthManager: AccountAuthManager,
     private val readSharedPreferences: ReadSharedPreferences,
     private val createSharedPreferences: CreateSharedPreferences,
-    private val declaredShots: DeclaredShots
+    private val declaredShots: DeclaredShotsJson
 ) : ViewModel() {
 
     init {

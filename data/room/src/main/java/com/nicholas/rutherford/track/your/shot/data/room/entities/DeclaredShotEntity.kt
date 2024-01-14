@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 
 @Entity(tableName = "declaredShots")
-data class DeclaredShotEntity (
+data class DeclaredShotEntity(
     @PrimaryKey
     val id: Int,
     @ColumnInfo(name = "value")

@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.helper.account
 
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
@@ -30,6 +31,7 @@ class AccountAuthManagerImpl(
     private val application: Application,
     private val navigator: Navigator,
     private val activeUserRepository: ActiveUserRepository,
+    private val declaredShotRepository: DeclaredShotRepository,
     private val playerRepository: PlayerRepository,
     private val userRepository: UserRepository,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
@@ -114,6 +116,8 @@ class AccountAuthManagerImpl(
                         firebaseAccountInfoKey = firebaseAccountInfoKey
                     )
                 )
+                declaredShotRepository.createDeclaredShots()
+
                 collectPlayerInfoList(firebaseAccountInfoKey = firebaseAccountInfoKey)
             } ?: disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
         }

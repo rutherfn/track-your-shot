@@ -12,6 +12,8 @@ import com.nicholas.rutherford.track.your.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.your.shot.data.room.database.AppDatabase
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepositoryImpl
+import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
@@ -36,8 +38,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
-import com.nicholas.rutherford.track.your.shot.feature.splash.DeclaredShots
-import com.nicholas.rutherford.track.your.shot.feature.splash.DeclaredShotsImpl
+import com.nicholas.rutherford.track.your.shot.feature.splash.DeclaredShotsJson
+import com.nicholas.rutherford.track.your.shot.feature.splash.DeclaredShotsJsonImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
@@ -83,21 +85,21 @@ class AppModule {
         single {
             getSharedPreferences(androidApplication())
         }
-        single<DeclaredShots> {
-            DeclaredShotsImpl(     application = get(),)
-
+        single<DeclaredShotsJson> {
+            DeclaredShotsJsonImpl(application = get(),)
         }
         single {
             Room.databaseBuilder(
                 androidApplication(),
                 AppDatabase::class.java,
                 Constants.APP_DATABASE_NAME
-            )
-                .fallbackToDestructiveMigration()
-                .build()
+            ).build()
         }
         single {
             get<AppDatabase>().activeUserDao()
+        }
+        single {
+            get<AppDatabase>().declaredShotDao()
         }
         single {
             get<AppDatabase>().userDao()
@@ -107,6 +109,12 @@ class AppModule {
         }
         single<ActiveUserRepository> {
             ActiveUserRepositoryImpl(activeUserDao = get())
+        }
+        single<DeclaredShotRepository> {
+            DeclaredShotRepositoryImpl(
+                declaredShotDao = get(),
+                declaredShotsJson = get()
+            )
         }
         single<UserRepository> {
             UserRepositoryImpl(userDao = get())
@@ -176,6 +184,7 @@ class AppModule {
                 application = get(),
                 navigator = get(),
                 activeUserRepository = get(),
+                declaredShotRepository = get(),
                 playerRepository = get(),
                 userRepository = get(),
                 readFirebaseUserInfo = get(),
