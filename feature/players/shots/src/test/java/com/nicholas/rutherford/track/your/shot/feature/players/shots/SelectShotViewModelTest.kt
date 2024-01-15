@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots
 
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -8,6 +9,7 @@ import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -72,6 +74,53 @@ class SelectShotViewModelTest {
             selectShotViewModel.currentDeclaredShotArrayList.toList(),
             shotDeclaredList
         )
+    }
+
+    @Nested
+    inner class OnCancelIconClicked {
+
+        @Test
+        fun `when search query is not empty should update state`()  {
+            val searchQuery = "searchQuery"
+
+            selectShotViewModel.selectShotMutableStateFlow.update {
+                it.copy(searchQuery = searchQuery)
+            }
+
+            val shotDeclaredList = listOf(TestDeclaredShot.build())
+
+            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns shotDeclaredList
+
+            selectShotViewModel.onCancelIconClicked()
+
+            Assertions.assertEquals(
+                selectShotViewModel.selectShotMutableStateFlow.value,
+                SelectShotState(declaredShotList = shotDeclaredList)
+            )
+            Assertions.assertEquals(
+                selectShotViewModel.currentDeclaredShotArrayList.toList(),
+                shotDeclaredList
+            )
+        }
+
+        @Test
+        fun `when search query is empty should not update state`() {
+            val emptyShotDeclaredList: List<DeclaredShot> = emptyList()
+            selectShotViewModel.selectShotMutableStateFlow.update {
+                it.copy(searchQuery = "")
+            }
+
+            selectShotViewModel.onCancelIconClicked()
+
+            Assertions.assertEquals(
+                selectShotViewModel.selectShotMutableStateFlow.value,
+                SelectShotState(declaredShotList = emptyShotDeclaredList)
+            )
+            Assertions.assertEquals(
+                selectShotViewModel.currentDeclaredShotArrayList.toList(),
+                emptyShotDeclaredList
+            )
+        }
     }
 
     @Nested
