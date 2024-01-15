@@ -287,6 +287,8 @@ fun NavigationComponent(
                 SelectShotScreen(
                     selectShotParams = SelectShotParams(
                         state = selectShotViewModel.selectShotStateFlow.collectAsState().value,
+                        onSearchValueChanged = { newSearchQuery -> selectShotViewModel.onSearchValueChanged(newSearchQuery = newSearchQuery) },
+                        onCancelIconClicked = { selectShotViewModel.onCancelIconClicked() },
                         onnDeclaredShotItemClicked = {},
                         onHelpIconClicked = {}
                     )

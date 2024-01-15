@@ -45,6 +45,7 @@ object StringsIds {
         R.string.email_is_required_please_enter_a_email_to_reset_password_for_existing_account
     val emailRequired = R.string.email_required
     val errorCreatingAccount = R.string.error_creating_account
+    val findShotsByName = R.string.find_shots_by_name
     val gotIt = R.string.got_it
     val havingTroubleCreatingYourAccountPleaseTryAgain =
         R.string.having_trouble_creating_your_account_please_try_again

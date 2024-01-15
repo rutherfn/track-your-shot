@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
+import com.nicholas.rutherford.track.your.shot.compose.components.SearchTextField
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
@@ -39,12 +40,20 @@ fun SelectShotScreen(selectShotParams: SelectShotParams) {
 
     Content(
         ui = {
+            SearchTextField(
+                value = selectShotParams.state.searchQuery,
+                onValueChange = { newSearchQuery -> selectShotParams.onSearchValueChanged.invoke(newSearchQuery) },
+                onCancelIconClicked = { selectShotParams.onCancelIconClicked.invoke() },
+                placeholderValue = stringResource(id = StringsIds.findShotsByName)
+            )
             if (!isShotsDeclaredListEmpty) {
                 LazyColumn {
                     items(selectShotParams.state.declaredShotList) { declaredShot ->
                         DeclaredShotItem(declaredShot = declaredShot)
                     }
                 }
+            } else {
+                // empty state
             }
         },
         appBar = AppBar(

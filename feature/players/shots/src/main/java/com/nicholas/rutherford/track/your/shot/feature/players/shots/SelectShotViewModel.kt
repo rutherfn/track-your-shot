@@ -30,8 +30,28 @@ class SelectShotViewModel(
             }
 
             selectShotMutableStateFlow.update { state ->
-                state.copy(declaredShotList = currentDeclaredShotArrayList)
+                state.copy(searchQuery = "", declaredShotList = currentDeclaredShotArrayList)
             }
+        }
+    }
+
+    fun onSearchValueChanged(newSearchQuery: String) {
+        currentDeclaredShotArrayList.clear()
+
+        scope.launch {
+            declaredShotRepository.fetchDeclaredShotsBySearchQuery(searchQuery = newSearchQuery).forEach { declaredShot ->
+                currentDeclaredShotArrayList.add(declaredShot)
+            }
+            selectShotMutableStateFlow.update { state ->
+                state.copy(declaredShotList = currentDeclaredShotArrayList, searchQuery = newSearchQuery)
+            }
+        }
+    }
+
+    fun onCancelIconClicked() {
+        if (selectShotMutableStateFlow.value.searchQuery.isNotEmpty()) {
+            currentDeclaredShotArrayList.clear()
+            updateDeclaredShotListState()
         }
     }
 
