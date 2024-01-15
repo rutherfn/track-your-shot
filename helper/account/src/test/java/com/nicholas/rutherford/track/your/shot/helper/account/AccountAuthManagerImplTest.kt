@@ -4,6 +4,7 @@ import android.app.Application
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toActiveUser
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toPlayer
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
@@ -43,6 +44,7 @@ class AccountAuthManagerImplTest {
     private val navigator = mockk<Navigator>(relaxed = true)
 
     private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
+    private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
     private val userRepository = mockk<UserRepository>(relaxed = true)
 
@@ -59,6 +61,7 @@ class AccountAuthManagerImplTest {
             application = application,
             navigator = navigator,
             activeUserRepository = activeUserRepository,
+            declaredShotRepository = declaredShotRepository,
             playerRepository = playerRepository,
             userRepository = userRepository,
             readFirebaseUserInfo = readFirebaseUserInfo,
@@ -209,6 +212,7 @@ class AccountAuthManagerImplTest {
                     )
                 )
             }
+            coVerify { declaredShotRepository.createDeclaredShots() }
             coVerify { activeUserRepository.deleteActiveUser() }
         }
 
@@ -231,6 +235,7 @@ class AccountAuthManagerImplTest {
                     )
                 )
             }
+            coVerify { declaredShotRepository.createDeclaredShots() }
             coVerify(exactly = 0) { activeUserRepository.deleteActiveUser() }
             coVerify(exactly = 0) { playerRepository.createListOfPlayers(playerList = any()) }
         }
@@ -254,6 +259,7 @@ class AccountAuthManagerImplTest {
                     )
                 )
             }
+            coVerify { declaredShotRepository.createDeclaredShots() }
             coVerify(exactly = 0) { activeUserRepository.deleteActiveUser() }
             coVerify { playerRepository.createListOfPlayers(playerList = any()) }
             verify { navigator.progress(progressAction = null) }
