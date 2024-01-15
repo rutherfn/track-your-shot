@@ -71,6 +71,7 @@
     <string name="reset_password">Reset Password</string>
     <string name="reset_password_email_sent">Reset Password Email Sent</string>
     <string name="resend_email">Resend Email</string>
+    <string name="select_a_shot">Select A Shot</string>
     <string name="password">Password</string>
     <string name="password_required">Password*</string>
     <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">Password is not in correct format. Please enter password in correct format</string>

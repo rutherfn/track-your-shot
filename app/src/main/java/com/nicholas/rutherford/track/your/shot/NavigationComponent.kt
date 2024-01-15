@@ -105,6 +105,7 @@ fun NavigationComponent(
     val playersListViewModel = viewModels.playersListViewModel
     val createEditPlayerViewModel = viewModels.createEditPlayerViewModel
     val forgotPasswordViewModel = viewModels.forgotPasswordViewModel
+    val selectShotViewModel = viewModels.selectShotViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -276,6 +277,13 @@ fun NavigationComponent(
                     lastNameArgument = null,
                     createEditPlayerViewModel = createEditPlayerViewModel
                 )(entry)
+            }
+            composable(
+                route = NavigationDestinations.SELECT_SHOT_SCREEN
+            ) {
+                SelectShotScreen(
+                    selectShoT
+                )
             }
             composable(
                 route = NavigationDestinations.FORGOT_PASSWORD_SCREEN

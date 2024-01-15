@@ -100,6 +100,7 @@ object StringsIds {
     val resetPassword = R.string.reset_password
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email
+    val selectAShot = R.string.select_a_shot
     val settings = R.string.settings
     val smallForward = R.string.small_forward
     val sf = R.string.sf
