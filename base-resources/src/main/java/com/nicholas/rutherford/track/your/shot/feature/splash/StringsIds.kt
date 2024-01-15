@@ -110,6 +110,8 @@ object StringsIds {
     val splashIconDescription = R.string.splash_icon_description
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
     val takeAPicture = R.string.take_a_picture
+    val tapForeMoreInfo = R.string.tap_for_more_info
+    val tapForLessInfo = R.string.tap_for_less_info
     val termsConditions = R.string.terms_conditions
     val theImageUploadWasUnsuccessful = R.string.the_image_upload_was_unsuccessful
     val thereWasAErrorCreatingYourAccountPleaseTryAgain =

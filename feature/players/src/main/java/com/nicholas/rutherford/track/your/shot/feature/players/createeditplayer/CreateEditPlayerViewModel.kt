@@ -516,4 +516,6 @@ class CreateEditPlayerViewModel(
             )
         )
     }
+
+    fun onLogShotsClicked() = navigation.navigateToSelectShot()
 }

@@ -31,6 +31,10 @@ object TextStyles {
         fontSize = 18.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Bold, color = Colors.primaryColor
     )
 
+    val bodyBold = TextStyle(
+        fontSize = 14.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Bold, color = Colors.primaryColor
+    )
+
     val body = TextStyle(
         fontSize = 14.sp, fontFamily = FontFamily.Default, color = Colors.primaryColor
     )

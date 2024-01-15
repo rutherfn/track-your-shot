@@ -102,6 +102,8 @@
     <string name="splash_icon_description">This is a splash image for the splash screen that gets displayed before app is triggered</string>
     <string name="successfully_sent_email_verification">Successfully sent verification</string>
     <string name="take_a_picture">Take A Picture</string>
+    <string name="tap_for_more_info">Tap for more info</string>
+    <string name="tap_for_less_info">Tap for less info</string>
     <string name="terms_conditions">Terms &amp; Conditions</string>
     <string name="the_image_upload_was_unsuccessful">The image upload was unsuccessful. Please attempt it once more.</string>
     <string name="there_was_a_error_creating_your_account_please_try_again">There was a error creating your account. Please try again.</string>
@@ -131,6 +133,7 @@
     <string name="view_x">View %s</string>
     <string name="voice_commands">Voice Commands</string>
     <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_shot_category">Category - %s</string>
     <string name="yes">Yes</string>
     <string name="your_player_could_not_be_retrieved_description">Your player could not be retrieved. Please try again.</string>
 </resources>

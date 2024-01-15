@@ -100,7 +100,11 @@ object NavigationActions {
         }
     }
 
-    object CreatePlayer {
-        // todo add actions
+    object CreateEditPlayer {
+
+        fun selectShot() = object : NavigationAction {
+            override val destination = NavigationDestinations.SELECT_SHOT_SCREEN
+            override val navOptions = NavOptions.Builder().build()
+        }
     }
 }

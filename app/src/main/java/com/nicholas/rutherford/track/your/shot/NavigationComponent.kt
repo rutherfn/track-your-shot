@@ -34,6 +34,8 @@ import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotParams
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.navigation.ComparePlayersStatsAction
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
@@ -146,6 +148,7 @@ fun NavigationComponent(
     }
     LaunchedEffect(navigatorState) {
         navigatorState?.let {
+            println("get here navigate")
             navHostController.navigate(it.destination, it.navOptions)
         }
     }
@@ -282,7 +285,11 @@ fun NavigationComponent(
                 route = NavigationDestinations.SELECT_SHOT_SCREEN
             ) {
                 SelectShotScreen(
-                    selectShoT
+                    selectShotParams = SelectShotParams(
+                        state = selectShotViewModel.selectShotStateFlow.collectAsState().value,
+                        onnDeclaredShotItemClicked = {},
+                        onHelpIconClicked = {}
+                    )
                 )
             }
             composable(

@@ -243,7 +243,8 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
 
                     LogShotsContent(
                         firstName = createEditPlayerParams.state.firstName,
-                        lastName = createEditPlayerParams.state.lastName
+                        lastName = createEditPlayerParams.state.lastName,
+                        onLogShotsClicked = createEditPlayerParams.onLogShotsClicked
                     )
                 }
             }
