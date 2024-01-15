@@ -1,4 +1,3 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots
 
-class SelectShotNavigation {
-}
+class SelectShotNavigation

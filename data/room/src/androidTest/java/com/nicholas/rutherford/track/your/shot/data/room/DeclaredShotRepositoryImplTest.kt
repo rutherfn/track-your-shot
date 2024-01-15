@@ -124,4 +124,35 @@ class DeclaredShotRepositoryImplTest {
 
         assertThat(declaredShotRepositoryImpl.fetchAllDeclaredShots(), equalTo(emptyDeclaredShotList))
     }
+
+    @Test
+    fun fetchDeclaredShotFromId() = runBlocking {
+        val newDeclaredShot = DeclaredShot(
+            id = 1,
+            shotCategory = "inside",
+            title = "Layup",
+            description = "A layup is a fundamental and common inside shot where a player drives towards the basket and releases the ball near the hoop with one hand."
+        )
+
+        declaredShotRepositoryImpl.createDeclaredShots()
+
+        assertThat(declaredShotRepositoryImpl.fetchDeclaredShotFromId(id = 1), equalTo(newDeclaredShot))
+        assertThat(declaredShotRepositoryImpl.fetchDeclaredShotFromId(id = 2), equalTo(null))
+    }
+
+    @Test
+    fun fetchDeclaredShotsBySearchQuery() = runBlocking {
+        val newDeclaredShot = DeclaredShot(
+            id = 1,
+            shotCategory = "inside",
+            title = "Layup",
+            description = "A layup is a fundamental and common inside shot where a player drives towards the basket and releases the ball near the hoop with one hand."
+        )
+        val emptyDeclaredShotList: List<DeclaredShot> = emptyList()
+
+        declaredShotRepositoryImpl.createDeclaredShots()
+
+        assertThat(declaredShotRepositoryImpl.fetchDeclaredShotsBySearchQuery("Lay"), equalTo(listOf(newDeclaredShot)))
+        assertThat(declaredShotRepositoryImpl.fetchDeclaredShotsBySearchQuery("Test"), equalTo(emptyDeclaredShotList))
+    }
 }

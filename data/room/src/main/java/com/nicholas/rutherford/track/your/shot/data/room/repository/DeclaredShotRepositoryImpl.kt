@@ -28,7 +28,13 @@ class DeclaredShotRepositoryImpl(
 
     override suspend fun deleteAllDeclaredShots() = declaredShotDao.deleteAll()
 
-    internal fun getDeclaredShotsFromJson(): List<DeclaredShot> {
+    override suspend fun fetchDeclaredShotFromId(id: Int): DeclaredShot? =
+        declaredShotDao.getDeclaredShotFromId(id = id)?.toDeclaredShot()
+
+    override suspend fun fetchDeclaredShotsBySearchQuery(searchQuery: String): List<DeclaredShot> =
+        declaredShotDao.getDeclaredShotsBySearchQuery(searchQuery = searchQuery).map { it.toDeclaredShot() }
+
+    private fun getDeclaredShotsFromJson(): List<DeclaredShot> {
         val json = declaredShotsJson.fetchJsonDeclaredShots()
         val typeToken = object : TypeToken<List<DeclaredShot>>() {}.type
         return Gson().fromJson(json, typeToken)

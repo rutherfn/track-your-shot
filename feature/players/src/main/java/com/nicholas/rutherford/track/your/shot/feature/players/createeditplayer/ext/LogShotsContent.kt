@@ -90,7 +90,7 @@ fun ColumnScope.LogShotsContent(
                     onClick = {
                         println("log shots adadada")
                         onLogShotsClicked.invoke()
-                              },
+                    },
                     shape = RoundedCornerShape(size = 50.dp),
                     modifier = Modifier
                         .padding(vertical = Padding.twelve)

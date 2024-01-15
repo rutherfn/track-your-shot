@@ -77,4 +77,23 @@ class DeclaredShotEntityDaoTest {
 
         assertThat(listOf(declaredShotEntity), equalTo(declaredShotDao.getAllDeclaredShots()))
     }
+
+    @Test
+    fun detDeclaredShotsFromId() = runBlocking {
+        declaredShotDao.insert(declaredShotEntities = listOf(declaredShotEntity))
+
+        assertThat(declaredShotEntity, equalTo(declaredShotDao.getDeclaredShotFromId(id = declaredShotEntity.id)))
+        assertThat(null, equalTo(declaredShotDao.getDeclaredShotFromId(id = 22)))
+    }
+
+    @Test
+    fun getDeclaredShotsBySearchQuery() = runBlocking {
+        declaredShotDao.insert(declaredShotEntities = listOf(declaredShotEntity))
+
+        val emptyDeclaredShotEntityList: List<DeclaredShotEntity> = emptyList()
+
+        assertThat(listOf(declaredShotEntity), equalTo(declaredShotDao.getDeclaredShotsBySearchQuery("ook")))
+
+        assertThat(emptyDeclaredShotEntityList, equalTo(declaredShotDao.getDeclaredShotsBySearchQuery("nick")))
+    }
 }

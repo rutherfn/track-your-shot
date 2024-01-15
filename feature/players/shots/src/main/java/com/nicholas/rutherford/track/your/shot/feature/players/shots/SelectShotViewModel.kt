@@ -29,7 +29,7 @@ class SelectShotViewModel(
                 currentDeclaredShotArrayList.add(declaredShot)
             }
 
-            selectShotMutableStateFlow.update {  state ->
+            selectShotMutableStateFlow.update { state ->
                 state.copy(declaredShotList = currentDeclaredShotArrayList)
             }
         }

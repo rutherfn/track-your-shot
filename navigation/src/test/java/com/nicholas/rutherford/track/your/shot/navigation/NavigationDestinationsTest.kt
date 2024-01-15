@@ -20,6 +20,7 @@ class NavigationDestinationsTest {
     internal val settingsScreen = "settingsScreen"
     internal val statsScreen = "statsScreen"
     internal val voiceCommandsScreen = "voiceCommandsScreen"
+    internal val selectShotScreen = "selectShotScreen"
 
     @BeforeEach
     fun beforeEach() {
@@ -76,6 +77,11 @@ class NavigationDestinationsTest {
         @Test
         fun `authentication screen should result in authentication screen`() {
             Assertions.assertEquals(navigationDestinations.AUTHENTICATION_SCREEN, authenticationScreen)
+        }
+
+        @Test
+        fun `select shot screen should result in select a shot screen`() {
+            Assertions.assertEquals(navigationDestinations.SELECT_SHOT_SCREEN, selectShotScreen)
         }
     }
 }

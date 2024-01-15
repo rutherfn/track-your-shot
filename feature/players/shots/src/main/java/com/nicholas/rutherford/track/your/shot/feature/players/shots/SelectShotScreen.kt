@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -40,13 +39,13 @@ fun SelectShotScreen(selectShotParams: SelectShotParams) {
 
     Content(
         ui = {
-             if (!isShotsDeclaredListEmpty) {
-                 LazyColumn {
-                     items(selectShotParams.state.declaredShotList) { declaredShot ->
-                         DeclaredShotItem(declaredShot = declaredShot)
-                     }
-                 }
-             }
+            if (!isShotsDeclaredListEmpty) {
+                LazyColumn {
+                    items(selectShotParams.state.declaredShotList) { declaredShot ->
+                        DeclaredShotItem(declaredShot = declaredShot)
+                    }
+                }
+            }
         },
         appBar = AppBar(
             toolbarTitle = stringResource(id = StringsIds.selectAShot),
@@ -94,14 +93,16 @@ fun DeclaredShotItem(declaredShot: DeclaredShot) {
 
             if (isExpanded) {
                 Text(
-                    text = stringResource(id = R.string.x_shot_category,
+                    text = stringResource(
+                        id = R.string.x_shot_category,
                         declaredShot.shotCategory.replaceFirstChar { char ->
                             if (char.isLowerCase()) {
                                 char.titlecase(Locale.getDefault())
                             } else {
                                 char.toString()
                             }
-                        }),
+                        }
+                    ),
                     style = TextStyles.body,
                     textAlign = TextAlign.Start
                 )
@@ -128,6 +129,5 @@ fun DeclaredShotItem(declaredShot: DeclaredShot) {
                 )
             }
         }
-
     }
 }

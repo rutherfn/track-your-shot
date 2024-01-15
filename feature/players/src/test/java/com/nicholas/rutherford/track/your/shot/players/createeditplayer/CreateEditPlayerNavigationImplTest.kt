@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.your.shot.players.createeditplayer
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigationImpl
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationAction
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot
@@ -67,5 +69,19 @@ class CreateEditPlayerNavigationImplTest {
         val expectedAction = NavigationDestinations.PLAYERS_LIST_SCREEN
 
         Assertions.assertEquals(expectedAction, capturedArgument)
+    }
+
+    @Test
+    fun `navigate to select shot`() {
+        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+
+        createEditPlayerNavigationImpl.navigateToSelectShot()
+
+        verify { navigator.navigate(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+        val expectedAction = NavigationActions.CreateEditPlayer.selectShot()
+
+        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }
 }

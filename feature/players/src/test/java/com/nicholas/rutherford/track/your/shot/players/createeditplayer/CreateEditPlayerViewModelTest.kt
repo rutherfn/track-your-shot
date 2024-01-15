@@ -1185,4 +1185,11 @@ class CreateEditPlayerViewModelTest {
         Assertions.assertEquals(sheet.title, "Choose Option")
         Assertions.assertEquals(sheet.values, listOf("Choose Image From Gallery", "Take A Picture"))
     }
+
+    @Test
+    fun `on log shots clicked`() {
+        createEditPlayerViewModel.onLogShotsClicked()
+
+        verify { navigation.navigateToSelectShot() }
+    }
 }
