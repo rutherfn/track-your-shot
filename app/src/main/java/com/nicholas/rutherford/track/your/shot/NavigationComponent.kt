@@ -148,7 +148,6 @@ fun NavigationComponent(
     }
     LaunchedEffect(navigatorState) {
         navigatorState?.let {
-            println("get here navigate")
             navHostController.navigate(it.destination, it.navOptions)
         }
     }
