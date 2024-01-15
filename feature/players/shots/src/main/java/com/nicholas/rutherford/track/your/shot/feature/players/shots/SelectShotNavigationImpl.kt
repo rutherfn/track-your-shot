@@ -7,5 +7,4 @@ class SelectShotNavigationImpl(private val navigator: Navigator) : SelectShotNav
     override fun popFromCreatePlayer() = navigator.pop(popRouteAction = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN)
 
     override fun popFromEditPlayer() = navigator.pop(popRouteAction = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS)
-
 }

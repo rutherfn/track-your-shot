@@ -49,6 +49,7 @@ class SelectShotViewModel(
         }
     }
 
+    // todo -> needs to be tested // just test if state updates when called
     fun onCancelIconClicked() {
         if (selectShotMutableStateFlow.value.searchQuery.isNotEmpty()) {
             currentDeclaredShotArrayList.clear()

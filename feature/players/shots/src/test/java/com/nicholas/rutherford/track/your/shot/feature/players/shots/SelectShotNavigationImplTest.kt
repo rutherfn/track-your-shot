@@ -1,7 +1,5 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots
 
-import com.nicholas.rutherford.track.your.shot.navigation.NavigationAction
-import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot

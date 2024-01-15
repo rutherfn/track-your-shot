@@ -366,7 +366,7 @@ fun NavigationComponent(
                 AlertConfirmAndDismissButton(
                     onButtonClicked = {
                         navigator.alert(alertAction = null)
-                         confirmButton.onButtonClicked?.invoke()
+                        confirmButton.onButtonClicked?.invoke()
                     },
                     buttonText = confirmButton.buttonText
                 )

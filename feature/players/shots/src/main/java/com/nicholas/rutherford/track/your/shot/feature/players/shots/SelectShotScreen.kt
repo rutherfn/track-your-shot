@@ -64,7 +64,7 @@ fun SelectShotScreen(selectShotParams: SelectShotParams) {
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = true,
             onIconButtonClicked = { selectShotParams.onBackButtonClicked.invoke() },
-            onSecondaryIconButtonClicked = {selectShotParams.onHelpIconClicked.invoke() }
+            onSecondaryIconButtonClicked = { selectShotParams.onHelpIconClicked.invoke() }
         ),
         secondaryImageVector = Icons.Filled.Help
     )

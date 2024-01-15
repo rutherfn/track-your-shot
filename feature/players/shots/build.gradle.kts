@@ -88,4 +88,6 @@ dependencies {
     testImplementation(Dependencies.Mockk.core)
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+
+    testImplementation(project(path = ":data-test:room"))
 }
