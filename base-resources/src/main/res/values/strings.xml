@@ -41,6 +41,7 @@
     <string name="empty_field">Empty Field</string>
     <string name="empty_fields">Empty Fields</string>
     <string name="error_creating_account">Error Creating Account</string>
+    <string name="find_shots_by_name">Find shots by name </string>
     <string name="general_information">General Information</string>
     <string name="got_it">Got It</string>
     <string name="having_trouble_creating_your_account_please_try_again">Having trouble creating your account. Please try again</string>
@@ -71,6 +72,7 @@
     <string name="reset_password">Reset Password</string>
     <string name="reset_password_email_sent">Reset Password Email Sent</string>
     <string name="resend_email">Resend Email</string>
+    <string name="select_a_shot">Select A Shot</string>
     <string name="password">Password</string>
     <string name="password_required">Password*</string>
     <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">Password is not in correct format. Please enter password in correct format</string>
@@ -101,6 +103,8 @@
     <string name="splash_icon_description">This is a splash image for the splash screen that gets displayed before app is triggered</string>
     <string name="successfully_sent_email_verification">Successfully sent verification</string>
     <string name="take_a_picture">Take A Picture</string>
+    <string name="tap_for_more_info">Tap for more info</string>
+    <string name="tap_for_less_info">Tap for less info</string>
     <string name="terms_conditions">Terms &amp; Conditions</string>
     <string name="the_image_upload_was_unsuccessful">The image upload was unsuccessful. Please attempt it once more.</string>
     <string name="there_was_a_error_creating_your_account_please_try_again">There was a error creating your account. Please try again.</string>
@@ -130,6 +134,7 @@
     <string name="view_x">View %s</string>
     <string name="voice_commands">Voice Commands</string>
     <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_shot_category">Category - %s</string>
     <string name="yes">Yes</string>
     <string name="your_player_could_not_be_retrieved_description">Your player could not be retrieved. Please try again.</string>
 </resources>

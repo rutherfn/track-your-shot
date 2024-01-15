@@ -33,7 +33,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 fun ColumnScope.LogShotsContent(
     isEmpty: Boolean = true,
     firstName: String,
-    lastName: String
+    lastName: String,
+    onLogShotsClicked: () -> Unit,
 ) {
     val hintLogNewShot = if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
         stringResource(id = R.string.hint_log_new_shots_for_player_x, "$firstName $lastName")
@@ -87,7 +88,8 @@ fun ColumnScope.LogShotsContent(
 
                 Button(
                     onClick = {
-                        // todo -> take user to list to log new shots
+                        println("log shots adadada")
+                        onLogShotsClicked.invoke()
                     },
                     shape = RoundedCornerShape(size = 50.dp),
                     modifier = Modifier

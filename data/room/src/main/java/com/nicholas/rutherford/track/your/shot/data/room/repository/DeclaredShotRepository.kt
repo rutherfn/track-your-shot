@@ -11,4 +11,7 @@ interface DeclaredShotRepository {
     suspend fun fetchAllDeclaredShots(): List<DeclaredShot>
 
     suspend fun deleteAllDeclaredShots()
+    suspend fun fetchDeclaredShotFromId(id: Int): DeclaredShot?
+
+    suspend fun fetchDeclaredShotsBySearchQuery(searchQuery: String): List<DeclaredShot>
 }

@@ -48,7 +48,8 @@ fun ConditionalTopAppBar(
     } else {
         SimpleTopAppBar(
             appBar = appBar,
-            imageVector = imageVector
+            imageVector = imageVector,
+            secondaryImageVector = secondaryImageVector
         )
     }
 }
@@ -56,7 +57,8 @@ fun ConditionalTopAppBar(
 @Composable
 private fun SimpleTopAppBar(
     appBar: AppBar,
-    imageVector: ImageVector?
+    imageVector: ImageVector?,
+    secondaryImageVector: ImageVector?
 ) {
     TopAppBar(
         title = {
@@ -84,8 +86,8 @@ private fun SimpleTopAppBar(
                     modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.Save,
-                        contentDescription = "Save icon"
+                        imageVector = secondaryImageVector ?: Icons.Filled.Save,
+                        contentDescription = "Secondary icon"
                     )
                 }
             }

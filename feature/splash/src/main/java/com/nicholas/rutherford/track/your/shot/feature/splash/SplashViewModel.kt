@@ -3,7 +3,6 @@ package com.nicholas.rutherford.track.your.shot.feature.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
-import com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson.DeclaredShotsJson
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
@@ -21,12 +20,8 @@ class SplashViewModel(
     private val activeUserRepository: ActiveUserRepository,
     private val accountAuthManager: AccountAuthManager,
     private val readSharedPreferences: ReadSharedPreferences,
-    private val createSharedPreferences: CreateSharedPreferences,
-    private val declaredShots: DeclaredShotsJson
+    private val createSharedPreferences: CreateSharedPreferences
 ) : ViewModel() {
-
-    init {
-    }
 
     internal fun checkIfAppHasBeenLaunchedBefore() {
         if (!readSharedPreferences.appHasBeenLaunched()) {

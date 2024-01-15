@@ -28,7 +28,8 @@ open class MainActivity : ComponentActivity() {
                     createEditPlayerViewModel = getViewModel(),
                     forgotPasswordViewModel = getViewModel(),
                     createAccountViewModel = getViewModel(),
-                    authenticationViewModel = getViewModel()
+                    authenticationViewModel = getViewModel(),
+                    selectShotViewModel = getViewModel()
                 )
             )
         }

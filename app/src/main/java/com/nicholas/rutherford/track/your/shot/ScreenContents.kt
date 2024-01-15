@@ -25,6 +25,7 @@ class ScreenContents {
                     )
                 },
                 onToolbarMenuClicked = { createEditPlayerViewModel.onToolbarMenuClicked() },
+                onLogShotsClicked = { createEditPlayerViewModel.onLogShotsClicked() },
                 onFirstNameValueChanged = { newFirstName ->
                     createEditPlayerViewModel.onFirstNameValueChanged(
                         newFirstName = newFirstName

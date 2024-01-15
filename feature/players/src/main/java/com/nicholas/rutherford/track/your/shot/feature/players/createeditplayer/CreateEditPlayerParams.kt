@@ -7,6 +7,7 @@ data class CreateEditPlayerParams(
     val onClearImageState: () -> Unit,
     val checkForExistingPlayer: () -> Unit,
     val onToolbarMenuClicked: () -> Unit,
+    val onLogShotsClicked: () -> Unit,
     val onFirstNameValueChanged: (newFirstName: String) -> Unit,
     val onLastNameValueChanged: (newFirstName: String) -> Unit,
     val onPlayerPositionStringChanged: (newPosition: String) -> Unit,

@@ -47,6 +47,7 @@ feature/forgot-password/build
 feature/home/build
 feature/login/build
 feature/players/build
+feature/players/shots/build
 feature/splash/build
 
 firebase/core/build

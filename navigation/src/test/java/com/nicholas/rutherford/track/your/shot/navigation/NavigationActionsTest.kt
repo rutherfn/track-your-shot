@@ -202,5 +202,21 @@ class NavigationActionsTest {
                 )
             }
         }
+
+        @Nested
+        inner class CreateEditPlayer {
+
+            @Test
+            fun selectShot() {
+                Assertions.assertEquals(
+                    Actions.CreateEditPlayer.selectShot().destination,
+                    NavigationDestinations.SELECT_SHOT_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.CreateEditPlayer.selectShot().navOptions,
+                    NavOptions.Builder().build()
+                )
+            }
+        }
     }
 }

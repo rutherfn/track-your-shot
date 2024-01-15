@@ -34,6 +34,8 @@ import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotParams
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.navigation.ComparePlayersStatsAction
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
@@ -105,6 +107,7 @@ fun NavigationComponent(
     val playersListViewModel = viewModels.playersListViewModel
     val createEditPlayerViewModel = viewModels.createEditPlayerViewModel
     val forgotPasswordViewModel = viewModels.forgotPasswordViewModel
+    val selectShotViewModel = viewModels.selectShotViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -276,6 +279,20 @@ fun NavigationComponent(
                     lastNameArgument = null,
                     createEditPlayerViewModel = createEditPlayerViewModel
                 )(entry)
+            }
+            composable(
+                route = NavigationDestinations.SELECT_SHOT_SCREEN
+            ) {
+                SelectShotScreen(
+                    selectShotParams = SelectShotParams(
+                        state = selectShotViewModel.selectShotStateFlow.collectAsState().value,
+                        onSearchValueChanged = { newSearchQuery -> selectShotViewModel.onSearchValueChanged(newSearchQuery = newSearchQuery) },
+                        onBackButtonClicked = { selectShotViewModel.onBackButtonClicked() },
+                        onCancelIconClicked = { selectShotViewModel.onCancelIconClicked() },
+                        onnDeclaredShotItemClicked = {},
+                        onHelpIconClicked = {}
+                    )
+                )
             }
             composable(
                 route = NavigationDestinations.FORGOT_PASSWORD_SCREEN

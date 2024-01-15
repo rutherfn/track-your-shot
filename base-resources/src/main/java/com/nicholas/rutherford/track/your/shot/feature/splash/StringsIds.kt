@@ -45,6 +45,7 @@ object StringsIds {
         R.string.email_is_required_please_enter_a_email_to_reset_password_for_existing_account
     val emailRequired = R.string.email_required
     val errorCreatingAccount = R.string.error_creating_account
+    val findShotsByName = R.string.find_shots_by_name
     val gotIt = R.string.got_it
     val havingTroubleCreatingYourAccountPleaseTryAgain =
         R.string.having_trouble_creating_your_account_please_try_again
@@ -100,6 +101,7 @@ object StringsIds {
     val resetPassword = R.string.reset_password
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email
+    val selectAShot = R.string.select_a_shot
     val settings = R.string.settings
     val smallForward = R.string.small_forward
     val sf = R.string.sf
@@ -109,6 +111,8 @@ object StringsIds {
     val splashIconDescription = R.string.splash_icon_description
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
     val takeAPicture = R.string.take_a_picture
+    val tapForeMoreInfo = R.string.tap_for_more_info
+    val tapForLessInfo = R.string.tap_for_less_info
     val termsConditions = R.string.terms_conditions
     val theImageUploadWasUnsuccessful = R.string.the_image_upload_was_unsuccessful
     val thereWasAErrorCreatingYourAccountPleaseTryAgain =
