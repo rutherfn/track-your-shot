@@ -231,8 +231,7 @@ class AppModule {
                 activeUserRepository = get(),
                 accountAuthManager = get(),
                 readSharedPreferences = get(),
-                createSharedPreferences = get(),
-                declaredShots = get()
+                createSharedPreferences = get()
             )
         }
         viewModel {
