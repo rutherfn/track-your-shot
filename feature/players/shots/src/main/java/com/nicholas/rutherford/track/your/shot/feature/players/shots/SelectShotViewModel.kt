@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 
 class SelectShotViewModel(
     private val scope: CoroutineScope,
+    private val navigation: SelectShotNavigation,
     private val declaredShotRepository: DeclaredShotRepository
 ) : ViewModel() {
 
@@ -52,6 +53,14 @@ class SelectShotViewModel(
         if (selectShotMutableStateFlow.value.searchQuery.isNotEmpty()) {
             currentDeclaredShotArrayList.clear()
             updateDeclaredShotListState()
+        }
+    }
+
+    fun onBackButtonClicked(fromCreatePlayer: Boolean = true) {
+        if (fromCreatePlayer) {
+            navigation.popFromCreatePlayer()
+        } else {
+            navigation.popFromEditPlayer()
         }
     }
 

@@ -11,6 +11,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Card
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Help
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,9 +63,10 @@ fun SelectShotScreen(selectShotParams: SelectShotParams) {
             shouldShowMiddleContentAppBar = false,
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = true,
-            onIconButtonClicked = {},
-            onSecondaryIconButtonClicked = {}
-        )
+            onIconButtonClicked = { selectShotParams.onBackButtonClicked.invoke() },
+            onSecondaryIconButtonClicked = {selectShotParams.onHelpIconClicked.invoke() }
+        ),
+        secondaryImageVector = Icons.Filled.Help
     )
 }
 

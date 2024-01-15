@@ -1,3 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots
 
-class SelectShotNavigation
+interface SelectShotNavigation {
+    fun popFromCreatePlayer()
+    fun popFromEditPlayer()
+}

@@ -38,6 +38,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotNavigation
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
@@ -216,6 +218,9 @@ class AppModule {
         single<CreateEditPlayerNavigation> {
             CreateEditPlayerNavigationImpl(navigator = get())
         }
+        single<SelectShotNavigation> {
+            SelectShotNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(appCenter = get(), accountAuthManager = get())
         }
@@ -268,6 +273,7 @@ class AppModule {
         viewModel {
             SelectShotViewModel(
                 scope = defaultCoroutineScope,
+                navigation = get(),
                 declaredShotRepository = get()
             )
         }
