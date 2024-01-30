@@ -8,7 +8,11 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUserEntity
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayerEntity
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
@@ -17,6 +21,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoR
 import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.ExistingUserFirebase
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -51,6 +56,8 @@ class AccountAuthManagerImplTest {
     private val readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
     private val existingUserFirebase = mockk<ExistingUserFirebase>(relaxed = true)
 
+    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
+
     private val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create()
     private val password = "Password$1"
 
@@ -65,7 +72,8 @@ class AccountAuthManagerImplTest {
             playerRepository = playerRepository,
             userRepository = userRepository,
             readFirebaseUserInfo = readFirebaseUserInfo,
-            existingUserFirebase = existingUserFirebase
+            existingUserFirebase = existingUserFirebase,
+            createSharedPreferences = createSharedPreferences
         )
     }
 
@@ -89,6 +97,8 @@ class AccountAuthManagerImplTest {
 
         coVerifyOrder {
             existingUserFirebase.logout()
+            createSharedPreferences.createHasLoggedInPlayerListPreference(value = true)
+            createSharedPreferences.createHasLoggedInDeclaredShotListPreference(value = true)
             accountAuthManagerImpl.clearOutDatabase()
         }
     }
@@ -101,6 +111,16 @@ class AccountAuthManagerImplTest {
             activeUserRepository.deleteActiveUser()
             playerRepository.deleteAllPlayers()
             userRepository.deleteAllUsers()
+        }
+    }
+
+    @Test
+    fun `update logged in preferences should call functions`() = runTest {
+        accountAuthManagerImpl.updateLoggedInPreferences()
+
+        coVerifyOrder {
+            createSharedPreferences.createHasLoggedInPlayerListPreference(value = true)
+            createSharedPreferences.createHasLoggedInDeclaredShotListPreference(value = true)
         }
     }
 
@@ -218,11 +238,19 @@ class AccountAuthManagerImplTest {
 
         @Test
         fun `when getAccountInfoKeyFlowByEmail returns value, fetchActiveUser returns null, when get playerInfoList returns empty should not call create list of players`() = runTest {
+            val declaredShotList = listOf(TestDeclaredShot.build())
+
             coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = activeUserEntity.email) } returns flowOf(value = key)
             coEvery { activeUserRepository.fetchActiveUser() } returns null
+            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotList
             coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(emptyList())
 
             accountAuthManagerImpl.updateActiveUserFromLoggedInUser(email = activeUserEntity.email, username = activeUserEntity.username)
+
+            Assertions.assertEquals(
+                accountAuthManagerImpl.loggedInDeclaredShotListStateFlow.value,
+                declaredShotList
+            )
 
             coVerify {
                 activeUserRepository.createActiveUser(
@@ -242,11 +270,19 @@ class AccountAuthManagerImplTest {
 
         @Test
         fun `when getAccountInfoKeyFlowByEmail returns value, fetchActiveUser returns null, when get playerInfoList returns data should call create list of players`() = runTest {
+            val declaredShotList = listOf(TestDeclaredShot.build())
+
             coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = activeUserEntity.email) } returns flowOf(value = key)
             coEvery { activeUserRepository.fetchActiveUser() } returns null
+            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotList
             coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(playerInfoRealtimeWithKeyResponseList)
 
             accountAuthManagerImpl.updateActiveUserFromLoggedInUser(email = activeUserEntity.email, username = activeUserEntity.username)
+
+            Assertions.assertEquals(
+                accountAuthManagerImpl.loggedInDeclaredShotListStateFlow.value,
+                declaredShotList
+            )
 
             coVerify {
                 activeUserRepository.createActiveUser(
@@ -283,13 +319,42 @@ class AccountAuthManagerImplTest {
 
         @Test
         fun `when getPlayerInfoList returns list of info should call disableProcessAndNavigateToPlayersList and createListOfPlayers`() = runTest {
+            val playerArrayList: ArrayList<Player> = arrayListOf()
             val playerInfoRealtimeWithKeyResponseList = listOf(TestPlayerInfoRealtimeWithKeyResponse().create())
+
+            playerInfoRealtimeWithKeyResponseList.map { player ->
+                playerArrayList.add(Player(
+                    firstName = player.playerInfo.firstName,
+                    lastName = player.playerInfo.lastName,
+                    position = PlayerPositions.fromValue(player.playerInfo.positionValue),
+                    firebaseKey = player.playerFirebaseKey,
+                    imageUrl = player.playerInfo.imageUrl,
+                    shotsLoggedList = player.playerInfo.shotsLogged.map { shotLoggedRealtimeResponse ->
+                        ShotLogged(
+                            shotType = shotLoggedRealtimeResponse.shotType,
+                            shotsAttempted = shotLoggedRealtimeResponse.shotsAttempted,
+                            shotsMade = shotLoggedRealtimeResponse.shotsMade,
+                            shotsMissed = shotLoggedRealtimeResponse.shotsMissed,
+                            shotsMadePercentValue = shotLoggedRealtimeResponse.shotsMadePercentValue,
+                            shotsMissedPercentValue = shotLoggedRealtimeResponse.shotsMissedPercentValue,
+                            shotsAttemptedMillisecondsValue = shotLoggedRealtimeResponse.shotsAttemptedMillisecondsValue,
+                            shotsLoggedMillisecondsValue = shotLoggedRealtimeResponse.shotsLoggedMillisecondsValue
+                        )
+                    }
+                ))
+            }
 
             coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(playerInfoRealtimeWithKeyResponseList)
 
             accountAuthManagerImpl.collectPlayerInfoList(firebaseAccountInfoKey = key)
 
+            Assertions.assertEquals(
+                accountAuthManagerImpl.loggedInPlayerListStateFlow.value,
+                playerArrayList.toList()
+            )
+
             coVerify { playerRepository.createListOfPlayers(playerList = any()) }
+            verify { accountAuthManagerImpl.updateLoggedInPreferences() }
             verify { navigator.progress(progressAction = null) }
             verify { navigator.navigate(navigationAction = any()) }
         }
