@@ -9,19 +9,4 @@ class CreateSharedPreferencesImpl(private val editor: SharedPreferences.Editor) 
         editor.putBoolean(SharedPreferencesConstants.Preferences.APP_HAS_LAUNCHED, value)
         editor.apply()
     }
-
-    override fun createAccountHasBeenCreatedPreference(value: Boolean) {
-        editor.putBoolean(SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED, value)
-        editor.apply()
-    }
-
-    override fun createUnverifiedEmailPreference(value: String) {
-        editor.putString(SharedPreferencesConstants.Preferences.UNVERIFIED_EMAIL, value)
-        editor.apply()
-    }
-
-    override fun createUnverifiedUsernamePreference(value: String) {
-        editor.putString(SharedPreferencesConstants.Preferences.UNVERIFIED_USERNAME, value)
-        editor.apply()
-    }
 }
