@@ -103,6 +103,8 @@ object StringsIds {
     val resendEmail = R.string.resend_email
     val selectAShot = R.string.select_a_shot
     val settings = R.string.settings
+    val showLess = R.string.show_less
+    val showMore = R.string.show_more
     val smallForward = R.string.small_forward
     val sf = R.string.sf
     val shootingGuard = R.string.shooting_guard
@@ -111,8 +113,6 @@ object StringsIds {
     val splashIconDescription = R.string.splash_icon_description
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
     val takeAPicture = R.string.take_a_picture
-    val tapForeMoreInfo = R.string.tap_for_more_info
-    val tapForLessInfo = R.string.tap_for_less_info
     val termsConditions = R.string.terms_conditions
     val theImageUploadWasUnsuccessful = R.string.the_image_upload_was_unsuccessful
     val thereWasAErrorCreatingYourAccountPleaseTryAgain =

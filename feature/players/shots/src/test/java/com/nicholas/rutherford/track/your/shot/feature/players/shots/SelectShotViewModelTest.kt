@@ -80,7 +80,7 @@ class SelectShotViewModelTest {
     inner class OnCancelIconClicked {
 
         @Test
-        fun `when search query is not empty should update state`()  {
+        fun `when search query is not empty should update state`() {
             val searchQuery = "searchQuery"
 
             selectShotViewModel.selectShotMutableStateFlow.update {

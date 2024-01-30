@@ -92,18 +92,17 @@ fun DeclaredShotItem(declaredShot: DeclaredShot) {
                 ClickableText(
                     text = buildAnnotatedString {
                         withStyle(style = SpanStyle(color = Color.Blue)) {
-                            append(stringResource(id = StringsIds.tapForeMoreInfo))
+                            append(stringResource(id = StringsIds.showMore))
                         }
                     },
                     onClick = {
                         isExpanded = !isExpanded
                     }
                 )
-            }
+                Spacer(modifier = Modifier.width(16.dp))
+            } else {
+                Spacer(modifier = Modifier.width(16.dp))
 
-            Spacer(modifier = Modifier.width(16.dp))
-
-            if (isExpanded) {
                 Text(
                     text = stringResource(
                         id = R.string.x_shot_category,
@@ -132,7 +131,7 @@ fun DeclaredShotItem(declaredShot: DeclaredShot) {
                 ClickableText(
                     text = buildAnnotatedString {
                         withStyle(style = SpanStyle(color = Color.Blue)) {
-                            append(stringResource(id = StringsIds.tapForLessInfo))
+                            append(stringResource(id = StringsIds.showLess))
                         }
                     },
                     onClick = {

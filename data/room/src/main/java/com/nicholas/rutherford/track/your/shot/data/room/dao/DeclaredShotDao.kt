@@ -18,12 +18,12 @@ interface DeclaredShotDao {
     @Query("DELETE FROM declaredShots")
     suspend fun deleteAll()
 
-    @Query("SELECT * FROM declaredShots")
+    @Query("SELECT * FROM declaredShots ORDER BY title ASC")
     suspend fun getAllDeclaredShots(): List<DeclaredShotEntity>
 
     @Query("SELECT * FROM declaredShots WHERE id = :id")
     suspend fun getDeclaredShotFromId(id: Int): DeclaredShotEntity?
 
-    @Query("SELECT * FROM declaredShots WHERE title LIKE '%' || :searchQuery || '%'")
+    @Query("SELECT * FROM declaredShots WHERE REPLACE(title, ' ', '') LIKE '%' || REPLACE(:searchQuery, ' ', '') || '%' ORDER BY title ASC")
     suspend fun getDeclaredShotsBySearchQuery(searchQuery: String): List<DeclaredShotEntity>
 }
