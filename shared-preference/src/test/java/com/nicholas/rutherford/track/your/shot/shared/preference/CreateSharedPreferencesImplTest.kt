@@ -1,7 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.shared.preference
 
 import android.content.SharedPreferences
-import com.nicholas.rutherford.track.your.shot.helper.constants.SharedPreferencesConstants
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferencesImpl
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -51,9 +51,45 @@ class CreateSharedPreferencesImplTest {
                 createSharedPreferencesImpl.createAppHasLaunchedPreference(value = defaultValue)
 
                 verify {
-                    editor.putBoolean(SharedPreferencesConstants.Preferences.APP_HAS_LAUNCHED, defaultValue)
+                    editor.putBoolean(Constants.Preferences.APP_HAS_LAUNCHED, defaultValue)
                 }
                 verify { editor.apply() }
             }
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `createHasLoggedInPlayerListPreference should call editor putBoolean and apply`() =
+        runTest {
+            val defaultValue = true
+
+            coEvery { sharedPreferences.edit() } returns editor
+
+            init()
+
+            createSharedPreferencesImpl.createHasLoggedInPlayerListPreference(value = defaultValue)
+
+            verify {
+                editor.putBoolean(Constants.Preferences.HAS_LOGGED_IN_PLAYER_LIST, defaultValue)
+            }
+            verify { editor.apply() }
+        }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `createHasLoggedInDeclaredShotListPreference should call editor putBoolean and apply`() =
+        runTest {
+            val defaultValue = true
+
+            coEvery { sharedPreferences.edit() } returns editor
+
+            init()
+
+            createSharedPreferencesImpl.createHasLoggedInDeclaredShotListPreference(value = defaultValue)
+
+            verify {
+                editor.putBoolean(Constants.Preferences.HAS_LOGGED_IN_DECLARED_SHOT_LIST, defaultValue)
+            }
+            verify { editor.apply() }
+        }
 }

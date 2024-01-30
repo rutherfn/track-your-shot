@@ -1,7 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.shared.preference
 
 import android.content.SharedPreferences
-import com.nicholas.rutherford.track.your.shot.helper.constants.SharedPreferencesConstants
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferencesImpl
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -42,7 +42,7 @@ class ReadSharedPreferencesImplTest {
             runTest {
                 coEvery {
                     sharedPreferences.getBoolean(
-                        SharedPreferencesConstants.Preferences.APP_HAS_LAUNCHED,
+                        Constants.Preferences.APP_HAS_LAUNCHED,
                         false
                     )
                 } returns true
@@ -59,6 +59,74 @@ class ReadSharedPreferencesImplTest {
                 init()
 
                 Assertions.assertEquals(readSharedPreferencesImpl.appHasBeenLaunched(), false)
+            }
+    }
+
+    @Nested
+    inner class HasLoggedInPlayerList {
+
+        @BeforeEach
+        fun beforeEach() {
+            mockkStatic(SharedPreferences::class)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return true when getBoolean returns back true`() =
+            runTest {
+                coEvery {
+                    sharedPreferences.getBoolean(
+                        Constants.Preferences.HAS_LOGGED_IN_PLAYER_LIST,
+                        false
+                    )
+                } returns true
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.hasLoggedInPlayerList(), true)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return false when getBoolean returns back no value`() =
+            runTest {
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.hasLoggedInPlayerList(), false)
+            }
+    }
+
+    @Nested
+    inner class HasLoggedInDeclaredShotList {
+
+        @BeforeEach
+        fun beforeEach() {
+            mockkStatic(SharedPreferences::class)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return true when getBoolean returns back true`() =
+            runTest {
+                coEvery {
+                    sharedPreferences.getBoolean(
+                        Constants.Preferences.HAS_LOGGED_IN_DECLARED_SHOT_LIST,
+                        false
+                    )
+                } returns true
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.hasLoggedInDeclaredShotList(), true)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return false when getBoolean returns back no value`() =
+            runTest {
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.hasLoggedInDeclaredShotList(), false)
             }
     }
 }

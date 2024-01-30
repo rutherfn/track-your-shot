@@ -63,7 +63,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.Existi
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManagerImpl
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.helper.constants.SharedPreferencesConstants
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.helper.network.NetworkImpl
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
@@ -306,6 +305,6 @@ class AppModule {
     }
 
     private fun getSharedPreferences(androidApplication: Application): android.content.SharedPreferences {
-        return androidApplication.getSharedPreferences(SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES, android.content.Context.MODE_PRIVATE)
+        return androidApplication.getSharedPreferences(Constants.Preferences.TRACK_MY_SHOT_PREFERENCES, android.content.Context.MODE_PRIVATE)
     }
 }
