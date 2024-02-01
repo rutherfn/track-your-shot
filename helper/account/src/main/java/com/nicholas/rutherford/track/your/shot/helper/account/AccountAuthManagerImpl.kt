@@ -59,7 +59,6 @@ class AccountAuthManagerImpl(
 
             existingUserFirebase.logout()
 
-            updateLoggedInPreferences()
             clearOutDatabase()
         }
     }
@@ -80,8 +79,8 @@ class AccountAuthManagerImpl(
     }
 
     internal fun updateLoggedInPreferences() {
-        createSharedPreferences.createHasLoggedInPlayerListPreference(value = true)
-        createSharedPreferences.createHasLoggedInDeclaredShotListPreference(value = true)
+        createSharedPreferences.createShouldUpdateLoggedInPlayerListPreference(value = true)
+        createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
     }
 
     override fun login(email: String, password: String) {
@@ -131,8 +130,6 @@ class AccountAuthManagerImpl(
                 )
                 declaredShotRepository.createDeclaredShots()
 
-                _loggedInDeclaredShotListStateFlow.value = declaredShotRepository.fetchAllDeclaredShots()
-
                 collectPlayerInfoList(firebaseAccountInfoKey = firebaseAccountInfoKey)
             } ?: disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
         }
@@ -165,10 +162,12 @@ class AccountAuthManagerImpl(
                             )
                         }
 
-                    _loggedInPlayerListStateFlow.value = playerList
-                    playerRepository.createListOfPlayers(playerList = playerList)
-
                     updateLoggedInPreferences()
+
+                    _loggedInPlayerListStateFlow.value = playerList
+                    _loggedInDeclaredShotListStateFlow.value = declaredShotRepository.fetchAllDeclaredShots()
+
+                    playerRepository.createListOfPlayers(playerList = playerList)
 
                     disableProcessAndNavigateToPlayersList()
                 } else {

@@ -59,7 +59,7 @@ class CreateSharedPreferencesImplTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `createHasLoggedInPlayerListPreference should call editor putBoolean and apply`() =
+    fun `createShouldUpdateLoggedInPlayerListPreference should call editor putBoolean and apply`() =
         runTest {
             val defaultValue = true
 
@@ -67,17 +67,17 @@ class CreateSharedPreferencesImplTest {
 
             init()
 
-            createSharedPreferencesImpl.createHasLoggedInPlayerListPreference(value = defaultValue)
+            createSharedPreferencesImpl.createShouldUpdateLoggedInPlayerListPreference(value = defaultValue)
 
             verify {
-                editor.putBoolean(Constants.Preferences.HAS_LOGGED_IN_PLAYER_LIST, defaultValue)
+                editor.putBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST, defaultValue)
             }
             verify { editor.apply() }
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `createHasLoggedInDeclaredShotListPreference should call editor putBoolean and apply`() =
+    fun `createShouldUpdateLoggedInDeclaredShotListPreference should call editor putBoolean and apply`() =
         runTest {
             val defaultValue = true
 
@@ -85,10 +85,10 @@ class CreateSharedPreferencesImplTest {
 
             init()
 
-            createSharedPreferencesImpl.createHasLoggedInDeclaredShotListPreference(value = defaultValue)
+            createSharedPreferencesImpl.createShouldUpdateLoggedInDeclaredShotListPreference(value = defaultValue)
 
             verify {
-                editor.putBoolean(Constants.Preferences.HAS_LOGGED_IN_DECLARED_SHOT_LIST, defaultValue)
+                editor.putBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST, defaultValue)
             }
             verify { editor.apply() }
         }

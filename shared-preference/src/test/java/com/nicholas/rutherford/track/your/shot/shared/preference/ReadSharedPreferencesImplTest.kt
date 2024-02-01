@@ -63,7 +63,7 @@ class ReadSharedPreferencesImplTest {
     }
 
     @Nested
-    inner class HasLoggedInPlayerList {
+    inner class ShouldUpdateLoggedInPlayerListState {
 
         @BeforeEach
         fun beforeEach() {
@@ -76,14 +76,14 @@ class ReadSharedPreferencesImplTest {
             runTest {
                 coEvery {
                     sharedPreferences.getBoolean(
-                        Constants.Preferences.HAS_LOGGED_IN_PLAYER_LIST,
+                        Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST,
                         false
                     )
                 } returns true
 
                 init()
 
-                Assertions.assertEquals(readSharedPreferencesImpl.hasLoggedInPlayerList(), true)
+                Assertions.assertEquals(readSharedPreferencesImpl.shouldUpdateLoggedInPlayerListState(), true)
             }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -92,12 +92,12 @@ class ReadSharedPreferencesImplTest {
             runTest {
                 init()
 
-                Assertions.assertEquals(readSharedPreferencesImpl.hasLoggedInPlayerList(), false)
+                Assertions.assertEquals(readSharedPreferencesImpl.shouldUpdateLoggedInPlayerListState(), false)
             }
     }
 
     @Nested
-    inner class HasLoggedInDeclaredShotList {
+    inner class ShouldUpdateLoggedInDeclaredShotListState {
 
         @BeforeEach
         fun beforeEach() {
@@ -110,14 +110,14 @@ class ReadSharedPreferencesImplTest {
             runTest {
                 coEvery {
                     sharedPreferences.getBoolean(
-                        Constants.Preferences.HAS_LOGGED_IN_DECLARED_SHOT_LIST,
+                        Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST,
                         false
                     )
                 } returns true
 
                 init()
 
-                Assertions.assertEquals(readSharedPreferencesImpl.hasLoggedInDeclaredShotList(), true)
+                Assertions.assertEquals(readSharedPreferencesImpl.shouldUpdateLoggedInDeclaredShotListState(), true)
             }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -126,7 +126,7 @@ class ReadSharedPreferencesImplTest {
             runTest {
                 init()
 
-                Assertions.assertEquals(readSharedPreferencesImpl.hasLoggedInDeclaredShotList(), false)
+                Assertions.assertEquals(readSharedPreferencesImpl.shouldUpdateLoggedInDeclaredShotListState(), false)
             }
     }
 }

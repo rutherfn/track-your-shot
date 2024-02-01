@@ -3,16 +3,23 @@ package com.nicholas.rutherford.track.your.shot.feature.players.shots
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
+import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SelectShotViewModel(
     private val scope: CoroutineScope,
     private val navigation: SelectShotNavigation,
-    private val declaredShotRepository: DeclaredShotRepository
+    private val declaredShotRepository: DeclaredShotRepository,
+    private val accountAuthManager: AccountAuthManager,
+    private val createSharedPreferences: CreateSharedPreferences,
+    private val readSharedPreferences: ReadSharedPreferences
 ) : ViewModel() {
 
     internal var currentDeclaredShotArrayList: ArrayList<DeclaredShot> = arrayListOf()
@@ -21,19 +28,37 @@ class SelectShotViewModel(
     val selectShotStateFlow = selectShotMutableStateFlow.asStateFlow()
 
     init {
-        updateDeclaredShotListState()
+        fetchDeclaredShotsAndUpdateState()
+        collectLoggedInDeclaredShotsStateFlow()
     }
 
-    fun updateDeclaredShotListState() {
+    internal fun fetchDeclaredShotsAndUpdateState() {
         scope.launch {
-            declaredShotRepository.fetchAllDeclaredShots().forEach { declaredShot ->
-                currentDeclaredShotArrayList.add(declaredShot)
-            }
+            currentDeclaredShotArrayList.addAll(declaredShotRepository.fetchAllDeclaredShots())
+            updateState()
+        }
+    }
 
-            selectShotMutableStateFlow.update { state ->
-                state.copy(searchQuery = "", declaredShotList = currentDeclaredShotArrayList)
+    private fun updateState() {
+        selectShotMutableStateFlow.update { state ->
+            state.copy(searchQuery = "", declaredShotList = currentDeclaredShotArrayList)
+        }
+    }
+
+    fun collectLoggedInDeclaredShotsStateFlow() {
+        scope.launch {
+            accountAuthManager.loggedInDeclaredShotListStateFlow.collectLatest { declaredShotList ->
+                if (shouldUpdateStateFromLoggedIn(declaredShotList = declaredShotList)) {
+                    currentDeclaredShotArrayList.addAll(declaredShotList)
+                    updateState()
+                    createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = false)
+                }
             }
         }
+    }
+
+    fun shouldUpdateStateFromLoggedIn(declaredShotList: List<DeclaredShot>): Boolean {
+        return declaredShotList.isNotEmpty() && readSharedPreferences.shouldUpdateLoggedInDeclaredShotListState()
     }
 
     fun onSearchValueChanged(newSearchQuery: String) {
@@ -52,7 +77,7 @@ class SelectShotViewModel(
     fun onCancelIconClicked() {
         if (selectShotMutableStateFlow.value.searchQuery.isNotEmpty()) {
             currentDeclaredShotArrayList.clear()
-            updateDeclaredShotListState()
+            fetchDeclaredShotsAndUpdateState()
         }
     }
 

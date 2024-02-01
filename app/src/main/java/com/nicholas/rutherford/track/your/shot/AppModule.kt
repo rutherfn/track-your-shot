@@ -79,8 +79,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 class AppModule {
-    val mainCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-    val ioCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val defaultCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     val modules = module {
@@ -88,7 +86,7 @@ class AppModule {
             getSharedPreferences(androidApplication())
         }
         single<DeclaredShotsJson> {
-            DeclaredShotsJsonImpl(application = get(),)
+            DeclaredShotsJsonImpl(application = get())
         }
         single {
             Room.databaseBuilder(
@@ -190,7 +188,8 @@ class AppModule {
                 playerRepository = get(),
                 userRepository = get(),
                 readFirebaseUserInfo = get(),
-                existingUserFirebase = get()
+                existingUserFirebase = get(),
+                createSharedPreferences = get()
             )
         }
         single<PlayersAdditionUpdates> {
@@ -251,7 +250,9 @@ class AppModule {
                 deleteFirebaseUserInfo = get(),
                 activeUserRepository = get(),
                 playersAdditionUpdates = get(),
-                playerRepository = get()
+                playerRepository = get(),
+                createSharedPreferences = get(),
+                readSharedPreferences = get()
             )
         }
         viewModel {
@@ -272,7 +273,10 @@ class AppModule {
             SelectShotViewModel(
                 scope = defaultCoroutineScope,
                 navigation = get(),
-                declaredShotRepository = get()
+                declaredShotRepository = get(),
+                accountAuthManager = get(),
+                createSharedPreferences = get(),
+                readSharedPreferences = get()
             )
         }
         viewModel {

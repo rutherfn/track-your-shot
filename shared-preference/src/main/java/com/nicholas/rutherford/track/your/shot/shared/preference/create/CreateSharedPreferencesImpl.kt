@@ -10,13 +10,13 @@ class CreateSharedPreferencesImpl(private val editor: SharedPreferences.Editor) 
         editor.apply()
     }
 
-    override fun createHasLoggedInPlayerListPreference(value: Boolean) {
-        editor.putBoolean(Constants.Preferences.HAS_LOGGED_IN_PLAYER_LIST, value)
+    override fun createShouldUpdateLoggedInPlayerListPreference(value: Boolean) {
+        editor.putBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST, value)
         editor.apply()
     }
 
-    override fun createHasLoggedInDeclaredShotListPreference(value: Boolean) {
-        editor.putBoolean(Constants.Preferences.HAS_LOGGED_IN_DECLARED_SHOT_LIST, value)
+    override fun createShouldUpdateLoggedInDeclaredShotListPreference(value: Boolean) {
+        editor.putBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST, value)
         editor.apply()
     }
 }
