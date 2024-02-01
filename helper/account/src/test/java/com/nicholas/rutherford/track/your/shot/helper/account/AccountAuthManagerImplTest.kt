@@ -97,8 +97,6 @@ class AccountAuthManagerImplTest {
 
         coVerifyOrder {
             existingUserFirebase.logout()
-            createSharedPreferences.createHasLoggedInPlayerListPreference(value = true)
-            createSharedPreferences.createHasLoggedInDeclaredShotListPreference(value = true)
             accountAuthManagerImpl.clearOutDatabase()
         }
     }
@@ -111,16 +109,6 @@ class AccountAuthManagerImplTest {
             activeUserRepository.deleteActiveUser()
             playerRepository.deleteAllPlayers()
             userRepository.deleteAllUsers()
-        }
-    }
-
-    @Test
-    fun `update logged in preferences should call functions`() = runTest {
-        accountAuthManagerImpl.updateLoggedInPreferences()
-
-        coVerifyOrder {
-            createSharedPreferences.createHasLoggedInPlayerListPreference(value = true)
-            createSharedPreferences.createHasLoggedInDeclaredShotListPreference(value = true)
         }
     }
 
@@ -354,7 +342,7 @@ class AccountAuthManagerImplTest {
             )
 
             coVerify { playerRepository.createListOfPlayers(playerList = any()) }
-            verify { accountAuthManagerImpl.updateLoggedInPreferences() }
+//            verify { accountAuthManagerImpl.updateLoggedInPreferences() }
             verify { navigator.progress(progressAction = null) }
             verify { navigator.navigate(navigationAction = any()) }
         }

@@ -35,30 +35,31 @@ class SelectShotViewModel(
     internal fun fetchDeclaredShotsAndUpdateState() {
         scope.launch {
             currentDeclaredShotArrayList.addAll(declaredShotRepository.fetchAllDeclaredShots())
-            updateState()
+            selectShotMutableStateFlow.update { state ->
+                state.copy(searchQuery = "", declaredShotList = currentDeclaredShotArrayList)
+            }
         }
     }
 
-    private fun updateState() {
-        selectShotMutableStateFlow.update { state ->
-            state.copy(searchQuery = "", declaredShotList = currentDeclaredShotArrayList)
-        }
-    }
-
-    fun collectLoggedInDeclaredShotsStateFlow() {
+    private fun collectLoggedInDeclaredShotsStateFlow() {
         scope.launch {
             accountAuthManager.loggedInDeclaredShotListStateFlow.collectLatest { declaredShotList ->
-                if (shouldUpdateStateFromLoggedIn(declaredShotList = declaredShotList)) {
+                if (shouldUpdateStateFromLoggedIn(
+                        declaredShotList = declaredShotList,
+                        shouldUpdateLoggedInDeclaredShotListState = readSharedPreferences.shouldUpdateLoggedInDeclaredShotListState()
+                )) {
                     currentDeclaredShotArrayList.addAll(declaredShotList)
-                    updateState()
+                    selectShotMutableStateFlow.update { state ->
+                        state.copy(searchQuery = "", declaredShotList = currentDeclaredShotArrayList)
+                    }
                     createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = false)
                 }
             }
         }
     }
 
-    fun shouldUpdateStateFromLoggedIn(declaredShotList: List<DeclaredShot>): Boolean {
-        return declaredShotList.isNotEmpty() && readSharedPreferences.shouldUpdateLoggedInDeclaredShotListState()
+    internal fun shouldUpdateStateFromLoggedIn(declaredShotList: List<DeclaredShot>, shouldUpdateLoggedInDeclaredShotListState: Boolean): Boolean {
+        return declaredShotList.isNotEmpty() && shouldUpdateLoggedInDeclaredShotListState
     }
 
     fun onSearchValueChanged(newSearchQuery: String) {

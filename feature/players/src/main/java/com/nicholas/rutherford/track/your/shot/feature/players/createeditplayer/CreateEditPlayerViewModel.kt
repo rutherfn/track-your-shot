@@ -26,6 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CreateEditPlayerViewModel(
@@ -76,7 +77,9 @@ class CreateEditPlayerViewModel(
     }
 
     fun updateToolbarNameResIdStateToCreatePlayer() {
-        createEditPlayerMutableStateFlow.value = CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
+        createEditPlayerMutableStateFlow.update { state ->
+            state.copy(toolbarNameResId = StringsIds.createPlayer)
+        }
     }
 
     fun onToolbarMenuClicked() = navigation.pop()

@@ -76,7 +76,7 @@ class PlayersListViewModel(
     private fun collectLoggedInPlayerListStateFlow() {
         scope.launch {
             accountAuthManager.loggedInPlayerListStateFlow.collectLatest { loggedInPlayerList ->
-                if (shouldUpdateFromUserLoggedIn(loggedInPlayerList = loggedInPlayerList)) {
+                if (shouldUpdateFromUserLoggedIn(loggedInPlayerList = loggedInPlayerList, shouldUpdateLoggedInPlayerListState = readSharedPreferences.shouldUpdateLoggedInPlayerListState())) {
                     handleLoggedInPlayerList(playerList = loggedInPlayerList)
                     createSharedPreferences.createShouldUpdateLoggedInPlayerListPreference(value = false)
                 }
@@ -84,8 +84,8 @@ class PlayersListViewModel(
         }
     }
 
-    private fun shouldUpdateFromUserLoggedIn(loggedInPlayerList: List<Player>): Boolean {
-        return loggedInPlayerList.isNotEmpty() && readSharedPreferences.shouldUpdateLoggedInPlayerListState()
+    internal fun shouldUpdateFromUserLoggedIn(loggedInPlayerList: List<Player>, shouldUpdateLoggedInPlayerListState: Boolean): Boolean {
+        return loggedInPlayerList.isNotEmpty() && shouldUpdateLoggedInPlayerListState
     }
 
     private fun handlePlayerAdded(hasBeenAdded: Boolean) {
