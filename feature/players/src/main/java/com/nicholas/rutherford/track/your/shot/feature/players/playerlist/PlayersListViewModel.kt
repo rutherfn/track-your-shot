@@ -66,6 +66,7 @@ class PlayersListViewModel(
     }
 
     internal fun collectPlayerAdditionUpdates() {
+        2
         scope.launch {
             playersAdditionUpdates.newPlayerHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
                 handlePlayerAdded(hasBeenAdded = hasBeenAdded)

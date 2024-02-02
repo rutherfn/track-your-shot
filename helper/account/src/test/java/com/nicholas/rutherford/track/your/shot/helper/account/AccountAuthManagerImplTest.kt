@@ -311,25 +311,27 @@ class AccountAuthManagerImplTest {
             val playerInfoRealtimeWithKeyResponseList = listOf(TestPlayerInfoRealtimeWithKeyResponse().create())
 
             playerInfoRealtimeWithKeyResponseList.map { player ->
-                playerArrayList.add(Player(
-                    firstName = player.playerInfo.firstName,
-                    lastName = player.playerInfo.lastName,
-                    position = PlayerPositions.fromValue(player.playerInfo.positionValue),
-                    firebaseKey = player.playerFirebaseKey,
-                    imageUrl = player.playerInfo.imageUrl,
-                    shotsLoggedList = player.playerInfo.shotsLogged.map { shotLoggedRealtimeResponse ->
-                        ShotLogged(
-                            shotType = shotLoggedRealtimeResponse.shotType,
-                            shotsAttempted = shotLoggedRealtimeResponse.shotsAttempted,
-                            shotsMade = shotLoggedRealtimeResponse.shotsMade,
-                            shotsMissed = shotLoggedRealtimeResponse.shotsMissed,
-                            shotsMadePercentValue = shotLoggedRealtimeResponse.shotsMadePercentValue,
-                            shotsMissedPercentValue = shotLoggedRealtimeResponse.shotsMissedPercentValue,
-                            shotsAttemptedMillisecondsValue = shotLoggedRealtimeResponse.shotsAttemptedMillisecondsValue,
-                            shotsLoggedMillisecondsValue = shotLoggedRealtimeResponse.shotsLoggedMillisecondsValue
-                        )
-                    }
-                ))
+                playerArrayList.add(
+                    Player(
+                        firstName = player.playerInfo.firstName,
+                        lastName = player.playerInfo.lastName,
+                        position = PlayerPositions.fromValue(player.playerInfo.positionValue),
+                        firebaseKey = player.playerFirebaseKey,
+                        imageUrl = player.playerInfo.imageUrl,
+                        shotsLoggedList = player.playerInfo.shotsLogged.map { shotLoggedRealtimeResponse ->
+                            ShotLogged(
+                                shotType = shotLoggedRealtimeResponse.shotType,
+                                shotsAttempted = shotLoggedRealtimeResponse.shotsAttempted,
+                                shotsMade = shotLoggedRealtimeResponse.shotsMade,
+                                shotsMissed = shotLoggedRealtimeResponse.shotsMissed,
+                                shotsMadePercentValue = shotLoggedRealtimeResponse.shotsMadePercentValue,
+                                shotsMissedPercentValue = shotLoggedRealtimeResponse.shotsMissedPercentValue,
+                                shotsAttemptedMillisecondsValue = shotLoggedRealtimeResponse.shotsAttemptedMillisecondsValue,
+                                shotsLoggedMillisecondsValue = shotLoggedRealtimeResponse.shotsLoggedMillisecondsValue
+                            )
+                        }
+                    )
+                )
             }
 
             coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(playerInfoRealtimeWithKeyResponseList)

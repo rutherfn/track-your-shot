@@ -47,7 +47,8 @@ class SelectShotViewModel(
                 if (shouldUpdateStateFromLoggedIn(
                         declaredShotList = declaredShotList,
                         shouldUpdateLoggedInDeclaredShotListState = readSharedPreferences.shouldUpdateLoggedInDeclaredShotListState()
-                )) {
+                    )
+                ) {
                     currentDeclaredShotArrayList.addAll(declaredShotList)
                     selectShotMutableStateFlow.update { state ->
                         state.copy(searchQuery = "", declaredShotList = currentDeclaredShotArrayList)

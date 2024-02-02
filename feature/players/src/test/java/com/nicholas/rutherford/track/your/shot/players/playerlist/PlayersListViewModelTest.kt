@@ -301,7 +301,6 @@ class PlayersListViewModelTest {
         }
     }
 
-
     @Test
     fun `HandleLoggedInPlayerList should clear out given list and update state`() = runTest {
         val newPlayer = Player(
