@@ -102,10 +102,6 @@ class MyApplicationTest : KoinTest {
         assertNotNull(createAccountNavigation)
         assertNotNull(authenticationNavigation)
 
-        // assertNotNull(mainActivityViewModel)
-        // assertNotNull(loginViewModel)
-        // assertNotNull(forgotPasswordViewModel)
-
         // todo figure out a way to mock shared preferences in classes that it gets used
         // the tests for some reason is not able to create the factory generated class
 
