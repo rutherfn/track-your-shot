@@ -6,6 +6,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
@@ -18,6 +19,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.Existi
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,11 +37,15 @@ class AccountAuthManagerImpl(
     private val playerRepository: PlayerRepository,
     private val userRepository: UserRepository,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
-    private val existingUserFirebase: ExistingUserFirebase
+    private val existingUserFirebase: ExistingUserFirebase,
+    private val createSharedPreferences: CreateSharedPreferences
 ) : AccountAuthManager {
 
     private val _loggedInPlayerListStateFlow: MutableStateFlow<List<Player>> = MutableStateFlow(value = emptyList())
     override val loggedInPlayerListStateFlow: StateFlow<List<Player>> = _loggedInPlayerListStateFlow.asStateFlow()
+
+    private val _loggedInDeclaredShotListStateFlow: MutableStateFlow<List<DeclaredShot>> = MutableStateFlow(value = emptyList())
+    override val loggedInDeclaredShotListStateFlow: StateFlow<List<DeclaredShot>> = _loggedInDeclaredShotListStateFlow.asStateFlow()
     override fun logout() {
         scope.launch {
             navigator.progress(progressAction = Progress())
@@ -52,6 +58,7 @@ class AccountAuthManagerImpl(
             delay(Constants.DELAY_IN_MILLISECONDS_BEFORE_LOGGING_OUT)
 
             existingUserFirebase.logout()
+
             clearOutDatabase()
         }
     }
@@ -116,7 +123,10 @@ class AccountAuthManagerImpl(
                         firebaseAccountInfoKey = firebaseAccountInfoKey
                     )
                 )
+                createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
                 declaredShotRepository.createDeclaredShots()
+
+                _loggedInDeclaredShotListStateFlow.value = declaredShotRepository.fetchAllDeclaredShots()
 
                 collectPlayerInfoList(firebaseAccountInfoKey = firebaseAccountInfoKey)
             } ?: disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
@@ -150,8 +160,10 @@ class AccountAuthManagerImpl(
                             )
                         }
 
+                    createSharedPreferences.createShouldUpdateLoggedInPlayerListPreference(value = true)
                     _loggedInPlayerListStateFlow.value = playerList
                     playerRepository.createListOfPlayers(playerList = playerList)
+
                     disableProcessAndNavigateToPlayersList()
                 } else {
                     disableProcessAndNavigateToPlayersList()

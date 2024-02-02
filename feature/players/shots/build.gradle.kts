@@ -69,6 +69,7 @@ android {
 dependencies {
     api(project(path = ":compose:components"))
     api(project(path = ":data:room"))
+    api(project(path = ":helper:account"))
     api(project(path = ":helper:network"))
     api(project(path = ":navigation"))
 

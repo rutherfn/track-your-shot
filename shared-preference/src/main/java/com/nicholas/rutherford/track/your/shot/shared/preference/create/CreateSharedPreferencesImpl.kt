@@ -1,27 +1,22 @@
 package com.nicholas.rutherford.track.your.shot.shared.preference.create
 
 import android.content.SharedPreferences
-import com.nicholas.rutherford.track.your.shot.helper.constants.SharedPreferencesConstants
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 
 class CreateSharedPreferencesImpl(private val editor: SharedPreferences.Editor) : CreateSharedPreferences {
 
     override fun createAppHasLaunchedPreference(value: Boolean) {
-        editor.putBoolean(SharedPreferencesConstants.Preferences.APP_HAS_LAUNCHED, value)
+        editor.putBoolean(Constants.Preferences.APP_HAS_LAUNCHED, value)
         editor.apply()
     }
 
-    override fun createAccountHasBeenCreatedPreference(value: Boolean) {
-        editor.putBoolean(SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED, value)
+    override fun createShouldUpdateLoggedInPlayerListPreference(value: Boolean) {
+        editor.putBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST, value)
         editor.apply()
     }
 
-    override fun createUnverifiedEmailPreference(value: String) {
-        editor.putString(SharedPreferencesConstants.Preferences.UNVERIFIED_EMAIL, value)
-        editor.apply()
-    }
-
-    override fun createUnverifiedUsernamePreference(value: String) {
-        editor.putString(SharedPreferencesConstants.Preferences.UNVERIFIED_USERNAME, value)
+    override fun createShouldUpdateLoggedInDeclaredShotListPreference(value: Boolean) {
+        editor.putBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST, value)
         editor.apply()
     }
 }

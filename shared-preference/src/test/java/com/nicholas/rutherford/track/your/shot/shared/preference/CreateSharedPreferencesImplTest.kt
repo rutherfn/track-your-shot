@@ -1,7 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.shared.preference
 
 import android.content.SharedPreferences
-import com.nicholas.rutherford.track.your.shot.helper.constants.SharedPreferencesConstants
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferencesImpl
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -51,30 +51,7 @@ class CreateSharedPreferencesImplTest {
                 createSharedPreferencesImpl.createAppHasLaunchedPreference(value = defaultValue)
 
                 verify {
-                    editor.putBoolean(SharedPreferencesConstants.Preferences.APP_HAS_LAUNCHED, defaultValue)
-                }
-                verify { editor.apply() }
-            }
-
-        @OptIn(ExperimentalCoroutinesApi::class)
-        @Test
-        fun `createAccountHasBeenCreatedPreference should call editor putBoolean and apply`() =
-            runTest {
-                val defaultValue = true
-
-                coEvery {
-                    sharedPreferences.edit()
-                } returns editor
-
-                init()
-
-                createSharedPreferencesImpl.createAccountHasBeenCreatedPreference(value = defaultValue)
-
-                verify {
-                    editor.putBoolean(
-                        SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED,
-                        defaultValue
-                    )
+                    editor.putBoolean(Constants.Preferences.APP_HAS_LAUNCHED, defaultValue)
                 }
                 verify { editor.apply() }
             }
@@ -82,46 +59,36 @@ class CreateSharedPreferencesImplTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `createUnverifiedEmailPreference should call editor putString and apply`() =
+    fun `createShouldUpdateLoggedInPlayerListPreference should call editor putBoolean and apply`() =
         runTest {
-            val defaultValue = "emailtest@gmail.com"
+            val defaultValue = true
 
-            coEvery {
-                sharedPreferences.edit()
-            } returns editor
+            coEvery { sharedPreferences.edit() } returns editor
 
             init()
 
-            createSharedPreferencesImpl.createUnverifiedEmailPreference(value = defaultValue)
+            createSharedPreferencesImpl.createShouldUpdateLoggedInPlayerListPreference(value = defaultValue)
 
             verify {
-                editor.putString(
-                    SharedPreferencesConstants.Preferences.UNVERIFIED_EMAIL,
-                    defaultValue
-                )
+                editor.putBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST, defaultValue)
             }
             verify { editor.apply() }
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `createUnverifiedUsernamePreference should call editor putString and apply`() =
+    fun `createShouldUpdateLoggedInDeclaredShotListPreference should call editor putBoolean and apply`() =
         runTest {
-            val defaultValue = "newUsername112"
+            val defaultValue = true
 
-            coEvery {
-                sharedPreferences.edit()
-            } returns editor
+            coEvery { sharedPreferences.edit() } returns editor
 
             init()
 
-            createSharedPreferencesImpl.createUnverifiedUsernamePreference(value = defaultValue)
+            createSharedPreferencesImpl.createShouldUpdateLoggedInDeclaredShotListPreference(value = defaultValue)
 
             verify {
-                editor.putString(
-                    SharedPreferencesConstants.Preferences.UNVERIFIED_USERNAME,
-                    defaultValue
-                )
+                editor.putBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST, defaultValue)
             }
             verify { editor.apply() }
         }

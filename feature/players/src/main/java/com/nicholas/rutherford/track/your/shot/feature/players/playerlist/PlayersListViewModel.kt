@@ -14,6 +14,8 @@ import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
+import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +34,9 @@ class PlayersListViewModel(
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val activeUserRepository: ActiveUserRepository,
     private val playersAdditionUpdates: PlayersAdditionUpdates,
-    private val playerRepository: PlayerRepository
+    private val playerRepository: PlayerRepository,
+    private val createSharedPreferences: CreateSharedPreferences,
+    private val readSharedPreferences: ReadSharedPreferences
 ) : ViewModel() {
 
     internal var currentPlayerArrayList: ArrayList<Player> = arrayListOf()
@@ -62,6 +66,7 @@ class PlayersListViewModel(
     }
 
     internal fun collectPlayerAdditionUpdates() {
+        2
         scope.launch {
             playersAdditionUpdates.newPlayerHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
                 handlePlayerAdded(hasBeenAdded = hasBeenAdded)
@@ -72,9 +77,16 @@ class PlayersListViewModel(
     private fun collectLoggedInPlayerListStateFlow() {
         scope.launch {
             accountAuthManager.loggedInPlayerListStateFlow.collectLatest { loggedInPlayerList ->
-                handleLoggedInPlayerList(playerList = loggedInPlayerList)
+                if (shouldUpdateFromUserLoggedIn(loggedInPlayerList = loggedInPlayerList, shouldUpdateLoggedInPlayerListState = readSharedPreferences.shouldUpdateLoggedInPlayerListState())) {
+                    handleLoggedInPlayerList(playerList = loggedInPlayerList)
+                    createSharedPreferences.createShouldUpdateLoggedInPlayerListPreference(value = false)
+                }
             }
         }
+    }
+
+    internal fun shouldUpdateFromUserLoggedIn(loggedInPlayerList: List<Player>, shouldUpdateLoggedInPlayerListState: Boolean): Boolean {
+        return loggedInPlayerList.isNotEmpty() && shouldUpdateLoggedInPlayerListState
     }
 
     private fun handlePlayerAdded(hasBeenAdded: Boolean) {

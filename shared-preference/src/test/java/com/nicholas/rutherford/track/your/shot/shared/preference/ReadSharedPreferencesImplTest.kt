@@ -1,7 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.shared.preference
 
 import android.content.SharedPreferences
-import com.nicholas.rutherford.track.your.shot.helper.constants.SharedPreferencesConstants
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferencesImpl
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -42,7 +42,7 @@ class ReadSharedPreferencesImplTest {
             runTest {
                 coEvery {
                     sharedPreferences.getBoolean(
-                        SharedPreferencesConstants.Preferences.APP_HAS_LAUNCHED,
+                        Constants.Preferences.APP_HAS_LAUNCHED,
                         false
                     )
                 } returns true
@@ -63,7 +63,7 @@ class ReadSharedPreferencesImplTest {
     }
 
     @Nested
-    inner class AccountHasBeenCreated {
+    inner class ShouldUpdateLoggedInPlayerListState {
 
         @BeforeEach
         fun beforeEach() {
@@ -76,14 +76,14 @@ class ReadSharedPreferencesImplTest {
             runTest {
                 coEvery {
                     sharedPreferences.getBoolean(
-                        SharedPreferencesConstants.Preferences.ACCOUNT_HAS_BEEN_CREATED,
+                        Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST,
                         false
                     )
                 } returns true
 
                 init()
 
-                Assertions.assertEquals(readSharedPreferencesImpl.accountHasBeenCreated(), true)
+                Assertions.assertEquals(readSharedPreferencesImpl.shouldUpdateLoggedInPlayerListState(), true)
             }
 
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -92,12 +92,12 @@ class ReadSharedPreferencesImplTest {
             runTest {
                 init()
 
-                Assertions.assertEquals(readSharedPreferencesImpl.accountHasBeenCreated(), false)
+                Assertions.assertEquals(readSharedPreferencesImpl.shouldUpdateLoggedInPlayerListState(), false)
             }
     }
 
     @Nested
-    inner class UnVerifiedEmail {
+    inner class ShouldUpdateLoggedInDeclaredShotListState {
 
         @BeforeEach
         fun beforeEach() {
@@ -106,109 +106,27 @@ class ReadSharedPreferencesImplTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `should return null when getString returns back null`() =
+        fun `should return true when getBoolean returns back true`() =
             runTest {
                 coEvery {
-                    sharedPreferences.getString(
-                        SharedPreferencesConstants.Preferences.UNVERIFIED_EMAIL,
-                        null
+                    sharedPreferences.getBoolean(
+                        Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST,
+                        false
                     )
-                } returns null
+                } returns true
 
                 init()
 
-                Assertions.assertEquals(readSharedPreferencesImpl.unverifiedEmail(), null)
+                Assertions.assertEquals(readSharedPreferencesImpl.shouldUpdateLoggedInDeclaredShotListState(), true)
             }
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `should return null when getString returns back empty string`() =
+        fun `should return false when getBoolean returns back no value`() =
             runTest {
-                coEvery {
-                    sharedPreferences.getString(
-                        SharedPreferencesConstants.Preferences.UNVERIFIED_EMAIL,
-                        null
-                    )
-                } returns ""
-
                 init()
 
-                Assertions.assertEquals(readSharedPreferencesImpl.unverifiedEmail(), null)
-            }
-
-        @OptIn(ExperimentalCoroutinesApi::class)
-        @Test
-        fun `should return back actual data when getString returns back data`() =
-            runTest {
-                val testEmail = "test@email11.com"
-                coEvery {
-                    sharedPreferences.getString(
-                        SharedPreferencesConstants.Preferences.UNVERIFIED_EMAIL,
-                        null
-                    )
-                } returns testEmail
-
-                init()
-
-                Assertions.assertEquals(readSharedPreferencesImpl.unverifiedEmail(), testEmail)
-            }
-    }
-
-    @Nested
-    inner class UnVerifiedUsername {
-
-        @BeforeEach
-        fun beforeEach() {
-            mockkStatic(SharedPreferences::class)
-        }
-
-        @OptIn(ExperimentalCoroutinesApi::class)
-        @Test
-        fun `should return null when getString returns back null`() =
-            runTest {
-                coEvery {
-                    sharedPreferences.getString(
-                        SharedPreferencesConstants.Preferences.UNVERIFIED_USERNAME,
-                        null
-                    )
-                } returns null
-
-                init()
-
-                Assertions.assertEquals(readSharedPreferencesImpl.unverifiedUsername(), null)
-            }
-
-        @OptIn(ExperimentalCoroutinesApi::class)
-        @Test
-        fun `should return null when getString returns back empty string`() =
-            runTest {
-                coEvery {
-                    sharedPreferences.getString(
-                        SharedPreferencesConstants.Preferences.UNVERIFIED_USERNAME,
-                        null
-                    )
-                } returns ""
-
-                init()
-
-                Assertions.assertEquals(readSharedPreferencesImpl.unverifiedUsername(), null)
-            }
-
-        @OptIn(ExperimentalCoroutinesApi::class)
-        @Test
-        fun `should return back actual data when getString returns back data`() =
-            runTest {
-                val username = "testUsername"
-                coEvery {
-                    sharedPreferences.getString(
-                        SharedPreferencesConstants.Preferences.UNVERIFIED_USERNAME,
-                        null
-                    )
-                } returns username
-
-                init()
-
-                Assertions.assertEquals(readSharedPreferencesImpl.unverifiedUsername(), username)
+                Assertions.assertEquals(readSharedPreferencesImpl.shouldUpdateLoggedInDeclaredShotListState(), false)
             }
     }
 }

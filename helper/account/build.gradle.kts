@@ -68,6 +68,7 @@ dependencies {
     api(project(path = ":firebase:core"))
     api(project(path = ":firebase:util"))
     api(project(path = ":navigation"))
+    api(project(path = ":shared-preference"))
 
     implementation(Dependencies.Coroutine.jvm)
 
@@ -78,8 +79,9 @@ dependencies {
     testImplementation(Dependencies.Junit.junit)
 
     testImplementation(Dependencies.Mockk.core)
-    testImplementation(project(mapOf("path" to ":data-test:firebase")))
-    testImplementation(project(mapOf("path" to ":data-test:room")))
+
+    testImplementation(project(path = ":data-test:firebase"))
+    testImplementation(project(path = ":data-test:room"))
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }

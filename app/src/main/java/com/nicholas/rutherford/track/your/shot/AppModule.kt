@@ -63,7 +63,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.Existi
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManagerImpl
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.helper.constants.SharedPreferencesConstants
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.helper.network.NetworkImpl
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
@@ -80,8 +79,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 class AppModule {
-    val mainCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-    val ioCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val defaultCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     val modules = module {
@@ -89,7 +86,7 @@ class AppModule {
             getSharedPreferences(androidApplication())
         }
         single<DeclaredShotsJson> {
-            DeclaredShotsJsonImpl(application = get(),)
+            DeclaredShotsJsonImpl(application = get())
         }
         single {
             Room.databaseBuilder(
@@ -191,7 +188,8 @@ class AppModule {
                 playerRepository = get(),
                 userRepository = get(),
                 readFirebaseUserInfo = get(),
-                existingUserFirebase = get()
+                existingUserFirebase = get(),
+                createSharedPreferences = get()
             )
         }
         single<PlayersAdditionUpdates> {
@@ -252,7 +250,9 @@ class AppModule {
                 deleteFirebaseUserInfo = get(),
                 activeUserRepository = get(),
                 playersAdditionUpdates = get(),
-                playerRepository = get()
+                playerRepository = get(),
+                createSharedPreferences = get(),
+                readSharedPreferences = get()
             )
         }
         viewModel {
@@ -273,7 +273,10 @@ class AppModule {
             SelectShotViewModel(
                 scope = defaultCoroutineScope,
                 navigation = get(),
-                declaredShotRepository = get()
+                declaredShotRepository = get(),
+                accountAuthManager = get(),
+                createSharedPreferences = get(),
+                readSharedPreferences = get()
             )
         }
         viewModel {
@@ -306,6 +309,6 @@ class AppModule {
     }
 
     private fun getSharedPreferences(androidApplication: Application): android.content.SharedPreferences {
-        return androidApplication.getSharedPreferences(SharedPreferencesConstants.Core.TRACK_MY_SHOT_PREFERENCES, android.content.Context.MODE_PRIVATE)
+        return androidApplication.getSharedPreferences(Constants.Preferences.TRACK_MY_SHOT_PREFERENCES, android.content.Context.MODE_PRIVATE)
     }
 }

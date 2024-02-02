@@ -1,6 +1,13 @@
 package com.nicholas.rutherford.track.your.shot.helper.constants
 
 object Constants {
+    object Preferences {
+        const val TRACK_MY_SHOT_PREFERENCES = "TRACK_MY_SHOT_PREFERENCES"
+
+        const val APP_HAS_LAUNCHED = "appHasLaunched"
+        const val SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST = "shouldUpdateLoggedInPlayerList"
+        const val SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST = "shouldUpdateLoggedInDeclaredShotList"
+    }
     const val APP_DATABASE_NAME = "app_database.db"
     const val ACTIVE_USER_ID = 1
     const val ACCOUNT_INFO = "accountInfo"
