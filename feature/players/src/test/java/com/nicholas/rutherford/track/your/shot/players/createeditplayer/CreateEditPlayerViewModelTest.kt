@@ -236,6 +236,7 @@ class CreateEditPlayerViewModelTest {
             Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
 
             coEvery { playerRepository.fetchPlayerByName(firstName = player.firstName, lastName = player.lastName) } returns player
+            every { application.getString(StringsIds.hintLogNewShotsForPlayer) } returns "Press the \"Log Shots\" button to record shots for"
 
             createEditPlayerViewModel.checkForExistingPlayer(
                 firstNameArgument = player.firstName,
@@ -250,14 +251,91 @@ class CreateEditPlayerViewModelTest {
                     lastName = player.lastName,
                     editedPlayerUrl = player.imageUrl!!,
                     toolbarNameResId = StringsIds.editPlayer,
-                    playerPositionString = "Center"
+                    playerPositionString = "Center",
+                    shotsHaveBeenLogged = true,
+                    hintLogNewShotText = "Press the \"Log Shots\" button to record shots for ${player.firstName} ${player.lastName}"
                 )
             )
         }
     }
 
+    @Nested
+    inner class HintLogNewShotText {
+
+        @Test
+        fun `when firstName passed in is null should return hintLogNewShots`() {
+            every { application.getString(StringsIds.hintLogNewShots) } returns "Press the \"Log Shots\" button to record shots for the player."
+
+            val result = createEditPlayerViewModel.hintLogNewShotText(
+                firstName = null,
+                lastName = "last"
+            )
+
+            Assertions.assertEquals(result, "Press the \"Log Shots\" button to record shots for the player.")
+        }
+
+        @Test
+        fun `when lastName passed in is null should return hintLogNewShots`() {
+            every { application.getString(StringsIds.hintLogNewShots) } returns "Press the \"Log Shots\" button to record shots for the player."
+
+            val result = createEditPlayerViewModel.hintLogNewShotText(
+                firstName = "first",
+                lastName = null
+            )
+
+            Assertions.assertEquals(result, "Press the \"Log Shots\" button to record shots for the player.")
+        }
+
+        @Test
+        fun `when firstName and lastName passed in is not empty should return hint log for first and last name`() {
+            val firstName = "firstName"
+            val lastName = "lastName"
+
+            every { application.getString(StringsIds.hintLogNewShotsForPlayer) } returns "Press the \"Log Shots\" button to record shots for"
+
+            val result = createEditPlayerViewModel.hintLogNewShotText(
+                firstName = firstName,
+                lastName = lastName
+            )
+
+            Assertions.assertEquals(result, "Press the \"Log Shots\" button to record shots for $firstName $lastName")
+        }
+
+        @Test
+        fun `when firstName is set and lastName is empty should return hint log for firstName only`() {
+            val firstName = "firstName"
+            val lastName = ""
+
+            every { application.getString(StringsIds.hintLogNewShotsForPlayer) } returns "Press the \"Log Shots\" button to record shots for"
+
+            val result = createEditPlayerViewModel.hintLogNewShotText(
+                firstName = firstName,
+                lastName = lastName
+            )
+
+            Assertions.assertEquals(result, "Press the \"Log Shots\" button to record shots for $firstName")
+        }
+
+        @Test
+        fun `when lastName is set and firstName is empty should return hint log for lastName only`() {
+            val firstName = ""
+            val lastName = "lastName"
+
+            every { application.getString(StringsIds.hintLogNewShotsForPlayer) } returns "Press the \"Log Shots\" button to record shots for"
+
+            val result = createEditPlayerViewModel.hintLogNewShotText(
+                firstName = firstName,
+                lastName = lastName
+            )
+
+            Assertions.assertEquals(result, "Press the \"Log Shots\" button to record shots for $lastName")
+        }
+    }
+
     @Test
     fun `update state for existing player`() {
+        every { application.getString(StringsIds.hintLogNewShotsForPlayer) } returns "Press the \"Log Shots\" button to record shots for"
+
         val player = TestPlayer().create()
 
         Assertions.assertEquals(
@@ -276,7 +354,9 @@ class CreateEditPlayerViewModelTest {
                 lastName = player.lastName,
                 editedPlayerUrl = player.imageUrl!!,
                 toolbarNameResId = StringsIds.editPlayer,
-                playerPositionString = "Center"
+                playerPositionString = "Center",
+                shotsHaveBeenLogged = true,
+                hintLogNewShotText = "Press the \"Log Shots\" button to record shots for ${player.firstName} ${player.lastName}"
             )
         )
     }

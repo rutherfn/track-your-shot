@@ -9,5 +9,8 @@ data class CreateEditPlayerState(
     val editedPlayerUrl: String = "",
     val toolbarNameResId: Int = StringsIds.createPlayer,
     val playerPositionString: String = "",
+    val hintLogNewShotText: String = "",
+    val shotsHaveBeenLogged: Boolean = false,
+    val pendingShotsHasBeenLogged: Boolean = false,
     val sheet: Sheet? = null
 )

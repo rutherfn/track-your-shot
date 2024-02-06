@@ -64,6 +64,26 @@ class CreateEditPlayerViewModel(
         }
     }
 
+    internal fun hintLogNewShotText(firstName: String? = null, lastName: String? = null): String {
+        var hintLogNewShotText: String = createEditPlayerMutableStateFlow.value.hintLogNewShotText
+
+        safeLet(firstName, lastName) { first, last ->
+            hintLogNewShotText = if (first.isNotEmpty() && last.isNotEmpty()) {
+                application.getString(StringsIds.hintLogNewShotsForPlayer) + " $first $last"
+            } else if (first.isNotEmpty()) {
+                application.getString(StringsIds.hintLogNewShotsForPlayer) + " $first"
+            } else if (last.isNotEmpty()) {
+                application.getString(StringsIds.hintLogNewShotsForPlayer) + " $last"
+            } else {
+                application.getString(StringsIds.hintLogNewShots)
+            }
+        } ?: run {
+            hintLogNewShotText = application.getString(StringsIds.hintLogNewShots)
+        }
+
+        return hintLogNewShotText
+    }
+
     internal fun updateStateForExistingPlayer(player: Player) {
         editedPlayer = player
         createEditPlayerMutableStateFlow.value =
@@ -72,13 +92,18 @@ class CreateEditPlayerViewModel(
                 lastName = player.lastName,
                 editedPlayerUrl = player.imageUrl ?: "",
                 toolbarNameResId = StringsIds.editPlayer,
-                playerPositionString = application.getString(player.position.toType())
+                playerPositionString = application.getString(player.position.toType()),
+                hintLogNewShotText = hintLogNewShotText(firstName = player.firstName, lastName = player.lastName),
+                shotsHaveBeenLogged = player.shotsLoggedList.isNotEmpty()
             )
     }
 
     fun updateToolbarNameResIdStateToCreatePlayer() {
         createEditPlayerMutableStateFlow.update { state ->
-            state.copy(toolbarNameResId = StringsIds.createPlayer)
+            state.copy(
+                toolbarNameResId = StringsIds.createPlayer,
+                hintLogNewShotText = hintLogNewShotText(firstName = null, lastName = null)
+            )
         }
     }
 
@@ -382,11 +407,27 @@ class CreateEditPlayerViewModel(
     }
 
     fun onFirstNameValueChanged(newFirstName: String) {
-        createEditPlayerMutableStateFlow.value = createEditPlayerMutableStateFlow.value.copy(firstName = newFirstName)
+        val currentLastName = createEditPlayerMutableStateFlow.value.lastName
+
+        createEditPlayerMutableStateFlow.value = createEditPlayerMutableStateFlow.value.copy(
+            firstName = newFirstName,
+            hintLogNewShotText = hintLogNewShotText(
+                firstName = newFirstName,
+                lastName = currentLastName
+            )
+        )
     }
 
     fun onLastNameValueChanged(newLastName: String) {
-        createEditPlayerMutableStateFlow.value = createEditPlayerMutableStateFlow.value.copy(lastName = newLastName)
+        val currentFirstName = createEditPlayerMutableStateFlow.value.firstName
+
+        createEditPlayerMutableStateFlow.value = createEditPlayerMutableStateFlow.value.copy(
+            lastName = newLastName,
+            hintLogNewShotText = hintLogNewShotText(
+                firstName = currentFirstName,
+                lastName = newLastName
+            )
+        )
     }
 
     fun onPlayerPositionStringChanged(newPositionString: String) {

@@ -55,7 +55,7 @@ object StringsIds {
         R.string.having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid
     val hintAddNewPlayer = R.string.hint_add_new_player
     val hintLogNewShots = R.string.hint_log_new_shots
-    val hintLogNewShotsForPlayerX = R.string.hint_log_new_shots_for_player_x
+    val hintLogNewShotsForPlayer = R.string.hint_log_new_shots_for_player
     val issueOccurred = R.string.issue_occurred
     val lastName = R.string.last_name
     val leavingTheAppWillResultInYouNotFinishingTheAccountCreationProcessDescription =
@@ -103,6 +103,7 @@ object StringsIds {
     val resendEmail = R.string.resend_email
     val selectAShot = R.string.select_a_shot
     val settings = R.string.settings
+    val shots = R.string.shots
     val showLess = R.string.show_less
     val showMore = R.string.show_more
     val smallForward = R.string.small_forward
