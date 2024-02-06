@@ -94,7 +94,7 @@ private fun ColumnScope.PendingShots(shotsHaveBeenLogged: Boolean) {
                 Spacer(modifier = Modifier.weight(1f))
 
                 IconButton(
-                    onClick = {  }
+                    onClick = { }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.ArrowForward,
@@ -144,7 +144,7 @@ private fun ColumnScope.ViewLoggedShots() {
                 Spacer(modifier = Modifier.weight(1f))
 
                 IconButton(
-                    onClick = {  }
+                    onClick = { }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.ArrowForward,
