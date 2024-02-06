@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.data.room.database
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -21,7 +22,12 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.UserEntity
         PlayerEntity::class,
         UserEntity::class
     ],
-    version = 1,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2),
+        AutoMigration(from = 2, to = 3),
+        AutoMigration(from = 3, to = 4)
+    ],
+    version = 4,
     exportSchema = true
 )
 @TypeConverters(PlayerPositionsConverter::class, ShotLoggedConverter::class)
