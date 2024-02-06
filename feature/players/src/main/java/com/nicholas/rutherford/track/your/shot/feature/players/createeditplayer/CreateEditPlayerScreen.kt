@@ -42,8 +42,8 @@ import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.CoreTextField
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
-import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.LogShotsContent
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.PositionChooser
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.ShotsContent
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.UploadPlayerImageContent
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.getImageUri
@@ -241,9 +241,10 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
 
                     Spacer(modifier = Modifier.height(Padding.sixteen))
 
-                    LogShotsContent(
-                        firstName = createEditPlayerParams.state.firstName,
-                        lastName = createEditPlayerParams.state.lastName,
+                    ShotsContent(
+                        shotsHaveBeenLogged = true,
+                        pendingShotsHaveBeenLogged = true,
+                        hintLogNewShotText = createEditPlayerParams.state.hintLogNewShotText,
                         onLogShotsClicked = createEditPlayerParams.onLogShotsClicked
                     )
                 }
