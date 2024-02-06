@@ -3,7 +3,6 @@ package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.ViewModel
-import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
@@ -70,11 +69,11 @@ class CreateEditPlayerViewModel(
 
         safeLet(firstName, lastName) { first, last ->
             hintLogNewShotText = if (first.isNotEmpty() && last.isNotEmpty()) {
-                application.getString(R.string.hint_log_new_shots_for_player_x, "$first $last")
+                application.getString(StringsIds.hintLogNewShotsForPlayer) + " $first $last"
             } else if (first.isNotEmpty()) {
-                application.getString(R.string.hint_log_new_shots_for_player_x, first)
+                application.getString(StringsIds.hintLogNewShotsForPlayer) + " $first"
             } else if (last.isNotEmpty()) {
-                application.getString(R.string.hint_log_new_shots_for_player_x, last)
+                application.getString(StringsIds.hintLogNewShotsForPlayer) + " $last"
             } else {
                 application.getString(StringsIds.hintLogNewShots)
             }

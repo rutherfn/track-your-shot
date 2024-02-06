@@ -55,7 +55,7 @@ fun ColumnScope.ShotsContent(
 }
 
 @Composable
-fun ColumnScope.PendingShots(shotsHaveBeenLogged: Boolean) {
+private fun ColumnScope.PendingShots(shotsHaveBeenLogged: Boolean) {
     if (!shotsHaveBeenLogged) {
         Text(
             text = "Shots",
@@ -107,9 +107,9 @@ fun ColumnScope.PendingShots(shotsHaveBeenLogged: Boolean) {
 }
 
 @Composable
-fun ColumnScope.ViewLoggedShots() {
+private fun ColumnScope.ViewLoggedShots() {
     Text(
-        text = "Shots",
+        text = stringResource(id = R.string.shots),
         style = TextStyles.small,
         modifier = Modifier
             .align(Alignment.Start)
@@ -157,7 +157,7 @@ fun ColumnScope.ViewLoggedShots() {
 }
 
 @Composable
-fun ColumnScope.ShotContentEmptyState(hintLogNewShotText: String, onLogShotsClicked: () -> Unit) {
+private fun ColumnScope.ShotContentEmptyState(hintLogNewShotText: String, onLogShotsClicked: () -> Unit) {
     Text(
         text = stringResource(id = R.string.log_shots),
         style = TextStyles.small,
