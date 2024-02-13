@@ -8,5 +8,6 @@ data class ShotLoggedRealtimeResponse(
     val shotsMadePercentValue: Double = 0.0,
     val shotsMissedPercentValue: Double = 0.0,
     val shotsAttemptedMillisecondsValue: Long = 0L,
-    val shotsLoggedMillisecondsValue: Long = 0L
+    val shotsLoggedMillisecondsValue: Long = 0L,
+    val isPending: Boolean = false
 )

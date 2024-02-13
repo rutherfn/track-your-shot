@@ -18,5 +18,7 @@ data class ShotLogged(
     @ColumnInfo(name = "shotsAttemptedMillisecondsValue")
     val shotsAttemptedMillisecondsValue: Long,
     @ColumnInfo(name = "shotsLoggedMillisecondsValue")
-    val shotsLoggedMillisecondsValue: Long
+    val shotsLoggedMillisecondsValue: Long,
+    @ColumnInfo(name = "isPending")
+    val isPending: Boolean
 )

@@ -154,7 +154,8 @@ class AccountAuthManagerImpl(
                                         shotsMadePercentValue = shotLoggedRealtimeResponse.shotsMadePercentValue,
                                         shotsMissedPercentValue = shotLoggedRealtimeResponse.shotsMissedPercentValue,
                                         shotsAttemptedMillisecondsValue = shotLoggedRealtimeResponse.shotsAttemptedMillisecondsValue,
-                                        shotsLoggedMillisecondsValue = shotLoggedRealtimeResponse.shotsLoggedMillisecondsValue
+                                        shotsLoggedMillisecondsValue = shotLoggedRealtimeResponse.shotsLoggedMillisecondsValue,
+                                        isPending = shotLoggedRealtimeResponse.isPending
                                     )
                                 }
                             )

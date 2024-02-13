@@ -11,7 +11,8 @@ object TestShotLoggedRealtimeResponse {
             shotsMadePercentValue = SHOTS_MADE_PERCENT_VALUE,
             shotsMissedPercentValue = SHOTS_MISSED_PERCENT_VALUE,
             shotsAttemptedMillisecondsValue = SHOTS_ATTEMPTED_MILLISECONDS_VALUE,
-            shotsLoggedMillisecondsValue = SHOTS_LOGGED_MILLISECONDS_VALUE
+            shotsLoggedMillisecondsValue = SHOTS_LOGGED_MILLISECONDS_VALUE,
+            isPending = IS_PENDING
         )
     }
 
@@ -23,4 +24,5 @@ object TestShotLoggedRealtimeResponse {
     private const val SHOTS_MISSED_PERCENT_VALUE = 66.67
     private const val SHOTS_ATTEMPTED_MILLISECONDS_VALUE = 1000L
     private const val SHOTS_LOGGED_MILLISECONDS_VALUE = 2000L
+    private const val IS_PENDING = false
 }
