@@ -19,7 +19,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.slot
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -48,7 +47,6 @@ class ReadFirebaseUserInfoImplTest {
     @Nested
     inner class GetLoggedInAccountEmail {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser is set to null should set to null`() = runTest {
             every { firebaseAuth.currentUser } returns null
@@ -57,7 +55,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getLoggedInAccountEmail().first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser email is set to null should set to null`() = runTest {
             every { firebaseAuth.currentUser!!.email } returns null
@@ -66,7 +63,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getLoggedInAccountEmail().first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser and email is not set to null should set value to returned email`() = runTest {
             every { firebaseAuth.currentUser!!.email } returns accountInfoRealtimeResponse.email
@@ -79,7 +75,6 @@ class ReadFirebaseUserInfoImplTest {
     @Nested
     inner class GetAccountInfoListFlow {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onCancelled is called should return null`() = runTest {
             val mockDatabaseError = mockk<DatabaseError>()
@@ -96,7 +91,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoListFlow().first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onDataChange is called with snapshot exists return back as false should return null`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -121,7 +115,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoListFlow().first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onDataChange is called with snapshot exists return back as true with snapshot child data should return info`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -150,7 +143,6 @@ class ReadFirebaseUserInfoImplTest {
     @Nested
     inner class GetLastUpdatedDateFlow {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onCancelled is called should return null`() = runTest {
             val mockDatabaseError = mockk<DatabaseError>()
@@ -167,7 +159,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getLastUpdatedDateFlow().first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onDataChange is called but snapshot does not exist should return null`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -188,7 +179,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getLastUpdatedDateFlow().first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onDataChange is called, snapshot exists, and value returns null should return null`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -210,7 +200,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getLastUpdatedDateFlow().first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onDataChange is called, snapshot exists, and value returns date should return valid date`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -236,7 +225,6 @@ class ReadFirebaseUserInfoImplTest {
     @Nested
     inner class GetAccountInfoKeyByEmail {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onCancelled is called should return null`() = runTest {
             val mockDatabaseError = mockk<DatabaseError>()
@@ -255,7 +243,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoKeyFlowByEmail(accountInfoRealtimeResponse.email).first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onDataChange is called but snapshot does not exist should return null`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -278,7 +265,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoKeyFlowByEmail(accountInfoRealtimeResponse.email).first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onDataChange is called, snapshot exists, and children key returns empty should return null`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -302,7 +288,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoKeyFlowByEmail(accountInfoRealtimeResponse.email).first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onDataChange is called, snapshot exists, and children key returns info should return null`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -333,7 +318,6 @@ class ReadFirebaseUserInfoImplTest {
     @Nested
     inner class GetAccountInfoFlowByEmail {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onCancelled is called should return null`() = runTest {
             val mockDatabaseError = mockk<DatabaseError>()
@@ -352,7 +336,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoFlowByEmail(accountInfoRealtimeResponse.email).first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onDataChange is called but the count is 0 should return null`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -379,7 +362,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoFlowByEmail(accountInfoRealtimeResponse.email).first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onDataChange is called but the count is greater then 1 should return null`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -406,7 +388,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoFlowByEmail(accountInfoRealtimeResponse.email).first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onDataChange is called with snapshot exists return back as false should return null`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -433,7 +414,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoFlowByEmail(accountInfoRealtimeResponse.email).first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onDataChange is called with valid conditions should return accountInfoRealTimeResponse`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -465,7 +445,6 @@ class ReadFirebaseUserInfoImplTest {
     inner class GetPlayerInfoList {
         private val playerInfoRealtimeWithKeyResponseEmptyList: List<PlayerInfoRealtimeWithKeyResponse> = emptyList()
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when onCancelled is called should return empty list`() = runTest {
             val mockDatabaseError = mockk<DatabaseError>()
@@ -484,7 +463,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(playerInfoRealtimeWithKeyResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when on data change is called but snapshot does not exist should return empty list`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -507,7 +485,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(playerInfoRealtimeWithKeyResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when snapshot exists but children count is zero should return empty list`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -531,7 +508,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(playerInfoRealtimeWithKeyResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when snapshot exists and has children should return list of player info`() = runTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
@@ -571,7 +547,6 @@ class ReadFirebaseUserInfoImplTest {
     @Nested
     inner class IsEmailVerifiedFlow {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser is set to null should set to false`() = runTest {
             every { firebaseAuth.currentUser } returns null
@@ -580,7 +555,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser is not null but complete listener is not successful should be set to false`() = runTest {
             val mockTaskReloadResult = mockk<Task<Void>>()
@@ -598,7 +572,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser is not null but complete listener is successful with email verified set to false should be set to false`() = runTest {
             val mockTaskReloadResult = mockk<Task<Void>>()
@@ -617,7 +590,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser is not null but complete listener is successful with email verified set to true should be set to true`() = runTest {
             val mockTaskReloadResult = mockk<Task<Void>>()
@@ -640,7 +612,6 @@ class ReadFirebaseUserInfoImplTest {
     @Nested
     inner class IsLoggedInFlow {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser is set to null should set to false`() = runTest {
             every { firebaseAuth.currentUser } returns null
@@ -649,7 +620,6 @@ class ReadFirebaseUserInfoImplTest {
             Assertions.assertEquals(false, readFirebaseUserInfoImpl.isLoggedInFlow().first())
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when currentUser is not set to null should be set to true`() = runTest {
             readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)

@@ -9,7 +9,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.slot
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -34,7 +33,6 @@ class CreateFirebaseLastUpdatedImplTest {
     @Nested
     inner class AttemptToCreateAccountFirebaseAuthResponseFlow {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when add on complete listener is executed should set flow to false when isSuccessful returns back false`() = runTest {
             val mockTaskVoidResult = mockk<Task<Void>>()
@@ -58,7 +56,6 @@ class CreateFirebaseLastUpdatedImplTest {
             Assertions.assertEquals(false, value)
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when add on complete listener is executed should set flow to true when isSuccessful returns back true`() = runTest {
             val mockTaskVoidResult = mockk<Task<Void>>()
