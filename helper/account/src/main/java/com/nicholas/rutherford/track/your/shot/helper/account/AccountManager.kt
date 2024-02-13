@@ -11,5 +11,5 @@ interface AccountManager {
     fun logout()
     fun checkIfWeNeedToLogoutOnLaunch()
     fun login(email: String, password: String)
-    fun deleteAllPlayersPendingShots()
+    fun deleteAllPendingShotsAndPlayers()
 }

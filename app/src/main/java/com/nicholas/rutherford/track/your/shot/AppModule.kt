@@ -194,6 +194,7 @@ class AppModule {
                 activeUserRepository = get(),
                 declaredShotRepository = get(),
                 playerRepository = get(),
+                pendingPlayerRepository = get(),
                 userRepository = get(),
                 readFirebaseUserInfo = get(),
                 existingUserFirebase = get(),
