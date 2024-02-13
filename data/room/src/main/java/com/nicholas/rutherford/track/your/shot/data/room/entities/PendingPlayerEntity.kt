@@ -8,7 +8,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPosition
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 
 @Entity(tableName = "pendingPlayers")
-data class PendingPlayerEntity (
+data class PendingPlayerEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     @ColumnInfo(name = "firstName")
