@@ -15,7 +15,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.Player
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
@@ -53,7 +53,7 @@ class PlayersListViewModelTest {
 
     private val network = mockk<Network>(relaxed = true)
 
-    private val accountAuthManager = mockk<AccountAuthManager>(relaxed = true)
+    private val accountManager = mockk<AccountManager>(relaxed = true)
 
     private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
     private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
@@ -77,7 +77,7 @@ class PlayersListViewModelTest {
             scope = scope,
             navigation = navigation,
             network = network,
-            accountAuthManager = accountAuthManager,
+            accountManager = accountManager,
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
             activeUserRepository = activeUserRepository,
             playersAdditionUpdates = playersAdditionUpdates,
@@ -161,7 +161,7 @@ class PlayersListViewModelTest {
         fun `when loggedInPlayerListStateFlow emits a empty list should not update state or list`() = runTest {
             val playerList: List<Player> = emptyList()
 
-            every { accountAuthManager.loggedInPlayerListStateFlow } returns MutableStateFlow(playerList)
+            every { accountManager.loggedInPlayerListStateFlow } returns MutableStateFlow(playerList)
             every { readSharedPreferences.shouldUpdateLoggedInPlayerListState() } returns true
 
             playersListViewModel = PlayersListViewModel(
@@ -169,7 +169,7 @@ class PlayersListViewModelTest {
                 scope = scope,
                 navigation = navigation,
                 network = network,
-                accountAuthManager = accountAuthManager,
+                accountManager = accountManager,
                 deleteFirebaseUserInfo = deleteFirebaseUserInfo,
                 activeUserRepository = activeUserRepository,
                 playersAdditionUpdates = playersAdditionUpdates,
@@ -199,7 +199,7 @@ class PlayersListViewModelTest {
                 shotsLoggedList = emptyList()
             )
 
-            every { accountAuthManager.loggedInPlayerListStateFlow } returns MutableStateFlow(listOf(player))
+            every { accountManager.loggedInPlayerListStateFlow } returns MutableStateFlow(listOf(player))
             every { readSharedPreferences.shouldUpdateLoggedInPlayerListState() } returns false
 
             playersListViewModel = PlayersListViewModel(
@@ -207,7 +207,7 @@ class PlayersListViewModelTest {
                 scope = scope,
                 navigation = navigation,
                 network = network,
-                accountAuthManager = accountAuthManager,
+                accountManager = accountManager,
                 deleteFirebaseUserInfo = deleteFirebaseUserInfo,
                 activeUserRepository = activeUserRepository,
                 playersAdditionUpdates = playersAdditionUpdates,
@@ -238,7 +238,7 @@ class PlayersListViewModelTest {
             )
             val playerList = listOf(player)
 
-            every { accountAuthManager.loggedInPlayerListStateFlow } returns MutableStateFlow(playerList)
+            every { accountManager.loggedInPlayerListStateFlow } returns MutableStateFlow(playerList)
             every { readSharedPreferences.shouldUpdateLoggedInPlayerListState() } returns true
 
             playersListViewModel = PlayersListViewModel(
@@ -246,7 +246,7 @@ class PlayersListViewModelTest {
                 scope = scope,
                 navigation = navigation,
                 network = network,
-                accountAuthManager = accountAuthManager,
+                accountManager = accountManager,
                 deleteFirebaseUserInfo = deleteFirebaseUserInfo,
                 activeUserRepository = activeUserRepository,
                 playersAdditionUpdates = playersAdditionUpdates,

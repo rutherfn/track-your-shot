@@ -3,7 +3,7 @@ package com.nicholas.rutherford.track.your.shot.feature.splash
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import io.mockk.coEvery
@@ -33,7 +33,7 @@ class SplashViewModelTest {
     internal var readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
 
     internal var activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
-    internal val accountAuthManager = mockk<AccountAuthManager>(relaxed = true)
+    internal val accountManager = mockk<AccountManager>(relaxed = true)
 
     internal val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
     internal val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
@@ -52,7 +52,7 @@ class SplashViewModelTest {
             navigation = navigation,
             readFirebaseUserInfo = readFirebaseUserInfo,
             activeUserRepository = activeUserRepository,
-            accountAuthManager = accountAuthManager,
+            accountManager = accountManager,
             readSharedPreferences = readSharedPreferences,
             createSharedPreferences = createSharedPreferences
         )
@@ -81,7 +81,7 @@ class SplashViewModelTest {
 
                 viewModel.checkIfAppHasBeenLaunchedBefore()
 
-                verify { accountAuthManager.checkIfWeNeedToLogoutOnLaunch() }
+                verify { accountManager.checkIfWeNeedToLogoutOnLaunch() }
                 verify { createSharedPreferences.createAppHasLaunchedPreference(value = true) }
             }
 
@@ -91,7 +91,7 @@ class SplashViewModelTest {
 
                 viewModel.checkIfAppHasBeenLaunchedBefore()
 
-                verify(exactly = 0) { accountAuthManager.checkIfWeNeedToLogoutOnLaunch() }
+                verify(exactly = 0) { accountManager.checkIfWeNeedToLogoutOnLaunch() }
                 verify(exactly = 0) { createSharedPreferences.createAppHasLaunchedPreference(value = true) }
             }
         }
@@ -115,7 +115,7 @@ class SplashViewModelTest {
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
                         activeUserRepository = activeUserRepository,
-                        accountAuthManager = accountAuthManager,
+                        accountManager = accountManager,
                         readSharedPreferences = readSharedPreferences,
                         createSharedPreferences = createSharedPreferences
                     )
@@ -148,7 +148,7 @@ class SplashViewModelTest {
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
                         activeUserRepository = activeUserRepository,
-                        accountAuthManager = accountAuthManager,
+                        accountManager = accountManager,
                         readSharedPreferences = readSharedPreferences,
                         createSharedPreferences = createSharedPreferences
                     )
@@ -176,7 +176,7 @@ class SplashViewModelTest {
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
                         activeUserRepository = activeUserRepository,
-                        accountAuthManager = accountAuthManager,
+                        accountManager = accountManager,
                         readSharedPreferences = readSharedPreferences,
                         createSharedPreferences = createSharedPreferences
                     )
@@ -208,7 +208,7 @@ class SplashViewModelTest {
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
                         activeUserRepository = activeUserRepository,
-                        accountAuthManager = accountAuthManager,
+                        accountManager = accountManager,
                         readSharedPreferences = readSharedPreferences,
                         createSharedPreferences = createSharedPreferences
                     )
@@ -245,7 +245,7 @@ class SplashViewModelTest {
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
                         activeUserRepository = activeUserRepository,
-                        accountAuthManager = accountAuthManager,
+                        accountManager = accountManager,
                         readSharedPreferences = readSharedPreferences,
                         createSharedPreferences = createSharedPreferences
                     )
@@ -273,7 +273,7 @@ class SplashViewModelTest {
                         navigation = navigation,
                         readFirebaseUserInfo = readFirebaseUserInfo,
                         activeUserRepository = activeUserRepository,
-                        accountAuthManager = accountAuthManager,
+                        accountManager = accountManager,
                         readSharedPreferences = readSharedPreferences,
                         createSharedPreferences = createSharedPreferences
                     )

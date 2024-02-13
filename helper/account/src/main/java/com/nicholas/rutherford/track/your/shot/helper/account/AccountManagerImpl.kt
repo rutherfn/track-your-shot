@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class AccountAuthManagerImpl(
+class AccountManagerImpl(
     private val scope: CoroutineScope,
     private val application: Application,
     private val navigator: Navigator,
@@ -39,7 +39,7 @@ class AccountAuthManagerImpl(
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val existingUserFirebase: ExistingUserFirebase,
     private val createSharedPreferences: CreateSharedPreferences
-) : AccountAuthManager {
+) : AccountManager {
 
     private val _loggedInPlayerListStateFlow: MutableStateFlow<List<Player>> = MutableStateFlow(value = emptyList())
     override val loggedInPlayerListStateFlow: StateFlow<List<Player>> = _loggedInPlayerListStateFlow.asStateFlow()
@@ -95,6 +95,26 @@ class AccountAuthManagerImpl(
                         }
                 } else {
                     disableProgressAndShowUnableToLoginAlert()
+                }
+            }
+        }
+    }
+
+    override fun deleteAllPlayersPendingShots() {
+        scope.launch {
+            playerRepository.fetchAllPlayers().forEach { player ->
+                val pendingShots = player.shotsLoggedList.filter { shot -> shot.isPending }
+
+                if (pendingShots.isNotEmpty()) {
+                    val newPlayer = Player(
+                        firstName = player.firstName,
+                        lastName = player.lastName,
+                        position = player.position,
+                        firebaseKey = player.firebaseKey,
+                        imageUrl = player.imageUrl,
+                        shotsLoggedList = player.shotsLoggedList.filter { shot -> !shot.isPending }
+                    )
+                    playerRepository.updatePlayer(currentPlayer = player, newPlayer = newPlayer)
                 }
             }
         }

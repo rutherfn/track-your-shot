@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.delay
@@ -18,14 +18,14 @@ class SplashViewModel(
     private val navigation: SplashNavigation,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val activeUserRepository: ActiveUserRepository,
-    private val accountAuthManager: AccountAuthManager,
+    private val accountManager: AccountManager,
     private val readSharedPreferences: ReadSharedPreferences,
     private val createSharedPreferences: CreateSharedPreferences
 ) : ViewModel() {
 
     internal fun checkIfAppHasBeenLaunchedBefore() {
         if (!readSharedPreferences.appHasBeenLaunched()) {
-            accountAuthManager.checkIfWeNeedToLogoutOnLaunch()
+            accountManager.checkIfWeNeedToLogoutOnLaunch()
             createSharedPreferences.createAppHasLaunchedPreference(value = true)
         }
     }

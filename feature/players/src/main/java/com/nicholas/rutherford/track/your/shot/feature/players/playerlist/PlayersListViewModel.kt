@@ -12,7 +12,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
@@ -30,7 +30,7 @@ class PlayersListViewModel(
     private val scope: CoroutineScope,
     private val navigation: PlayersListNavigation,
     private val network: Network,
-    private val accountAuthManager: AccountAuthManager,
+    private val accountManager: AccountManager,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val activeUserRepository: ActiveUserRepository,
     private val playersAdditionUpdates: PlayersAdditionUpdates,
@@ -76,7 +76,7 @@ class PlayersListViewModel(
 
     private fun collectLoggedInPlayerListStateFlow() {
         scope.launch {
-            accountAuthManager.loggedInPlayerListStateFlow.collectLatest { loggedInPlayerList ->
+            accountManager.loggedInPlayerListStateFlow.collectLatest { loggedInPlayerList ->
                 if (shouldUpdateFromUserLoggedIn(loggedInPlayerList = loggedInPlayerList, shouldUpdateLoggedInPlayerListState = readSharedPreferences.shouldUpdateLoggedInPlayerListState())) {
                     handleLoggedInPlayerList(playerList = loggedInPlayerList)
                     createSharedPreferences.createShouldUpdateLoggedInPlayerListPreference(value = false)
