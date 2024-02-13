@@ -3,7 +3,7 @@ package com.nicholas.rutherford.track.your.shot.feature.players.shots
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import io.mockk.coEvery
@@ -35,7 +35,7 @@ class SelectShotViewModelTest {
 
     private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
 
-    private val accountAuthManager = mockk<AccountAuthManager>(relaxed = true)
+    private val accountManager = mockk<AccountManager>(relaxed = true)
 
     private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
     private val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
@@ -46,7 +46,7 @@ class SelectShotViewModelTest {
             scope = scope,
             navigation = navigation,
             declaredShotRepository = declaredShotRepository,
-            accountAuthManager = accountAuthManager,
+            accountManager = accountManager,
             createSharedPreferences = createSharedPreferences,
             readSharedPreferences = readSharedPreferences
         )
@@ -78,13 +78,13 @@ class SelectShotViewModelTest {
             val declaredShotList: List<DeclaredShot> = emptyList()
 
             every { readSharedPreferences.shouldUpdateLoggedInDeclaredShotListState() } returns true
-            every { accountAuthManager.loggedInDeclaredShotListStateFlow } returns MutableStateFlow(declaredShotList)
+            every { accountManager.loggedInDeclaredShotListStateFlow } returns MutableStateFlow(declaredShotList)
 
             selectShotViewModel = SelectShotViewModel(
                 scope = scope,
                 navigation = navigation,
                 declaredShotRepository = declaredShotRepository,
-                accountAuthManager = accountAuthManager,
+                accountManager = accountManager,
                 createSharedPreferences = createSharedPreferences,
                 readSharedPreferences = readSharedPreferences
             )
@@ -105,13 +105,13 @@ class SelectShotViewModelTest {
             val declaredShotList: List<DeclaredShot> = listOf(TestDeclaredShot.build())
 
             every { readSharedPreferences.shouldUpdateLoggedInDeclaredShotListState() } returns false
-            every { accountAuthManager.loggedInDeclaredShotListStateFlow } returns MutableStateFlow(declaredShotList)
+            every { accountManager.loggedInDeclaredShotListStateFlow } returns MutableStateFlow(declaredShotList)
 
             selectShotViewModel = SelectShotViewModel(
                 scope = scope,
                 navigation = navigation,
                 declaredShotRepository = declaredShotRepository,
-                accountAuthManager = accountAuthManager,
+                accountManager = accountManager,
                 createSharedPreferences = createSharedPreferences,
                 readSharedPreferences = readSharedPreferences
             )
@@ -131,13 +131,13 @@ class SelectShotViewModelTest {
             val declaredShotList: List<DeclaredShot> = listOf(TestDeclaredShot.build())
 
             every { readSharedPreferences.shouldUpdateLoggedInDeclaredShotListState() } returns true
-            every { accountAuthManager.loggedInDeclaredShotListStateFlow } returns MutableStateFlow(declaredShotList)
+            every { accountManager.loggedInDeclaredShotListStateFlow } returns MutableStateFlow(declaredShotList)
 
             selectShotViewModel = SelectShotViewModel(
                 scope = scope,
                 navigation = navigation,
                 declaredShotRepository = declaredShotRepository,
-                accountAuthManager = accountAuthManager,
+                accountManager = accountManager,
                 createSharedPreferences = createSharedPreferences,
                 readSharedPreferences = readSharedPreferences
             )

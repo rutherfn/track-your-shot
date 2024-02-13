@@ -7,7 +7,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -15,7 +15,7 @@ class LoginViewModel(
     private val application: Application,
     private val navigation: LoginNavigation,
     private val buildType: BuildType,
-    private val accountAuthManager: AccountAuthManager
+    private val accountManager: AccountManager
 ) : ViewModel() {
 
     internal val loginMutableStateFlow = MutableStateFlow(LoginState())
@@ -66,7 +66,7 @@ class LoginViewModel(
         onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
         onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
 
-        accountAuthManager.login(
+        accountManager.login(
             email = newEmail,
             password = newPassword
         )

@@ -14,6 +14,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUserEntity
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayerEntity
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestAccountInfoRealTimeResponse
@@ -35,9 +36,9 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AccountAuthManagerImplTest {
+class AccountManagerImplTest {
 
-    private lateinit var accountAuthManagerImpl: AccountAuthManagerImpl
+    private lateinit var accountManagerImpl: AccountManagerImpl
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -63,7 +64,7 @@ class AccountAuthManagerImplTest {
 
     @BeforeEach
     fun beforeEach() {
-        accountAuthManagerImpl = AccountAuthManagerImpl(
+        accountManagerImpl = AccountManagerImpl(
             scope = scope,
             application = application,
             navigator = navigator,
@@ -80,7 +81,7 @@ class AccountAuthManagerImplTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `logout verify should call functions in order`() = runTest {
-        accountAuthManagerImpl.logout()
+        accountManagerImpl.logout()
 
         verify {
             navigator.progress(progressAction = any())
@@ -97,13 +98,13 @@ class AccountAuthManagerImplTest {
 
         coVerifyOrder {
             existingUserFirebase.logout()
-            accountAuthManagerImpl.clearOutDatabase()
+            accountManagerImpl.clearOutDatabase()
         }
     }
 
     @Test
     fun `clear out database verify should call delete functions`() = runTest {
-        accountAuthManagerImpl.clearOutDatabase()
+        accountManagerImpl.clearOutDatabase()
 
         coVerifyOrder {
             activeUserRepository.deleteActiveUser()
@@ -117,31 +118,94 @@ class AccountAuthManagerImplTest {
         @Test
         fun `when loginFlow returns as not successful should call disableProgressAndShowUnableToLoginAlert`() {
             coEvery { existingUserFirebase.loginFlow(email = accountInfoRealtimeResponse.email, password = password) } returns flowOf(value = false)
-            accountAuthManagerImpl.login(email = accountInfoRealtimeResponse.email, password = password)
+            accountManagerImpl.login(email = accountInfoRealtimeResponse.email, password = password)
 
             verify { navigator.progress(progressAction = any()) }
-            coVerify { accountAuthManagerImpl.disableProgressAndShowUnableToLoginAlert() }
+            coVerify { accountManagerImpl.disableProgressAndShowUnableToLoginAlert() }
         }
 
         @Test
         fun `when loginFlow returns as successful and get account info flow by email returns null should call disableProgressAndShowUnableToLoginAlert`() {
             coEvery { existingUserFirebase.loginFlow(email = accountInfoRealtimeResponse.email, password = password) } returns flowOf(value = true)
             coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = null)
-            accountAuthManagerImpl.login(email = accountInfoRealtimeResponse.email, password = password)
+            accountManagerImpl.login(email = accountInfoRealtimeResponse.email, password = password)
 
             verify { navigator.progress(progressAction = any()) }
-            coVerify { accountAuthManagerImpl.disableProgressAndShowUnableToLoginAlert() }
+            coVerify { accountManagerImpl.disableProgressAndShowUnableToLoginAlert() }
         }
 
         @Test
         fun `when loginFlow returns as successful and get account info flow by email returns info should not call disableProgressAndShowUnableToLoginAlert`() {
             coEvery { existingUserFirebase.loginFlow(email = accountInfoRealtimeResponse.email, password = password) } returns flowOf(value = true)
             coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = accountInfoRealtimeResponse)
-            accountAuthManagerImpl.login(email = accountInfoRealtimeResponse.email, password = password)
+            accountManagerImpl.login(email = accountInfoRealtimeResponse.email, password = password)
 
             verify { navigator.progress(progressAction = any()) }
 
-            coVerify(exactly = 0) { accountAuthManagerImpl.disableProgressAndShowUnableToLoginAlert() }
+            coVerify(exactly = 0) { accountManagerImpl.disableProgressAndShowUnableToLoginAlert() }
+        }
+    }
+
+    @Nested
+    inner class DeleteAllPlayersPendingShots {
+
+        @Test
+        fun `when fetchAllPlayers return empty should not call updatePlayer`() {
+            coEvery { playerRepository.fetchAllPlayers() } returns emptyList()
+
+            accountManagerImpl.deleteAllPlayersPendingShots()
+
+            coVerify(exactly = 0) { playerRepository.updatePlayer(currentPlayer = any(), newPlayer = any()) }
+        }
+
+        @Test
+        fun `when fetchAllPlayers returns players but empty shots should not call updatePlayer`() {
+            val players = listOf(TestPlayerEntity().create().copy(shotsLoggedList = emptyList()).toPlayer())
+
+            coEvery { playerRepository.fetchAllPlayers() } returns players
+
+            accountManagerImpl.deleteAllPlayersPendingShots()
+
+            coVerify(exactly = 0) { playerRepository.updatePlayer(currentPlayer = any(), newPlayer = any()) }
+        }
+
+        @Test
+        fun `when fetchAllPlayers returns players with no pending shots should not call updatePlayer`() {
+            val players = listOf(TestPlayerEntity().create().toPlayer())
+
+            coEvery { playerRepository.fetchAllPlayers() } returns players
+
+            accountManagerImpl.deleteAllPlayersPendingShots()
+
+            coVerify(exactly = 0) { playerRepository.updatePlayer(currentPlayer = any(), newPlayer = any()) }
+        }
+
+        @Test
+        fun `when fetchAllPlayers returns player with pending shots should call updatePlayer`() {
+            val shotsLoggedList = listOf(
+                TestShotLogged.build().copy(isPending = false),
+                TestShotLogged.build().copy(
+                    shotType = 2,
+                    shotsAttempted = 6,
+                    shotsMade = 3,
+                    shotsMissed = 3,
+                    shotsMadePercentValue = 50.0,
+                    shotsMissedPercentValue = 50.0,
+                    shotsAttemptedMillisecondsValue = 2000L,
+                    shotsLoggedMillisecondsValue = 4000L,
+                    isPending = true
+                )
+            )
+            val players = listOf(TestPlayerEntity().create().copy(shotsLoggedList = shotsLoggedList).toPlayer())
+
+            coEvery { playerRepository.fetchAllPlayers() } returns players
+
+            accountManagerImpl.deleteAllPlayersPendingShots()
+
+            val currentPlayer = players[0]
+            val newPlayer = TestPlayerEntity().create().copy(shotsLoggedList = listOf(TestShotLogged.build().copy(isPending = false))).toPlayer()
+
+            coVerify(exactly = 1) { playerRepository.updatePlayer(currentPlayer = currentPlayer, newPlayer = newPlayer) }
         }
     }
 
@@ -154,7 +218,7 @@ class AccountAuthManagerImplTest {
         fun `when fetch active user is not null should call delete all active users`() = runTest {
             coEvery { activeUserRepository.fetchActiveUser() } returns activeUserEntity.toActiveUser()
 
-            accountAuthManagerImpl.checkForActiveUserAndPlayers()
+            accountManagerImpl.checkForActiveUserAndPlayers()
 
             coVerify { activeUserRepository.deleteActiveUser() }
         }
@@ -163,7 +227,7 @@ class AccountAuthManagerImplTest {
         fun `when fetch active user is not null should not call delete all active users`() = runTest {
             coEvery { activeUserRepository.fetchActiveUser() } returns null
 
-            accountAuthManagerImpl.checkForActiveUserAndPlayers()
+            accountManagerImpl.checkForActiveUserAndPlayers()
 
             coVerify(exactly = 0) { activeUserRepository.deleteActiveUser() }
         }
@@ -172,7 +236,7 @@ class AccountAuthManagerImplTest {
         fun `when fetch all players is not empty should call delete all players`() = runTest {
             coEvery { playerRepository.fetchAllPlayers() } returns playerEntityList.map { it.toPlayer() }
 
-            accountAuthManagerImpl.checkForActiveUserAndPlayers()
+            accountManagerImpl.checkForActiveUserAndPlayers()
 
             coVerify { playerRepository.deleteAllPlayers() }
         }
@@ -181,7 +245,7 @@ class AccountAuthManagerImplTest {
         fun `when fetch all players is empty should not call delete all players`() = runTest {
             coEvery { playerRepository.fetchAllPlayers() } returns emptyList()
 
-            accountAuthManagerImpl.checkForActiveUserAndPlayers()
+            accountManagerImpl.checkForActiveUserAndPlayers()
 
             coVerify(exactly = 0) { playerRepository.deleteAllPlayers() }
         }
@@ -197,9 +261,9 @@ class AccountAuthManagerImplTest {
         fun `when getAccountInfoKeyFlowByEmail returns null should call disableProgressAndShowUnableToLoginAlert`() = runTest {
             coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = null)
 
-            accountAuthManagerImpl.updateActiveUserFromLoggedInUser(email = accountInfoRealtimeResponse.email, username = accountInfoRealtimeResponse.userName)
+            accountManagerImpl.updateActiveUserFromLoggedInUser(email = accountInfoRealtimeResponse.email, username = accountInfoRealtimeResponse.userName)
 
-            coVerify { accountAuthManagerImpl.disableProgressAndShowUnableToLoginAlert(isLoggedIn = true) }
+            coVerify { accountManagerImpl.disableProgressAndShowUnableToLoginAlert(isLoggedIn = true) }
         }
 
         @Test
@@ -207,7 +271,7 @@ class AccountAuthManagerImplTest {
             coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = activeUserEntity.email) } returns flowOf(value = key)
             coEvery { activeUserRepository.fetchActiveUser() } returns activeUserEntity.toActiveUser()
 
-            accountAuthManagerImpl.updateActiveUserFromLoggedInUser(email = activeUserEntity.email, username = activeUserEntity.username)
+            accountManagerImpl.updateActiveUserFromLoggedInUser(email = activeUserEntity.email, username = activeUserEntity.username)
 
             coVerify {
                 activeUserRepository.createActiveUser(
@@ -233,10 +297,10 @@ class AccountAuthManagerImplTest {
             coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotList
             coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(emptyList())
 
-            accountAuthManagerImpl.updateActiveUserFromLoggedInUser(email = activeUserEntity.email, username = activeUserEntity.username)
+            accountManagerImpl.updateActiveUserFromLoggedInUser(email = activeUserEntity.email, username = activeUserEntity.username)
 
             Assertions.assertEquals(
-                accountAuthManagerImpl.loggedInDeclaredShotListStateFlow.value,
+                accountManagerImpl.loggedInDeclaredShotListStateFlow.value,
                 declaredShotList
             )
 
@@ -265,10 +329,10 @@ class AccountAuthManagerImplTest {
             coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotList
             coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(playerInfoRealtimeWithKeyResponseList)
 
-            accountAuthManagerImpl.updateActiveUserFromLoggedInUser(email = activeUserEntity.email, username = activeUserEntity.username)
+            accountManagerImpl.updateActiveUserFromLoggedInUser(email = activeUserEntity.email, username = activeUserEntity.username)
 
             Assertions.assertEquals(
-                accountAuthManagerImpl.loggedInDeclaredShotListStateFlow.value,
+                accountManagerImpl.loggedInDeclaredShotListStateFlow.value,
                 declaredShotList
             )
 
@@ -298,7 +362,7 @@ class AccountAuthManagerImplTest {
         fun `when getPlayerInfoList returns empty list should call disableProcessAndNavigateToPlayersList and not createListOfPlayers`() = runTest {
             coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(emptyList())
 
-            accountAuthManagerImpl.collectPlayerInfoList(firebaseAccountInfoKey = key)
+            accountManagerImpl.collectPlayerInfoList(firebaseAccountInfoKey = key)
 
             coVerify(exactly = 0) { playerRepository.createListOfPlayers(playerList = any()) }
             verify { navigator.progress(progressAction = null) }
@@ -337,10 +401,10 @@ class AccountAuthManagerImplTest {
 
             coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(playerInfoRealtimeWithKeyResponseList)
 
-            accountAuthManagerImpl.collectPlayerInfoList(firebaseAccountInfoKey = key)
+            accountManagerImpl.collectPlayerInfoList(firebaseAccountInfoKey = key)
 
             Assertions.assertEquals(
-                accountAuthManagerImpl.loggedInPlayerListStateFlow.value,
+                accountManagerImpl.loggedInPlayerListStateFlow.value,
                 playerArrayList.toList()
             )
 
@@ -356,10 +420,10 @@ class AccountAuthManagerImplTest {
 
         @Test
         fun `when isLoggedIn is set to true should log out and clear database, and call unable to login alert`() = runTest {
-            accountAuthManagerImpl.disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
+            accountManagerImpl.disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
 
             verify { existingUserFirebase.logout() }
-            coVerify { accountAuthManagerImpl.clearOutDatabase() }
+            coVerify { accountManagerImpl.clearOutDatabase() }
 
             verifyOrder {
                 navigator.progress(progressAction = null)
@@ -370,10 +434,10 @@ class AccountAuthManagerImplTest {
 
         @Test
         fun `when isLoggedIn is set to false should not log out and clear database, and call unable to login alert`() = runTest {
-            accountAuthManagerImpl.disableProgressAndShowUnableToLoginAlert(isLoggedIn = false)
+            accountManagerImpl.disableProgressAndShowUnableToLoginAlert(isLoggedIn = false)
 
             verify(exactly = 0) { existingUserFirebase.logout() }
-            coVerify(exactly = 0) { accountAuthManagerImpl.clearOutDatabase() }
+            coVerify(exactly = 0) { accountManagerImpl.clearOutDatabase() }
 
             verifyOrder {
                 navigator.progress(progressAction = null)
@@ -386,15 +450,15 @@ class AccountAuthManagerImplTest {
     @Test
     fun `unableToLoginAccountAlert should have valid values`() {
         Assertions.assertEquals(
-            accountAuthManagerImpl.unableToLoginToAccountAlert().title,
+            accountManagerImpl.unableToLoginToAccountAlert().title,
             application.getString(StringsIds.unableToLoginToAccount)
         )
         Assertions.assertEquals(
-            accountAuthManagerImpl.unableToLoginToAccountAlert().description,
+            accountManagerImpl.unableToLoginToAccountAlert().description,
             application.getString(StringsIds.havingTroubleLoggingIntoYourAccountPleaseTryAgainAndEnsureCredentialsExistAndAreValid)
         )
         Assertions.assertEquals(
-            accountAuthManagerImpl.unableToLoginToAccountAlert().dismissButton!!.buttonText,
+            accountManagerImpl.unableToLoginToAccountAlert().dismissButton!!.buttonText,
             application.getString(StringsIds.gotIt)
         )
     }

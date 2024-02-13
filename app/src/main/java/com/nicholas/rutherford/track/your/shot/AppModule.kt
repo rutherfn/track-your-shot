@@ -60,8 +60,8 @@ import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.Auth
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebaseImpl
 import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.ExistingUserFirebase
 import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.ExistingUserFirebaseImpl
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManagerImpl
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManagerImpl
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.helper.network.NetworkImpl
@@ -178,8 +178,8 @@ class AppModule {
         single<Navigator> {
             NavigatorImpl()
         }
-        single<AccountAuthManager> {
-            AccountAuthManagerImpl(
+        single<AccountManager> {
+            AccountManagerImpl(
                 scope = defaultCoroutineScope,
                 application = get(),
                 navigator = get(),
@@ -220,14 +220,14 @@ class AppModule {
             SelectShotNavigationImpl(navigator = get())
         }
         viewModel {
-            MainActivityViewModel(appCenter = get(), accountAuthManager = get())
+            MainActivityViewModel(appCenter = get(), accountManager = get())
         }
         viewModel {
             SplashViewModel(
                 navigation = get(),
                 readFirebaseUserInfo = get(),
                 activeUserRepository = get(),
-                accountAuthManager = get(),
+                accountManager = get(),
                 readSharedPreferences = get(),
                 createSharedPreferences = get()
             )
@@ -237,7 +237,7 @@ class AppModule {
                 application = androidApplication(),
                 navigation = get(),
                 buildType = get(),
-                accountAuthManager = get()
+                accountManager = get()
             )
         }
         viewModel {
@@ -246,7 +246,7 @@ class AppModule {
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 network = get(),
-                accountAuthManager = get(),
+                accountManager = get(),
                 deleteFirebaseUserInfo = get(),
                 activeUserRepository = get(),
                 playersAdditionUpdates = get(),
@@ -274,7 +274,7 @@ class AppModule {
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 declaredShotRepository = get(),
-                accountAuthManager = get(),
+                accountManager = get(),
                 createSharedPreferences = get(),
                 readSharedPreferences = get()
             )

@@ -4,7 +4,7 @@ import android.app.Application
 import com.nicholas.rutherford.track.your.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
@@ -20,7 +20,7 @@ class LoginViewModelTest {
     private var navigation = mockk<LoginNavigation>(relaxed = true)
     private var application = mockk<Application>(relaxed = true)
 
-    private var accountAuthManager = mockk<AccountAuthManager>(relaxed = true)
+    private var accountManager = mockk<AccountManager>(relaxed = true)
 
     private val debugVersionName = "debug"
     private val releaseVersionName = "release"
@@ -41,7 +41,7 @@ class LoginViewModelTest {
             application = application,
             navigation = navigation,
             buildType = buildTypeDebug,
-            accountAuthManager = accountAuthManager
+            accountManager = accountManager
         )
     }
 
@@ -59,7 +59,7 @@ class LoginViewModelTest {
                 application = application,
                 navigation = navigation,
                 buildType = buildTypeDebug,
-                accountAuthManager = accountAuthManager
+                accountManager = accountManager
             )
 
             viewModel.updateLauncherDrawableIdState()
@@ -75,7 +75,7 @@ class LoginViewModelTest {
                 application = application,
                 navigation = navigation,
                 buildType = buildTypeStage,
-                accountAuthManager = accountAuthManager
+                accountManager = accountManager
             )
 
             viewModel.updateLauncherDrawableIdState()
@@ -91,7 +91,7 @@ class LoginViewModelTest {
                 application = application,
                 navigation = navigation,
                 buildType = buildTypeRelease,
-                accountAuthManager = accountAuthManager
+                accountManager = accountManager
             )
 
             viewModel.updateLauncherDrawableIdState()
@@ -198,7 +198,7 @@ class LoginViewModelTest {
             ),
             viewModel.loginMutableStateFlow.value
         )
-        verify { accountAuthManager.login(email = emailTest, password = passwordTest) }
+        verify { accountManager.login(email = emailTest, password = passwordTest) }
     }
 
     @Test fun `on forgot password clicked should call navigate to forgot password`() {

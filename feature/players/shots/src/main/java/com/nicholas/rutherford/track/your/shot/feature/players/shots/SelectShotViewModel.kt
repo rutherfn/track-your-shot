@@ -3,7 +3,7 @@ package com.nicholas.rutherford.track.your.shot.feature.players.shots
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountAuthManager
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +17,7 @@ class SelectShotViewModel(
     private val scope: CoroutineScope,
     private val navigation: SelectShotNavigation,
     private val declaredShotRepository: DeclaredShotRepository,
-    private val accountAuthManager: AccountAuthManager,
+    private val accountManager: AccountManager,
     private val createSharedPreferences: CreateSharedPreferences,
     private val readSharedPreferences: ReadSharedPreferences
 ) : ViewModel() {
@@ -43,7 +43,7 @@ class SelectShotViewModel(
 
     private fun collectLoggedInDeclaredShotsStateFlow() {
         scope.launch {
-            accountAuthManager.loggedInDeclaredShotListStateFlow.collectLatest { declaredShotList ->
+            accountManager.loggedInDeclaredShotListStateFlow.collectLatest { declaredShotList ->
                 if (shouldUpdateStateFromLoggedIn(
                         declaredShotList = declaredShotList,
                         shouldUpdateLoggedInDeclaredShotListState = readSharedPreferences.shouldUpdateLoggedInDeclaredShotListState()
