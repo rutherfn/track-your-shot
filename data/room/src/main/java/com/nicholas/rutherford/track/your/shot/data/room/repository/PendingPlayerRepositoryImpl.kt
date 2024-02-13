@@ -8,7 +8,11 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.toPendingPlaye
 class PendingPlayerRepositoryImpl(private val pendingPlayerDao: PendingPlayerDao) : PendingPlayerRepository {
     override suspend fun createPendingPlayer(player: Player) = pendingPlayerDao.insert(pendingPlayerEntity = player.toPendingPlayerEntity())
 
-    override suspend fun updatePendingPlayer(player: Player) = pendingPlayerDao.update(pendingPlayerEntity = player.toPendingPlayerEntity())
+    override suspend fun updatePendingPlayer(currentPendingPlayer: Player, newPendingPlayer: Player) {
+        val playerId = pendingPlayerDao.getPendingPlayerIdByName(firstName = currentPendingPlayer.firstName, lastName = currentPendingPlayer.lastName)
+
+        pendingPlayerDao.update(pendingPlayerEntity = newPendingPlayer.toPendingPlayerEntity().copy(id = playerId))
+    }
 
     override suspend fun deleteAllPendingPlayers() = pendingPlayerDao.deleteAllPendingPlayers()
 

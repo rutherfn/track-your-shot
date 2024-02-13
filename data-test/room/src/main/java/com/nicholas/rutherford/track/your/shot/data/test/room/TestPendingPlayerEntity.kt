@@ -23,6 +23,4 @@ object TestPendingPlayerEntity {
     private val position = PlayerPositions.Center
     private const val PENDING_FIREBASE_KEY = "firebaseKey"
     private const val PENDING_IMAGE_URL = "url"
-
-
 }

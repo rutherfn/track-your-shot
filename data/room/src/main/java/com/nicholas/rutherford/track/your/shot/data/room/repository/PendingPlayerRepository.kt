@@ -6,7 +6,7 @@ interface PendingPlayerRepository {
 
     suspend fun createPendingPlayer(player: Player)
 
-    suspend fun updatePendingPlayer(player: Player)
+    suspend fun updatePendingPlayer(currentPendingPlayer: Player, newPendingPlayer: Player)
 
     suspend fun deleteAllPendingPlayers()
 
