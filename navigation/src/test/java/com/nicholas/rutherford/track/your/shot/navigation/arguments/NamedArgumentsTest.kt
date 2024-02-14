@@ -12,5 +12,8 @@ class NamedArgumentsTest {
 
         Assertions.assertEquals(NamedArguments.FIRST_NAME, "firstName")
         Assertions.assertEquals(NamedArguments.LAST_NAME, "lastName")
+
+        Assertions.assertEquals(NamedArguments.IS_EXISTING_PLAYER, "isExistingPlayer")
+        Assertions.assertEquals(NamedArguments.PLAYER_ID, "playerId")
     }
 }

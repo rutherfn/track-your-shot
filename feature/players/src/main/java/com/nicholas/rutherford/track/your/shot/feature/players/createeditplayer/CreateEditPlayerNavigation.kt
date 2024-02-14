@@ -6,7 +6,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 interface CreateEditPlayerNavigation {
     fun alert(alert: Alert)
     fun appSettings()
-    fun navigateToSelectShot()
+    fun navigateToSelectShot(isExistingPlayer: Boolean, playerId: Int)
     fun disableProgress()
     fun enableProgress(progress: Progress)
     fun pop()

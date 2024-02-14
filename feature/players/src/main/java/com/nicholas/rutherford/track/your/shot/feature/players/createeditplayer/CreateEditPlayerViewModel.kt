@@ -4,6 +4,7 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.Center.toPlayerPosition
@@ -35,6 +36,7 @@ class CreateEditPlayerViewModel(
     private val updateFirebaseUserInfo: UpdateFirebaseUserInfo,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val playerRepository: PlayerRepository,
+    private val pendingPlayerRepository: PendingPlayerRepository,
     private val activeUserRepository: ActiveUserRepository,
     private val scope: CoroutineScope,
     private val navigation: CreateEditPlayerNavigation,
@@ -42,7 +44,8 @@ class CreateEditPlayerViewModel(
     private val network: Network
 ) : ViewModel() {
 
-    internal val createEditPlayerMutableStateFlow = MutableStateFlow(value = CreateEditPlayerState())
+    internal val createEditPlayerMutableStateFlow =
+        MutableStateFlow(value = CreateEditPlayerState())
     val createEditPlayerStateFlow = createEditPlayerMutableStateFlow.asStateFlow()
 
     internal var editedPlayer: Player? = null
@@ -93,7 +96,10 @@ class CreateEditPlayerViewModel(
                 editedPlayerUrl = player.imageUrl ?: "",
                 toolbarNameResId = StringsIds.editPlayer,
                 playerPositionString = application.getString(player.position.toType()),
-                hintLogNewShotText = hintLogNewShotText(firstName = player.firstName, lastName = player.lastName),
+                hintLogNewShotText = hintLogNewShotText(
+                    firstName = player.firstName,
+                    lastName = player.lastName
+                ),
                 shotsHaveBeenLogged = player.shotsLoggedList.isNotEmpty()
             )
     }
@@ -107,12 +113,16 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    fun onToolbarMenuClicked() = navigation.pop()
+    fun onToolbarMenuClicked() {
+        createEditPlayerMutableStateFlow.value = CreateEditPlayerState()
+        navigation.pop()
+    }
 
     fun onImageUploadClicked(uri: Uri?) {
         when {
             editedPlayer != null && createEditPlayerStateFlow.value.editedPlayerUrl.isNotEmpty() ->
                 updateSheetToRemoveImageSheet()
+
             uri == null -> updateSheetToChooseFromGalleryOrTakePictureSheet()
             else -> updateSheetToRemoveImageSheet()
         }
@@ -132,10 +142,21 @@ class CreateEditPlayerViewModel(
 
     fun onSelectedCreateEditImageOption(option: String): CreateEditImageOption {
         return when (option) {
-            application.getString(StringsIds.chooseImageFromGallery) -> { CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY }
-            application.getString(StringsIds.takeAPicture) -> { CreateEditImageOption.TAKE_A_PICTURE }
-            application.getString(StringsIds.removeImage) -> { CreateEditImageOption.REMOVE_IMAGE }
-            else -> { CreateEditImageOption.CANCEL }
+            application.getString(StringsIds.chooseImageFromGallery) -> {
+                CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY
+            }
+
+            application.getString(StringsIds.takeAPicture) -> {
+                CreateEditImageOption.TAKE_A_PICTURE
+            }
+
+            application.getString(StringsIds.removeImage) -> {
+                CreateEditImageOption.REMOVE_IMAGE
+            }
+
+            else -> {
+                CreateEditImageOption.CANCEL
+            }
         }
     }
 
@@ -193,12 +214,19 @@ class CreateEditPlayerViewModel(
     }
 
     fun onClearImageState() {
-        createEditPlayerMutableStateFlow.value = createEditPlayerStateFlow.value.copy(editedPlayerUrl = "")
+        createEditPlayerMutableStateFlow.value =
+            createEditPlayerStateFlow.value.copy(editedPlayerUrl = "")
     }
 
-    internal fun hasNotEditedExistingPlayer(existingPlayer: Player, uri: Uri?, state: CreateEditPlayerState): Boolean {
-        val hasSameName = existingPlayer.firstName == state.firstName && existingPlayer.lastName == state.lastName
-        val hasSamePosition = application.getString(existingPlayer.position.toType()) == state.playerPositionString
+    internal fun hasNotEditedExistingPlayer(
+        existingPlayer: Player,
+        uri: Uri?,
+        state: CreateEditPlayerState
+    ): Boolean {
+        val hasSameName =
+            existingPlayer.firstName == state.firstName && existingPlayer.lastName == state.lastName
+        val hasSamePosition =
+            application.getString(existingPlayer.position.toType()) == state.playerPositionString
         val hasSamePlacedImage = if (existingPlayer.imageUrl == null) {
             false
         } else if (uri != null) {
@@ -231,7 +259,10 @@ class CreateEditPlayerViewModel(
                 createFirebaseUserInfo.attemptToCreateImageFirebaseStorageResponseFlow(uri = playerUri)
                     .collectLatest { imageUrl ->
                         if (imageUrl != null) {
-                            determineToUpdateOrCreateUserInFirebase(state = state, imageUrl = imageUrl)
+                            determineToUpdateOrCreateUserInFirebase(
+                                state = state,
+                                imageUrl = imageUrl
+                            )
                         } else {
                             navigation.disableProgress()
                             navigation.alert(alert = notAbleToUploadImageAlert())
@@ -243,7 +274,10 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    suspend fun determineToUpdateOrCreateUserInFirebase(state: CreateEditPlayerState, imageUrl: String?) {
+    suspend fun determineToUpdateOrCreateUserInFirebase(
+        state: CreateEditPlayerState,
+        imageUrl: String?
+    ) {
         if (editedPlayer != null) {
             updateUserInFirebase(state = state, imageUrl = imageUrl)
         } else {
@@ -283,7 +317,10 @@ class CreateEditPlayerViewModel(
                 val key = activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey ?: ""
                 val playerKey =
                     safeLet(player.firstName, player.lastName) { firstName, lastName ->
-                        playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)?.firebaseKey ?: ""
+                        playerRepository.fetchPlayerByName(
+                            firstName = firstName,
+                            lastName = lastName
+                        )?.firebaseKey ?: ""
                     } ?: run { "" }
 
                 if (key.isNotEmpty() && playerKey.isNotEmpty()) {
@@ -431,7 +468,8 @@ class CreateEditPlayerViewModel(
     }
 
     fun onPlayerPositionStringChanged(newPositionString: String) {
-        createEditPlayerMutableStateFlow.value = createEditPlayerMutableStateFlow.value.copy(playerPositionString = newPositionString)
+        createEditPlayerMutableStateFlow.value =
+            createEditPlayerMutableStateFlow.value.copy(playerPositionString = newPositionString)
     }
 
     internal fun cameraPermissionNotGrantedAlert(): Alert {
@@ -500,7 +538,11 @@ class CreateEditPlayerViewModel(
         return Alert(
             title = application.getString(StringsIds.notConnectedToInternet),
             description = application.getString(StringsIds.weHaveDetectedCurrentlyNotConnectedToInternetDescription),
-            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(
+                    StringsIds.gotIt
+                )
+            )
         )
     }
 
@@ -508,7 +550,11 @@ class CreateEditPlayerViewModel(
         return Alert(
             title = application.getString(StringsIds.unableToUploadImage),
             description = application.getString(StringsIds.theImageUploadWasUnsuccessful),
-            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.ok))
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(
+                    StringsIds.ok
+                )
+            )
         )
     }
 
@@ -516,7 +562,11 @@ class CreateEditPlayerViewModel(
         return Alert(
             title = application.getString(StringsIds.issueOccurred),
             description = application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue),
-            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(
+                    StringsIds.gotIt
+                )
+            )
         )
     }
 
@@ -524,7 +574,11 @@ class CreateEditPlayerViewModel(
         return Alert(
             title = application.getString(StringsIds.issueOccurred),
             description = application.getString(StringsIds.playerCreationFailedPleaseTryAgain),
-            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(
+                    StringsIds.gotIt
+                )
+            )
         )
     }
 
@@ -532,7 +586,11 @@ class CreateEditPlayerViewModel(
         return Alert(
             title = application.getString(StringsIds.issueOccurred),
             description = application.getString(StringsIds.yourPlayerCouldNotBeRetrievedDescription),
-            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(
+                    StringsIds.gotIt
+                )
+            )
         )
     }
 
@@ -540,7 +598,11 @@ class CreateEditPlayerViewModel(
         return Alert(
             title = application.getString(StringsIds.issueOccurred),
             description = application.getString(StringsIds.playerAlreadyHasBeenAddedDescription),
-            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(
+                    StringsIds.gotIt
+                )
+            )
         )
     }
 
@@ -561,5 +623,76 @@ class CreateEditPlayerViewModel(
         )
     }
 
-    fun onLogShotsClicked() = navigation.navigateToSelectShot()
+    internal fun logShotsFieldRequired(): Boolean {
+        if (editedPlayer != null) {
+            return true
+        } else {
+            val firstName = createEditPlayerStateFlow.value.firstName
+            val lastName = createEditPlayerStateFlow.value.lastName
+
+            return if (firstName.isEmpty()) {
+                navigation.alert(alert = firstNameEmptyAlert())
+                false
+            } else if (lastName.isEmpty()) {
+                navigation.alert(alert = lastNameEmptyAlert())
+                false
+            } else {
+                true
+            }
+        }
+    }
+
+    internal suspend fun existingOrPendingPlayerId(): Int? {
+        if (!network.isDeviceConnectedToInternet()) {
+            navigation.alert(alert = notConnectedToInternetAlert())
+            return null
+        } else {
+            editedPlayer?.let { player ->
+                return playerRepository.fetchPlayerIdByName(
+                    firstName = player.firstName,
+                    lastName = player.lastName
+                )
+            } ?: run {
+                if (pendingPlayerRepository.fetchAllPendingPlayers().isNotEmpty()) {
+                    pendingPlayerRepository.deleteAllPendingPlayers()
+                }
+
+                val firstName = createEditPlayerStateFlow.value.firstName
+                val lastName = createEditPlayerStateFlow.value.lastName
+
+                val pendingPlayer = Player(
+                    firstName = firstName,
+                    lastName = lastName,
+                    position = createEditPlayerMutableStateFlow.value.playerPositionString.toPlayerPosition(
+                        application = application
+                    ),
+                    firebaseKey = "",
+                    imageUrl = "",
+                    shotsLoggedList = emptyList()
+                )
+                pendingPlayerRepository.createPendingPlayer(player = pendingPlayer)
+
+                return pendingPlayerRepository.fetchPendingPlayerIdByName(
+                    firstName = firstName,
+                    lastName = lastName
+                )
+            }
+        }
+    }
+
+    fun onLogShotsClicked() {
+        if (logShotsFieldRequired()) {
+            scope.launch {
+                existingOrPendingPlayerId()?.let { playerId ->
+                    val isExistingPlayer = editedPlayer != null
+                    navigation.navigateToSelectShot(
+                        isExistingPlayer = isExistingPlayer,
+                        playerId = playerId
+                    )
+                } ?: run {
+                    // alert should be shown here
+                }
+            }
+        }
+    }
 }

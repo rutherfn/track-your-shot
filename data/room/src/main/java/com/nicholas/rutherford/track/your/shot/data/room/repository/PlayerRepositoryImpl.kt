@@ -21,6 +21,8 @@ class PlayerRepositoryImpl(private val playerDao: PlayerDao) : PlayerRepository 
 
     override suspend fun deleteAllPlayers() = playerDao.deleteAllPlayers()
 
+    override suspend fun fetchPlayerIdByName(firstName: String, lastName: String): Int? = playerDao.getPlayerIdByName(firstName = firstName, lastName = lastName)
+
     override suspend fun fetchPlayerByName(firstName: String, lastName: String): Player? {
         return if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
             playerDao.getPlayersByName(firstName = firstName, lastName = lastName)?.toPlayer()

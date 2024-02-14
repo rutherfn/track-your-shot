@@ -271,6 +271,7 @@ class AppModule {
                 updateFirebaseUserInfo = get(),
                 readFirebaseUserInfo = get(),
                 playerRepository = get(),
+                pendingPlayerRepository = get(),
                 activeUserRepository = get(),
                 scope = defaultCoroutineScope,
                 navigation = get(),

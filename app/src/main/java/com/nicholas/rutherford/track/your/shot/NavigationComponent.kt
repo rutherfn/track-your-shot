@@ -281,8 +281,9 @@ fun NavigationComponent(
                 )(entry)
             }
             composable(
-                route = NavigationDestinations.SELECT_SHOT_SCREEN
-            ) {
+                route = NavigationDestinations.SELECT_SHOT_SCREEN_WITH_PARAMS,
+                arguments = NavArguments.selectShot
+            ) { entry ->
                 SelectShotScreen(
                     selectShotParams = SelectShotParams(
                         state = selectShotViewModel.selectShotStateFlow.collectAsState().value,
@@ -290,7 +291,13 @@ fun NavigationComponent(
                         onBackButtonClicked = { selectShotViewModel.onBackButtonClicked() },
                         onCancelIconClicked = { selectShotViewModel.onCancelIconClicked() },
                         onnDeclaredShotItemClicked = {},
-                        onHelpIconClicked = {}
+                        onHelpIconClicked = {},
+                        updateIsExistingPlayerAndPlayerId = {  ->
+                            selectShotViewModel.updateIsExistingPlayerAndPlayerId(
+                                isExistingPlayerArgument = entry.arguments?.getBoolean(NamedArguments.IS_EXISTING_PLAYER),
+                                playerIdArgument = entry.arguments?.getInt(NamedArguments.PLAYER_ID)
+                            )
+                        }
                     )
                 )
             }

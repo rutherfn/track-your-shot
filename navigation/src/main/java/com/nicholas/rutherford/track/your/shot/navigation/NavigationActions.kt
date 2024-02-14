@@ -102,8 +102,8 @@ object NavigationActions {
 
     object CreateEditPlayer {
 
-        fun selectShot() = object : NavigationAction {
-            override val destination = NavigationDestinations.SELECT_SHOT_SCREEN
+        fun selectShot(isExistingPlayer: Boolean, playerId: Int) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.selectShotWithParams(isExistingPlayer = isExistingPlayer, playerId = playerId)
             override val navOptions = NavOptions.Builder().build()
         }
     }

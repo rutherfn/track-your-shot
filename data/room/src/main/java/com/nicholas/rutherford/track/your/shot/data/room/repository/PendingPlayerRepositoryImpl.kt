@@ -16,5 +16,8 @@ class PendingPlayerRepositoryImpl(private val pendingPlayerDao: PendingPlayerDao
 
     override suspend fun deleteAllPendingPlayers() = pendingPlayerDao.deleteAllPendingPlayers()
 
+    override suspend fun fetchPendingPlayerIdByName(firstName: String, lastName: String): Int =
+        pendingPlayerDao.getPendingPlayerIdByName(firstName = firstName, lastName = lastName)
+
     override suspend fun fetchAllPendingPlayers(): List<Player> = pendingPlayerDao.getAllPendingPlayers()?.map { pendingPlayer -> pendingPlayer.toPlayer() } ?: emptyList()
 }

@@ -208,12 +208,14 @@ class NavigationActionsTest {
 
             @Test
             fun selectShot() {
+                val isExistingPlayer = false
+                val playerId = 2
                 Assertions.assertEquals(
-                    Actions.CreateEditPlayer.selectShot().destination,
-                    NavigationDestinations.SELECT_SHOT_SCREEN
+                    Actions.CreateEditPlayer.selectShot(isExistingPlayer = isExistingPlayer, playerId = playerId).destination,
+                    NavigationDestinationsWithParams.selectShotWithParams(isExistingPlayer = isExistingPlayer, playerId = playerId)
                 )
                 Assertions.assertEquals(
-                    Actions.CreateEditPlayer.selectShot().navOptions,
+                    Actions.CreateEditPlayer.selectShot(isExistingPlayer = isExistingPlayer, playerId = playerId).navOptions,
                     NavOptions.Builder().build()
                 )
             }

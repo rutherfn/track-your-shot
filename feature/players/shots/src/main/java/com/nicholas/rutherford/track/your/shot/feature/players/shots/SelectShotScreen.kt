@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,6 +41,14 @@ import java.util.Locale
 @Composable
 fun SelectShotScreen(selectShotParams: SelectShotParams) {
     val isShotsDeclaredListEmpty = selectShotParams.state.declaredShotList.isEmpty()
+
+    BackHandler(true) {
+        selectShotParams.onBackButtonClicked.invoke()
+    }
+
+    LaunchedEffect(Unit) {
+        selectShotParams.updateIsExistingPlayerAndPlayerId.invoke()
+    }
 
     Content(
         ui = {
