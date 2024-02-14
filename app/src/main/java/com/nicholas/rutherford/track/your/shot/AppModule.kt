@@ -260,6 +260,7 @@ class AppModule {
                 activeUserRepository = get(),
                 playersAdditionUpdates = get(),
                 playerRepository = get(),
+                pendingPlayerRepository = get(),
                 createSharedPreferences = get(),
                 readSharedPreferences = get()
             )
