@@ -1474,9 +1474,12 @@ class CreateEditPlayerViewModelTest {
 
             verify(exactly = 0) { navigation.alert(alert = any()) }
 
-            Assertions.assertEquals(createEditPlayerViewModel.pendingPlayers, listOf(
-                player.copy(position = PlayerPositions.PointGuard, firebaseKey = "", imageUrl = "", shotsLoggedList = emptyList())
-            ))
+            Assertions.assertEquals(
+                createEditPlayerViewModel.pendingPlayers,
+                listOf(
+                    player.copy(position = PlayerPositions.PointGuard, firebaseKey = "", imageUrl = "", shotsLoggedList = emptyList())
+                )
+            )
             Assertions.assertEquals(result, playerId)
         }
     }
@@ -1526,5 +1529,4 @@ class CreateEditPlayerViewModelTest {
             verify(exactly = 1) { navigation.navigateToSelectShot(isExistingPlayer = true, playerId = 1) }
         }
     }
-
 }
