@@ -120,7 +120,7 @@ class CreateEditPlayerViewModel(
 
     fun onImageUploadClicked(uri: Uri?) {
         when {
-            editedPlayer != null && createEditPlayerStateFlow.value.editedPlayerUrl.isNotEmpty() ->
+            editedPlayer != null && createEditPlayerMutableStateFlow.value.editedPlayerUrl.isNotEmpty() ->
                 updateSheetToRemoveImageSheet()
 
             uri == null -> updateSheetToChooseFromGalleryOrTakePictureSheet()
@@ -215,7 +215,7 @@ class CreateEditPlayerViewModel(
 
     fun onClearImageState() {
         createEditPlayerMutableStateFlow.value =
-            createEditPlayerStateFlow.value.copy(editedPlayerUrl = "")
+            createEditPlayerMutableStateFlow.value.copy(editedPlayerUrl = "")
     }
 
     internal fun hasNotEditedExistingPlayer(
@@ -623,43 +623,65 @@ class CreateEditPlayerViewModel(
         )
     }
 
-    internal fun logShotsFieldRequired(): Boolean {
-        if (editedPlayer != null) {
+    /**
+     * Checks if the user has access to log shots.
+     * Returns true if the user is an edited player or if the required information for creating a new player is provided.
+     * Otherwise, shows an alert and returns false.
+     */
+    internal fun hasLogShotsAccess(): Boolean {
+        // If an edited player exists, return true
+        editedPlayer?.let {
             return true
-        } else {
-            val firstName = createEditPlayerStateFlow.value.firstName
-            val lastName = createEditPlayerStateFlow.value.lastName
+        }
 
-            return if (firstName.isEmpty()) {
+        // If creating a new player, validate first and last names
+        val firstName = createEditPlayerMutableStateFlow.value.firstName
+        val lastName = createEditPlayerMutableStateFlow.value.lastName
+
+        return when {
+            firstName.isEmpty() -> {
+                // Show alert for empty first name
                 navigation.alert(alert = firstNameEmptyAlert())
                 false
-            } else if (lastName.isEmpty()) {
+            }
+            lastName.isEmpty() -> {
+                // Show alert for empty last name
                 navigation.alert(alert = lastNameEmptyAlert())
                 false
-            } else {
-                true
             }
+            else -> true
         }
     }
 
+    /**
+     * Retrieves the ID of an existing player or a pending player.
+     * If the device is not connected to the internet, shows an alert and returns null.
+     * If an edited player exists, fetches the ID from the repository.
+     * Otherwise, creates a pending player and returns its ID.
+     */
     internal suspend fun existingOrPendingPlayerId(): Int? {
+        // Check if the device is connected to the internet
         if (!network.isDeviceConnectedToInternet()) {
+            // Show alert for not connected to the internet
             navigation.alert(alert = notConnectedToInternetAlert())
             return null
         } else {
+            // Check if an edited player exists
             editedPlayer?.let { player ->
+                // Fetch ID of the existing player and return it
                 return playerRepository.fetchPlayerIdByName(
                     firstName = player.firstName,
                     lastName = player.lastName
                 )
             } ?: run {
-                if (pendingPlayerRepository.fetchAllPendingPlayers().isNotEmpty()) {
+                // Delete any pending players if they exist
+                pendingPlayerRepository.fetchAllPendingPlayers().takeIf { it.isNotEmpty() }?.let {
                     pendingPlayerRepository.deleteAllPendingPlayers()
                 }
 
-                val firstName = createEditPlayerStateFlow.value.firstName
-                val lastName = createEditPlayerStateFlow.value.lastName
-
+                // Create a new pending player
+                val firstName = createEditPlayerMutableStateFlow.value.firstName
+                val lastName = createEditPlayerMutableStateFlow.value.lastName
                 val pendingPlayer = Player(
                     firstName = firstName,
                     lastName = lastName,
@@ -672,6 +694,7 @@ class CreateEditPlayerViewModel(
                 )
                 pendingPlayerRepository.createPendingPlayer(player = pendingPlayer)
 
+                // Fetch ID of the pending player and return it
                 return pendingPlayerRepository.fetchPendingPlayerIdByName(
                     firstName = firstName,
                     lastName = lastName
@@ -681,7 +704,7 @@ class CreateEditPlayerViewModel(
     }
 
     fun onLogShotsClicked() {
-        if (logShotsFieldRequired()) {
+        if (hasLogShotsAccess()) {
             scope.launch {
                 existingOrPendingPlayerId()?.let { playerId ->
                     val isExistingPlayer = editedPlayer != null
@@ -689,8 +712,6 @@ class CreateEditPlayerViewModel(
                         isExistingPlayer = isExistingPlayer,
                         playerId = playerId
                     )
-                } ?: run {
-                    // alert should be shown here
                 }
             }
         }

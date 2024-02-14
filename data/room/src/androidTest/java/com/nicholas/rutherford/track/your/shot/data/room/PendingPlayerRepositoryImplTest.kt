@@ -102,6 +102,35 @@ class PendingPlayerRepositoryImplTest {
     }
 
     @Test
+    fun fetchPendingPlayerIdByName() = runBlocking {
+        val playerId = 1
+        val player1 = Player(
+            firstName = "name1",
+            lastName = "name2",
+            position = PlayerPositions.Center,
+            imageUrl = null,
+            firebaseKey = "key1",
+            shotsLoggedList = listOf(TestShotLogged.build())
+        )
+        val player2 = Player(
+            firstName = "name3",
+            lastName = "name4",
+            position = PlayerPositions.SmallForward,
+            imageUrl = null,
+            firebaseKey = "ley2",
+            shotsLoggedList = emptyList()
+        )
+
+        pendingPlayerRepositoryImpl.createPendingPlayer(player = player1)
+        pendingPlayerRepositoryImpl.createPendingPlayer(player = player2)
+
+        assertThat(
+            pendingPlayerRepositoryImpl.fetchPendingPlayerIdByName(firstName = "name1", lastName = "name2"),
+            equalTo(playerId)
+        )
+    }
+
+    @Test
     fun fetchAllPendingPlayers() = runBlocking {
         val player1 = Player(
             firstName = "name1",

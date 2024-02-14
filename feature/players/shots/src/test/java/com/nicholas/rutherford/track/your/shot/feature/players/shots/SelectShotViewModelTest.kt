@@ -53,6 +53,20 @@ class SelectShotViewModelTest {
     }
 
     @Test
+    fun `update is existing player and player id should update internal fields`() {
+        Assertions.assertEquals(selectShotViewModel.isExistingPlayer, null)
+        Assertions.assertEquals(selectShotViewModel.playerId, null)
+
+        selectShotViewModel.updateIsExistingPlayerAndPlayerId(
+            isExistingPlayerArgument = true,
+            playerIdArgument = 1
+        )
+
+        Assertions.assertEquals(selectShotViewModel.isExistingPlayer, true)
+        Assertions.assertEquals(selectShotViewModel.playerId, 1)
+    }
+
+    @Test
     fun `fetch declared shots and update state state should update state property`() {
         val shotDeclaredList = listOf(TestDeclaredShot.build())
 
@@ -263,15 +277,19 @@ class SelectShotViewModelTest {
     inner class OnBackButtonClicked {
 
         @Test
-        fun `when fromCreatePlayer set to true should call pop from create player`() {
-            selectShotViewModel.onBackButtonClicked(fromCreatePlayer = true)
+        fun `when isExistingPlayer set to false should call pop from create player`() {
+            selectShotViewModel.isExistingPlayer = false
+
+            selectShotViewModel.onBackButtonClicked()
 
             verify { navigation.popFromCreatePlayer() }
         }
 
         @Test
-        fun `when fromCreatePlayer set to false should call pop from edit player`() {
-            selectShotViewModel.onBackButtonClicked(fromCreatePlayer = false)
+        fun `when isExistingPlayer set to true should call pop from edit player`() {
+            selectShotViewModel.isExistingPlayer = true
+
+            selectShotViewModel.onBackButtonClicked()
 
             verify { navigation.popFromEditPlayer() }
         }
