@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.helper.account
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
@@ -35,6 +36,7 @@ class AccountManagerImpl(
     private val activeUserRepository: ActiveUserRepository,
     private val declaredShotRepository: DeclaredShotRepository,
     private val playerRepository: PlayerRepository,
+    private val pendingPlayerRepository: PendingPlayerRepository,
     private val userRepository: UserRepository,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val existingUserFirebase: ExistingUserFirebase,
@@ -75,6 +77,7 @@ class AccountManagerImpl(
     internal suspend fun clearOutDatabase() {
         activeUserRepository.deleteActiveUser()
         playerRepository.deleteAllPlayers()
+        pendingPlayerRepository.deleteAllPendingPlayers()
         userRepository.deleteAllUsers()
     }
 
@@ -100,7 +103,14 @@ class AccountManagerImpl(
         }
     }
 
-    override fun deleteAllPlayersPendingShots() {
+    override fun deleteAllPendingShotsAndPlayers() {
+        deleteAllPendingPlayers()
+        deleteAllPendingShotsFromPlayers()
+    }
+
+    internal fun deleteAllPendingPlayers() = scope.launch { pendingPlayerRepository.deleteAllPendingPlayers() }
+
+    internal fun deleteAllPendingShotsFromPlayers() {
         scope.launch {
             playerRepository.fetchAllPlayers().forEach { player ->
                 val pendingShots = player.shotsLoggedList.filter { shot -> shot.isPending }

@@ -8,6 +8,7 @@ object NavigationDestinations {
     const val CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS = "createEditPlayerScreen/{firstName}/{lastName}"
     const val FORGOT_PASSWORD_SCREEN = "forgotPasswordScreen"
     const val SELECT_SHOT_SCREEN = "selectShotScreen"
+    const val SELECT_SHOT_SCREEN_WITH_PARAMS = "selectShotScreen/{isExistingPlayer}/{playerId}"
     const val PLAYERS_LIST_SCREEN = "playersListScreen"
     const val LOGIN_SCREEN = "loginScreen"
     const val SPLASH_SCREEN = "splashScreen"

@@ -12,4 +12,8 @@ object NavArguments {
         navArgument(NamedArguments.FIRST_NAME) { type = NavType.StringType },
         navArgument(NamedArguments.LAST_NAME) { type = NavType.StringType }
     )
+    val selectShot = listOf(
+        navArgument(NamedArguments.IS_EXISTING_PLAYER) { type = NavType.BoolType },
+        navArgument(NamedArguments.PLAYER_ID) { type = NavType.IntType }
+    )
 }

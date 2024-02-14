@@ -5,6 +5,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.toActiveUser
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toPlayer
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
@@ -51,7 +52,10 @@ class AccountManagerImplTest {
 
     private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
     private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
+
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
+    private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
+
     private val userRepository = mockk<UserRepository>(relaxed = true)
 
     private val readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
@@ -71,6 +75,7 @@ class AccountManagerImplTest {
             activeUserRepository = activeUserRepository,
             declaredShotRepository = declaredShotRepository,
             playerRepository = playerRepository,
+            pendingPlayerRepository = pendingPlayerRepository,
             userRepository = userRepository,
             readFirebaseUserInfo = readFirebaseUserInfo,
             existingUserFirebase = existingUserFirebase,
@@ -109,6 +114,7 @@ class AccountManagerImplTest {
         coVerifyOrder {
             activeUserRepository.deleteActiveUser()
             playerRepository.deleteAllPlayers()
+            pendingPlayerRepository.deleteAllPendingPlayers()
             userRepository.deleteAllUsers()
         }
     }
@@ -146,14 +152,21 @@ class AccountManagerImplTest {
         }
     }
 
+    @Test
+    fun `deleteAllPendingPlayers should call repository delete all pending players`() {
+        accountManagerImpl.deleteAllPendingPlayers()
+
+        coVerify(exactly = 1) { pendingPlayerRepository.deleteAllPendingPlayers() }
+    }
+
     @Nested
-    inner class DeleteAllPlayersPendingShots {
+    inner class DeleteAllPendingShotsFromPlayers {
 
         @Test
         fun `when fetchAllPlayers return empty should not call updatePlayer`() {
             coEvery { playerRepository.fetchAllPlayers() } returns emptyList()
 
-            accountManagerImpl.deleteAllPlayersPendingShots()
+            accountManagerImpl.deleteAllPendingShotsFromPlayers()
 
             coVerify(exactly = 0) { playerRepository.updatePlayer(currentPlayer = any(), newPlayer = any()) }
         }
@@ -164,7 +177,7 @@ class AccountManagerImplTest {
 
             coEvery { playerRepository.fetchAllPlayers() } returns players
 
-            accountManagerImpl.deleteAllPlayersPendingShots()
+            accountManagerImpl.deleteAllPendingShotsFromPlayers()
 
             coVerify(exactly = 0) { playerRepository.updatePlayer(currentPlayer = any(), newPlayer = any()) }
         }
@@ -175,7 +188,7 @@ class AccountManagerImplTest {
 
             coEvery { playerRepository.fetchAllPlayers() } returns players
 
-            accountManagerImpl.deleteAllPlayersPendingShots()
+            accountManagerImpl.deleteAllPendingShotsFromPlayers()
 
             coVerify(exactly = 0) { playerRepository.updatePlayer(currentPlayer = any(), newPlayer = any()) }
         }
@@ -200,7 +213,7 @@ class AccountManagerImplTest {
 
             coEvery { playerRepository.fetchAllPlayers() } returns players
 
-            accountManagerImpl.deleteAllPlayersPendingShots()
+            accountManagerImpl.deleteAllPendingShotsFromPlayers()
 
             val currentPlayer = players[0]
             val newPlayer = TestPlayerEntity().create().copy(shotsLoggedList = listOf(TestShotLogged.build().copy(isPending = false))).toPlayer()

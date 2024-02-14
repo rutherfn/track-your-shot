@@ -24,6 +24,7 @@ object Constants {
     const val IMAGE_URL = "imageUrl"
     const val LAST_NAME = "lastName"
     const val LAST_UPDATED = "lastUpdated"
+    const val PENDING_PLAYERS_EXPECTED_SIZE = 1
     const val PLAYERS = "players"
     const val POSITION_VALUE = "positionValue"
     const val POSITION_NA = 5

@@ -23,6 +23,9 @@ object StringsIds {
     val deleteX = R.string.delete_x
     val deviceIsCurrentlyNotConnectedToInternetDesc =
         R.string.device_is_currently_not_connected_to_internet_desc
+    val doYouWishToProceedDescription =
+        R.string.do_you_wish_to_proceed_description
+
     val emailHasBeenSentToRestPasswordPleaseFollowDirectionsToResetPassword =
         R.string.email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password
     val emailHasBeenSentToVerifyAccountPleaseOpenEmailSentEmailToVerifyAccount =
@@ -124,6 +127,7 @@ object StringsIds {
     val unableToResetPassword = R.string.unable_to_reset_password
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
     val unableToUploadImage = R.string.unable_to_upload_image
+    val unsavedPlayerChanges = R.string.unsaved_player_changes
     val usernameRequired = R.string.username_required
     val usernameInUse = R.string.username_in_use
     val usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat =

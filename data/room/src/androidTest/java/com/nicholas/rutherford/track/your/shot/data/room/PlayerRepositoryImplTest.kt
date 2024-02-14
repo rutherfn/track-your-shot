@@ -142,6 +142,18 @@ class PlayerRepositoryImplTest {
     }
 
     @Test
+    fun fetchPlayerIdByName() = runBlocking {
+        val playerId = 1
+        val newPlayer1 = player.copy(firstName = "name1", lastName = "name2")
+        val newPlayer2 = player.copy(firstName = "name2", lastName = "name3")
+
+        playerRepositoryImpl.createPlayer(player = newPlayer1)
+        playerRepositoryImpl.createPlayer(player = newPlayer2)
+
+        assertThat(playerRepositoryImpl.fetchPlayerIdByName(firstName = "name1", lastName = "name2"), equalTo(playerId))
+    }
+
+    @Test
     fun fetchPlayerCount() = runBlocking {
         val newPlayer = player.copy(firstName = "name1", lastName = "name2")
 

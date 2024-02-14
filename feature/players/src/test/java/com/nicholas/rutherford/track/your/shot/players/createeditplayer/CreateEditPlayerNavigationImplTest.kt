@@ -73,14 +73,16 @@ class CreateEditPlayerNavigationImplTest {
 
     @Test
     fun `navigate to select shot`() {
+        val isExistingPlayer = false
+        val playerId = 5
         val argumentCapture: CapturingSlot<NavigationAction> = slot()
 
-        createEditPlayerNavigationImpl.navigateToSelectShot()
+        createEditPlayerNavigationImpl.navigateToSelectShot(isExistingPlayer = isExistingPlayer, playerId = playerId)
 
         verify { navigator.navigate(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationActions.CreateEditPlayer.selectShot()
+        val expectedAction = NavigationActions.CreateEditPlayer.selectShot(isExistingPlayer = isExistingPlayer, playerId = playerId)
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }

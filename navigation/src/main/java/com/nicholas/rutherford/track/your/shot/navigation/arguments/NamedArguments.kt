@@ -5,4 +5,6 @@ object NamedArguments {
     const val EMAIL = "email"
     const val FIRST_NAME = "firstName"
     const val LAST_NAME = "lastName"
+    const val IS_EXISTING_PLAYER = "isExistingPlayer"
+    const val PLAYER_ID = "playerId"
 }

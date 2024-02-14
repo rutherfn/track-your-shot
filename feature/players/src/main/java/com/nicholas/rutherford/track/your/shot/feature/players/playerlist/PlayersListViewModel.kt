@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.feature.players.playerlist
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
@@ -35,6 +36,7 @@ class PlayersListViewModel(
     private val activeUserRepository: ActiveUserRepository,
     private val playersAdditionUpdates: PlayersAdditionUpdates,
     private val playerRepository: PlayerRepository,
+    private val pendingPlayerRepository: PendingPlayerRepository,
     private val createSharedPreferences: CreateSharedPreferences,
     private val readSharedPreferences: ReadSharedPreferences
 ) : ViewModel() {
@@ -48,6 +50,7 @@ class PlayersListViewModel(
         updatePlayerListState()
         collectPlayerAdditionUpdates()
         collectLoggedInPlayerListStateFlow()
+        deleteAllNonEmptyPendingPlayers()
     }
 
     fun updatePlayerListState() {
@@ -66,7 +69,6 @@ class PlayersListViewModel(
     }
 
     internal fun collectPlayerAdditionUpdates() {
-        2
         scope.launch {
             playersAdditionUpdates.newPlayerHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
                 handlePlayerAdded(hasBeenAdded = hasBeenAdded)
@@ -81,6 +83,14 @@ class PlayersListViewModel(
                     handleLoggedInPlayerList(playerList = loggedInPlayerList)
                     createSharedPreferences.createShouldUpdateLoggedInPlayerListPreference(value = false)
                 }
+            }
+        }
+    }
+
+    internal fun deleteAllNonEmptyPendingPlayers() {
+        scope.launch {
+            if (pendingPlayerRepository.fetchAllPendingPlayers().isNotEmpty()) {
+                pendingPlayerRepository.deleteAllPendingPlayers()
             }
         }
     }

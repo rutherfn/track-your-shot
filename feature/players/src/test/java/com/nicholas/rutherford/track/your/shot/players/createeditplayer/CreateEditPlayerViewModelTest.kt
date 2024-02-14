@@ -3,8 +3,10 @@ package com.nicholas.rutherford.track.your.shot.players.createeditplayer
 import android.app.Application
 import android.net.Uri
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.Center.toPlayerPosition
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
@@ -29,7 +31,9 @@ import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -54,6 +58,8 @@ class CreateEditPlayerViewModelTest {
     private val readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
 
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
+    private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
+
     private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -101,6 +107,10 @@ class CreateEditPlayerViewModelTest {
         every { application.getString(StringsIds.settings) } returns "Settings"
         every { application.getString(StringsIds.notNow) } returns "Not Now"
         every { application.getString(StringsIds.cameraPermissionHasBeenDeniedDescription) } returns "Camera permission has been denied. To manually grant permission for the camera and upload pictures for the Player, kindly navigate to Settings."
+        every { application.getString(StringsIds.unsavedPlayerChanges) } returns "Unsaved Player Changes"
+        every { application.getString(StringsIds.doYouWishToProceedDescription) } returns "Do you wish to proceed despite having unsaved player modifications? Any changes made will not be saved."
+        every { application.getString(StringsIds.yes) } returns "Yes"
+        every { application.getString(StringsIds.no) } returns "No"
     }
 
     @BeforeEach
@@ -113,6 +123,7 @@ class CreateEditPlayerViewModelTest {
             updateFirebaseUserInfo = updateFirebaseUserInfo,
             readFirebaseUserInfo = readFirebaseUserInfo,
             playerRepository = playerRepository,
+            pendingPlayerRepository = pendingPlayerRepository,
             activeUserRepository = activeUserRepository,
             scope = scope,
             navigation = navigation,
@@ -371,11 +382,37 @@ class CreateEditPlayerViewModelTest {
         )
     }
 
-    @Test
-    fun `on toolbar menu clicked`() {
-        createEditPlayerViewModel.onToolbarMenuClicked()
+    @Nested
+    inner class OnToolbarMenuClicked {
 
-        verify { navigation.pop() }
+        @Test
+        fun `when pendingPlayers returns back a size of 1 should call alert`() {
+            val player = TestPlayer().create()
+
+            createEditPlayerViewModel.pendingPlayers = listOf(player)
+
+            createEditPlayerViewModel.onToolbarMenuClicked()
+
+            verify(exactly = 0) { navigation.pop() }
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when pendingPlayers returns back a size of not 1 should call pop and reset state`() {
+            val pendingPlayers: List<Player> = emptyList()
+
+            createEditPlayerViewModel.pendingPlayers = pendingPlayers
+
+            createEditPlayerViewModel.onToolbarMenuClicked()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState()
+            )
+
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+            verify { navigation.pop() }
+        }
     }
 
     @Nested
@@ -1244,6 +1281,58 @@ class CreateEditPlayerViewModelTest {
     }
 
     @Test
+    fun `unsaved player changes alert`() {
+        val alert = createEditPlayerViewModel.unsavedPlayerChangesAlert()
+
+        Assertions.assertEquals(alert.title, "Unsaved Player Changes")
+        Assertions.assertEquals(alert.confirmButton!!.buttonText, "Yes")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "No")
+        Assertions.assertEquals(alert.description, "Do you wish to proceed despite having unsaved player modifications? Any changes made will not be saved.")
+    }
+
+    @Nested
+    inner class OnConfirmUnsavedPlayerChangesButtonClicked {
+
+        @Test
+        fun `when pendingPlayers has a size of 1 should update pending states, reset state, and pop`() {
+            val player = TestPlayer().create()
+            val emptyPlayerList: List<Player> = emptyList()
+
+            createEditPlayerViewModel.pendingPlayers = listOf(player)
+
+            coEvery { pendingPlayerRepository.deleteAllPendingPlayers() } just runs
+
+            createEditPlayerViewModel.onConfirmUnsavedPlayerChangesButtonClicked()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.pendingPlayers,
+                emptyPlayerList
+            )
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerMutableStateFlow.value,
+                CreateEditPlayerState()
+            )
+            verify { navigation.pop() }
+        }
+
+        @Test
+        fun `when pendingPlayers does not have a size of 1 should pop and reset state`() {
+            val pendingPlayers: List<Player> = emptyList()
+
+            createEditPlayerViewModel.pendingPlayers = pendingPlayers
+
+            createEditPlayerViewModel.onConfirmUnsavedPlayerChangesButtonClicked()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerMutableStateFlow.value,
+                CreateEditPlayerState()
+            )
+            coVerify(exactly = 0) { pendingPlayerRepository.deleteAllPendingPlayers() }
+            verify { navigation.pop() }
+        }
+    }
+
+    @Test
     fun `remove image sheet`() {
         every { application.getString(StringsIds.chooseOption) } returns "Choose Option"
         every { application.getString(StringsIds.removeImage) } returns "Remove Image"
@@ -1266,10 +1355,178 @@ class CreateEditPlayerViewModelTest {
         Assertions.assertEquals(sheet.values, listOf("Choose Image From Gallery", "Take A Picture"))
     }
 
-    @Test
-    fun `on log shots clicked`() {
-        createEditPlayerViewModel.onLogShotsClicked()
+    @Nested
+    inner class HasLogShotsAccess {
 
-        verify { navigation.navigateToSelectShot() }
+        @Test
+        fun `when editedPlayer is not set to null should return true`() {
+            val player = TestPlayer().create()
+
+            createEditPlayerViewModel.editedPlayer = player
+
+            val result = createEditPlayerViewModel.hasLogShotsAccess()
+
+            Assertions.assertEquals(result, true)
+        }
+
+        @Test
+        fun `when editedPlayer is null and firstName is empty should show alert and return false`() {
+            createEditPlayerViewModel.editedPlayer = null
+
+            createEditPlayerViewModel.createEditPlayerMutableStateFlow.value = CreateEditPlayerState(
+                firstName = "",
+                lastName = "lastName"
+            )
+
+            val result = createEditPlayerViewModel.hasLogShotsAccess()
+
+            verify(exactly = 1) { navigation.alert(alert = any()) }
+
+            Assertions.assertEquals(result, false)
+        }
+
+        @Test
+        fun `when editedPlayer is null and lastName is empty should show alert and return false`() {
+            createEditPlayerViewModel.editedPlayer = null
+
+            createEditPlayerViewModel.createEditPlayerMutableStateFlow.value = CreateEditPlayerState(
+                firstName = "firstName",
+                lastName = ""
+            )
+
+            val result = createEditPlayerViewModel.hasLogShotsAccess()
+
+            verify(exactly = 1) { navigation.alert(alert = any()) }
+
+            Assertions.assertEquals(result, false)
+        }
+
+        @Test
+        fun `when editedPlayer is null and firstName and lastName is not empty should return true and not show alert`() {
+            createEditPlayerViewModel.editedPlayer = null
+
+            createEditPlayerViewModel.createEditPlayerMutableStateFlow.value = CreateEditPlayerState(
+                firstName = "firstName",
+                lastName = "lastName"
+            )
+
+            val result = createEditPlayerViewModel.hasLogShotsAccess()
+
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+
+            Assertions.assertEquals(result, true)
+        }
+    }
+
+    @Nested
+    inner class ExistingOrPendingPlayerId {
+
+        @Test
+        fun `when isDeviceConnectedToInternet returns false should show alert and return null`() = runTest {
+            coEvery { network.isDeviceConnectedToInternet() } returns false
+
+            val result = createEditPlayerViewModel.existingOrPendingPlayerId()
+            val emptyPendingPlayers: List<Player> = emptyList()
+
+            verify(exactly = 1) { navigation.alert(alert = any()) }
+
+            Assertions.assertEquals(createEditPlayerViewModel.pendingPlayers, emptyPendingPlayers)
+            Assertions.assertEquals(result, null)
+        }
+
+        @Test
+        fun `when isDeviceConnectedToInternet returns true and editedPlayer is not set to null should return fetchPlayerIdByName`() = runTest {
+            val player = TestPlayer().create()
+            val playerId = 1
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+            coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
+
+            createEditPlayerViewModel.editedPlayer = player
+
+            val result = createEditPlayerViewModel.existingOrPendingPlayerId()
+            val emptyPendingPlayers: List<Player> = emptyList()
+
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+
+            Assertions.assertEquals(createEditPlayerViewModel.pendingPlayers, emptyPendingPlayers)
+            Assertions.assertEquals(result, playerId)
+        }
+
+        @Test
+        fun `when isDeviceConnectedToInternet returns true and editedPlayer is set to null should create pending player and return back id by pending player name`() = runTest {
+            val player = TestPlayer().create()
+            val playerId = 1
+            val pendingPlayer = TestPlayer().create().copy(firstName = "pendingFirst", lastName = "pendingLast")
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+            coEvery { pendingPlayerRepository.fetchAllPendingPlayers() } returns listOf(pendingPlayer)
+            coEvery { pendingPlayerRepository.deleteAllPendingPlayers() } just runs
+            coEvery { pendingPlayerRepository.createPendingPlayer(player = player) } just runs
+            coEvery { pendingPlayerRepository.fetchPendingPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
+
+            createEditPlayerViewModel.createEditPlayerMutableStateFlow.value = CreateEditPlayerState(
+                firstName = player.firstName,
+                lastName = player.lastName
+            )
+
+            val result = createEditPlayerViewModel.existingOrPendingPlayerId()
+
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.pendingPlayers,
+                listOf(
+                    player.copy(position = PlayerPositions.PointGuard, firebaseKey = "", imageUrl = "", shotsLoggedList = emptyList())
+                )
+            )
+            Assertions.assertEquals(result, playerId)
+        }
+    }
+
+    @Nested
+    inner class OnLogShotsClicked {
+
+        @Test
+        fun `when has log shots access returns false should not call navigateToSelectShot`() {
+            createEditPlayerViewModel.editedPlayer = null
+
+            createEditPlayerViewModel.createEditPlayerMutableStateFlow.value = CreateEditPlayerState(
+                firstName = "",
+                lastName = "lastName"
+            )
+
+            createEditPlayerViewModel.onLogShotsClicked()
+
+            verify(exactly = 0) { navigation.navigateToSelectShot(isExistingPlayer = any(), playerId = any()) }
+        }
+
+        @Test
+        fun `when has log shots access returns true and existingOrPendingPlayerId returns null should not call navigateToSelectShot`() {
+            val player = TestPlayer().create()
+
+            createEditPlayerViewModel.editedPlayer = player
+
+            coEvery { network.isDeviceConnectedToInternet() } returns false
+
+            createEditPlayerViewModel.onLogShotsClicked()
+
+            verify(exactly = 0) { navigation.navigateToSelectShot(isExistingPlayer = any(), playerId = any()) }
+        }
+
+        @Test
+        fun `when has log shots access returns true and existingOrPendingPlayerId returns id should call navigateToSelectShot`() {
+            val player = TestPlayer().create()
+            val playerId = 1
+
+            coEvery { network.isDeviceConnectedToInternet() } returns true
+            coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
+
+            createEditPlayerViewModel.editedPlayer = player
+
+            createEditPlayerViewModel.onLogShotsClicked()
+
+            verify(exactly = 1) { navigation.navigateToSelectShot(isExistingPlayer = true, playerId = 1) }
+        }
     }
 }

@@ -242,8 +242,8 @@ fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
                     Spacer(modifier = Modifier.height(Padding.sixteen))
 
                     ShotsContent(
-                        shotsHaveBeenLogged = true,
-                        pendingShotsHaveBeenLogged = true,
+                        shotsHaveBeenLogged = false,
+                        pendingShotsHaveBeenLogged = false,
                         hintLogNewShotText = createEditPlayerParams.state.hintLogNewShotText,
                         onLogShotsClicked = createEditPlayerParams.onLogShotsClicked
                     )

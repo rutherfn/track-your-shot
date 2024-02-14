@@ -14,6 +14,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRe
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepositoryImpl
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
@@ -105,6 +107,9 @@ class AppModule {
             get<AppDatabase>().userDao()
         }
         single {
+            get<AppDatabase>().pendingPlayerDao()
+        }
+        single {
             get<AppDatabase>().playerDao()
         }
         single<ActiveUserRepository> {
@@ -121,6 +126,9 @@ class AppModule {
         }
         single<PlayerRepository> {
             PlayerRepositoryImpl(playerDao = get())
+        }
+        single<PendingPlayerRepository> {
+            PendingPlayerRepositoryImpl(pendingPlayerDao = get())
         }
         single<android.content.SharedPreferences.Editor> {
             getSharedPreferences(androidApplication()).edit()
@@ -186,6 +194,7 @@ class AppModule {
                 activeUserRepository = get(),
                 declaredShotRepository = get(),
                 playerRepository = get(),
+                pendingPlayerRepository = get(),
                 userRepository = get(),
                 readFirebaseUserInfo = get(),
                 existingUserFirebase = get(),
@@ -251,6 +260,7 @@ class AppModule {
                 activeUserRepository = get(),
                 playersAdditionUpdates = get(),
                 playerRepository = get(),
+                pendingPlayerRepository = get(),
                 createSharedPreferences = get(),
                 readSharedPreferences = get()
             )
@@ -262,6 +272,7 @@ class AppModule {
                 updateFirebaseUserInfo = get(),
                 readFirebaseUserInfo = get(),
                 playerRepository = get(),
+                pendingPlayerRepository = get(),
                 activeUserRepository = get(),
                 scope = defaultCoroutineScope,
                 navigation = get(),
