@@ -107,6 +107,10 @@ class CreateEditPlayerViewModelTest {
         every { application.getString(StringsIds.settings) } returns "Settings"
         every { application.getString(StringsIds.notNow) } returns "Not Now"
         every { application.getString(StringsIds.cameraPermissionHasBeenDeniedDescription) } returns "Camera permission has been denied. To manually grant permission for the camera and upload pictures for the Player, kindly navigate to Settings."
+        every { application.getString(StringsIds.unsavedPlayerChanges) } returns "Unsaved Player Changes"
+        every { application.getString(StringsIds.doYouWishToProceedDescription) } returns "Do you wish to proceed despite having unsaved player modifications? Any changes made will not be saved."
+        every { application.getString(StringsIds.yes) } returns "Yes"
+        every { application.getString(StringsIds.no) } returns "No"
     }
 
     @BeforeEach
@@ -378,17 +382,37 @@ class CreateEditPlayerViewModelTest {
         )
     }
 
-    @Test
-    fun `on toolbar menu clicked`() {
-        createEditPlayerViewModel.onToolbarMenuClicked()
+    @Nested
+    inner class OnToolbarMenuClicked {
 
+        @Test
+        fun `when pendingPlayers returns back a size of 1 should call alert`() {
+            val player = TestPlayer().create()
 
-        Assertions.assertEquals(
-            createEditPlayerViewModel.createEditPlayerStateFlow.value,
-            CreateEditPlayerState()
-        )
+            createEditPlayerViewModel.pendingPlayers = listOf(player)
 
-        verify { navigation.pop() }
+            createEditPlayerViewModel.onToolbarMenuClicked()
+
+            verify(exactly = 0) { navigation.pop() }
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when pendingPlayers returns back a size of not 1 should call pop and reset state`() {
+            val pendingPlayers: List<Player> = emptyList()
+
+            createEditPlayerViewModel.pendingPlayers = pendingPlayers
+
+            createEditPlayerViewModel.onToolbarMenuClicked()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState()
+            )
+
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+            verify { navigation.pop() }
+        }
     }
 
     @Nested
@@ -1257,6 +1281,58 @@ class CreateEditPlayerViewModelTest {
     }
 
     @Test
+    fun `unsaved player changes alert`() {
+        val alert = createEditPlayerViewModel.unsavedPlayerChangesAlert()
+
+        Assertions.assertEquals(alert.title, "Unsaved Player Changes")
+        Assertions.assertEquals(alert.confirmButton!!.buttonText, "Yes")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "No")
+        Assertions.assertEquals(alert.description, "Do you wish to proceed despite having unsaved player modifications? Any changes made will not be saved.")
+    }
+
+    @Nested
+    inner class OnConfirmUnsavedPlayerChangesButtonClicked {
+
+        @Test
+        fun `when pendingPlayers has a size of 1 should update pending states, reset state, and pop`() {
+            val player = TestPlayer().create()
+            val emptyPlayerList: List<Player> = emptyList()
+
+            createEditPlayerViewModel.pendingPlayers = listOf(player)
+
+            coEvery { pendingPlayerRepository.deleteAllPendingPlayers() } just runs
+
+            createEditPlayerViewModel.onConfirmUnsavedPlayerChangesButtonClicked()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.pendingPlayers,
+                emptyPlayerList
+            )
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerMutableStateFlow.value,
+                CreateEditPlayerState()
+            )
+            verify { navigation.pop() }
+        }
+
+        @Test
+        fun `when pendingPlayers does not have a size of 1 should pop and reset state`() {
+            val pendingPlayers: List<Player> = emptyList()
+
+            createEditPlayerViewModel.pendingPlayers = pendingPlayers
+
+            createEditPlayerViewModel.onConfirmUnsavedPlayerChangesButtonClicked()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerMutableStateFlow.value,
+                CreateEditPlayerState()
+            )
+            coVerify(exactly = 0) { pendingPlayerRepository.deleteAllPendingPlayers() }
+            verify { navigation.pop() }
+        }
+    }
+
+    @Test
     fun `remove image sheet`() {
         every { application.getString(StringsIds.chooseOption) } returns "Choose Option"
         every { application.getString(StringsIds.removeImage) } returns "Remove Image"
@@ -1436,7 +1512,7 @@ class CreateEditPlayerViewModelTest {
         }
 
         @Test
-        fun `when has log shots access returns true and existingOrPendingPlayerId returns id should call navaigteToSelectShot`() {
+        fun `when has log shots access returns true and existingOrPendingPlayerId returns id should call navigateToSelectShot`() {
             val player = TestPlayer().create()
             val playerId = 1
 
