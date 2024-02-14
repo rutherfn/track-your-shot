@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.players.playerlist
 
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
@@ -61,6 +62,7 @@ class PlayersListViewModelTest {
     private val playersAdditionUpdates = mockk<PlayersAdditionUpdates>(relaxed = true)
 
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
+    private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
 
     private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
     private val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
@@ -82,6 +84,7 @@ class PlayersListViewModelTest {
             activeUserRepository = activeUserRepository,
             playersAdditionUpdates = playersAdditionUpdates,
             playerRepository = playerRepository,
+            pendingPlayerRepository = pendingPlayerRepository,
             createSharedPreferences = createSharedPreferences,
             readSharedPreferences = readSharedPreferences
         )
@@ -174,6 +177,7 @@ class PlayersListViewModelTest {
                 activeUserRepository = activeUserRepository,
                 playersAdditionUpdates = playersAdditionUpdates,
                 playerRepository = playerRepository,
+                pendingPlayerRepository = pendingPlayerRepository,
                 createSharedPreferences = createSharedPreferences,
                 readSharedPreferences = readSharedPreferences
             )
@@ -213,6 +217,7 @@ class PlayersListViewModelTest {
                 playersAdditionUpdates = playersAdditionUpdates,
                 playerRepository = playerRepository,
                 createSharedPreferences = createSharedPreferences,
+                pendingPlayerRepository = pendingPlayerRepository,
                 readSharedPreferences = readSharedPreferences
             )
 
@@ -252,6 +257,7 @@ class PlayersListViewModelTest {
                 playersAdditionUpdates = playersAdditionUpdates,
                 playerRepository = playerRepository,
                 createSharedPreferences = createSharedPreferences,
+                pendingPlayerRepository = pendingPlayerRepository,
                 readSharedPreferences = readSharedPreferences
             )
 
@@ -263,6 +269,32 @@ class PlayersListViewModelTest {
                 playersListViewModel.currentPlayerArrayList.toList(),
                 playerList
             )
+        }
+    }
+
+    @Nested
+    inner class DeleteAllNonEmptyPendingPlayers {
+
+        @Test
+        fun `when fetch all pending players returns a empty list should not call delete all pending players`() {
+            val players: List<Player> = emptyList()
+
+            coEvery { pendingPlayerRepository.fetchAllPendingPlayers() } returns players
+
+            playersListViewModel.deleteAllNonEmptyPendingPlayers()
+
+            coVerify(exactly = 0) { pendingPlayerRepository.deleteAllPendingPlayers() }
+        }
+
+        @Test
+        fun `when fetch all pending players returns a player list should call delete all pending players`() {
+            val players = listOf(player)
+
+            coEvery { pendingPlayerRepository.fetchAllPendingPlayers() } returns players
+
+            playersListViewModel.deleteAllNonEmptyPendingPlayers()
+
+            coVerify(exactly = 1) { pendingPlayerRepository.deleteAllPendingPlayers() }
         }
     }
 

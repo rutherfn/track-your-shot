@@ -22,6 +22,7 @@
     <string name="current_players_has_no_changes_description">There haven\'t been any recent updates or modifications to the current player. Please make adjustments to the existing player to proceed.</string>
     <string name="delete_x">Delete %s</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
+    <string name="do_you_wish_to_proceed_description">Do you wish to proceed despite having unsaved player modifications? Any changes made will not be saved.</string>
     <string name="edit_x">Edit %s</string>
     <string name="enter_first_name">Enter First Name</string>
     <string name="enter_last_name">Enter Last Name</string>
@@ -124,6 +125,7 @@
     <string name="unable_to_set_new_username">Unable to set new username</string>
     <string name="unable_to_send_email_verification">Unable to send email verification</string>
     <string name="unable_to_upload_image">Unable to upload image</string>
+    <string name="unsaved_player_changes">Unsaved Player Changes</string>
     <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">We have detected a problem with your account. Please contact support to resolve issue.</string>
     <string name="we_have_detected_currently_not_connected_to_internet_description">We have detected currently not connected to internet. Please connect to service, and try again.</string>
     <string name="username_is_required_please_enter_a_username_to_create_a_account">Username is required. Please enter a username to create a account.</string>

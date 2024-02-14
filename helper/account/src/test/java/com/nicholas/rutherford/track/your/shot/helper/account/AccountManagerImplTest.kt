@@ -114,6 +114,7 @@ class AccountManagerImplTest {
         coVerifyOrder {
             activeUserRepository.deleteActiveUser()
             playerRepository.deleteAllPlayers()
+            pendingPlayerRepository.deleteAllPendingPlayers()
             userRepository.deleteAllUsers()
         }
     }

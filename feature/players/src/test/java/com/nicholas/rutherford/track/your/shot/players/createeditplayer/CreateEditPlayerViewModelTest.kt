@@ -6,6 +6,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRe
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.Center.toPlayerPosition
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
@@ -1349,9 +1350,11 @@ class CreateEditPlayerViewModelTest {
             coEvery { network.isDeviceConnectedToInternet() } returns false
 
             val result = createEditPlayerViewModel.existingOrPendingPlayerId()
+            val emptyPendingPlayers: List<Player> = emptyList()
 
             verify(exactly = 1) { navigation.alert(alert = any()) }
 
+            Assertions.assertEquals(createEditPlayerViewModel.pendingPlayers, emptyPendingPlayers)
             Assertions.assertEquals(result, null)
         }
 
@@ -1366,9 +1369,11 @@ class CreateEditPlayerViewModelTest {
             createEditPlayerViewModel.editedPlayer = player
 
             val result = createEditPlayerViewModel.existingOrPendingPlayerId()
+            val emptyPendingPlayers: List<Player> = emptyList()
 
             verify(exactly = 0) { navigation.alert(alert = any()) }
 
+            Assertions.assertEquals(createEditPlayerViewModel.pendingPlayers, emptyPendingPlayers)
             Assertions.assertEquals(result, playerId)
         }
 
@@ -1393,6 +1398,9 @@ class CreateEditPlayerViewModelTest {
 
             verify(exactly = 0) { navigation.alert(alert = any()) }
 
+            Assertions.assertEquals(createEditPlayerViewModel.pendingPlayers, listOf(
+                player.copy(position = PlayerPositions.PointGuard, firebaseKey = "", imageUrl = "", shotsLoggedList = emptyList())
+            ))
             Assertions.assertEquals(result, playerId)
         }
     }

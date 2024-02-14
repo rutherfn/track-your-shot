@@ -19,6 +19,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUs
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.shouldAskForReadMediaImages
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
@@ -49,6 +50,7 @@ class CreateEditPlayerViewModel(
     val createEditPlayerStateFlow = createEditPlayerMutableStateFlow.asStateFlow()
 
     internal var editedPlayer: Player? = null
+    internal var pendingPlayers: List<Player> = emptyList()
 
     fun checkForExistingPlayer(firstNameArgument: String?, lastNameArgument: String?) {
         scope.launch {
@@ -114,8 +116,12 @@ class CreateEditPlayerViewModel(
     }
 
     fun onToolbarMenuClicked() {
-        createEditPlayerMutableStateFlow.value = CreateEditPlayerState()
-        navigation.pop()
+        if (pendingPlayers.size == Constants.PENDING_PLAYERS_EXPECTED_SIZE) {
+            navigation.alert(alert = unsavedPlayerChangesAlert())
+        } else {
+            createEditPlayerMutableStateFlow.value = CreateEditPlayerState()
+            navigation.pop()
+        }
     }
 
     fun onImageUploadClicked(uri: Uri?) {
@@ -606,6 +612,30 @@ class CreateEditPlayerViewModel(
         )
     }
 
+    internal fun unsavedPlayerChangesAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.unsavedPlayerChanges),
+            description = application.getString(StringsIds.doYouWishToProceedDescription),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.yes),
+                onButtonClicked = { onConfirmUnsavedPlayerChangesButtonClicked() }
+            ),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.no),
+                onButtonClicked = {}
+            )
+        )
+    }
+
+    fun onConfirmUnsavedPlayerChangesButtonClicked() {
+        if (pendingPlayers.size == Constants.PENDING_PLAYERS_EXPECTED_SIZE) {
+            scope.launch { pendingPlayerRepository.deleteAllPendingPlayers() }
+            pendingPlayers = emptyList()
+        }
+        createEditPlayerMutableStateFlow.value = CreateEditPlayerState()
+        navigation.pop()
+    }
+
     internal fun removeImageSheet(): Sheet {
         return Sheet(
             title = application.getString(StringsIds.chooseOption),
@@ -676,6 +706,7 @@ class CreateEditPlayerViewModel(
             } ?: run {
                 // Delete any pending players if they exist
                 pendingPlayerRepository.fetchAllPendingPlayers().takeIf { it.isNotEmpty() }?.let {
+                    pendingPlayers = emptyList()
                     pendingPlayerRepository.deleteAllPendingPlayers()
                 }
 
@@ -693,6 +724,8 @@ class CreateEditPlayerViewModel(
                     shotsLoggedList = emptyList()
                 )
                 pendingPlayerRepository.createPendingPlayer(player = pendingPlayer)
+
+                pendingPlayers = listOf(pendingPlayer)
 
                 // Fetch ID of the pending player and return it
                 return pendingPlayerRepository.fetchPendingPlayerIdByName(

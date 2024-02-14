@@ -77,6 +77,7 @@ class AccountManagerImpl(
     internal suspend fun clearOutDatabase() {
         activeUserRepository.deleteActiveUser()
         playerRepository.deleteAllPlayers()
+        pendingPlayerRepository.deleteAllPendingPlayers()
         userRepository.deleteAllUsers()
     }
 
