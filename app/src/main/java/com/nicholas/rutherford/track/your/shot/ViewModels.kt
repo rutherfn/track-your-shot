@@ -6,7 +6,7 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 
 data class ViewModels(

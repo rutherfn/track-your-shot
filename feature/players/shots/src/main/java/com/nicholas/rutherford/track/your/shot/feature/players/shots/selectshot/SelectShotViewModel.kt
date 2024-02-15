@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.players.shots
+package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository

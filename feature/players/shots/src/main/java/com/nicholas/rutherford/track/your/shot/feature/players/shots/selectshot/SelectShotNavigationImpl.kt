@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.players.shots
+package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator

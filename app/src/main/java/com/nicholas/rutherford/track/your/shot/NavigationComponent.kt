@@ -34,8 +34,8 @@ import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotParams
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotScreen
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotParams
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.navigation.ComparePlayersStatsAction
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction

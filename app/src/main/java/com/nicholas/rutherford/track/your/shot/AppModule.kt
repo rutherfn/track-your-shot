@@ -40,9 +40,9 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotNavigation
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotNavigationImpl
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigation
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
