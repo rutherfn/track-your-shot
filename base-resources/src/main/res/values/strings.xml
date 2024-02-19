@@ -57,6 +57,7 @@
     <string name="login">Login</string>
     <string name="login_icon_description">This is a login image for the login screen</string>
     <string name="logout">Logout</string>
+    <string name="log_shot">Log Shot</string>
     <string name="log_shots">Log Shots</string>
     <string name="menu">Menu</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>

@@ -26,6 +26,7 @@ object Constants {
     const val LAST_UPDATED = "lastUpdated"
     const val PENDING_PLAYERS_EXPECTED_SIZE = 1
     const val PLAYERS = "players"
+    const val POP_DEFAULT_ACTION = "pop"
     const val POSITION_VALUE = "positionValue"
     const val POSITION_NA = 5
     const val USERS_PATH = "users"

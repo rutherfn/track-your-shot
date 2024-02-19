@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
+import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
@@ -103,7 +104,13 @@ class SelectShotViewModel(
         // todo show a alert of some sort with info
     }
 
-    fun onDeclaredShotItemClicked() {
-        // todo -> navigate user to new screen
+    fun onDeclaredShotItemClicked(shotId: Int) {
+        safeLet(isExistingPlayer, playerId) { isExisting, id ->
+            navigation.navigateToLogShot(
+                isExistingPlayer = isExisting,
+                playerId = id,
+                shotId = shotId
+            )
+        }
     }
 }

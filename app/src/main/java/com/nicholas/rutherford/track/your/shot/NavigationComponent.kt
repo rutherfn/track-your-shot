@@ -34,9 +34,12 @@ import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotParams
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotParams
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.ComparePlayersStatsAction
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
@@ -108,6 +111,7 @@ fun NavigationComponent(
     val createEditPlayerViewModel = viewModels.createEditPlayerViewModel
     val forgotPasswordViewModel = viewModels.forgotPasswordViewModel
     val selectShotViewModel = viewModels.selectShotViewModel
+    val logShotViewModel = viewModels.logShotViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -163,7 +167,11 @@ fun NavigationComponent(
 
     LaunchedEffect(popRouteState) {
         popRouteState?.let { route ->
-            navHostController.popBackStack(route = route, inclusive = false)
+            if (route == Constants.POP_DEFAULT_ACTION) {
+                navHostController.popBackStack()
+            } else {
+                navHostController.popBackStack(route = route, inclusive = false)
+            }
             navigator.pop(popRouteAction = null) // need to set this to null to listen to next pop action
         }
     }
@@ -296,6 +304,27 @@ fun NavigationComponent(
                             selectShotViewModel.updateIsExistingPlayerAndPlayerId(
                                 isExistingPlayerArgument = entry.arguments?.getBoolean(NamedArguments.IS_EXISTING_PLAYER),
                                 playerIdArgument = entry.arguments?.getInt(NamedArguments.PLAYER_ID)
+                            )
+                        },
+                        onItemClicked = { shotId ->
+                            selectShotViewModel.onDeclaredShotItemClicked(shotId = shotId)
+                        }
+                    )
+                )
+            }
+            composable(
+                route = NavigationDestinations.LOG_SHOT_WITH_PARAMS,
+                arguments = NavArguments.logShot
+            ) { entry ->
+                LogShotScreen(
+                    logShotParams = LogShotParams(
+                        state = logShotViewModel.logShotStateFlow.collectAsState().value,
+                        onBackButtonClicked = { logShotViewModel.onBackClicked() },
+                        updateIsExistingPlayerAndPlayerId = { ->
+                            logShotViewModel.updateIsExistingPlayerAndPlayerId(
+                                isExistingPlayerArgument = entry.arguments?.getBoolean(NamedArguments.IS_EXISTING_PLAYER),
+                                playerIdArgument = entry.arguments?.getInt(NamedArguments.PLAYER_ID),
+                                shotIdArgument = entry.arguments?.getInt(NamedArguments.SHOT_ID)
                             )
                         }
                     )

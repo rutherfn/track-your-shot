@@ -9,5 +9,6 @@ data class SelectShotParams(
     val onCancelIconClicked: () -> Unit,
     val onnDeclaredShotItemClicked: (declaredShot: DeclaredShot) -> Unit,
     val onHelpIconClicked: () -> Unit,
-    val updateIsExistingPlayerAndPlayerId: () -> Unit
+    val updateIsExistingPlayerAndPlayerId: () -> Unit,
+    val onItemClicked: (id: Int) -> Unit,
 )

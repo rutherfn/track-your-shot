@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -61,7 +62,12 @@ fun SelectShotScreen(selectShotParams: SelectShotParams) {
             if (!isShotsDeclaredListEmpty) {
                 LazyColumn {
                     items(selectShotParams.state.declaredShotList) { declaredShot ->
-                        DeclaredShotItem(declaredShot = declaredShot)
+                        DeclaredShotItem(
+                            declaredShot = declaredShot,
+                            onItemClicked = { id ->
+                                selectShotParams.onItemClicked.invoke(id)
+                            }
+                        )
                     }
                 }
             } else {
@@ -81,14 +87,20 @@ fun SelectShotScreen(selectShotParams: SelectShotParams) {
 }
 
 @Composable
-fun DeclaredShotItem(declaredShot: DeclaredShot) {
+fun DeclaredShotItem(
+    declaredShot: DeclaredShot,
+    onItemClicked: (id: Int) -> Unit
+) {
     var isExpanded by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp)
+            .clickable {
+                       onItemClicked.invoke(declaredShot.id)
+            },
         elevation = 2.dp
     ) {
         Column(modifier = Modifier.padding(8.dp)) {

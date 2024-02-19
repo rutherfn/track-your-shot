@@ -66,6 +66,7 @@ object StringsIds {
     val login = R.string.login
     val loginIconDescription = R.string.login_icon_description
     val logout = R.string.logout
+    val logShot = R.string.log_shot
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
     val no = R.string.no

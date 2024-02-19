@@ -40,6 +40,9 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotNavigation
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotViewModel
@@ -228,6 +231,9 @@ class AppModule {
         single<SelectShotNavigation> {
             SelectShotNavigationImpl(navigator = get())
         }
+        single<LogShotNavigation> {
+            LogShotNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(appCenter = get(), accountManager = get())
         }
@@ -288,6 +294,15 @@ class AppModule {
                 accountManager = get(),
                 createSharedPreferences = get(),
                 readSharedPreferences = get()
+            )
+        }
+        viewModel {
+            LogShotViewModel(
+                scope = defaultCoroutineScope,
+                navigation = get(),
+                declaredShotRepository = get(),
+                playerPendingPlayerRepository = get(),
+                playerRepository = get()
             )
         }
         viewModel {
