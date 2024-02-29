@@ -99,7 +99,7 @@ fun DeclaredShotItem(
             .fillMaxWidth()
             .padding(16.dp)
             .clickable {
-                       onItemClicked.invoke(declaredShot.id)
+                onItemClicked.invoke(declaredShot.id)
             },
         elevation = 2.dp
     ) {

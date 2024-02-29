@@ -113,7 +113,7 @@ object NavigationActions {
             isExistingPlayer: Boolean,
             playerId: Int,
             shotId: Int
-        ) = object  : NavigationAction {
+        ) = object : NavigationAction {
             override val destination = NavigationDestinationsWithParams.logShotWithParams(
                 isExistingPlayer = isExistingPlayer,
                 playerId = playerId,

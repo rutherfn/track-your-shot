@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.navigation
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.update
 class NavigatorImpl : Navigator {
     private val _alertActions: MutableStateFlow<Alert?> = MutableStateFlow(value = null)
     private val _appSettingsActions: MutableStateFlow<Boolean?> = MutableStateFlow(value = null)
+    private val _datePickerActions: MutableStateFlow<DatePickerInfo?> = MutableStateFlow(value = null)
     private val _emailActions: MutableStateFlow<Boolean?> = MutableStateFlow(value = null)
     private val _finishActions: MutableStateFlow<Boolean?> = MutableStateFlow(value = null)
     private val _navActions: MutableStateFlow<NavigationAction?> = MutableStateFlow(value = null)
@@ -19,6 +21,7 @@ class NavigatorImpl : Navigator {
 
     override val alertActions: StateFlow<Alert?> = _alertActions.asStateFlow()
     override val appSettingsActions: StateFlow<Boolean?> = _appSettingsActions.asStateFlow()
+    override val datePickerActions: StateFlow<DatePickerInfo?> = _datePickerActions.asStateFlow()
     override val emailActions: StateFlow<Boolean?> = _emailActions.asStateFlow()
     override val finishActions: StateFlow<Boolean?> = _finishActions.asStateFlow()
     override val popRouteActions: StateFlow<String?> = _popRouteActions.asStateFlow()
@@ -29,6 +32,8 @@ class NavigatorImpl : Navigator {
     override fun alert(alertAction: Alert?) = _alertActions.update { alertAction }
 
     override fun appSettings(appSettingsAction: Boolean?) = _appSettingsActions.update { appSettingsAction }
+
+    override fun datePicker(datePickerAction: DatePickerInfo?) = _datePickerActions.update { datePickerAction }
 
     override fun emailAction(emailAction: Boolean?) = _emailActions.update { emailAction }
 

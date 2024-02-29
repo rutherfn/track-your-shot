@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.feature.players.playerlist
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -109,7 +110,8 @@ fun PlayerItem(
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(8.dp),
+                    .padding(8.dp)
+                    .clickable { expanded = true },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(

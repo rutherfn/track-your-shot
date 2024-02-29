@@ -39,6 +39,8 @@ class SelectShotViewModel(
     fun updateIsExistingPlayerAndPlayerId(isExistingPlayerArgument: Boolean?, playerIdArgument: Int?) {
         this.isExistingPlayer = isExistingPlayerArgument
         this.playerId = playerIdArgument
+
+        println("here is the player id $playerId")
     }
 
     internal fun fetchDeclaredShotsAndUpdateState() {

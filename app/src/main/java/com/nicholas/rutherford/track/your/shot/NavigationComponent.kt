@@ -21,9 +21,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nicholas.rutherford.track.your.shot.compose.components.AlertDialog
+import com.nicholas.rutherford.track.your.shot.compose.components.CustomDatePickerDialog
 import com.nicholas.rutherford.track.your.shot.compose.components.ProgressDialog
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationScreen
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountScreen
@@ -74,6 +76,10 @@ fun NavigationComponent(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
+    val datePickerState by navigator.datePickerActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
     val emailState by navigator.emailActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
@@ -100,6 +106,7 @@ fun NavigationComponent(
     )
 
     var alert: Alert? by remember { mutableStateOf(value = null) }
+    var datePicker: DatePickerInfo? by remember { mutableStateOf(value = null) }
     var progress: Progress? by remember { mutableStateOf(value = null) }
 
     val screenContents = ScreenContents()
@@ -116,6 +123,11 @@ fun NavigationComponent(
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
             alert = newAlert
+        }
+    }
+    LaunchedEffect(datePickerState) {
+        datePickerState?.let { newDatePicker ->
+            datePicker = newDatePicker
         }
     }
     LaunchedEffect(appSettingsState) {
@@ -316,19 +328,22 @@ fun NavigationComponent(
                 route = NavigationDestinations.LOG_SHOT_WITH_PARAMS,
                 arguments = NavArguments.logShot
             ) { entry ->
-                LogShotScreen(
-                    logShotParams = LogShotParams(
-                        state = logShotViewModel.logShotStateFlow.collectAsState().value,
-                        onBackButtonClicked = { logShotViewModel.onBackClicked() },
-                        updateIsExistingPlayerAndPlayerId = { ->
-                            logShotViewModel.updateIsExistingPlayerAndPlayerId(
-                                isExistingPlayerArgument = entry.arguments?.getBoolean(NamedArguments.IS_EXISTING_PLAYER),
-                                playerIdArgument = entry.arguments?.getInt(NamedArguments.PLAYER_ID),
-                                shotIdArgument = entry.arguments?.getInt(NamedArguments.SHOT_ID)
-                            )
-                        }
+                entry.arguments?.let { bundle ->
+                    LogShotScreen(
+                        logShotParams = LogShotParams(
+                            state = logShotViewModel.logShotStateFlow.collectAsState().value,
+                            onBackButtonClicked = { logShotViewModel.onBackClicked() },
+                            onDateShotsTakenClicked = { logShotViewModel.onDateShotsTakenClicked() },
+                            updateIsExistingPlayerAndPlayerId = { ->
+                                logShotViewModel.updateIsExistingPlayerAndPlayerId(
+                                    isExistingPlayerArgument = bundle.getBoolean(NamedArguments.IS_EXISTING_PLAYER),
+                                    playerIdArgument = bundle.getInt(NamedArguments.PLAYER_ID),
+                                    shotIdArgument = bundle.getInt(NamedArguments.SHOT_ID)
+                                )
+                            }
+                        )
                     )
-                )
+                }
             }
             composable(
                 route = NavigationDestinations.FORGOT_PASSWORD_SCREEN
@@ -386,6 +401,26 @@ fun NavigationComponent(
                     emailArgument = it.arguments?.getString(NamedArguments.EMAIL)
                 )
             }
+        }
+    }
+
+    datePicker?.let { newDatePicker ->
+        TrackMyShotTheme {
+            CustomDatePickerDialog(
+                datePickerInfo = DatePickerInfo(
+                    onDateOkClicked = { value ->
+                        navigator.datePicker(datePickerAction = null)
+                        datePicker = null
+                        newDatePicker.onDateOkClicked.invoke(value)
+                    },
+                    onDismissClicked = {
+                        navigator.datePicker(datePickerAction = null)
+                        datePicker = null
+                        newDatePicker.onDismissClicked?.invoke()
+                    },
+                    dateValue = newDatePicker.dateValue
+                )
+            )
         }
     }
 

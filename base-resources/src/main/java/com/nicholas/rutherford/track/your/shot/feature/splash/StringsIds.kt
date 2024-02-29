@@ -7,6 +7,7 @@ object StringsIds {
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
     val areYouSureYouWantLeaveTrackYourShot = R.string.are_you_sure_you_want_to_leave_track_your_shot
     val c = R.string.c
+    val cancel = R.string.cancel
     val cameraPermissionHasBeenDeniedDescription = R.string.camera_permission_has_been_denied_description
     val center = R.string.center
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
@@ -106,6 +107,7 @@ object StringsIds {
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email
     val selectAShot = R.string.select_a_shot
+    val selectDate = R.string.select_date
     val settings = R.string.settings
     val shots = R.string.shots
     val showLess = R.string.show_less

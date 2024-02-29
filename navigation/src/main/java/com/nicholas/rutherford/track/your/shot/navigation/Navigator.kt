@@ -1,12 +1,14 @@
 package com.nicholas.rutherford.track.your.shot.navigation
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import kotlinx.coroutines.flow.StateFlow
 
 interface Navigator {
     val alertActions: StateFlow<Alert?>
     val appSettingsActions: StateFlow<Boolean?>
+    val datePickerActions: StateFlow<DatePickerInfo?>
     val emailActions: StateFlow<Boolean?>
     val finishActions: StateFlow<Boolean?>
     val navActions: StateFlow<NavigationAction?>
@@ -16,6 +18,7 @@ interface Navigator {
 
     fun alert(alertAction: Alert?)
     fun appSettings(appSettingsAction: Boolean?)
+    fun datePicker(datePickerAction: DatePickerInfo?)
     fun emailAction(emailAction: Boolean?)
     fun finish(finishAction: Boolean?)
     fun navigate(navigationAction: NavigationAction?)
