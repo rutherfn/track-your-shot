@@ -20,6 +20,8 @@
     <string name="create_player">Create Player</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
     <string name="current_players_has_no_changes_description">There haven\'t been any recent updates or modifications to the current player. Please make adjustments to the existing player to proceed.</string>
+    <string name="date_shots_logged">Date Shots Logged</string>
+    <string name="date_shots_taken">Date Shots Taken</string>
     <string name="delete_x">Delete %s</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
     <string name="do_you_wish_to_proceed_description">Do you wish to proceed despite having unsaved player modifications? Any changes made will not be saved.</string>
@@ -37,6 +39,8 @@
     <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">Email is required. Please enter a email to login to existing account.</string>
     <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">Email is required. Please enter a email to reset password for existing account.</string>
     <string name="email_required">Email*</string>
+    <string name="enter_shots_made">Enter Shots Made</string>
+    <string name="enter_shots_missed">Enter Shots Missed</string>
     <string name="edit_player">Edit Player</string>
     <string name="empty" translatable="false" />
     <string name="empty_field">Empty Field</string>
@@ -99,6 +103,11 @@
     <string name="remove_image">Remove Image</string>
     <string name="settings">Settings</string>
     <string name="shots">Shots</string>
+    <string name="shots_attempted">Shots Attempted</string>
+    <string name="shots_made">Shots Made</string>
+    <string name="shots_made_percentage">Shots Made Percentage</string>
+    <string name="shots_missed_percentage">Shots Missed Percentage</string>
+    <string name="shots_missed">Shots Missed</string>
     <string name="show_less">Show Less</string>
     <string name="show_more">Show More</string>
     <string name="sf" translatable="false">sf</string>

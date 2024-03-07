@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.navigation
 
+import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
@@ -11,6 +12,7 @@ interface Navigator {
     val datePickerActions: StateFlow<DatePickerInfo?>
     val emailActions: StateFlow<Boolean?>
     val finishActions: StateFlow<Boolean?>
+    val inputInfoActions: StateFlow<InputInfo?>
     val navActions: StateFlow<NavigationAction?>
     val popRouteActions: StateFlow<String?>
     val progressActions: StateFlow<Progress?>
@@ -21,6 +23,7 @@ interface Navigator {
     fun datePicker(datePickerAction: DatePickerInfo?)
     fun emailAction(emailAction: Boolean?)
     fun finish(finishAction: Boolean?)
+    fun inputInfo(inputInfoAction: InputInfo?)
     fun navigate(navigationAction: NavigationAction?)
     fun pop(popRouteAction: String?)
     fun progress(progressAction: Progress?)

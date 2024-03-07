@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.compose.components
+package com.nicholas.rutherford.track.your.shot.compose.components.dialogs
 
 import android.view.ContextThemeWrapper
 import android.widget.CalendarView
@@ -26,6 +26,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.compose.components.R
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toLocalDate
@@ -34,9 +35,15 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+/**
+ * Default [Dialog] with given params to build a custom date picker used for,
+ * displaying in viewModel; whenever we want to select a new date
+ *
+ * @param datePickerInfo Contains all given data to build out the [CustomDatePickerDialog]
+ */
 @Composable
 fun CustomDatePickerDialog(datePickerInfo: DatePickerInfo) {
-    val selDate = remember { mutableStateOf( datePickerInfo.dateValue?.toLocalDate() ?: LocalDate.now()) }
+    val selDate = remember { mutableStateOf(datePickerInfo.dateValue?.toLocalDate() ?: LocalDate.now()) }
 
     Dialog(
         onDismissRequest = { datePickerInfo.onDismissClicked?.invoke() },

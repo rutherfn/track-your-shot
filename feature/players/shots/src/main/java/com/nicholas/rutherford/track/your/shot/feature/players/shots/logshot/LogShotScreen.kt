@@ -2,23 +2,16 @@ package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.runtime.Composable
@@ -34,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
@@ -66,13 +60,19 @@ fun LogShotScreen(logShotParams: LogShotParams) {
 @Composable
 fun LogShotContent(logShotParams: LogShotParams) {
     ShotInfoContent(
-        onDateShotsTakenClicked = logShotParams.onDateShotsTakenClicked
+        state = logShotParams.state,
+        onDateShotsTakenClicked = logShotParams.onDateShotsTakenClicked,
+        onShotsMadeClicked = logShotParams.onShotsMadeClicked,
+        onShotsMissedClicked = logShotParams.onShotsMissedClicked
     )
 }
 
 @Composable
 private fun ShotInfoContent(
-    onDateShotsTakenClicked: () -> Unit
+    state: LogShotState,
+    onDateShotsTakenClicked: () -> Unit,
+    onShotsMadeClicked: () -> Unit,
+    onShotsMissedClicked: () -> Unit
 ) {
     var isPlayerShotInfoExpanded by remember { mutableStateOf(value = false) }
     var playerShotInfoImageVector by remember { mutableStateOf(value = Icons.Filled.ExpandMore) }
@@ -97,106 +97,89 @@ private fun ShotInfoContent(
             elevation = 2.dp
         ) {
             Column {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .fillMaxWidth()
-                        .clickable {
-                            isPlayerShotInfoExpanded = !isPlayerShotInfoExpanded
-                            playerShotInfoImageVector = if (isPlayerShotInfoExpanded) {
-                                Icons.Filled.ExpandLess
-                            } else {
-                                Icons.Filled.ExpandMore
-                            }
+                BaseRow(
+                    title = state.shotName,
+                    imageVector = playerShotInfoImageVector,
+                    onClicked = {
+                        isPlayerShotInfoExpanded = !isPlayerShotInfoExpanded
+                        playerShotInfoImageVector = if (isPlayerShotInfoExpanded) {
+                            Icons.Filled.ExpandLess
+                        } else {
+                            Icons.Filled.ExpandMore
                         }
-                        .padding(8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Hook Shot",
-                        modifier = Modifier.padding(start = 4.dp),
-                        style = TextStyles.smallBold
-                    )
-                    IconButton(
-                        onClick = {
-                            isPlayerShotInfoExpanded = !isPlayerShotInfoExpanded
-                            playerShotInfoImageVector = if (isPlayerShotInfoExpanded) {
-                                Icons.Filled.ExpandLess
-                            } else {
-                                Icons.Filled.ExpandMore
-                            }
-                        },
-                        modifier = Modifier.padding(start = 4.dp),
-                    ) {
-                        Icon(
-                            imageVector = playerShotInfoImageVector,
-                            contentDescription = ""
-                        )
                     }
-                }
+                )
 
                 if (isPlayerShotInfoExpanded) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Date Shots Logged",
-                            modifier = Modifier.padding(start = 4.dp),
-                            style = TextStyles.small.copy(fontSize = 16.sp)
-                        )
-                        Text(
-                            text = "11/12/22",
-                            modifier = Modifier.padding(start = 4.dp),
-                            style = TextStyles.body,
-                            color = AppColors.LightGray
-                        )
-                    }
+                    BaseRow(
+                        title = stringResource(id = StringsIds.dateShotsLogged),
+                        onClicked = {},
+                        subText = state.shotsLoggedDateValue,
+                        subTextColor = AppColors.LightGray,
+                        titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
+                        imageVector = null,
+                        shouldShowDivider = true
+                    )
 
-                    Divider()
+                    BaseRow(
+                        title = stringResource(id = StringsIds.dateShotsTaken),
+                        onClicked = { onDateShotsTakenClicked.invoke() },
+                        titleStyle = TextStyles.small.copy(fontSize = 16.sp),
+                        iconTint = Color.Blue,
+                        subText = state.shotsTakenDateValue,
+                        imageVector = Icons.Filled.CalendarToday,
+                        shouldShowDivider = true
+                    )
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .clickable {
-                                onDateShotsTakenClicked.invoke()
-                            },
-                        horizontalArrangement = Arrangement.SpaceBetween, // Aligns items with space between them
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Date Shots Taken",
-                            style = TextStyles.small.copy(fontSize = 16.sp),
-                            modifier = Modifier.padding(start = 4.dp)
-                        )
+                    BaseRow(
+                        title = stringResource(id = StringsIds.shotsMade),
+                        onClicked = { onShotsMadeClicked.invoke() },
+                        titleStyle = TextStyles.small.copy(fontSize = 16.sp),
+                        iconTint = Color.Blue,
+                        subText = state.shotsMade.toString(),
+                        imageVector = Icons.Filled.ChevronRight,
+                        shouldShowDivider = true
+                    )
 
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "-January 1, 2023",
-                                style = TextStyles.body.copy(color = Color.Blue),
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
+                    BaseRow(
+                        title = stringResource(id = StringsIds.shotsMissed),
+                        onClicked = { onShotsMissedClicked.invoke() },
+                        titleStyle = TextStyles.small.copy(fontSize = 16.sp),
+                        iconTint = Color.Blue,
+                        subText = state.shotsMissed.toString(),
+                        imageVector = Icons.Filled.ChevronRight,
+                        shouldShowDivider = true
+                    )
 
-                            Icon(
-                                imageVector = Icons.Filled.CalendarToday,
-                                contentDescription = "",
-                                tint = Color.Blue,
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .padding(end = 4.dp)
-                            )
-                        }
-                    }
+                    BaseRow(
+                        title = stringResource(id = StringsIds.shotsAttempted),
+                        onClicked = {},
+                        subText = state.shotsAttempted.toString(),
+                        subTextColor = AppColors.LightGray,
+                        titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
+                        imageVector = null,
+                        shouldShowDivider = true
+                    )
 
+                    BaseRow(
+                        title = stringResource(id = StringsIds.shotsMadePercentage),
+                        onClicked = {},
+                        subText = state.shotsMadePercentValue,
+                        subTextColor = AppColors.LightGray,
+                        titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
+                        imageVector = null,
+                        shouldShowDivider = true
+                    )
 
+                    BaseRow(
+                        title = stringResource(id = StringsIds.shotsMissedPercentage),
+                        onClicked = {},
+                        subText = state.shotsMissedPercentValue,
+                        subTextColor = AppColors.LightGray,
+                        titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
+                        imageVector = null,
+                        shouldShowDivider = true
+                    )
                 }
             }
         }

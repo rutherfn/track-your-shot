@@ -77,6 +77,16 @@ fun String.toLocalDate(): LocalDate? {
     }
 }
 
+fun LocalDate.toDateValue(): String? {
+    return try {
+        val formatter = DateTimeFormatter.ofPattern("MMM d, y", Locale.ENGLISH)
+        this.format(formatter)
+    } catch (e: Exception) {
+        // Return null if formatting fails
+        null
+    }
+}
+
 fun getImageUri(context: Context, image: Bitmap): Uri? {
     val values = ContentValues().apply {
         put(MediaStore.Images.Media.TITLE, "title")

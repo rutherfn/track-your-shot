@@ -20,9 +20,11 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.nicholas.rutherford.track.your.shot.compose.components.AlertDialog
-import com.nicholas.rutherford.track.your.shot.compose.components.CustomDatePickerDialog
-import com.nicholas.rutherford.track.your.shot.compose.components.ProgressDialog
+import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.AlertDialog
+import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.CustomDatePickerDialog
+import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.ProgressDialog
+import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.ShotInputDialog
+import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
@@ -88,6 +90,10 @@ fun NavigationComponent(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
+    val inputInfoState by navigator.inputInfoActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
     val navigatorState by navigator.navActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
@@ -107,6 +113,7 @@ fun NavigationComponent(
 
     var alert: Alert? by remember { mutableStateOf(value = null) }
     var datePicker: DatePickerInfo? by remember { mutableStateOf(value = null) }
+    var inputInfo: InputInfo? by remember { mutableStateOf(value = null) }
     var progress: Progress? by remember { mutableStateOf(value = null) }
 
     val screenContents = ScreenContents()
@@ -128,6 +135,11 @@ fun NavigationComponent(
     LaunchedEffect(datePickerState) {
         datePickerState?.let { newDatePicker ->
             datePicker = newDatePicker
+        }
+    }
+    LaunchedEffect(inputInfoState) {
+        inputInfoState?.let { newInputInfo ->
+            inputInfo = newInputInfo
         }
     }
     LaunchedEffect(appSettingsState) {
@@ -312,7 +324,7 @@ fun NavigationComponent(
                         onCancelIconClicked = { selectShotViewModel.onCancelIconClicked() },
                         onnDeclaredShotItemClicked = {},
                         onHelpIconClicked = {},
-                        updateIsExistingPlayerAndPlayerId = { ->
+                        updateIsExistingPlayerAndPlayerId = {
                             selectShotViewModel.updateIsExistingPlayerAndPlayerId(
                                 isExistingPlayerArgument = entry.arguments?.getBoolean(NamedArguments.IS_EXISTING_PLAYER),
                                 playerIdArgument = entry.arguments?.getInt(NamedArguments.PLAYER_ID)
@@ -334,13 +346,15 @@ fun NavigationComponent(
                             state = logShotViewModel.logShotStateFlow.collectAsState().value,
                             onBackButtonClicked = { logShotViewModel.onBackClicked() },
                             onDateShotsTakenClicked = { logShotViewModel.onDateShotsTakenClicked() },
-                            updateIsExistingPlayerAndPlayerId = { ->
+                            updateIsExistingPlayerAndPlayerId = {
                                 logShotViewModel.updateIsExistingPlayerAndPlayerId(
                                     isExistingPlayerArgument = bundle.getBoolean(NamedArguments.IS_EXISTING_PLAYER),
                                     playerIdArgument = bundle.getInt(NamedArguments.PLAYER_ID),
                                     shotIdArgument = bundle.getInt(NamedArguments.SHOT_ID)
                                 )
-                            }
+                            },
+                            onShotsMadeClicked = { logShotViewModel.onShotsMadeClicked() },
+                            onShotsMissedClicked = {  logShotViewModel.onShotsMissedClicked()}
                         )
                     )
                 }
@@ -402,6 +416,29 @@ fun NavigationComponent(
                 )
             }
         }
+    }
+
+    inputInfo?.let { info ->
+        ShotInputDialog(
+            inputInfo = InputInfo(
+                titleResId = info.titleResId,
+                confirmButtonResId = info.confirmButtonResId,
+                dismissButtonResId = info.dismissButtonResId,
+                placeholderResId = info.placeholderResId,
+                onConfirmButtonClicked = { value ->
+                    if (value.toIntOrNull() != null) {
+                        navigator.inputInfo(inputInfoAction = null)
+                        info.onConfirmButtonClicked.invoke(value)
+                        inputInfo = null
+                    }
+                },
+                onDismissButtonClicked = {
+                    navigator.inputInfo(inputInfoAction = null)
+                    info.onDismissButtonClicked?.invoke()
+                    inputInfo = null
+                }
+            )
+        )
     }
 
     datePicker?.let { newDatePicker ->
