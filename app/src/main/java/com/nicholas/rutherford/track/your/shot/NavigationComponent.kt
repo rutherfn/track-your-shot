@@ -354,7 +354,7 @@ fun NavigationComponent(
                                 )
                             },
                             onShotsMadeClicked = { logShotViewModel.onShotsMadeClicked() },
-                            onShotsMissedClicked = {  logShotViewModel.onShotsMissedClicked()}
+                            onShotsMissedClicked = { logShotViewModel.onShotsMissedClicked() }
                         )
                     )
                 }

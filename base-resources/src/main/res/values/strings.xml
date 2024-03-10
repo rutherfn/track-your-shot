@@ -102,6 +102,7 @@
     <string name="read_media_images_description">Permission to read media images has been declined. To manually enable the "Read Media Images" permission and select an image from the gallery for the Player, please navigate to settings.</string>
     <string name="remove_image">Remove Image</string>
     <string name="settings">Settings</string>
+    <string name="shot_percentage">%s %%</string>
     <string name="shots">Shots</string>
     <string name="shots_attempted">Shots Attempted</string>
     <string name="shots_made">Shots Made</string>

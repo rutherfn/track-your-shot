@@ -29,6 +29,7 @@ object Constants {
     const val POP_DEFAULT_ACTION = "pop"
     const val POSITION_VALUE = "positionValue"
     const val POSITION_NA = 5
+    const val SHOT_ZERO_VALUE = 0.0
     const val USERS_PATH = "users"
     const val POINT_GUARD_VALUE = 0
     const val SHOOTING_GUARD_VALUE = 1

@@ -298,6 +298,7 @@ class AppModule {
         }
         viewModel {
             LogShotViewModel(
+                application = androidApplication(),
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 declaredShotRepository = get(),

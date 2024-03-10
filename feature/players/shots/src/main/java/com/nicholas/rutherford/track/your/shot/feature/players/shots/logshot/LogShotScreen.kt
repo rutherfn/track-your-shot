@@ -59,24 +59,6 @@ fun LogShotScreen(logShotParams: LogShotParams) {
 
 @Composable
 fun LogShotContent(logShotParams: LogShotParams) {
-    ShotInfoContent(
-        state = logShotParams.state,
-        onDateShotsTakenClicked = logShotParams.onDateShotsTakenClicked,
-        onShotsMadeClicked = logShotParams.onShotsMadeClicked,
-        onShotsMissedClicked = logShotParams.onShotsMissedClicked
-    )
-}
-
-@Composable
-private fun ShotInfoContent(
-    state: LogShotState,
-    onDateShotsTakenClicked: () -> Unit,
-    onShotsMadeClicked: () -> Unit,
-    onShotsMissedClicked: () -> Unit
-) {
-    var isPlayerShotInfoExpanded by remember { mutableStateOf(value = false) }
-    var playerShotInfoImageVector by remember { mutableStateOf(value = Icons.Filled.ExpandMore) }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -88,6 +70,27 @@ private fun ShotInfoContent(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        ShotInfoContent(
+            state = logShotParams.state,
+            onDateShotsTakenClicked = logShotParams.onDateShotsTakenClicked,
+            onShotsMadeClicked = logShotParams.onShotsMadeClicked,
+            onShotsMissedClicked = logShotParams.onShotsMissedClicked
+        )
+        PlayerInfoContent(
+            state = logShotParams.state
+        )
+    }
+}
+
+@Composable
+private fun ShotInfoContent(
+    state: LogShotState,
+    onDateShotsTakenClicked: () -> Unit,
+    onShotsMadeClicked: () -> Unit,
+    onShotsMissedClicked: () -> Unit
+) {
+    var isPlayerShotInfoExpanded by remember { mutableStateOf(value = false) }
+    var playerShotInfoImageVector by remember { mutableStateOf(value = Icons.Filled.ExpandMore) }
 
         Card(
             modifier = Modifier
@@ -182,6 +185,53 @@ private fun ShotInfoContent(
                     )
                 }
             }
-        }
     }
 }
+
+@Composable
+fun PlayerInfoContent(
+    state: LogShotState
+) {
+    var isPlayerInfoExpanded by remember { mutableStateOf(value = false) }
+    var playerInfoImageVector by remember { mutableStateOf(value = Icons.Filled.ExpandMore) }
+
+    Card(
+        modifier = Modifier
+            .background(AppColors.White)
+            .fillMaxWidth()
+            .padding(top = 16.dp, bottom = 16.dp),
+        elevation = 2.dp
+    ) {
+        Column {
+            BaseRow(
+                title = state.playerName,
+                imageVector = playerInfoImageVector,
+                onClicked = {
+                    isPlayerInfoExpanded = !isPlayerInfoExpanded
+                    playerInfoImageVector = if (isPlayerInfoExpanded) {
+                        Icons.Filled.ExpandLess
+                    } else {
+                        Icons.Filled.ExpandMore
+                    }
+                }
+            )
+
+            if (isPlayerInfoExpanded) {
+                val subTextId = if (state.playerPosition == 0) {
+                    StringsIds.empty
+                } else {
+                    state.playerPosition
+                }
+                BaseRow(
+                    title = stringResource(id = StringsIds.position),
+                    onClicked = {},
+                    subText = stringResource(id = subTextId),
+                    subTextColor = AppColors.LightGray,
+                    titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
+                    imageVector = null,
+                    shouldShowDivider = true
+                )
+            }
+        }
+    }
+        }

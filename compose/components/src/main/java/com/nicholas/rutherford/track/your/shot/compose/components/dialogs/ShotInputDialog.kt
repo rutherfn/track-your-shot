@@ -58,7 +58,12 @@ fun ShotInputDialog(inputInfo: InputInfo) {
                 text = {
                     TextField(
                         value = numberText,
-                        onValueChange = { numberText = it },
+                        onValueChange = {
+                            val count = it.toIntOrNull() ?: 0
+                            if (it.matches(Regex(pattern = "\\d+")) && count <= 99) {
+                                numberText = it
+                            }
+                        },
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                         keyboardActions = KeyboardActions(
                             onDone = {

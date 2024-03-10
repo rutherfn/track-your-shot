@@ -95,6 +95,7 @@ object StringsIds {
     val permissionHasBeenDeclined = R.string.permission_has_been_declined
     val pg = R.string.pg
     val pointGuard = R.string.point_guard
+    val position = R.string.position
     val pf = R.string.pf
     val powerForward = R.string.power_forward
     val playerAlreadyHasBeenAddedDescription = R.string.player_already_has_been_added_description
@@ -113,6 +114,7 @@ object StringsIds {
     val selectAShot = R.string.select_a_shot
     val selectDate = R.string.select_date
     val settings = R.string.settings
+    val shotPercentage = R.string.shot_percentage
     val shots = R.string.shots
     val shotsAttempted = R.string.shots_attempted
     val shotsMade = R.string.shots_made
