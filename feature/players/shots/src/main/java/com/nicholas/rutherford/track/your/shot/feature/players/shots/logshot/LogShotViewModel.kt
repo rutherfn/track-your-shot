@@ -150,12 +150,19 @@ class LogShotViewModel(
     }
 
     fun onShotsMadeClicked() {
+        val currentShotsMade = logShotMutableStateFlow.value.shotsMade
+
         navigation.inputInfo(
             inputInfo = InputInfo(
                 titleResId = StringsIds.enterShotsMade,
                 confirmButtonResId = StringsIds.ok,
                 dismissButtonResId = StringsIds.cancel,
                 placeholderResId = StringsIds.shotsMade,
+                startingInputAmount = if (currentShotsMade == 0) {
+                    null
+                } else {
+                    currentShotsMade
+                },
                 onConfirmButtonClicked = { shots ->
                     updateStateAfterShotsMadeInput(shots = shots.toInt())
                 }
@@ -164,12 +171,19 @@ class LogShotViewModel(
     }
 
     fun onShotsMissedClicked() {
+        val currentShotsMissed = logShotMutableStateFlow.value.shotsMissed
+
         navigation.inputInfo(
             inputInfo = InputInfo(
                 titleResId = StringsIds.enterShotsMissed,
                 confirmButtonResId = StringsIds.ok,
                 dismissButtonResId = StringsIds.cancel,
                 placeholderResId = StringsIds.shotsMissed,
+                startingInputAmount = if (currentShotsMissed == 0) {
+                                                                                          null
+                                                                                          } else {
+                                                                                                 currentShotsMissed
+                                                                                                 },
                 onConfirmButtonClicked = { shots ->
                     updateShotsMissedState(shots = shots.toInt())
                 }

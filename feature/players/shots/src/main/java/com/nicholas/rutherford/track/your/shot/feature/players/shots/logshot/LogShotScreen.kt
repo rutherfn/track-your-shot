@@ -51,8 +51,9 @@ fun LogShotScreen(logShotParams: LogShotParams) {
             toolbarTitle = stringResource(id = StringsIds.logShot),
             shouldShowMiddleContentAppBar = false,
             shouldIncludeSpaceAfterDeclaration = false,
-            shouldShowSecondaryButton = false,
-            onIconButtonClicked = { logShotParams.onBackButtonClicked.invoke() }
+            shouldShowSecondaryButton = true,
+            onIconButtonClicked = { logShotParams.onBackButtonClicked.invoke() },
+            onSecondaryIconButtonClicked = {}
         )
     )
 }
@@ -76,9 +77,7 @@ fun LogShotContent(logShotParams: LogShotParams) {
             onShotsMadeClicked = logShotParams.onShotsMadeClicked,
             onShotsMissedClicked = logShotParams.onShotsMissedClicked
         )
-        PlayerInfoContent(
-            state = logShotParams.state
-        )
+        PlayerInfoContent(state = logShotParams.state)
     }
 }
 

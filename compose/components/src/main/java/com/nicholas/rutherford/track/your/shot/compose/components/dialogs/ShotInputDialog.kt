@@ -26,7 +26,7 @@ import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
 
 @Composable
 fun ShotInputDialog(inputInfo: InputInfo) {
-    var numberText by remember { mutableStateOf(value = "") }
+    var numberText by remember { mutableStateOf(value = inputInfo.startingInputAmount?.toString() ?: "") }
 
     TrackMyShotTheme {
         Dialog(
