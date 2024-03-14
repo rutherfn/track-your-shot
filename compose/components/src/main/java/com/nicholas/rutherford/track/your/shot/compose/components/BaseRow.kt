@@ -34,7 +34,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 @Composable
 fun BaseRow(
     title: String,
-    onClicked: () -> Unit,
+    onClicked: (() -> Unit)? = null,
     subTextColor: Color = Color.Unspecified,
     titleStyle: TextStyle = TextStyles.smallBold,
     iconTint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
@@ -42,12 +42,20 @@ fun BaseRow(
     imageVector: ImageVector? = null,
     shouldShowDivider: Boolean = false
 ) {
-    Row(
-        modifier = Modifier
+    val rowModidifer = onClicked?.let {
+        Modifier
             .fillMaxSize()
             .fillMaxWidth()
-            .clickable { onClicked.invoke() }
-            .padding(8.dp),
+            .clickable { it.invoke() }
+            .padding(8.dp)
+    } ?: run {
+        Modifier
+            .fillMaxSize()
+            .fillMaxWidth()
+            .padding(8.dp)
+    }
+    Row(
+        modifier =rowModidifer,
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

@@ -5,7 +5,7 @@ data class InputInfo(
     val confirmButtonResId: Int,
     val dismissButtonResId: Int,
     val placeholderResId: Int,
-    val startingInputAmount: Int? = null,
+    val startingInputAmount: Int?,
     val onConfirmButtonClicked: ((value: String) -> Unit),
     val onDismissButtonClicked: (() -> Unit)? = null,
 )

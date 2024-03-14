@@ -105,8 +105,6 @@ class LogShotViewModel(
     }
 
     internal fun shotsMissedPercentValue(shotsMade: Double, shotsMissed: Double): String {
-        println("shots made $shotsMade")
-        println("shots missed $shotsMissed")
         val totalShots = shotsMissed + shotsMade
         val percentValue = if (shotsMade != Constants.SHOT_ZERO_VALUE && shotsMissed != Constants.SHOT_ZERO_VALUE) {
             val percentage = shotsMissed / totalShots * 100
@@ -122,10 +120,6 @@ class LogShotViewModel(
 
         return percentValue
     }
-
-//    internal fun shosMadePercentValue(shotsMade: Double, shotsMissed: Double): String {
-//        if (shotsMade != 0 && shotsMissed != 0 )
-//    }
 
     internal fun updateStateAfterShotsMadeInput(shots: Int) {
         logShotMutableStateFlow.update { state ->
@@ -151,6 +145,8 @@ class LogShotViewModel(
 
     fun onShotsMadeClicked() {
         val currentShotsMade = logShotMutableStateFlow.value.shotsMade
+
+        println("here are the current shots made $currentShotsMade")
 
         navigation.inputInfo(
             inputInfo = InputInfo(
@@ -180,10 +176,10 @@ class LogShotViewModel(
                 dismissButtonResId = StringsIds.cancel,
                 placeholderResId = StringsIds.shotsMissed,
                 startingInputAmount = if (currentShotsMissed == 0) {
-                                                                                          null
-                                                                                          } else {
-                                                                                                 currentShotsMissed
-                                                                                                 },
+                    null
+                } else {
+                    currentShotsMissed
+                },
                 onConfirmButtonClicked = { shots ->
                     updateShotsMissedState(shots = shots.toInt())
                 }

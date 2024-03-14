@@ -425,12 +425,11 @@ fun NavigationComponent(
                 confirmButtonResId = info.confirmButtonResId,
                 dismissButtonResId = info.dismissButtonResId,
                 placeholderResId = info.placeholderResId,
+                startingInputAmount = info.startingInputAmount,
                 onConfirmButtonClicked = { value ->
-                    if (value.toIntOrNull() != null) {
-                        navigator.inputInfo(inputInfoAction = null)
-                        info.onConfirmButtonClicked.invoke(value)
-                        inputInfo = null
-                    }
+                    navigator.inputInfo(inputInfoAction = null)
+                    info.onConfirmButtonClicked.invoke(value)
+                    inputInfo = null
                 },
                 onDismissButtonClicked = {
                     navigator.inputInfo(inputInfoAction = null)

@@ -115,7 +115,7 @@ private fun ShotInfoContent(
                 if (isPlayerShotInfoExpanded) {
                     BaseRow(
                         title = stringResource(id = StringsIds.dateShotsLogged),
-                        onClicked = {},
+                        onClicked = null,
                         subText = state.shotsLoggedDateValue,
                         subTextColor = AppColors.LightGray,
                         titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
@@ -155,7 +155,7 @@ private fun ShotInfoContent(
 
                     BaseRow(
                         title = stringResource(id = StringsIds.shotsAttempted),
-                        onClicked = {},
+                        onClicked = null,
                         subText = state.shotsAttempted.toString(),
                         subTextColor = AppColors.LightGray,
                         titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
@@ -165,7 +165,7 @@ private fun ShotInfoContent(
 
                     BaseRow(
                         title = stringResource(id = StringsIds.shotsMadePercentage),
-                        onClicked = {},
+                        onClicked = null,
                         subText = state.shotsMadePercentValue,
                         subTextColor = AppColors.LightGray,
                         titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
@@ -175,7 +175,7 @@ private fun ShotInfoContent(
 
                     BaseRow(
                         title = stringResource(id = StringsIds.shotsMissedPercentage),
-                        onClicked = {},
+                        onClicked = null,
                         subText = state.shotsMissedPercentValue,
                         subTextColor = AppColors.LightGray,
                         titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
@@ -223,7 +223,7 @@ fun PlayerInfoContent(
                 }
                 BaseRow(
                     title = stringResource(id = StringsIds.position),
-                    onClicked = {},
+                    onClicked = null,
                     subText = stringResource(id = subTextId),
                     subTextColor = AppColors.LightGray,
                     titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),

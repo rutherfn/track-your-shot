@@ -23,10 +23,13 @@ import androidx.compose.ui.window.DialogProperties
 import com.nicholas.rutherford.track.your.shot.TrackMyShotTheme
 import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
 import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 
 @Composable
 fun ShotInputDialog(inputInfo: InputInfo) {
-    var numberText by remember { mutableStateOf(value = inputInfo.startingInputAmount?.toString() ?: "") }
+    var numberText by remember { mutableStateOf(value = "") }
+
+    println(inputInfo.startingInputAmount)
 
     TrackMyShotTheme {
         Dialog(
@@ -56,6 +59,11 @@ fun ShotInputDialog(inputInfo: InputInfo) {
                     )
                 },
                 text = {
+                    val placeholderText = if (inputInfo.startingInputAmount == null) {
+                        stringResource(id = inputInfo.placeholderResId)
+                    } else {
+                        stringResource(id = StringsIds.currentShotsX, inputInfo.startingInputAmount?.toString() ?: "")
+                    }
                     TextField(
                         value = numberText,
                         onValueChange = {
@@ -73,7 +81,7 @@ fun ShotInputDialog(inputInfo: InputInfo) {
                         modifier = Modifier.fillMaxWidth(),
                         colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor),
                         singleLine = true,
-                        placeholder = { Text(text = stringResource(id = inputInfo.placeholderResId)) }
+                        placeholder = { Text(text = placeholderText) }
                     )
                 },
                 modifier = Modifier.padding(32.dp)
