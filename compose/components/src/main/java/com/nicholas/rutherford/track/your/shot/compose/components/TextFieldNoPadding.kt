@@ -61,7 +61,7 @@ fun TextFieldNoPadding(
             value = value,
             keyboardOptions = keyboardOptions,
             onValueChange = {
-                newUsername ->
+                    newUsername ->
                 onValueChange.invoke(newUsername)
             },
             textStyle = textStyle,

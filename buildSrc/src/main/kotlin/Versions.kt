@@ -68,7 +68,7 @@ object Versions {
 
         object Koin { const val latestVersion = "3.2.0" }
 
-        object KtLint { const val ktLint = "11.0.0" }
+        object KtLint { const val ktLint = "11.5.0" }
 
         object Lifecycle {
             const val core = "2.6.0-alpha02"

@@ -120,7 +120,6 @@ class LogShotViewModel(
         }
     }
 
-
     internal fun updateStateAfterShotsMadeInput(shots: Int) {
         logShotMutableStateFlow.update { state ->
             state.copy(
@@ -198,17 +197,19 @@ class LogShotViewModel(
     }
 
     fun onBackClicked() {
-        logShotMutableStateFlow.update { state -> state.copy(
-            shotName = "",
-            playerName = "",
-            playerPosition = 0,
-            shotsLoggedDateValue = "",
-            shotsTakenDateValue = "",
-            shotsMade = 0,
-            shotsMissed = 0,
-            shotsAttempted = 0,
-            shotsMadePercentValue = "",
-            shotsMissedPercentValue = "")
+        logShotMutableStateFlow.update { state ->
+            state.copy(
+                shotName = "",
+                playerName = "",
+                playerPosition = 0,
+                shotsLoggedDateValue = "",
+                shotsTakenDateValue = "",
+                shotsMade = 0,
+                shotsMissed = 0,
+                shotsAttempted = 0,
+                shotsMadePercentValue = "",
+                shotsMissedPercentValue = ""
+            )
         }
         navigation.pop()
     }

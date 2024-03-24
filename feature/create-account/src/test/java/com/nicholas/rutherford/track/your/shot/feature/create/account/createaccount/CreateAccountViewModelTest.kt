@@ -78,7 +78,8 @@ class CreateAccountViewModelTest {
     @Test
     fun initializeCreateAccountState() {
         Assertions.assertEquals(
-            viewModel.createAccountStateFlow.value, state
+            viewModel.createAccountStateFlow.value,
+            state
         )
     }
 

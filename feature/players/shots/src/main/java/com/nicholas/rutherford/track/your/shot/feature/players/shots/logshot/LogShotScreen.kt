@@ -36,7 +36,6 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun LogShotScreen(logShotParams: LogShotParams) {
-
     BackHandler(true) {
         logShotParams.onBackButtonClicked.invoke()
     }
@@ -91,99 +90,99 @@ private fun ShotInfoContent(
     var isPlayerShotInfoExpanded by remember { mutableStateOf(value = false) }
     var playerShotInfoImageVector by remember { mutableStateOf(value = Icons.Filled.ExpandMore) }
 
-        Card(
-            modifier = Modifier
-                .background(AppColors.White)
-                .fillMaxWidth()
-                .padding(top = 16.dp, bottom = 16.dp),
-            elevation = 2.dp
-        ) {
-            Column {
-                BaseRow(
-                    title = state.shotName,
-                    imageVector = playerShotInfoImageVector,
-                    onClicked = {
-                        isPlayerShotInfoExpanded = !isPlayerShotInfoExpanded
-                        playerShotInfoImageVector = if (isPlayerShotInfoExpanded) {
-                            Icons.Filled.ExpandLess
-                        } else {
-                            Icons.Filled.ExpandMore
-                        }
+    Card(
+        modifier = Modifier
+            .background(AppColors.White)
+            .fillMaxWidth()
+            .padding(top = 16.dp, bottom = 16.dp),
+        elevation = 2.dp
+    ) {
+        Column {
+            BaseRow(
+                title = state.shotName,
+                imageVector = playerShotInfoImageVector,
+                onClicked = {
+                    isPlayerShotInfoExpanded = !isPlayerShotInfoExpanded
+                    playerShotInfoImageVector = if (isPlayerShotInfoExpanded) {
+                        Icons.Filled.ExpandLess
+                    } else {
+                        Icons.Filled.ExpandMore
                     }
+                }
+            )
+
+            if (isPlayerShotInfoExpanded) {
+                BaseRow(
+                    title = stringResource(id = StringsIds.dateShotsLogged),
+                    onClicked = null,
+                    subText = state.shotsLoggedDateValue,
+                    subTextColor = AppColors.LightGray,
+                    titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
+                    imageVector = null,
+                    shouldShowDivider = true
                 )
 
-                if (isPlayerShotInfoExpanded) {
-                    BaseRow(
-                        title = stringResource(id = StringsIds.dateShotsLogged),
-                        onClicked = null,
-                        subText = state.shotsLoggedDateValue,
-                        subTextColor = AppColors.LightGray,
-                        titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
-                        imageVector = null,
-                        shouldShowDivider = true
-                    )
+                BaseRow(
+                    title = stringResource(id = StringsIds.dateShotsTaken),
+                    onClicked = { onDateShotsTakenClicked.invoke() },
+                    titleStyle = TextStyles.small.copy(fontSize = 16.sp),
+                    iconTint = Color.Blue,
+                    subText = state.shotsTakenDateValue,
+                    imageVector = Icons.Filled.CalendarToday,
+                    shouldShowDivider = true
+                )
 
-                    BaseRow(
-                        title = stringResource(id = StringsIds.dateShotsTaken),
-                        onClicked = { onDateShotsTakenClicked.invoke() },
-                        titleStyle = TextStyles.small.copy(fontSize = 16.sp),
-                        iconTint = Color.Blue,
-                        subText = state.shotsTakenDateValue,
-                        imageVector = Icons.Filled.CalendarToday,
-                        shouldShowDivider = true
-                    )
+                BaseRow(
+                    title = stringResource(id = StringsIds.shotsMade),
+                    onClicked = { onShotsMadeClicked.invoke() },
+                    titleStyle = TextStyles.small.copy(fontSize = 16.sp),
+                    iconTint = Color.Blue,
+                    subText = state.shotsMade.toString(),
+                    imageVector = Icons.Filled.ChevronRight,
+                    shouldShowDivider = true
+                )
 
-                    BaseRow(
-                        title = stringResource(id = StringsIds.shotsMade),
-                        onClicked = { onShotsMadeClicked.invoke() },
-                        titleStyle = TextStyles.small.copy(fontSize = 16.sp),
-                        iconTint = Color.Blue,
-                        subText = state.shotsMade.toString(),
-                        imageVector = Icons.Filled.ChevronRight,
-                        shouldShowDivider = true
-                    )
+                BaseRow(
+                    title = stringResource(id = StringsIds.shotsMissed),
+                    onClicked = { onShotsMissedClicked.invoke() },
+                    titleStyle = TextStyles.small.copy(fontSize = 16.sp),
+                    iconTint = Color.Blue,
+                    subText = state.shotsMissed.toString(),
+                    imageVector = Icons.Filled.ChevronRight,
+                    shouldShowDivider = true
+                )
 
-                    BaseRow(
-                        title = stringResource(id = StringsIds.shotsMissed),
-                        onClicked = { onShotsMissedClicked.invoke() },
-                        titleStyle = TextStyles.small.copy(fontSize = 16.sp),
-                        iconTint = Color.Blue,
-                        subText = state.shotsMissed.toString(),
-                        imageVector = Icons.Filled.ChevronRight,
-                        shouldShowDivider = true
-                    )
+                BaseRow(
+                    title = stringResource(id = StringsIds.shotsAttempted),
+                    onClicked = null,
+                    subText = state.shotsAttempted.toString(),
+                    subTextColor = AppColors.LightGray,
+                    titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
+                    imageVector = null,
+                    shouldShowDivider = true
+                )
 
-                    BaseRow(
-                        title = stringResource(id = StringsIds.shotsAttempted),
-                        onClicked = null,
-                        subText = state.shotsAttempted.toString(),
-                        subTextColor = AppColors.LightGray,
-                        titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
-                        imageVector = null,
-                        shouldShowDivider = true
-                    )
+                BaseRow(
+                    title = stringResource(id = StringsIds.shotsMadePercentage),
+                    onClicked = null,
+                    subText = state.shotsMadePercentValue,
+                    subTextColor = AppColors.LightGray,
+                    titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
+                    imageVector = null,
+                    shouldShowDivider = true
+                )
 
-                    BaseRow(
-                        title = stringResource(id = StringsIds.shotsMadePercentage),
-                        onClicked = null,
-                        subText = state.shotsMadePercentValue,
-                        subTextColor = AppColors.LightGray,
-                        titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
-                        imageVector = null,
-                        shouldShowDivider = true
-                    )
-
-                    BaseRow(
-                        title = stringResource(id = StringsIds.shotsMissedPercentage),
-                        onClicked = null,
-                        subText = state.shotsMissedPercentValue,
-                        subTextColor = AppColors.LightGray,
-                        titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
-                        imageVector = null,
-                        shouldShowDivider = true
-                    )
-                }
+                BaseRow(
+                    title = stringResource(id = StringsIds.shotsMissedPercentage),
+                    onClicked = null,
+                    subText = state.shotsMissedPercentValue,
+                    subTextColor = AppColors.LightGray,
+                    titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
+                    imageVector = null,
+                    shouldShowDivider = true
+                )
             }
+        }
     }
 }
 
@@ -233,4 +232,4 @@ fun PlayerInfoContent(
             }
         }
     }
-        }
+}

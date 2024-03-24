@@ -41,7 +41,7 @@ fun ColumnScope.ShotsContent(
     shotsHaveBeenLogged: Boolean,
     pendingShotsHaveBeenLogged: Boolean,
     hintLogNewShotText: String,
-    onLogShotsClicked: () -> Unit,
+    onLogShotsClicked: () -> Unit
 ) {
     if (!shotsHaveBeenLogged) {
         ShotContentEmptyState(hintLogNewShotText = hintLogNewShotText, onLogShotsClicked = onLogShotsClicked)

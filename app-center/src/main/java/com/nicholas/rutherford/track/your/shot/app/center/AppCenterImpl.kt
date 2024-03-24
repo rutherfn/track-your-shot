@@ -25,8 +25,10 @@ class AppCenterImpl(private val application: Application, private val buildType:
 
     override fun start() {
         MicrosoftAppCenter.start(
-            application, generateAppCenterAppSecret(),
-            Analytics::class.java, Crashes::class.java
+            application,
+            generateAppCenterAppSecret(),
+            Analytics::class.java,
+            Crashes::class.java
         )
     }
 }

@@ -20,7 +20,8 @@ class NavigationDestinationsWithParamsTest {
 
         Assertions.assertEquals(
             navigationDestinationsWithParams.authenticationWithParams(
-                username = username, email = email
+                username = username,
+                email = email
             ),
             "authenticationScreen/username/emailtest@gmail.com"
         )

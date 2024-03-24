@@ -248,7 +248,6 @@ fun NavigationComponent(
             )
         }
     ) {
-
         NavHost(
             navController = navHostController,
             startDestination = NavigationDestinations.SPLASH_SCREEN
