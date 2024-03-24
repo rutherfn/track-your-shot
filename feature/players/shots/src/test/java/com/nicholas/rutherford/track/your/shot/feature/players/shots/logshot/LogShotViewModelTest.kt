@@ -90,62 +90,66 @@ class LogShotViewModelTest {
         }
 
         @Test
-        fun `when declaredShot is not null and player from fetch player by id is not null should update state`() = runTest {
-            val shotId = 2
-            val playerId = 4
+        fun `when declaredShot is not null and player from fetch player by id is not null should update state`() =
+            runTest {
+                val shotId = 2
+                val playerId = 4
 
-            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotId) } returns TestDeclaredShot.build()
-            coEvery { playerRepository.fetchPlayerById(id = playerId) } returns TestPlayer().create()
+                coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotId) } returns TestDeclaredShot.build()
+                coEvery { playerRepository.fetchPlayerById(id = playerId) } returns TestPlayer().create()
 
-            logShotViewModel.updateIsExistingPlayerAndId(
-                isExistingPlayerArgument = true,
-                playerIdArgument = playerId,
-                shotIdArgument = shotId
-            )
+                logShotViewModel.updateIsExistingPlayerAndId(
+                    isExistingPlayerArgument = true,
+                    playerIdArgument = playerId,
+                    shotIdArgument = shotId
+                )
 
-            Assertions.assertEquals(logShotViewModel.logShotMutableStateFlow.value, LogShotState(
-                shotName ="Hook Shot",
-                playerName = "first, last",
-                playerPosition =StringsIds.center,
-                shotsLoggedDateValue = LocalDate.now().toDateValue() ?: "",
-                shotsTakenDateValue = "",
-                shotsMade = 0,
-                shotsMissed = 0,
-                shotsAttempted = 0,
-                shotsMadePercentValue = "",
-                shotsMissedPercentValue = ""
-            )
-            )
-        }
+                Assertions.assertEquals(
+                    logShotViewModel.logShotMutableStateFlow.value, LogShotState(
+                        shotName = "Hook Shot",
+                        playerName = "first, last",
+                        playerPosition = StringsIds.center,
+                        shotsLoggedDateValue = LocalDate.now().toDateValue() ?: "",
+                        shotsTakenDateValue = "",
+                        shotsMade = 0,
+                        shotsMissed = 0,
+                        shotsAttempted = 0,
+                        shotsMadePercentValue = "",
+                        shotsMissedPercentValue = ""
+                    )
+                )
+            }
 
         @Test
-        fun `when declaredShot is not null and player from fetch pending player by id is not null should update state`() = runTest {
-            val shotId = 2
-            val playerId = 4
+        fun `when declaredShot is not null and player from fetch pending player by id is not null should update state`() =
+            runTest {
+                val shotId = 2
+                val playerId = 4
 
-            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotId) } returns TestDeclaredShot.build()
-            coEvery { pendingPlayerRepository.fetchPlayerById(id = playerId) } returns TestPlayer().create()
+                coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotId) } returns TestDeclaredShot.build()
+                coEvery { pendingPlayerRepository.fetchPlayerById(id = playerId) } returns TestPlayer().create()
 
-            logShotViewModel.updateIsExistingPlayerAndId(
-                isExistingPlayerArgument = false,
-                playerIdArgument = playerId,
-                shotIdArgument = shotId
-            )
+                logShotViewModel.updateIsExistingPlayerAndId(
+                    isExistingPlayerArgument = false,
+                    playerIdArgument = playerId,
+                    shotIdArgument = shotId
+                )
 
-            Assertions.assertEquals(logShotViewModel.logShotMutableStateFlow.value, LogShotState(
-                shotName = "Hook Shot",
-                playerName = "first, last",
-                playerPosition = StringsIds.center,
-                shotsLoggedDateValue = LocalDate.now().toDateValue() ?: "",
-                shotsTakenDateValue = "",
-                shotsMade = 0,
-                shotsMissed = 0,
-                shotsAttempted = 0,
-                shotsMadePercentValue = "",
-                shotsMissedPercentValue = ""
-            )
-            )
-        }
+                Assertions.assertEquals(
+                    logShotViewModel.logShotMutableStateFlow.value, LogShotState(
+                        shotName = "Hook Shot",
+                        playerName = "first, last",
+                        playerPosition = StringsIds.center,
+                        shotsLoggedDateValue = LocalDate.now().toDateValue() ?: "",
+                        shotsTakenDateValue = "",
+                        shotsMade = 0,
+                        shotsMissed = 0,
+                        shotsAttempted = 0,
+                        shotsMadePercentValue = "",
+                        shotsMissedPercentValue = ""
+                    )
+                )
+            }
     }
 
     @Nested
@@ -167,7 +171,7 @@ class LogShotViewModelTest {
 
         @Test
         fun `when shotsMade and shotsMissed is equal to zero should return zero`() {
-            val result =  logShotViewModel.shotsAttempted(shotsMade = 0, shotsMissed = 0)
+            val result = logShotViewModel.shotsAttempted(shotsMade = 0, shotsMissed = 0)
 
             Assertions.assertEquals(result, 0)
         }
@@ -272,7 +276,11 @@ class LogShotViewModelTest {
         fun `when percent is the default value should return empty string`() {
             every { application.getString(StringsIds.empty) } returns ""
 
-            val result = logShotViewModel.percentageFormat(shotsMade = 0.0, shotsMissed = 2.0, isShotsMade = true)
+            val result = logShotViewModel.percentageFormat(
+                shotsMade = 0.0,
+                shotsMissed = 2.0,
+                isShotsMade = true
+            )
 
             Assertions.assertEquals(result, "")
         }
@@ -282,7 +290,12 @@ class LogShotViewModelTest {
             val percentValue = 37.5
             val percentageRoundedValue = String.format("%.1f", percentValue)
 
-            every { application.getString(StringsIds.shotPercentage, percentageRoundedValue) } returns "37.5%"
+            every {
+                application.getString(
+                    StringsIds.shotPercentage,
+                    percentageRoundedValue
+                )
+            } returns "37.5%"
 
             val result = logShotViewModel.percentageFormat(
                 shotsMade = 3.0,
