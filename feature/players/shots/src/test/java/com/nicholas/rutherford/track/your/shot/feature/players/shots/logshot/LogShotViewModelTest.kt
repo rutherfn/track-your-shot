@@ -1,3 +1,4 @@
+
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot
 
 import android.app.Application
@@ -105,7 +106,8 @@ class LogShotViewModelTest {
                 )
 
                 Assertions.assertEquals(
-                    logShotViewModel.logShotMutableStateFlow.value, LogShotState(
+                    logShotViewModel.logShotMutableStateFlow.value,
+                    LogShotState(
                         shotName = "Hook Shot",
                         playerName = "first, last",
                         playerPosition = StringsIds.center,
@@ -136,7 +138,8 @@ class LogShotViewModelTest {
                 )
 
                 Assertions.assertEquals(
-                    logShotViewModel.logShotMutableStateFlow.value, LogShotState(
+                    logShotViewModel.logShotMutableStateFlow.value,
+                    LogShotState(
                         shotName = "Hook Shot",
                         playerName = "first, last",
                         playerPosition = StringsIds.center,
