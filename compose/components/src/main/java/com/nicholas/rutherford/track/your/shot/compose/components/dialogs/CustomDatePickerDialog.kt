@@ -1,6 +1,5 @@
 package com.nicholas.rutherford.track.your.shot.compose.components.dialogs
 
-import android.view.ContextThemeWrapper
 import android.widget.CalendarView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -26,7 +25,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.nicholas.rutherford.track.your.shot.AppColors
-import com.nicholas.rutherford.track.your.shot.compose.components.R
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toLocalDate
@@ -87,7 +85,7 @@ fun CustomDatePickerDialog(datePickerInfo: DatePickerInfo) {
             AndroidView(
                 modifier = Modifier.wrapContentSize(),
                 factory = { context ->
-                    CalendarView(ContextThemeWrapper(context, R.style.CalenderViewCustom))
+                    CalendarView(context)
                 },
                 update = { view ->
                     view.date = selDate.value.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()

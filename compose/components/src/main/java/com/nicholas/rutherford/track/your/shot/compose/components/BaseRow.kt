@@ -55,7 +55,7 @@ fun BaseRow(
             .padding(8.dp)
     }
     Row(
-        modifier =rowModidifer,
+        modifier = rowModidifer,
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
