@@ -347,7 +347,7 @@ fun NavigationComponent(
                             onBackButtonClicked = { logShotViewModel.onBackClicked() },
                             onDateShotsTakenClicked = { logShotViewModel.onDateShotsTakenClicked() },
                             updateIsExistingPlayerAndPlayerId = {
-                                logShotViewModel.updateIsExistingPlayerAndPlayerId(
+                                logShotViewModel.updateIsExistingPlayerAndId(
                                     isExistingPlayerArgument = bundle.getBoolean(NamedArguments.IS_EXISTING_PLAYER),
                                     playerIdArgument = bundle.getInt(NamedArguments.PLAYER_ID),
                                     shotIdArgument = bundle.getInt(NamedArguments.SHOT_ID)

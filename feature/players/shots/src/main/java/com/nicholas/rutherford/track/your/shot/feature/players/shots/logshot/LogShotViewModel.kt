@@ -24,18 +24,18 @@ class LogShotViewModel(
     private val scope: CoroutineScope,
     private val navigation: LogShotNavigation,
     private val declaredShotRepository: DeclaredShotRepository,
-    private val playerPendingPlayerRepository: PendingPlayerRepository,
+    private val pendingPlayerRepository: PendingPlayerRepository,
     private val playerRepository: PlayerRepository
 ) : ViewModel() {
 
     internal val logShotMutableStateFlow = MutableStateFlow(value = LogShotState())
     val logShotStateFlow = logShotMutableStateFlow.asStateFlow()
 
-    internal var isExistingPlayer: Boolean = false
-    internal var playerId: Int = 0
-    internal var shotId: Int = 0
+    private var isExistingPlayer = false
+    private var playerId = 0
+    private var shotId = 0
 
-    fun updateIsExistingPlayerAndPlayerId(
+    fun updateIsExistingPlayerAndId(
         isExistingPlayerArgument: Boolean,
         playerIdArgument: Int,
         shotIdArgument: Int
@@ -49,7 +49,7 @@ class LogShotViewModel(
             val player = if (isExistingPlayer) {
                 playerRepository.fetchPlayerById(id = playerId)
             } else {
-                playerPendingPlayerRepository.fetchPlayerById(id = playerId)
+                pendingPlayerRepository.fetchPlayerById(id = playerId)
             }
 
             safeLet(declaredShot, player) { shot, existingPlayer ->
@@ -87,47 +87,55 @@ class LogShotViewModel(
         }
     }
 
-    internal fun shotsMadePercentValue(shotsMade: Double, shotsMissed: Double): String {
-        val totalShots = shotsMade + shotsMissed
+    internal fun shotsPercentValue(shotsMade: Double, shotsMissed: Double, isShotsMade: Boolean): Double {
+        val totalShots = if (isShotsMade) {
+            shotsMade + shotsMissed
+        } else {
+            shotsMissed + shotsMade
+        }
         val percentValue = if (shotsMade != Constants.SHOT_ZERO_VALUE && shotsMissed != Constants.SHOT_ZERO_VALUE) {
-            val percentage = shotsMade / totalShots * 100
+            if (isShotsMade) {
+                shotsMade / totalShots * 100
+            } else {
+                shotsMissed / totalShots * 100
+            }
+        } else {
+            Constants.SHOT_ZERO_VALUE
+        }
+
+        return percentValue
+    }
+
+    internal fun percentageFormat(shotsMade: Double, shotsMissed: Double, isShotsMade: Boolean): String {
+        val percentage = shotsPercentValue(shotsMade = shotsMade, shotsMissed = shotsMissed, isShotsMade = isShotsMade)
+        return if (percentage == Constants.SHOT_ZERO_VALUE) {
+            application.getString(StringsIds.empty)
+        } else {
             val percentageRoundedValue = String.format("%.1f", percentage)
             if (percentageRoundedValue.endsWith(".0")) {
                 application.getString(StringsIds.shotPercentage, percentageRoundedValue.substring(0, percentageRoundedValue.length - 2))
             } else {
                 application.getString(StringsIds.shotPercentage, percentageRoundedValue)
             }
-        } else {
-            application.getString(StringsIds.empty)
         }
-
-        return percentValue
     }
 
-    internal fun shotsMissedPercentValue(shotsMade: Double, shotsMissed: Double): String {
-        val totalShots = shotsMissed + shotsMade
-        val percentValue = if (shotsMade != Constants.SHOT_ZERO_VALUE && shotsMissed != Constants.SHOT_ZERO_VALUE) {
-            val percentage = shotsMissed / totalShots * 100
-            val percentageRoundedValue = String.format("%.1f", percentage)
-            if (percentageRoundedValue.endsWith(".0")) {
-                application.getString(StringsIds.shotPercentage, percentageRoundedValue.substring(0, percentageRoundedValue.length - 2))
-            } else {
-                application.getString(StringsIds.shotPercentage, percentageRoundedValue)
-            }
-        } else {
-            application.getString(StringsIds.empty)
-        }
-
-        return percentValue
-    }
 
     internal fun updateStateAfterShotsMadeInput(shots: Int) {
         logShotMutableStateFlow.update { state ->
             state.copy(
                 shotsMade = shots,
                 shotsAttempted = shotsAttempted(shotsMade = shots, shotsMissed = state.shotsMissed),
-                shotsMadePercentValue = shotsMadePercentValue(shotsMade = shots.toDouble(), shotsMissed = state.shotsMissed.toDouble()),
-                shotsMissedPercentValue = shotsMissedPercentValue(shotsMade = shots.toDouble(), shotsMissed = state.shotsMissed.toDouble())
+                shotsMadePercentValue = percentageFormat(
+                    shotsMade = shots.toDouble(),
+                    shotsMissed = state.shotsMissed.toDouble(),
+                    isShotsMade = true
+                ),
+                shotsMissedPercentValue = percentageFormat(
+                    shotsMade = shots.toDouble(),
+                    shotsMissed = state.shotsMissed.toDouble(),
+                    isShotsMade = false
+                )
             )
         }
     }
@@ -137,28 +145,36 @@ class LogShotViewModel(
             state.copy(
                 shotsMissed = shots,
                 shotsAttempted = shotsAttempted(shotsMade = state.shotsMade, shotsMissed = shots),
-                shotsMadePercentValue = shotsMadePercentValue(shotsMade = state.shotsMade.toDouble(), shotsMissed = shots.toDouble()),
-                shotsMissedPercentValue = shotsMissedPercentValue(shotsMade = state.shotsMade.toDouble(), shotsMissed = shots.toDouble())
+                shotsMadePercentValue = percentageFormat(
+                    shotsMade = state.shotsMade.toDouble(),
+                    shotsMissed = shots.toDouble(),
+                    isShotsMade = true
+                ),
+                shotsMissedPercentValue = percentageFormat(
+                    shotsMade = state.shotsMade.toDouble(),
+                    shotsMissed = shots.toDouble(),
+                    isShotsMade = false
+                )
             )
         }
     }
 
+    internal fun startingInputAmount(amount: Int): Int? {
+        return if (amount > 0) {
+            amount
+        } else {
+            null
+        }
+    }
+
     fun onShotsMadeClicked() {
-        val currentShotsMade = logShotMutableStateFlow.value.shotsMade
-
-        println("here are the current shots made $currentShotsMade")
-
         navigation.inputInfo(
             inputInfo = InputInfo(
                 titleResId = StringsIds.enterShotsMade,
                 confirmButtonResId = StringsIds.ok,
                 dismissButtonResId = StringsIds.cancel,
                 placeholderResId = StringsIds.shotsMade,
-                startingInputAmount = if (currentShotsMade == 0) {
-                    null
-                } else {
-                    currentShotsMade
-                },
+                startingInputAmount = startingInputAmount(amount = logShotMutableStateFlow.value.shotsMade),
                 onConfirmButtonClicked = { shots ->
                     updateStateAfterShotsMadeInput(shots = shots.toInt())
                 }
@@ -167,19 +183,13 @@ class LogShotViewModel(
     }
 
     fun onShotsMissedClicked() {
-        val currentShotsMissed = logShotMutableStateFlow.value.shotsMissed
-
         navigation.inputInfo(
             inputInfo = InputInfo(
                 titleResId = StringsIds.enterShotsMissed,
                 confirmButtonResId = StringsIds.ok,
                 dismissButtonResId = StringsIds.cancel,
                 placeholderResId = StringsIds.shotsMissed,
-                startingInputAmount = if (currentShotsMissed == 0) {
-                    null
-                } else {
-                    currentShotsMissed
-                },
+                startingInputAmount = startingInputAmount(amount = logShotMutableStateFlow.value.shotsMissed),
                 onConfirmButtonClicked = { shots ->
                     updateShotsMissedState(shots = shots.toInt())
                 }
@@ -187,5 +197,19 @@ class LogShotViewModel(
         )
     }
 
-    fun onBackClicked() = navigation.pop()
+    fun onBackClicked() {
+        logShotMutableStateFlow.update { state -> state.copy(
+            shotName = "",
+            playerName = "",
+            playerPosition = 0,
+            shotsLoggedDateValue = "",
+            shotsTakenDateValue = "",
+            shotsMade = 0,
+            shotsMissed = 0,
+            shotsAttempted = 0,
+            shotsMadePercentValue = "",
+            shotsMissedPercentValue = "")
+        }
+        navigation.pop()
+    }
 }

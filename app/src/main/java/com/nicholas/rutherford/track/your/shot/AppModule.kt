@@ -302,7 +302,7 @@ class AppModule {
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 declaredShotRepository = get(),
-                playerPendingPlayerRepository = get(),
+                pendingPlayerRepository = get(),
                 playerRepository = get()
             )
         }
