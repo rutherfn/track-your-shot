@@ -104,10 +104,10 @@ class LogShotViewModelTest {
             )
 
             Assertions.assertEquals(logShotViewModel.logShotMutableStateFlow.value, LogShotState(
-                shotName="Hook Shot",
-                playerName= "first, last",
-                playerPosition=StringsIds.center,
-                shotsLoggedDateValue= LocalDate.now().toDateValue() ?: "",
+                shotName ="Hook Shot",
+                playerName = "first, last",
+                playerPosition =StringsIds.center,
+                shotsLoggedDateValue = LocalDate.now().toDateValue() ?: "",
                 shotsTakenDateValue = "",
                 shotsMade = 0,
                 shotsMissed = 0,
@@ -133,10 +133,10 @@ class LogShotViewModelTest {
             )
 
             Assertions.assertEquals(logShotViewModel.logShotMutableStateFlow.value, LogShotState(
-                shotName="Hook Shot",
-                playerName= "first, last",
-                playerPosition=StringsIds.center,
-                shotsLoggedDateValue= LocalDate.now().toDateValue() ?: "",
+                shotName = "Hook Shot",
+                playerName = "first, last",
+                playerPosition = StringsIds.center,
+                shotsLoggedDateValue = LocalDate.now().toDateValue() ?: "",
                 shotsTakenDateValue = "",
                 shotsMade = 0,
                 shotsMissed = 0,
