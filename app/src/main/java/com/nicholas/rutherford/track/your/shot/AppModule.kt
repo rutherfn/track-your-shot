@@ -40,9 +40,12 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotNavigation
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotNavigationImpl
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotNavigation
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigation
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
@@ -228,6 +231,9 @@ class AppModule {
         single<SelectShotNavigation> {
             SelectShotNavigationImpl(navigator = get())
         }
+        single<LogShotNavigation> {
+            LogShotNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(appCenter = get(), accountManager = get())
         }
@@ -288,6 +294,16 @@ class AppModule {
                 accountManager = get(),
                 createSharedPreferences = get(),
                 readSharedPreferences = get()
+            )
+        }
+        viewModel {
+            LogShotViewModel(
+                application = androidApplication(),
+                scope = defaultCoroutineScope,
+                navigation = get(),
+                declaredShotRepository = get(),
+                pendingPlayerRepository = get(),
+                playerRepository = get()
             )
         }
         viewModel {

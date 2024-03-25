@@ -447,6 +447,7 @@ class PlayersListViewModelTest {
             every { application.getString(StringsIds.unableToDeletePlayerPleaseContactSupport) } returns unableToDeletePlayerPleaseContactSupport
             every { application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue) } returns weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue
         }
+
         @Test
         fun `when device is connected to internet returns false should show alert`() = runTest {
             val expectedAlert = Alert(

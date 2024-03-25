@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.compose.components
+package com.nicholas.rutherford.track.your.shot.compose.components.dialogs
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog

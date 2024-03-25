@@ -20,6 +20,9 @@
     <string name="create_player">Create Player</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
     <string name="current_players_has_no_changes_description">There haven\'t been any recent updates or modifications to the current player. Please make adjustments to the existing player to proceed.</string>
+    <string name="current_shots_x">Current Shots %s</string>
+    <string name="date_shots_logged">Date Shots Logged</string>
+    <string name="date_shots_taken">Date Shots Taken</string>
     <string name="delete_x">Delete %s</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
     <string name="do_you_wish_to_proceed_description">Do you wish to proceed despite having unsaved player modifications? Any changes made will not be saved.</string>
@@ -37,6 +40,8 @@
     <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">Email is required. Please enter a email to login to existing account.</string>
     <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">Email is required. Please enter a email to reset password for existing account.</string>
     <string name="email_required">Email*</string>
+    <string name="enter_shots_made">Enter Shots Made</string>
+    <string name="enter_shots_missed">Enter Shots Missed</string>
     <string name="edit_player">Edit Player</string>
     <string name="empty" translatable="false" />
     <string name="empty_field">Empty Field</string>
@@ -57,6 +62,7 @@
     <string name="login">Login</string>
     <string name="login_icon_description">This is a login image for the login screen</string>
     <string name="logout">Logout</string>
+    <string name="log_shot">Log Shot</string>
     <string name="log_shots">Log Shots</string>
     <string name="menu">Menu</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
@@ -74,6 +80,7 @@
     <string name="reset_password_email_sent">Reset Password Email Sent</string>
     <string name="resend_email">Resend Email</string>
     <string name="select_a_shot">Select A Shot</string>
+    <string name="select_date">Select Date</string>
     <string name="password">Password</string>
     <string name="password_required">Password*</string>
     <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">Password is not in correct format. Please enter password in correct format</string>
@@ -96,13 +103,20 @@
     <string name="read_media_images_description">Permission to read media images has been declined. To manually enable the "Read Media Images" permission and select an image from the gallery for the Player, please navigate to settings.</string>
     <string name="remove_image">Remove Image</string>
     <string name="settings">Settings</string>
+    <string name="shot_percentage">%s %%</string>
     <string name="shots">Shots</string>
+    <string name="shots_attempted">Shots Attempted</string>
+    <string name="shots_made">Shots Made</string>
+    <string name="shots_made_percentage">Shots Made Percentage</string>
+    <string name="shots_missed_percentage">Shots Missed Percentage</string>
+    <string name="shots_missed">Shots Missed</string>
     <string name="show_less">Show Less</string>
     <string name="show_more">Show More</string>
     <string name="sf" translatable="false">sf</string>
     <string name="sg" translatable="false">sg</string>
     <string name="small_forward">Small Forward</string>
     <string name="shooting_guard">Shooting Guard</string>
+    <string name="shot_info">Shot Info</string>
     <string name="stats">Stats</string>
     <string name="splash_icon_description">This is a splash image for the splash screen that gets displayed before app is triggered</string>
     <string name="successfully_sent_email_verification">Successfully sent verification</string>
@@ -136,7 +150,7 @@
     <string name="verify_account">Verify Account</string>
     <string name="view_x">View %s</string>
     <string name="voice_commands">Voice Commands</string>
-    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_position_x_player_name" formatted="false">%s , %s</string>
     <string name="x_shot_category">Category - %s</string>
     <string name="yes">Yes</string>
     <string name="your_player_could_not_be_retrieved_description">Your player could not be retrieved. Please try again.</string>

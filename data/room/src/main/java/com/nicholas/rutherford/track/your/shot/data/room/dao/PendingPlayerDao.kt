@@ -18,6 +18,9 @@ interface PendingPlayerDao {
     @Query("DELETE FROM pendingPlayers")
     suspend fun deleteAllPendingPlayers()
 
+    @Query("SELECT * FROM pendingPlayers WHERE id = :id")
+    suspend fun getPlayerById(id: Int): PendingPlayerEntity?
+
     @Query("SELECT * FROM pendingPlayers")
     suspend fun getAllPendingPlayers(): List<PendingPlayerEntity>?
 

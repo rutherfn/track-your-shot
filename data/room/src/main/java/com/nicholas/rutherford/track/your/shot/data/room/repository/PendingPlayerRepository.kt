@@ -9,6 +9,7 @@ interface PendingPlayerRepository {
     suspend fun updatePendingPlayer(currentPendingPlayer: Player, newPendingPlayer: Player)
 
     suspend fun deleteAllPendingPlayers()
+    suspend fun fetchPlayerById(id: Int): Player?
     suspend fun fetchPendingPlayerIdByName(firstName: String, lastName: String): Int
 
     suspend fun fetchAllPendingPlayers(): List<Player>

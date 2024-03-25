@@ -135,7 +135,7 @@ private fun ComplexTopAppBar(
                     )
                 }
             }
-        },
+        }
     )
 
     if (appBar.shouldIncludeSpaceAfterDeclaration) {

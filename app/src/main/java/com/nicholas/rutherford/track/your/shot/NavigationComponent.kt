@@ -20,10 +20,14 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.nicholas.rutherford.track.your.shot.compose.components.AlertDialog
-import com.nicholas.rutherford.track.your.shot.compose.components.ProgressDialog
+import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.AlertDialog
+import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.CustomDatePickerDialog
+import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.ProgressDialog
+import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.ShotInputDialog
+import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationScreen
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountScreen
@@ -34,9 +38,12 @@ import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotParams
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.SelectShotScreen
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotParams
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotScreen
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotParams
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.ComparePlayersStatsAction
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
@@ -71,11 +78,19 @@ fun NavigationComponent(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
+    val datePickerState by navigator.datePickerActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
     val emailState by navigator.emailActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
     val finishState by navigator.finishActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
+    val inputInfoState by navigator.inputInfoActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
@@ -97,6 +112,8 @@ fun NavigationComponent(
     )
 
     var alert: Alert? by remember { mutableStateOf(value = null) }
+    var datePicker: DatePickerInfo? by remember { mutableStateOf(value = null) }
+    var inputInfo: InputInfo? by remember { mutableStateOf(value = null) }
     var progress: Progress? by remember { mutableStateOf(value = null) }
 
     val screenContents = ScreenContents()
@@ -108,10 +125,21 @@ fun NavigationComponent(
     val createEditPlayerViewModel = viewModels.createEditPlayerViewModel
     val forgotPasswordViewModel = viewModels.forgotPasswordViewModel
     val selectShotViewModel = viewModels.selectShotViewModel
+    val logShotViewModel = viewModels.logShotViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
             alert = newAlert
+        }
+    }
+    LaunchedEffect(datePickerState) {
+        datePickerState?.let { newDatePicker ->
+            datePicker = newDatePicker
+        }
+    }
+    LaunchedEffect(inputInfoState) {
+        inputInfoState?.let { newInputInfo ->
+            inputInfo = newInputInfo
         }
     }
     LaunchedEffect(appSettingsState) {
@@ -163,7 +191,11 @@ fun NavigationComponent(
 
     LaunchedEffect(popRouteState) {
         popRouteState?.let { route ->
-            navHostController.popBackStack(route = route, inclusive = false)
+            if (route == Constants.POP_DEFAULT_ACTION) {
+                navHostController.popBackStack()
+            } else {
+                navHostController.popBackStack(route = route, inclusive = false)
+            }
             navigator.pop(popRouteAction = null) // need to set this to null to listen to next pop action
         }
     }
@@ -216,7 +248,6 @@ fun NavigationComponent(
             )
         }
     ) {
-
         NavHost(
             navController = navHostController,
             startDestination = NavigationDestinations.SPLASH_SCREEN
@@ -292,14 +323,40 @@ fun NavigationComponent(
                         onCancelIconClicked = { selectShotViewModel.onCancelIconClicked() },
                         onnDeclaredShotItemClicked = {},
                         onHelpIconClicked = {},
-                        updateIsExistingPlayerAndPlayerId = { ->
+                        updateIsExistingPlayerAndPlayerId = {
                             selectShotViewModel.updateIsExistingPlayerAndPlayerId(
                                 isExistingPlayerArgument = entry.arguments?.getBoolean(NamedArguments.IS_EXISTING_PLAYER),
                                 playerIdArgument = entry.arguments?.getInt(NamedArguments.PLAYER_ID)
                             )
+                        },
+                        onItemClicked = { shotId ->
+                            selectShotViewModel.onDeclaredShotItemClicked(shotId = shotId)
                         }
                     )
                 )
+            }
+            composable(
+                route = NavigationDestinations.LOG_SHOT_WITH_PARAMS,
+                arguments = NavArguments.logShot
+            ) { entry ->
+                entry.arguments?.let { bundle ->
+                    LogShotScreen(
+                        logShotParams = LogShotParams(
+                            state = logShotViewModel.logShotStateFlow.collectAsState().value,
+                            onBackButtonClicked = { logShotViewModel.onBackClicked() },
+                            onDateShotsTakenClicked = { logShotViewModel.onDateShotsTakenClicked() },
+                            updateIsExistingPlayerAndPlayerId = {
+                                logShotViewModel.updateIsExistingPlayerAndId(
+                                    isExistingPlayerArgument = bundle.getBoolean(NamedArguments.IS_EXISTING_PLAYER),
+                                    playerIdArgument = bundle.getInt(NamedArguments.PLAYER_ID),
+                                    shotIdArgument = bundle.getInt(NamedArguments.SHOT_ID)
+                                )
+                            },
+                            onShotsMadeClicked = { logShotViewModel.onShotsMadeClicked() },
+                            onShotsMissedClicked = { logShotViewModel.onShotsMissedClicked() }
+                        )
+                    )
+                }
             }
             composable(
                 route = NavigationDestinations.FORGOT_PASSWORD_SCREEN
@@ -357,6 +414,48 @@ fun NavigationComponent(
                     emailArgument = it.arguments?.getString(NamedArguments.EMAIL)
                 )
             }
+        }
+    }
+
+    inputInfo?.let { info ->
+        ShotInputDialog(
+            inputInfo = InputInfo(
+                titleResId = info.titleResId,
+                confirmButtonResId = info.confirmButtonResId,
+                dismissButtonResId = info.dismissButtonResId,
+                placeholderResId = info.placeholderResId,
+                startingInputAmount = info.startingInputAmount,
+                onConfirmButtonClicked = { value ->
+                    navigator.inputInfo(inputInfoAction = null)
+                    info.onConfirmButtonClicked.invoke(value)
+                    inputInfo = null
+                },
+                onDismissButtonClicked = {
+                    navigator.inputInfo(inputInfoAction = null)
+                    info.onDismissButtonClicked?.invoke()
+                    inputInfo = null
+                }
+            )
+        )
+    }
+
+    datePicker?.let { newDatePicker ->
+        TrackMyShotTheme {
+            CustomDatePickerDialog(
+                datePickerInfo = DatePickerInfo(
+                    onDateOkClicked = { value ->
+                        navigator.datePicker(datePickerAction = null)
+                        datePicker = null
+                        newDatePicker.onDateOkClicked.invoke(value)
+                    },
+                    onDismissClicked = {
+                        navigator.datePicker(datePickerAction = null)
+                        datePicker = null
+                        newDatePicker.onDismissClicked?.invoke()
+                    },
+                    dateValue = newDatePicker.dateValue
+                )
+            )
         }
     }
 

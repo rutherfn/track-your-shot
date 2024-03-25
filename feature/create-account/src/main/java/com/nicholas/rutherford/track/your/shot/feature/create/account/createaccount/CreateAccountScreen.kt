@@ -56,7 +56,6 @@ fun CreateAccountScreenContent(createAccountScreenParams: CreateAccountScreenPar
             .padding(Padding.twenty),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Image(
             painter = painterResource(id = DrawablesIds.launcherRound),
             contentDescription = stringResource(id = StringsIds.loginIconDescription),

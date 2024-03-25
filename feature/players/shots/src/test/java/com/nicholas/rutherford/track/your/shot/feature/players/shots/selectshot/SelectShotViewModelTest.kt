@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.players.shots
+package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot

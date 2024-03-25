@@ -11,6 +11,9 @@ import android.provider.MediaStore
 import androidx.core.content.ContextCompat
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 inline fun <T1 : Any, T2 : Any, R : Any> safeLet(p1: T1?, p2: T2?, block: (T1, T2) -> R?): R? {
     return if (p1 != null && p2 != null) block(p1, p2) else null
@@ -61,6 +64,26 @@ fun PlayerPositions.toType(): Int {
             StringsIds.powerForward
         }
         else -> { StringsIds.center }
+    }
+}
+
+fun String.toLocalDate(): LocalDate? {
+    return try {
+        val formatter = DateTimeFormatter.ofPattern("MMM d, y", Locale.ENGLISH)
+        LocalDate.parse(this, formatter)
+    } catch (e: Exception) {
+        // Return null if parsing fails
+        null
+    }
+}
+
+fun LocalDate.toDateValue(): String? {
+    return try {
+        val formatter = DateTimeFormatter.ofPattern("MMM d, y", Locale.ENGLISH)
+        this.format(formatter)
+    } catch (e: Exception) {
+        // Return null if formatting fails
+        null
     }
 }
 

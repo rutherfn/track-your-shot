@@ -86,6 +86,16 @@ class PlayerEntityDaoTest {
     }
 
     @Test
+    fun getPlayerById() = runBlocking {
+        val newPlayerEntity = playerEntity.copy(id = 2, firstName = "first1", lastName = "last1")
+
+        playerDao.insert(playerEntity = playerEntity)
+        playerDao.insert(playerEntity = newPlayerEntity)
+
+        assertThat(newPlayerEntity, equalTo(playerDao.getPlayerById(id = 2)))
+    }
+
+    @Test
     fun getPlayerIdByName() = runBlocking {
         val newPlayerEntity = playerEntity.copy(id = 2, firstName = "first1", lastName = "last1")
 

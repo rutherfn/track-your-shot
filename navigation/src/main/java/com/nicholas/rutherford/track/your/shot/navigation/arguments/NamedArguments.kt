@@ -7,4 +7,5 @@ object NamedArguments {
     const val LAST_NAME = "lastName"
     const val IS_EXISTING_PLAYER = "isExistingPlayer"
     const val PLAYER_ID = "playerId"
+    const val SHOT_ID = "shotId"
 }

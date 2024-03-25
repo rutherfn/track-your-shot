@@ -371,6 +371,7 @@ class AccountManagerImplTest {
     @Nested
     inner class CollectPlayerInfoList {
         private val key = "key"
+
         @Test
         fun `when getPlayerInfoList returns empty list should call disableProcessAndNavigateToPlayersList and not createListOfPlayers`() = runTest {
             coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(emptyList())

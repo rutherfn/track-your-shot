@@ -7,6 +7,7 @@ object StringsIds {
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
     val areYouSureYouWantLeaveTrackYourShot = R.string.are_you_sure_you_want_to_leave_track_your_shot
     val c = R.string.c
+    val cancel = R.string.cancel
     val cameraPermissionHasBeenDeniedDescription = R.string.camera_permission_has_been_denied_description
     val center = R.string.center
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
@@ -20,6 +21,9 @@ object StringsIds {
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount =
         R.string.current_account_has_not_been_verified_please_open_email_to_verify_account
     val currentPlayerHasNoChangesDescription = R.string.current_players_has_no_changes_description
+    val currentShotsX = R.string.current_shots_x
+    val dateShotsLogged = R.string.date_shots_logged
+    val dateShotsTaken = R.string.date_shots_taken
     val deleteX = R.string.delete_x
     val deviceIsCurrentlyNotConnectedToInternetDesc =
         R.string.device_is_currently_not_connected_to_internet_desc
@@ -47,6 +51,8 @@ object StringsIds {
     val emailIsRequiredPleaseEnterAEmailToResetPasswordForExistingAccount =
         R.string.email_is_required_please_enter_a_email_to_reset_password_for_existing_account
     val emailRequired = R.string.email_required
+    val enterShotsMade = R.string.enter_shots_made
+    val enterShotsMissed = R.string.enter_shots_missed
     val errorCreatingAccount = R.string.error_creating_account
     val findShotsByName = R.string.find_shots_by_name
     val gotIt = R.string.got_it
@@ -66,6 +72,7 @@ object StringsIds {
     val login = R.string.login
     val loginIconDescription = R.string.login_icon_description
     val logout = R.string.logout
+    val logShot = R.string.log_shot
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
     val no = R.string.no
@@ -89,6 +96,7 @@ object StringsIds {
     val permissionHasBeenDeclined = R.string.permission_has_been_declined
     val pg = R.string.pg
     val pointGuard = R.string.point_guard
+    val position = R.string.position
     val pf = R.string.pf
     val powerForward = R.string.power_forward
     val playerAlreadyHasBeenAddedDescription = R.string.player_already_has_been_added_description
@@ -105,8 +113,15 @@ object StringsIds {
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email
     val selectAShot = R.string.select_a_shot
+    val selectDate = R.string.select_date
     val settings = R.string.settings
+    val shotPercentage = R.string.shot_percentage
     val shots = R.string.shots
+    val shotsAttempted = R.string.shots_attempted
+    val shotsMade = R.string.shots_made
+    val shotsMadePercentage = R.string.shots_made_percentage
+    val shotsMissedPercentage = R.string.shots_missed_percentage
+    val shotsMissed = R.string.shots_missed
     val showLess = R.string.show_less
     val showMore = R.string.show_more
     val smallForward = R.string.small_forward

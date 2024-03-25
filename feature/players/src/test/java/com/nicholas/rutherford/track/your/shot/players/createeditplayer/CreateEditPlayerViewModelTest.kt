@@ -393,6 +393,7 @@ class CreateEditPlayerViewModelTest {
 
             createEditPlayerViewModel.onToolbarMenuClicked()
 
+            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
             verify(exactly = 0) { navigation.pop() }
             verify { navigation.alert(alert = any()) }
         }
@@ -405,6 +406,7 @@ class CreateEditPlayerViewModelTest {
 
             createEditPlayerViewModel.onToolbarMenuClicked()
 
+            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
                 CreateEditPlayerState()
@@ -1304,6 +1306,7 @@ class CreateEditPlayerViewModelTest {
 
             createEditPlayerViewModel.onConfirmUnsavedPlayerChangesButtonClicked()
 
+            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
             Assertions.assertEquals(
                 createEditPlayerViewModel.pendingPlayers,
                 emptyPlayerList
@@ -1323,6 +1326,7 @@ class CreateEditPlayerViewModelTest {
 
             createEditPlayerViewModel.onConfirmUnsavedPlayerChangesButtonClicked()
 
+            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerMutableStateFlow.value,
                 CreateEditPlayerState()

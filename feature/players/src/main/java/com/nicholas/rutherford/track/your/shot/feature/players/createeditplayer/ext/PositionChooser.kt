@@ -49,7 +49,7 @@ fun PositionChooser(createEditPlayerParams: CreateEditPlayerParams) {
         Spacer(modifier = Modifier.height(Padding.sixteen))
         DropdownMenu(
             expanded = isDropdownExpanded,
-            onDismissRequest = { isDropdownExpanded = false },
+            onDismissRequest = { isDropdownExpanded = false }
         ) {
             options.forEachIndexed { index, option ->
                 DropdownMenuItem(

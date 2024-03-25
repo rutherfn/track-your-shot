@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.players.shots
+package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 
@@ -9,5 +9,6 @@ data class SelectShotParams(
     val onCancelIconClicked: () -> Unit,
     val onnDeclaredShotItemClicked: (declaredShot: DeclaredShot) -> Unit,
     val onHelpIconClicked: () -> Unit,
-    val updateIsExistingPlayerAndPlayerId: () -> Unit
+    val updateIsExistingPlayerAndPlayerId: () -> Unit,
+    val onItemClicked: (id: Int) -> Unit
 )

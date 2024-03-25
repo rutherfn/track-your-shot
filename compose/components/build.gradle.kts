@@ -70,9 +70,11 @@ android {
 }
 
 dependencies {
+    api(project(path = ":base-resources"))
     api(project(path = ":compose:theme"))
     api(project(path = ":data:shared"))
     api(project(path = ":helper:compose-content-test-rule"))
+    api(project(path = ":helper:extensions"))
     api(project(path = ":helper:ui"))
 
     debugImplementation(Dependencies.Compose.uiTooling)

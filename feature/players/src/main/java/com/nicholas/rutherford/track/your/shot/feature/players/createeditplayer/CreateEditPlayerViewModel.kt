@@ -119,6 +119,7 @@ class CreateEditPlayerViewModel(
         if (pendingPlayers.size == Constants.PENDING_PLAYERS_EXPECTED_SIZE) {
             navigation.alert(alert = unsavedPlayerChangesAlert())
         } else {
+            editedPlayer = null
             createEditPlayerMutableStateFlow.value = CreateEditPlayerState()
             navigation.pop()
         }
@@ -628,6 +629,7 @@ class CreateEditPlayerViewModel(
     }
 
     fun onConfirmUnsavedPlayerChangesButtonClicked() {
+        editedPlayer = null
         if (pendingPlayers.size == Constants.PENDING_PLAYERS_EXPECTED_SIZE) {
             scope.launch { pendingPlayerRepository.deleteAllPendingPlayers() }
             pendingPlayers = emptyList()

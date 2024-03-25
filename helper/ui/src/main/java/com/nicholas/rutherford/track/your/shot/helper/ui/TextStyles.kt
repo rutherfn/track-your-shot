@@ -12,31 +12,49 @@ object TextStyles {
     val large = TextStyle(
         fontSize = 40.sp,
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Bold, color = Colors.primaryColor
+        fontWeight = FontWeight.Bold,
+        color = Colors.primaryColor
     )
 
     val subLarge = TextStyle(
-        fontSize = 28.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Bold, color = Colors.primaryColor
+        fontSize = 28.sp,
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        color = Colors.primaryColor
     )
 
     val medium = TextStyle(
-        fontSize = 24.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Medium, color = Colors.primaryColor
+        fontSize = 24.sp,
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Medium,
+        color = Colors.primaryColor
     )
 
     val small = TextStyle(
-        fontSize = 18.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Medium, color = Colors.primaryColor
+        fontSize = 18.sp,
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Medium,
+        color = Colors.primaryColor
     )
 
     val smallBold = TextStyle(
-        fontSize = 18.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Bold, color = Colors.primaryColor
+        fontSize = 18.sp,
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        color = Colors.primaryColor
     )
 
     val bodyBold = TextStyle(
-        fontSize = 14.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Bold, color = Colors.primaryColor
+        fontSize = 14.sp,
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        color = Colors.primaryColor
     )
 
     val body = TextStyle(
-        fontSize = 14.sp, fontFamily = FontFamily.Default, color = Colors.primaryColor
+        fontSize = 14.sp,
+        fontFamily = FontFamily.Default,
+        color = Colors.primaryColor
     )
 
     val hyperLink = TextStyle(
