@@ -24,6 +24,9 @@ interface DeclaredShotDao {
     @Query("SELECT * FROM declaredShots WHERE id = :id")
     suspend fun getDeclaredShotFromId(id: Int): DeclaredShotEntity?
 
+    @Query("SELECT * FROM declaredShots WHERE title = :name")
+    suspend fun getDeclaredShotByName(name: String): DeclaredShotEntity?
+
     @Query("SELECT * FROM declaredShots WHERE REPLACE(title, ' ', '') LIKE '%' || REPLACE(:searchQuery, ' ', '') || '%' ORDER BY title ASC")
     suspend fun getDeclaredShotsBySearchQuery(searchQuery: String): List<DeclaredShotEntity>
 }

@@ -4,6 +4,7 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
@@ -42,6 +43,7 @@ class CreateEditPlayerViewModel(
     private val scope: CoroutineScope,
     private val navigation: CreateEditPlayerNavigation,
     private val playersAdditionUpdates: PlayersAdditionUpdates,
+    private val declaredShotRepository: DeclaredShotRepository,
     private val network: Network
 ) : ViewModel() {
 
@@ -66,6 +68,12 @@ class CreateEditPlayerViewModel(
             } ?: run {
                 updateToolbarNameResIdStateToCreatePlayer()
             }
+        }
+
+        scope.launch {
+        val result = declaredShotRepository.fetchDeclaredShotByName("Banked Three")
+
+            println(result)
         }
     }
 

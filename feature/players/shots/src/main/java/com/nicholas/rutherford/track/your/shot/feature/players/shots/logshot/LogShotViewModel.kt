@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
@@ -35,6 +37,8 @@ class LogShotViewModel(
     private var playerId = 0
     private var shotId = 0
 
+    private var currentPlayer: Player? = null
+
     fun updateIsExistingPlayerAndId(
         isExistingPlayerArgument: Boolean,
         playerIdArgument: Int,
@@ -51,6 +55,8 @@ class LogShotViewModel(
             } else {
                 pendingPlayerRepository.fetchPlayerById(id = playerId)
             }
+
+            currentPlayer = player
 
             safeLet(declaredShot, player) { shot, existingPlayer ->
                 logShotMutableStateFlow.update { state ->
@@ -87,33 +93,49 @@ class LogShotViewModel(
         }
     }
 
-    internal fun shotsPercentValue(shotsMade: Double, shotsMissed: Double, isShotsMade: Boolean): Double {
+    internal fun shotsPercentValue(
+        shotsMade: Double,
+        shotsMissed: Double,
+        isShotsMade: Boolean
+    ): Double {
         val totalShots = if (isShotsMade) {
             shotsMade + shotsMissed
         } else {
             shotsMissed + shotsMade
         }
-        val percentValue = if (shotsMade != Constants.SHOT_ZERO_VALUE && shotsMissed != Constants.SHOT_ZERO_VALUE) {
-            if (isShotsMade) {
-                shotsMade / totalShots * 100
+        val percentValue =
+            if (shotsMade != Constants.SHOT_ZERO_VALUE && shotsMissed != Constants.SHOT_ZERO_VALUE) {
+                if (isShotsMade) {
+                    shotsMade / totalShots * 100
+                } else {
+                    shotsMissed / totalShots * 100
+                }
             } else {
-                shotsMissed / totalShots * 100
+                Constants.SHOT_ZERO_VALUE
             }
-        } else {
-            Constants.SHOT_ZERO_VALUE
-        }
 
         return percentValue
     }
 
-    internal fun percentageFormat(shotsMade: Double, shotsMissed: Double, isShotsMade: Boolean): String {
-        val percentage = shotsPercentValue(shotsMade = shotsMade, shotsMissed = shotsMissed, isShotsMade = isShotsMade)
+    internal fun percentageFormat(
+        shotsMade: Double,
+        shotsMissed: Double,
+        isShotsMade: Boolean
+    ): String {
+        val percentage = shotsPercentValue(
+            shotsMade = shotsMade,
+            shotsMissed = shotsMissed,
+            isShotsMade = isShotsMade
+        )
         return if (percentage == Constants.SHOT_ZERO_VALUE) {
             application.getString(StringsIds.empty)
         } else {
             val percentageRoundedValue = String.format("%.1f", percentage)
             if (percentageRoundedValue.endsWith(".0")) {
-                application.getString(StringsIds.shotPercentage, percentageRoundedValue.substring(0, percentageRoundedValue.length - 2))
+                application.getString(
+                    StringsIds.shotPercentage,
+                    percentageRoundedValue.substring(0, percentageRoundedValue.length - 2)
+                )
             } else {
                 application.getString(StringsIds.shotPercentage, percentageRoundedValue)
             }
@@ -194,6 +216,27 @@ class LogShotViewModel(
                 }
             )
         )
+    }
+
+    fun onSaveClicked() {
+        scope.launch {
+            currentPlayer?.let { player ->
+                navigation.enableProgress(Progress())
+//                val newShotsLogged = player.shotsLoggedList + listOf(
+//                    ShotLogged(
+//                        shotType = gets
+//                    )
+//                )
+                if (isExistingPlayer) {
+//                        playerRepository.updatePlayer(
+//                            currentPlayer = player,
+//                            newPlayer = player.copy(shotsLoggedList =)
+//                        )
+                } else {
+
+                }
+            }
+        }
     }
 
     fun onBackClicked() {
