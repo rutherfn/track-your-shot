@@ -9,11 +9,13 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlaye
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.Center.toPlayerPosition
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
@@ -44,6 +46,7 @@ class CreateEditPlayerViewModel(
     private val navigation: CreateEditPlayerNavigation,
     private val playersAdditionUpdates: PlayersAdditionUpdates,
     private val declaredShotRepository: DeclaredShotRepository,
+    private val currentPendingShot: CurrentPendingShot,
     private val network: Network
 ) : ViewModel() {
 
@@ -54,26 +57,51 @@ class CreateEditPlayerViewModel(
     internal var editedPlayer: Player? = null
     internal var pendingPlayers: List<Player> = emptyList()
 
-    fun checkForExistingPlayer(firstNameArgument: String?, lastNameArgument: String?) {
-        scope.launch {
-            safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
-                if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
-                    playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)
-                        ?.let { player ->
-                            updateStateForExistingPlayer(player = player)
-                        } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
-                } else {
+    internal var pendingShotLoggedList: List<ShotLogged> = emptyList()
+
+    init {
+        scope.launch { collectPendingShotsLogged() }
+    }
+
+    internal suspend fun collectPendingShotsLogged() {
+        currentPendingShot.shotsStateFlow
+            .collectLatest { shotLoggedList ->
+                pendingShotLoggedList = shotLoggedList
+
+                if (pendingShotLoggedList.isNotEmpty()) {
+                    createEditPlayerMutableStateFlow.update { state ->
+                        state.copy(shots = state.shots + pendingShotLoggedList)
+                    }
+                }
+            }
+    }
+
+    fun checkForExistingPlayer(
+        firstNameArgument: String?,
+        lastNameArgument: String?,
+        hasPendingChangesArgument: Boolean?
+    ) {
+        println("has said changes $hasPendingChangesArgument")
+        if (hasPendingChangesArgument == false) {
+            scope.launch {
+                safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
+                    if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
+                        playerRepository.fetchPlayerByName(
+                            firstName = firstName,
+                            lastName = lastName
+                        )
+                            ?.let { player ->
+                                updateStateForExistingPlayer(player = player)
+                            } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
+                    } else {
+                        updateToolbarNameResIdStateToCreatePlayer()
+                    }
+                } ?: run {
                     updateToolbarNameResIdStateToCreatePlayer()
                 }
-            } ?: run {
-                updateToolbarNameResIdStateToCreatePlayer()
             }
-        }
+        } else {
 
-        scope.launch {
-        val result = declaredShotRepository.fetchDeclaredShotByName("Banked Three")
-
-            println(result)
         }
     }
 
@@ -110,7 +138,7 @@ class CreateEditPlayerViewModel(
                     firstName = player.firstName,
                     lastName = player.lastName
                 ),
-                shotsHaveBeenLogged = player.shotsLoggedList.isNotEmpty()
+                shots = player.shotsLoggedList
             )
     }
 

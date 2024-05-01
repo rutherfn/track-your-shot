@@ -115,7 +115,11 @@ class PlayersListViewModel(
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
 
     fun onAddPlayerClicked() {
-        navigation.navigateToCreateEditPlayer(firstName = null, lastName = null)
+        navigation.navigateToCreateEditPlayer(
+            firstName = null,
+            lastName = null,
+            hasPendingChanges = null
+        )
     }
 
     suspend fun onYesDeletePlayerClicked(player: Player) {
@@ -159,7 +163,7 @@ class PlayersListViewModel(
         }
     }
 
-    fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)
+    fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName, hasPendingChanges = null)
 
     fun onDeletePlayerClicked(player: Player) = navigation.alert(alert = deletePlayerAlert(player = player))
 

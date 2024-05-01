@@ -12,6 +12,7 @@ class ScreenContents {
     fun createEditPlayerContent(
         firstNameArgument: String?,
         lastNameArgument: String?,
+        hasPendingChangesArgument: Boolean?,
         createEditPlayerViewModel: CreateEditPlayerViewModel
     ): @Composable (NavBackStackEntry) -> Unit = {
         CreatePlayerScreen(
@@ -21,7 +22,8 @@ class ScreenContents {
                 checkForExistingPlayer = {
                     createEditPlayerViewModel.checkForExistingPlayer(
                         firstNameArgument = firstNameArgument,
-                        lastNameArgument = lastNameArgument
+                        lastNameArgument = lastNameArgument,
+                        hasPendingChangesArgument = hasPendingChangesArgument
                     )
                 },
                 onToolbarMenuClicked = { createEditPlayerViewModel.onToolbarMenuClicked() },

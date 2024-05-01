@@ -5,10 +5,15 @@ import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
@@ -19,7 +24,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.util.Date
+import java.util.Locale
 
 class LogShotViewModel(
     private val application: Application,
@@ -27,7 +35,8 @@ class LogShotViewModel(
     private val navigation: LogShotNavigation,
     private val declaredShotRepository: DeclaredShotRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
-    private val playerRepository: PlayerRepository
+    private val playerRepository: PlayerRepository,
+    private val currentPendingShot: CurrentPendingShot
 ) : ViewModel() {
 
     internal val logShotMutableStateFlow = MutableStateFlow(value = LogShotState())
@@ -38,6 +47,7 @@ class LogShotViewModel(
     private var shotId = 0
 
     private var currentPlayer: Player? = null
+    private var currentDeclaredShot: DeclaredShot? = null
 
     fun updateIsExistingPlayerAndId(
         isExistingPlayerArgument: Boolean,
@@ -57,6 +67,7 @@ class LogShotViewModel(
             }
 
             currentPlayer = player
+            currentDeclaredShot = declaredShot
 
             safeLet(declaredShot, player) { shot, existingPlayer ->
                 logShotMutableStateFlow.update { state ->
@@ -218,24 +229,104 @@ class LogShotViewModel(
         )
     }
 
+
+    fun invalidLogShotAlert(description: String): Alert {
+        return Alert(
+            title = application.getString(StringsIds.emptyField),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            ),
+            description = description
+        )
+    }
+
+    fun shotEntryInvalidAlert(shotsMade: Int, shotsMissed: Int, shotsAttemptedMillisecondsValue: Long) : Alert? {
+        val description: String? = if (shotsMade == 0) {
+            application.getString(StringsIds.shotsNotRecordedDescription)
+        } else if (shotsMissed == 0) {
+            application.getString(StringsIds.missedShotsNotRecordedDescription)
+        } else if (shotsAttemptedMillisecondsValue == 0L) {
+            application.getString(StringsIds.dateShotWasTakenDescription)
+        } else {
+            null
+        }
+
+        description?.let {
+            return invalidLogShotAlert(description = it)
+        } ?: run {
+            return null
+        }
+    }
+
     fun onSaveClicked() {
         scope.launch {
             currentPlayer?.let { player ->
                 navigation.enableProgress(Progress())
-//                val newShotsLogged = player.shotsLoggedList + listOf(
-//                    ShotLogged(
-//                        shotType = gets
-//                    )
-//                )
-                if (isExistingPlayer) {
-//                        playerRepository.updatePlayer(
-//                            currentPlayer = player,
-//                            newPlayer = player.copy(shotsLoggedList =)
-//                        )
-                } else {
+                val state = logShotMutableStateFlow.value
 
+                shotEntryInvalidAlert(
+                    shotsMade = state.shotsMade,
+                    shotsMissed = state.shotsMissed,
+                    shotsAttemptedMillisecondsValue = convertValueToDate(value = state.shotsTakenDateValue)?.time ?: 0
+                )?.let { alert ->
+                    navigation.disableProgress()
+                    navigation.alert(alert = alert)
+                } ?: run {
+                    currentPendingShot.createShot(shotLogged = ShotLogged(
+                        shotType = currentDeclaredShot?.id ?: 0,
+                        shotsAttempted = state.shotsAttempted,
+                        shotsMade = state.shotsMade,
+                        shotsMissed = state.shotsMissed,
+                        shotsMadePercentValue = convertPercentageToDouble(percentage = state.shotsMadePercentValue),
+                        shotsMissedPercentValue = convertPercentageToDouble(percentage = state.shotsMissedPercentValue),
+                        shotsAttemptedMillisecondsValue = convertValueToDate(value = state.shotsTakenDateValue)?.time ?: 0L,
+                        shotsLoggedMillisecondsValue = convertValueToDate(value = state.shotsLoggedDateValue)?.time ?: 0L,
+                        isPending = true
+                    ))
+                    navigateToCreateorEditPlayer()
                 }
+            } ?: run {
+                // player info missing alert
             }
+        }
+    }
+
+    fun convertPercentageToDouble(percentage: String): Double {
+        if (!percentage.contains("%")) {
+            return 0.0
+        }
+
+        // Remove the '%' sign from the percentage string
+        val valueWithoutPercentSign = percentage.replace("%", "")
+
+        val valueWithDecimal = if (!valueWithoutPercentSign.contains(".")) {
+            "$valueWithoutPercentSign.0"
+        } else {
+            valueWithoutPercentSign
+        }
+
+        return try {
+            valueWithDecimal.toDouble()
+        } catch (e: NumberFormatException) {
+            0.0
+        }
+    }
+
+    fun navigateToCreateorEditPlayer() {
+        navigation.disableProgress()
+        if (isExistingPlayer) {
+            navigation.popToEditPlayer()
+        } else {
+            navigation.disableProgress()
+            navigation.popToCreatePlayer()
+        }
+    }
+
+    fun convertValueToDate(value: String): Date? {
+        if (value.isEmpty()) {
+            return null
+        } else {
+            return SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).parse(value)
         }
     }
 

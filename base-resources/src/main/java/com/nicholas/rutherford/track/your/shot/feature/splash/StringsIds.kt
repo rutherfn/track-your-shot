@@ -122,6 +122,9 @@ object StringsIds {
     val shotsMadePercentage = R.string.shots_made_percentage
     val shotsMissedPercentage = R.string.shots_missed_percentage
     val shotsMissed = R.string.shots_missed
+    val shotsNotRecordedDescription = R.string.shots_not_recorded_description
+    val missedShotsNotRecordedDescription = R.string.missed_shots_not_recorded_description
+    val dateShotWasTakenDescription = R.string.date_shot_was_taken_description
     val showLess = R.string.show_less
     val showMore = R.string.show_more
     val smallForward = R.string.small_forward

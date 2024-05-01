@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
@@ -38,25 +39,34 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun ColumnScope.ShotsContent(
-    shotsHaveBeenLogged: Boolean,
-    pendingShotsHaveBeenLogged: Boolean,
+    shotList: List<ShotLogged>,
     hintLogNewShotText: String,
     onLogShotsClicked: () -> Unit
 ) {
-    if (!shotsHaveBeenLogged) {
+    val isShotsEmpty = shotList.isEmpty()
+    val shots = shotList.filter { shot -> !shot.isPending }
+    val pendingShots = shotList.filter { shot -> shot.isPending }
+
+    println("is shots empty $isShotsEmpty")
+
+    if (isShotsEmpty) {
         ShotContentEmptyState(hintLogNewShotText = hintLogNewShotText, onLogShotsClicked = onLogShotsClicked)
     } else {
-        ViewLoggedShots()
+        LoggedShot()
     }
 
-    if (pendingShotsHaveBeenLogged) {
-        PendingShots(shotsHaveBeenLogged = shotsHaveBeenLogged)
+    if (pendingShots.isNotEmpty()) {
+        PendingShot(
+            nonPendingShotsHaveBeenLogged = shots.isNotEmpty()
+        )
     }
 }
 
 @Composable
-private fun ColumnScope.PendingShots(shotsHaveBeenLogged: Boolean) {
-    if (!shotsHaveBeenLogged) {
+private fun ColumnScope.PendingShot(
+    nonPendingShotsHaveBeenLogged: Boolean
+) {
+    if (!nonPendingShotsHaveBeenLogged) {
         Text(
             text = "Shots",
             style = TextStyles.small,
@@ -93,9 +103,7 @@ private fun ColumnScope.PendingShots(shotsHaveBeenLogged: Boolean) {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(
-                    onClick = { }
-                ) {
+                IconButton(onClick = { }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowForward,
                         contentDescription = ""
@@ -107,53 +115,53 @@ private fun ColumnScope.PendingShots(shotsHaveBeenLogged: Boolean) {
 }
 
 @Composable
-private fun ColumnScope.ViewLoggedShots() {
-    Text(
-        text = stringResource(id = R.string.shots),
-        style = TextStyles.small,
-        modifier = Modifier
-            .align(Alignment.Start)
-            .padding(top = Padding.twelve, start = Padding.four)
-    )
+private fun ColumnScope.LoggedShot() {
+        Text(
+            text = stringResource(id = R.string.shots),
+            style = TextStyles.small,
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(top = Padding.twelve, start = Padding.four)
+        )
 
-    Card(
-        modifier = Modifier
-            .background(AppColors.White)
-            .fillMaxWidth()
-            .padding(
-                top = 16.dp,
-                end = 4.dp,
-                bottom = 16.dp
-            ),
-        elevation = 2.dp
-    ) {
-        Column {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Current Shots\nLast Logged: 10/11/2022", // todo update this with real text from shots
-                    style = TextStyles.body,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.padding(vertical = 4.dp)
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                IconButton(
-                    onClick = { }
+        Card(
+            modifier = Modifier
+                .background(AppColors.White)
+                .fillMaxWidth()
+                .padding(
+                    top = 16.dp,
+                    end = 4.dp,
+                    bottom = 16.dp
+                ),
+            elevation = 2.dp
+        ) {
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowForward,
-                        contentDescription = ""
+                    Text(
+                        text = "Current Shots\nLast Logged: 10/11/2022", // todo update this with real text from shots
+                        style = TextStyles.body,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(vertical = 4.dp)
                     )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    IconButton(
+                        onClick = { }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowForward,
+                            contentDescription = ""
+                        )
+                    }
                 }
             }
         }
-    }
 }
 
 @Composable

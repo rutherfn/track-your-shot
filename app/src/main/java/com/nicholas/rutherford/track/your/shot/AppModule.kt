@@ -40,6 +40,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.CurrentPendingShot
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.CurrentPendingShotImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotViewModel
@@ -124,9 +126,8 @@ class AppModule {
                 declaredShotsJson = get()
             )
         }
-        single<UserRepository> {
-            UserRepositoryImpl(userDao = get())
-        }
+        single<CurrentPendingShot> { CurrentPendingShotImpl() }
+        single<UserRepository> { UserRepositoryImpl(userDao = get()) }
         single<PlayerRepository> {
             PlayerRepositoryImpl(playerDao = get())
         }
@@ -284,6 +285,7 @@ class AppModule {
                 navigation = get(),
                 playersAdditionUpdates = get(),
                 declaredShotRepository = get(),
+                currentPendingShot = get(),
                 network = get()
             )
         }
@@ -304,7 +306,8 @@ class AppModule {
                 navigation = get(),
                 declaredShotRepository = get(),
                 pendingPlayerRepository = get(),
-                playerRepository = get()
+                playerRepository = get(),
+                currentPendingShot = get()
             )
         }
         viewModel {

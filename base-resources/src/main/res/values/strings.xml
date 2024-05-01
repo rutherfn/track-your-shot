@@ -110,6 +110,9 @@
     <string name="shots_made_percentage">Shots Made Percentage</string>
     <string name="shots_missed_percentage">Shots Missed Percentage</string>
     <string name="shots_missed">Shots Missed</string>
+    <string name="shots_not_recorded_description">You haven\'t recorded any successful shots. Please input the number of shots made to proceed with logging the shot.</string>
+    <string name="missed_shots_not_recorded_description">You haven\'t recorded any missed shots. Please input the number of shots missed to proceed with logging the shot.</string>
+    <string name="date_shot_was_taken_description">You haven\'t entered the date the shot was taken. Please input the date the shot was taken to proceed with logging ths shot.</string>
     <string name="show_less">Show Less</string>
     <string name="show_more">Show More</string>
     <string name="sf" translatable="false">sf</string>

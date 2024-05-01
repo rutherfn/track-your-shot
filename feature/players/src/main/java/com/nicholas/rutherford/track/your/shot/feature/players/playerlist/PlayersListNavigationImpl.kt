@@ -14,13 +14,15 @@ class PlayersListNavigationImpl(
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
     override fun navigateToCreateEditPlayer(
         firstName: String?,
-        lastName: String?
+        lastName: String?,
+        hasPendingChanges: Boolean?
     ) {
         safeLet(firstName, lastName) { first, last ->
             navigator.navigate(
                 navigationAction = NavigationActions.PlayersList.createEditPlayerWithParams(
                     firstName = first,
-                    lastName = last
+                    lastName = last,
+                    hasPendingChanges = hasPendingChanges
                 )
             )
         } ?: run {

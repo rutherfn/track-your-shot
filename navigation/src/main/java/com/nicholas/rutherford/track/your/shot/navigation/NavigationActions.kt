@@ -94,8 +94,8 @@ object NavigationActions {
             override val navOptions = NavOptions.Builder().build()
         }
 
-        fun createEditPlayerWithParams(firstName: String, lastName: String) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.createEditPlayerWithParams(firstName = firstName, lastName = lastName)
+        fun createEditPlayerWithParams(firstName: String, lastName: String, hasPendingChanges: Boolean?) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.createEditPlayerWithParams(firstName = firstName, lastName = lastName, hasPendingChanges = hasPendingChanges)
             override val navOptions = NavOptions.Builder().build()
         }
     }

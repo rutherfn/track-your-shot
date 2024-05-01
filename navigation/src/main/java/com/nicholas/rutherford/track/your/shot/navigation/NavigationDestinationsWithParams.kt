@@ -5,8 +5,8 @@ object NavigationDestinationsWithParams {
         return "${NavigationDestinations.AUTHENTICATION_SCREEN}/$username/$email"
     }
 
-    fun createEditPlayerWithParams(firstName: String, lastName: String): String {
-        return "${NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN}/$firstName/$lastName"
+    fun createEditPlayerWithParams(firstName: String, lastName: String, hasPendingChanges: Boolean?): String {
+        return "${NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN}/$firstName/$lastName/$hasPendingChanges"
     }
 
     fun logShotWithParams(isExistingPlayer: Boolean, playerId: Int, shotId: Int): String {
