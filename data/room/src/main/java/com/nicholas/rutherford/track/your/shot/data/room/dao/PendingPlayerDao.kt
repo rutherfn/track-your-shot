@@ -24,6 +24,9 @@ interface PendingPlayerDao {
     @Query("SELECT * FROM pendingPlayers")
     suspend fun getAllPendingPlayers(): List<PendingPlayerEntity>?
 
+    @Query("SELECT * FROM pendingPlayers WHERE firstName = :firstName AND lastName = :lastName")
+    suspend fun getPendingPlayerByName(firstName: String, lastName: String): PendingPlayerEntity?
+
     @Query("SELECT id FROM pendingPlayers WHERE firstName = :firstName AND lastName = :lastName")
     suspend fun getPendingPlayerIdByName(firstName: String, lastName: String): Int
 }

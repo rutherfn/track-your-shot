@@ -56,7 +56,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CreatePlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
+fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
     val bottomState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
     var hasUploadedImage by remember { mutableStateOf(false) }

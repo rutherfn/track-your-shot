@@ -194,11 +194,17 @@ class NavigationActionsTest {
                 val hasPendingChanges = false
 
                 Assertions.assertEquals(
-                    Actions.PlayersList.createEditPlayerWithParams(firstName = firstName, lastName = lastName, hasPendingChanges = hasPendingChanges).destination,
+                    Actions.PlayersList.createEditPlayerWithParams(
+                        firstName = firstName,
+                        lastName = lastName
+                    ).destination,
                     NavigationDestinationsWithParams.createEditPlayerWithParams(firstName = firstName, lastName = lastName, hasPendingChanges = hasPendingChanges)
                 )
                 Assertions.assertEquals(
-                    Actions.PlayersList.createEditPlayerWithParams(firstName = firstName, lastName = lastName, hasPendingChanges = hasPendingChanges).navOptions,
+                    Actions.PlayersList.createEditPlayerWithParams(
+                        firstName = firstName,
+                        lastName = lastName
+                    ).navOptions,
                     NavOptions.Builder().build()
                 )
             }

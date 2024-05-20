@@ -21,8 +21,7 @@ class PlayersListNavigationImpl(
             navigator.navigate(
                 navigationAction = NavigationActions.PlayersList.createEditPlayerWithParams(
                     firstName = first,
-                    lastName = last,
-                    hasPendingChanges = hasPendingChanges
+                    lastName = last
                 )
             )
         } ?: run {

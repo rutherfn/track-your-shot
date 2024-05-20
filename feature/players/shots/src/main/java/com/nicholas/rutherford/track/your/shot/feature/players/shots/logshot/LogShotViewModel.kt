@@ -13,7 +13,8 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.CurrentPendingShot
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
@@ -229,7 +230,6 @@ class LogShotViewModel(
         )
     }
 
-
     fun invalidLogShotAlert(description: String): Alert {
         return Alert(
             title = application.getString(StringsIds.emptyField),
@@ -240,7 +240,7 @@ class LogShotViewModel(
         )
     }
 
-    fun shotEntryInvalidAlert(shotsMade: Int, shotsMissed: Int, shotsAttemptedMillisecondsValue: Long) : Alert? {
+    fun shotEntryInvalidAlert(shotsMade: Int, shotsMissed: Int, shotsAttemptedMillisecondsValue: Long): Alert? {
         val description: String? = if (shotsMade == 0) {
             application.getString(StringsIds.shotsNotRecordedDescription)
         } else if (shotsMissed == 0) {
@@ -272,21 +272,25 @@ class LogShotViewModel(
                     navigation.disableProgress()
                     navigation.alert(alert = alert)
                 } ?: run {
-                    currentPendingShot.createShot(shotLogged = ShotLogged(
-                        shotType = currentDeclaredShot?.id ?: 0,
-                        shotsAttempted = state.shotsAttempted,
-                        shotsMade = state.shotsMade,
-                        shotsMissed = state.shotsMissed,
-                        shotsMadePercentValue = convertPercentageToDouble(percentage = state.shotsMadePercentValue),
-                        shotsMissedPercentValue = convertPercentageToDouble(percentage = state.shotsMissedPercentValue),
-                        shotsAttemptedMillisecondsValue = convertValueToDate(value = state.shotsTakenDateValue)?.time ?: 0L,
-                        shotsLoggedMillisecondsValue = convertValueToDate(value = state.shotsLoggedDateValue)?.time ?: 0L,
-                        isPending = true
-                    ))
+                    currentPendingShot.createShot(
+                        shotLogged = PendingShot(
+                            player = player,
+                            shotLogged = ShotLogged(
+                                shotType = currentDeclaredShot?.id ?: 0,
+                                shotsAttempted = state.shotsAttempted,
+                                shotsMade = state.shotsMade,
+                                shotsMissed = state.shotsMissed,
+                                shotsMadePercentValue = convertPercentageToDouble(percentage = state.shotsMadePercentValue),
+                                shotsMissedPercentValue = convertPercentageToDouble(percentage = state.shotsMissedPercentValue),
+                                shotsAttemptedMillisecondsValue = convertValueToDate(value = state.shotsTakenDateValue)?.time ?: 0L,
+                                shotsLoggedMillisecondsValue = convertValueToDate(value = state.shotsLoggedDateValue)?.time ?: 0L,
+                                isPending = true
+                            ),
+                            isPendingPlayer = isExistingPlayer
+                        )
+                    )
                     navigateToCreateorEditPlayer()
                 }
-            } ?: run {
-                // player info missing alert
             }
         }
     }
@@ -296,7 +300,6 @@ class LogShotViewModel(
             return 0.0
         }
 
-        // Remove the '%' sign from the percentage string
         val valueWithoutPercentSign = percentage.replace("%", "")
 
         val valueWithDecimal = if (!valueWithoutPercentSign.contains(".")) {
@@ -315,7 +318,7 @@ class LogShotViewModel(
     fun navigateToCreateorEditPlayer() {
         navigation.disableProgress()
         if (isExistingPlayer) {
-            navigation.popToEditPlayer()
+            navigation.navigateToCreateEditPlayer()
         } else {
             navigation.disableProgress()
             navigation.popToCreatePlayer()
@@ -323,10 +326,10 @@ class LogShotViewModel(
     }
 
     fun convertValueToDate(value: String): Date? {
-        if (value.isEmpty()) {
-            return null
+        return if (value.isEmpty()) {
+            null
         } else {
-            return SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).parse(value)
+            SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).parse(value)
         }
     }
 

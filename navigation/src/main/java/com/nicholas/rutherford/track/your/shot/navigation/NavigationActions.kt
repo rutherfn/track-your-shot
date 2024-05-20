@@ -94,8 +94,8 @@ object NavigationActions {
             override val navOptions = NavOptions.Builder().build()
         }
 
-        fun createEditPlayerWithParams(firstName: String, lastName: String, hasPendingChanges: Boolean?) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.createEditPlayerWithParams(firstName = firstName, lastName = lastName, hasPendingChanges = hasPendingChanges)
+        fun createEditPlayerWithParams(firstName: String, lastName: String) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.createEditPlayerWithParams(firstName = firstName, lastName = lastName)
             override val navOptions = NavOptions.Builder().build()
         }
     }
@@ -120,6 +120,16 @@ object NavigationActions {
                 shotId = shotId
             )
             override val navOptions = NavOptions.Builder().build()
+        }
+    }
+
+    object LogShot {
+
+        fun createEditPlayer() = object : NavigationAction {
+            override val destination = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(1, true)
+                .build()
         }
     }
 }

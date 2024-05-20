@@ -9,13 +9,13 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlaye
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.Center.toPlayerPosition
-import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.CurrentPendingShot
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
@@ -57,7 +57,7 @@ class CreateEditPlayerViewModel(
     internal var editedPlayer: Player? = null
     internal var pendingPlayers: List<Player> = emptyList()
 
-    internal var pendingShotLoggedList: List<ShotLogged> = emptyList()
+    internal var pendingShotLoggedList: List<PendingShot> = emptyList()
 
     init {
         scope.launch { collectPendingShotsLogged() }
@@ -69,8 +69,21 @@ class CreateEditPlayerViewModel(
                 pendingShotLoggedList = shotLoggedList
 
                 if (pendingShotLoggedList.isNotEmpty()) {
+                    val firstPendingShot = pendingShotLoggedList.first()
+
+                    if (firstPendingShot.isPendingPlayer) {
+                        checkForPendingPlayer(
+                            firstNameArgument = firstPendingShot.player.firstName,
+                            lastNameArgument = firstPendingShot.player.lastName
+                        )
+                    } else {
+                        checkForExistingPlayer(
+                            firstNameArgument = firstPendingShot.player.firstName,
+                            lastNameArgument = firstPendingShot.player.lastName
+                        )
+                    }
                     createEditPlayerMutableStateFlow.update { state ->
-                        state.copy(shots = state.shots + pendingShotLoggedList)
+                        state.copy(shots = state.shots + pendingShotLoggedList.map { it.shotLogged })
                     }
                 }
             }
@@ -78,30 +91,46 @@ class CreateEditPlayerViewModel(
 
     fun checkForExistingPlayer(
         firstNameArgument: String?,
-        lastNameArgument: String?,
-        hasPendingChangesArgument: Boolean?
+        lastNameArgument: String?
     ) {
-        println("has said changes $hasPendingChangesArgument")
-        if (hasPendingChangesArgument == false) {
-            scope.launch {
-                safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
-                    if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
-                        playerRepository.fetchPlayerByName(
-                            firstName = firstName,
-                            lastName = lastName
-                        )
-                            ?.let { player ->
-                                updateStateForExistingPlayer(player = player)
-                            } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
-                    } else {
-                        updateToolbarNameResIdStateToCreatePlayer()
-                    }
-                } ?: run {
+        scope.launch {
+            safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
+                if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
+                    playerRepository.fetchPlayerByName(
+                        firstName = firstName,
+                        lastName = lastName
+                    )
+                        ?.let { player ->
+                            updateStateForExistingPlayer(player = player)
+                        } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
+                } else {
                     updateToolbarNameResIdStateToCreatePlayer()
                 }
+            } ?: run {
+                updateToolbarNameResIdStateToCreatePlayer()
             }
-        } else {
+        }
+    }
 
+    fun checkForPendingPlayer(
+        firstNameArgument: String?,
+        lastNameArgument: String?
+    ) {
+        scope.launch {
+            safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
+                if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
+                    pendingPlayerRepository.fetchPendingPlayerByName(
+                        firstName = firstName,
+                        lastName = lastName
+                    )?.let { player ->
+                            updateStateForExistingPlayer(player = player)
+                        } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
+                } else {
+                    updateToolbarNameResIdStateToCreatePlayer()
+                }
+            } ?: run {
+                updateToolbarNameResIdStateToCreatePlayer()
+            }
         }
     }
 
@@ -132,7 +161,7 @@ class CreateEditPlayerViewModel(
                 firstName = player.firstName,
                 lastName = player.lastName,
                 editedPlayerUrl = player.imageUrl ?: "",
-                toolbarNameResId = StringsIds.editPlayer,
+                toolbarNameResId = StringsIds.createPlayer,
                 playerPositionString = application.getString(player.position.toType()),
                 hintLogNewShotText = hintLogNewShotText(
                     firstName = player.firstName,

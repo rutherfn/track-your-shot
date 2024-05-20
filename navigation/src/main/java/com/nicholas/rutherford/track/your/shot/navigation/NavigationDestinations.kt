@@ -5,7 +5,7 @@ object NavigationDestinations {
     const val AUTHENTICATION_SCREEN_WITH_PARAMS = "authenticationScreen/{username}/{email}"
     const val CREATE_ACCOUNT_SCREEN = "createAccountScreen"
     const val CREATE_EDIT_PLAYER_SCREEN = "createEditPlayerScreen"
-    const val CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS = "createEditPlayerScreen/{firstName}/{lastName}/{hasPendingChanges}"
+    const val CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS = "createEditPlayerScreen/{firstName}/{lastName}"
     const val FORGOT_PASSWORD_SCREEN = "forgotPasswordScreen"
     const val LOG_SHOT_WITH_PARAMS = "logShotScreen/{isExistingPlayer}/{playerId}/{shotId}"
     const val LOG_SHOT_SCREEN = "logShotScreen"
