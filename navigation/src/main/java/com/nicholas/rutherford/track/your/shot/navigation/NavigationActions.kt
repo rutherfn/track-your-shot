@@ -128,7 +128,7 @@ object NavigationActions {
         fun createEditPlayer() = object : NavigationAction {
             override val destination = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN
             override val navOptions = NavOptions.Builder()
-                .setPopUpTo(1, true)
+                .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                 .build()
         }
     }

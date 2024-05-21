@@ -12,7 +12,6 @@ class ScreenContents {
     fun createEditPlayerContent(
         firstNameArgument: String?,
         lastNameArgument: String?,
-        hasPendingChangesArgument: Boolean?,
         createEditPlayerViewModel: CreateEditPlayerViewModel
     ): @Composable (NavBackStackEntry) -> Unit = {
         CreateEditPlayerScreen(

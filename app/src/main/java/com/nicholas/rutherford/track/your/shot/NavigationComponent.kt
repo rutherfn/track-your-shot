@@ -298,11 +298,9 @@ fun NavigationComponent(
             ) { entry ->
                 val firstNameArgument = entry.arguments?.getString(NamedArguments.FIRST_NAME)
                 val lastNameArgument = entry.arguments?.getString(NamedArguments.LAST_NAME)
-                val hasPendingChangesArgument = entry.arguments?.getBoolean(NamedArguments.HAS_PENDING_CHANGES)
                 screenContents.createEditPlayerContent(
                     firstNameArgument = firstNameArgument,
                     lastNameArgument = lastNameArgument,
-                    hasPendingChangesArgument = hasPendingChangesArgument,
                     createEditPlayerViewModel = createEditPlayerViewModel
                 )(entry)
             }
@@ -310,7 +308,6 @@ fun NavigationComponent(
                 screenContents.createEditPlayerContent(
                     firstNameArgument = null,
                     lastNameArgument = null,
-                    hasPendingChangesArgument = null,
                     createEditPlayerViewModel = createEditPlayerViewModel
                 )(entry)
             }

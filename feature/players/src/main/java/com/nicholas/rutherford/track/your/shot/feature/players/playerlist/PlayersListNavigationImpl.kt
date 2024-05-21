@@ -12,11 +12,7 @@ class PlayersListNavigationImpl(
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
     override fun disableProgress() = navigator.progress(progressAction = null)
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
-    override fun navigateToCreateEditPlayer(
-        firstName: String?,
-        lastName: String?,
-        hasPendingChanges: Boolean?
-    ) {
+    override fun navigateToCreateEditPlayer(firstName: String?, lastName: String?) {
         safeLet(firstName, lastName) { first, last ->
             navigator.navigate(
                 navigationAction = NavigationActions.PlayersList.createEditPlayerWithParams(

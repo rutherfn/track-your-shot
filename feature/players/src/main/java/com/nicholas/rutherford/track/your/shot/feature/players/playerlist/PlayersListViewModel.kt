@@ -117,8 +117,7 @@ class PlayersListViewModel(
     fun onAddPlayerClicked() {
         navigation.navigateToCreateEditPlayer(
             firstName = null,
-            lastName = null,
-            hasPendingChanges = null
+            lastName = null
         )
     }
 
@@ -163,7 +162,7 @@ class PlayersListViewModel(
         }
     }
 
-    fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName, hasPendingChanges = null)
+    fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)
 
     fun onDeletePlayerClicked(player: Player) = navigation.alert(alert = deletePlayerAlert(player = player))
 

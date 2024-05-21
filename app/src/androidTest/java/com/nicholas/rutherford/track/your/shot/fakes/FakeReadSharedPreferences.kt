@@ -12,4 +12,15 @@ class FakeReadSharedPreferences(
     override fun unverifiedEmail(): String? = unverifiedEmail
 
     override fun unverifiedUsername(): String? = unverifiedUsername
+    override fun appHasBeenLaunched(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun shouldUpdateLoggedInPlayerListState(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun shouldUpdateLoggedInDeclaredShotListState(): Boolean {
+        TODO("Not yet implemented")
+    }
 }
