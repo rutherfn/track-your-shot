@@ -79,11 +79,19 @@ class DeclaredShotEntityDaoTest {
     }
 
     @Test
-    fun detDeclaredShotsFromId() = runBlocking {
+    fun getDeclaredShotsFromId() = runBlocking {
         declaredShotDao.insert(declaredShotEntities = listOf(declaredShotEntity))
 
         assertThat(declaredShotEntity, equalTo(declaredShotDao.getDeclaredShotFromId(id = declaredShotEntity.id)))
         assertThat(null, equalTo(declaredShotDao.getDeclaredShotFromId(id = 22)))
+    }
+
+    @Test
+    fun getDeclaredShotByName() = runBlocking {
+        declaredShotDao.insert(declaredShotEntities = listOf(declaredShotEntity))
+
+        assertThat(declaredShotEntity, equalTo(declaredShotDao.getDeclaredShotByName(name = declaredShotEntity.title)))
+        assertThat(null, equalTo(declaredShotDao.getDeclaredShotByName(name = "Test11")))
     }
 
     @Test
