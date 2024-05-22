@@ -66,27 +66,18 @@ class CreateEditPlayerViewModel(
     internal suspend fun collectPendingShotsLogged() {
         currentPendingShot.shotsStateFlow
             .collectLatest { shotLoggedList ->
-                pendingShotLoggedList = shotLoggedList
-
-                if (pendingShotLoggedList.isNotEmpty()) {
-                    val firstPendingShot = pendingShotLoggedList.first()
-
-                    if (firstPendingShot.isPendingPlayer) {
-                        checkForPendingPlayer(
-                            firstNameArgument = firstPendingShot.player.firstName,
-                            lastNameArgument = firstPendingShot.player.lastName
-                        )
-                    } else {
-                        checkForExistingPlayer(
-                            firstNameArgument = firstPendingShot.player.firstName,
-                            lastNameArgument = firstPendingShot.player.lastName
-                        )
-                    }
-                    createEditPlayerMutableStateFlow.update { state ->
-                        state.copy(shots = state.shots + pendingShotLoggedList.map { it.shotLogged })
-                    }
-                }
+                processPendingShots(shotLoggedList = shotLoggedList)
             }
+    }
+
+    private fun processPendingShots(shotLoggedList: List<PendingShot>) {
+        if (shotLoggedList.isNotEmpty() && shotLoggedList.size == 1) {
+            pendingShotLoggedList = shotLoggedList
+
+            createEditPlayerMutableStateFlow.update { state ->
+                state.copy(shots = state.shots + pendingShotLoggedList.first().shotLogged)
+            }
+        }
     }
 
     fun checkForExistingPlayer(
@@ -101,28 +92,6 @@ class CreateEditPlayerViewModel(
                         lastName = lastName
                     )
                         ?.let { player ->
-                            updateStateForExistingPlayer(player = player)
-                        } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
-                } else {
-                    updateToolbarNameResIdStateToCreatePlayer()
-                }
-            } ?: run {
-                updateToolbarNameResIdStateToCreatePlayer()
-            }
-        }
-    }
-
-    fun checkForPendingPlayer(
-        firstNameArgument: String?,
-        lastNameArgument: String?
-    ) {
-        scope.launch {
-            safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
-                if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
-                    pendingPlayerRepository.fetchPendingPlayerByName(
-                        firstName = firstName,
-                        lastName = lastName
-                    )?.let { player ->
                             updateStateForExistingPlayer(player = player)
                         } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
                 } else {
@@ -161,7 +130,7 @@ class CreateEditPlayerViewModel(
                 firstName = player.firstName,
                 lastName = player.lastName,
                 editedPlayerUrl = player.imageUrl ?: "",
-                toolbarNameResId = StringsIds.createPlayer,
+                toolbarNameResId = StringsIds.editPlayer,
                 playerPositionString = application.getString(player.position.toType()),
                 hintLogNewShotText = hintLogNewShotText(
                     firstName = player.firstName,

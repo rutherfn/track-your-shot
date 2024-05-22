@@ -69,6 +69,7 @@ android {
 dependencies {
     api(project(path = ":compose:components"))
     api(project(path = ":data:room"))
+    api(project(path = ":feature:players:shots"))
     api(project(path = ":firebase:core"))
     api(project(path = ":firebase:util"))
     api(project(path = ":helper:account"))
@@ -76,7 +77,6 @@ dependencies {
     api(project(path = ":helper:extensions"))
     api(project(path = ":helper:network"))
     api(project(path = ":navigation"))
-    implementation(project(":feature:players:shots"))
 
     debugImplementation(Dependencies.Compose.uiToolingPreview)
 

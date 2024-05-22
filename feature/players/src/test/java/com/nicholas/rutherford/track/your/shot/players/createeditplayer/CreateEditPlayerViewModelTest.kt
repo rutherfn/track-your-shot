@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.players.createeditplayer
 import android.app.Application
 import android.net.Uri
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
@@ -13,11 +14,14 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAnd
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditImageOption
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerState
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
@@ -40,6 +44,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -70,6 +75,9 @@ class CreateEditPlayerViewModelTest {
     private val navigation = mockk<CreateEditPlayerNavigation>(relaxed = true)
 
     private val playersAdditionUpdates = mockk<PlayersAdditionUpdates>(relaxed = true)
+
+    private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
+    private val currentPendingShot = mockk<CurrentPendingShot>(relaxed = true)
 
     private val network = mockk<Network>(relaxed = true)
 
@@ -128,8 +136,68 @@ class CreateEditPlayerViewModelTest {
             scope = scope,
             navigation = navigation,
             playersAdditionUpdates = playersAdditionUpdates,
+            declaredShotRepository = declaredShotRepository,
+            currentPendingShot = currentPendingShot,
             network = network
         )
+    }
+
+    @Nested
+    inner class CollectPendingShotsLogged {
+        val pendingShot = PendingShot(
+            player = TestPlayer().create(),
+            shotLogged = TestShotLogged.build(),
+            isPendingPlayer = false
+        )
+
+        @Test
+        fun `when currentPendingShot shotsStateFlow does not return back a pending shot should not update state`() = runTest {
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState()
+            )
+
+            createEditPlayerViewModel.collectPendingShotsLogged()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState()
+            )
+        }
+
+        @Test
+        fun `when currentPendingShot shotsStateFlow returns a list more then 1 should not update state`() = runTest {
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState()
+            )
+
+            coEvery { currentPendingShot.shotsStateFlow } returns flowOf(listOf(pendingShot, pendingShot))
+
+            createEditPlayerViewModel.collectPendingShotsLogged()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState()
+            )
+        }
+
+        @Test
+        fun `when 1currentPendingShot shotsStateFlow returns a list of 1 should update state`() = runTest {
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState()
+            )
+
+            coEvery { currentPendingShot.shotsStateFlow } returns flowOf(listOf(pendingShot))
+
+            createEditPlayerViewModel.collectPendingShotsLogged()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState(shots = listOf(pendingShot.shotLogged))
+            )
+        }
     }
 
     @Nested
@@ -263,8 +331,8 @@ class CreateEditPlayerViewModelTest {
                     editedPlayerUrl = player.imageUrl!!,
                     toolbarNameResId = StringsIds.editPlayer,
                     playerPositionString = "Center",
-                    shotsHaveBeenLogged = true,
-                    hintLogNewShotText = "Press the \"Log Shots\" button to record shots for ${player.firstName} ${player.lastName}"
+                    hintLogNewShotText = "Press the \"Log Shots\" button to record shots for ${player.firstName} ${player.lastName}",
+                    shots = player.shotsLoggedList
                 )
             )
         }
@@ -366,8 +434,8 @@ class CreateEditPlayerViewModelTest {
                 editedPlayerUrl = player.imageUrl!!,
                 toolbarNameResId = StringsIds.editPlayer,
                 playerPositionString = "Center",
-                shotsHaveBeenLogged = true,
-                hintLogNewShotText = "Press the \"Log Shots\" button to record shots for ${player.firstName} ${player.lastName}"
+                hintLogNewShotText = "Press the \"Log Shots\" button to record shots for ${player.firstName} ${player.lastName}",
+                shots = player.shotsLoggedList
             )
         )
     }
