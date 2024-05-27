@@ -86,13 +86,6 @@ class PendingPlayerEntityDaoTest {
     }
 
     @Test
-    fun getPendingPlayerByName() = runBlocking {
-        pendingPlayerDao.insert(pendingPlayerEntity = pendingPlayerEntity)
-
-        assertThat(pendingPlayerEntity, equalTo(pendingPlayerDao.getPendingPlayerByName(firstName = pendingPlayerEntity.firstName, lastName = pendingPlayerEntity.lastName)))
-    }
-
-    @Test
     fun getPendingPlayerIdByName() = runBlocking {
         val newPendingPlayerEntity = pendingPlayerEntity.copy(id = 2, firstName = "first1", lastName = "last1")
 

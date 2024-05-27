@@ -21,8 +21,5 @@ class PendingPlayerRepositoryImpl(private val pendingPlayerDao: PendingPlayerDao
     override suspend fun fetchPendingPlayerIdByName(firstName: String, lastName: String): Int =
         pendingPlayerDao.getPendingPlayerIdByName(firstName = firstName, lastName = lastName)
 
-    override suspend fun fetchPendingPlayerByName(firstName: String, lastName: String): Player? =
-        pendingPlayerDao.getPendingPlayerByName(firstName = firstName, lastName)?.toPlayer()
-
     override suspend fun fetchAllPendingPlayers(): List<Player> = pendingPlayerDao.getAllPendingPlayers()?.map { pendingPlayer -> pendingPlayer.toPlayer() } ?: emptyList()
 }

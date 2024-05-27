@@ -141,20 +141,6 @@ class DeclaredShotRepositoryImplTest {
     }
 
     @Test
-    fun fetchDeclaredShotByName() = runBlocking {
-        val newDeclaredShot = DeclaredShot(
-            id = 1,
-            shotCategory = "inside",
-            title = "Layup",
-            description = "A layup is a fundamental and common inside shot where a player drives towards the basket and releases the ball near the hoop with one hand."
-        )
-
-        declaredShotRepositoryImpl.createDeclaredShots()
-
-        assertThat(declaredShotRepositoryImpl.fetchDeclaredShotByName("Layup"), equalTo(newDeclaredShot))
-    }
-
-    @Test
     fun fetchDeclaredShotsBySearchQuery() = runBlocking {
         val newDeclaredShot = DeclaredShot(
             id = 1,
