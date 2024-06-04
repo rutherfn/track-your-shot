@@ -1,9 +1,14 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot
 
 import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationAction
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot
 import io.mockk.mockk
@@ -25,6 +30,15 @@ class LogShotNavigationImplTest {
     }
 
     @Test
+    fun `alert action`() {
+        val alert = Alert(title = "title")
+
+        logShotNavigationImpl.alert(alert = alert)
+
+        verify { navigator.alert(alertAction = alert) }
+    }
+
+    @Test
     fun `pop action`() {
         val argumentCapture: CapturingSlot<String> = slot()
 
@@ -34,6 +48,34 @@ class LogShotNavigationImplTest {
 
         val capturedArgument = argumentCapture.captured
         val expectedAction = Constants.POP_DEFAULT_ACTION
+
+        Assertions.assertEquals(expectedAction, capturedArgument)
+    }
+
+    @Test
+    fun `pop to create player`() {
+        val argumentCapture: CapturingSlot<String> = slot()
+
+        logShotNavigationImpl.popToCreatePlayer()
+
+        verify { navigator.pop(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+        val expectedAction = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN
+
+        Assertions.assertEquals(expectedAction, capturedArgument)
+    }
+
+    @Test
+    fun `pop to edit player`() {
+        val argumentCapture: CapturingSlot<String> = slot()
+
+        logShotNavigationImpl.popToEditPlayer()
+
+        verify { navigator.pop(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+        val expectedAction = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS
 
         Assertions.assertEquals(expectedAction, capturedArgument)
     }
@@ -75,5 +117,35 @@ class LogShotNavigationImplTest {
         val capturedArgument = argumentCapture.captured
 
         Assertions.assertEquals(inputInfo, capturedArgument)
+    }
+
+    @Test
+    fun `disable progress`() {
+        logShotNavigationImpl.disableProgress()
+
+        verify { navigator.progress(progressAction = null) }
+    }
+
+    @Test
+    fun `enable progress`() {
+        val progress = Progress()
+
+        logShotNavigationImpl.enableProgress(progress = progress)
+
+        verify { navigator.progress(progressAction = progress) }
+    }
+
+    @Test
+    fun `navigate to create edit player`() {
+        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+
+        logShotNavigationImpl.navigateToCreateEditPlayer()
+
+        verify { navigator.navigate(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+        val expectedAction = NavigationActions.LogShot.createEditPlayer()
+
+        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }
 }

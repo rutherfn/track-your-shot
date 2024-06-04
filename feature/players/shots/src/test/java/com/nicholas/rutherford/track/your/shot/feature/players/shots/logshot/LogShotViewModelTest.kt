@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlaye
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
 import io.mockk.coEvery
@@ -42,6 +43,8 @@ class LogShotViewModelTest {
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
 
+    private val currentPendingShot = mockk<CurrentPendingShot>(relaxed = true )
+
     @BeforeEach
     fun beforeEach() {
         logShotViewModel = LogShotViewModel(
@@ -50,7 +53,8 @@ class LogShotViewModelTest {
             navigation = navigation,
             declaredShotRepository = declaredShotRepository,
             pendingPlayerRepository = pendingPlayerRepository,
-            playerRepository = playerRepository
+            playerRepository = playerRepository,
+            currentPendingShot = currentPendingShot
         )
     }
 
