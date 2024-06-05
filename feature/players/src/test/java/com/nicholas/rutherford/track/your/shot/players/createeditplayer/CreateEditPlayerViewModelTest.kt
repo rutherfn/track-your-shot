@@ -44,7 +44,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -144,7 +143,7 @@ class CreateEditPlayerViewModelTest {
 
     @Nested
     inner class CollectPendingShotsLogged {
-        val pendingShot = PendingShot(
+        private val pendingShot = PendingShot(
             player = TestPlayer().create(),
             shotLogged = TestShotLogged.build(),
             isPendingPlayer = false
