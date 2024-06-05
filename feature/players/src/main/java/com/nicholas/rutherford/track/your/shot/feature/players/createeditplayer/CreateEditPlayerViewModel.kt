@@ -150,7 +150,7 @@ class CreateEditPlayerViewModel(
     }
 
     fun onToolbarMenuClicked() {
-        if (pendingPlayers.size == Constants.PENDING_PLAYERS_EXPECTED_SIZE) {
+        if (pendingPlayers.size == Constants.PENDING_PLAYERS_EXPECTED_SIZE || pendingShotLoggedList.isNotEmpty()) {
             navigation.alert(alert = unsavedPlayerChangesAlert())
         } else {
             editedPlayer = null
@@ -668,6 +668,8 @@ class CreateEditPlayerViewModel(
             scope.launch { pendingPlayerRepository.deleteAllPendingPlayers() }
             pendingPlayers = emptyList()
         }
+        currentPendingShot.clearShotList()
+        pendingShotLoggedList = emptyList()
         createEditPlayerMutableStateFlow.value = CreateEditPlayerState()
         navigation.pop()
     }

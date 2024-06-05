@@ -195,7 +195,7 @@ class CreateEditPlayerViewModelTest {
 
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState(shots = listOf(pendingShot.shotLogged))
+                CreateEditPlayerState(pendingShots = listOf(pendingShot.shotLogged))
             )
         }
     }
@@ -459,6 +459,22 @@ class CreateEditPlayerViewModelTest {
 
             createEditPlayerViewModel.pendingPlayers = listOf(player)
 
+            createEditPlayerViewModel.onToolbarMenuClicked()
+
+            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
+            verify(exactly = 0) { navigation.pop() }
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when pendingShotLoggedList is not empty should call alert`() {
+            createEditPlayerViewModel.pendingShotLoggedList = listOf(
+                PendingShot(
+                    player = TestPlayer().create(),
+                    shotLogged = TestShotLogged.build(),
+                    isPendingPlayer = false
+                )
+            )
             createEditPlayerViewModel.onToolbarMenuClicked()
 
             Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
