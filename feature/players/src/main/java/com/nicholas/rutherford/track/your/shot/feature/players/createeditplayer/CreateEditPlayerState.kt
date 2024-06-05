@@ -12,5 +12,6 @@ data class CreateEditPlayerState(
     val playerPositionString: String = "",
     val hintLogNewShotText: String = "",
     val shots: List<ShotLogged> = emptyList(),
+    val pendingShots: List<ShotLogged> = emptyList(),
     val sheet: Sheet? = null
 )

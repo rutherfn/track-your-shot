@@ -5,9 +5,14 @@ import android.app.Application
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
 import io.mockk.coEvery
@@ -24,6 +29,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
+import java.util.Date
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LogShotViewModelTest {
@@ -349,6 +355,226 @@ class LogShotViewModelTest {
         logShotViewModel.onShotsMissedClicked()
 
         verify { navigation.inputInfo(inputInfo = any()) }
+    }
+
+    @Test
+    fun `invalid shot alert should return alert`() {
+        val description = "description"
+
+        every { application.getString(StringsIds.empty) } returns ""
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+
+        Assertions.assertEquals(
+            logShotViewModel.invalidLogShotAlert(description = description),
+            Alert(
+                title = "",
+                dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
+                description = description
+        )
+        )
+    }
+
+    @Nested
+    inner class ShotEntryInvalidAlert {
+
+        @Test
+        fun `when description is not set to null should return null alert`() {
+            Assertions.assertEquals(logShotViewModel.shotEntryInvalidAlert(
+                shotsMade = 6,
+                shotsMissed = 2,
+                shotsAttemptedMillisecondsValue = 2L
+            ),
+                null
+            )
+        }
+
+        @Test
+        fun `when shotsMade is set to 0 should set a description which should build alert`() {
+            val description = "You haven\'t recorded any successful shots. Please input the number of shots made to proceed with logging the shot."
+
+            every { application.getString(StringsIds.empty) } returns ""
+            every { application.getString(StringsIds.gotIt) } returns "Got It"
+            every { application.getString(StringsIds.shotsNotRecordedDescription) } returns description
+
+            Assertions.assertEquals(logShotViewModel.shotEntryInvalidAlert(
+                shotsMade = 0,
+                shotsMissed = 2,
+                shotsAttemptedMillisecondsValue = 2L
+            ),
+                Alert(
+                    title = "",
+                    dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
+                    description = description
+                )
+            )
+        }
+
+        @Test
+        fun `when shotsMissed is set 0 should set description which should build alert`() {
+            val description = "You haven\'t recorded any missed shots. Please input the number of shots missed to proceed with logging the shot."
+
+            every { application.getString(StringsIds.empty) } returns ""
+            every { application.getString(StringsIds.gotIt) } returns "Got It"
+            every { application.getString(StringsIds.missedShotsNotRecordedDescription) } returns description
+
+            Assertions.assertEquals(logShotViewModel.shotEntryInvalidAlert(
+                shotsMade = 2,
+                shotsMissed = 0,
+                shotsAttemptedMillisecondsValue = 2L
+            ),
+                Alert(
+                    title = "",
+                    dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
+                    description = description
+                )
+            )
+        }
+
+        @Test
+        fun `when shotsAttemptedMillisecondsValue is set 0 should set description which should build alert`() {
+            val description = "You haven\'t entered the date the shot was taken. Please input the date the shot was taken to proceed with logging ths shot."
+
+            every { application.getString(StringsIds.empty) } returns ""
+            every { application.getString(StringsIds.gotIt) } returns "Got It"
+            every { application.getString(StringsIds.dateShotWasTakenDescription) } returns description
+
+            Assertions.assertEquals(logShotViewModel.shotEntryInvalidAlert(
+                shotsMade = 2,
+                shotsMissed = 2,
+                shotsAttemptedMillisecondsValue = 0L
+            ),
+                Alert(
+                    title = "",
+                    dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
+                    description = description
+                )
+            )
+        }
+    }
+
+    @Nested
+    inner class OnSaveClicked {
+
+        @Test
+        fun `when currentPlayer is null should show alert`() = runTest {
+            logShotViewModel.currentPlayer = null
+
+            logShotViewModel.onSaveClicked()
+
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when currentPlayer is not null but logged shot is invalid should show alert`() = runTest {
+            logShotViewModel.currentDeclaredShot = TestDeclaredShot.build()
+            logShotViewModel.currentPlayer = TestPlayer().create()
+
+            val description = "You haven\'t recorded any missed shots. Please input the number of shots missed to proceed with logging the shot."
+
+            every { application.getString(StringsIds.empty) } returns ""
+            every { application.getString(StringsIds.gotIt) } returns "Got It"
+            every { application.getString(StringsIds.missedShotsNotRecordedDescription) } returns description
+
+            logShotViewModel.logShotMutableStateFlow.value = LogShotState(
+                shotsMade = 5,
+                shotsMissed = 2,
+                shotsAttempted = 4,
+                shotsTakenDateValue = "Jun 4, 2019",
+                shotsLoggedDateValue = "June 4, 2019",
+                shotsMadePercentValue = "100%",
+                shotsMissedPercentValue = "100%",
+            )
+
+            logShotViewModel.onSaveClicked()
+
+            verify { navigation.enableProgress(progress = Progress()) }
+            verify { currentPendingShot.createShot(any()) }
+            verify { logShotViewModel.navigateToCreateOrEditPlayer() }
+        }
+
+        @Test
+        fun `when currentPlayer is not null and logged shot is valid should create a new pending show and call navigateToCreateorEditPlayer`() {
+            logShotViewModel.currentDeclaredShot = TestDeclaredShot.build()
+            logShotViewModel.currentPlayer = TestPlayer().create()
+
+            logShotViewModel.logShotMutableStateFlow.value = LogShotState(
+                shotsMade = 5,
+                shotsMissed = 5,
+                shotsTakenDateValue = "Jun 4, 2019"
+            )
+        }
+    }
+
+    @Nested
+    inner class ConvertPercentageToDouble {
+
+        @Test
+        fun `when percentage does not contain a percent sign should return default value`() {
+            Assertions.assertEquals(
+                logShotViewModel.convertPercentageToDouble(percentage = "1"),
+                0.0
+            )
+        }
+
+        @Test
+        fun `if value contains a period should convert it to a percent value`() {
+            Assertions.assertEquals(
+                logShotViewModel.convertPercentageToDouble(percentage = "33.3%"),
+                33.3
+            )
+        }
+
+        @Test
+        fun `if value contains no period should convert it to a percent value with addition of a zero`() {
+            Assertions.assertEquals(
+                logShotViewModel.convertPercentageToDouble(percentage = "1%"),
+                1.0
+            )
+        }
+    }
+
+    @Nested
+    inner class NavigateToCreateOrEditPlayer {
+
+        @Test
+        fun `when isExistingPlayer is set to true should call navigateToCreateEditPlayer`() {
+            logShotViewModel.isExistingPlayer = true
+
+            logShotViewModel.navigateToCreateOrEditPlayer()
+
+            verify { navigation.disableProgress() }
+            verify { navigation.navigateToCreateEditPlayer() }
+        }
+
+        @Test
+        fun `when isExistingPlayer is set to false should call pop to create player`() {
+            logShotViewModel.isExistingPlayer = false
+
+            logShotViewModel.navigateToCreateOrEditPlayer()
+
+            verify { navigation.disableProgress() }
+            verify { navigation.popToCreatePlayer() }
+        }
+    }
+
+    @Nested
+    inner class ConvertValueToDate {
+
+        @Test
+        fun `when value is empty should return null`() {
+            Assertions.assertEquals(
+                logShotViewModel.convertValueToDate(value = ""),
+                null
+            )
+        }
+
+        @Test
+        fun `when value is not empty should return back a date`() {
+            Assertions.assertEquals(
+                logShotViewModel.convertValueToDate(value = "Jun 4, 2019"),
+                Date(1559624400000)
+            )
+        }
     }
 
     @Test

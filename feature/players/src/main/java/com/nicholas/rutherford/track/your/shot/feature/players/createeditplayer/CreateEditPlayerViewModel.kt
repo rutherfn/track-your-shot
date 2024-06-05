@@ -75,7 +75,7 @@ class CreateEditPlayerViewModel(
             pendingShotLoggedList = shotLoggedList
 
             createEditPlayerMutableStateFlow.update { state ->
-                state.copy(shots = state.shots + pendingShotLoggedList.first().shotLogged)
+                state.copy(pendingShots = state.pendingShots + listOf(pendingShotLoggedList.first().shotLogged))
             }
         }
     }

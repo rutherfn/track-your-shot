@@ -94,6 +94,7 @@
     <string name="player_already_has_been_added_description">The specified player name has already been included. Kindly add a new player with a name that has not been added before.</string>
     <string name="player_creation_failed_please_try_again">Player creation failed. Please try again.</string>
     <string name="player_image">Player Image</string>
+    <string name="player_is_invalid_please_try_again">Current player is invalid. Please try to log shot again</string>
     <string name="players">Players</string>
     <string name="players_first_name_empty_description">The player\'s first name is missing. Kindly provide a first name to proceed.</string>
     <string name="players_last_name_empty_description">The player\'s last name is missing. Kindly provide a first name to proceed.</string>

@@ -43,12 +43,12 @@ class LogShotViewModel(
     internal val logShotMutableStateFlow = MutableStateFlow(value = LogShotState())
     val logShotStateFlow = logShotMutableStateFlow.asStateFlow()
 
-    private var isExistingPlayer = false
+    internal var isExistingPlayer = false
     private var playerId = 0
     private var shotId = 0
 
-    private var currentPlayer: Player? = null
-    private var currentDeclaredShot: DeclaredShot? = null
+    internal var currentPlayer: Player? = null
+    internal var currentDeclaredShot: DeclaredShot? = null
 
     fun updateIsExistingPlayerAndId(
         isExistingPlayerArgument: Boolean,
@@ -232,10 +232,8 @@ class LogShotViewModel(
 
     fun invalidLogShotAlert(description: String): Alert {
         return Alert(
-            title = application.getString(StringsIds.emptyField),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.gotIt)
-            ),
+            title = application.getString(StringsIds.empty),
+            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt)),
             description = description
         )
     }
@@ -289,11 +287,13 @@ class LogShotViewModel(
                             isPendingPlayer = isExistingPlayer
                         )
                     )
-                    navigateToCreateorEditPlayer()
+                    navigateToCreateOrEditPlayer()
                 }
-            }
+            } ?: navigation.alert(alert = invalidLogShotAlert(description = application.getString(StringsIds.playerIsInvalidPleaseTryAgain)))
         }
     }
+
+
 
     fun convertPercentageToDouble(percentage: String): Double {
         if (!percentage.contains("%")) {
@@ -315,12 +315,11 @@ class LogShotViewModel(
         }
     }
 
-    fun navigateToCreateorEditPlayer() {
+    fun navigateToCreateOrEditPlayer() {
         navigation.disableProgress()
         if (isExistingPlayer) {
-            navigation.navigateToCreateEditPlayer()
+            navigation.popToEditPlayer()
         } else {
-            navigation.disableProgress()
             navigation.popToCreatePlayer()
         }
     }

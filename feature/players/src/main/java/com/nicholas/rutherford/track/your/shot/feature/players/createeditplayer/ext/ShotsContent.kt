@@ -40,20 +40,17 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 @Composable
 fun ColumnScope.ShotsContent(
     shotList: List<ShotLogged>,
+    pendingShotList: List<ShotLogged>,
     hintLogNewShotText: String,
     onLogShotsClicked: () -> Unit
 ) {
-    val isShotsEmpty = shotList.isEmpty()
-    val shots = shotList.filter { shot -> !shot.isPending }
-    val pendingShots = shotList.filter { shot -> shot.isPending }
-
-    if (isShotsEmpty) {
+    if (shotList.isEmpty() && pendingShotList.isEmpty()) {
         ShotContentEmptyState(hintLogNewShotText = hintLogNewShotText, onLogShotsClicked = onLogShotsClicked)
-    } else if (shots.isNotEmpty()) {
+    } else if (shotList.isNotEmpty()) {
         LoggedShot()
     }
 
-    if (pendingShots.isNotEmpty()) {
+    if (pendingShotList.isNotEmpty()) {
         Text(
             text = "Pending Shots",
             style = TextStyles.small,
@@ -61,7 +58,7 @@ fun ColumnScope.ShotsContent(
                 .align(Alignment.Start)
                 .padding(top = Padding.twelve, start = Padding.four)
         )
-        pendingShots.forEach { shot -> PendingShot(shot = shot) }
+        pendingShotList.forEach { shot -> PendingShot(shot = shot) }
     }
 }
 

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class CurrentPendingShotImpl : CurrentPendingShot {
 
-    private val shotsMutableStateFlow: MutableStateFlow<List<PendingShot>> = MutableStateFlow(value = emptyList())
+    internal val shotsMutableStateFlow: MutableStateFlow<List<PendingShot>> = MutableStateFlow(value = emptyList())
     override val shotsStateFlow: Flow<List<PendingShot>> = shotsMutableStateFlow.asStateFlow()
 
     override fun createShot(shotLogged: PendingShot) {
