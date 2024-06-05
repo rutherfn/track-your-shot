@@ -5,7 +5,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
@@ -24,8 +23,4 @@ class LogShotNavigationImpl(private val navigator: Navigator) : LogShotNavigatio
     override fun disableProgress() = navigator.progress(progressAction = null)
 
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
-
-    override fun navigateToCreateEditPlayer() = navigator.navigate(
-        navigationAction = NavigationActions.LogShot.createEditPlayer()
-    )
 }

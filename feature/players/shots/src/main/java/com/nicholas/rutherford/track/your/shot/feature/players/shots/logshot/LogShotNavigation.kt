@@ -14,5 +14,4 @@ interface LogShotNavigation {
     fun inputInfo(inputInfo: InputInfo)
     fun disableProgress()
     fun enableProgress(progress: Progress)
-    fun navigateToCreateEditPlayer()
 }

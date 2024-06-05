@@ -543,7 +543,7 @@ class LogShotViewModelTest {
             logShotViewModel.navigateToCreateOrEditPlayer()
 
             verify { navigation.disableProgress() }
-            verify { navigation.navigateToCreateEditPlayer() }
+            verify { navigation.popToEditPlayer() }
         }
 
         @Test
