@@ -5,14 +5,12 @@ import android.app.Application
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
-import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
 import io.mockk.coEvery
@@ -49,7 +47,7 @@ class LogShotViewModelTest {
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
 
-    private val currentPendingShot = mockk<CurrentPendingShot>(relaxed = true )
+    private val currentPendingShot = mockk<CurrentPendingShot>(relaxed = true)
 
     @BeforeEach
     fun beforeEach() {
@@ -370,7 +368,7 @@ class LogShotViewModelTest {
                 title = "",
                 dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
                 description = description
-        )
+            )
         )
     }
 
@@ -379,11 +377,12 @@ class LogShotViewModelTest {
 
         @Test
         fun `when description is not set to null should return null alert`() {
-            Assertions.assertEquals(logShotViewModel.shotEntryInvalidAlert(
-                shotsMade = 6,
-                shotsMissed = 2,
-                shotsAttemptedMillisecondsValue = 2L
-            ),
+            Assertions.assertEquals(
+                logShotViewModel.shotEntryInvalidAlert(
+                    shotsMade = 6,
+                    shotsMissed = 2,
+                    shotsAttemptedMillisecondsValue = 2L
+                ),
                 null
             )
         }
@@ -396,11 +395,12 @@ class LogShotViewModelTest {
             every { application.getString(StringsIds.gotIt) } returns "Got It"
             every { application.getString(StringsIds.shotsNotRecordedDescription) } returns description
 
-            Assertions.assertEquals(logShotViewModel.shotEntryInvalidAlert(
-                shotsMade = 0,
-                shotsMissed = 2,
-                shotsAttemptedMillisecondsValue = 2L
-            ),
+            Assertions.assertEquals(
+                logShotViewModel.shotEntryInvalidAlert(
+                    shotsMade = 0,
+                    shotsMissed = 2,
+                    shotsAttemptedMillisecondsValue = 2L
+                ),
                 Alert(
                     title = "",
                     dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
@@ -417,11 +417,12 @@ class LogShotViewModelTest {
             every { application.getString(StringsIds.gotIt) } returns "Got It"
             every { application.getString(StringsIds.missedShotsNotRecordedDescription) } returns description
 
-            Assertions.assertEquals(logShotViewModel.shotEntryInvalidAlert(
-                shotsMade = 2,
-                shotsMissed = 0,
-                shotsAttemptedMillisecondsValue = 2L
-            ),
+            Assertions.assertEquals(
+                logShotViewModel.shotEntryInvalidAlert(
+                    shotsMade = 2,
+                    shotsMissed = 0,
+                    shotsAttemptedMillisecondsValue = 2L
+                ),
                 Alert(
                     title = "",
                     dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
@@ -438,11 +439,12 @@ class LogShotViewModelTest {
             every { application.getString(StringsIds.gotIt) } returns "Got It"
             every { application.getString(StringsIds.dateShotWasTakenDescription) } returns description
 
-            Assertions.assertEquals(logShotViewModel.shotEntryInvalidAlert(
-                shotsMade = 2,
-                shotsMissed = 2,
-                shotsAttemptedMillisecondsValue = 0L
-            ),
+            Assertions.assertEquals(
+                logShotViewModel.shotEntryInvalidAlert(
+                    shotsMade = 2,
+                    shotsMissed = 2,
+                    shotsAttemptedMillisecondsValue = 0L
+                ),
                 Alert(
                     title = "",
                     dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
@@ -482,7 +484,7 @@ class LogShotViewModelTest {
                 shotsTakenDateValue = "Jun 4, 2019",
                 shotsLoggedDateValue = "June 4, 2019",
                 shotsMadePercentValue = "100%",
-                shotsMissedPercentValue = "100%",
+                shotsMissedPercentValue = "100%"
             )
 
             logShotViewModel.onSaveClicked()

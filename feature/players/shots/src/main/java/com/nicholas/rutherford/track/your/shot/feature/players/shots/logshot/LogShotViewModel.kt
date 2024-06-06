@@ -293,8 +293,6 @@ class LogShotViewModel(
         }
     }
 
-
-
     fun convertPercentageToDouble(percentage: String): Double {
         if (!percentage.contains("%")) {
             return 0.0
