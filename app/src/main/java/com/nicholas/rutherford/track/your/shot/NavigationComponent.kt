@@ -169,7 +169,7 @@ fun NavigationComponent(
                     activity.startActivity(intent)
                     navigator.emailAction(emailAction = null)
                 } catch (ex: ActivityNotFoundException) {
-                    println("$ex")
+                    ex.printStackTrace()
                 }
             }
         }
@@ -353,7 +353,8 @@ fun NavigationComponent(
                                 )
                             },
                             onShotsMadeClicked = { logShotViewModel.onShotsMadeClicked() },
-                            onShotsMissedClicked = { logShotViewModel.onShotsMissedClicked() }
+                            onShotsMissedClicked = { logShotViewModel.onShotsMissedClicked() },
+                            onSaveClicked = { logShotViewModel.onSaveClicked() }
                         )
                     )
                 }

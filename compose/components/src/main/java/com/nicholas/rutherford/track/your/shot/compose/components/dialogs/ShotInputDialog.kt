@@ -29,8 +29,6 @@ import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 fun ShotInputDialog(inputInfo: InputInfo) {
     var numberText by remember { mutableStateOf(value = "") }
 
-    println(inputInfo.startingInputAmount)
-
     TrackMyShotTheme {
         Dialog(
             onDismissRequest = { inputInfo.onDismissButtonClicked?.invoke() },

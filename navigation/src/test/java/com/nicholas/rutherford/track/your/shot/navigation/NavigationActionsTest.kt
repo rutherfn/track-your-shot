@@ -193,11 +193,17 @@ class NavigationActionsTest {
                 val lastName = "lastName"
 
                 Assertions.assertEquals(
-                    Actions.PlayersList.createEditPlayerWithParams(firstName = firstName, lastName = lastName).destination,
+                    Actions.PlayersList.createEditPlayerWithParams(
+                        firstName = firstName,
+                        lastName = lastName
+                    ).destination,
                     NavigationDestinationsWithParams.createEditPlayerWithParams(firstName = firstName, lastName = lastName)
                 )
                 Assertions.assertEquals(
-                    Actions.PlayersList.createEditPlayerWithParams(firstName = firstName, lastName = lastName).navOptions,
+                    Actions.PlayersList.createEditPlayerWithParams(
+                        firstName = firstName,
+                        lastName = lastName
+                    ).navOptions,
                     NavOptions.Builder().build()
                 )
             }
@@ -217,6 +223,44 @@ class NavigationActionsTest {
                 Assertions.assertEquals(
                     Actions.CreateEditPlayer.selectShot(isExistingPlayer = isExistingPlayer, playerId = playerId).navOptions,
                     NavOptions.Builder().build()
+                )
+            }
+        }
+
+        @Nested
+        inner class SelectShot {
+
+            @Test
+            fun logShot() {
+                val isExistingPlayer = false
+                val playerId = 2
+                val shotId = 2
+
+                Assertions.assertEquals(
+                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId).destination,
+                    NavigationDestinationsWithParams.logShotWithParams(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId)
+                )
+                Assertions.assertEquals(
+                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId).navOptions,
+                    NavOptions.Builder().build()
+                )
+            }
+        }
+
+        @Nested
+        inner class LogShot {
+
+            @Test
+            fun createEditPlayer() {
+                Assertions.assertEquals(
+                    Actions.LogShot.createEditPlayer().destination,
+                    NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.LogShot.createEditPlayer().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                        .build()
                 )
             }
         }

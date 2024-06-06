@@ -122,4 +122,14 @@ object NavigationActions {
             override val navOptions = NavOptions.Builder().build()
         }
     }
+
+    object LogShot {
+
+        fun createEditPlayer() = object : NavigationAction {
+            override val destination = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                .build()
+        }
+    }
 }

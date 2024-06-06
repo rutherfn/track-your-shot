@@ -4,6 +4,7 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
@@ -13,6 +14,8 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAnd
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
@@ -42,6 +45,8 @@ class CreateEditPlayerViewModel(
     private val scope: CoroutineScope,
     private val navigation: CreateEditPlayerNavigation,
     private val playersAdditionUpdates: PlayersAdditionUpdates,
+    private val declaredShotRepository: DeclaredShotRepository,
+    private val currentPendingShot: CurrentPendingShot,
     private val network: Network
 ) : ViewModel() {
 
@@ -52,11 +57,40 @@ class CreateEditPlayerViewModel(
     internal var editedPlayer: Player? = null
     internal var pendingPlayers: List<Player> = emptyList()
 
-    fun checkForExistingPlayer(firstNameArgument: String?, lastNameArgument: String?) {
+    internal var pendingShotLoggedList: List<PendingShot> = emptyList()
+
+    init {
+        scope.launch { collectPendingShotsLogged() }
+    }
+
+    internal suspend fun collectPendingShotsLogged() {
+        currentPendingShot.shotsStateFlow
+            .collectLatest { shotLoggedList ->
+                processPendingShots(shotLoggedList = shotLoggedList)
+            }
+    }
+
+    private fun processPendingShots(shotLoggedList: List<PendingShot>) {
+        if (shotLoggedList.isNotEmpty() && shotLoggedList.size == 1) {
+            pendingShotLoggedList = shotLoggedList
+
+            createEditPlayerMutableStateFlow.update { state ->
+                state.copy(pendingShots = state.pendingShots + listOf(pendingShotLoggedList.first().shotLogged))
+            }
+        }
+    }
+
+    fun checkForExistingPlayer(
+        firstNameArgument: String?,
+        lastNameArgument: String?
+    ) {
         scope.launch {
             safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
                 if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
-                    playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)
+                    playerRepository.fetchPlayerByName(
+                        firstName = firstName,
+                        lastName = lastName
+                    )
                         ?.let { player ->
                             updateStateForExistingPlayer(player = player)
                         } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
@@ -102,7 +136,7 @@ class CreateEditPlayerViewModel(
                     firstName = player.firstName,
                     lastName = player.lastName
                 ),
-                shotsHaveBeenLogged = player.shotsLoggedList.isNotEmpty()
+                shots = player.shotsLoggedList
             )
     }
 
@@ -116,7 +150,7 @@ class CreateEditPlayerViewModel(
     }
 
     fun onToolbarMenuClicked() {
-        if (pendingPlayers.size == Constants.PENDING_PLAYERS_EXPECTED_SIZE) {
+        if (pendingPlayers.size == Constants.PENDING_PLAYERS_EXPECTED_SIZE || pendingShotLoggedList.isNotEmpty()) {
             navigation.alert(alert = unsavedPlayerChangesAlert())
         } else {
             editedPlayer = null
@@ -634,6 +668,8 @@ class CreateEditPlayerViewModel(
             scope.launch { pendingPlayerRepository.deleteAllPendingPlayers() }
             pendingPlayers = emptyList()
         }
+        currentPendingShot.clearShotList()
+        pendingShotLoggedList = emptyList()
         createEditPlayerMutableStateFlow.value = CreateEditPlayerState()
         navigation.pop()
     }

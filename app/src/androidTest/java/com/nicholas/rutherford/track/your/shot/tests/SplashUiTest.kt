@@ -50,7 +50,7 @@ class SplashUiTest {
     fun verify_splash_screen_content_navigating_to_home() {
         testUtil.setContentAndLoadOptionalModule(
             koinModule = module {
-                single<ReadSharedPreferences> { FakeReadSharedPreferences(accountHasBeenCreated = true) }
+                single<ReadSharedPreferences> { FakeReadSharedPreferences() }
                 single<ReadFirebaseUserInfo> { FakeReadFirebaseUserInfo(isLoggedIn = true, isEmailVerified = true) }
             }
         )
@@ -64,7 +64,7 @@ class SplashUiTest {
     fun verify_splash_screen_content_navigating_to_authentication() {
         testUtil.setContentAndLoadOptionalModule(
             koinModule = module {
-                single<ReadSharedPreferences> { FakeReadSharedPreferences(unverifiedEmail = "unverifiedemail@gmail.com", unverifiedUsername = "unverifiedUsername") }
+                single<ReadSharedPreferences> { FakeReadSharedPreferences() }
                 single<ReadFirebaseUserInfo> { FakeReadFirebaseUserInfo(isLoggedIn = true) }
             }
         )

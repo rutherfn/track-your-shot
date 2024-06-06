@@ -102,6 +102,7 @@ object StringsIds {
     val playerAlreadyHasBeenAddedDescription = R.string.player_already_has_been_added_description
     val playerCreationFailedPleaseTryAgain = R.string.player_creation_failed_please_try_again
     val playerImage = R.string.player_image
+    val playerIsInvalidPleaseTryAgain = R.string.player_is_invalid_please_try_again
     val players = R.string.players
     val playersFirstNameEmptyDescription = R.string.players_first_name_empty_description
     val playersLastNameEmptyDescription = R.string.players_last_name_empty_description
@@ -122,6 +123,9 @@ object StringsIds {
     val shotsMadePercentage = R.string.shots_made_percentage
     val shotsMissedPercentage = R.string.shots_missed_percentage
     val shotsMissed = R.string.shots_missed
+    val shotsNotRecordedDescription = R.string.shots_not_recorded_description
+    val missedShotsNotRecordedDescription = R.string.missed_shots_not_recorded_description
+    val dateShotWasTakenDescription = R.string.date_shot_was_taken_description
     val showLess = R.string.show_less
     val showMore = R.string.show_more
     val smallForward = R.string.small_forward

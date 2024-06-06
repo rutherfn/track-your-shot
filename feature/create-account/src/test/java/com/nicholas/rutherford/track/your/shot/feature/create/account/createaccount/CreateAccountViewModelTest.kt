@@ -45,7 +45,6 @@ class CreateAccountViewModelTest {
     private val createAccountFirebaseAuthResponse = TestCreateAccountFirebaseAuthResponse().create()
     private var authenticateUserViaEmailFirebaseResponse = TestAuthenticateUserViaEmailFirebaseResponse().create()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val dispatcher = StandardTestDispatcher()
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -83,7 +82,6 @@ class CreateAccountViewModelTest {
         )
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `updateStoredUsernamesAndEmailsArrayList when fetch all users return users should update allStoredEmailsArrayList and allStoredUsernamesArrayList`() = runTest {
         val user = TestUser().create()
@@ -291,7 +289,7 @@ class CreateAccountViewModelTest {
 
     @Nested
     inner class SetIsUsernameStoredInFirebase {
-        val username = "username"
+        private val username = "username"
 
         @Test
         fun `username passed in is set to null should set isUsernameStoredInFirebase to false`() {
@@ -929,7 +927,6 @@ class CreateAccountViewModelTest {
         private val testPassword = "testPassword"
         private val testUsername = "testUsername"
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when attemptToCreateAccountFirebaseAuthResponse returns back as not successful should call functions`() =
             runTest {
@@ -950,7 +947,6 @@ class CreateAccountViewModelTest {
                 verify { navigation.alert(alert = any()) }
             }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when attemptToAttemptToCreateAccountFirebaseAuthResponse returns successful and send email returns back not successful should call functions`() =
             runTest {
@@ -975,7 +971,6 @@ class CreateAccountViewModelTest {
                 verify { navigation.navigateToAuthentication(email = testEmail, username = testUsername) }
             }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when attemptToAttemptToCreateAccountFirebaseAuthResponse returns successful and send email returns back successful should call functions`() =
             runTest {

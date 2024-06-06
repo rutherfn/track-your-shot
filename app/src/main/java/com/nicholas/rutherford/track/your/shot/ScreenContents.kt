@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavBackStackEntry
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerViewModel
-import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreatePlayerScreen
 
 class ScreenContents {
 
@@ -14,7 +14,7 @@ class ScreenContents {
         lastNameArgument: String?,
         createEditPlayerViewModel: CreateEditPlayerViewModel
     ): @Composable (NavBackStackEntry) -> Unit = {
-        CreatePlayerScreen(
+        CreateEditPlayerScreen(
             createEditPlayerParams = CreateEditPlayerParams(
                 state = createEditPlayerViewModel.createEditPlayerStateFlow.collectAsState().value,
                 onClearImageState = { createEditPlayerViewModel.onClearImageState() },

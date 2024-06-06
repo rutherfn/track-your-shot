@@ -115,7 +115,10 @@ class PlayersListViewModel(
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
 
     fun onAddPlayerClicked() {
-        navigation.navigateToCreateEditPlayer(firstName = null, lastName = null)
+        navigation.navigateToCreateEditPlayer(
+            firstName = null,
+            lastName = null
+        )
     }
 
     suspend fun onYesDeletePlayerClicked(player: Player) {

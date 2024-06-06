@@ -94,6 +94,7 @@
     <string name="player_already_has_been_added_description">The specified player name has already been included. Kindly add a new player with a name that has not been added before.</string>
     <string name="player_creation_failed_please_try_again">Player creation failed. Please try again.</string>
     <string name="player_image">Player Image</string>
+    <string name="player_is_invalid_please_try_again">Current player is invalid. Please try to log shot again</string>
     <string name="players">Players</string>
     <string name="players_first_name_empty_description">The player\'s first name is missing. Kindly provide a first name to proceed.</string>
     <string name="players_last_name_empty_description">The player\'s last name is missing. Kindly provide a first name to proceed.</string>
@@ -110,6 +111,9 @@
     <string name="shots_made_percentage">Shots Made Percentage</string>
     <string name="shots_missed_percentage">Shots Missed Percentage</string>
     <string name="shots_missed">Shots Missed</string>
+    <string name="shots_not_recorded_description">You haven\'t recorded any successful shots. Please input the number of shots made to proceed with logging the shot.</string>
+    <string name="missed_shots_not_recorded_description">You haven\'t recorded any missed shots. Please input the number of shots missed to proceed with logging the shot.</string>
+    <string name="date_shot_was_taken_description">You haven\'t entered the date the shot was taken. Please input the date the shot was taken to proceed with logging ths shot.</string>
     <string name="show_less">Show Less</string>
     <string name="show_more">Show More</string>
     <string name="sf" translatable="false">sf</string>

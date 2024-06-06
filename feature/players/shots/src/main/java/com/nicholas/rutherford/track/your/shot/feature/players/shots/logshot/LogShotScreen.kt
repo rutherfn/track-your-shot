@@ -52,7 +52,7 @@ fun LogShotScreen(logShotParams: LogShotParams) {
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = true,
             onIconButtonClicked = { logShotParams.onBackButtonClicked.invoke() },
-            onSecondaryIconButtonClicked = {}
+            onSecondaryIconButtonClicked = { logShotParams.onSaveClicked.invoke() }
         )
     )
 }
