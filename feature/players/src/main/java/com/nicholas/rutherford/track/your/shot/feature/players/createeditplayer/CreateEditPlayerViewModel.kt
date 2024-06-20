@@ -201,18 +201,6 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    fun shotNameFromType(type: Int): String {
-        var shotName = ""
-
-        scope.launch {
-            shotName = declaredShotRepository.fetchDeclaredShotFromId(id = type)?.title ?: ""
-        }
-
-        println("here is the shot name $shotName")
-
-        return shotName
-    }
-
     internal fun onNavigateToAppSettings() = navigation.appSettings()
 
     fun permissionNotGrantedForCameraAlert() {

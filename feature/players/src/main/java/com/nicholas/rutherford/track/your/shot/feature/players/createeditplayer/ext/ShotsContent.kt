@@ -32,7 +32,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
-import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
@@ -76,7 +75,7 @@ private fun PendingShot(shot: ShotLogged) {
         Column {
             Row(
                 modifier = Modifier.padding(8.dp).clickable {
-                                                            //todo -> Add functionality for the user to view or edit a pending shot
+                    // todo -> Add functionality for the user to view or edit a pending shot
                 },
                 verticalAlignment = Alignment.CenterVertically
             ) {

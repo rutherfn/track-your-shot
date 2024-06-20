@@ -4,7 +4,7 @@ object TestShotLoggedRealtimeResponse {
 
     fun build(): ShotLoggedRealtimeResponse {
         return ShotLoggedRealtimeResponse(
-            shotName = "",
+            shotName = SHOT_NAME,
             shotType = SHOT_TYPE,
             shotsAttempted = SHOTS_ATTEMPTED,
             shotsMade = SHOTS_MADE,
