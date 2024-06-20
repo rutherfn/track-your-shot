@@ -142,7 +142,8 @@ class LogShotViewModel(
         return if (percentage == Constants.SHOT_ZERO_VALUE) {
             application.getString(StringsIds.empty)
         } else {
-            val percentageRoundedValue = String.format("%.1f", percentage)
+            val locale = Locale("en", "US")
+            val percentageRoundedValue = String.format(locale, "%.1f", percentage)
             if (percentageRoundedValue.endsWith(".0")) {
                 application.getString(
                     StringsIds.shotPercentage,
@@ -173,7 +174,7 @@ class LogShotViewModel(
         }
     }
 
-    internal fun updateShotsMissedState(shots: Int) {
+    private fun updateShotsMissedState(shots: Int) {
         logShotMutableStateFlow.update { state ->
             state.copy(
                 shotsMissed = shots,
@@ -274,6 +275,7 @@ class LogShotViewModel(
                         shotLogged = PendingShot(
                             player = player,
                             shotLogged = ShotLogged(
+                                shotName = state.shotName,
                                 shotType = currentDeclaredShot?.id ?: 0,
                                 shotsAttempted = state.shotsAttempted,
                                 shotsMade = state.shotsMade,
@@ -287,11 +289,29 @@ class LogShotViewModel(
                             isPendingPlayer = isExistingPlayer
                         )
                     )
+
+                    resetState()
                     navigateToCreateOrEditPlayer()
                 }
             } ?: navigation.alert(alert = invalidLogShotAlert(description = application.getString(StringsIds.playerIsInvalidPleaseTryAgain)))
         }
     }
+
+    private fun resetState() =
+        logShotMutableStateFlow.update { state ->
+            state.copy(
+                shotName = "",
+                playerName = "",
+                playerPosition = 0,
+                shotsLoggedDateValue = "",
+                shotsTakenDateValue = "",
+                shotsMade = 0,
+                shotsMissed = 0,
+                shotsAttempted = 0,
+                shotsMadePercentValue = "",
+                shotsMissedPercentValue = ""
+            )
+        }
 
     fun convertPercentageToDouble(percentage: String): Double {
         if (!percentage.contains("%")) {

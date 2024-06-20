@@ -116,11 +116,14 @@ object StringsIds {
     val selectAShot = R.string.select_a_shot
     val selectDate = R.string.select_date
     val settings = R.string.settings
+    val shotNameX = R.string.shot_name_x
     val shotPercentage = R.string.shot_percentage
     val shots = R.string.shots
     val shotsAttempted = R.string.shots_attempted
     val shotsMade = R.string.shots_made
+    val shotsMadeX = R.string.shots_made_x
     val shotsMadePercentage = R.string.shots_made_percentage
+    val shotsMadePercentageX = R.string.shots_made_percentage_x
     val shotsMissedPercentage = R.string.shots_missed_percentage
     val shotsMissed = R.string.shots_missed
     val shotsNotRecordedDescription = R.string.shots_not_recorded_description
