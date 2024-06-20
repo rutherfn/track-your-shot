@@ -477,6 +477,7 @@ class LogShotViewModelTest {
             every { application.getString(StringsIds.missedShotsNotRecordedDescription) } returns description
 
             logShotViewModel.logShotMutableStateFlow.value = LogShotState(
+                shotName = "shotName",
                 shotsMade = 5,
                 shotsMissed = 2,
                 shotsAttempted = 4,

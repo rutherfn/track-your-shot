@@ -121,6 +121,9 @@
     <string name="small_forward">Small Forward</string>
     <string name="shooting_guard">Shooting Guard</string>
     <string name="shot_info">Shot Info</string>
+    <string name="shot_name_x">Shot Name - %s \n</string>
+    <string name="shots_made_x">\nShots Made - %s</string>
+    <string name="shots_made_percentage_x">\nShots Made Percentage: %s</string>
     <string name="stats">Stats</string>
     <string name="splash_icon_description">This is a splash image for the splash screen that gets displayed before app is triggered</string>
     <string name="successfully_sent_email_verification">Successfully sent verification</string>

@@ -42,7 +42,7 @@ fun BaseRow(
     imageVector: ImageVector? = null,
     shouldShowDivider: Boolean = false
 ) {
-    val rowModidifer = onClicked?.let {
+    val rowModifier = onClicked?.let {
         Modifier
             .fillMaxSize()
             .fillMaxWidth()
@@ -55,7 +55,7 @@ fun BaseRow(
             .padding(8.dp)
     }
     Row(
-        modifier = rowModidifer,
+        modifier = rowModifier,
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

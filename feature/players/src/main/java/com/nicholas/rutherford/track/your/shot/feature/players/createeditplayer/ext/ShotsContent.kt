@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
+import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
@@ -68,21 +70,18 @@ private fun PendingShot(shot: ShotLogged) {
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
-            .padding(
-                top = 4.dp,
-                end = 4.dp,
-                bottom = 16.dp
-            ),
+            .padding(top = 4.dp, end = 4.dp),
         elevation = 2.dp
     ) {
         Column {
             Row(
-                modifier = Modifier
-                    .padding(8.dp),
+                modifier = Modifier.padding(8.dp).clickable {
+                                                            //todo -> Add functionality for the user to view or edit a pending shot
+                },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Current Pending Shot", // todo update this with real text from shots
+                    text = stringResource(id = StringsIds.shotNameX, shot.shotName),
                     style = TextStyles.body,
                     textAlign = TextAlign.Start,
                     modifier = Modifier.padding(vertical = 4.dp)
@@ -90,12 +89,10 @@ private fun PendingShot(shot: ShotLogged) {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(onClick = { }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowForward,
-                        contentDescription = ""
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Filled.ArrowForward,
+                    contentDescription = ""
+                )
             }
         }
     }

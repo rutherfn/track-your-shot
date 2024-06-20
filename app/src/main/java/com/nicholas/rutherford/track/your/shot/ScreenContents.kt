@@ -46,9 +46,7 @@ class ScreenContents {
                 permissionNotGrantedForCameraAlert = { createEditPlayerViewModel.permissionNotGrantedForCameraAlert() },
                 permissionNotGrantedForReadMediaOrExternalStorageAlert = { createEditPlayerViewModel.permissionNotGrantedForReadMediaOrExternalStorageAlert() },
                 onSelectedCreateEditImageOption = { option ->
-                    createEditPlayerViewModel.onSelectedCreateEditImageOption(
-                        option
-                    )
+                    createEditPlayerViewModel.onSelectedCreateEditImageOption(option)
                 }
             )
         )

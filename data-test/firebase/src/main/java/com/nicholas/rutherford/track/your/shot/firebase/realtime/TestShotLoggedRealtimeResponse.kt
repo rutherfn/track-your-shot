@@ -4,6 +4,7 @@ object TestShotLoggedRealtimeResponse {
 
     fun build(): ShotLoggedRealtimeResponse {
         return ShotLoggedRealtimeResponse(
+            shotName = "",
             shotType = SHOT_TYPE,
             shotsAttempted = SHOTS_ATTEMPTED,
             shotsMade = SHOTS_MADE,
@@ -16,6 +17,7 @@ object TestShotLoggedRealtimeResponse {
         )
     }
 
+    private const val SHOT_NAME = "shotName"
     private const val SHOT_TYPE = 3
     private const val SHOTS_ATTEMPTED = 15
     private const val SHOTS_MADE = 5
