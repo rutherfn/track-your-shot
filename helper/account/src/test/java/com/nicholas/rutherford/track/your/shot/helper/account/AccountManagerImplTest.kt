@@ -398,6 +398,7 @@ class AccountManagerImplTest {
                         imageUrl = player.playerInfo.imageUrl,
                         shotsLoggedList = player.playerInfo.shotsLogged.map { shotLoggedRealtimeResponse ->
                             ShotLogged(
+                                shotName = shotLoggedRealtimeResponse.shotName,
                                 shotType = shotLoggedRealtimeResponse.shotType,
                                 shotsAttempted = shotLoggedRealtimeResponse.shotsAttempted,
                                 shotsMade = shotLoggedRealtimeResponse.shotsMade,
