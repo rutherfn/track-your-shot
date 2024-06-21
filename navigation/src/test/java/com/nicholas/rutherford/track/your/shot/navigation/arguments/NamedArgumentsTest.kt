@@ -15,5 +15,7 @@ class NamedArgumentsTest {
 
         Assertions.assertEquals(NamedArguments.IS_EXISTING_PLAYER, "isExistingPlayer")
         Assertions.assertEquals(NamedArguments.PLAYER_ID, "playerId")
+
+        Assertions.assertEquals(NamedArguments.CURRENT_PLAYER_SHOTS_SIZE, "currentPlayerShotsSize")
     }
 }

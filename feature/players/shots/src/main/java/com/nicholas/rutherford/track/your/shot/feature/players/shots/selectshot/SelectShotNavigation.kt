@@ -6,6 +6,7 @@ interface SelectShotNavigation {
     fun navigateToLogShot(
         isExistingPlayer: Boolean,
         playerId: Int,
-        shotId: Int
+        shotId: Int,
+        currentPlayerShotsSize: Int
     )
 }

@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.firebase.realtime
 
 data class ShotLoggedRealtimeResponse(
+    val id: Int = 0,
     val shotName: String = "",
     val shotType: Int = 0,
     val shotsAttempted: Int = 0,

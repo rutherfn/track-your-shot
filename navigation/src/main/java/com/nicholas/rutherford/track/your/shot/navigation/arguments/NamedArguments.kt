@@ -8,4 +8,5 @@ object NamedArguments {
     const val IS_EXISTING_PLAYER = "isExistingPlayer"
     const val PLAYER_ID = "playerId"
     const val SHOT_ID = "shotId"
+    const val CURRENT_PLAYER_SHOTS_SIZE = "currentPlayerShotsSize"
 }

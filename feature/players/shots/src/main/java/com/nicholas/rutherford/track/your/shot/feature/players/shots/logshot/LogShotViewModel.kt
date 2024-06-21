@@ -30,6 +30,8 @@ import java.time.LocalDate
 import java.util.Date
 import java.util.Locale
 
+const val PENDING_SHOT_DEFAULT_ID = 0
+
 class LogShotViewModel(
     private val application: Application,
     private val scope: CoroutineScope,
@@ -50,14 +52,18 @@ class LogShotViewModel(
     internal var currentPlayer: Player? = null
     internal var currentDeclaredShot: DeclaredShot? = null
 
+    internal var currentPlayerShotSize = 0
+
     fun updateIsExistingPlayerAndId(
         isExistingPlayerArgument: Boolean,
         playerIdArgument: Int,
-        shotIdArgument: Int
+        shotIdArgument: Int,
+        currentPlayerShotsSizeArgument: Int
     ) {
         this.isExistingPlayer = isExistingPlayerArgument
         this.playerId = playerIdArgument
         this.shotId = shotIdArgument
+        this.currentPlayerShotSize = currentPlayerShotsSizeArgument
 
         scope.launch {
             val declaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = shotId)
@@ -275,6 +281,7 @@ class LogShotViewModel(
                         shotLogged = PendingShot(
                             player = player,
                             shotLogged = ShotLogged(
+                                id  = currentPlayerShotSize + 1,
                                 shotName = state.shotName,
                                 shotType = currentDeclaredShot?.id ?: 0,
                                 shotsAttempted = state.shotsAttempted,

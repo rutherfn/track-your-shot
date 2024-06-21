@@ -102,8 +102,12 @@ object NavigationActions {
 
     object CreateEditPlayer {
 
-        fun selectShot(isExistingPlayer: Boolean, playerId: Int) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.selectShotWithParams(isExistingPlayer = isExistingPlayer, playerId = playerId)
+        fun selectShot(isExistingPlayer: Boolean, playerId: Int, currentPlayerShotsSize: Int) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.selectShotWithParams(
+                isExistingPlayer = isExistingPlayer,
+                playerId = playerId,
+                currentPlayerShotsSize = currentPlayerShotsSize
+            )
             override val navOptions = NavOptions.Builder().build()
         }
     }
@@ -112,12 +116,14 @@ object NavigationActions {
         fun logShot(
             isExistingPlayer: Boolean,
             playerId: Int,
-            shotId: Int
+            shotId: Int,
+            currentPlayerShotsSize: Int
         ) = object : NavigationAction {
             override val destination = NavigationDestinationsWithParams.logShotWithParams(
                 isExistingPlayer = isExistingPlayer,
                 playerId = playerId,
-                shotId = shotId
+                shotId = shotId,
+                currentPlayerShotsSize = currentPlayerShotsSize
             )
             override val navOptions = NavOptions.Builder().build()
         }

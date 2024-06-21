@@ -14,11 +14,13 @@ object NavArguments {
     )
     val selectShot = listOf(
         navArgument(NamedArguments.IS_EXISTING_PLAYER) { type = NavType.BoolType },
-        navArgument(NamedArguments.PLAYER_ID) { type = NavType.IntType }
+        navArgument(NamedArguments.PLAYER_ID) { type = NavType.IntType },
+        navArgument(NamedArguments.CURRENT_PLAYER_SHOTS_SIZE) { type = NavType.IntType }
     )
     val logShot = listOf(
         navArgument(NamedArguments.IS_EXISTING_PLAYER) { type = NavType.BoolType },
         navArgument(NamedArguments.PLAYER_ID) { type = NavType.IntType },
-        navArgument(NamedArguments.SHOT_ID) { type = NavType.IntType }
+        navArgument(NamedArguments.SHOT_ID) { type = NavType.IntType },
+        navArgument(NamedArguments.CURRENT_PLAYER_SHOTS_SIZE) { type = NavType.IntType}
     )
 }

@@ -1173,6 +1173,7 @@ class CreateEditPlayerViewModelTest {
                 createEditPlayerViewModel.currentShotLoggedRealtimeResponseList(),
                 listOf(
                     ShotLoggedRealtimeResponse(
+                        id = shotLogged.id,
                         shotName = shotLogged.shotName,
                         shotType = shotLogged.shotType,
                         shotsAttempted = shotLogged.shotsAttempted,

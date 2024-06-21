@@ -76,8 +76,10 @@ class CreateEditPlayerViewModel(
         if (shotLoggedList.isNotEmpty() && shotLoggedList.size == 1) {
             pendingShotLoggedList = shotLoggedList
 
+            println("here we go ${pendingShotLoggedList.first().shotLogged.id}")
+
             createEditPlayerMutableStateFlow.update { state ->
-                state.copy(pendingShots = state.pendingShots + listOf(pendingShotLoggedList.first().shotLogged))
+                state.copy(pendingShots = pendingShotLoggedList.map { it.shotLogged })
             }
         }
     }
@@ -164,40 +166,40 @@ class CreateEditPlayerViewModel(
     }
 
     internal fun clearState() {
-        if (editedPlayer == null) {
-            createEditPlayerMutableStateFlow.update { state ->
-                state.copy(
-                    firstName = "",
-                    lastName = "",
-                    editedPlayerUrl = "",
-                    toolbarNameResId = StringsIds.createPlayer,
-                    playerPositionString = "",
-                    hintLogNewShotText = "",
-                    pendingShots = emptyList(),
-                    sheet = null
-                )
-            }
-        } else {
-            createEditPlayerMutableStateFlow.update { state ->
-                state.copy(
-                    firstName = "",
-                    lastName = "",
-                    editedPlayerUrl = "",
-                    toolbarNameResId = StringsIds.editPlayer,
-                    playerPositionString = "",
-                    hintLogNewShotText = "",
-                    pendingShots = emptyList(),
-                    sheet = null
-                )
-            }
-        }
+//        if (editedPlayer == null) {
+//            createEditPlayerMutableStateFlow.update { state ->
+//                state.copy(
+//                    firstName = "",
+//                    lastName = "",
+//                    editedPlayerUrl = "",
+//                    toolbarNameResId = StringsIds.createPlayer,
+//                    playerPositionString = "",
+//                    hintLogNewShotText = "",
+//                    pendingShots = emptyList(),
+//                    sheet = null
+//                )
+//            }
+//        } else {
+//            createEditPlayerMutableStateFlow.update { state ->
+//                state.copy(
+//                    firstName = "",
+//                    lastName = "",
+//                    editedPlayerUrl = "",
+//                    toolbarNameResId = StringsIds.editPlayer,
+//                    playerPositionString = "",
+//                    hintLogNewShotText = "",
+//                    pendingShots = emptyList(),
+//                    sheet = null
+//                )
+//            }
+//        }
     }
 
     internal fun clearLocalDeclarations() {
-        currentPendingShot.clearShotList()
-        pendingPlayers = emptyList()
-        pendingShotLoggedList = emptyList()
-        editedPlayer = null
+//        currentPendingShot.clearShotList()
+//        pendingPlayers = emptyList()
+//        pendingShotLoggedList = emptyList()
+//        editedPlayer = null
     }
 
     fun onImageUploadClicked(uri: Uri?) {
@@ -401,6 +403,7 @@ class CreateEditPlayerViewModel(
             pendingShotLoggedList.forEach { pendingShot ->
                 shotLoggedRealtimeResponseArrayList.add(
                     ShotLoggedRealtimeResponse(
+                        id = pendingShot.shotLogged.id,
                         shotName = pendingShot.shotLogged.shotName,
                         shotType = pendingShot.shotLogged.shotType,
                         shotsAttempted = pendingShot.shotLogged.shotsAttempted,
@@ -421,10 +424,10 @@ class CreateEditPlayerViewModel(
     }
 
     internal fun currentShotLoggedList(): List<ShotLogged> {
-        if (pendingShotLoggedList.isNotEmpty()) {
-            return pendingShotLoggedList.map { pendingShot -> pendingShot.shotLogged }
+        return if (pendingShotLoggedList.isNotEmpty()) {
+            pendingShotLoggedList.map { pendingShot -> pendingShot.shotLogged }
         } else {
-            return emptyList()
+            emptyList()
         }
     }
 
@@ -863,7 +866,8 @@ class CreateEditPlayerViewModel(
                     val isExistingPlayer = editedPlayer != null
                     navigation.navigateToSelectShot(
                         isExistingPlayer = isExistingPlayer,
-                        playerId = playerId
+                        playerId = playerId,
+                        currentPlayerShotsSize = createEditPlayerStateFlow.value.shots.size
                     )
                 }
             }

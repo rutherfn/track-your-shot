@@ -45,6 +45,8 @@ fun ColumnScope.ShotsContent(
     hintLogNewShotText: String,
     onLogShotsClicked: () -> Unit
 ) {
+
+    println("pending shot list size ${pendingShotList.size}")
     if (shotList.isEmpty() && pendingShotList.isEmpty()) {
         ShotContentEmptyState(hintLogNewShotText = hintLogNewShotText, onLogShotsClicked = onLogShotsClicked)
     } else if (shotList.isNotEmpty()) {

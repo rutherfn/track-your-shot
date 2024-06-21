@@ -10,7 +10,16 @@ class CreateEditPlayerNavigationImpl(private val navigator: Navigator) : CreateE
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
 
     override fun appSettings() = navigator.appSettings(appSettingsAction = true)
-    override fun navigateToSelectShot(isExistingPlayer: Boolean, playerId: Int) = navigator.navigate(navigationAction = NavigationActions.CreateEditPlayer.selectShot(isExistingPlayer = isExistingPlayer, playerId = playerId))
+    override fun navigateToSelectShot(
+        isExistingPlayer: Boolean,
+        playerId: Int,
+        currentPlayerShotsSize: Int
+    ) = navigator.navigate(navigationAction = NavigationActions.CreateEditPlayer.selectShot(
+        isExistingPlayer = isExistingPlayer,
+        playerId = playerId,
+        currentPlayerShotsSize = currentPlayerShotsSize
+    )
+    )
     override fun disableProgress() = navigator.progress(progressAction = null)
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
     override fun pop() = navigator.pop(popRouteAction = NavigationDestinations.PLAYERS_LIST_SCREEN)
