@@ -9,6 +9,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerReposi
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.Center.toPlayerPosition
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
@@ -29,6 +30,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFireba
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PLAYER_FIREBASE_KEY
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
@@ -445,7 +447,11 @@ class CreateEditPlayerViewModelTest {
 
         Assertions.assertEquals(
             createEditPlayerViewModel.createEditPlayerStateFlow.value,
-            CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
+            CreateEditPlayerState(
+                toolbarNameResId = StringsIds.createPlayer,
+                shots = emptyList(),
+                pendingShots = emptyList()
+            )
         )
     }
 
@@ -498,6 +504,83 @@ class CreateEditPlayerViewModelTest {
             verify(exactly = 0) { navigation.alert(alert = any()) }
             verify { navigation.pop() }
         }
+    }
+
+    @Nested
+    inner class ClearState {
+
+        @Test
+        fun `when editedPlayer is set to null should reset the state flow value`() {
+            createEditPlayerViewModel.clearState()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState(
+                    firstName = "",
+                    lastName = "",
+                    editedPlayerUrl = "",
+                    toolbarNameResId = StringsIds.createPlayer,
+                    playerPositionString = "",
+                    hintLogNewShotText = "",
+                    pendingShots = emptyList(),
+                    sheet = null
+                )
+            )
+        }
+
+        @Test
+        fun `when editedPlayer is not set to null should reset the state flow value with edit player as toolbar name`() {
+            createEditPlayerViewModel.editedPlayer = TestPlayer().create()
+
+            createEditPlayerViewModel.clearState()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState().copy(
+                    firstName = "",
+                    lastName = "",
+                    editedPlayerUrl = "",
+                    toolbarNameResId = StringsIds.editPlayer,
+                    playerPositionString = "",
+                    hintLogNewShotText = "",
+                    pendingShots = emptyList(),
+                    sheet = null
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `clearLocatDeclartion should clear out properties`() {
+        val emptyPendingPlayersList: List<Player> = listOf()
+        val emptyPendingShotList: List<PendingShot> = listOf()
+
+        createEditPlayerViewModel.pendingPlayers = listOf(TestPlayer().create())
+        createEditPlayerViewModel.pendingShotLoggedList = listOf(
+            PendingShot(
+                player = TestPlayer().create(),
+                shotLogged = TestShotLogged.build(),
+                isPendingPlayer = false
+            )
+        )
+        createEditPlayerViewModel.editedPlayer = TestPlayer().create()
+
+        createEditPlayerViewModel.clearLocalDeclarations()
+
+        verify { currentPendingShot.clearShotList() }
+
+        Assertions.assertEquals(
+            createEditPlayerViewModel.pendingPlayers,
+            emptyPendingPlayersList
+        )
+        Assertions.assertEquals(
+            createEditPlayerViewModel.pendingShotLoggedList,
+            emptyPendingShotList
+        )
+        Assertions.assertEquals(
+            createEditPlayerViewModel.editedPlayer,
+            null
+        )
     }
 
     @Nested
@@ -869,9 +952,35 @@ class CreateEditPlayerViewModelTest {
         }
 
         @Test
-        fun `when all conditions are met should return true`() {
-            val existingPlayer = player
+        fun `when pendingShotLoggedList is not empty should return false`() {
+            createEditPlayerViewModel.pendingShotLoggedList = listOf(
+                PendingShot(
+                    player = TestPlayer().create(),
+                    shotLogged = TestShotLogged.build(),
+                    isPendingPlayer = false
+                )
+            )
 
+            val existingPlayer = player
+            val state = CreateEditPlayerState(
+                firstName = player.firstName,
+                lastName = player.lastName,
+                editedPlayerUrl = player.imageUrl!!,
+                toolbarNameResId = StringsIds.editPlayer,
+                playerPositionString = "Center"
+            )
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.hasNotEditedExistingPlayer(existingPlayer = existingPlayer, uri = null, state = state),
+                false
+            )
+        }
+
+        @Test
+        fun `when all conditions are met should return true`() {
+            createEditPlayerViewModel.pendingShotLoggedList = emptyList()
+
+            val existingPlayer = player
             val state = CreateEditPlayerState(
                 firstName = player.firstName,
                 lastName = player.lastName,
@@ -1042,6 +1151,85 @@ class CreateEditPlayerViewModelTest {
                     imageUrl = ""
                 )
             }
+        }
+    }
+
+    @Nested
+    inner class CurrentShotLoggedRealtimeResponseList {
+
+        @Test
+        fun `when pendingShotLoggedList is not empty should return a realtime response`() {
+            val shotLogged = TestShotLogged.build()
+
+            createEditPlayerViewModel.pendingShotLoggedList = listOf(
+                PendingShot(
+                    player = TestPlayer().create(),
+                    shotLogged = shotLogged,
+                    isPendingPlayer = false
+                )
+            )
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.currentShotLoggedRealtimeResponseList(),
+                listOf(
+                    ShotLoggedRealtimeResponse(
+                        shotName = shotLogged.shotName,
+                        shotType = shotLogged.shotType,
+                        shotsAttempted = shotLogged.shotsAttempted,
+                        shotsMade = shotLogged.shotsMade,
+                        shotsMissed = shotLogged.shotsMissed,
+                        shotsMadePercentValue = shotLogged.shotsMadePercentValue,
+                        shotsMissedPercentValue = shotLogged.shotsMissedPercentValue,
+                        shotsAttemptedMillisecondsValue = shotLogged.shotsAttemptedMillisecondsValue,
+                        shotsLoggedMillisecondsValue = shotLogged.shotsLoggedMillisecondsValue,
+                        isPending = false
+                    )
+                )
+            )
+        }
+
+        @Test
+        fun `when pendingShotLoggedList is empty should return empty list`() {
+            val emptyList: List<PendingShot> = emptyList()
+            createEditPlayerViewModel.pendingShotLoggedList = arrayListOf()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.currentShotLoggedRealtimeResponseList(),
+                emptyList
+            )
+        }
+    }
+
+    @Nested
+    inner class CurrentShotLoggedList {
+
+        @Test
+        fun `when pendingShotLoggedList is not empty should return back empty shot`() {
+            val shotLogged = TestShotLogged.build()
+            val pendingShot = PendingShot(
+                player = TestPlayer().create(),
+                shotLogged = shotLogged,
+                isPendingPlayer = false
+            )
+
+            createEditPlayerViewModel.pendingShotLoggedList = arrayListOf(pendingShot)
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.currentShotLoggedList(),
+                listOf(shotLogged)
+            )
+        }
+
+        @Test
+        fun `when pendingShotLoggedList is empty should return empty list`() {
+            val emptyShotLoggedList: List<ShotLogged> = emptyList()
+
+            createEditPlayerViewModel.pendingShotLoggedList = arrayListOf()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.currentShotLoggedList(),
+                emptyShotLoggedList
+            )
         }
     }
 

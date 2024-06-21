@@ -9,6 +9,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlaye
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.Center.toPlayerPosition
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
@@ -22,6 +23,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUs
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.shouldAskForReadMediaImages
@@ -144,7 +146,9 @@ class CreateEditPlayerViewModel(
         createEditPlayerMutableStateFlow.update { state ->
             state.copy(
                 toolbarNameResId = StringsIds.createPlayer,
-                hintLogNewShotText = hintLogNewShotText(firstName = null, lastName = null)
+                hintLogNewShotText = hintLogNewShotText(firstName = null, lastName = null),
+                shots = emptyList(),
+                pendingShots = emptyList()
             )
         }
     }
@@ -153,10 +157,47 @@ class CreateEditPlayerViewModel(
         if (pendingPlayers.size == Constants.PENDING_PLAYERS_EXPECTED_SIZE || pendingShotLoggedList.isNotEmpty()) {
             navigation.alert(alert = unsavedPlayerChangesAlert())
         } else {
-            editedPlayer = null
-            createEditPlayerMutableStateFlow.value = CreateEditPlayerState()
+            clearLocalDeclarations()
+            clearState()
             navigation.pop()
         }
+    }
+
+    internal fun clearState() {
+        if (editedPlayer == null) {
+            createEditPlayerMutableStateFlow.update { state ->
+                state.copy(
+                    firstName = "",
+                    lastName = "",
+                    editedPlayerUrl = "",
+                    toolbarNameResId = StringsIds.createPlayer,
+                    playerPositionString = "",
+                    hintLogNewShotText = "",
+                    pendingShots = emptyList(),
+                    sheet = null
+                )
+            }
+        } else {
+            createEditPlayerMutableStateFlow.update { state ->
+                state.copy(
+                    firstName = "",
+                    lastName = "",
+                    editedPlayerUrl = "",
+                    toolbarNameResId = StringsIds.editPlayer,
+                    playerPositionString = "",
+                    hintLogNewShotText = "",
+                    pendingShots = emptyList(),
+                    sheet = null
+                )
+            }
+        }
+    }
+
+    internal fun clearLocalDeclarations() {
+        currentPendingShot.clearShotList()
+        pendingPlayers = emptyList()
+        pendingShotLoggedList = emptyList()
+        editedPlayer = null
     }
 
     fun onImageUploadClicked(uri: Uri?) {
@@ -275,7 +316,7 @@ class CreateEditPlayerViewModel(
         } else {
             state.editedPlayerUrl == existingPlayer.imageUrl
         }
-        return hasSameName && hasSamePosition && hasSamePlacedImage
+        return hasSameName && hasSamePosition && hasSamePlacedImage && pendingShotLoggedList.isEmpty()
     }
 
     fun checkIfPlayerAlreadyExists(state: CreateEditPlayerState, uri: Uri?) {
@@ -336,7 +377,8 @@ class CreateEditPlayerViewModel(
                     firstName = state.firstName,
                     lastName = state.lastName,
                     positionValue = state.playerPositionString.toPlayerPosition(application = application).value,
-                    imageUrl = imageUrl ?: ""
+                    imageUrl = imageUrl ?: "",
+                    shotsLogged = currentShotLoggedRealtimeResponseList()
                 )
             ).collectLatest { isSuccessful ->
                 handleFirebaseResponseForSavingPlayer(
@@ -349,6 +391,40 @@ class CreateEditPlayerViewModel(
         } else {
             navigation.disableProgress()
             navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
+        }
+    }
+
+    internal fun currentShotLoggedRealtimeResponseList(): List<ShotLoggedRealtimeResponse> {
+        if (pendingShotLoggedList.isNotEmpty()) {
+            val shotLoggedRealtimeResponseArrayList: ArrayList<ShotLoggedRealtimeResponse> = arrayListOf()
+
+            pendingShotLoggedList.forEach { pendingShot ->
+                shotLoggedRealtimeResponseArrayList.add(
+                    ShotLoggedRealtimeResponse(
+                        shotName = pendingShot.shotLogged.shotName,
+                        shotType = pendingShot.shotLogged.shotType,
+                        shotsAttempted = pendingShot.shotLogged.shotsAttempted,
+                        shotsMade = pendingShot.shotLogged.shotsMade,
+                        shotsMissed = pendingShot.shotLogged.shotsMissed,
+                        shotsMadePercentValue = pendingShot.shotLogged.shotsMadePercentValue,
+                        shotsMissedPercentValue = pendingShot.shotLogged.shotsMissedPercentValue,
+                        shotsAttemptedMillisecondsValue = pendingShot.shotLogged.shotsAttemptedMillisecondsValue,
+                        shotsLoggedMillisecondsValue = pendingShot.shotLogged.shotsLoggedMillisecondsValue,
+                        isPending = false
+                    )
+                )
+            }
+            return shotLoggedRealtimeResponseArrayList.toList()
+        } else {
+            return emptyList()
+        }
+    }
+
+    internal fun currentShotLoggedList(): List<ShotLogged> {
+        if (pendingShotLoggedList.isNotEmpty()) {
+            return pendingShotLoggedList.map { pendingShot -> pendingShot.shotLogged }
+        } else {
+            return emptyList()
         }
     }
 
@@ -375,7 +451,8 @@ class CreateEditPlayerViewModel(
                                 positionValue = state.playerPositionString.toPlayerPosition(
                                     application = application
                                 ).value,
-                                imageUrl = imageUrl ?: ""
+                                imageUrl = imageUrl ?: "",
+                                shotsLogged = currentShotLoggedRealtimeResponseList()
                             )
                         )
                     ).collectLatest { isSuccessful ->
@@ -457,10 +534,15 @@ class CreateEditPlayerViewModel(
                 position = positionString.toPlayerPosition(application = application),
                 firebaseKey = playerKey,
                 imageUrl = imageUrl ?: "",
-                shotsLoggedList = emptyList() // todo -> add logic from list state
+                shotsLoggedList = currentShotLoggedList()
             )
 
             createOrEditPlayerInRoom(player = player)
+
+            currentPendingShot.clearShotList()
+
+            clearLocalDeclarations()
+            clearState()
 
             navigation.disableProgress()
             navigation.pop()
