@@ -501,6 +501,34 @@ class CreateEditPlayerViewModelTest {
     }
 
     @Nested
+    inner class ClearState {
+
+        @Test
+        fun `when editedPlayer is set to null should reset the state flow value`() {
+            createEditPlayerViewModel.clearState()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState()
+            )
+        }
+
+        @Test
+        fun `when editedPlayer is not set to null should reset the state flow value with edit player as toolbar name`() {
+            createEditPlayerViewModel.editedPlayer = TestPlayer().create()
+
+            createEditPlayerViewModel.clearState()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState().copy(
+                    toolbarNameResId = StringsIds.editPlayer
+                )
+            )
+        }
+    }
+
+    @Nested
     inner class OnImageUploadClicked {
 
         @Test
@@ -869,9 +897,35 @@ class CreateEditPlayerViewModelTest {
         }
 
         @Test
-        fun `when all conditions are met should return true`() {
-            val existingPlayer = player
+        fun `when pendingShotLoggedList is not empty should return false`() {
+            createEditPlayerViewModel.pendingShotLoggedList = listOf(
+                PendingShot(
+                    player = TestPlayer().create(),
+                    shotLogged = TestShotLogged.build(),
+                    isPendingPlayer = false
+                )
+            )
 
+            val existingPlayer = player
+            val state = CreateEditPlayerState(
+                firstName = player.firstName,
+                lastName = player.lastName,
+                editedPlayerUrl = player.imageUrl!!,
+                toolbarNameResId = StringsIds.editPlayer,
+                playerPositionString = "Center"
+            )
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.hasNotEditedExistingPlayer(existingPlayer = existingPlayer, uri = null, state = state),
+                false
+            )
+        }
+
+        @Test
+        fun `when all conditions are met should return true`() {
+            createEditPlayerViewModel.pendingShotLoggedList = emptyList()
+
+            val existingPlayer = player
             val state = CreateEditPlayerState(
                 firstName = player.firstName,
                 lastName = player.lastName,
