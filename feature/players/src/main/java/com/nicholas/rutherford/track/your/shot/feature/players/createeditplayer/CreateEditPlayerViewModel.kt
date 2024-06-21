@@ -146,7 +146,9 @@ class CreateEditPlayerViewModel(
         createEditPlayerMutableStateFlow.update { state ->
             state.copy(
                 toolbarNameResId = StringsIds.createPlayer,
-                hintLogNewShotText = hintLogNewShotText(firstName = null, lastName = null)
+                hintLogNewShotText = hintLogNewShotText(firstName = null, lastName = null),
+                shots = emptyList(),
+                pendingShots = emptyList()
             )
         }
     }
@@ -155,20 +157,47 @@ class CreateEditPlayerViewModel(
         if (pendingPlayers.size == Constants.PENDING_PLAYERS_EXPECTED_SIZE || pendingShotLoggedList.isNotEmpty()) {
             navigation.alert(alert = unsavedPlayerChangesAlert())
         } else {
+            clearLocalDeclarations()
             clearState()
-            pendingPlayers = emptyList()
-            pendingShotLoggedList = emptyList()
-            editedPlayer = null
             navigation.pop()
         }
     }
 
     internal fun clearState() {
         if (editedPlayer == null) {
-            createEditPlayerMutableStateFlow.value = CreateEditPlayerState()
+            createEditPlayerMutableStateFlow.update { state ->
+                state.copy(
+                    firstName = "",
+                    lastName = "",
+                    editedPlayerUrl = "",
+                    toolbarNameResId = StringsIds.createPlayer,
+                    playerPositionString = "",
+                    hintLogNewShotText = "",
+                    pendingShots = emptyList(),
+                    sheet = null
+                )
+            }
         } else {
-            createEditPlayerMutableStateFlow.value = CreateEditPlayerState().copy(toolbarNameResId = StringsIds.editPlayer)
+            createEditPlayerMutableStateFlow.update { state ->
+                state.copy(
+                    firstName = "",
+                    lastName = "",
+                    editedPlayerUrl = "",
+                    toolbarNameResId = StringsIds.editPlayer,
+                    playerPositionString = "",
+                    hintLogNewShotText = "",
+                    pendingShots = emptyList(),
+                    sheet = null
+                )
+            }
         }
+    }
+
+    internal fun clearLocalDeclarations() {
+        currentPendingShot.clearShotList()
+        pendingPlayers = emptyList()
+        pendingShotLoggedList = emptyList()
+        editedPlayer = null
     }
 
     fun onImageUploadClicked(uri: Uri?) {
@@ -512,11 +541,10 @@ class CreateEditPlayerViewModel(
 
             currentPendingShot.clearShotList()
 
-            navigation.disableProgress()
+            clearLocalDeclarations()
             clearState()
-            pendingPlayers = emptyList()
-            pendingShotLoggedList = emptyList()
-            editedPlayer = null
+
+            navigation.disableProgress()
             navigation.pop()
         } ?: run {
             navigation.disableProgress()
