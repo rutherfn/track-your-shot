@@ -1172,18 +1172,18 @@ class CreateEditPlayerViewModelTest {
             Assertions.assertEquals(
                 createEditPlayerViewModel.currentShotLoggedRealtimeResponseList(),
                 listOf(
-                ShotLoggedRealtimeResponse(
-                    shotName = shotLogged.shotName,
-                    shotType = shotLogged.shotType,
-                    shotsAttempted = shotLogged.shotsAttempted,
-                    shotsMade = shotLogged.shotsMade,
-                    shotsMissed = shotLogged.shotsMissed,
-                    shotsMadePercentValue = shotLogged.shotsMadePercentValue,
-                    shotsMissedPercentValue = shotLogged.shotsMissedPercentValue,
-                    shotsAttemptedMillisecondsValue = shotLogged.shotsAttemptedMillisecondsValue,
-                    shotsLoggedMillisecondsValue = shotLogged.shotsLoggedMillisecondsValue,
-                    isPending = false
-                )
+                    ShotLoggedRealtimeResponse(
+                        shotName = shotLogged.shotName,
+                        shotType = shotLogged.shotType,
+                        shotsAttempted = shotLogged.shotsAttempted,
+                        shotsMade = shotLogged.shotsMade,
+                        shotsMissed = shotLogged.shotsMissed,
+                        shotsMadePercentValue = shotLogged.shotsMadePercentValue,
+                        shotsMissedPercentValue = shotLogged.shotsMissedPercentValue,
+                        shotsAttemptedMillisecondsValue = shotLogged.shotsAttemptedMillisecondsValue,
+                        shotsLoggedMillisecondsValue = shotLogged.shotsLoggedMillisecondsValue,
+                        isPending = false
+                    )
                 )
             )
         }
