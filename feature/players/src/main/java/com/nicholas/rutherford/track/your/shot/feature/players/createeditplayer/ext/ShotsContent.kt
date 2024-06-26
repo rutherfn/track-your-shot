@@ -48,7 +48,6 @@ fun ColumnScope.ShotsContent(
     onViewShotClicked: (shotId: Int) -> Unit,
     onPendingShotClicked: (shotId: Int) -> Unit
 ) {
-
     if (shotList.isEmpty() && pendingShotList.isEmpty()) {
         ShotContentEmptyState(hintLogNewShotText = hintLogNewShotText, onLogShotsClicked = onLogShotsClicked)
     } else if (shotList.isNotEmpty()) {
@@ -101,7 +100,7 @@ private fun PendingShot(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(onClick = { onPendingShotClicked.invoke(shot.id) } ) {
+                IconButton(onClick = { onPendingShotClicked.invoke(shot.id) }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowForward,
                         contentDescription = ""
@@ -153,7 +152,7 @@ private fun ColumnScope.LoggedShot(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(onClick = { onViewShotClicked.invoke(shot.id) } ) {
+                IconButton(onClick = { onViewShotClicked.invoke(shot.id) }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowForward,
                         contentDescription = ""

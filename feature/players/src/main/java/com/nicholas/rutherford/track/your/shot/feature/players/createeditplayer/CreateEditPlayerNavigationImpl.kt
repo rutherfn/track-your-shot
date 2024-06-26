@@ -13,10 +13,11 @@ class CreateEditPlayerNavigationImpl(private val navigator: Navigator) : CreateE
     override fun navigateToSelectShot(
         isExistingPlayer: Boolean,
         playerId: Int
-    ) = navigator.navigate(navigationAction = NavigationActions.CreateEditPlayer.selectShot(
-        isExistingPlayer = isExistingPlayer,
-        playerId = playerId
-    )
+    ) = navigator.navigate(
+        navigationAction = NavigationActions.CreateEditPlayer.selectShot(
+            isExistingPlayer = isExistingPlayer,
+            playerId = playerId
+        )
     )
 
     override fun navigateToLogShot(
@@ -25,13 +26,15 @@ class CreateEditPlayerNavigationImpl(private val navigator: Navigator) : CreateE
         shotId: Int,
         viewCurrentExistingShot: Boolean,
         viewCurrentPendingShot: Boolean
-    ) = navigator.navigate(navigationAction = NavigationActions.CreateEditPlayer.logShot(
-        isExistingPlayer = isExistingPlayer,
-        playerId = playerId,
-        shotId = shotId,
-        viewCurrentExistingShot = viewCurrentExistingShot,
-        viewCurrentPendingShot = viewCurrentPendingShot
-    ))
+    ) = navigator.navigate(
+        navigationAction = NavigationActions.CreateEditPlayer.logShot(
+            isExistingPlayer = isExistingPlayer,
+            playerId = playerId,
+            shotId = shotId,
+            viewCurrentExistingShot = viewCurrentExistingShot,
+            viewCurrentPendingShot = viewCurrentPendingShot
+        )
+    )
     override fun disableProgress() = navigator.progress(progressAction = null)
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
     override fun pop() = navigator.pop(popRouteAction = NavigationDestinations.PLAYERS_LIST_SCREEN)

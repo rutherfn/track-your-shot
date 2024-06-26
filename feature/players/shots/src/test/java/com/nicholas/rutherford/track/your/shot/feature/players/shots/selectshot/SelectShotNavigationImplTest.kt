@@ -80,5 +80,4 @@ class SelectShotNavigationImplTest {
             capturedArgument.destination
         )
     }
-
 }

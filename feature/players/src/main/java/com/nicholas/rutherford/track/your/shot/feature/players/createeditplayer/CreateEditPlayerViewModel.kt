@@ -10,7 +10,6 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerReposi
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.Center.toPlayerPosition
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
-import com.nicholas.rutherford.track.your.shot.data.room.response.toPlayerEntity
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress

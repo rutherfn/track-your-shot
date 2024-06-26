@@ -17,5 +17,5 @@ data class CreateEditPlayerParams(
     val permissionNotGrantedForReadMediaOrExternalStorageAlert: () -> Unit,
     val onSelectedCreateEditImageOption: (uri: String) -> CreateEditImageOption,
     val onViewShotClicked: (shotId: Int) -> Unit,
-    val onViewPendingShotClicked: (shotId: Int) -> Unit,
+    val onViewPendingShotClicked: (shotId: Int) -> Unit
 )

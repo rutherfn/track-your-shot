@@ -16,13 +16,14 @@ class SelectShotNavigationImpl(private val navigator: Navigator) : SelectShotNav
         viewCurrentExistingShot: Boolean,
         viewCurrentPendingShot: Boolean
     ) {
-        navigator.navigate(navigationAction = NavigationActions.SelectShot.logShot(
-            isExistingPlayer = isExistingPlayer,
-            playerId = playerId,
-            shotId = shotId,
-            viewCurrentExistingShot = viewCurrentExistingShot,
-            viewCurrentPendingShot = viewCurrentPendingShot
-        )
+        navigator.navigate(
+            navigationAction = NavigationActions.SelectShot.logShot(
+                isExistingPlayer = isExistingPlayer,
+                playerId = playerId,
+                shotId = shotId,
+                viewCurrentExistingShot = viewCurrentExistingShot,
+                viewCurrentPendingShot = viewCurrentPendingShot
+            )
         )
     }
 }

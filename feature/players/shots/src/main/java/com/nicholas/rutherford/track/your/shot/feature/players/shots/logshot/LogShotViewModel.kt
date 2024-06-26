@@ -284,7 +284,7 @@ class LogShotViewModel(
                         shotLogged = PendingShot(
                             player = player,
                             shotLogged = ShotLogged(
-                                id  = currentPlayerShotSize + 1,
+                                id = currentPlayerShotSize + 1,
                                 shotName = state.shotName,
                                 shotType = currentDeclaredShot?.id ?: 0,
                                 shotsAttempted = state.shotsAttempted,
