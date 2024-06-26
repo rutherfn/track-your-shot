@@ -235,13 +235,14 @@ class NavigationActionsTest {
                 val isExistingPlayer = false
                 val playerId = 2
                 val shotId = 2
+                val isExistingShot = false
 
                 Assertions.assertEquals(
-                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId).destination,
-                    NavigationDestinationsWithParams.logShotWithParams(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId)
+                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId, isExistingShot = isExistingShot).destination,
+                    NavigationDestinationsWithParams.logShotWithParams(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId, isExistingShot = isExistingShot)
                 )
                 Assertions.assertEquals(
-                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId).navOptions,
+                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId, isExistingShot = isExistingShot).navOptions,
                     NavOptions.Builder().build()
                 )
             }
