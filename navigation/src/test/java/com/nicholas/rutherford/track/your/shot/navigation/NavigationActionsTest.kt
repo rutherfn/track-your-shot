@@ -235,14 +235,15 @@ class NavigationActionsTest {
                 val isExistingPlayer = false
                 val playerId = 2
                 val shotId = 2
-                val isExistingShot = false
+                val viewCurrentExistingShot = false
+                val viewCurrentPendingShot = false
 
                 Assertions.assertEquals(
-                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId, isExistingShot = isExistingShot).destination,
-                    NavigationDestinationsWithParams.logShotWithParams(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId, isExistingShot = isExistingShot)
+                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId, viewCurrentExistingShot = viewCurrentExistingShot, viewCurrentPendingShot = viewCurrentPendingShot).destination,
+                    NavigationDestinationsWithParams.logShotWithParams(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId, viewCurrentExistingShot = viewCurrentExistingShot, viewCurrentPendingShot = viewCurrentPendingShot)
                 )
                 Assertions.assertEquals(
-                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId, isExistingShot = isExistingShot).navOptions,
+                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId, viewCurrentExistingShot = viewCurrentExistingShot, viewCurrentPendingShot = viewCurrentExistingShot).navOptions,
                     NavOptions.Builder().build()
                 )
             }

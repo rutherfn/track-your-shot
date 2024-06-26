@@ -44,15 +44,19 @@ fun ColumnScope.ShotsContent(
     shotList: List<ShotLogged>,
     pendingShotList: List<ShotLogged>,
     hintLogNewShotText: String,
-    onLogShotsClicked: () -> Unit
+    onLogShotsClicked: () -> Unit,
+    onViewShotClicked: (shotId: Int) -> Unit,
+    onPendingShotClicked: (shotId: Int) -> Unit
 ) {
 
-    println("pending shot list size ${pendingShotList.size}")
     if (shotList.isEmpty() && pendingShotList.isEmpty()) {
         ShotContentEmptyState(hintLogNewShotText = hintLogNewShotText, onLogShotsClicked = onLogShotsClicked)
     } else if (shotList.isNotEmpty()) {
         shotList.forEach { shot ->
-            LoggedShot(shot = shot)
+            LoggedShot(
+                shot = shot,
+                onViewShotClicked = onViewShotClicked
+            )
         }
     }
 
@@ -64,16 +68,20 @@ fun ColumnScope.ShotsContent(
                 .align(Alignment.Start)
                 .padding(top = Padding.twelve, start = Padding.four)
         )
-        pendingShotList.forEach { shot -> PendingShot(shot = shot) }
+        pendingShotList.forEach { shot -> PendingShot(shot = shot, onPendingShotClicked = onPendingShotClicked) }
     }
 }
 
 @Composable
-private fun PendingShot(shot: ShotLogged) {
+private fun PendingShot(
+    shot: ShotLogged,
+    onPendingShotClicked: (shotId: Int) -> Unit
+) {
     Card(
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
+            .clickable { onPendingShotClicked.invoke(shot.id) }
             .padding(top = 4.dp, end = 4.dp),
         elevation = 2.dp
     ) {
@@ -81,9 +89,7 @@ private fun PendingShot(shot: ShotLogged) {
             Row(
                 modifier = Modifier
                     .padding(8.dp)
-                    .clickable {
-                        // todo -> Add functionality for the user to view or edit a pending shot
-                    },
+                    .clickable { onPendingShotClicked.invoke(shot.id) },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -95,17 +101,22 @@ private fun PendingShot(shot: ShotLogged) {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                Icon(
-                    imageVector = Icons.Filled.ArrowForward,
-                    contentDescription = ""
-                )
+                IconButton(onClick = { onPendingShotClicked.invoke(shot.id) } ) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowForward,
+                        contentDescription = ""
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun ColumnScope.LoggedShot(shot: ShotLogged) {
+private fun ColumnScope.LoggedShot(
+    shot: ShotLogged,
+    onViewShotClicked: (shotId: Int) -> Unit
+) {
     Text(
         text = stringResource(id = R.string.shots),
         style = TextStyles.small,
@@ -118,7 +129,7 @@ private fun ColumnScope.LoggedShot(shot: ShotLogged) {
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
-            .clickable {  }
+            .clickable { onViewShotClicked.invoke(shot.id) }
             .padding(
                 top = 16.dp,
                 end = 4.dp,
@@ -142,7 +153,7 @@ private fun ColumnScope.LoggedShot(shot: ShotLogged) {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(onClick = { }) {
+                IconButton(onClick = { onViewShotClicked.invoke(shot.id) } ) {
                     Icon(
                         imageVector = Icons.Filled.ArrowForward,
                         contentDescription = ""

@@ -13,8 +13,9 @@ object NavigationDestinationsWithParams {
         isExistingPlayer: Boolean,
         playerId: Int,
         shotId: Int,
-        isExistingShot: Boolean
-    ): String = "${NavigationDestinations.LOG_SHOT_SCREEN}/$isExistingPlayer/$playerId/$shotId/$isExistingShot"
+        viewCurrentExistingShot: Boolean,
+        viewCurrentPendingShot: Boolean
+    ): String = "${NavigationDestinations.LOG_SHOT_SCREEN}/$isExistingPlayer/$playerId/$shotId/$viewCurrentExistingShot/$viewCurrentPendingShot"
 
     fun selectShotWithParams(
         isExistingPlayer: Boolean,

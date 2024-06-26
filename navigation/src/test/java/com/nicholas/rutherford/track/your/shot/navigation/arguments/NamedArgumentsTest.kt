@@ -16,6 +16,7 @@ class NamedArgumentsTest {
         Assertions.assertEquals(NamedArguments.IS_EXISTING_PLAYER, "isExistingPlayer")
         Assertions.assertEquals(NamedArguments.PLAYER_ID, "playerId")
 
-        Assertions.assertEquals(NamedArguments.IS_EXISTING_SHOT, "isExistingShot")
+        Assertions.assertEquals(NamedArguments.VIEW_CURRENT_EXISTING_SHOT, "viewCurrentExistingShot")
+        Assertions.assertEquals(NamedArguments.VIEW_CURRENT_PENDING_SHOT, "viewCurrentPendingShot")
     }
 }

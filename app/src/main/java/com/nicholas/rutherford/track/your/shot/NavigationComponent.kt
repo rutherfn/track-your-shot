@@ -350,7 +350,8 @@ fun NavigationComponent(
                                     isExistingPlayerArgument = bundle.getBoolean(NamedArguments.IS_EXISTING_PLAYER),
                                     playerIdArgument = bundle.getInt(NamedArguments.PLAYER_ID),
                                     shotIdArgument = bundle.getInt(NamedArguments.SHOT_ID),
-                                    isExistingShotArgument = bundle.getBoolean(NamedArguments.IS_EXISTING_SHOT)
+                                    viewCurrentExistingShotArgument = bundle.getBoolean(NamedArguments.VIEW_CURRENT_EXISTING_SHOT),
+                                    viewCurrentPendingShotArgument = bundle.getBoolean(NamedArguments.VIEW_CURRENT_PENDING_SHOT)
                                 )
                             },
                             onShotsMadeClicked = { logShotViewModel.onShotsMadeClicked() },

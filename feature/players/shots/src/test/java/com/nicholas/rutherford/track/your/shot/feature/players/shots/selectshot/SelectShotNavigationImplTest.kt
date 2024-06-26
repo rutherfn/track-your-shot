@@ -1,5 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationAction
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot
@@ -48,4 +50,35 @@ class SelectShotNavigationImplTest {
 
         Assertions.assertEquals(expected, capturedArgument)
     }
+
+    @Test
+    fun `navigate to log shot`() {
+        val isExistingPlayer = false
+        val playerId = 5
+        val shotId = 3
+        val isExistingShot = false
+        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+
+        selectShotNavigationImpl.navigateToLogShot(
+            isExistingPlayer = isExistingPlayer,
+            playerId = playerId,
+            shotId = shotId
+        )
+
+        verify { navigator.navigate(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+        val expectedAction = NavigationActions.SelectShot.logShot(
+            isExistingPlayer = isExistingPlayer,
+            playerId = playerId,
+            shotId = shotId,
+            isExistingShot = isExistingShot
+        )
+
+        Assertions.assertEquals(
+            expectedAction.destination,
+            capturedArgument.destination
+        )
+    }
+
 }

@@ -109,6 +109,23 @@ object NavigationActions {
             )
             override val navOptions = NavOptions.Builder().build()
         }
+
+        fun logShot(
+            isExistingPlayer: Boolean,
+            playerId: Int,
+            shotId: Int,
+            viewCurrentExistingShot: Boolean,
+            viewCurrentPendingShot: Boolean
+        ) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.logShotWithParams(
+                isExistingPlayer = isExistingPlayer,
+                playerId = playerId,
+                shotId = shotId,
+                viewCurrentExistingShot = viewCurrentExistingShot,
+                viewCurrentPendingShot = viewCurrentPendingShot
+            )
+            override val navOptions = NavOptions.Builder().build()
+        }
     }
 
     object SelectShot {
@@ -116,13 +133,15 @@ object NavigationActions {
             isExistingPlayer: Boolean,
             playerId: Int,
             shotId: Int,
-            isExistingShot: Boolean
+            viewCurrentExistingShot: Boolean,
+            viewCurrentPendingShot: Boolean
         ) = object : NavigationAction {
             override val destination = NavigationDestinationsWithParams.logShotWithParams(
                 isExistingPlayer = isExistingPlayer,
                 playerId = playerId,
                 shotId = shotId,
-                isExistingShot = isExistingShot
+                viewCurrentExistingShot = viewCurrentExistingShot,
+                viewCurrentPendingShot = viewCurrentPendingShot
             )
             override val navOptions = NavOptions.Builder().build()
         }

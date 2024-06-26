@@ -3,12 +3,14 @@ package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.Center.toPlayerPosition
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
+import com.nicholas.rutherford.track.your.shot.data.room.response.toPlayerEntity
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
@@ -863,7 +865,27 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    fun onViewShotClicked(shotId: Int) {
+    fun onViewPendingShotClicked(shotId: Int) {
+        viewModelScope.launch {
+            navigation.navigateToLogShot(
+                isExistingPlayer = false,
+                playerId = existingOrPendingPlayerId() ?: 0,
+                shotId = shotId,
+                viewCurrentExistingShot = false,
+                viewCurrentPendingShot = true
+            )
+        }
+    }
 
+    fun onViewShotClicked(shotId: Int) {
+        viewModelScope.launch {
+            navigation.navigateToLogShot(
+                isExistingPlayer = true,
+                playerId = existingOrPendingPlayerId() ?: 0,
+                shotId = shotId,
+                viewCurrentExistingShot = true,
+                viewCurrentPendingShot = false
+            )
+        }
     }
 }

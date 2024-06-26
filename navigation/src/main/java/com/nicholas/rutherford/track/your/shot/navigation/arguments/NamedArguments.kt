@@ -8,5 +8,6 @@ object NamedArguments {
     const val IS_EXISTING_PLAYER = "isExistingPlayer"
     const val PLAYER_ID = "playerId"
     const val SHOT_ID = "shotId"
-    const val IS_EXISTING_SHOT = "isExistingShot"
+    const val VIEW_CURRENT_EXISTING_SHOT = "viewCurrentExistingShot"
+    const val VIEW_CURRENT_PENDING_SHOT = "viewCurrentPendingShot"
 }
