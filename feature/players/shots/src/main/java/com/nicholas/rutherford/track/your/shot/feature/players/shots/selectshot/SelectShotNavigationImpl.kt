@@ -12,14 +12,13 @@ class SelectShotNavigationImpl(private val navigator: Navigator) : SelectShotNav
     override fun navigateToLogShot(
         isExistingPlayer: Boolean,
         playerId: Int,
-        shotId: Int,
-        currentPlayerShotsSize: Int
+        shotId: Int
     ) {
         navigator.navigate(navigationAction = NavigationActions.SelectShot.logShot(
             isExistingPlayer = isExistingPlayer,
             playerId = playerId,
             shotId = shotId,
-            currentPlayerShotsSize = currentPlayerShotsSize
+            isExistingShot = false
         )
         )
     }

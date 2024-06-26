@@ -159,6 +159,7 @@
     <string name="voice_commands">Voice Commands</string>
     <string name="x_position_x_player_name" formatted="false">%s , %s</string>
     <string name="x_shot_category">Category - %s</string>
+    <string name="x_shot_last_logged_x">%s \nLast Logged: %s</string>
     <string name="yes">Yes</string>
     <string name="your_player_could_not_be_retrieved_description">Your player could not be retrieved. Please try again.</string>
 </resources>

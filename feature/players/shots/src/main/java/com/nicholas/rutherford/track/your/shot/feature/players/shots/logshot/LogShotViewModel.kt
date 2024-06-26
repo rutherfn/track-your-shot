@@ -17,6 +17,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.extensions.parseValueToDate
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
@@ -25,12 +26,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Date
 import java.util.Locale
-
-const val PENDING_SHOT_DEFAULT_ID = 0
 
 class LogShotViewModel(
     private val application: Application,
@@ -53,17 +51,18 @@ class LogShotViewModel(
     internal var currentDeclaredShot: DeclaredShot? = null
 
     internal var currentPlayerShotSize = 0
+    internal var isExistingShot = false
 
     fun updateIsExistingPlayerAndId(
         isExistingPlayerArgument: Boolean,
         playerIdArgument: Int,
         shotIdArgument: Int,
-        currentPlayerShotsSizeArgument: Int
+        isExistingShotArgument: Boolean
     ) {
         this.isExistingPlayer = isExistingPlayerArgument
         this.playerId = playerIdArgument
         this.shotId = shotIdArgument
-        this.currentPlayerShotSize = currentPlayerShotsSizeArgument
+        this.isExistingShot = isExistingShotArgument
 
         scope.launch {
             val declaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = shotId)
@@ -74,6 +73,7 @@ class LogShotViewModel(
             }
 
             currentPlayer = player
+            currentPlayerShotSize = currentPlayer?.shotsLoggedList?.size ?: 0
             currentDeclaredShot = declaredShot
 
             safeLet(declaredShot, player) { shot, existingPlayer ->
@@ -353,7 +353,7 @@ class LogShotViewModel(
         return if (value.isEmpty()) {
             null
         } else {
-            SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).parse(value)
+            parseValueToDate(value = value)
         }
     }
 

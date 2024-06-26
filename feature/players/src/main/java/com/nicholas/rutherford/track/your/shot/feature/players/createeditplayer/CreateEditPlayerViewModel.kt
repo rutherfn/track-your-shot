@@ -4,7 +4,6 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
-import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
@@ -47,7 +46,6 @@ class CreateEditPlayerViewModel(
     private val scope: CoroutineScope,
     private val navigation: CreateEditPlayerNavigation,
     private val playersAdditionUpdates: PlayersAdditionUpdates,
-    private val declaredShotRepository: DeclaredShotRepository,
     private val currentPendingShot: CurrentPendingShot,
     private val network: Network
 ) : ViewModel() {
@@ -73,10 +71,8 @@ class CreateEditPlayerViewModel(
     }
 
     private fun processPendingShots(shotLoggedList: List<PendingShot>) {
-        if (shotLoggedList.isNotEmpty() && shotLoggedList.size == 1) {
+        if (shotLoggedList.isNotEmpty()) {
             pendingShotLoggedList = shotLoggedList
-
-            println("here we go ${pendingShotLoggedList.first().shotLogged.id}")
 
             createEditPlayerMutableStateFlow.update { state ->
                 state.copy(pendingShots = pendingShotLoggedList.map { it.shotLogged })
@@ -84,17 +80,11 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    fun checkForExistingPlayer(
-        firstNameArgument: String?,
-        lastNameArgument: String?
-    ) {
+    fun checkForExistingPlayer(firstNameArgument: String?, lastNameArgument: String?) {
         scope.launch {
             safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
                 if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
-                    playerRepository.fetchPlayerByName(
-                        firstName = firstName,
-                        lastName = lastName
-                    )
+                    playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)
                         ?.let { player ->
                             updateStateForExistingPlayer(player = player)
                         } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
@@ -148,9 +138,7 @@ class CreateEditPlayerViewModel(
         createEditPlayerMutableStateFlow.update { state ->
             state.copy(
                 toolbarNameResId = StringsIds.createPlayer,
-                hintLogNewShotText = hintLogNewShotText(firstName = null, lastName = null),
-                shots = emptyList(),
-                pendingShots = emptyList()
+                hintLogNewShotText = hintLogNewShotText(firstName = null, lastName = null)
             )
         }
     }
@@ -166,40 +154,42 @@ class CreateEditPlayerViewModel(
     }
 
     internal fun clearState() {
-//        if (editedPlayer == null) {
-//            createEditPlayerMutableStateFlow.update { state ->
-//                state.copy(
-//                    firstName = "",
-//                    lastName = "",
-//                    editedPlayerUrl = "",
-//                    toolbarNameResId = StringsIds.createPlayer,
-//                    playerPositionString = "",
-//                    hintLogNewShotText = "",
-//                    pendingShots = emptyList(),
-//                    sheet = null
-//                )
-//            }
-//        } else {
-//            createEditPlayerMutableStateFlow.update { state ->
-//                state.copy(
-//                    firstName = "",
-//                    lastName = "",
-//                    editedPlayerUrl = "",
-//                    toolbarNameResId = StringsIds.editPlayer,
-//                    playerPositionString = "",
-//                    hintLogNewShotText = "",
-//                    pendingShots = emptyList(),
-//                    sheet = null
-//                )
-//            }
-//        }
+        if (editedPlayer == null) {
+            createEditPlayerMutableStateFlow.update { state ->
+                state.copy(
+                    firstName = "",
+                    lastName = "",
+                    editedPlayerUrl = "",
+                    toolbarNameResId = StringsIds.createPlayer,
+                    playerPositionString = "",
+                    hintLogNewShotText = "",
+                    pendingShots = emptyList(),
+                    shots = emptyList(),
+                    sheet = null
+                )
+            }
+        } else {
+            createEditPlayerMutableStateFlow.update { state ->
+                state.copy(
+                    firstName = "",
+                    lastName = "",
+                    editedPlayerUrl = "",
+                    toolbarNameResId = StringsIds.editPlayer,
+                    playerPositionString = "",
+                    hintLogNewShotText = "",
+                    pendingShots = emptyList(),
+                    shots = emptyList(),
+                    sheet = null
+                )
+            }
+        }
     }
 
     internal fun clearLocalDeclarations() {
-//        currentPendingShot.clearShotList()
-//        pendingPlayers = emptyList()
-//        pendingShotLoggedList = emptyList()
-//        editedPlayer = null
+        currentPendingShot.clearShotList()
+        pendingPlayers = emptyList()
+        pendingShotLoggedList = emptyList()
+        editedPlayer = null
     }
 
     fun onImageUploadClicked(uri: Uri?) {
@@ -866,11 +856,14 @@ class CreateEditPlayerViewModel(
                     val isExistingPlayer = editedPlayer != null
                     navigation.navigateToSelectShot(
                         isExistingPlayer = isExistingPlayer,
-                        playerId = playerId,
-                        currentPlayerShotsSize = createEditPlayerStateFlow.value.shots.size
+                        playerId = playerId
                     )
                 }
             }
         }
+    }
+
+    fun onViewShotClicked(shotId: Int) {
+
     }
 }

@@ -137,7 +137,6 @@ class CreateEditPlayerViewModelTest {
             scope = scope,
             navigation = navigation,
             playersAdditionUpdates = playersAdditionUpdates,
-            declaredShotRepository = declaredShotRepository,
             currentPendingShot = currentPendingShot,
             network = network
         )
@@ -448,9 +447,7 @@ class CreateEditPlayerViewModelTest {
         Assertions.assertEquals(
             createEditPlayerViewModel.createEditPlayerStateFlow.value,
             CreateEditPlayerState(
-                toolbarNameResId = StringsIds.createPlayer,
-                shots = emptyList(),
-                pendingShots = emptyList()
+                toolbarNameResId = StringsIds.createPlayer
             )
         )
     }
@@ -523,6 +520,7 @@ class CreateEditPlayerViewModelTest {
                     playerPositionString = "",
                     hintLogNewShotText = "",
                     pendingShots = emptyList(),
+                    shots = emptyList(),
                     sheet = null
                 )
             )
@@ -544,6 +542,7 @@ class CreateEditPlayerViewModelTest {
                     playerPositionString = "",
                     hintLogNewShotText = "",
                     pendingShots = emptyList(),
+                    shots = emptyList(),
                     sheet = null
                 )
             )

@@ -8,11 +8,15 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.core.content.ContextCompat
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants.DATE_PATTERN
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Date
 import java.util.Locale
 
 inline fun <T1 : Any, T2 : Any, R : Any> safeLet(p1: T1?, p2: T2?, block: (T1, T2) -> R?): R? {
@@ -131,6 +135,7 @@ fun hasReadImagePermissionEnabled(context: Context): Boolean {
     }
 }
 
+@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.TIRAMISU)
 fun shouldAskForReadMediaImages() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
 fun readMediaImagesOrExternalStoragePermission(): String {
@@ -140,3 +145,9 @@ fun readMediaImagesOrExternalStoragePermission(): String {
         Manifest.permission.READ_EXTERNAL_STORAGE
     }
 }
+
+fun parseValueToDate(value: String): Date? =
+    SimpleDateFormat(DATE_PATTERN, Locale.ENGLISH).parse(value)
+
+fun parseDateValueToString(timeInMilliseconds: Long): String =
+    SimpleDateFormat(DATE_PATTERN, Locale.ENGLISH).format(Date(timeInMilliseconds))

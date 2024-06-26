@@ -31,21 +31,14 @@ class SelectShotViewModel(
     internal var isExistingPlayer: Boolean? = null
     internal var playerId: Int? = null
 
-    internal var currentPlayerShotSize: Int? = null
-
     init {
         fetchDeclaredShotsAndUpdateState()
         collectLoggedInDeclaredShotsStateFlow()
     }
 
-    fun updateIsExistingPlayerAndPlayerId(
-        isExistingPlayerArgument: Boolean?,
-        playerIdArgument: Int?,
-        currentPlayerShotsSizeArgument: Int?
-    ) {
+    fun updateIsExistingPlayerAndPlayerId(isExistingPlayerArgument: Boolean?, playerIdArgument: Int?) {
         this.isExistingPlayer = isExistingPlayerArgument
         this.playerId = playerIdArgument
-        this.currentPlayerShotSize = currentPlayerShotsSizeArgument
     }
 
     internal fun fetchDeclaredShotsAndUpdateState() {
@@ -112,12 +105,11 @@ class SelectShotViewModel(
     }
 
     fun onDeclaredShotItemClicked(shotId: Int) {
-        safeLet(isExistingPlayer, playerId, currentPlayerShotSize) { isExisting, id, playerShotSize ->
+        safeLet(isExistingPlayer, playerId) { isExisting, id ->
             navigation.navigateToLogShot(
                 isExistingPlayer = isExisting,
                 playerId = id,
-                shotId = shotId,
-                currentPlayerShotsSize = playerShotSize
+                shotId = shotId
             )
         }
     }

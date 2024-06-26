@@ -35,6 +35,7 @@ import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.helper.extensions.parseDateValueToString
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
@@ -50,7 +51,9 @@ fun ColumnScope.ShotsContent(
     if (shotList.isEmpty() && pendingShotList.isEmpty()) {
         ShotContentEmptyState(hintLogNewShotText = hintLogNewShotText, onLogShotsClicked = onLogShotsClicked)
     } else if (shotList.isNotEmpty()) {
-        LoggedShot()
+        shotList.forEach { shot ->
+            LoggedShot(shot = shot)
+        }
     }
 
     if (pendingShotList.isNotEmpty()) {
@@ -76,9 +79,11 @@ private fun PendingShot(shot: ShotLogged) {
     ) {
         Column {
             Row(
-                modifier = Modifier.padding(8.dp).clickable {
-                    // todo -> Add functionality for the user to view or edit a pending shot
-                },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clickable {
+                        // todo -> Add functionality for the user to view or edit a pending shot
+                    },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -100,7 +105,7 @@ private fun PendingShot(shot: ShotLogged) {
 }
 
 @Composable
-private fun ColumnScope.LoggedShot() {
+private fun ColumnScope.LoggedShot(shot: ShotLogged) {
     Text(
         text = stringResource(id = R.string.shots),
         style = TextStyles.small,
@@ -113,6 +118,7 @@ private fun ColumnScope.LoggedShot() {
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
+            .clickable {  }
             .padding(
                 top = 16.dp,
                 end = 4.dp,
@@ -128,7 +134,7 @@ private fun ColumnScope.LoggedShot() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Current Shots\nLast Logged: 10/11/2022", // todo update this with real text from shots
+                    text = stringResource(id = R.string.x_shot_last_logged_x, shot.shotName, parseDateValueToString(timeInMilliseconds = shot.shotsLoggedMillisecondsValue)),
                     style = TextStyles.body,
                     textAlign = TextAlign.Start,
                     modifier = Modifier.padding(vertical = 4.dp)
@@ -136,9 +142,7 @@ private fun ColumnScope.LoggedShot() {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(
-                    onClick = { }
-                ) {
+                IconButton(onClick = { }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowForward,
                         contentDescription = ""
