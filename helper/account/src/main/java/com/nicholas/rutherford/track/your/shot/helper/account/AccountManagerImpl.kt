@@ -177,6 +177,7 @@ class AccountManagerImpl(
                                 imageUrl = player.playerInfo.imageUrl,
                                 shotsLoggedList = player.playerInfo.shotsLogged.map { shotLoggedRealtimeResponse ->
                                     ShotLogged(
+                                        id = shotLoggedRealtimeResponse.id,
                                         shotName = shotLoggedRealtimeResponse.shotName,
                                         shotType = shotLoggedRealtimeResponse.shotType,
                                         shotsAttempted = shotLoggedRealtimeResponse.shotsAttempted,

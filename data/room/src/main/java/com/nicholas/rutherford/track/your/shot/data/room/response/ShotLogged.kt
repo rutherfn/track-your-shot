@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.your.shot.data.room.response
 import androidx.room.ColumnInfo
 
 data class ShotLogged(
+    @ColumnInfo(name = "id")
+    val id: Int,
     @ColumnInfo(name = "shotName")
     val shotName: String,
     @ColumnInfo(name = "shotType")

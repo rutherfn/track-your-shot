@@ -284,7 +284,6 @@ class AppModule {
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 playersAdditionUpdates = get(),
-                declaredShotRepository = get(),
                 currentPendingShot = get(),
                 network = get()
             )

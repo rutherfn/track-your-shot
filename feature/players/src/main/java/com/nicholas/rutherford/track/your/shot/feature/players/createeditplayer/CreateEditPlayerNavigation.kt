@@ -7,6 +7,13 @@ interface CreateEditPlayerNavigation {
     fun alert(alert: Alert)
     fun appSettings()
     fun navigateToSelectShot(isExistingPlayer: Boolean, playerId: Int)
+    fun navigateToLogShot(
+        isExistingPlayer: Boolean,
+        playerId: Int,
+        shotId: Int,
+        viewCurrentExistingShot: Boolean,
+        viewCurrentPendingShot: Boolean
+    )
     fun disableProgress()
     fun enableProgress(progress: Progress)
     fun pop()

@@ -137,7 +137,6 @@ class CreateEditPlayerViewModelTest {
             scope = scope,
             navigation = navigation,
             playersAdditionUpdates = playersAdditionUpdates,
-            declaredShotRepository = declaredShotRepository,
             currentPendingShot = currentPendingShot,
             network = network
         )
@@ -157,23 +156,6 @@ class CreateEditPlayerViewModelTest {
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
                 CreateEditPlayerState()
             )
-
-            createEditPlayerViewModel.collectPendingShotsLogged()
-
-            Assertions.assertEquals(
-                createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
-            )
-        }
-
-        @Test
-        fun `when currentPendingShot shotsStateFlow returns a list more then 1 should not update state`() = runTest {
-            Assertions.assertEquals(
-                createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
-            )
-
-            coEvery { currentPendingShot.shotsStateFlow } returns flowOf(listOf(pendingShot, pendingShot))
 
             createEditPlayerViewModel.collectPendingShotsLogged()
 
@@ -448,9 +430,7 @@ class CreateEditPlayerViewModelTest {
         Assertions.assertEquals(
             createEditPlayerViewModel.createEditPlayerStateFlow.value,
             CreateEditPlayerState(
-                toolbarNameResId = StringsIds.createPlayer,
-                shots = emptyList(),
-                pendingShots = emptyList()
+                toolbarNameResId = StringsIds.createPlayer
             )
         )
     }
@@ -523,6 +503,7 @@ class CreateEditPlayerViewModelTest {
                     playerPositionString = "",
                     hintLogNewShotText = "",
                     pendingShots = emptyList(),
+                    shots = emptyList(),
                     sheet = null
                 )
             )
@@ -544,6 +525,7 @@ class CreateEditPlayerViewModelTest {
                     playerPositionString = "",
                     hintLogNewShotText = "",
                     pendingShots = emptyList(),
+                    shots = emptyList(),
                     sheet = null
                 )
             )
@@ -1173,6 +1155,7 @@ class CreateEditPlayerViewModelTest {
                 createEditPlayerViewModel.currentShotLoggedRealtimeResponseList(),
                 listOf(
                     ShotLoggedRealtimeResponse(
+                        id = shotLogged.id,
                         shotName = shotLogged.shotName,
                         shotType = shotLogged.shotType,
                         shotsAttempted = shotLogged.shotsAttempted,
@@ -1802,6 +1785,40 @@ class CreateEditPlayerViewModelTest {
             createEditPlayerViewModel.onLogShotsClicked()
 
             verify(exactly = 1) { navigation.navigateToSelectShot(isExistingPlayer = true, playerId = 1) }
+        }
+    }
+
+    @Test
+    fun `on view pending shot clicked should call log shot navigation`() {
+        val player = TestPlayer().create()
+
+        createEditPlayerViewModel.onViewPendingShotClicked(shotId = player.shotsLoggedList.first().id)
+
+        verify {
+            navigation.navigateToLogShot(
+                isExistingPlayer = false,
+                playerId = 0,
+                shotId = player.shotsLoggedList.first().id,
+                viewCurrentExistingShot = false,
+                viewCurrentPendingShot = true
+            )
+        }
+    }
+
+    @Test
+    fun `on view shot clicked should call log shot navigation`() {
+        val player = TestPlayer().create()
+
+        createEditPlayerViewModel.onViewShotClicked(shotId = player.shotsLoggedList.first().id)
+
+        verify {
+            navigation.navigateToLogShot(
+                isExistingPlayer = true,
+                playerId = 0,
+                shotId = player.shotsLoggedList.first().id,
+                viewCurrentExistingShot = true,
+                viewCurrentPendingShot = false
+            )
         }
     }
 }

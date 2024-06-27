@@ -103,7 +103,27 @@ object NavigationActions {
     object CreateEditPlayer {
 
         fun selectShot(isExistingPlayer: Boolean, playerId: Int) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.selectShotWithParams(isExistingPlayer = isExistingPlayer, playerId = playerId)
+            override val destination = NavigationDestinationsWithParams.selectShotWithParams(
+                isExistingPlayer = isExistingPlayer,
+                playerId = playerId
+            )
+            override val navOptions = NavOptions.Builder().build()
+        }
+
+        fun logShot(
+            isExistingPlayer: Boolean,
+            playerId: Int,
+            shotId: Int,
+            viewCurrentExistingShot: Boolean,
+            viewCurrentPendingShot: Boolean
+        ) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.logShotWithParams(
+                isExistingPlayer = isExistingPlayer,
+                playerId = playerId,
+                shotId = shotId,
+                viewCurrentExistingShot = viewCurrentExistingShot,
+                viewCurrentPendingShot = viewCurrentPendingShot
+            )
             override val navOptions = NavOptions.Builder().build()
         }
     }
@@ -112,12 +132,16 @@ object NavigationActions {
         fun logShot(
             isExistingPlayer: Boolean,
             playerId: Int,
-            shotId: Int
+            shotId: Int,
+            viewCurrentExistingShot: Boolean,
+            viewCurrentPendingShot: Boolean
         ) = object : NavigationAction {
             override val destination = NavigationDestinationsWithParams.logShotWithParams(
                 isExistingPlayer = isExistingPlayer,
                 playerId = playerId,
-                shotId = shotId
+                shotId = shotId,
+                viewCurrentExistingShot = viewCurrentExistingShot,
+                viewCurrentPendingShot = viewCurrentPendingShot
             )
             override val navOptions = NavOptions.Builder().build()
         }

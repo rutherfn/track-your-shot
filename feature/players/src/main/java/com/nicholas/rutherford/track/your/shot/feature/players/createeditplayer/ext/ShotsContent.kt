@@ -35,6 +35,7 @@ import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.helper.extensions.parseDateValueToString
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
@@ -43,12 +44,19 @@ fun ColumnScope.ShotsContent(
     shotList: List<ShotLogged>,
     pendingShotList: List<ShotLogged>,
     hintLogNewShotText: String,
-    onLogShotsClicked: () -> Unit
+    onLogShotsClicked: () -> Unit,
+    onViewShotClicked: (shotId: Int) -> Unit,
+    onPendingShotClicked: (shotId: Int) -> Unit
 ) {
     if (shotList.isEmpty() && pendingShotList.isEmpty()) {
         ShotContentEmptyState(hintLogNewShotText = hintLogNewShotText, onLogShotsClicked = onLogShotsClicked)
     } else if (shotList.isNotEmpty()) {
-        LoggedShot()
+        shotList.forEach { shot ->
+            LoggedShot(
+                shot = shot,
+                onViewShotClicked = onViewShotClicked
+            )
+        }
     }
 
     if (pendingShotList.isNotEmpty()) {
@@ -59,24 +67,28 @@ fun ColumnScope.ShotsContent(
                 .align(Alignment.Start)
                 .padding(top = Padding.twelve, start = Padding.four)
         )
-        pendingShotList.forEach { shot -> PendingShot(shot = shot) }
+        pendingShotList.forEach { shot -> PendingShot(shot = shot, onPendingShotClicked = onPendingShotClicked) }
     }
 }
 
 @Composable
-private fun PendingShot(shot: ShotLogged) {
+private fun PendingShot(
+    shot: ShotLogged,
+    onPendingShotClicked: (shotId: Int) -> Unit
+) {
     Card(
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
+            .clickable { onPendingShotClicked.invoke(shot.id) }
             .padding(top = 4.dp, end = 4.dp),
         elevation = 2.dp
     ) {
         Column {
             Row(
-                modifier = Modifier.padding(8.dp).clickable {
-                    // todo -> Add functionality for the user to view or edit a pending shot
-                },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clickable { onPendingShotClicked.invoke(shot.id) },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -88,17 +100,22 @@ private fun PendingShot(shot: ShotLogged) {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                Icon(
-                    imageVector = Icons.Filled.ArrowForward,
-                    contentDescription = ""
-                )
+                IconButton(onClick = { onPendingShotClicked.invoke(shot.id) }) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowForward,
+                        contentDescription = ""
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun ColumnScope.LoggedShot() {
+private fun ColumnScope.LoggedShot(
+    shot: ShotLogged,
+    onViewShotClicked: (shotId: Int) -> Unit
+) {
     Text(
         text = stringResource(id = R.string.shots),
         style = TextStyles.small,
@@ -111,6 +128,7 @@ private fun ColumnScope.LoggedShot() {
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
+            .clickable { onViewShotClicked.invoke(shot.id) }
             .padding(
                 top = 16.dp,
                 end = 4.dp,
@@ -126,7 +144,7 @@ private fun ColumnScope.LoggedShot() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Current Shots\nLast Logged: 10/11/2022", // todo update this with real text from shots
+                    text = stringResource(id = R.string.x_shot_last_logged_x, shot.shotName, parseDateValueToString(timeInMilliseconds = shot.shotsLoggedMillisecondsValue)),
                     style = TextStyles.body,
                     textAlign = TextAlign.Start,
                     modifier = Modifier.padding(vertical = 4.dp)
@@ -134,9 +152,7 @@ private fun ColumnScope.LoggedShot() {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(
-                    onClick = { }
-                ) {
+                IconButton(onClick = { onViewShotClicked.invoke(shot.id) }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowForward,
                         contentDescription = ""

@@ -6,6 +6,7 @@ object TestShotLogged {
 
     fun build(): ShotLogged {
         return ShotLogged(
+            id = SHOT_ID,
             shotName = SHOT_NAME,
             shotType = SHOT_TYPE,
             shotsAttempted = SHOTS_ATTEMPTED,
@@ -19,6 +20,7 @@ object TestShotLogged {
         )
     }
 
+    const val SHOT_ID = 1
     private const val SHOT_NAME = "shotName"
     private const val SHOT_TYPE = 3
     private const val SHOTS_ATTEMPTED = 15

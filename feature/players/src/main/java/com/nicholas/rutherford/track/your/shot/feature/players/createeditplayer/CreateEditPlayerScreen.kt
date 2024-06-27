@@ -245,7 +245,13 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
                         shotList = createEditPlayerParams.state.shots,
                         pendingShotList = createEditPlayerParams.state.pendingShots,
                         hintLogNewShotText = createEditPlayerParams.state.hintLogNewShotText,
-                        onLogShotsClicked = createEditPlayerParams.onLogShotsClicked
+                        onLogShotsClicked = createEditPlayerParams.onLogShotsClicked,
+                        onViewShotClicked = { shotId ->
+                            createEditPlayerParams.onViewShotClicked.invoke(shotId)
+                        },
+                        onPendingShotClicked = { shotId ->
+                            createEditPlayerParams.onViewPendingShotClicked.invoke(shotId)
+                        }
                     )
                 }
             }

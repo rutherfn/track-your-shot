@@ -9,11 +9,18 @@ object NavigationDestinationsWithParams {
         return "${NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN}/$firstName/$lastName"
     }
 
-    fun logShotWithParams(isExistingPlayer: Boolean, playerId: Int, shotId: Int): String {
-        return "${NavigationDestinations.LOG_SHOT_SCREEN}/$isExistingPlayer/$playerId/$shotId"
-    }
+    fun logShotWithParams(
+        isExistingPlayer: Boolean,
+        playerId: Int,
+        shotId: Int,
+        viewCurrentExistingShot: Boolean,
+        viewCurrentPendingShot: Boolean
+    ): String = "${NavigationDestinations.LOG_SHOT_SCREEN}/$isExistingPlayer/$playerId/$shotId/$viewCurrentExistingShot/$viewCurrentPendingShot"
 
-    fun selectShotWithParams(isExistingPlayer: Boolean, playerId: Int): String {
+    fun selectShotWithParams(
+        isExistingPlayer: Boolean,
+        playerId: Int
+    ): String {
         return "${NavigationDestinations.SELECT_SHOT_SCREEN}/$isExistingPlayer/$playerId"
     }
 }

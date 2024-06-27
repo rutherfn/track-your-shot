@@ -9,7 +9,21 @@ class SelectShotNavigationImpl(private val navigator: Navigator) : SelectShotNav
 
     override fun popFromEditPlayer() = navigator.pop(popRouteAction = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS)
 
-    override fun navigateToLogShot(isExistingPlayer: Boolean, playerId: Int, shotId: Int) {
-        navigator.navigate(navigationAction = NavigationActions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotId = shotId))
+    override fun navigateToLogShot(
+        isExistingPlayer: Boolean,
+        playerId: Int,
+        shotId: Int,
+        viewCurrentExistingShot: Boolean,
+        viewCurrentPendingShot: Boolean
+    ) {
+        navigator.navigate(
+            navigationAction = NavigationActions.SelectShot.logShot(
+                isExistingPlayer = isExistingPlayer,
+                playerId = playerId,
+                shotId = shotId,
+                viewCurrentExistingShot = viewCurrentExistingShot,
+                viewCurrentPendingShot = viewCurrentPendingShot
+            )
+        )
     }
 }

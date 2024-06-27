@@ -4,7 +4,6 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
-import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
@@ -47,7 +46,6 @@ class CreateEditPlayerViewModel(
     private val scope: CoroutineScope,
     private val navigation: CreateEditPlayerNavigation,
     private val playersAdditionUpdates: PlayersAdditionUpdates,
-    private val declaredShotRepository: DeclaredShotRepository,
     private val currentPendingShot: CurrentPendingShot,
     private val network: Network
 ) : ViewModel() {
@@ -73,26 +71,22 @@ class CreateEditPlayerViewModel(
     }
 
     private fun processPendingShots(shotLoggedList: List<PendingShot>) {
-        if (shotLoggedList.isNotEmpty() && shotLoggedList.size == 1) {
+        if (shotLoggedList.isNotEmpty()) {
             pendingShotLoggedList = shotLoggedList
 
             createEditPlayerMutableStateFlow.update { state ->
-                state.copy(pendingShots = state.pendingShots + listOf(pendingShotLoggedList.first().shotLogged))
+                state.copy(
+                    pendingShots = pendingShotLoggedList.map { it.shotLogged }
+                )
             }
         }
     }
 
-    fun checkForExistingPlayer(
-        firstNameArgument: String?,
-        lastNameArgument: String?
-    ) {
+    fun checkForExistingPlayer(firstNameArgument: String?, lastNameArgument: String?) {
         scope.launch {
             safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
                 if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
-                    playerRepository.fetchPlayerByName(
-                        firstName = firstName,
-                        lastName = lastName
-                    )
+                    playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)
                         ?.let { player ->
                             updateStateForExistingPlayer(player = player)
                         } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
@@ -146,9 +140,7 @@ class CreateEditPlayerViewModel(
         createEditPlayerMutableStateFlow.update { state ->
             state.copy(
                 toolbarNameResId = StringsIds.createPlayer,
-                hintLogNewShotText = hintLogNewShotText(firstName = null, lastName = null),
-                shots = emptyList(),
-                pendingShots = emptyList()
+                hintLogNewShotText = hintLogNewShotText(firstName = null, lastName = null)
             )
         }
     }
@@ -174,6 +166,7 @@ class CreateEditPlayerViewModel(
                     playerPositionString = "",
                     hintLogNewShotText = "",
                     pendingShots = emptyList(),
+                    shots = emptyList(),
                     sheet = null
                 )
             }
@@ -187,6 +180,7 @@ class CreateEditPlayerViewModel(
                     playerPositionString = "",
                     hintLogNewShotText = "",
                     pendingShots = emptyList(),
+                    shots = emptyList(),
                     sheet = null
                 )
             }
@@ -401,6 +395,7 @@ class CreateEditPlayerViewModel(
             pendingShotLoggedList.forEach { pendingShot ->
                 shotLoggedRealtimeResponseArrayList.add(
                     ShotLoggedRealtimeResponse(
+                        id = pendingShot.shotLogged.id,
                         shotName = pendingShot.shotLogged.shotName,
                         shotType = pendingShot.shotLogged.shotType,
                         shotsAttempted = pendingShot.shotLogged.shotsAttempted,
@@ -421,10 +416,10 @@ class CreateEditPlayerViewModel(
     }
 
     internal fun currentShotLoggedList(): List<ShotLogged> {
-        if (pendingShotLoggedList.isNotEmpty()) {
-            return pendingShotLoggedList.map { pendingShot -> pendingShot.shotLogged }
+        return if (pendingShotLoggedList.isNotEmpty()) {
+            pendingShotLoggedList.map { pendingShot -> pendingShot.shotLogged }
         } else {
-            return emptyList()
+            emptyList()
         }
     }
 
@@ -867,6 +862,30 @@ class CreateEditPlayerViewModel(
                     )
                 }
             }
+        }
+    }
+
+    fun onViewPendingShotClicked(shotId: Int) {
+        scope.launch {
+            navigation.navigateToLogShot(
+                isExistingPlayer = false,
+                playerId = existingOrPendingPlayerId() ?: 0,
+                shotId = shotId,
+                viewCurrentExistingShot = false,
+                viewCurrentPendingShot = true
+            )
+        }
+    }
+
+    fun onViewShotClicked(shotId: Int) {
+        scope.launch {
+            navigation.navigateToLogShot(
+                isExistingPlayer = true,
+                playerId = existingOrPendingPlayerId() ?: 0,
+                shotId = shotId,
+                viewCurrentExistingShot = true,
+                viewCurrentPendingShot = false
+            )
         }
     }
 }

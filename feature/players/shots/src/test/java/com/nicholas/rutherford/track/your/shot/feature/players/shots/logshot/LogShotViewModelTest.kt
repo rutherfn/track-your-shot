@@ -68,13 +68,17 @@ class LogShotViewModelTest {
         fun `when declared shot returns null should not update state`() = runTest {
             val shotId = 2
             val playerId = 4
+            val viewCurrentExistingShot = false
+            val viewCurrentPendingShot = false
 
             coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotId) } returns null
 
             logShotViewModel.updateIsExistingPlayerAndId(
                 isExistingPlayerArgument = false,
                 playerIdArgument = playerId,
-                shotIdArgument = shotId
+                shotIdArgument = shotId,
+                viewCurrentExistingShotArgument = viewCurrentExistingShot,
+                viewCurrentPendingShotArgument = viewCurrentPendingShot
             )
 
             Assertions.assertEquals(logShotViewModel.logShotMutableStateFlow.value, LogShotState())
@@ -84,6 +88,8 @@ class LogShotViewModelTest {
         fun `when player returns null should not update state`() = runTest {
             val shotId = 2
             val playerId = 4
+            val viewCurrentExistingShot = false
+            val viewCurrentPendingShot = false
 
             coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotId) } returns TestDeclaredShot.build()
             coEvery { playerRepository.fetchPlayerById(id = playerId) } returns null
@@ -91,7 +97,9 @@ class LogShotViewModelTest {
             logShotViewModel.updateIsExistingPlayerAndId(
                 isExistingPlayerArgument = true,
                 playerIdArgument = playerId,
-                shotIdArgument = shotId
+                shotIdArgument = shotId,
+                viewCurrentExistingShotArgument = viewCurrentExistingShot,
+                viewCurrentPendingShotArgument = viewCurrentPendingShot
             )
 
             Assertions.assertEquals(logShotViewModel.logShotMutableStateFlow.value, LogShotState())
@@ -102,6 +110,8 @@ class LogShotViewModelTest {
             runTest {
                 val shotId = 2
                 val playerId = 4
+                val viewCurrentExistingShot = false
+                val viewCurrentPendingShot = false
 
                 coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotId) } returns TestDeclaredShot.build()
                 coEvery { playerRepository.fetchPlayerById(id = playerId) } returns TestPlayer().create()
@@ -109,7 +119,9 @@ class LogShotViewModelTest {
                 logShotViewModel.updateIsExistingPlayerAndId(
                     isExistingPlayerArgument = true,
                     playerIdArgument = playerId,
-                    shotIdArgument = shotId
+                    shotIdArgument = shotId,
+                    viewCurrentExistingShotArgument = viewCurrentExistingShot,
+                    viewCurrentPendingShotArgument = viewCurrentPendingShot
                 )
 
                 Assertions.assertEquals(
@@ -134,6 +146,8 @@ class LogShotViewModelTest {
             runTest {
                 val shotId = 2
                 val playerId = 4
+                val viewCurrentExistingShot = false
+                val viewCurrentPendingShot = false
 
                 coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotId) } returns TestDeclaredShot.build()
                 coEvery { pendingPlayerRepository.fetchPlayerById(id = playerId) } returns TestPlayer().create()
@@ -141,7 +155,9 @@ class LogShotViewModelTest {
                 logShotViewModel.updateIsExistingPlayerAndId(
                     isExistingPlayerArgument = false,
                     playerIdArgument = playerId,
-                    shotIdArgument = shotId
+                    shotIdArgument = shotId,
+                    viewCurrentExistingShotArgument = viewCurrentExistingShot,
+                    viewCurrentPendingShotArgument = viewCurrentPendingShot
                 )
 
                 Assertions.assertEquals(

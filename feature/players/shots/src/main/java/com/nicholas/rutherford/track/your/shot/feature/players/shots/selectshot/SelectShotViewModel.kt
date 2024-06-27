@@ -109,7 +109,9 @@ class SelectShotViewModel(
             navigation.navigateToLogShot(
                 isExistingPlayer = isExisting,
                 playerId = id,
-                shotId = shotId
+                shotId = shotId,
+                viewCurrentExistingShot = false,
+                viewCurrentPendingShot = false
             )
         }
     }
