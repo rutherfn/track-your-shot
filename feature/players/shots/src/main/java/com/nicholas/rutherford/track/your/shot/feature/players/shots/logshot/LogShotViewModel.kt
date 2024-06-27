@@ -323,7 +323,9 @@ class LogShotViewModel(
                     navigation.alert(alert = alert)
                 } ?: run {
                     if (viewCurrentExistingShot) {
+                        // todo update existing shot
                     } else if (viewCurrentPendingShot) {
+                        // todo update current pending shot
                     } else {
                         currentPendingShot.createShot(
                             shotLogged = PendingShot(

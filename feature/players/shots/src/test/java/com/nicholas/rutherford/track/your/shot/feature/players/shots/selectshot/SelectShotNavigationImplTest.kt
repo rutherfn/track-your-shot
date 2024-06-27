@@ -56,13 +56,16 @@ class SelectShotNavigationImplTest {
         val isExistingPlayer = false
         val playerId = 5
         val shotId = 3
-        val isExistingShot = false
+        val viewCurrentExistingShot = false
+        val viewCurrentPendingShot = false
         val argumentCapture: CapturingSlot<NavigationAction> = slot()
 
         selectShotNavigationImpl.navigateToLogShot(
             isExistingPlayer = isExistingPlayer,
             playerId = playerId,
-            shotId = shotId
+            shotId = shotId,
+            viewCurrentExistingShot = viewCurrentExistingShot,
+            viewCurrentPendingShot = viewCurrentPendingShot
         )
 
         verify { navigator.navigate(capture(argumentCapture)) }
@@ -72,7 +75,8 @@ class SelectShotNavigationImplTest {
             isExistingPlayer = isExistingPlayer,
             playerId = playerId,
             shotId = shotId,
-            isExistingShot = isExistingShot
+            viewCurrentExistingShot = viewCurrentExistingShot,
+            viewCurrentPendingShot = viewCurrentPendingShot
         )
 
         Assertions.assertEquals(
