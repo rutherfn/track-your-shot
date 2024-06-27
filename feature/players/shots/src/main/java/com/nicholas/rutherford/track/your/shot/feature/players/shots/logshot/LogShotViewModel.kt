@@ -17,6 +17,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.extensions.parseDateValueToString
 import com.nicholas.rutherford.track.your.shot.helper.extensions.parseValueToDate
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
@@ -24,6 +25,7 @@ import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -88,6 +90,42 @@ class LogShotViewModel(
                         shotsLoggedDateValue = LocalDate.now().toDateValue() ?: ""
                     )
                 }
+            }
+
+            updateStateForViewShot()
+        }
+    }
+
+    suspend fun updateStateForViewShot() {
+        if (viewCurrentExistingShot) {
+           currentPlayer?.shotsLoggedList?.filter { shotLogged -> shotLogged.id == shotId }?.first()?.let { shot->
+            logShotMutableStateFlow.update { state ->
+                state.copy(
+                    shotsLoggedDateValue = parseDateValueToString(shot.shotsLoggedMillisecondsValue),
+                    shotsTakenDateValue = parseDateValueToString(shot.shotsAttemptedMillisecondsValue),
+                    shotsMade = shot.shotsMade,
+                    shotsMissed = shot.shotsMissed,
+                    shotsAttempted = shot.shotsAttempted,
+                    shotsMadePercentValue = "${shot.shotsMadePercentValue} %",
+                    shotsMissedPercentValue = "${shot.shotsMissedPercentValue} %"
+                )
+            }
+            }
+        }
+
+        if (viewCurrentPendingShot) {
+            val shot = currentPendingShot.shotsStateFlow.first().first().shotLogged
+
+            logShotMutableStateFlow.update { state ->
+                state.copy(
+                    shotsLoggedDateValue = parseDateValueToString(shot.shotsLoggedMillisecondsValue),
+                    shotsTakenDateValue = parseDateValueToString(shot.shotsAttemptedMillisecondsValue),
+                    shotsMade = shot.shotsMade,
+                    shotsMissed = shot.shotsMissed,
+                    shotsAttempted = shot.shotsAttempted,
+                    shotsMadePercentValue = "${shot.shotsMadePercentValue} %",
+                    shotsMissedPercentValue = "${shot.shotsMissedPercentValue} %"
+                )
             }
         }
     }
@@ -219,7 +257,9 @@ class LogShotViewModel(
                 placeholderResId = StringsIds.shotsMade,
                 startingInputAmount = startingInputAmount(amount = logShotMutableStateFlow.value.shotsMade),
                 onConfirmButtonClicked = { shots ->
-                    updateStateAfterShotsMadeInput(shots = shots.toInt())
+                    if (shots.isNotEmpty()) {
+                        updateStateAfterShotsMadeInput(shots = shots.toInt())
+                    }
                 }
             )
         )
@@ -234,7 +274,9 @@ class LogShotViewModel(
                 placeholderResId = StringsIds.shotsMissed,
                 startingInputAmount = startingInputAmount(amount = logShotMutableStateFlow.value.shotsMissed),
                 onConfirmButtonClicked = { shots ->
-                    updateShotsMissedState(shots = shots.toInt())
+                    if (shots.isNotEmpty()) {
+                        updateShotsMissedState(shots = shots.toInt())
+                    }
                 }
             )
         )
@@ -280,28 +322,36 @@ class LogShotViewModel(
                     navigation.disableProgress()
                     navigation.alert(alert = alert)
                 } ?: run {
-                    currentPendingShot.createShot(
-                        shotLogged = PendingShot(
-                            player = player,
-                            shotLogged = ShotLogged(
-                                id = currentPlayerShotSize + 1,
-                                shotName = state.shotName,
-                                shotType = currentDeclaredShot?.id ?: 0,
-                                shotsAttempted = state.shotsAttempted,
-                                shotsMade = state.shotsMade,
-                                shotsMissed = state.shotsMissed,
-                                shotsMadePercentValue = convertPercentageToDouble(percentage = state.shotsMadePercentValue),
-                                shotsMissedPercentValue = convertPercentageToDouble(percentage = state.shotsMissedPercentValue),
-                                shotsAttemptedMillisecondsValue = convertValueToDate(value = state.shotsTakenDateValue)?.time ?: 0L,
-                                shotsLoggedMillisecondsValue = convertValueToDate(value = state.shotsLoggedDateValue)?.time ?: 0L,
-                                isPending = true
-                            ),
-                            isPendingPlayer = isExistingPlayer
-                        )
-                    )
+                    if (viewCurrentExistingShot) {
 
-                    resetState()
-                    navigateToCreateOrEditPlayer()
+                    } else if (viewCurrentPendingShot) {
+
+                    } else {
+                        currentPendingShot.createShot(
+                            shotLogged = PendingShot(
+                                player = player,
+                                shotLogged = ShotLogged(
+                                    id = currentPlayerShotSize + 1,
+                                    shotName = state.shotName,
+                                    shotType = currentDeclaredShot?.id ?: 0,
+                                    shotsAttempted = state.shotsAttempted,
+                                    shotsMade = state.shotsMade,
+                                    shotsMissed = state.shotsMissed,
+                                    shotsMadePercentValue = convertPercentageToDouble(percentage = state.shotsMadePercentValue),
+                                    shotsMissedPercentValue = convertPercentageToDouble(percentage = state.shotsMissedPercentValue),
+                                    shotsAttemptedMillisecondsValue = convertValueToDate(value = state.shotsTakenDateValue)?.time
+                                        ?: 0L,
+                                    shotsLoggedMillisecondsValue = convertValueToDate(value = state.shotsLoggedDateValue)?.time
+                                        ?: 0L,
+                                    isPending = true
+                                ),
+                                isPendingPlayer = isExistingPlayer
+                            )
+                        )
+
+                        resetState()
+                        navigateToCreateOrEditPlayer()
+                    }
                 }
             } ?: navigation.alert(alert = invalidLogShotAlert(description = application.getString(StringsIds.playerIsInvalidPleaseTryAgain)))
         }

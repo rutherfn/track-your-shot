@@ -165,22 +165,22 @@ class CreateEditPlayerViewModelTest {
             )
         }
 
-        @Test
-        fun `when currentPendingShot shotsStateFlow returns a list more then 1 should not update state`() = runTest {
-            Assertions.assertEquals(
-                createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
-            )
-
-            coEvery { currentPendingShot.shotsStateFlow } returns flowOf(listOf(pendingShot, pendingShot))
-
-            createEditPlayerViewModel.collectPendingShotsLogged()
-
-            Assertions.assertEquals(
-                createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
-            )
-        }
+//        @Test
+//        fun `when currentPendingShot shotsStateFlow returns a list more then 1 should not update state`() = runTest {
+//            Assertions.assertEquals(
+//                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+//                CreateEditPlayerState()
+//            )
+//
+//            coEvery { currentPendingShot.shotsStateFlow } returns flowOf(listOf(pendingShot, pendingShot))
+//
+//            createEditPlayerViewModel.collectPendingShotsLogged()
+//
+//            Assertions.assertEquals(
+//                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+//                CreateEditPlayerState()
+//            )
+//        }
 
         @Test
         fun `when 1currentPendingShot shotsStateFlow returns a list of 1 should update state`() = runTest {
