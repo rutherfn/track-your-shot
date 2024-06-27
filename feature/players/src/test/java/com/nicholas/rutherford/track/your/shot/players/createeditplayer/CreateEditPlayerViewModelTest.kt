@@ -1787,4 +1787,38 @@ class CreateEditPlayerViewModelTest {
             verify(exactly = 1) { navigation.navigateToSelectShot(isExistingPlayer = true, playerId = 1) }
         }
     }
+
+    @Test
+    fun `on view pending shot clicked should call log shot navigation`() {
+        val player = TestPlayer().create()
+
+        createEditPlayerViewModel.onViewPendingShotClicked(shotId = player.shotsLoggedList.first().id)
+
+        verify {
+            navigation.navigateToLogShot(
+                isExistingPlayer = false,
+                playerId = 0,
+                shotId = player.shotsLoggedList.first().id,
+                viewCurrentExistingShot = false,
+                viewCurrentPendingShot = true
+            )
+        }
+    }
+
+    @Test
+    fun `on view shot clicked should call log shot navigation`() {
+        val player = TestPlayer().create()
+
+        createEditPlayerViewModel.onViewShotClicked(shotId = player.shotsLoggedList.first().id)
+
+        verify {
+            navigation.navigateToLogShot(
+                isExistingPlayer = true,
+                playerId = 0,
+                shotId = player.shotsLoggedList.first().id,
+                viewCurrentExistingShot = true,
+                viewCurrentPendingShot = false
+            )
+        }
+    }
 }

@@ -3,7 +3,6 @@ package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
@@ -867,7 +866,7 @@ class CreateEditPlayerViewModel(
     }
 
     fun onViewPendingShotClicked(shotId: Int) {
-        viewModelScope.launch {
+        scope.launch {
             navigation.navigateToLogShot(
                 isExistingPlayer = false,
                 playerId = existingOrPendingPlayerId() ?: 0,
@@ -879,7 +878,7 @@ class CreateEditPlayerViewModel(
     }
 
     fun onViewShotClicked(shotId: Int) {
-        viewModelScope.launch {
+        scope.launch {
             navigation.navigateToLogShot(
                 isExistingPlayer = true,
                 playerId = existingOrPendingPlayerId() ?: 0,
