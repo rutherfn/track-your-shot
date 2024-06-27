@@ -98,18 +98,18 @@ class LogShotViewModel(
 
     suspend fun updateStateForViewShot() {
         if (viewCurrentExistingShot) {
-           currentPlayer?.shotsLoggedList?.filter { shotLogged -> shotLogged.id == shotId }?.first()?.let { shot->
-            logShotMutableStateFlow.update { state ->
-                state.copy(
-                    shotsLoggedDateValue = parseDateValueToString(shot.shotsLoggedMillisecondsValue),
-                    shotsTakenDateValue = parseDateValueToString(shot.shotsAttemptedMillisecondsValue),
-                    shotsMade = shot.shotsMade,
-                    shotsMissed = shot.shotsMissed,
-                    shotsAttempted = shot.shotsAttempted,
-                    shotsMadePercentValue = "${shot.shotsMadePercentValue} %",
-                    shotsMissedPercentValue = "${shot.shotsMissedPercentValue} %"
-                )
-            }
+            currentPlayer?.shotsLoggedList?.filter { shotLogged -> shotLogged.id == shotId }?.first()?.let { shot ->
+                logShotMutableStateFlow.update { state ->
+                    state.copy(
+                        shotsLoggedDateValue = parseDateValueToString(shot.shotsLoggedMillisecondsValue),
+                        shotsTakenDateValue = parseDateValueToString(shot.shotsAttemptedMillisecondsValue),
+                        shotsMade = shot.shotsMade,
+                        shotsMissed = shot.shotsMissed,
+                        shotsAttempted = shot.shotsAttempted,
+                        shotsMadePercentValue = "${shot.shotsMadePercentValue} %",
+                        shotsMissedPercentValue = "${shot.shotsMissedPercentValue} %"
+                    )
+                }
             }
         }
 
@@ -323,9 +323,7 @@ class LogShotViewModel(
                     navigation.alert(alert = alert)
                 } ?: run {
                     if (viewCurrentExistingShot) {
-
                     } else if (viewCurrentPendingShot) {
-
                     } else {
                         currentPendingShot.createShot(
                             shotLogged = PendingShot(
