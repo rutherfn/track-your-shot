@@ -10,16 +10,20 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAnd
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -176,6 +180,118 @@ class LogShotViewModelTest {
                     )
                 )
             }
+    }
+
+    @Nested
+    inner class UpdateStateForViewShot {
+
+        @Test
+        fun `when viewCurrentExistingShot and viewCurrentPendingShot is set to false should not update state`() = runTest {
+            val player = TestPlayer().create()
+
+            logShotViewModel.viewCurrentExistingShot = false
+            logShotViewModel.viewCurrentPendingShot = false
+
+            logShotViewModel.currentPlayer = player
+            logShotViewModel.shotId = player.shotsLoggedList.first().id
+
+            logShotViewModel.updateStateForViewShot()
+
+            Assertions.assertEquals(
+                logShotViewModel.logShotMutableStateFlow.value,
+                LogShotState()
+            )
+        }
+
+        @Test
+        fun `when viewCurrentExistingShot is true but currentPlayer is set to null should not update state`() = runTest {
+            logShotViewModel.viewCurrentExistingShot = true
+            logShotViewModel.viewCurrentPendingShot = false
+
+            logShotViewModel.currentPlayer = null
+            logShotViewModel.shotId = 0
+
+            logShotViewModel.updateStateForViewShot()
+
+            Assertions.assertEquals(
+                logShotViewModel.logShotMutableStateFlow.value,
+                LogShotState()
+            )
+        }
+
+        @Test
+        fun `when viewCurrentExistingShot is true and is currentPlayer is not set to null should update state`() = runTest {
+            val player = TestPlayer().create()
+
+            logShotViewModel.viewCurrentExistingShot = true
+            logShotViewModel.viewCurrentPendingShot = false
+
+            logShotViewModel.currentPlayer = player
+            logShotViewModel.shotId = player.shotsLoggedList.first().id
+
+            logShotViewModel.updateStateForViewShot()
+
+            Assertions.assertEquals(
+                logShotViewModel.logShotMutableStateFlow.value,
+                LogShotState(
+                    shotsLoggedDateValue = "December 31, 1969",
+                    shotsTakenDateValue = "December 31, 1969",
+                    shotsMade = 5,
+                    shotsMissed = 10,
+                    shotsAttempted = 15,
+                    shotsMadePercentValue = "", // can't be tested due to limitation with mocking
+                    shotsMissedPercentValue = "" // can't be tested due to limitation with mocking
+                )
+            )
+        }
+
+        @Test
+        fun `when viewCurrentPendingShot is true and pending shot state flow returns a empty list should not update state`() = runTest {
+            val pendingShotList: List<PendingShot> = emptyList()
+
+            logShotViewModel.viewCurrentExistingShot = false
+            logShotViewModel.viewCurrentPendingShot = true
+
+            coEvery { currentPendingShot.shotsStateFlow } returns flowOf(pendingShotList)
+
+            logShotViewModel.updateStateForViewShot()
+
+            Assertions.assertEquals(
+                logShotViewModel.logShotMutableStateFlow.value,
+                LogShotState()
+            )
+        }
+
+        @Test
+        fun `when viewCurrentPendingShot is true and and pending shot flow returns a non empty list should update state`() = runTest {
+            val pendingShotList: List<PendingShot> = listOf(
+                PendingShot(
+                    player = TestPlayer().create(),
+                    shotLogged = TestShotLogged.build(),
+                    isPendingPlayer = true
+                )
+            )
+
+            logShotViewModel.viewCurrentExistingShot = false
+            logShotViewModel.viewCurrentPendingShot = true
+
+            coEvery { currentPendingShot.shotsStateFlow } returns flowOf(pendingShotList)
+
+            logShotViewModel.updateStateForViewShot()
+
+            Assertions.assertEquals(
+                logShotViewModel.logShotMutableStateFlow.value,
+                LogShotState(
+                    shotsLoggedDateValue = "December 31, 1969",
+                    shotsTakenDateValue = "December 31, 1969",
+                    shotsMade = 5,
+                    shotsMissed = 10,
+                    shotsAttempted = 15,
+                    shotsMadePercentValue = "", // can't be tested due to limitation with mocking
+                    shotsMissedPercentValue = "" // can't be tested due to limitation with mocking
+                )
+            )
+        }
     }
 
     @Nested
@@ -482,7 +598,7 @@ class LogShotViewModelTest {
         }
 
         @Test
-        fun `when currentPlayer is not null but logged shot is invalid should show alert`() = runTest {
+        fun `when currentPlayer is not null but logged shot is invalid should navigate to create edit player`() = runTest {
             logShotViewModel.currentDeclaredShot = TestDeclaredShot.build()
             logShotViewModel.currentPlayer = TestPlayer().create()
 
@@ -508,18 +624,6 @@ class LogShotViewModelTest {
             verify { navigation.enableProgress(progress = Progress()) }
             verify { currentPendingShot.createShot(any()) }
             verify { logShotViewModel.navigateToCreateOrEditPlayer() }
-        }
-
-        @Test
-        fun `when currentPlayer is not null and logged shot is valid should create a new pending show and call navigateToCreateorEditPlayer`() {
-            logShotViewModel.currentDeclaredShot = TestDeclaredShot.build()
-            logShotViewModel.currentPlayer = TestPlayer().create()
-
-            logShotViewModel.logShotMutableStateFlow.value = LogShotState(
-                shotsMade = 5,
-                shotsMissed = 5,
-                shotsTakenDateValue = "Jun 4, 2019"
-            )
         }
     }
 

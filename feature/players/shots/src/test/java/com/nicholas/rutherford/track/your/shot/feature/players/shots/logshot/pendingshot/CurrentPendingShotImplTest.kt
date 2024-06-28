@@ -18,7 +18,7 @@ class CurrentPendingShotImplTest {
     )
 
     @Test
-    fun `shotStateFloe should be updated from the MutableStateFlow`() = runTest {
+    fun `shotStateFlow should be updated from the MutableStateFlow`() = runTest {
         val pendingShotEmptyList: List<PendingShot> = emptyList()
 
         Assertions.assertEquals(
@@ -31,6 +31,37 @@ class CurrentPendingShotImplTest {
         Assertions.assertEquals(
             currentPendingShotImpl.shotsStateFlow.first(),
             flowOf(listOf(pendingShot)).first()
+        )
+    }
+
+    @Test
+    fun `shotStateFlow should be deleted when a shot is passed in that is in the state flow`() = runTest {
+        val pendingShot2 = PendingShot(
+            player = TestPlayer().create(),
+            shotLogged = TestShotLogged.build().copy(shotName = "Test Shot Name"),
+            isPendingPlayer = false
+        )
+
+        val pendingShotEmptyList: List<PendingShot> = emptyList()
+
+        Assertions.assertEquals(
+            currentPendingShotImpl.shotsStateFlow.first(),
+            flowOf(pendingShotEmptyList).first()
+        )
+
+        currentPendingShotImpl.createShot(shotLogged = pendingShot)
+        currentPendingShotImpl.createShot(shotLogged = pendingShot2)
+
+        Assertions.assertEquals(
+            currentPendingShotImpl.shotsStateFlow.first(),
+            flowOf(listOf(pendingShot, pendingShot2)).first()
+        )
+
+        currentPendingShotImpl.deleteShot(shotLogged = pendingShot)
+
+        Assertions.assertEquals(
+            currentPendingShotImpl.shotsStateFlow.first(),
+            flowOf(listOf(pendingShot2)).first()
         )
     }
 
