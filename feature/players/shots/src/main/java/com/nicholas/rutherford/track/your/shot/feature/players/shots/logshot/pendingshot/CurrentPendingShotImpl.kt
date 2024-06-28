@@ -14,6 +14,18 @@ class CurrentPendingShotImpl : CurrentPendingShot {
         shotsMutableStateFlow.value = currentShotList + listOf(shotLogged)
     }
 
+    override fun deleteShot(shotLogged: PendingShot) {
+        val filterShotArrayList: ArrayList<PendingShot> = arrayListOf()
+
+        shotsMutableStateFlow.value.forEach { shot ->
+            if (shot != shotLogged) {
+                filterShotArrayList.add(shot)
+            }
+        }
+
+        shotsMutableStateFlow.value = filterShotArrayList.toList()
+    }
+
     override fun clearShotList() {
         shotsMutableStateFlow.value = emptyList()
     }

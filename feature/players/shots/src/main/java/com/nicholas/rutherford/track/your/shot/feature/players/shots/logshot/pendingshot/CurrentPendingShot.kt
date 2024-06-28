@@ -6,5 +6,6 @@ interface CurrentPendingShot {
     val shotsStateFlow: Flow<List<PendingShot>>
 
     fun createShot(shotLogged: PendingShot)
+    fun deleteShot(shotLogged: PendingShot)
     fun clearShotList()
 }
