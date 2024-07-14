@@ -378,7 +378,7 @@ class CreateEditPlayerViewModel(
                     lastName = state.lastName,
                     positionValue = state.playerPositionString.toPlayerPosition(application = application).value,
                     imageUrl = imageUrl ?: "",
-                    shotsLogged = currentShotLoggedRealtimeResponseList(currentShotList = state.shots.map { shots -> shots.toRealtimeResponse() } )
+                    shotsLogged = currentShotLoggedRealtimeResponseList(currentShotList = state.shots.map { shots -> shots.toRealtimeResponse() })
                 )
             ).collectLatest { isSuccessful ->
                 handleFirebaseResponseForSavingPlayer(
@@ -453,7 +453,7 @@ class CreateEditPlayerViewModel(
                                     application = application
                                 ).value,
                                 imageUrl = imageUrl ?: "",
-                                shotsLogged = currentShotLoggedRealtimeResponseList(currentShotList = state.shots.map { shots -> shots.toRealtimeResponse() } )
+                                shotsLogged = currentShotLoggedRealtimeResponseList(currentShotList = state.shots.map { shots -> shots.toRealtimeResponse() })
                             )
                         )
                     ).collectLatest { isSuccessful ->
