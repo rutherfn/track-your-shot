@@ -44,14 +44,11 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.navigation.ComparePlayersStatsAction
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
 import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
-import com.nicholas.rutherford.track.your.shot.navigation.StatsAction
-import com.nicholas.rutherford.track.your.shot.navigation.VoiceCommandsAction
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArguments
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
 import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
@@ -229,9 +226,10 @@ fun NavigationComponent(
             DrawerContent(
                 actions = listOf(
                     PlayersListAction,
-                    StatsAction,
-                    ComparePlayersStatsAction,
-                    VoiceCommandsAction,
+                    // todo -> uncomment out when functionality introduced for them
+//                    StatsAction,
+//                    ComparePlayersStatsAction,
+//                    VoiceCommandsAction,
                     SettingsAction,
                     LogoutAction
                 ),
