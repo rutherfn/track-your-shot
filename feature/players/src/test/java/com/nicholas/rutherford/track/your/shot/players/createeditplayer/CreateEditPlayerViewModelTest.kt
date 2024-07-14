@@ -3,7 +3,6 @@ package com.nicholas.rutherford.track.your.shot.players.createeditplayer
 import android.app.Application
 import android.net.Uri
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
-import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
@@ -33,6 +32,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealt
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -77,7 +77,6 @@ class CreateEditPlayerViewModelTest {
 
     private val playersAdditionUpdates = mockk<PlayersAdditionUpdates>(relaxed = true)
 
-    private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
     private val currentPendingShot = mockk<CurrentPendingShot>(relaxed = true)
 
     private val network = mockk<Network>(relaxed = true)
@@ -1140,7 +1139,8 @@ class CreateEditPlayerViewModelTest {
     inner class CurrentShotLoggedRealtimeResponseList {
 
         @Test
-        fun `when pendingShotLoggedList is not empty should return a realtime response`() {
+        fun `when pendingShotLoggedList is not empty should return current passed in list and realtime response`() {
+            val currentShotLoggedList = listOf(TestShotLoggedRealtimeResponse.build())
             val shotLogged = TestShotLogged.build()
 
             createEditPlayerViewModel.pendingShotLoggedList = listOf(
@@ -1152,8 +1152,8 @@ class CreateEditPlayerViewModelTest {
             )
 
             Assertions.assertEquals(
-                createEditPlayerViewModel.currentShotLoggedRealtimeResponseList(),
-                listOf(
+                createEditPlayerViewModel.currentShotLoggedRealtimeResponseList(currentShotList = currentShotLoggedList),
+                currentShotLoggedList + listOf(
                     ShotLoggedRealtimeResponse(
                         id = shotLogged.id,
                         shotName = shotLogged.shotName,
@@ -1172,13 +1172,14 @@ class CreateEditPlayerViewModelTest {
         }
 
         @Test
-        fun `when pendingShotLoggedList is empty should return empty list`() {
-            val emptyList: List<PendingShot> = emptyList()
+        fun `when pendingShotLoggedList is empty should return only current shot logged list`() {
+            val currentShotLoggedList = listOf(TestShotLoggedRealtimeResponse.build())
+
             createEditPlayerViewModel.pendingShotLoggedList = arrayListOf()
 
             Assertions.assertEquals(
-                createEditPlayerViewModel.currentShotLoggedRealtimeResponseList(),
-                emptyList
+                createEditPlayerViewModel.currentShotLoggedRealtimeResponseList(currentShotList = currentShotLoggedList),
+                currentShotLoggedList
             )
         }
     }
@@ -1187,7 +1188,22 @@ class CreateEditPlayerViewModelTest {
     inner class CurrentShotLoggedList {
 
         @Test
-        fun `when pendingShotLoggedList is not empty should return back empty shot`() {
+        fun `when pendingShotLoggedList is not empty should return back current passed in shot list and pending shot`() {
+            val shotLoggedList = listOf(
+                ShotLogged(
+                    id = 4,
+                    shotName = "name",
+                    shotType = 2,
+                    shotsAttempted = 4,
+                    shotsMade = 1,
+                    shotsMissed = 3,
+                    shotsMadePercentValue = 1.0,
+                    shotsMissedPercentValue = 2.0,
+                    shotsAttemptedMillisecondsValue = 1L,
+                    shotsLoggedMillisecondsValue = 2L,
+                    isPending = false
+                )
+            )
             val shotLogged = TestShotLogged.build()
             val pendingShot = PendingShot(
                 player = TestPlayer().create(),
@@ -1198,20 +1214,34 @@ class CreateEditPlayerViewModelTest {
             createEditPlayerViewModel.pendingShotLoggedList = arrayListOf(pendingShot)
 
             Assertions.assertEquals(
-                createEditPlayerViewModel.currentShotLoggedList(),
-                listOf(shotLogged)
+                createEditPlayerViewModel.currentShotLoggedList(currentShotLoggedList = shotLoggedList),
+                shotLoggedList + listOf(shotLogged)
             )
         }
 
         @Test
-        fun `when pendingShotLoggedList is empty should return empty list`() {
-            val emptyShotLoggedList: List<ShotLogged> = emptyList()
+        fun `when pendingShotLoggedList is empty should return only passed in current shot list`() {
+            val shotLoggedList = listOf(
+                ShotLogged(
+                    id = 4,
+                    shotName = "name",
+                    shotType = 2,
+                    shotsAttempted = 4,
+                    shotsMade = 1,
+                    shotsMissed = 3,
+                    shotsMadePercentValue = 1.0,
+                    shotsMissedPercentValue = 2.0,
+                    shotsAttemptedMillisecondsValue = 1L,
+                    shotsLoggedMillisecondsValue = 2L,
+                    isPending = false
+                )
+            )
 
             createEditPlayerViewModel.pendingShotLoggedList = arrayListOf()
 
             Assertions.assertEquals(
-                createEditPlayerViewModel.currentShotLoggedList(),
-                emptyShotLoggedList
+                createEditPlayerViewModel.currentShotLoggedList(currentShotLoggedList = shotLoggedList),
+                shotLoggedList
             )
         }
     }
