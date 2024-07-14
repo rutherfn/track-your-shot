@@ -29,11 +29,14 @@ import com.nicholas.rutherford.track.your.shot.helper.extensions.shouldAskForRea
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+
+const val RESET_SCREEN_DELAY_IN_MILLIS = 500L
 
 class CreateEditPlayerViewModel(
     private val application: Application,
@@ -149,9 +152,12 @@ class CreateEditPlayerViewModel(
         if (pendingPlayers.size == Constants.PENDING_PLAYERS_EXPECTED_SIZE || pendingShotLoggedList.isNotEmpty()) {
             navigation.alert(alert = unsavedPlayerChangesAlert())
         } else {
-            clearLocalDeclarations()
-            clearState()
             navigation.pop()
+            scope.launch {
+                delay(RESET_SCREEN_DELAY_IN_MILLIS)
+                clearLocalDeclarations()
+                clearState()
+            }
         }
     }
 
@@ -372,7 +378,7 @@ class CreateEditPlayerViewModel(
                     lastName = state.lastName,
                     positionValue = state.playerPositionString.toPlayerPosition(application = application).value,
                     imageUrl = imageUrl ?: "",
-                    shotsLogged = currentShotLoggedRealtimeResponseList()
+                    shotsLogged = currentShotLoggedRealtimeResponseList(currentShotList = state.shots.map { shots -> shots.toRealtimeResponse() } )
                 )
             ).collectLatest { isSuccessful ->
                 handleFirebaseResponseForSavingPlayer(
@@ -388,7 +394,7 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    internal fun currentShotLoggedRealtimeResponseList(): List<ShotLoggedRealtimeResponse> {
+    internal fun currentShotLoggedRealtimeResponseList(currentShotList: List<ShotLoggedRealtimeResponse>): List<ShotLoggedRealtimeResponse> {
         if (pendingShotLoggedList.isNotEmpty()) {
             val shotLoggedRealtimeResponseArrayList: ArrayList<ShotLoggedRealtimeResponse> = arrayListOf()
 
@@ -409,17 +415,17 @@ class CreateEditPlayerViewModel(
                     )
                 )
             }
-            return shotLoggedRealtimeResponseArrayList.toList()
+            return currentShotList + shotLoggedRealtimeResponseArrayList.toList()
         } else {
-            return emptyList()
+            return currentShotList
         }
     }
 
-    internal fun currentShotLoggedList(): List<ShotLogged> {
+    internal fun currentShotLoggedList(currentShotLoggedList: List<ShotLogged>): List<ShotLogged> {
         return if (pendingShotLoggedList.isNotEmpty()) {
-            pendingShotLoggedList.map { pendingShot -> pendingShot.shotLogged }
+            currentShotLoggedList + pendingShotLoggedList.map { pendingShot -> pendingShot.shotLogged }
         } else {
-            emptyList()
+            currentShotLoggedList
         }
     }
 
@@ -447,7 +453,7 @@ class CreateEditPlayerViewModel(
                                     application = application
                                 ).value,
                                 imageUrl = imageUrl ?: "",
-                                shotsLogged = currentShotLoggedRealtimeResponseList()
+                                shotsLogged = currentShotLoggedRealtimeResponseList(currentShotList = state.shots.map { shots -> shots.toRealtimeResponse() } )
                             )
                         )
                     ).collectLatest { isSuccessful ->
@@ -529,7 +535,7 @@ class CreateEditPlayerViewModel(
                 position = positionString.toPlayerPosition(application = application),
                 firebaseKey = playerKey,
                 imageUrl = imageUrl ?: "",
-                shotsLoggedList = currentShotLoggedList()
+                shotsLoggedList = currentShotLoggedList(currentShotLoggedList = state.shots)
             )
 
             createOrEditPlayerInRoom(player = player)
@@ -745,10 +751,14 @@ class CreateEditPlayerViewModel(
             scope.launch { pendingPlayerRepository.deleteAllPendingPlayers() }
             pendingPlayers = emptyList()
         }
-        currentPendingShot.clearShotList()
-        pendingShotLoggedList = emptyList()
-        createEditPlayerMutableStateFlow.value = CreateEditPlayerState()
         navigation.pop()
+        scope.launch {
+            delay(RESET_SCREEN_DELAY_IN_MILLIS)
+            currentPendingShot.clearShotList()
+            clearState()
+            clearLocalDeclarations()
+            pendingShotLoggedList = emptyList()
+        }
     }
 
     internal fun removeImageSheet(): Sheet {
@@ -887,5 +897,21 @@ class CreateEditPlayerViewModel(
                 viewCurrentPendingShot = false
             )
         }
+    }
+
+    private fun ShotLogged.toRealtimeResponse(): ShotLoggedRealtimeResponse {
+        return ShotLoggedRealtimeResponse(
+            id = this.id,
+            shotName = this.shotName,
+            shotType = this.shotType,
+            shotsAttempted = this.shotsAttempted,
+            shotsMade = this.shotsMade,
+            shotsMissed = this.shotsMissed,
+            shotsMadePercentValue = this.shotsMadePercentValue,
+            shotsMissedPercentValue = this.shotsMissedPercentValue,
+            shotsAttemptedMillisecondsValue = this.shotsAttemptedMillisecondsValue,
+            shotsLoggedMillisecondsValue = this.shotsLoggedMillisecondsValue,
+            isPending = this.isPending
+        )
     }
 }
