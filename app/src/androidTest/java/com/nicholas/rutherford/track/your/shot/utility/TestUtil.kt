@@ -50,6 +50,7 @@ class TestUtil(private val composeRule: ComposeContentTestRule) {
             val createAccountViewModel = get<CreateAccountViewModel>()
             val authenticationViewModel = get<AuthenticationViewModel>()
 
+            // todo -> Come back to this when we can setup Automation for app.
 //            NavigationComponent(
 //                activity = MainActivityWrapper(),
 //                navHostController = navHostController,
