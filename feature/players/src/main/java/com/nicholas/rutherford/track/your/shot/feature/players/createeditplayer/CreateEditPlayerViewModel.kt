@@ -62,6 +62,8 @@ class CreateEditPlayerViewModel(
 
     internal var pendingShotLoggedList: List<PendingShot> = emptyList()
 
+    internal var hasChecked = false
+
     init {
         scope.launch { collectPendingShotsLogged() }
     }
@@ -79,26 +81,50 @@ class CreateEditPlayerViewModel(
 
             createEditPlayerMutableStateFlow.update { state ->
                 state.copy(
-                    pendingShots = pendingShotLoggedList.map { it.shotLogged }
+                    pendingShots = pendingShotLoggedList.map { it.shotLogged },
+                    shots =  currentShotsNotPending()
                 )
             }
         }
     }
 
+    internal fun currentShotsNotPending(): List<ShotLogged> {
+        val currentShotsArrayList: ArrayList<ShotLogged> = arrayListOf()
+
+        editedPlayer?.let { player ->
+            val pendingShotIds = pendingShotLoggedList.map { it.shotLogged.id }
+
+            player.shotsLoggedList.forEach { shot ->
+                if (!pendingShotIds.contains(shot.id)) {
+                    currentShotsArrayList.add(shot)
+                }
+            }
+        }
+
+        return currentShotsArrayList.toList()
+    }
+
     fun checkForExistingPlayer(firstNameArgument: String?, lastNameArgument: String?) {
-        scope.launch {
-            safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
-                if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
-                    playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)
-                        ?.let { player ->
-                            updateStateForExistingPlayer(player = player)
-                        } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
-                } else {
+        if (!hasChecked) {
+            scope.launch {
+                safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
+                    if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
+                        playerRepository.fetchPlayerByName(
+                            firstName = firstName,
+                            lastName = lastName
+                        )
+                            ?.let { player ->
+                                updateStateForExistingPlayer(player = player)
+                            } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
+                    } else {
+                        updateToolbarNameResIdStateToCreatePlayer()
+                    }
+                } ?: run {
                     updateToolbarNameResIdStateToCreatePlayer()
                 }
-            } ?: run {
-                updateToolbarNameResIdStateToCreatePlayer()
             }
+
+            hasChecked = true
         }
     }
 
@@ -198,6 +224,7 @@ class CreateEditPlayerViewModel(
         pendingPlayers = emptyList()
         pendingShotLoggedList = emptyList()
         editedPlayer = null
+        hasChecked = false
     }
 
     fun onImageUploadClicked(uri: Uri?) {
