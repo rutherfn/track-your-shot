@@ -365,11 +365,11 @@ class LogShotViewModel(
                         isPendingPlayer = isExistingPlayer
                     )
                     if (viewCurrentExistingShot) {
-                        //todo -> we need  to check to make sure theres actual changes before we create a pending shot for current shot logged
+                        // todo -> we need  to check to make sure theres actual changes before we create a pending shot for current shot logged
                         // so in this case, the pendingShot should not equal the shot passed in as a param being the active shot
                         createPendingShotForCurrentShot(pendingShot = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = shotId)))
                     } else if (viewCurrentPendingShot) {
-                        //todo -> we need  to check to make sure theres actual changes before we update pending shot
+                        // todo -> we need  to check to make sure theres actual changes before we update pending shot
                         // so in this case, the pendingShot should not equal the shot passed in as a param
                         updatePendingShot(pendingShot = pendingShot)
                     } else {
