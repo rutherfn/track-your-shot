@@ -164,6 +164,8 @@ object StringsIds {
         R.string.we_were_able_to_send_email_verification_please_check_your_email_to_verify_account
     val weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain =
         R.string.we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again
+    val xShot = R.string.x_shot
+    val xShots = R.string.x_shots
     val yes = R.string.yes
     val yourPlayerCouldNotBeRetrievedDescription = R.string.your_player_could_not_be_retrieved_description
 }

@@ -53,21 +53,29 @@ fun ShotInputDialog(inputInfo: InputInfo) {
                 title = {
                     Text(
                         text = stringResource(id = inputInfo.titleResId),
-                        modifier = Modifier.padding(start = 12.dp)
+                        modifier = Modifier.padding(start = 18.dp)
                     )
                 },
                 text = {
                     val placeholderText = if (inputInfo.startingInputAmount == null) {
                         stringResource(id = inputInfo.placeholderResId)
                     } else {
-                        stringResource(id = StringsIds.currentShotsX, inputInfo.startingInputAmount?.toString() ?: "")
+                        val inputAmount = inputInfo.startingInputAmount ?: 0
+
+                        if (inputAmount <= 1) {
+                            stringResource(id = StringsIds.xShot, inputAmount.toString())
+                        } else {
+                            stringResource(id = StringsIds.xShots, inputAmount.toString())
+                        }
                     }
                     TextField(
                         value = numberText,
-                        onValueChange = {
-                            val count = it.toIntOrNull() ?: 0
-                            if (it.matches(Regex(pattern = "\\d+")) && count <= 99) {
-                                numberText = it
+                        onValueChange = { value ->
+                            val shotInput = value.toIntOrNull() ?: 0
+                            numberText = if (shotInput <= 99) {
+                                value
+                            } else {
+                                numberText
                             }
                         },
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
