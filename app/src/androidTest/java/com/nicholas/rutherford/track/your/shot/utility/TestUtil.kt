@@ -50,19 +50,19 @@ class TestUtil(private val composeRule: ComposeContentTestRule) {
             val createAccountViewModel = get<CreateAccountViewModel>()
             val authenticationViewModel = get<AuthenticationViewModel>()
 
-            NavigationComponent(
-                activity = MainActivityWrapper(),
-                navHostController = navHostController,
-                navigator = navigator,
-                viewModels = ViewModels(
-                    splashViewModel = splashViewModel,
-                    loginViewModel = loginViewModel,
-                    forgotPasswordViewModel = forgotPasswordViewModel,
-                    createAccountViewModel = createAccountViewModel,
-                    playersListViewModel = playersListViewModel,
-                    authenticationViewModel = authenticationViewModel
-                )
-            )
+//            NavigationComponent(
+//                activity = MainActivityWrapper(),
+//                navHostController = navHostController,
+//                navigator = navigator,
+//                viewModels = ViewModels(
+//                    splashViewModel = splashViewModel,
+//                    loginViewModel = loginViewModel,
+//                    forgotPasswordViewModel = forgotPasswordViewModel,
+//                    createAccountViewModel = createAccountViewModel,
+//                    playersListViewModel = playersListViewModel,
+//                    authenticationViewModel = authenticationViewModel
+//                )
+//            )
         }
     }
 }

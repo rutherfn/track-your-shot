@@ -158,6 +158,8 @@
     <string name="view_x">View %s</string>
     <string name="voice_commands">Voice Commands</string>
     <string name="x_position_x_player_name" formatted="false">%s , %s</string>
+    <string name="x_shot">%s Shot</string>
+    <string name="x_shots">%s Shots</string>
     <string name="x_shot_category">Category - %s</string>
     <string name="x_shot_last_logged_x">%s \nLast Logged: %s</string>
     <string name="yes">Yes</string>
