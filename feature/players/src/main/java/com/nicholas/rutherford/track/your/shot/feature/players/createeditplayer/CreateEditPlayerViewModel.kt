@@ -62,7 +62,7 @@ class CreateEditPlayerViewModel(
 
     internal var pendingShotLoggedList: List<PendingShot> = emptyList()
 
-    internal var hasChecked = false
+    internal var hasCheckedForExistingPlayer = false
 
     init {
         scope.launch { collectPendingShotsLogged() }
@@ -105,7 +105,7 @@ class CreateEditPlayerViewModel(
     }
 
     fun checkForExistingPlayer(firstNameArgument: String?, lastNameArgument: String?) {
-        if (!hasChecked) {
+        if (!hasCheckedForExistingPlayer) {
             scope.launch {
                 safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
                     if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
@@ -124,7 +124,7 @@ class CreateEditPlayerViewModel(
                 }
             }
 
-            hasChecked = true
+            hasCheckedForExistingPlayer = true
         }
     }
 
@@ -224,7 +224,7 @@ class CreateEditPlayerViewModel(
         pendingPlayers = emptyList()
         pendingShotLoggedList = emptyList()
         editedPlayer = null
-        hasChecked = false
+        hasCheckedForExistingPlayer = false
     }
 
     fun onImageUploadClicked(uri: Uri?) {
