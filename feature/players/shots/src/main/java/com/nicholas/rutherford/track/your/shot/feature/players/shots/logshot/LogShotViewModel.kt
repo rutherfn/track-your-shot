@@ -367,13 +367,19 @@ class LogShotViewModel(
                     if (viewCurrentExistingShot) {
                         // todo -> we need  to check to make sure theres actual changes before we create a pending shot for current shot logged
                         // so in this case, the pendingShot should not equal the shot passed in as a param being the active shot
-                        createPendingShotForCurrentShot(pendingShot = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = shotId)))
+                        createPendingShot(
+                            isACurrentPlayerShot = true,
+                            pendingShot = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = shotId))
+                        )
                     } else if (viewCurrentPendingShot) {
                         // todo -> we need  to check to make sure theres actual changes before we update pending shot
                         // so in this case, the pendingShot should not equal the shot passed in as a param
                         updatePendingShot(pendingShot = pendingShot)
                     } else {
-                        createPendingShot(pendingShot = pendingShot)
+                        createPendingShot(
+                            isACurrentPlayerShot = false,
+                            pendingShot = pendingShot
+                        )
                     }
                 }
             } ?: navigation.alert(alert = invalidLogShotAlert(description = application.getString(StringsIds.playerIsInvalidPleaseTryAgain)))
@@ -403,13 +409,12 @@ class LogShotViewModel(
         navigateToCreateOrEditPlayer()
     }
 
-    private fun createPendingShot(pendingShot: PendingShot) {
-        currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = currentPlayerShotSize + 1)))
-        navigateToCreateOrEditPlayer()
-    }
-
-    private fun createPendingShotForCurrentShot(pendingShot: PendingShot) {
-        currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged))
+    private fun createPendingShot(isACurrentPlayerShot: Boolean, pendingShot: PendingShot) {
+        if (isACurrentPlayerShot) {
+            currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged))
+        } else {
+            currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = currentPlayerShotSize + 1)))
+        }
         navigateToCreateOrEditPlayer()
     }
 

@@ -622,6 +622,8 @@ class LogShotViewModelTest {
             verify { currentPendingShot.createShot(any()) }
             verify { logShotViewModel.navigateToCreateOrEditPlayer() }
         }
+
+        //todo validate each and every other instance here
     }
 
     @Nested

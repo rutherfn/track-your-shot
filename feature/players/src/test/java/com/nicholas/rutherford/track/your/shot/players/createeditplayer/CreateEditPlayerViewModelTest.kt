@@ -183,6 +183,54 @@ class CreateEditPlayerViewModelTest {
     }
 
     @Nested
+    inner class CurrentShotsNotPending {
+
+        @Test
+        fun `when editedPlayer is set to null should return a empty list`() {
+            val currentShotsArrayList: ArrayList<ShotLogged> = arrayListOf()
+
+            createEditPlayerViewModel.editedPlayer = null
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.currentShotsNotPending(),
+                currentShotsArrayList
+            )
+        }
+
+        @Test
+        fun `when editedPlayer is not set to null and pendingShotList contains the same ids of the logged list should return empty list`() {
+            val currentShotsArrayList: ArrayList<ShotLogged> = arrayListOf()
+
+            createEditPlayerViewModel.pendingShotLoggedList = listOf(
+                PendingShot(
+                    player = TestPlayer().create(),
+                    shotLogged = TestShotLogged.build(),
+                    isPendingPlayer = false
+                )
+            )
+            createEditPlayerViewModel.editedPlayer = TestPlayer().create()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.currentShotsNotPending(),
+                currentShotsArrayList
+            )
+        }
+
+        @Test
+        fun `when editedPlayer is not set to null and pendingShotList returns empty should return expected logged list`() {
+            val currentShotsArrayList = listOf(TestShotLogged.build())
+
+            createEditPlayerViewModel.pendingShotLoggedList = listOf()
+            createEditPlayerViewModel.editedPlayer = TestPlayer().create()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.currentShotsNotPending(),
+                currentShotsArrayList
+            )
+        }
+    }
+
+    @Nested
     inner class CheckForExistingPlayer {
         private val player = TestPlayer().create()
 
