@@ -1,11 +1,15 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
+import android.app.Application
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
@@ -33,6 +37,8 @@ class SelectShotViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher = UnconfinedTestDispatcher()
 
+    private val application = mockk<Application>(relaxed = true)
+
     private val scope = CoroutineScope(SupervisorJob() + testDispatcher)
 
     private val navigation = mockk<SelectShotNavigation>(relaxed = true)
@@ -50,6 +56,7 @@ class SelectShotViewModelTest {
     @BeforeEach
     fun beforeEach() {
         selectShotViewModel = SelectShotViewModel(
+            application = application,
             scope = scope,
             navigation = navigation,
             declaredShotRepository = declaredShotRepository,
@@ -104,6 +111,7 @@ class SelectShotViewModelTest {
             every { accountManager.loggedInDeclaredShotListStateFlow } returns MutableStateFlow(declaredShotList)
 
             selectShotViewModel = SelectShotViewModel(
+                application = application,
                 scope = scope,
                 navigation = navigation,
                 declaredShotRepository = declaredShotRepository,
@@ -133,6 +141,7 @@ class SelectShotViewModelTest {
             every { accountManager.loggedInDeclaredShotListStateFlow } returns MutableStateFlow(declaredShotList)
 
             selectShotViewModel = SelectShotViewModel(
+                application = application,
                 scope = scope,
                 navigation = navigation,
                 declaredShotRepository = declaredShotRepository,
@@ -161,6 +170,7 @@ class SelectShotViewModelTest {
             every { accountManager.loggedInDeclaredShotListStateFlow } returns MutableStateFlow(declaredShotList)
 
             selectShotViewModel = SelectShotViewModel(
+                application = application,
                 scope = scope,
                 navigation = navigation,
                 declaredShotRepository = declaredShotRepository,
@@ -310,6 +320,42 @@ class SelectShotViewModelTest {
         }
     }
 
+    @Test
+    fun `more info alert`() {
+        every { application.getString(StringsIds.selectingAShot) } returns "Selecting A Shot"
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+        every { application.getString(StringsIds.chooseAShotToLogInfoDescription) } returns "Choose a shot to log its information. To view additional details about the shot, click \"Show More\"."
+
+        val alert = Alert(
+            title = "Selecting A Shot",
+            dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
+            description = "Choose a shot to log its information. To view additional details about the shot, click \"Show More\"."
+        )
+
+        Assertions.assertEquals(
+            selectShotViewModel.moreInfoAlert(),
+            alert
+        )
+    }
+
+    @Test
+    fun `on help icon clicked`() {
+        every { application.getString(StringsIds.selectingAShot) } returns "Selecting A Shot"
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+        every { application.getString(StringsIds.chooseAShotToLogInfoDescription) } returns "Choose a shot to log its information. To view additional details about the shot, click \"Show More\"."
+
+        val alert = Alert(
+            title = "Selecting A Shot",
+            dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
+            description = "Choose a shot to log its information. To view additional details about the shot, click \"Show More\"."
+        )
+
+        selectShotViewModel.onHelpIconClicked()
+
+        verify { navigation.alert(alert = alert) }
+    }
+
+
     @Nested
     inner class DetermineShotId {
 
@@ -336,8 +382,8 @@ class SelectShotViewModelTest {
 
     @Nested
     inner class LoggedShotId {
-        val playerId = 2
-        val player = TestPlayer().create()
+        private val playerId = 2
+        private val player = TestPlayer().create()
 
         @Test
         fun `when isExistingPlayer is true and fetch player by id returns null should return default value of 0`() = runTest {

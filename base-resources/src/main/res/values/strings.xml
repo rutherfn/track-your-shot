@@ -11,6 +11,7 @@
     <string name="cancel">Cancel</string>
     <string name="center">Center</string>
     <string name="check_if_account_has_been_verified">Check if account has been verified</string>
+    <string name="choose_a_shot_to_log_info_description">Choose a shot to log its information. To view additional details about the shot, click \"Show More\",</string>
     <string name="choose_image_from_gallery">Choose Image From Gallery</string>
     <string name="choose_option">Choose Option</string>
     <string name="compare_players_stats">Compare Players &amp; Stats</string>
@@ -80,6 +81,7 @@
     <string name="reset_password_email_sent">Reset Password Email Sent</string>
     <string name="resend_email">Resend Email</string>
     <string name="select_a_shot">Select A Shot</string>
+    <string name="selecting_a_shot">Selecting A Shot</string>
     <string name="select_date">Select Date</string>
     <string name="password">Password</string>
     <string name="password_required">Password*</string>

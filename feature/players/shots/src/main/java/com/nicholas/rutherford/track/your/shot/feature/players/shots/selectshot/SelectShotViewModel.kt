@@ -1,11 +1,15 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
@@ -19,6 +23,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SelectShotViewModel(
+    private val application: Application,
     private val scope: CoroutineScope,
     private val navigation: SelectShotNavigation,
     private val declaredShotRepository: DeclaredShotRepository,
@@ -106,9 +111,17 @@ class SelectShotViewModel(
         }
     }
 
-    fun onHelpIconClicked() {
-        // todo show a alert of some sort with info
+    internal fun moreInfoAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.selectingAShot),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            ),
+            description = application.getString(StringsIds.chooseAShotToLogInfoDescription)
+        )
     }
+
+    fun onHelpIconClicked() = navigation.alert(alert = moreInfoAlert())
 
     internal fun determineShotId(player: Player): Int {
         return if (player.shotsLoggedList.isNotEmpty()) {

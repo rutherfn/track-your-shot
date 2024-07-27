@@ -320,7 +320,7 @@ fun NavigationComponent(
                         onBackButtonClicked = { selectShotViewModel.onBackButtonClicked() },
                         onCancelIconClicked = { selectShotViewModel.onCancelIconClicked() },
                         onnDeclaredShotItemClicked = {},
-                        onHelpIconClicked = {},
+                        onHelpIconClicked = { selectShotViewModel.onHelpIconClicked() },
                         updateIsExistingPlayerAndPlayerId = {
                             selectShotViewModel.updateIsExistingPlayerAndPlayerId(
                                 isExistingPlayerArgument = entry.arguments?.getBoolean(NamedArguments.IS_EXISTING_PLAYER),
