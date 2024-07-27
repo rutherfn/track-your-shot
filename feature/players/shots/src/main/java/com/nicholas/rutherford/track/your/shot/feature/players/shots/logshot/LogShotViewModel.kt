@@ -25,7 +25,6 @@ import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -77,6 +76,7 @@ class LogShotViewModel(
 
         scope.launch {
             val declaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = shotType)
+
             val player = if (isExistingPlayer) {
                 playerRepository.fetchPlayerById(id = playerId)
             } else {
@@ -368,6 +368,7 @@ class LogShotViewModel(
                         ),
                         isPendingPlayer = isExistingPlayer
                     )
+
                     if (viewCurrentExistingShot) {
                         // todo -> we need  to check to make sure theres actual changes before we create a pending shot for current shot logged
                         // so in this case, the pendingShot should not equal the shot passed in as a param being the active shot
@@ -406,13 +407,11 @@ class LogShotViewModel(
             )
         }
 
-    internal suspend fun updatePendingShot(pendingShot: PendingShot) {
-        currentPendingShot.shotsStateFlow.collectLatest { pendingShotlogged ->
-            val pendingShotLogged = pendingShotlogged.first()
-            currentPendingShot.deleteShot(shotLogged = pendingShotLogged)
-            currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = pendingShotLogged.shotLogged.id)))
-            navigateToCreateOrEditPlayer()
-        }
+    internal fun updatePendingShot(pendingShot: PendingShot) {
+        val firstShotLogged = currentPendingShot.fetchPendingShots().first()
+        currentPendingShot.deleteShot(shotLogged = firstShotLogged)
+        currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = firstShotLogged.shotLogged.id)))
+        navigateToCreateOrEditPlayer()
     }
 
     internal fun createPendingShot(isACurrentPlayerShot: Boolean, pendingShot: PendingShot) {

@@ -1920,12 +1920,16 @@ class CreateEditPlayerViewModelTest {
     fun `on view pending shot clicked should call log shot navigation`() {
         val player = TestPlayer().create()
 
-        createEditPlayerViewModel.onViewPendingShotClicked(shotId = player.shotsLoggedList.first().id)
+        createEditPlayerViewModel.onViewPendingShotClicked(
+            shotType = player.shotsLoggedList.first().shotType,
+            shotId = player.shotsLoggedList.first().id
+        )
 
         verify {
             navigation.navigateToLogShot(
                 isExistingPlayer = false,
                 playerId = 0,
+                shotType = player.shotsLoggedList.first().shotType,
                 shotId = player.shotsLoggedList.first().id,
                 viewCurrentExistingShot = false,
                 viewCurrentPendingShot = true
@@ -1937,12 +1941,16 @@ class CreateEditPlayerViewModelTest {
     fun `on view shot clicked should call log shot navigation`() {
         val player = TestPlayer().create()
 
-        createEditPlayerViewModel.onViewShotClicked(shotId = player.shotsLoggedList.first().id)
+        createEditPlayerViewModel.onViewShotClicked(
+            shotType = player.shotsLoggedList.first().shotType,
+            shotId = player.shotsLoggedList.first().id
+        )
 
         verify {
             navigation.navigateToLogShot(
                 isExistingPlayer = true,
                 playerId = 0,
+                shotType = player.shotsLoggedList.first().shotType,
                 shotId = player.shotsLoggedList.first().id,
                 viewCurrentExistingShot = true,
                 viewCurrentPendingShot = false

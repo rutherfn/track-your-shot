@@ -126,7 +126,7 @@ class SelectShotViewModel(
         } else {
             pendingPlayerRepository.fetchPlayerById(id = playerId)?.let { player ->
                 determineShotId(player = player)
-            }?: Constants.DEFAULT_SHOT_ID
+            } ?: Constants.DEFAULT_SHOT_ID
         }
     }
 
@@ -143,6 +143,5 @@ class SelectShotViewModel(
                 )
             }
         }
-
     }
 }

@@ -5,6 +5,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlaye
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
@@ -18,6 +19,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -305,6 +307,142 @@ class SelectShotViewModelTest {
             selectShotViewModel.onBackButtonClicked()
 
             verify { navigation.popFromEditPlayer() }
+        }
+    }
+
+    @Nested
+    inner class DetermineShotId {
+
+        @Test
+        fun `when player shotLoggedList is not empty should return the size of list`() {
+            val player = TestPlayer().create()
+
+            Assertions.assertEquals(
+                selectShotViewModel.determineShotId(player = player),
+                1
+            )
+        }
+
+        @Test
+        fun `when player shotLoggedList is empty should default value of 0`() {
+            val player = TestPlayer().create().copy(shotsLoggedList = emptyList())
+
+            Assertions.assertEquals(
+                selectShotViewModel.determineShotId(player = player),
+                0
+            )
+        }
+    }
+
+    @Nested
+    inner class LoggedShotId {
+        val playerId = 2
+        val player = TestPlayer().create()
+
+        @Test
+        fun `when isExistingPlayer is true and fetch player by id returns null should return default value of 0`() = runTest {
+            coEvery { playerRepository.fetchPlayerById(id = playerId) } returns null
+
+            Assertions.assertEquals(
+                selectShotViewModel.loggedShotId(isExistingPlayer = true, playerId = playerId),
+                0
+            )
+        }
+
+        @Test
+        fun `when isExistingPlayer is true and fetch player by id returns player should return player shotLoggedList size`() = runTest {
+            coEvery { playerRepository.fetchPlayerById(id = playerId) } returns player
+
+            Assertions.assertEquals(
+                selectShotViewModel.loggedShotId(isExistingPlayer = true, playerId = playerId),
+                player.shotsLoggedList.size
+            )
+        }
+
+        @Test
+        fun `when isExistingPlayer is set to false and fetch pending player by id returns null should return default value of 0`() = runTest {
+            coEvery { pendingPlayerRepository.fetchPlayerById(id = playerId) } returns null
+
+            Assertions.assertEquals(
+                selectShotViewModel.loggedShotId(isExistingPlayer = false, playerId = playerId),
+                0
+            )
+        }
+
+        @Test
+        fun `when isExistingPlayer is set to false and fetch pending player by id returns player should return player shotLoggedList size`() = runTest {
+            coEvery { pendingPlayerRepository.fetchPlayerById(id = playerId) } returns player
+
+            Assertions.assertEquals(
+                selectShotViewModel.loggedShotId(isExistingPlayer = false, playerId = playerId),
+                player.shotsLoggedList.size
+            )
+        }
+    }
+
+    @Nested
+    inner class OnDeclaredShotItemClicked {
+
+        @Test
+        fun `when isExistingPlayer is set to null should not call navigateToLogShot`() = runTest {
+            selectShotViewModel.isExistingPlayer = null
+            selectShotViewModel.playerId = 2
+
+            selectShotViewModel.onDeclaredShotItemClicked(shotType = 2)
+
+            verify(exactly = 0) {
+                navigation.navigateToLogShot(
+                    isExistingPlayer = any(),
+                    playerId = any(),
+                    shotType = any(),
+                    shotId = any(),
+                    viewCurrentExistingShot = any(),
+                    viewCurrentPendingShot = any()
+                )
+            }
+        }
+
+        @Test
+        fun `when playerId is set to null should not call navigateToLogShot`() = runTest {
+            selectShotViewModel.isExistingPlayer = false
+            selectShotViewModel.playerId = null
+
+            selectShotViewModel.onDeclaredShotItemClicked(shotType = 2)
+
+            verify(exactly = 0) {
+                navigation.navigateToLogShot(
+                    isExistingPlayer = any(),
+                    playerId = any(),
+                    shotType = any(),
+                    shotId = any(),
+                    viewCurrentExistingShot = any(),
+                    viewCurrentPendingShot = any()
+                )
+            }
+        }
+
+        @Test
+        fun `when playerId and isExistingPlayer are not set to null should call navigateToLogShot`() = runTest {
+            val playerId = 22
+            val player = TestPlayer().create()
+
+            coEvery { pendingPlayerRepository.fetchPlayerById(id = playerId) } returns player
+
+            selectShotViewModel.isExistingPlayer = false
+            selectShotViewModel.playerId = playerId
+
+            selectShotViewModel.onDeclaredShotItemClicked(shotType = 2)
+
+            verify {
+                navigation.navigateToLogShot(
+                    isExistingPlayer = false,
+                    playerId = playerId,
+                    shotType = 2,
+                    shotId = player.shotsLoggedList.size,
+                    viewCurrentExistingShot = false,
+                    viewCurrentPendingShot = false
+                )
+            }
         }
     }
 }

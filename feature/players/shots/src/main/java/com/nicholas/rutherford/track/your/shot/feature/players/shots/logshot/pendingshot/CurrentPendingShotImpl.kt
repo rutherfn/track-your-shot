@@ -9,6 +9,8 @@ class CurrentPendingShotImpl : CurrentPendingShot {
     internal val shotsMutableStateFlow: MutableStateFlow<List<PendingShot>> = MutableStateFlow(value = emptyList())
     override val shotsStateFlow: Flow<List<PendingShot>> = shotsMutableStateFlow.asStateFlow()
 
+    override fun fetchPendingShots(): List<PendingShot> = shotsMutableStateFlow.value
+
     override fun createShot(shotLogged: PendingShot) {
         val currentShotList = shotsMutableStateFlow.value
         shotsMutableStateFlow.value = currentShotList + listOf(shotLogged)

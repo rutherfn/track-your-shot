@@ -22,8 +22,6 @@ import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -72,14 +70,16 @@ class LogShotViewModelTest {
         fun `when declared shot returns null should not update state`() = runTest {
             val shotId = 2
             val playerId = 4
+            val shotType = 4
             val viewCurrentExistingShot = false
             val viewCurrentPendingShot = false
 
-            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotId) } returns null
+            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotType) } returns null
 
             logShotViewModel.updateIsExistingPlayerAndId(
                 isExistingPlayerArgument = false,
                 playerIdArgument = playerId,
+                shotTypeArgument = shotType,
                 shotIdArgument = shotId,
                 viewCurrentExistingShotArgument = viewCurrentExistingShot,
                 viewCurrentPendingShotArgument = viewCurrentPendingShot
@@ -92,15 +92,17 @@ class LogShotViewModelTest {
         fun `when player returns null should not update state`() = runTest {
             val shotId = 2
             val playerId = 4
+            val shotType = 4
             val viewCurrentExistingShot = false
             val viewCurrentPendingShot = false
 
-            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotId) } returns TestDeclaredShot.build()
+            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotType) } returns TestDeclaredShot.build()
             coEvery { playerRepository.fetchPlayerById(id = playerId) } returns null
 
             logShotViewModel.updateIsExistingPlayerAndId(
                 isExistingPlayerArgument = true,
                 playerIdArgument = playerId,
+                shotTypeArgument = shotType,
                 shotIdArgument = shotId,
                 viewCurrentExistingShotArgument = viewCurrentExistingShot,
                 viewCurrentPendingShotArgument = viewCurrentPendingShot
@@ -114,15 +116,17 @@ class LogShotViewModelTest {
             runTest {
                 val shotId = 2
                 val playerId = 4
+                val shotType = 9
                 val viewCurrentExistingShot = false
                 val viewCurrentPendingShot = false
 
-                coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotId) } returns TestDeclaredShot.build()
+                coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotType) } returns TestDeclaredShot.build()
                 coEvery { playerRepository.fetchPlayerById(id = playerId) } returns TestPlayer().create()
 
                 logShotViewModel.updateIsExistingPlayerAndId(
                     isExistingPlayerArgument = true,
                     playerIdArgument = playerId,
+                    shotTypeArgument = shotType,
                     shotIdArgument = shotId,
                     viewCurrentExistingShotArgument = viewCurrentExistingShot,
                     viewCurrentPendingShotArgument = viewCurrentPendingShot
@@ -150,15 +154,17 @@ class LogShotViewModelTest {
             runTest {
                 val shotId = 2
                 val playerId = 4
+                val shotType = 11
                 val viewCurrentExistingShot = false
                 val viewCurrentPendingShot = false
 
-                coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotId) } returns TestDeclaredShot.build()
+                coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotType) } returns TestDeclaredShot.build()
                 coEvery { pendingPlayerRepository.fetchPlayerById(id = playerId) } returns TestPlayer().create()
 
                 logShotViewModel.updateIsExistingPlayerAndId(
                     isExistingPlayerArgument = false,
                     playerIdArgument = playerId,
+                    shotTypeArgument = shotType,
                     shotIdArgument = shotId,
                     viewCurrentExistingShotArgument = viewCurrentExistingShot,
                     viewCurrentPendingShotArgument = viewCurrentPendingShot
@@ -657,6 +663,8 @@ class LogShotViewModelTest {
                 isPendingPlayer = false
             )
 
+            every { currentPendingShot.fetchPendingShots() } returns listOf(pendingShot)
+
             logShotViewModel.logShotMutableStateFlow.value = LogShotState(
                 shotName = "shotName",
                 shotsMade = 5,
@@ -670,11 +678,8 @@ class LogShotViewModelTest {
 
             logShotViewModel.onSaveClicked()
 
-            verify { logShotViewModel.createPendingShot(
-                isACurrentPlayerShot = true,
-                pendingShot = pendingShot
-            )
-            }
+            verify { currentPendingShot.createShot(shotLogged = any()) }
+            verify { logShotViewModel.navigateToCreateOrEditPlayer() }
         }
 
         @Test
@@ -704,9 +709,7 @@ class LogShotViewModelTest {
                 isPendingPlayer = false
             )
 
-            currentPendingShot.shotsStateFlow
-
-            every { currentPendingShot.shotsStateFlow } returns flowOf(listOf(pendingShot))
+            every { currentPendingShot.fetchPendingShots() } returns listOf(pendingShot)
 
             logShotViewModel.logShotMutableStateFlow.value = LogShotState(
                 shotName = "shotName",
@@ -721,7 +724,9 @@ class LogShotViewModelTest {
 
             logShotViewModel.onSaveClicked()
 
-            coVerify { logShotViewModel.updatePendingShot(pendingShot = pendingShot) }
+            coVerify { currentPendingShot.deleteShot(pendingShot) }
+            coVerify { currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = pendingShot.shotLogged.id))) }
+            verify { logShotViewModel.navigateToCreateOrEditPlayer() }
         }
 
         @Test
@@ -762,10 +767,11 @@ class LogShotViewModelTest {
 
             logShotViewModel.onSaveClicked()
 
-            verify { logShotViewModel.createPendingShot(
-                isACurrentPlayerShot = false,
-                pendingShot = pendingShot
-            )
+            verify {
+                logShotViewModel.createPendingShot(
+                    isACurrentPlayerShot = false,
+                    pendingShot = pendingShot
+                )
             }
         }
     }

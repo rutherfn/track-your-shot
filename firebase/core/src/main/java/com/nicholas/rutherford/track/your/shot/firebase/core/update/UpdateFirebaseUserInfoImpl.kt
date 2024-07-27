@@ -21,7 +21,6 @@ class UpdateFirebaseUserInfoImpl(private val firebaseDatabase: FirebaseDatabase)
                 Constants.POSITION_VALUE to playerInfoRealtimeWithKeyResponse.playerInfo.positionValue,
                 Constants.SHOTS_LOGGED to playerInfoRealtimeWithKeyResponse.playerInfo.shotsLogged
             )
-        playerDataToUpdate.plus(mapOf())
         return callbackFlow {
             firebaseDatabase.getReference(Constants.USERS)
                 .child(Constants.ACCOUNT_INFO)
