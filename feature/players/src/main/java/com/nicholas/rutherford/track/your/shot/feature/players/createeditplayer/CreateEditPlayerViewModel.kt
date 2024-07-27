@@ -35,6 +35,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 const val RESET_SCREEN_DELAY_IN_MILLIS = 500L
 
@@ -78,6 +79,10 @@ class CreateEditPlayerViewModel(
     private fun processPendingShots(shotLoggedList: List<PendingShot>) {
         if (shotLoggedList.isNotEmpty()) {
             pendingShotLoggedList = shotLoggedList
+
+            pendingShotLoggedList.map {
+                println("the things we do for love ${it.shotLogged.shotType}")
+            }
 
             createEditPlayerMutableStateFlow.update { state ->
                 state.copy(
@@ -902,11 +907,12 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    fun onViewPendingShotClicked(shotId: Int) {
+    fun onViewPendingShotClicked(shotType: Int, shotId: Int) {
         scope.launch {
             navigation.navigateToLogShot(
                 isExistingPlayer = false,
                 playerId = existingOrPendingPlayerId() ?: 0,
+                shotType = shotType,
                 shotId = shotId,
                 viewCurrentExistingShot = false,
                 viewCurrentPendingShot = true
@@ -914,11 +920,12 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    fun onViewShotClicked(shotId: Int) {
+    fun onViewShotClicked(shotType: Int, shotId: Int) {
         scope.launch {
             navigation.navigateToLogShot(
                 isExistingPlayer = true,
                 playerId = existingOrPendingPlayerId() ?: 0,
+                shotType = shotType,
                 shotId = shotId,
                 viewCurrentExistingShot = true,
                 viewCurrentPendingShot = false

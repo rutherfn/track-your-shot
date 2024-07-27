@@ -48,11 +48,11 @@ class ScreenContents {
                 onSelectedCreateEditImageOption = { option ->
                     createEditPlayerViewModel.onSelectedCreateEditImageOption(option)
                 },
-                onViewShotClicked = { shotId ->
-                    createEditPlayerViewModel.onViewShotClicked(shotId = shotId)
+                onViewShotClicked = { shotType, shotId ->
+                    createEditPlayerViewModel.onViewShotClicked(shotType = shotType, shotId = shotId)
                 },
-                onViewPendingShotClicked = { shotId ->
-                    createEditPlayerViewModel.onViewPendingShotClicked(shotId = shotId)
+                onViewPendingShotClicked = { shotType, shotId ->
+                    createEditPlayerViewModel.onViewPendingShotClicked(shotType = shotType, shotId = shotId)
                 }
             )
         )

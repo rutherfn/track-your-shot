@@ -48,6 +48,7 @@ class LogShotViewModel(
 
     internal var isExistingPlayer = false
     private var playerId = 0
+    internal var shotType = 0
     internal var shotId = 0
 
     internal var currentPlayer: Player? = null
@@ -60,6 +61,7 @@ class LogShotViewModel(
     fun updateIsExistingPlayerAndId(
         isExistingPlayerArgument: Boolean,
         playerIdArgument: Int,
+        shotTypeArgument: Int,
         shotIdArgument: Int,
         viewCurrentExistingShotArgument: Boolean,
         viewCurrentPendingShotArgument: Boolean
@@ -68,12 +70,13 @@ class LogShotViewModel(
 
         this.isExistingPlayer = isExistingPlayerArgument
         this.playerId = playerIdArgument
+        this.shotType = shotTypeArgument
         this.shotId = shotIdArgument
         this.viewCurrentExistingShot = viewCurrentExistingShotArgument
         this.viewCurrentPendingShot = viewCurrentPendingShotArgument
 
         scope.launch {
-            val declaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = shotId)
+            val declaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = shotType)
             val player = if (isExistingPlayer) {
                 playerRepository.fetchPlayerById(id = playerId)
             } else {

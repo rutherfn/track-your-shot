@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
@@ -37,6 +39,9 @@ class SelectShotViewModelTest {
 
     private val accountManager = mockk<AccountManager>(relaxed = true)
 
+    private val playerRepository = mockk<PlayerRepository>(relaxed = true)
+    private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
+
     private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
     private val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
 
@@ -47,6 +52,8 @@ class SelectShotViewModelTest {
             navigation = navigation,
             declaredShotRepository = declaredShotRepository,
             accountManager = accountManager,
+            playerRepository = playerRepository,
+            pendingPlayerRepository = pendingPlayerRepository,
             createSharedPreferences = createSharedPreferences,
             readSharedPreferences = readSharedPreferences
         )
@@ -99,6 +106,8 @@ class SelectShotViewModelTest {
                 navigation = navigation,
                 declaredShotRepository = declaredShotRepository,
                 accountManager = accountManager,
+                playerRepository = playerRepository,
+                pendingPlayerRepository = pendingPlayerRepository,
                 createSharedPreferences = createSharedPreferences,
                 readSharedPreferences = readSharedPreferences
             )
@@ -126,6 +135,8 @@ class SelectShotViewModelTest {
                 navigation = navigation,
                 declaredShotRepository = declaredShotRepository,
                 accountManager = accountManager,
+                playerRepository = playerRepository,
+                pendingPlayerRepository = pendingPlayerRepository,
                 createSharedPreferences = createSharedPreferences,
                 readSharedPreferences = readSharedPreferences
             )
@@ -152,6 +163,8 @@ class SelectShotViewModelTest {
                 navigation = navigation,
                 declaredShotRepository = declaredShotRepository,
                 accountManager = accountManager,
+                playerRepository = playerRepository,
+                pendingPlayerRepository = pendingPlayerRepository,
                 createSharedPreferences = createSharedPreferences,
                 readSharedPreferences = readSharedPreferences
             )

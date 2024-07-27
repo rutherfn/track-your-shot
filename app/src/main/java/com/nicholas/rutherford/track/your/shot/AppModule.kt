@@ -294,6 +294,8 @@ class AppModule {
                 navigation = get(),
                 declaredShotRepository = get(),
                 accountManager = get(),
+                playerRepository = get(),
+                pendingPlayerRepository = get(),
                 createSharedPreferences = get(),
                 readSharedPreferences = get()
             )

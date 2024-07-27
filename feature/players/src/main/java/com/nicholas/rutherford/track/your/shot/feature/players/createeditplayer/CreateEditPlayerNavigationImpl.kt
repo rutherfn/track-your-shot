@@ -23,12 +23,14 @@ class CreateEditPlayerNavigationImpl(private val navigator: Navigator) : CreateE
     override fun navigateToLogShot(
         isExistingPlayer: Boolean,
         playerId: Int,
+        shotType: Int,
         shotId: Int,
         viewCurrentExistingShot: Boolean,
         viewCurrentPendingShot: Boolean
     ) = navigator.navigate(
         navigationAction = NavigationActions.CreateEditPlayer.logShot(
             isExistingPlayer = isExistingPlayer,
+            shotType = shotType,
             playerId = playerId,
             shotId = shotId,
             viewCurrentExistingShot = viewCurrentExistingShot,
