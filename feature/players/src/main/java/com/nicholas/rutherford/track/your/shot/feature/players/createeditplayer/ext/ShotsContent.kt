@@ -18,7 +18,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
@@ -51,8 +50,15 @@ fun ColumnScope.ShotsContent(
     if (shotList.isEmpty() && pendingShotList.isEmpty()) {
         ShotContentEmptyState(hintLogNewShotText = hintLogNewShotText, onLogShotsClicked = onLogShotsClicked)
     } else if (shotList.isNotEmpty()) {
+        Text(
+            text = stringResource(id = R.string.shots),
+            style = TextStyles.small,
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(top = Padding.twelve, start = Padding.four)
+        )
         shotList.forEach { shot ->
-            LoggedShot(
+            LoggedShotCard(
                 shot = shot,
                 onViewShotClicked = onViewShotClicked
             )
@@ -61,69 +67,24 @@ fun ColumnScope.ShotsContent(
 
     if (pendingShotList.isNotEmpty()) {
         Text(
-            text = "Pending Shots",
+            text = stringResource(id = R.string.pending_shots),
             style = TextStyles.small,
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(top = Padding.twelve, start = Padding.four)
         )
-        pendingShotList.forEach { shot -> PendingShot(shot = shot, onPendingShotClicked = onPendingShotClicked) }
+        pendingShotList.forEach { shot ->
+            LoggedShotCard(
+                shot = shot,
+                onViewShotClicked = onPendingShotClicked) }
     }
 }
 
 @Composable
-private fun PendingShot(
-    shot: ShotLogged,
-    onPendingShotClicked: (shotType: Int, shotId: Int) -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .background(AppColors.White)
-            .fillMaxWidth()
-            .clickable { onPendingShotClicked.invoke(shot.shotType, shot.id) }
-            .padding(top = 4.dp, end = 4.dp),
-        elevation = 2.dp
-    ) {
-        Column {
-            Row(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .clickable { onPendingShotClicked.invoke(shot.shotType, shot.id) },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(id = StringsIds.shotNameX, shot.shotName),
-                    style = TextStyles.body,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.padding(vertical = 4.dp)
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                IconButton(onClick = { onPendingShotClicked.invoke(shot.shotType, shot.id) }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowForward,
-                        contentDescription = ""
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun ColumnScope.LoggedShot(
+private fun LoggedShotCard(
     shot: ShotLogged,
     onViewShotClicked: (shotType: Int, shotId: Int) -> Unit
 ) {
-    Text(
-        text = stringResource(id = R.string.shots),
-        style = TextStyles.small,
-        modifier = Modifier
-            .align(Alignment.Start)
-            .padding(top = Padding.twelve, start = Padding.four)
-    )
-
     Card(
         modifier = Modifier
             .background(AppColors.White)
@@ -136,7 +97,9 @@ private fun ColumnScope.LoggedShot(
             ),
         elevation = 2.dp
     ) {
-        Column {
+        Column(
+            modifier = Modifier.clickable { onViewShotClicked.invoke(shot.shotType, shot.id) }
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxSize()
@@ -144,7 +107,11 @@ private fun ColumnScope.LoggedShot(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(id = R.string.x_shot_last_logged_x, shot.shotName, parseDateValueToString(timeInMilliseconds = shot.shotsLoggedMillisecondsValue)),
+                    text = stringResource(
+                        id = R.string.x_x,
+                        shot.shotName,
+                        parseDateValueToString(timeInMilliseconds = shot.shotsLoggedMillisecondsValue)
+                    ),
                     style = TextStyles.body,
                     textAlign = TextAlign.Start,
                     modifier = Modifier.padding(vertical = 4.dp)
@@ -152,12 +119,10 @@ private fun ColumnScope.LoggedShot(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(onClick = { onViewShotClicked.invoke(shot.shotType, shot.id) }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowForward,
-                        contentDescription = ""
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Filled.ArrowForward,
+                    contentDescription = ""
+                )
             }
         }
     }
