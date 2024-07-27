@@ -80,6 +80,10 @@ fun ColumnScope.ShotsContent(
             )
         }
     }
+
+    if (shotList.isNotEmpty() && pendingShotList.isEmpty()) {
+        LogNewShotButton(onLogShotsClicked = onLogShotsClicked)
+    }
 }
 
 @Composable
@@ -93,9 +97,9 @@ private fun LoggedShotCard(
             .fillMaxWidth()
             .clickable { onViewShotClicked.invoke(shot.shotType, shot.id) }
             .padding(
-                top = 16.dp,
+                top = 8.dp,
                 end = 4.dp,
-                bottom = 16.dp
+                bottom = 8.dp
             ),
         elevation = 2.dp
     ) {
@@ -124,6 +128,37 @@ private fun LoggedShotCard(
                 Icon(
                     imageVector = Icons.Filled.ArrowForward,
                     contentDescription = ""
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun LogNewShotButton(onLogShotsClicked: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppColors.White),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Button(
+                onClick = { onLogShotsClicked.invoke() },
+                shape = RoundedCornerShape(size = 50.dp),
+                modifier = Modifier
+                    .padding(vertical = Padding.twelve)
+                    .fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor)
+            ) {
+                Text(
+                    text = "Log Shots",
+                    style = TextStyles.smallBold,
+                    textAlign = TextAlign.Center,
+                    color = Color.White
                 )
             }
         }
