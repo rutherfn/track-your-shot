@@ -62,6 +62,8 @@ class CreateEditPlayerViewModel(
 
     internal var pendingShotLoggedList: List<PendingShot> = emptyList()
 
+    internal var hasCheckedForExistingPlayer = false
+
     init {
         scope.launch { collectPendingShotsLogged() }
     }
@@ -79,26 +81,50 @@ class CreateEditPlayerViewModel(
 
             createEditPlayerMutableStateFlow.update { state ->
                 state.copy(
-                    pendingShots = pendingShotLoggedList.map { it.shotLogged }
+                    pendingShots = pendingShotLoggedList.map { it.shotLogged },
+                    shots = currentShotsNotPending()
                 )
             }
         }
     }
 
+    internal fun currentShotsNotPending(): List<ShotLogged> {
+        val currentShotsArrayList: ArrayList<ShotLogged> = arrayListOf()
+
+        editedPlayer?.let { player ->
+            val pendingShotIds = pendingShotLoggedList.map { it.shotLogged.id }
+
+            player.shotsLoggedList.forEach { shot ->
+                if (!pendingShotIds.contains(shot.id)) {
+                    currentShotsArrayList.add(shot)
+                }
+            }
+        }
+
+        return currentShotsArrayList.toList()
+    }
+
     fun checkForExistingPlayer(firstNameArgument: String?, lastNameArgument: String?) {
-        scope.launch {
-            safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
-                if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
-                    playerRepository.fetchPlayerByName(firstName = firstName, lastName = lastName)
-                        ?.let { player ->
-                            updateStateForExistingPlayer(player = player)
-                        } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
-                } else {
+        if (!hasCheckedForExistingPlayer) {
+            scope.launch {
+                safeLet(firstNameArgument, lastNameArgument) { firstName, lastName ->
+                    if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
+                        playerRepository.fetchPlayerByName(
+                            firstName = firstName,
+                            lastName = lastName
+                        )
+                            ?.let { player ->
+                                updateStateForExistingPlayer(player = player)
+                            } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
+                    } else {
+                        updateToolbarNameResIdStateToCreatePlayer()
+                    }
+                } ?: run {
                     updateToolbarNameResIdStateToCreatePlayer()
                 }
-            } ?: run {
-                updateToolbarNameResIdStateToCreatePlayer()
             }
+
+            hasCheckedForExistingPlayer = true
         }
     }
 
@@ -198,6 +224,7 @@ class CreateEditPlayerViewModel(
         pendingPlayers = emptyList()
         pendingShotLoggedList = emptyList()
         editedPlayer = null
+        hasCheckedForExistingPlayer = false
     }
 
     fun onImageUploadClicked(uri: Uri?) {
@@ -865,9 +892,8 @@ class CreateEditPlayerViewModel(
         if (hasLogShotsAccess()) {
             scope.launch {
                 existingOrPendingPlayerId()?.let { playerId ->
-                    val isExistingPlayer = editedPlayer != null
                     navigation.navigateToSelectShot(
-                        isExistingPlayer = isExistingPlayer,
+                        isExistingPlayer = editedPlayer != null,
                         playerId = playerId
                     )
                 }
@@ -875,11 +901,12 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    fun onViewPendingShotClicked(shotId: Int) {
+    fun onViewPendingShotClicked(shotType: Int, shotId: Int) {
         scope.launch {
             navigation.navigateToLogShot(
-                isExistingPlayer = false,
+                isExistingPlayer = editedPlayer != null,
                 playerId = existingOrPendingPlayerId() ?: 0,
+                shotType = shotType,
                 shotId = shotId,
                 viewCurrentExistingShot = false,
                 viewCurrentPendingShot = true
@@ -887,11 +914,12 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    fun onViewShotClicked(shotId: Int) {
+    fun onViewShotClicked(shotType: Int, shotId: Int) {
         scope.launch {
             navigation.navigateToLogShot(
                 isExistingPlayer = true,
                 playerId = existingOrPendingPlayerId() ?: 0,
+                shotType = shotType,
                 shotId = shotId,
                 viewCurrentExistingShot = true,
                 viewCurrentPendingShot = false

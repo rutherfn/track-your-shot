@@ -56,6 +56,7 @@ class SelectShotNavigationImplTest {
         val isExistingPlayer = false
         val playerId = 5
         val shotId = 3
+        val shotType = 4
         val viewCurrentExistingShot = false
         val viewCurrentPendingShot = false
         val argumentCapture: CapturingSlot<NavigationAction> = slot()
@@ -64,6 +65,7 @@ class SelectShotNavigationImplTest {
             isExistingPlayer = isExistingPlayer,
             playerId = playerId,
             shotId = shotId,
+            shotType = shotType,
             viewCurrentExistingShot = viewCurrentExistingShot,
             viewCurrentPendingShot = viewCurrentPendingShot
         )
@@ -75,6 +77,7 @@ class SelectShotNavigationImplTest {
             isExistingPlayer = isExistingPlayer,
             playerId = playerId,
             shotId = shotId,
+            shotType = shotType,
             viewCurrentExistingShot = viewCurrentExistingShot,
             viewCurrentPendingShot = viewCurrentPendingShot
         )

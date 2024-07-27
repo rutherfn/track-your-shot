@@ -14,6 +14,7 @@ object Constants {
     const val CENTER = 4
     const val CONTENT_LAST_UPDATED_PATH = "contentLastUpdated"
     const val DATE_PATTERN = "MMMM dd, yyyy"
+    const val DEFAULT_SHOT_ID = 0
     const val DELAY_IN_MILLISECONDS_BEFORE_LOGGING_OUT = 1000L
     const val DELAY_IN_MILLISECONDS_TO_SHOW_PROGRESS_MASK_ON_LOG_OUT = 3000L
     const val EMAIL = "email"

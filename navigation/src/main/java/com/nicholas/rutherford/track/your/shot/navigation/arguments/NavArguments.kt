@@ -19,6 +19,7 @@ object NavArguments {
     val logShot = listOf(
         navArgument(NamedArguments.IS_EXISTING_PLAYER) { type = NavType.BoolType },
         navArgument(NamedArguments.PLAYER_ID) { type = NavType.IntType },
+        navArgument(NamedArguments.SHOT_TYPE) { type = NavType.IntType },
         navArgument(NamedArguments.SHOT_ID) { type = NavType.IntType },
         navArgument(NamedArguments.VIEW_CURRENT_EXISTING_SHOT) { type = NavType.BoolType },
         navArgument(NamedArguments.VIEW_CURRENT_PENDING_SHOT) { type = NavType.BoolType }

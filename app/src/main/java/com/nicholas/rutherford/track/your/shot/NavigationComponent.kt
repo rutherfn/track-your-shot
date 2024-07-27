@@ -327,8 +327,8 @@ fun NavigationComponent(
                                 playerIdArgument = entry.arguments?.getInt(NamedArguments.PLAYER_ID)
                             )
                         },
-                        onItemClicked = { shotId ->
-                            selectShotViewModel.onDeclaredShotItemClicked(shotId = shotId)
+                        onItemClicked = { shotType ->
+                            selectShotViewModel.onDeclaredShotItemClicked(shotType = shotType)
                         }
                     )
                 )
@@ -347,6 +347,7 @@ fun NavigationComponent(
                                 logShotViewModel.updateIsExistingPlayerAndId(
                                     isExistingPlayerArgument = bundle.getBoolean(NamedArguments.IS_EXISTING_PLAYER),
                                     playerIdArgument = bundle.getInt(NamedArguments.PLAYER_ID),
+                                    shotTypeArgument = bundle.getInt(NamedArguments.SHOT_TYPE),
                                     shotIdArgument = bundle.getInt(NamedArguments.SHOT_ID),
                                     viewCurrentExistingShotArgument = bundle.getBoolean(NamedArguments.VIEW_CURRENT_EXISTING_SHOT),
                                     viewCurrentPendingShotArgument = bundle.getBoolean(NamedArguments.VIEW_CURRENT_PENDING_SHOT)

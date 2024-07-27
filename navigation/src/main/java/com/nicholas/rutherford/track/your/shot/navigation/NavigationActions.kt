@@ -113,6 +113,7 @@ object NavigationActions {
         fun logShot(
             isExistingPlayer: Boolean,
             playerId: Int,
+            shotType: Int,
             shotId: Int,
             viewCurrentExistingShot: Boolean,
             viewCurrentPendingShot: Boolean
@@ -120,6 +121,7 @@ object NavigationActions {
             override val destination = NavigationDestinationsWithParams.logShotWithParams(
                 isExistingPlayer = isExistingPlayer,
                 playerId = playerId,
+                shotType = shotType,
                 shotId = shotId,
                 viewCurrentExistingShot = viewCurrentExistingShot,
                 viewCurrentPendingShot = viewCurrentPendingShot
@@ -132,6 +134,7 @@ object NavigationActions {
         fun logShot(
             isExistingPlayer: Boolean,
             playerId: Int,
+            shotType: Int,
             shotId: Int,
             viewCurrentExistingShot: Boolean,
             viewCurrentPendingShot: Boolean
@@ -139,6 +142,7 @@ object NavigationActions {
             override val destination = NavigationDestinationsWithParams.logShotWithParams(
                 isExistingPlayer = isExistingPlayer,
                 playerId = playerId,
+                shotType = shotType,
                 shotId = shotId,
                 viewCurrentExistingShot = viewCurrentExistingShot,
                 viewCurrentPendingShot = viewCurrentPendingShot

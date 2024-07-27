@@ -10,6 +10,7 @@ interface CreateEditPlayerNavigation {
     fun navigateToLogShot(
         isExistingPlayer: Boolean,
         playerId: Int,
+        shotType: Int,
         shotId: Int,
         viewCurrentExistingShot: Boolean,
         viewCurrentPendingShot: Boolean

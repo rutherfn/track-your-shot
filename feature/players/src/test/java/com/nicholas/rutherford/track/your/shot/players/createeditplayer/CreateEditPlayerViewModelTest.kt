@@ -183,8 +183,78 @@ class CreateEditPlayerViewModelTest {
     }
 
     @Nested
+    inner class CurrentShotsNotPending {
+
+        @Test
+        fun `when editedPlayer is set to null should return a empty list`() {
+            val currentShotsArrayList: ArrayList<ShotLogged> = arrayListOf()
+
+            createEditPlayerViewModel.editedPlayer = null
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.currentShotsNotPending(),
+                currentShotsArrayList
+            )
+        }
+
+        @Test
+        fun `when editedPlayer is not set to null and pendingShotList contains the same ids of the logged list should return empty list`() {
+            val currentShotsArrayList: ArrayList<ShotLogged> = arrayListOf()
+
+            createEditPlayerViewModel.pendingShotLoggedList = listOf(
+                PendingShot(
+                    player = TestPlayer().create(),
+                    shotLogged = TestShotLogged.build(),
+                    isPendingPlayer = false
+                )
+            )
+            createEditPlayerViewModel.editedPlayer = TestPlayer().create()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.currentShotsNotPending(),
+                currentShotsArrayList
+            )
+        }
+
+        @Test
+        fun `when editedPlayer is not set to null and pendingShotList returns empty should return expected logged list`() {
+            val currentShotsArrayList = listOf(TestShotLogged.build())
+
+            createEditPlayerViewModel.pendingShotLoggedList = listOf()
+            createEditPlayerViewModel.editedPlayer = TestPlayer().create()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.currentShotsNotPending(),
+                currentShotsArrayList
+            )
+        }
+    }
+
+    @Nested
     inner class CheckForExistingPlayer {
         private val player = TestPlayer().create()
+
+        @Test
+        fun `when hasCheckedForExistingPlayer is set to to true should not update state`() {
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState()
+            )
+            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
+
+            createEditPlayerViewModel.hasCheckedForExistingPlayer = true
+
+            createEditPlayerViewModel.checkForExistingPlayer(
+                firstNameArgument = null,
+                lastNameArgument = player.lastName
+            )
+
+            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState()
+            )
+        }
 
         @Test
         fun `when firstNameArgument is null should update toolbarNameResId to create player`() {
@@ -203,6 +273,10 @@ class CreateEditPlayerViewModelTest {
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
                 CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
+            )
+            Assertions.assertEquals(
+                createEditPlayerViewModel.hasCheckedForExistingPlayer,
+                true
             )
         }
 
@@ -224,6 +298,10 @@ class CreateEditPlayerViewModelTest {
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
                 CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
             )
+            Assertions.assertEquals(
+                createEditPlayerViewModel.hasCheckedForExistingPlayer,
+                true
+            )
         }
 
         @Test
@@ -244,6 +322,10 @@ class CreateEditPlayerViewModelTest {
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
                 CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
             )
+            Assertions.assertEquals(
+                createEditPlayerViewModel.hasCheckedForExistingPlayer,
+                true
+            )
         }
 
         @Test
@@ -263,6 +345,10 @@ class CreateEditPlayerViewModelTest {
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
                 CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
+            )
+            Assertions.assertEquals(
+                createEditPlayerViewModel.hasCheckedForExistingPlayer,
+                true
             )
         }
 
@@ -285,6 +371,10 @@ class CreateEditPlayerViewModelTest {
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
                 CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
+            )
+            Assertions.assertEquals(
+                createEditPlayerViewModel.hasCheckedForExistingPlayer,
+                true
             )
         }
 
@@ -316,6 +406,10 @@ class CreateEditPlayerViewModelTest {
                     hintLogNewShotText = "Press the \"Log Shots\" button to record shots for ${player.firstName} ${player.lastName}",
                     shots = player.shotsLoggedList
                 )
+            )
+            Assertions.assertEquals(
+                createEditPlayerViewModel.hasCheckedForExistingPlayer,
+                true
             )
         }
     }
@@ -561,6 +655,10 @@ class CreateEditPlayerViewModelTest {
         Assertions.assertEquals(
             createEditPlayerViewModel.editedPlayer,
             null
+        )
+        Assertions.assertEquals(
+            createEditPlayerViewModel.hasCheckedForExistingPlayer,
+            false
         )
     }
 
@@ -1822,12 +1920,16 @@ class CreateEditPlayerViewModelTest {
     fun `on view pending shot clicked should call log shot navigation`() {
         val player = TestPlayer().create()
 
-        createEditPlayerViewModel.onViewPendingShotClicked(shotId = player.shotsLoggedList.first().id)
+        createEditPlayerViewModel.onViewPendingShotClicked(
+            shotType = player.shotsLoggedList.first().shotType,
+            shotId = player.shotsLoggedList.first().id
+        )
 
         verify {
             navigation.navigateToLogShot(
                 isExistingPlayer = false,
                 playerId = 0,
+                shotType = player.shotsLoggedList.first().shotType,
                 shotId = player.shotsLoggedList.first().id,
                 viewCurrentExistingShot = false,
                 viewCurrentPendingShot = true
@@ -1839,12 +1941,16 @@ class CreateEditPlayerViewModelTest {
     fun `on view shot clicked should call log shot navigation`() {
         val player = TestPlayer().create()
 
-        createEditPlayerViewModel.onViewShotClicked(shotId = player.shotsLoggedList.first().id)
+        createEditPlayerViewModel.onViewShotClicked(
+            shotType = player.shotsLoggedList.first().shotType,
+            shotId = player.shotsLoggedList.first().id
+        )
 
         verify {
             navigation.navigateToLogShot(
                 isExistingPlayer = true,
                 playerId = 0,
+                shotType = player.shotsLoggedList.first().shotType,
                 shotId = player.shotsLoggedList.first().id,
                 viewCurrentExistingShot = true,
                 viewCurrentPendingShot = false

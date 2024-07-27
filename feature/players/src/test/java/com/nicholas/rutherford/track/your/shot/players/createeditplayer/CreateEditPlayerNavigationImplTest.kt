@@ -91,6 +91,7 @@ class CreateEditPlayerNavigationImplTest {
     fun `navigate to log shot`() {
         val isExistingPlayer = false
         val playerId = 5
+        val shotType = 4
         val shotId = 2
         val viewCurrentExistingShot = false
         val viewCurrentPendingShot = false
@@ -99,6 +100,7 @@ class CreateEditPlayerNavigationImplTest {
         createEditPlayerNavigationImpl.navigateToLogShot(
             isExistingPlayer = isExistingPlayer,
             playerId = playerId,
+            shotType = shotType,
             shotId = shotId,
             viewCurrentExistingShot = viewCurrentExistingShot,
             viewCurrentPendingShot = viewCurrentPendingShot
@@ -110,6 +112,7 @@ class CreateEditPlayerNavigationImplTest {
         val expectedAction = NavigationActions.CreateEditPlayer.logShot(
             isExistingPlayer = isExistingPlayer,
             playerId = playerId,
+            shotType = shotType,
             shotId = shotId,
             viewCurrentExistingShot = viewCurrentExistingShot,
             viewCurrentPendingShot = viewCurrentPendingShot

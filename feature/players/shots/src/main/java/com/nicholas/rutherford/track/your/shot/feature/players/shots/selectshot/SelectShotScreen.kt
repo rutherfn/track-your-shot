@@ -64,8 +64,8 @@ fun SelectShotScreen(selectShotParams: SelectShotParams) {
                     items(selectShotParams.state.declaredShotList) { declaredShot ->
                         DeclaredShotItem(
                             declaredShot = declaredShot,
-                            onItemClicked = { id ->
-                                selectShotParams.onItemClicked.invoke(id)
+                            onItemClicked = { type ->
+                                selectShotParams.onItemClicked.invoke(type)
                             }
                         )
                     }
@@ -89,7 +89,7 @@ fun SelectShotScreen(selectShotParams: SelectShotParams) {
 @Composable
 fun DeclaredShotItem(
     declaredShot: DeclaredShot,
-    onItemClicked: (id: Int) -> Unit
+    onItemClicked: (type: Int) -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 

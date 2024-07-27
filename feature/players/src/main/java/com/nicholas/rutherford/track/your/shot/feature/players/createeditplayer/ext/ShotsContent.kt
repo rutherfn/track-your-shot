@@ -45,8 +45,8 @@ fun ColumnScope.ShotsContent(
     pendingShotList: List<ShotLogged>,
     hintLogNewShotText: String,
     onLogShotsClicked: () -> Unit,
-    onViewShotClicked: (shotId: Int) -> Unit,
-    onPendingShotClicked: (shotId: Int) -> Unit
+    onViewShotClicked: (shotType: Int, shotId: Int) -> Unit,
+    onPendingShotClicked: (shotType: Int, shotId: Int) -> Unit
 ) {
     if (shotList.isEmpty() && pendingShotList.isEmpty()) {
         ShotContentEmptyState(hintLogNewShotText = hintLogNewShotText, onLogShotsClicked = onLogShotsClicked)
@@ -74,13 +74,13 @@ fun ColumnScope.ShotsContent(
 @Composable
 private fun PendingShot(
     shot: ShotLogged,
-    onPendingShotClicked: (shotId: Int) -> Unit
+    onPendingShotClicked: (shotType: Int, shotId: Int) -> Unit
 ) {
     Card(
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
-            .clickable { onPendingShotClicked.invoke(shot.id) }
+            .clickable { onPendingShotClicked.invoke(shot.shotType, shot.id) }
             .padding(top = 4.dp, end = 4.dp),
         elevation = 2.dp
     ) {
@@ -88,7 +88,7 @@ private fun PendingShot(
             Row(
                 modifier = Modifier
                     .padding(8.dp)
-                    .clickable { onPendingShotClicked.invoke(shot.id) },
+                    .clickable { onPendingShotClicked.invoke(shot.shotType, shot.id) },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -100,7 +100,7 @@ private fun PendingShot(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(onClick = { onPendingShotClicked.invoke(shot.id) }) {
+                IconButton(onClick = { onPendingShotClicked.invoke(shot.shotType, shot.id) }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowForward,
                         contentDescription = ""
@@ -114,7 +114,7 @@ private fun PendingShot(
 @Composable
 private fun ColumnScope.LoggedShot(
     shot: ShotLogged,
-    onViewShotClicked: (shotId: Int) -> Unit
+    onViewShotClicked: (shotType: Int, shotId: Int) -> Unit
 ) {
     Text(
         text = stringResource(id = R.string.shots),
@@ -128,7 +128,7 @@ private fun ColumnScope.LoggedShot(
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
-            .clickable { onViewShotClicked.invoke(shot.id) }
+            .clickable { onViewShotClicked.invoke(shot.shotType, shot.id) }
             .padding(
                 top = 16.dp,
                 end = 4.dp,
@@ -152,7 +152,7 @@ private fun ColumnScope.LoggedShot(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(onClick = { onViewShotClicked.invoke(shot.id) }) {
+                IconButton(onClick = { onViewShotClicked.invoke(shot.shotType, shot.id) }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowForward,
                         contentDescription = ""

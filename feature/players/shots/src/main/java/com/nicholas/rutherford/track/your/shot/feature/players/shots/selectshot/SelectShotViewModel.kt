@@ -2,8 +2,12 @@ package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
@@ -19,6 +23,8 @@ class SelectShotViewModel(
     private val navigation: SelectShotNavigation,
     private val declaredShotRepository: DeclaredShotRepository,
     private val accountManager: AccountManager,
+    private val playerRepository: PlayerRepository,
+    private val pendingPlayerRepository: PendingPlayerRepository,
     private val createSharedPreferences: CreateSharedPreferences,
     private val readSharedPreferences: ReadSharedPreferences
 ) : ViewModel() {
@@ -104,15 +110,38 @@ class SelectShotViewModel(
         // todo show a alert of some sort with info
     }
 
-    fun onDeclaredShotItemClicked(shotId: Int) {
+    internal fun determineShotId(player: Player): Int {
+        return if (player.shotsLoggedList.isNotEmpty()) {
+            player.shotsLoggedList.size
+        } else {
+            Constants.DEFAULT_SHOT_ID
+        }
+    }
+
+    internal suspend fun loggedShotId(isExistingPlayer: Boolean, playerId: Int): Int {
+        return if (isExistingPlayer) {
+            playerRepository.fetchPlayerById(playerId)?.let { player ->
+                determineShotId(player = player)
+            } ?: Constants.DEFAULT_SHOT_ID
+        } else {
+            pendingPlayerRepository.fetchPlayerById(id = playerId)?.let { player ->
+                determineShotId(player = player)
+            } ?: Constants.DEFAULT_SHOT_ID
+        }
+    }
+
+    fun onDeclaredShotItemClicked(shotType: Int) {
         safeLet(isExistingPlayer, playerId) { isExisting, id ->
-            navigation.navigateToLogShot(
-                isExistingPlayer = isExisting,
-                playerId = id,
-                shotId = shotId,
-                viewCurrentExistingShot = false,
-                viewCurrentPendingShot = false
-            )
+            scope.launch {
+                navigation.navigateToLogShot(
+                    isExistingPlayer = isExisting,
+                    playerId = id,
+                    shotType = shotType,
+                    shotId = loggedShotId(isExistingPlayer = isExisting, playerId = id),
+                    viewCurrentExistingShot = false,
+                    viewCurrentPendingShot = false
+                )
+            }
         }
     }
 }

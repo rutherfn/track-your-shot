@@ -47,18 +47,20 @@ class LogShotViewModel(
 
     internal var isExistingPlayer = false
     private var playerId = 0
+    internal var shotType = 0
     internal var shotId = 0
 
     internal var currentPlayer: Player? = null
     internal var currentDeclaredShot: DeclaredShot? = null
 
-    internal var currentPlayerShotSize = 0
+    private var currentPlayerShotSize = 0
     internal var viewCurrentExistingShot = false
     internal var viewCurrentPendingShot = false
 
     fun updateIsExistingPlayerAndId(
         isExistingPlayerArgument: Boolean,
         playerIdArgument: Int,
+        shotTypeArgument: Int,
         shotIdArgument: Int,
         viewCurrentExistingShotArgument: Boolean,
         viewCurrentPendingShotArgument: Boolean
@@ -67,12 +69,14 @@ class LogShotViewModel(
 
         this.isExistingPlayer = isExistingPlayerArgument
         this.playerId = playerIdArgument
+        this.shotType = shotTypeArgument
         this.shotId = shotIdArgument
         this.viewCurrentExistingShot = viewCurrentExistingShotArgument
         this.viewCurrentPendingShot = viewCurrentPendingShotArgument
 
         scope.launch {
-            val declaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = shotId)
+            val declaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = shotType)
+
             val player = if (isExistingPlayer) {
                 playerRepository.fetchPlayerById(id = playerId)
             } else {
@@ -98,7 +102,7 @@ class LogShotViewModel(
         }
     }
 
-    internal suspend fun updateStateForViewShot() {
+    private suspend fun updateStateForViewShot() {
         if (viewCurrentExistingShot) {
             currentPlayer?.shotsLoggedList?.first { shotLogged -> shotLogged.id == shotId }?.let { shot ->
                 logShotMutableStateFlow.update { state ->
@@ -364,13 +368,23 @@ class LogShotViewModel(
                         ),
                         isPendingPlayer = isExistingPlayer
                     )
-                    println("get here test $viewCurrentPendingShot")
+
                     if (viewCurrentExistingShot) {
-                        // todo -> update for existing shot
+                        // todo -> we need  to check to make sure theres actual changes before we create a pending shot for current shot logged
+                        // so in this case, the pendingShot should not equal the shot passed in as a param being the active shot
+                        createPendingShot(
+                            isACurrentPlayerShot = true,
+                            pendingShot = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = shotId))
+                        )
                     } else if (viewCurrentPendingShot) {
+                        // todo -> we need  to check to make sure theres actual changes before we update pending shot
+                        // so in this case, the pendingShot should not equal the shot passed in as a param
                         updatePendingShot(pendingShot = pendingShot)
                     } else {
-                        createPendingShot(pendingShot = pendingShot)
+                        createPendingShot(
+                            isACurrentPlayerShot = false,
+                            pendingShot = pendingShot
+                        )
                     }
                 }
             } ?: navigation.alert(alert = invalidLogShotAlert(description = application.getString(StringsIds.playerIsInvalidPleaseTryAgain)))
@@ -393,15 +407,19 @@ class LogShotViewModel(
             )
         }
 
-    internal suspend fun updatePendingShot(pendingShot: PendingShot) {
-        val pendingShotLogged = currentPendingShot.shotsStateFlow.first().first()
-        currentPendingShot.deleteShot(shotLogged = pendingShotLogged)
-        currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = pendingShotLogged.shotLogged.id)))
+    internal fun updatePendingShot(pendingShot: PendingShot) {
+        val firstShotLogged = currentPendingShot.fetchPendingShots().first()
+        currentPendingShot.deleteShot(shotLogged = firstShotLogged)
+        currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = firstShotLogged.shotLogged.id)))
         navigateToCreateOrEditPlayer()
     }
 
-    private fun createPendingShot(pendingShot: PendingShot) {
-        currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = currentPlayerShotSize + 1)))
+    internal fun createPendingShot(isACurrentPlayerShot: Boolean, pendingShot: PendingShot) {
+        if (isACurrentPlayerShot) {
+            currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged))
+        } else {
+            currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = currentPlayerShotSize + 1)))
+        }
         navigateToCreateOrEditPlayer()
     }
 
