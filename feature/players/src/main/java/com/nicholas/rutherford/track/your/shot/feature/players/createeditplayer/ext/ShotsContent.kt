@@ -76,7 +76,9 @@ fun ColumnScope.ShotsContent(
         pendingShotList.forEach { shot ->
             LoggedShotCard(
                 shot = shot,
-                onViewShotClicked = onPendingShotClicked) }
+                onViewShotClicked = onPendingShotClicked
+            )
+        }
     }
 }
 
