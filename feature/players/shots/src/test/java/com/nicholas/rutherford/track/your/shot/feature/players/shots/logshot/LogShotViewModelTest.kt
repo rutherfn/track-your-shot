@@ -5,21 +5,25 @@ import android.app.Application
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -595,15 +599,63 @@ class LogShotViewModelTest {
         }
 
         @Test
-        fun `when currentPlayer is not null but logged shot is invalid should navigate to create edit player`() = runTest {
-            logShotViewModel.currentDeclaredShot = TestDeclaredShot.build()
+        fun `when currentPlayer is not null, logged shot is invalid should show a alert`() = runTest {
             logShotViewModel.currentPlayer = TestPlayer().create()
 
             val description = "You haven\'t recorded any missed shots. Please input the number of shots missed to proceed with logging the shot."
+            val alert = Alert(
+                title = "",
+                dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
+                description = description
+            )
 
             every { application.getString(StringsIds.empty) } returns ""
             every { application.getString(StringsIds.gotIt) } returns "Got It"
             every { application.getString(StringsIds.missedShotsNotRecordedDescription) } returns description
+
+            logShotViewModel.logShotMutableStateFlow.value = LogShotState(
+                shotName = "shotName",
+                shotsMade = 1,
+                shotsMissed = 0,
+                shotsAttempted = 4,
+                shotsTakenDateValue = "Jun 4, 2019",
+                shotsLoggedDateValue = "June 4, 2019",
+                shotsMadePercentValue = "100%",
+                shotsMissedPercentValue = "100%"
+            )
+
+            logShotViewModel.onSaveClicked()
+
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = alert) }
+        }
+
+        @Test
+        fun `when currentPlayer is not null, logged shot is valid, and viewCurrentExistingShot set to true should call create pending shot`() = runTest {
+            logShotViewModel.currentDeclaredShot = TestDeclaredShot.build()
+            logShotViewModel.currentPlayer = TestPlayer().create()
+
+            logShotViewModel.viewCurrentExistingShot = true
+
+            val pendingShot = PendingShot(
+                player = TestPlayer().create(),
+                shotLogged = ShotLogged(
+                    id = 1,
+                    shotName = "shotName",
+                    shotType = 1,
+                    shotsAttempted = 4,
+                    shotsMade = 5,
+                    shotsMissed = 2,
+                    shotsMadePercentValue = logShotViewModel.convertPercentageToDouble(percentage = "100%"),
+                    shotsMissedPercentValue = logShotViewModel.convertPercentageToDouble(percentage = "100%"),
+                    shotsAttemptedMillisecondsValue = logShotViewModel.convertValueToDate(value = "June 4, 2019")?.time
+                        ?: 0L,
+                    shotsLoggedMillisecondsValue = logShotViewModel.convertValueToDate(value = "June 4, 2019")?.time
+                        ?: 0L,
+                    isPending = true
+                ),
+                isPendingPlayer = false
+            )
 
             logShotViewModel.logShotMutableStateFlow.value = LogShotState(
                 shotName = "shotName",
@@ -618,12 +670,104 @@ class LogShotViewModelTest {
 
             logShotViewModel.onSaveClicked()
 
-            verify { navigation.enableProgress(progress = Progress()) }
-            verify { currentPendingShot.createShot(any()) }
-            verify { logShotViewModel.navigateToCreateOrEditPlayer() }
+            verify { logShotViewModel.createPendingShot(
+                isACurrentPlayerShot = true,
+                pendingShot = pendingShot
+            )
+            }
         }
 
-        //todo validate each and every other instance here
+        @Test
+        fun `when currentPlayer is not null, logged shot is valid, and viewCurrentPendingShot set to true should call create pending shot`() = runTest {
+            logShotViewModel.currentDeclaredShot = TestDeclaredShot.build()
+            logShotViewModel.currentPlayer = TestPlayer().create()
+
+            logShotViewModel.viewCurrentPendingShot = true
+
+            val pendingShot = PendingShot(
+                player = TestPlayer().create(),
+                shotLogged = ShotLogged(
+                    id = 1,
+                    shotName = "shotName",
+                    shotType = 1,
+                    shotsAttempted = 4,
+                    shotsMade = 5,
+                    shotsMissed = 2,
+                    shotsMadePercentValue = logShotViewModel.convertPercentageToDouble(percentage = "100%"),
+                    shotsMissedPercentValue = logShotViewModel.convertPercentageToDouble(percentage = "100%"),
+                    shotsAttemptedMillisecondsValue = logShotViewModel.convertValueToDate(value = "June 4, 2019")?.time
+                        ?: 0L,
+                    shotsLoggedMillisecondsValue = logShotViewModel.convertValueToDate(value = "June 4, 2019")?.time
+                        ?: 0L,
+                    isPending = true
+                ),
+                isPendingPlayer = false
+            )
+
+            currentPendingShot.shotsStateFlow
+
+            every { currentPendingShot.shotsStateFlow } returns flowOf(listOf(pendingShot))
+
+            logShotViewModel.logShotMutableStateFlow.value = LogShotState(
+                shotName = "shotName",
+                shotsMade = 5,
+                shotsMissed = 2,
+                shotsAttempted = 4,
+                shotsTakenDateValue = "Jun 4, 2019",
+                shotsLoggedDateValue = "June 4, 2019",
+                shotsMadePercentValue = "100%",
+                shotsMissedPercentValue = "100%"
+            )
+
+            logShotViewModel.onSaveClicked()
+
+            coVerify { logShotViewModel.updatePendingShot(pendingShot = pendingShot) }
+        }
+
+        @Test
+        fun `when currentPlayer is not null, logged shot is valid, and no previous booleans are set to true should navigate to create edit player`() = runTest {
+            logShotViewModel.currentDeclaredShot = TestDeclaredShot.build()
+            logShotViewModel.currentPlayer = TestPlayer().create()
+
+            val pendingShot = PendingShot(
+                player = TestPlayer().create(),
+                shotLogged = ShotLogged(
+                    id = 1,
+                    shotName = "shotName",
+                    shotType = 1,
+                    shotsAttempted = 4,
+                    shotsMade = 5,
+                    shotsMissed = 2,
+                    shotsMadePercentValue = logShotViewModel.convertPercentageToDouble(percentage = "100%"),
+                    shotsMissedPercentValue = logShotViewModel.convertPercentageToDouble(percentage = "100%"),
+                    shotsAttemptedMillisecondsValue = logShotViewModel.convertValueToDate(value = "June 4, 2019")?.time
+                        ?: 0L,
+                    shotsLoggedMillisecondsValue = logShotViewModel.convertValueToDate(value = "June 4, 2019")?.time
+                        ?: 0L,
+                    isPending = true
+                ),
+                isPendingPlayer = false
+            )
+
+            logShotViewModel.logShotMutableStateFlow.value = LogShotState(
+                shotName = "shotName",
+                shotsMade = 5,
+                shotsMissed = 2,
+                shotsAttempted = 4,
+                shotsTakenDateValue = "Jun 4, 2019",
+                shotsLoggedDateValue = "June 4, 2019",
+                shotsMadePercentValue = "100%",
+                shotsMissedPercentValue = "100%"
+            )
+
+            logShotViewModel.onSaveClicked()
+
+            verify { logShotViewModel.createPendingShot(
+                isACurrentPlayerShot = false,
+                pendingShot = pendingShot
+            )
+            }
+        }
     }
 
     @Nested

@@ -25,6 +25,7 @@ import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -402,14 +403,16 @@ class LogShotViewModel(
             )
         }
 
-    private suspend fun updatePendingShot(pendingShot: PendingShot) {
-        val pendingShotLogged = currentPendingShot.shotsStateFlow.first().first()
-        currentPendingShot.deleteShot(shotLogged = pendingShotLogged)
-        currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = pendingShotLogged.shotLogged.id)))
-        navigateToCreateOrEditPlayer()
+    internal suspend fun updatePendingShot(pendingShot: PendingShot) {
+        currentPendingShot.shotsStateFlow.collectLatest { pendingShotlogged ->
+            val pendingShotLogged = pendingShotlogged.first()
+            currentPendingShot.deleteShot(shotLogged = pendingShotLogged)
+            currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = pendingShotLogged.shotLogged.id)))
+            navigateToCreateOrEditPlayer()
+        }
     }
 
-    private fun createPendingShot(isACurrentPlayerShot: Boolean, pendingShot: PendingShot) {
+    internal fun createPendingShot(isACurrentPlayerShot: Boolean, pendingShot: PendingShot) {
         if (isACurrentPlayerShot) {
             currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged))
         } else {
