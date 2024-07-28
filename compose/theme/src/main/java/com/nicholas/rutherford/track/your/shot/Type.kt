@@ -12,32 +12,27 @@ val Typography = Typography(
     h1 = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Bold,
-        fontSize = 24.sp,
-        color = AppColors.Orange
+        fontSize = 24.sp
     ),
     h2 = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Bold,
-        fontSize = 20.sp,
-        color = AppColors.Black
+        fontSize = 20.sp
     ),
     body1 = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        color = AppColors.Black
+        fontSize = 14.sp
     ),
     body2 = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
-        color = AppColors.Black
+        fontSize = 12.sp
     ),
     button = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Normal,
-        fontSize = 18.sp,
-        color = AppColors.Black
+        fontSize = 18.sp
     )
 
 )

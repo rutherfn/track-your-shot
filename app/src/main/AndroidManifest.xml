@@ -17,10 +17,12 @@
         android:icon="${appIcon}"
         android:label="${appLabel}"
         android:roundIcon="${roundAppIcon}"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.TrackMyShot">
+        android:supportsRtl="true">
 
-        <activity android:name=".MainActivity" android:exported="true">
+        <activity
+            android:name=".MainActivity" android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
