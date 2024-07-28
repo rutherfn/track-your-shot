@@ -21,6 +21,7 @@ object StringsIds {
     val createPlayer = R.string.create_player
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount =
         R.string.current_account_has_not_been_verified_please_open_email_to_verify_account
+    val currentShotHasBeenUpdatedDescription = R.string.current_shot_has_been_updated_description
     val currentPlayerHasNoChangesDescription = R.string.current_players_has_no_changes_description
     val currentShotHasNoChangesDescription = R.string.current_shot_has_no_changes_description
     val dateShotsLogged = R.string.date_shots_logged
@@ -118,6 +119,7 @@ object StringsIds {
     val selectDate = R.string.select_date
     val settings = R.string.settings
     val shotPercentage = R.string.shot_percentage
+    val shotUpdated = R.string.shot_updated
     val shots = R.string.shots
     val shotsAttempted = R.string.shots_attempted
     val shotsMade = R.string.shots_made

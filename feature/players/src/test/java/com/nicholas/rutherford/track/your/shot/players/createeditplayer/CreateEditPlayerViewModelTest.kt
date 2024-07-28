@@ -162,10 +162,22 @@ class CreateEditPlayerViewModelTest {
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
                 CreateEditPlayerState()
             )
+
+            verify(exactly = 0) { navigation.alert(alert = any())}
         }
 
         @Test
         fun `when 1currentPendingShot shotsStateFlow returns a list of 1 should update state`() = runTest {
+            every { application.getString(StringsIds.shotUpdated) } returns "Shot Updated"
+            every { application.getString(StringsIds.gotIt) } returns "Got It"
+            every { application.getString(StringsIds.currentShotHasBeenUpdatedDescription) } returns "The current shot has been updated. To see the latest information, click on the shot to view the updates"
+
+            val alert = Alert(
+                title = "Shot Updated",
+                dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
+                description = "The current shot has been updated. To see the latest information, click on the shot to view the updates"
+            )
+
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
                 CreateEditPlayerState()
@@ -179,7 +191,27 @@ class CreateEditPlayerViewModelTest {
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
                 CreateEditPlayerState(pendingShots = listOf(pendingShot.shotLogged))
             )
+
+            verify { navigation.alert(alert = alert) }
         }
+    }
+
+    @Test
+    fun `show updated alert should return alert`() {
+        every { application.getString(StringsIds.shotUpdated) } returns "Shot Updated"
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+        every { application.getString(StringsIds.currentShotHasBeenUpdatedDescription) } returns "The current shot has been updated. To see the latest information, click on the shot to view the updates"
+
+        val alert = Alert(
+            title = "Shot Updated",
+            dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
+            description = "The current shot has been updated. To see the latest information, click on the shot to view the updates"
+        )
+
+        Assertions.assertEquals(
+            createEditPlayerViewModel.showUpdatedAlert(),
+            alert
+        )
     }
 
     @Nested
