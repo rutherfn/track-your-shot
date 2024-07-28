@@ -19,55 +19,47 @@ object TextStyles {
     val subLarge = TextStyle(
         fontSize = 28.sp,
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Bold,
-        color = Colors.primaryColor
+        fontWeight = FontWeight.Bold
     )
 
     val medium = TextStyle(
         fontSize = 24.sp,
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        color = Colors.primaryColor
+        fontWeight = FontWeight.Medium
     )
 
     val small = TextStyle(
         fontSize = 18.sp,
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        color = Colors.primaryColor
+        fontWeight = FontWeight.Medium
     )
 
     val smallBold = TextStyle(
         fontSize = 18.sp,
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Bold,
-        color = Colors.primaryColor
+        fontWeight = FontWeight.Bold
     )
 
     val bodyBold = TextStyle(
         fontSize = 14.sp,
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Bold,
-        color = Colors.primaryColor
+        fontWeight = FontWeight.Bold
     )
 
     val body = TextStyle(
         fontSize = 14.sp,
-        fontFamily = FontFamily.Default,
-        color = Colors.primaryColor
+        fontFamily = FontFamily.Default
     )
 
     val hyperLink = TextStyle(
         fontSize = 14.sp,
         fontFamily = FontFamily.Default,
-        textDecoration = TextDecoration.Underline,
-        color = Colors.primaryColor
+        textDecoration = TextDecoration.Underline
     )
 
     val toolbar = TextStyle(
         fontSize = 22.sp,
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Bold,
-        color = Colors.primaryColor
+        fontWeight = FontWeight.Bold
     )
 }

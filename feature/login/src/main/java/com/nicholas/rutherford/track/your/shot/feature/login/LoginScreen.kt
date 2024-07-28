@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.TrackMyShotTheme
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
@@ -71,16 +72,19 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
 
         Text(
             text = stringResource(id = StringsIds.proceedWithYourAccount),
-            style = TextStyles.small,
+           // style = TextStyles.small,
             modifier = Modifier.testTag(tag = LoginTags.PROCEED_WITH_YOUR_ACCOUNT_TEXT)
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))
+        TrackMyShotTheme {
         Text(
             text = stringResource(id = StringsIds.login),
-            modifier = Modifier.padding(8.dp).testTag(tag = LoginTags.LOGIN_TEXT),
-            style = TextStyles.medium
-        )
+            modifier = Modifier
+                .padding(8.dp)
+                .testTag(tag = LoginTags.LOGIN_TEXT),
+           // style = TextStyles.medium
+        )}
 
         Spacer(modifier = Modifier.height(Padding.eight))
         TextField(
