@@ -10,6 +10,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
@@ -588,6 +589,65 @@ class LogShotViewModelTest {
                     dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
                     description = description
                 )
+            )
+        }
+    }
+
+    @Test
+    fun `disable progress and show alert`() {
+        val alert = Alert(
+            title = "",
+            dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
+            description = "Test"
+        )
+
+        logShotViewModel.disableProgressAndShowAlert(alert = alert)
+
+        verify { navigation.disableProgress() }
+        verify { navigation.alert(alert = alert) }
+    }
+
+    @Nested
+    inner class NoChangesForShotAlert {
+        val pendingShotLogged = TestShotLogged.build()
+
+        @Test
+        fun `when initialShotLogged is set to null should return null`() {
+            logShotViewModel.initialShotLogged = null
+
+            Assertions.assertEquals(
+                logShotViewModel.noChangesForShotAlert(pendingShotLogged = pendingShotLogged),
+                null
+            )
+        }
+
+        @Test
+        fun `when initialShotLogged is not the same as pendingShotLogged should return null`() {
+            logShotViewModel.initialShotLogged = pendingShotLogged
+
+            Assertions.assertEquals(
+                logShotViewModel.noChangesForShotAlert(pendingShotLogged = pendingShotLogged.copy(shotsMissed = 111)),
+                null
+            )
+        }
+
+        @Test
+        fun `when initialShotLogged is the same as pendingShotLogged should return a alert`() {
+            val alert = Alert(
+                title = "No Changes Made",
+                dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
+                description = "There haven\'t been any recent updates or modifications to this shot. Please make adjustments to the existing shot to proceed."
+            )
+
+            every { application.getString(StringsIds.noChangesMade) } returns "No Changes Made"
+            every { application.getString(StringsIds.gotIt) } returns "Got It"
+            every { application.getString(StringsIds.currentShotHasNoChangesDescription) } returns "There haven\'t been any recent updates or modifications to this shot. Please make adjustments to the existing shot to proceed."
+            
+            logShotViewModel.initialShotLogged = pendingShotLogged
+
+            Assertions.assertEquals(
+                logShotViewModel.noChangesForShotAlert(pendingShotLogged = pendingShotLogged),
+                alert
             )
         }
     }

@@ -21,6 +21,7 @@
     <string name="create_player">Create Player</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
     <string name="current_players_has_no_changes_description">There haven\'t been any recent updates or modifications to the current player. Please make adjustments to the existing player to proceed.</string>
+    <string name="current_shot_has_no_changes_description">There haven\'t been any recent updates or modifications to this shot. Please make adjustments to the existing shot to proceed.</string>
     <string name="current_shots_x">Current Shots %s</string>
     <string name="date_shots_logged">Date Shots Logged</string>
     <string name="date_shots_taken">Date Shots Taken</string>

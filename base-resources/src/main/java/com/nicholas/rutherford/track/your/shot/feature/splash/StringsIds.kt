@@ -22,6 +22,7 @@ object StringsIds {
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount =
         R.string.current_account_has_not_been_verified_please_open_email_to_verify_account
     val currentPlayerHasNoChangesDescription = R.string.current_players_has_no_changes_description
+    val currentShotHasNoChangesDescription = R.string.current_shot_has_no_changes_description
     val dateShotsLogged = R.string.date_shots_logged
     val dateShotsTaken = R.string.date_shots_taken
     val deleteX = R.string.delete_x

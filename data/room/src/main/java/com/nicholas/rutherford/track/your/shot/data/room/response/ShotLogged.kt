@@ -26,3 +26,15 @@ data class ShotLogged(
     @ColumnInfo(name = "isPending")
     val isPending: Boolean
 )
+
+fun ShotLogged.isTheSame(shotCompared: ShotLogged): Boolean {
+    return this.shotName == shotCompared.shotName &&
+        this.shotType == shotCompared.shotType &&
+        this.shotsAttempted == shotCompared.shotsAttempted &&
+        this.shotsMade == shotCompared.shotsMade &&
+        this.shotsMissed == shotCompared.shotsMissed &&
+        this.shotsMadePercentValue == shotCompared.shotsMadePercentValue &&
+        this.shotsMissedPercentValue == shotCompared.shotsMissedPercentValue &&
+        this.shotsAttemptedMillisecondsValue == shotCompared.shotsAttemptedMillisecondsValue &&
+        this.shotsLoggedMillisecondsValue == shotCompared.shotsLoggedMillisecondsValue
+}
