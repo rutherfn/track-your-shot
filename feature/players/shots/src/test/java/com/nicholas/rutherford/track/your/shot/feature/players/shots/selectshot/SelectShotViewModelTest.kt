@@ -355,7 +355,6 @@ class SelectShotViewModelTest {
         verify { navigation.alert(alert = alert) }
     }
 
-
     @Nested
     inner class DetermineShotId {
 

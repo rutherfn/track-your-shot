@@ -163,7 +163,7 @@ class CreateEditPlayerViewModelTest {
                 CreateEditPlayerState()
             )
 
-            verify(exactly = 0) { navigation.alert(alert = any())}
+            verify(exactly = 0) { navigation.alert(alert = any()) }
         }
 
         @Test

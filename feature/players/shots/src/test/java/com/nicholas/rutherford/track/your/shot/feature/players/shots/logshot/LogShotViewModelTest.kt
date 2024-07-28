@@ -642,7 +642,7 @@ class LogShotViewModelTest {
             every { application.getString(StringsIds.noChangesMade) } returns "No Changes Made"
             every { application.getString(StringsIds.gotIt) } returns "Got It"
             every { application.getString(StringsIds.currentShotHasNoChangesDescription) } returns "There haven\'t been any recent updates or modifications to this shot. Please make adjustments to the existing shot to proceed."
-            
+
             logShotViewModel.initialShotLogged = pendingShotLogged
 
             Assertions.assertEquals(

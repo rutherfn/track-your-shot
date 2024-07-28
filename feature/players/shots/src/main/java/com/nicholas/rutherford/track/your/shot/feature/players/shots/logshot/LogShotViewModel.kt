@@ -158,20 +158,20 @@ class LogShotViewModel(
         }
 
         initialShotLogged = ShotLogged(
-                id = 0, // does not matter since were ignoring this field
-                shotName = logShotMutableStateFlow.value.shotName,
-                shotType = currentDeclaredShot?.id ?: 0,
-                shotsAttempted = logShotMutableStateFlow.value.shotsAttempted,
-                shotsMade = logShotMutableStateFlow.value.shotsMade,
-                shotsMissed = logShotMutableStateFlow.value.shotsMissed,
-                shotsMadePercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMadePercentValue),
-                shotsMissedPercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMissedPercentValue),
-                shotsAttemptedMillisecondsValue = convertValueToDate(value = logShotMutableStateFlow.value.shotsTakenDateValue)?.time
-                    ?: 0L,
-                shotsLoggedMillisecondsValue = convertValueToDate(value = logShotMutableStateFlow.value.shotsLoggedDateValue)?.time
-                    ?: 0L,
-                isPending = true // does not matter since were ignoring this field
-            )
+            id = 0, // does not matter since were ignoring this field
+            shotName = logShotMutableStateFlow.value.shotName,
+            shotType = currentDeclaredShot?.id ?: 0,
+            shotsAttempted = logShotMutableStateFlow.value.shotsAttempted,
+            shotsMade = logShotMutableStateFlow.value.shotsMade,
+            shotsMissed = logShotMutableStateFlow.value.shotsMissed,
+            shotsMadePercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMadePercentValue),
+            shotsMissedPercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMissedPercentValue),
+            shotsAttemptedMillisecondsValue = convertValueToDate(value = logShotMutableStateFlow.value.shotsTakenDateValue)?.time
+                ?: 0L,
+            shotsLoggedMillisecondsValue = convertValueToDate(value = logShotMutableStateFlow.value.shotsLoggedDateValue)?.time
+                ?: 0L,
+            isPending = true // does not matter since were ignoring this field
+        )
     }
 
     fun onDateShotsTakenClicked() {
@@ -394,14 +394,14 @@ class LogShotViewModel(
                     if (viewCurrentExistingShot) {
                         noChangesForShotAlert(pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
                             disableProgressAndShowAlert(alert = alert)
-                        }?: createPendingShot(
+                        } ?: createPendingShot(
                             isACurrentPlayerShot = true,
                             pendingShot = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = shotId))
                         )
                     } else if (viewCurrentPendingShot) {
                         noChangesForShotAlert(pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
                             disableProgressAndShowAlert(alert = alert)
-                        }?: updatePendingShot(pendingShot = pendingShot)
+                        } ?: updatePendingShot(pendingShot = pendingShot)
                     } else {
                         createPendingShot(
                             isACurrentPlayerShot = false,
@@ -430,19 +430,19 @@ class LogShotViewModel(
         }
 
     internal fun noChangesForShotAlert(pendingShotLogged: ShotLogged): Alert? {
-            initialShotLogged?.let { currentShot ->
-                if (currentShot.isTheSame(pendingShotLogged)) {
-                    return Alert(
-                        title = application.getString(StringsIds.noChangesMade),
-                        dismissButton = AlertConfirmAndDismissButton(
-                            buttonText = application.getString(StringsIds.gotIt)
-                        ),
-                        description = application.getString(StringsIds.currentShotHasNoChangesDescription)
-                    )
-                } else {
-                    return null
-                }
-            } ?:  return null
+        initialShotLogged?.let { currentShot ->
+            if (currentShot.isTheSame(pendingShotLogged)) {
+                return Alert(
+                    title = application.getString(StringsIds.noChangesMade),
+                    dismissButton = AlertConfirmAndDismissButton(
+                        buttonText = application.getString(StringsIds.gotIt)
+                    ),
+                    description = application.getString(StringsIds.currentShotHasNoChangesDescription)
+                )
+            } else {
+                return null
+            }
+        } ?: return null
     }
 
     private fun updatePendingShot(pendingShot: PendingShot) {
