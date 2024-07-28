@@ -72,19 +72,18 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
 
         Text(
             text = stringResource(id = StringsIds.proceedWithYourAccount),
-           // style = TextStyles.small,
+            style = TextStyles.small,
             modifier = Modifier.testTag(tag = LoginTags.PROCEED_WITH_YOUR_ACCOUNT_TEXT)
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))
-        TrackMyShotTheme {
         Text(
             text = stringResource(id = StringsIds.login),
             modifier = Modifier
                 .padding(8.dp)
                 .testTag(tag = LoginTags.LOGIN_TEXT),
-           // style = TextStyles.medium
-        )}
+            style = TextStyles.medium
+        )
 
         Spacer(modifier = Modifier.height(Padding.eight))
         TextField(
