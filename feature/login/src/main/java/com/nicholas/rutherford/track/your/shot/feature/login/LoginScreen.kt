@@ -78,7 +78,9 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
         Spacer(modifier = Modifier.height(Padding.eight))
         Text(
             text = stringResource(id = StringsIds.login),
-            modifier = Modifier.padding(8.dp).testTag(tag = LoginTags.LOGIN_TEXT),
+            modifier = Modifier
+                .padding(8.dp)
+                .testTag(tag = LoginTags.LOGIN_TEXT),
             style = TextStyles.medium
         )
 
