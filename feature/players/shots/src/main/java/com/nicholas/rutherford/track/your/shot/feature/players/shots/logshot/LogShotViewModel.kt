@@ -8,6 +8,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerReposi
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
+import com.nicholas.rutherford.track.your.shot.data.room.response.isTheSame
 import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
@@ -57,6 +58,7 @@ class LogShotViewModel(
     internal var viewCurrentExistingShot = false
     internal var viewCurrentPendingShot = false
 
+    internal var initialShotLogged: ShotLogged? = null
     fun updateIsExistingPlayerAndId(
         isExistingPlayerArgument: Boolean,
         playerIdArgument: Int,
@@ -154,6 +156,22 @@ class LogShotViewModel(
                 }
             }
         }
+
+        initialShotLogged = ShotLogged(
+            id = 0, // does not matter since were ignoring this field
+            shotName = logShotMutableStateFlow.value.shotName,
+            shotType = currentDeclaredShot?.id ?: 0,
+            shotsAttempted = logShotMutableStateFlow.value.shotsAttempted,
+            shotsMade = logShotMutableStateFlow.value.shotsMade,
+            shotsMissed = logShotMutableStateFlow.value.shotsMissed,
+            shotsMadePercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMadePercentValue),
+            shotsMissedPercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMissedPercentValue),
+            shotsAttemptedMillisecondsValue = convertValueToDate(value = logShotMutableStateFlow.value.shotsTakenDateValue)?.time
+                ?: 0L,
+            shotsLoggedMillisecondsValue = convertValueToDate(value = logShotMutableStateFlow.value.shotsLoggedDateValue)?.time
+                ?: 0L,
+            isPending = true // does not matter since were ignoring this field
+        )
     }
 
     fun onDateShotsTakenClicked() {
@@ -317,7 +335,7 @@ class LogShotViewModel(
         )
     }
 
-    fun shotEntryInvalidAlert(shotsMade: Int, shotsMissed: Int, shotsAttemptedMillisecondsValue: Long): Alert? {
+    internal fun shotEntryInvalidAlert(shotsMade: Int, shotsMissed: Int, shotsAttemptedMillisecondsValue: Long): Alert? {
         val description: String? = if (shotsMade == 0) {
             application.getString(StringsIds.shotsNotRecordedDescription)
         } else if (shotsMissed == 0) {
@@ -335,6 +353,11 @@ class LogShotViewModel(
         }
     }
 
+    internal fun disableProgressAndShowAlert(alert: Alert) {
+        navigation.disableProgress()
+        navigation.alert(alert = alert)
+    }
+
     fun onSaveClicked() {
         scope.launch {
             currentPlayer?.let { player ->
@@ -346,8 +369,7 @@ class LogShotViewModel(
                     shotsMissed = state.shotsMissed,
                     shotsAttemptedMillisecondsValue = convertValueToDate(value = state.shotsTakenDateValue)?.time ?: 0
                 )?.let { alert ->
-                    navigation.disableProgress()
-                    navigation.alert(alert = alert)
+                    disableProgressAndShowAlert(alert = alert)
                 } ?: run {
                     val pendingShot = PendingShot(
                         player = player,
@@ -370,16 +392,16 @@ class LogShotViewModel(
                     )
 
                     if (viewCurrentExistingShot) {
-                        // todo -> we need  to check to make sure theres actual changes before we create a pending shot for current shot logged
-                        // so in this case, the pendingShot should not equal the shot passed in as a param being the active shot
-                        createPendingShot(
+                        noChangesForShotAlert(pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
+                            disableProgressAndShowAlert(alert = alert)
+                        } ?: createPendingShot(
                             isACurrentPlayerShot = true,
                             pendingShot = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = shotId))
                         )
                     } else if (viewCurrentPendingShot) {
-                        // todo -> we need  to check to make sure theres actual changes before we update pending shot
-                        // so in this case, the pendingShot should not equal the shot passed in as a param
-                        updatePendingShot(pendingShot = pendingShot)
+                        noChangesForShotAlert(pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
+                            disableProgressAndShowAlert(alert = alert)
+                        } ?: updatePendingShot(pendingShot = pendingShot)
                     } else {
                         createPendingShot(
                             isACurrentPlayerShot = false,
@@ -407,7 +429,23 @@ class LogShotViewModel(
             )
         }
 
-    internal fun updatePendingShot(pendingShot: PendingShot) {
+    internal fun noChangesForShotAlert(pendingShotLogged: ShotLogged): Alert? {
+        initialShotLogged?.let { currentShot ->
+            if (currentShot.isTheSame(pendingShotLogged)) {
+                return Alert(
+                    title = application.getString(StringsIds.noChangesMade),
+                    dismissButton = AlertConfirmAndDismissButton(
+                        buttonText = application.getString(StringsIds.gotIt)
+                    ),
+                    description = application.getString(StringsIds.currentShotHasNoChangesDescription)
+                )
+            } else {
+                return null
+            }
+        } ?: return null
+    }
+
+    private fun updatePendingShot(pendingShot: PendingShot) {
         val firstShotLogged = currentPendingShot.fetchPendingShots().first()
         currentPendingShot.deleteShot(shotLogged = firstShotLogged)
         currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = firstShotLogged.shotLogged.id)))

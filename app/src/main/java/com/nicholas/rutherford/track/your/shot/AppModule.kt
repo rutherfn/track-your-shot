@@ -290,6 +290,7 @@ class AppModule {
         }
         viewModel {
             SelectShotViewModel(
+                application = get(),
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 declaredShotRepository = get(),

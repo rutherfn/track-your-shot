@@ -85,7 +85,17 @@ class CreateEditPlayerViewModel(
                     shots = currentShotsNotPending()
                 )
             }
+
+            navigation.alert(alert = showUpdatedAlert())
         }
+    }
+
+    internal fun showUpdatedAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.shotUpdated),
+            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt)),
+            description = application.getString(StringsIds.currentShotHasBeenUpdatedDescription)
+        )
     }
 
     internal fun currentShotsNotPending(): List<ShotLogged> {

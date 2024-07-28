@@ -11,6 +11,7 @@ object StringsIds {
     val cameraPermissionHasBeenDeniedDescription = R.string.camera_permission_has_been_denied_description
     val center = R.string.center
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
+    val chooseAShotToLogInfoDescription = R.string.choose_a_shot_to_log_info_description
     val chooseImageFromGallery = R.string.choose_image_from_gallery
     val chooseOption = R.string.choose_option
     val comparePlayersStats = R.string.compare_players_stats
@@ -20,8 +21,9 @@ object StringsIds {
     val createPlayer = R.string.create_player
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount =
         R.string.current_account_has_not_been_verified_please_open_email_to_verify_account
+    val currentShotHasBeenUpdatedDescription = R.string.current_shot_has_been_updated_description
     val currentPlayerHasNoChangesDescription = R.string.current_players_has_no_changes_description
-    val currentShotsX = R.string.current_shots_x
+    val currentShotHasNoChangesDescription = R.string.current_shot_has_no_changes_description
     val dateShotsLogged = R.string.date_shots_logged
     val dateShotsTaken = R.string.date_shots_taken
     val deleteX = R.string.delete_x
@@ -101,7 +103,6 @@ object StringsIds {
     val powerForward = R.string.power_forward
     val playerAlreadyHasBeenAddedDescription = R.string.player_already_has_been_added_description
     val playerCreationFailedPleaseTryAgain = R.string.player_creation_failed_please_try_again
-    val playerImage = R.string.player_image
     val playerIsInvalidPleaseTryAgain = R.string.player_is_invalid_please_try_again
     val players = R.string.players
     val playersFirstNameEmptyDescription = R.string.players_first_name_empty_description
@@ -114,16 +115,15 @@ object StringsIds {
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email
     val selectAShot = R.string.select_a_shot
+    val selectingAShot = R.string.selecting_a_shot
     val selectDate = R.string.select_date
     val settings = R.string.settings
-    val shotNameX = R.string.shot_name_x
     val shotPercentage = R.string.shot_percentage
+    val shotUpdated = R.string.shot_updated
     val shots = R.string.shots
     val shotsAttempted = R.string.shots_attempted
     val shotsMade = R.string.shots_made
-    val shotsMadeX = R.string.shots_made_x
     val shotsMadePercentage = R.string.shots_made_percentage
-    val shotsMadePercentageX = R.string.shots_made_percentage_x
     val shotsMissedPercentage = R.string.shots_missed_percentage
     val shotsMissed = R.string.shots_missed
     val shotsNotRecordedDescription = R.string.shots_not_recorded_description
