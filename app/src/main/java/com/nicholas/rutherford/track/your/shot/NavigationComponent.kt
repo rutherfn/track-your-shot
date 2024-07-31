@@ -42,6 +42,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.Log
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotParams
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
@@ -381,6 +382,11 @@ fun NavigationComponent(
                         onBackButtonClicked = { forgotPasswordViewModel.onBackButtonClicked() }
                     )
                 )
+            }
+            composable(
+                route = NavigationDestinations.SETTINGS_SCREEN
+            ) {
+                SettingsScreen()
             }
             composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
                 CreateAccountScreen(

@@ -106,6 +106,7 @@ dependencies {
     api(project(path = ":feature:login"))
     api(project(path = ":feature:players"))
     api(project(path = ":feature:players:shots"))
+    api(project(path = ":feature:settings"))
     api(project(path = ":feature:splash"))
     api(project(path = ":helper:account"))
     api(project(path = ":helper:compose-content-test-rule"))
