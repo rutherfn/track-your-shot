@@ -42,6 +42,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.Log
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotParams
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
@@ -124,6 +125,7 @@ fun NavigationComponent(
     val forgotPasswordViewModel = viewModels.forgotPasswordViewModel
     val selectShotViewModel = viewModels.selectShotViewModel
     val logShotViewModel = viewModels.logShotViewModel
+    val settingsViewModel = viewModels.settingsViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -386,7 +388,13 @@ fun NavigationComponent(
             composable(
                 route = NavigationDestinations.SETTINGS_SCREEN
             ) {
-                SettingsScreen()
+                SettingsScreen(
+                    params = SettingsParams(
+                        onToolbarMenuClicked = {
+                            settingsViewModel.onToolbarMenuClicked()
+                        }
+                    )
+                )
             }
             composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
                 CreateAccountScreen(

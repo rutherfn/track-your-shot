@@ -12,7 +12,9 @@ object Versions {
     object Dependencies {
 
         object Android {
+            const val annotationJvm = "1.8.1"
             const val appCompat = "1.4.1"
+            const val core = "1.13.1"
             const val ktx = "1.7.0"
             const val testRules = "1.5.0"
         }

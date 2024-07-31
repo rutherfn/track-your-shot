@@ -8,6 +8,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 
 data class ViewModels(
@@ -20,5 +21,6 @@ data class ViewModels(
     val createAccountViewModel: CreateAccountViewModel,
     val authenticationViewModel: AuthenticationViewModel,
     val selectShotViewModel: SelectShotViewModel,
-    val logShotViewModel: LogShotViewModel
+    val logShotViewModel: LogShotViewModel,
+    val settingsViewModel: SettingsViewModel
 )

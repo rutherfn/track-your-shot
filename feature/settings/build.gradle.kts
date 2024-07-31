@@ -67,12 +67,15 @@ android {
 }
 
 dependencies {
+    api(project(path = ":base-resources"))
     api(project(path = ":compose:components"))
     api(project(path = ":navigation"))
 
     debugImplementation(Dependencies.Compose.uiToolingPreview)
 
     implementation(Dependencies.Compose.material)
+    implementation(Dependencies.Compose.materialDesignIconsCore)
+    implementation(Dependencies.Compose.materialDesignIconsExtended)
     implementation(Dependencies.Compose.uiToolingPreview)
     implementation(Dependencies.Compose.viewModel)
 

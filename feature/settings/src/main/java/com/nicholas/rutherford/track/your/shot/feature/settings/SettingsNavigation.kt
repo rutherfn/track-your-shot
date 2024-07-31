@@ -1,4 +1,5 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings
 
-class SettingsNavigation {
+interface SettingsNavigation {
+    fun openNavigationDrawer()
 }
