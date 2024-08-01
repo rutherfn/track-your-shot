@@ -392,7 +392,11 @@ fun NavigationComponent(
                     params = SettingsParams(
                         onToolbarMenuClicked = {
                             settingsViewModel.onToolbarMenuClicked()
-                        }
+                        },
+                        onSettingItemClicked = { value ->
+                                               settingsViewModel.onSettingItemClicked(value = value)
+                        },
+                        state = settingsViewModel.settingsStateFlow.collectAsState().value
                     )
                 )
             }

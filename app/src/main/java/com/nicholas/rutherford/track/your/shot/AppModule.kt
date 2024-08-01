@@ -347,7 +347,8 @@ class AppModule {
         }
         viewModel {
             SettingsViewModel(
-                navigation = get()
+                navigation = get(),
+                application = androidApplication()
             )
         }
     }

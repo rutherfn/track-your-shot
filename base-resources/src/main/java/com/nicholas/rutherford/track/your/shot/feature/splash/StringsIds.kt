@@ -3,10 +3,12 @@ package com.nicholas.rutherford.track.your.shot.feature.splash
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 
 object StringsIds {
+    val accountInfo = R.string.account_info
     val accountHasNotBeenVerified = R.string.account_has_not_been_verified
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
     val areYouSureYouWantLeaveTrackYourShot = R.string.are_you_sure_you_want_to_leave_track_your_shot
     val c = R.string.c
+    val camera = R.string.camera
     val cancel = R.string.cancel
     val cameraPermissionHasBeenDeniedDescription = R.string.camera_permission_has_been_denied_description
     val center = R.string.center
@@ -57,6 +59,7 @@ object StringsIds {
     val enterShotsMissed = R.string.enter_shots_missed
     val errorCreatingAccount = R.string.error_creating_account
     val findShotsByName = R.string.find_shots_by_name
+    val general = R.string.general
     val gotIt = R.string.got_it
     val havingTroubleCreatingYourAccountPleaseTryAgain =
         R.string.having_trouble_creating_your_account_please_try_again
@@ -95,6 +98,7 @@ object StringsIds {
         R.string.password_is_required_please_enter_a_password_to_create_a_account
     val passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount =
         R.string.password_is_required_please_enter_a_password_to_login_to_existing_account
+    val permissions = R.string.permissions
     val permissionHasBeenDeclined = R.string.permission_has_been_declined
     val pg = R.string.pg
     val pointGuard = R.string.point_guard
@@ -108,6 +112,8 @@ object StringsIds {
     val playersFirstNameEmptyDescription = R.string.players_first_name_empty_description
     val playersLastNameEmptyDescription = R.string.players_last_name_empty_description
     val proceedWithYourAccount = R.string.proceed_with_your_account
+    val readExternalStorage = R.string.read_external_storage
+    val readMediaStorage = R.string.read_media_images
     val readExternalStorageDescription = R.string.read_external_storage_description
     val readMediaImagesDescription = R.string.read_media_images_description
     val removeImage = R.string.remove_image
@@ -156,6 +162,7 @@ object StringsIds {
         R.string.username_is_not_in_correct_format_please_enter_username_in_correct_format
     val usernameIsRequiredPleaseEnterAUsernameToCreateAAccount =
         R.string.username_is_required_please_enter_a_username_to_create_a_account
+    val usingTheApp = R.string.using_the_app
     val verifyAccount = R.string.verify_account
     val voiceCommands = R.string.voice_commands
     val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue = R.string.we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue

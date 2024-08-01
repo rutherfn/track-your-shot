@@ -121,6 +121,7 @@ dependencies {
     kover(project(":feature:forgot-password"))
     kover(project(":feature:login"))
     kover(project(":feature:players"))
+    kover(project(":feature:settings"))
     kover(project(":feature:splash"))
     kover(project(":firebase:core"))
     kover(project(":helper:network"))

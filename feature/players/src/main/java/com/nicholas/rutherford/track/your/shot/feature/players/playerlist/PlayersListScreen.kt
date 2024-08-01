@@ -134,7 +134,7 @@ fun PlayerItem(
                             stringResource(id = positionId),
                             player.fullName()
                         ),
-                        style = TextStyles.body,
+                        style = TextStyles.bodyBold,
                         textAlign = TextAlign.Start
                     )
                 }
