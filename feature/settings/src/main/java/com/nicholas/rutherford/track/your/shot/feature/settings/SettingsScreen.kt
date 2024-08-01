@@ -16,17 +16,16 @@ import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import com.nicholas.rutherford.track.your.shot.base.resources.R
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
+import com.nicholas.rutherford.track.your.shot.compose.components.SwitchRow
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
@@ -79,7 +78,7 @@ private fun SettingsContent(
 
         Spacer(modifier = Modifier.height(Padding.eight))
 
-        SettingsCard(
+        SettingsRowCard(
             values = settingGeneralValues,
             onSettingItemClicked = onSettingItemClicked
         )
@@ -93,15 +92,12 @@ private fun SettingsContent(
 
         Spacer(modifier = Modifier.height(Padding.eight))
 
-        SettingsCard(
-            values = settingPermissionsValues,
-            onSettingItemClicked = onSettingItemClicked
-        )
+        SettingsSwitchCard(values = settingPermissionsValues)
     }
 }
 
 @Composable
-private fun SettingsCard(
+private fun SettingsRowCard(
     values: List<String>,
     onSettingItemClicked: (value: String) -> Unit
 ) {
@@ -119,6 +115,27 @@ private fun SettingsCard(
                     titleStyle = TextStyles.bodyBold,
                     onClicked = { onSettingItemClicked.invoke(value) },
                     imageVector = Icons.Filled.ChevronRight,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun SettingsSwitchCard(values: List<String>) {
+    values.forEach { value ->
+        Card(
+            modifier = Modifier
+                .background(AppColors.White)
+                .fillMaxWidth()
+                .padding(top = Padding.eight, bottom = Padding.eight),
+            elevation = 2.dp
+        ) {
+            Column {
+                SwitchRow(
+                    title = value,
+                    onSwitchChanged = {},
+                    titleStyle = TextStyles.bodyBold,
                 )
             }
         }

@@ -46,8 +46,19 @@ class SettingsViewModel(
             }
         )
 
+    // todo add functionality to navigate to screens along with unit tests
     fun onSettingItemClicked(value: String) {
-        println("item clicked $value")
+        when (value) {
+            application.getString(StringsIds.usingTheApp) -> {
+                // navigate the onboarding screen
+            }
+            application.getString(StringsIds.termsConditions) -> {
+                // navigate to terms and conditions page
+            }
+            else -> {
+                // the only one left is account info so should navigate there
+            }
+        }
     }
 
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
