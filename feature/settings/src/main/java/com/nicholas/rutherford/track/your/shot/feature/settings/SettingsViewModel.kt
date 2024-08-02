@@ -20,7 +20,7 @@ class SettingsViewModel(
         updateState()
     }
 
-    fun updateState() {
+    private fun updateState() {
         settingsMutableStateFlow.update { settingsState ->
             settingsState.copy(
                 generalSettings = generalSettings(),
