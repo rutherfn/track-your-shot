@@ -44,6 +44,7 @@
     <string name="email_is_required_please_enter_a_email_to_create_a_account">Email is required. Please enter a email to create a account.</string>
     <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">Email is required. Please enter a email to login to existing account.</string>
     <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">Email is required. Please enter a email to reset password for existing account.</string>
+    <string name="enabled_permissions">Enabled Permissions</string>
     <string name="email_required">Email*</string>
     <string name="enter_shots_made">Enter Shots Made</string>
     <string name="enter_shots_missed">Enter Shots Missed</string>
@@ -168,6 +169,7 @@
     <string name="we_were_unable_to_set_new_username_since_the_username_is_empty_please_click_try_again_to_set_new_username">We were unable to set new username since the username is empty. Please click try again to set new username</string>
     <string name="we_were_unable_to_set_new_username_since_the_username_is_the_same_as_the_current_username_please_click_try_again_to_set_new_username">We were unable to set new username since the username is the same as the current username. Please click try again to set new username</string>
     <string name="verify_account">Verify Account</string>
+    <string name="view_more_info">View More Info</string>
     <string name="view_x">View %s</string>
     <string name="voice_commands">Voice Commands</string>
     <string name="x_position_x_player_name" formatted="false">%s , %s</string>

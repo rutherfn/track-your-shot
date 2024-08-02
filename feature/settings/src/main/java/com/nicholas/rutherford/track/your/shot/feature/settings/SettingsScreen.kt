@@ -92,7 +92,10 @@ private fun SettingsContent(
 
         Spacer(modifier = Modifier.height(Padding.eight))
 
-        SettingsSwitchCard(values = settingPermissionsValues)
+        SettingsRowCard(
+            values = settingPermissionsValues,
+            onSettingItemClicked = onSettingItemClicked
+        )
     }
 }
 
@@ -110,37 +113,17 @@ private fun SettingsRowCard(
     ) {
         Column {
             values.forEach { value ->
-                BaseRow(
-                    title = value,
-                    titleStyle = TextStyles.bodyBold,
-                    onClicked = { onSettingItemClicked.invoke(value) },
-                    imageVector = Icons.Filled.ChevronRight,
-                )
+                    BaseRow(
+                        title = value,
+                        titleStyle = TextStyles.bodyBold,
+                        onClicked = { onSettingItemClicked.invoke(value) },
+                        imageVector = Icons.Filled.ChevronRight,
+                    )
             }
         }
     }
 }
 
-@Composable
-fun SettingsSwitchCard(values: List<String>) {
-    values.forEach { value ->
-        Card(
-            modifier = Modifier
-                .background(AppColors.White)
-                .fillMaxWidth()
-                .padding(top = Padding.eight, bottom = Padding.eight),
-            elevation = 2.dp
-        ) {
-            Column {
-                SwitchRow(
-                    title = value,
-                    onSwitchChanged = {},
-                    titleStyle = TextStyles.bodyBold,
-                )
-            }
-        }
-    }
-}
 @Preview
 @Composable
 fun SettingsScreenPreview() {

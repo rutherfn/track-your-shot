@@ -20,6 +20,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun SwitchRow(
+    enabled: Boolean,
     title: String,
     onSwitchChanged: ((to: Boolean) -> Unit),
     titleStyle: TextStyle = TextStyles.smallBold,
@@ -37,12 +38,9 @@ fun SwitchRow(
         )
 
         // logic for switch row
-        val test = remember { mutableStateOf(value = false ) }
         Switch(
-            checked = test.value,
-            onCheckedChange = {
-                              test.value = it
-            },
+            checked = enabled,
+            onCheckedChange = { onSwitchChanged.invoke(it) },
             modifier = Modifier.padding(start = 4.dp).size(42.dp)
         )
     }

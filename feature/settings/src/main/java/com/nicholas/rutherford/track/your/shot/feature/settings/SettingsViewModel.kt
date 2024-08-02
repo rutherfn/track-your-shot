@@ -31,19 +31,15 @@ class SettingsViewModel(
 
     internal fun generalSettings(): List<String> =
         listOf(
-            application.getString(StringsIds.usingTheApp),
+            application.getString(StringsIds.accountInfo),
             application.getString(StringsIds.termsConditions),
-            application.getString(StringsIds.accountInfo)
+            application.getString(StringsIds.usingTheApp)
         )
 
     internal fun permissionsSettings(): List<String> =
         listOf(
-            application.getString(StringsIds.camera),
-            if (shouldAskForReadMediaImages()) {
-                application.getString(StringsIds.readMediaStorage)
-            } else {
-                application.getString(StringsIds.readExternalStorage)
-            }
+            application.getString(StringsIds.enabledPermissions),
+            application.getString(StringsIds.viewMoreInfo)
         )
 
     // todo add functionality to navigate to screens along with unit tests
@@ -55,8 +51,14 @@ class SettingsViewModel(
             application.getString(StringsIds.termsConditions) -> {
                 // navigate to terms and conditions page
             }
+            application.getString(StringsIds.accountInfo) -> {
+                // navigate to account info page
+            }
+            application.getString(StringsIds.enabledPermissions) -> {
+                // navigate to enabled permissions page
+            }
             else -> {
-                // the only one left is account info so should navigate there
+                // the only one left is view more info so should navigate there
             }
         }
     }

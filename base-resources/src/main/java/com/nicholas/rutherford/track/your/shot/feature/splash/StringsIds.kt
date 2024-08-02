@@ -38,6 +38,7 @@ object StringsIds {
         R.string.email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password
     val emailHasBeenSentToVerifyAccountPleaseOpenEmailSentEmailToVerifyAccount =
         R.string.email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account
+    val enabledPermissions = R.string.enabled_permissions
     val firstName = R.string.first_name
     val forgotPassword = R.string.forgot_password
     val editPlayer = R.string.edit_player
@@ -164,6 +165,7 @@ object StringsIds {
         R.string.username_is_required_please_enter_a_username_to_create_a_account
     val usingTheApp = R.string.using_the_app
     val verifyAccount = R.string.verify_account
+    val viewMoreInfo = R.string.view_more_info
     val voiceCommands = R.string.voice_commands
     val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue = R.string.we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue
     val weHaveDetectedCurrentlyNotConnectedToInternetDescription = R.string.we_have_detected_currently_not_connected_to_internet_description
