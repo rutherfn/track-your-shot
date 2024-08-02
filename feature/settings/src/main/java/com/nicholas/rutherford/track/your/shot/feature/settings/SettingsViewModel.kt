@@ -3,7 +3,6 @@ package com.nicholas.rutherford.track.your.shot.feature.settings
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
-import com.nicholas.rutherford.track.your.shot.helper.extensions.shouldAskForReadMediaImages
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

@@ -25,7 +25,6 @@ import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
-import com.nicholas.rutherford.track.your.shot.compose.components.SwitchRow
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
@@ -46,7 +45,7 @@ fun SettingsScreen(params: SettingsParams) {
             shouldShowMiddleContentAppBar = true,
             onIconButtonClicked = {
                 params.onToolbarMenuClicked.invoke()
-            },
+            }
         ),
         secondaryImageVector = Icons.Filled.Help
     )
@@ -67,7 +66,7 @@ private fun SettingsContent(
                 end = Padding.sixteen,
                 bottom = Padding.sixteen
             ),
-        horizontalAlignment = Alignment.Start,
+        horizontalAlignment = Alignment.Start
     ) {
         Spacer(modifier = Modifier.height(Padding.sixteen))
 
@@ -113,12 +112,12 @@ private fun SettingsRowCard(
     ) {
         Column {
             values.forEach { value ->
-                    BaseRow(
-                        title = value,
-                        titleStyle = TextStyles.bodyBold,
-                        onClicked = { onSettingItemClicked.invoke(value) },
-                        imageVector = Icons.Filled.ChevronRight,
-                    )
+                BaseRow(
+                    title = value,
+                    titleStyle = TextStyles.bodyBold,
+                    onClicked = { onSettingItemClicked.invoke(value) },
+                    imageVector = Icons.Filled.ChevronRight
+                )
             }
         }
     }
