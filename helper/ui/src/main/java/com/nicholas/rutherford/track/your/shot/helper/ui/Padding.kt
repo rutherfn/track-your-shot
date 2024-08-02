@@ -9,5 +9,7 @@ object Padding {
     val sixteen = 16.dp
     val twenty = 20.dp
     val twentyFour = 24.dp
+    val twentyEight = 28.dp
+    val thirtyTwo = 32.dp
     val forty = 40.dp
 }

@@ -2,11 +2,20 @@ plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.kover)
 }
 
 android {
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
+
+    buildFeatures {
+        compose = ComposeData.Enabled.value
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
+    }
 
     compileOptions {
         sourceCompatibility = types.BuildTypes.CompileOptions.sourceCompatibility
@@ -59,14 +68,22 @@ android {
 
 dependencies {
     api(project(path = ":base-resources"))
-    api(project(path = ":data:room"))
+    api(project(path = ":compose:components"))
+    api(project(path = ":navigation"))
 
-    implementation(Dependencies.Android.annotationJvm)
-    implementation(Dependencies.Android.core)
+    debugImplementation(Dependencies.Compose.uiToolingPreview)
+
+    implementation(Dependencies.Compose.material)
+    implementation(Dependencies.Compose.materialDesignIconsCore)
+    implementation(Dependencies.Compose.materialDesignIconsExtended)
+    implementation(Dependencies.Compose.uiToolingPreview)
+    implementation(Dependencies.Compose.viewModel)
 
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)
     testImplementation(Dependencies.Junit.junit)
+
+    testImplementation(Dependencies.Mockk.core)
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }

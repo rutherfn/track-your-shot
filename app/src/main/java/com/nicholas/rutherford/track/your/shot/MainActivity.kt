@@ -30,7 +30,8 @@ open class MainActivity : ComponentActivity() {
                     createAccountViewModel = getViewModel(),
                     authenticationViewModel = getViewModel(),
                     selectShotViewModel = getViewModel(),
-                    logShotViewModel = getViewModel()
+                    logShotViewModel = getViewModel(),
+                    settingsViewModel = getViewModel()
                 )
             )
         }

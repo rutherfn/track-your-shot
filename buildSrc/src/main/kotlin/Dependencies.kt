@@ -5,7 +5,9 @@
 object Dependencies {
 
     object Android {
+        const val annotationJvm = "androidx.annotation:annotation-jvm:${Versions.Dependencies.Android.annotationJvm}"
         const val appCompat = "androidx.appcompat:appcompat:${Versions.Dependencies.Android.appCompat}"
+        const val core = "androidx.core:core:"
         const val ktx = "androidx.core:core-ktx:${Versions.Dependencies.Android.ktx}"
         const val testRules = "androidx.test:rules:${Versions.Dependencies.Android.testRules}"
     }

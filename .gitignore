@@ -48,6 +48,7 @@ feature/home/build
 feature/login/build
 feature/players/build
 feature/players/shots/build
+feature/settings/build
 feature/splash/build
 
 firebase/core/build

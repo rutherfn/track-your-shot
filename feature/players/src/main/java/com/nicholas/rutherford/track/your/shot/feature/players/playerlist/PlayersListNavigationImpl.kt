@@ -6,9 +6,7 @@ import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
-class PlayersListNavigationImpl(
-    private val navigator: Navigator
-) : PlayersListNavigation {
+class PlayersListNavigationImpl(private val navigator: Navigator) : PlayersListNavigation {
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
     override fun disableProgress() = navigator.progress(progressAction = null)
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)

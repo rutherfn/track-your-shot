@@ -48,6 +48,9 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigation
+import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
@@ -235,6 +238,9 @@ class AppModule {
         single<LogShotNavigation> {
             LogShotNavigationImpl(navigator = get())
         }
+        single<SettingsNavigation> {
+            SettingsNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(appCenter = get(), accountManager = get())
         }
@@ -337,6 +343,12 @@ class AppModule {
                 authenticationFirebase = get(),
                 createFirebaseUserInfo = get(),
                 activeUserRepository = get()
+            )
+        }
+        viewModel {
+            SettingsViewModel(
+                navigation = get(),
+                application = androidApplication()
             )
         }
     }
