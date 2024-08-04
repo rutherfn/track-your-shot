@@ -50,9 +50,7 @@ class SettingsViewModel(
             application.getString(StringsIds.termsConditions) -> {
                 // navigate to terms and conditions page
             }
-            application.getString(StringsIds.accountInfo) -> {
-                // navigate to account info page
-            }
+            application.getString(StringsIds.accountInfo) -> { navigation.navigateToAccountInfo() }
             application.getString(StringsIds.enabledPermissions) -> {
                 // navigate to enabled permissions page
             }

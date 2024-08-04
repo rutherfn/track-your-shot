@@ -44,6 +44,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
@@ -126,6 +128,7 @@ fun NavigationComponent(
     val selectShotViewModel = viewModels.selectShotViewModel
     val logShotViewModel = viewModels.logShotViewModel
     val settingsViewModel = viewModels.settingsViewModel
+    val accountInfoViewModel = viewModels.accountInfoViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -385,9 +388,7 @@ fun NavigationComponent(
                     )
                 )
             }
-            composable(
-                route = NavigationDestinations.SETTINGS_SCREEN
-            ) {
+            composable(route = NavigationDestinations.SETTINGS_SCREEN) {
                 SettingsScreen(
                     params = SettingsParams(
                         onToolbarMenuClicked = {
@@ -397,6 +398,15 @@ fun NavigationComponent(
                             settingsViewModel.onSettingItemClicked(value = value)
                         },
                         state = settingsViewModel.settingsStateFlow.collectAsState().value
+                    )
+                )
+            }
+            composable(route = NavigationDestinations.ACCOUNT_INFO_SCREEN) {
+                AccountInfoScreen(
+                    params = AccountInfoParams(
+                        onToolbarIconButtonClicked = { accountInfoViewModel.onToolbarIconButtonClicked() },
+                        onToolbarSecondaryIconButtonClicked = { accountInfoViewModel.onToolbarSecondaryIconButtonClicked() },
+                        state = accountInfoViewModel.accountInfoStateFlow.collectAsState().value
                     )
                 )
             }

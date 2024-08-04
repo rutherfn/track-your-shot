@@ -51,6 +51,9 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoNavigation
+import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
@@ -241,6 +244,9 @@ class AppModule {
         single<SettingsNavigation> {
             SettingsNavigationImpl(navigator = get())
         }
+        single<AccountInfoNavigation> {
+            AccountInfoNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(appCenter = get(), accountManager = get())
         }
@@ -351,6 +357,12 @@ class AppModule {
             SettingsViewModel(
                 navigation = get(),
                 application = androidApplication()
+            )
+        }
+        viewModel {
+            AccountInfoViewModel(
+                application = androidApplication(),
+                navigation = get()
             )
         }
     }

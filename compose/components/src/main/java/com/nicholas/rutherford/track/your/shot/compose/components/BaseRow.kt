@@ -40,22 +40,25 @@ fun BaseRow(
     iconTint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
     subText: String? = null,
     imageVector: ImageVector? = null,
-    shouldShowDivider: Boolean = false
+    shouldShowDivider: Boolean = false,
+    shouldFillMaxSize: Boolean = true
 ) {
     val rowModifier = onClicked?.let {
         Modifier
-            .fillMaxSize()
             .fillMaxWidth()
             .clickable { it.invoke() }
             .padding(8.dp)
     } ?: run {
         Modifier
-            .fillMaxSize()
             .fillMaxWidth()
             .padding(8.dp)
     }
     Row(
-        modifier = rowModifier,
+        modifier = if (shouldFillMaxSize) {
+            rowModifier.fillMaxSize()
+        } else {
+            rowModifier
+        },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

@@ -168,4 +168,12 @@ object NavigationActions {
                 .build()
         }
     }
+
+    object Settings {
+
+        fun accountInfo() = object : NavigationAction {
+            override val destination = NavigationDestinations.ACCOUNT_INFO_SCREEN
+            override val navOptions = NavOptions.Builder().build()
+        }
+    }
 }
