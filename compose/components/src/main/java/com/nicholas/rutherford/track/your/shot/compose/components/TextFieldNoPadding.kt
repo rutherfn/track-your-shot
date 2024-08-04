@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
@@ -41,6 +42,7 @@ fun TextFieldNoPadding(
     label: String,
     value: String,
     onValueChange: ((String) -> Unit),
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     textStyle: TextStyle = TextStyles.body,
     singleLine: Boolean = true,
@@ -59,11 +61,9 @@ fun TextFieldNoPadding(
                 .offset(x = negativeOffSetPaddingX)
                 .fillMaxWidth(),
             value = value,
+            visualTransformation = visualTransformation,
             keyboardOptions = keyboardOptions,
-            onValueChange = {
-                    newUsername ->
-                onValueChange.invoke(newUsername)
-            },
+            onValueChange = { newUsername -> onValueChange.invoke(newUsername) },
             textStyle = textStyle,
             singleLine = singleLine,
             colors = colors

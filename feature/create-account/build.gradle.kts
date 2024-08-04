@@ -88,6 +88,7 @@ dependencies {
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
+    implementation(project(":feature:players"))
 
     testImplementation(Dependencies.Coroutine.test)
 
