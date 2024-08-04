@@ -12,6 +12,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFireba
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -34,7 +35,8 @@ class CreateAccountViewModel(
     private val network: Network,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val authenticationFirebase: AuthenticationFirebase,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val scope: CoroutineScope
 ) : ViewModel() {
 
     internal var isUsernameEmptyOrNull: Boolean = false
@@ -103,7 +105,7 @@ class CreateAccountViewModel(
         setIsTwoOrMoreFieldsEmptyOrNull()
 
         // Attempt to show error alert or create Firebase Auth
-        viewModelScope.launch {
+        scope.launch {
             attemptToShowErrorAlertOrCreateFirebaseAuth(createAccountState = createAccountState)
         }
     }

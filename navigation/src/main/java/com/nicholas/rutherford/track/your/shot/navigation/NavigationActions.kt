@@ -66,6 +66,14 @@ object NavigationActions {
                 .setLaunchSingleTop(true)
                 .build()
         }
+
+        fun login() = object : NavigationAction {
+            override val destination: String = NavigationDestinations.LOGIN_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .setLaunchSingleTop(true)
+                .build()
+        }
     }
 
     object DrawerScreen {
