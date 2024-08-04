@@ -52,6 +52,7 @@
     <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">Email is required. Please enter a email to login to existing account.</string>
     <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">Email is required. Please enter a email to reset password for existing account.</string>
     <string name="enabled_permissions">Enabled Permissions</string>
+    <string name="error_editing_account_info">Error Editing Account Info</string>
     <string name="email_required">Email*</string>
     <string name="enter_shots_made">Enter Shots Made</string>
     <string name="enter_shots_missed">Enter Shots Missed</string>

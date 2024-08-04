@@ -1,10 +1,13 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo
 
+import android.app.Application
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.RESET_SCREEN_DELAY_IN_MILLIS
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import kotlinx.coroutines.CoroutineScope
@@ -15,6 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AccountInfoViewModel(
+    private val application: Application,
     private val activeUserRepository: ActiveUserRepository,
     private val navigation: AccountInfoNavigation,
     private val scope: CoroutineScope
@@ -75,16 +79,50 @@ class AccountInfoViewModel(
         }
     }
 
+    private fun onToolbarSecondaryClickedFromView() {
+        accountInfoMutableStateFlow.update { state ->
+            state.copy(
+                shouldEditAccountInfoDetails = true,
+                toolbarSecondaryImageVector = Icons.Filled.Save,
+                toolbarTitleId = StringsIds.editAccountInfo
+            )
+        }
+    }
+
+    internal fun alert(description: String): Alert {
+        return Alert(
+            title = application.getString(StringsIds.errorEditingAccountInfo),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            ),
+            description = description
+        )
+    }
+
+    internal fun buildAlertDescription(state: AccountInfoState): String? {
+        when {
+            state.newEmail.isEmpty() && state.email.isEmpty() && state.newUsername.isEmpty() && state.confirmNewUsername.isEmpty() -> {
+                return "We have no changes"
+            }
+            state.newEmail.isNotEmpty() && state.email.isNotEmpty() && state.newUsername.isNotEmpty() && state.confirmNewUsername.isNotEmpty() -> {
+                // we need to check each here
+            }
+        }
+    }
+
+    private fun onToolbarSecondaryClickedFromEdit() {
+        val state = accountInfoMutableStateFlow.value
+
+        navigation.enableProgress()
+
+        if
+    }
+
     fun onToolbarSecondaryIconButtonClicked() {
         if (!accountInfoMutableStateFlow.value.shouldEditAccountInfoDetails) {
-            accountInfoMutableStateFlow.update { state ->
-                state.copy(
-                    shouldEditAccountInfoDetails = true,
-                    toolbarSecondaryImageVector = Icons.Filled.Save,
-                    toolbarTitleId = StringsIds.editAccountInfo
-                )
-            }
+            onToolbarSecondaryClickedFromView()
         } else {
+            onToolbarSecondaryClickedFromEdit()
         }
     }
 }

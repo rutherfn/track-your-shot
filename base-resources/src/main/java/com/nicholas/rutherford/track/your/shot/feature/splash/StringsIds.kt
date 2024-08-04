@@ -46,6 +46,7 @@ object StringsIds {
     val emailHasBeenSentToVerifyAccountPleaseOpenEmailSentEmailToVerifyAccount =
         R.string.email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account
     val enabledPermissions = R.string.enabled_permissions
+    val errorEditingAccountInfo = R.string.error_editing_account_info
     val firstName = R.string.first_name
     val forgotPassword = R.string.forgot_password
     val editAccountInfo = R.string.edit_account_info

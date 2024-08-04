@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo
 
+import android.app.Application
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
@@ -24,6 +25,8 @@ class AccountInfoViewModelTest {
 
     private lateinit var viewModel: AccountInfoViewModel
 
+    private var application = mockk<Application>(relaxed = true)
+
     private var activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
     private var navigation = mockk<AccountInfoNavigation>(relaxed = true)
 
@@ -35,6 +38,7 @@ class AccountInfoViewModelTest {
     @BeforeEach
     fun beforeEach() {
         viewModel = AccountInfoViewModel(
+            application = application,
             activeUserRepository = activeUserRepository,
             navigation = navigation,
             scope = scope
