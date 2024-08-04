@@ -13,10 +13,12 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -45,7 +47,10 @@ class CreateAccountViewModelTest {
     private val createAccountFirebaseAuthResponse = TestCreateAccountFirebaseAuthResponse().create()
     private var authenticateUserViaEmailFirebaseResponse = TestAuthenticateUserViaEmailFirebaseResponse().create()
 
-    val dispatcher = StandardTestDispatcher()
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val dispatcher = UnconfinedTestDispatcher()
+
+    private val scope = CoroutineScope(SupervisorJob() + dispatcher)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
@@ -57,7 +62,8 @@ class CreateAccountViewModelTest {
             network = network,
             createFirebaseUserInfo = createFirebaseUserInfo,
             authenticationFirebase = authenticationFirebase,
-            userRepository = userRepository
+            userRepository = userRepository,
+            scope = scope
         )
     }
 
@@ -72,6 +78,22 @@ class CreateAccountViewModelTest {
         Assertions.assertEquals(EMAIL_PATTERN, "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}\$")
         Assertions.assertEquals(PASSWORD_PATTERN, "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$")
         Assertions.assertEquals(USERNAME_PATTERN, "^(?=[a-zA-Z\\d._]{8,20}\$)(?!.*[_.]{2})[^_.].*[^_.]\$")
+    }
+
+    @Test
+    fun `clear state`() {
+        Assertions.assertEquals(
+            viewModel.createAccountStateFlow.value,
+            CreateAccountState()
+        )
+    }
+
+    @Test
+    fun `clear local declarations`() {
+        val emptyArray: ArrayList<String> = arrayListOf()
+
+        Assertions.assertEquals(viewModel.allStoredEmailsArrayList, emptyArray)
+        Assertions.assertEquals(viewModel.allStoredUsernamesArrayList, emptyArray)
     }
 
     @Test
@@ -184,7 +206,7 @@ class CreateAccountViewModelTest {
         )
         private val validUsernames = listOf(
             "UsernameValid1291",
-            "Testdsds4112",
+            "testAccount4112",
             "OneTestUsername2222",
             "Test2211",
             "Username124"
@@ -251,7 +273,7 @@ class CreateAccountViewModelTest {
     @Nested
     inner class SetIsUsernameInNotCorrectFormat {
         private val invalidUsername = "_username"
-        private val validUsername = "Usernametest12212"
+        private val validUsername = "UsernameTest12212"
 
         @Test fun `when username is null should set isUsernameInNotCorrectFormat to true`() {
             viewModel.isUsernameInNotCorrectFormat = false
@@ -400,7 +422,7 @@ class CreateAccountViewModelTest {
     @Nested
     inner class SetIsEmailInNotCorrectFormat {
         private val testEmail = "testemail@yahoo.com"
-        private val invalidTestEmail = "testemail"
+        private val invalidTestEmail = "testEmail"
 
         @Test fun `when email is null should set isEmailInNotCorrectFormat to true`() {
             viewModel.isEmailInNotCorrectFormat = false
@@ -676,7 +698,7 @@ class CreateAccountViewModelTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when validafeFieldsWithOptionalAlert is not null and password is null should not call any functions`() = runTest {
+        fun `when validateFieldsWithOptionalAlert is not null and password is null should not call any functions`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns true
@@ -728,7 +750,7 @@ class CreateAccountViewModelTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isTwoOrMoreFieldsEmptyOrNull is set to true should return back mulitple fields are required alert`() = runTest {
+        fun `when isTwoOrMoreFieldsEmptyOrNull is set to true should return back multiple fields are required alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
             coEvery { network.isDeviceConnectedToInternet() } returns true

@@ -8,19 +8,12 @@ import kotlinx.coroutines.flow.callbackFlow
 
 class AuthenticationFirebaseImpl(private val firebaseAuth: FirebaseAuth) : AuthenticationFirebase {
 
-    override fun attemptToDeleteCurrentUser(): Flow<Boolean> {
+    override fun attemptToDeleteCurrentUserFlow(): Flow<Boolean> {
         return callbackFlow {
             firebaseAuth.currentUser?.let { currentUser ->
                 currentUser.delete()
-                    .addOnCompleteListener {
-                        trySend(element = true)
-                    }
-                    .addOnFailureListener {
-                        trySend(element = false)
-                    }
-            } ?: run {
-                trySend(element = true)
-            }
+                    .addOnCompleteListener { trySend(element = it.isSuccessful) }
+            } ?: run { trySend(element = true) }
             awaitClose()
         }
     }

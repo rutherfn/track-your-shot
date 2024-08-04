@@ -32,6 +32,72 @@ class AuthenticationFirebaseImplTest {
     }
 
     @Nested
+    inner class AttemptToDeleteCurrentUserFlow {
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when current user is set to null should set flow to true`() = runTest {
+            every { firebaseAuth.currentUser } returns null
+
+            val result = authenticationFirebaseImpl.attemptToDeleteCurrentUserFlow().first()
+
+            Assertions.assertEquals(result, true)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when current user is not set to null and delete calls on complete listener but isSuccessful returns false should set flow to false`() = runTest {
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val slot = slot<OnCompleteListener<Void>>()
+            val isSuccessful = false
+
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+            every { mockTaskVoidResult.isSuccessful } returns isSuccessful
+
+            mockkStatic(Tasks::class)
+
+            every {
+                firebaseAuth.currentUser!!.delete()
+                    .addOnCompleteListener(capture(slot))
+            } answers {
+                slot.captured.onComplete(mockTaskVoidResult)
+                mockTaskVoidResult
+            }
+
+            val result = authenticationFirebaseImpl.attemptToDeleteCurrentUserFlow().first()
+
+            Assertions.assertEquals(result, false)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when current user is not set to null and delete calls on complete listener but isSuccessful returns true should set flow to true`() = runTest {
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val slot = slot<OnCompleteListener<Void>>()
+            val isSuccessful = true
+
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+            every { mockTaskVoidResult.isSuccessful } returns isSuccessful
+
+            mockkStatic(Tasks::class)
+
+            every {
+                firebaseAuth.currentUser!!.delete()
+                    .addOnCompleteListener(capture(slot))
+            } answers {
+                slot.captured.onComplete(mockTaskVoidResult)
+                mockTaskVoidResult
+            }
+
+            val result = authenticationFirebaseImpl.attemptToDeleteCurrentUserFlow().first()
+
+            Assertions.assertEquals(result, true)
+        }
+    }
+
+    @Nested
     inner class AttemptToSendEmailVerificationForCurrentUser {
 
         @OptIn(ExperimentalCoroutinesApi::class)

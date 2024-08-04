@@ -130,6 +130,21 @@ class AuthenticationViewModel(
     fun onDeletePendingAccountClicked() =
         navigation.alert(alert = areYouSureYouWantToDeleteAccountAlert())
 
+    internal suspend fun onYesDeletePendingAccountClicked() {
+        navigation.enableProgress(progress = Progress())
+        authenticationFirebase.attemptToDeleteCurrentUserFlow()
+            .collectLatest { isSuccessful ->
+                if (isSuccessful) {
+                    activeUserRepository.deleteActiveUser()
+                    navigation.disableProgress()
+                    navigation.navigateToLogin()
+                } else {
+                    navigation.disableProgress()
+                    navigation.alert(alert = errorDeletingPendingAccountAlert())
+                }
+            }
+    }
+
     internal fun areYouSureYouWantToDeleteAccountAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.deletingPendingAccount),
@@ -144,21 +159,6 @@ class AuthenticationViewModel(
             ),
             description = application.getString(StringsIds.areYouSureYouWantToDeletePendingAccountDescription)
         )
-    }
-
-    internal suspend fun onYesDeletePendingAccountClicked() {
-        navigation.enableProgress(progress = Progress())
-        authenticationFirebase.attemptToDeleteCurrentUser()
-            .collectLatest { isSuccessful ->
-                if (isSuccessful) {
-                    activeUserRepository.deleteActiveUser()
-                    navigation.disableProgress()
-                    navigation.navigateToLogin()
-                } else {
-                    navigation.disableProgress()
-                    navigation.alert(alert = errorDeletingPendingAccountAlert())
-                }
-            }
     }
 
     internal fun errorCreatingAccountAlert(): Alert {
