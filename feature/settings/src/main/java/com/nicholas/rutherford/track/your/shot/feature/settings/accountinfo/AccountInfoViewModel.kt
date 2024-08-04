@@ -76,7 +76,7 @@ class AccountInfoViewModel(
     }
 
     fun onToolbarSecondaryIconButtonClicked() {
-        if (accountInfoMutableStateFlow.value.shouldEditAccountInfoDetails == false) {
+        if (!accountInfoMutableStateFlow.value.shouldEditAccountInfoDetails) {
             accountInfoMutableStateFlow.update { state ->
                 state.copy(
                     shouldEditAccountInfoDetails = true,
@@ -85,7 +85,6 @@ class AccountInfoViewModel(
                 )
             }
         } else {
-
         }
     }
 }

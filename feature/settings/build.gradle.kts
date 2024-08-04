@@ -71,6 +71,7 @@ dependencies {
     api(project(path = ":compose:components"))
     api(project(path = ":navigation"))
     implementation(project(":feature:players"))
+    testImplementation(project(":data-test:room"))
 
     debugImplementation(Dependencies.Compose.uiToolingPreview)
 
@@ -79,6 +80,8 @@ dependencies {
     implementation(Dependencies.Compose.materialDesignIconsExtended)
     implementation(Dependencies.Compose.uiToolingPreview)
     implementation(Dependencies.Compose.viewModel)
+
+    testImplementation(Dependencies.Coroutine.test)
 
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)
