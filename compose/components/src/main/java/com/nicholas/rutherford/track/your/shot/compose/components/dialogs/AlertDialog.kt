@@ -2,12 +2,14 @@ package com.nicholas.rutherford.track.your.shot.compose.components.dialogs
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 
 /**
@@ -33,7 +35,8 @@ fun AlertDialog(
             confirmButton?.let { button ->
                 TextButton(
                     onClick = { button.onButtonClicked?.invoke() },
-                    content = { Text(text = button.buttonText) }
+                    content = { Text(text = button.buttonText) },
+                    colors = ButtonDefaults.textButtonColors(contentColor = AppColors.Orange)
                 )
             }
         },
@@ -41,7 +44,8 @@ fun AlertDialog(
             dismissButton?.let { button ->
                 TextButton(
                     onClick = { button.onButtonClicked?.invoke() },
-                    content = { Text(text = button.buttonText) }
+                    content = { Text(text = button.buttonText) },
+                    colors = ButtonDefaults.textButtonColors(contentColor = AppColors.OrangeVariant)
                 )
             }
         },

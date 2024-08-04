@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
@@ -95,7 +96,10 @@ fun CreateAccountScreenContent(createAccountScreenParams: CreateAccountScreenPar
                 createAccountScreenParams.onPasswordValueChanged(newPassword)
             },
             visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            keyboardActions = KeyboardActions(
+                onDone = { createAccountScreenParams.onCreateAccountButtonClicked.invoke() }
+            )
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))

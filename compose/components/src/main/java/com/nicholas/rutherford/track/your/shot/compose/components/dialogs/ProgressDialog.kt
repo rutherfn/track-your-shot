@@ -19,7 +19,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
+import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
  * Default [Dialog] with given params to build dialogs with [CircularProgressIndicator] used in [Content]
@@ -49,10 +51,12 @@ fun ProgressDialog(
                     .background(color = Color.White, shape = RoundedCornerShape(Padding.twelve))
             ) {
                 Column {
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(color = AppColors.Orange)
                     title?.let { text ->
                         Text(
-                            text = text
+                            text = text,
+                            color = AppColors.Black,
+                            style = TextStyles.bodyBold
                         )
                     }
                 }

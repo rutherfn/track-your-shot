@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
@@ -111,7 +112,10 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
             onValueChange = { newPassword -> loginScreenParams.onPasswordValueChanged.invoke(newPassword) },
             textStyle = TextStyles.body,
             singleLine = true,
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor),
+            keyboardActions = KeyboardActions(
+                onDone = { loginScreenParams.onLoginButtonClicked.invoke() }
+            )
         )
 
         Spacer(modifier = Modifier.height(Padding.twenty))

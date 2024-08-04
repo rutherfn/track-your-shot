@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -46,7 +47,8 @@ fun TextFieldNoPadding(
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     textStyle: TextStyle = TextStyles.body,
     singleLine: Boolean = true,
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
+    colors: TextFieldColors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor),
+    keyboardActions: KeyboardActions = KeyboardActions(),
 ) {
     // removes the starting padding of the TextField
     val negativeOffSetPaddingX = (-8).dp
@@ -63,6 +65,7 @@ fun TextFieldNoPadding(
             value = value,
             visualTransformation = visualTransformation,
             keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
             onValueChange = { newUsername -> onValueChange.invoke(newUsername) },
             textStyle = textStyle,
             singleLine = singleLine,
