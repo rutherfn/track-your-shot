@@ -361,8 +361,9 @@ class AppModule {
         }
         viewModel {
             AccountInfoViewModel(
-                application = androidApplication(),
-                navigation = get()
+                activeUserRepository = get(),
+                navigation = get(),
+                scope = defaultCoroutineScope
             )
         }
     }

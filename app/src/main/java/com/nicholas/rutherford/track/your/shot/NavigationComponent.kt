@@ -406,7 +406,19 @@ fun NavigationComponent(
                     params = AccountInfoParams(
                         onToolbarIconButtonClicked = { accountInfoViewModel.onToolbarIconButtonClicked() },
                         onToolbarSecondaryIconButtonClicked = { accountInfoViewModel.onToolbarSecondaryIconButtonClicked() },
-                        state = accountInfoViewModel.accountInfoStateFlow.collectAsState().value
+                        state = accountInfoViewModel.accountInfoStateFlow.collectAsState().value,
+                        onNewEmailValueChanged = { email ->
+                            accountInfoViewModel.onNewEmailValueChanged(email = email)
+                        },
+                        onConfirmNewEmailValueChanged = { email ->
+                            accountInfoViewModel.onConfirmNewEmailValueChanged(email = email)
+                        },
+                        onNewUsernameValueChanged = { username ->
+                            accountInfoViewModel.onNewUsernameValueChanged(username = username)
+                        },
+                        onConfirmNewUsernameValueChanged = { username ->
+                            accountInfoViewModel.onConfirmNewUsernameValueChanged(username = username)
+                        }
                     )
                 )
             }

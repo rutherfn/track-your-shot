@@ -17,12 +17,16 @@
     <string name="choose_a_shot_to_log_info_description">Choose a shot to log its information. To view additional details about the shot, click \"Show More\",</string>
     <string name="choose_image_from_gallery">Choose Image From Gallery</string>
     <string name="choose_option">Choose Option</string>
+    <string name="confirm_new_email">Confirm New Email</string>
+    <string name="confirm_new_username">Confirm New Username</string>
     <string name="compare_players_stats">Compare Players &amp; Stats</string>
     <string name="continue_text">Continue</string>
     <string name="click_me_to_create_account">Click me to create account</string>
     <string name="create_account">Create Account</string>
     <string name="create_player">Create Player</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
+    <string name="current_email">Current Email</string>
+    <string name="current_username">Current Username</string>
     <string name="current_players_has_no_changes_description">There haven\'t been any recent updates or modifications to the current player. Please make adjustments to the existing player to proceed.</string>
     <string name="current_shot_has_been_updated_description">The current shot has been updated. To see the latest information, click on the shot to view the updates.</string>
     <string name="current_shot_has_no_changes_description">There haven\'t been any recent updates or modifications to this shot. Please make adjustments to the existing shot to proceed.</string>
@@ -51,6 +55,7 @@
     <string name="email_required">Email*</string>
     <string name="enter_shots_made">Enter Shots Made</string>
     <string name="enter_shots_missed">Enter Shots Missed</string>
+    <string name="edit_account_info">Edit Account Info</string>
     <string name="edit_player">Edit Player</string>
     <string name="empty" translatable="false" />
     <string name="empty_field">Empty Field</string>
@@ -77,6 +82,8 @@
     <string name="log_shots">Log Shots</string>
     <string name="menu">Menu</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
+    <string name="new_email">New Email</string>
+    <string name="new_username">New Username</string>
     <string name="no">No</string>
     <string name="no_changes_made">No Changes Made</string>
     <string name="not_connected_to_internet">Not connected to internet</string>

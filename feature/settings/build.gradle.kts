@@ -70,6 +70,7 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":compose:components"))
     api(project(path = ":navigation"))
+    implementation(project(":feature:players"))
 
     debugImplementation(Dependencies.Compose.uiToolingPreview)
 

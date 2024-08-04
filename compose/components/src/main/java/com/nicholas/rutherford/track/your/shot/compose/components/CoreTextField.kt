@@ -43,7 +43,8 @@ import androidx.compose.foundation.text.BasicTextField as TextField
 fun CoreTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    placeholderValue: String
+    placeholderValue: String,
+    title: String? = null
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -60,6 +61,13 @@ fun CoreTextField(
     if (shouldClearFocus) {
         LocalFocusManager.current.clearFocus()
         shouldClearFocus = false
+    }
+
+    title?.let { text ->
+        Text(
+            text = text,
+            style = TextStyles.smallBold
+        )
     }
 
     TextField(

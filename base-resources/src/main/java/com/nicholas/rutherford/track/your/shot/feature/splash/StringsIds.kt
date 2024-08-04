@@ -17,6 +17,8 @@ object StringsIds {
     val chooseAShotToLogInfoDescription = R.string.choose_a_shot_to_log_info_description
     val chooseImageFromGallery = R.string.choose_image_from_gallery
     val chooseOption = R.string.choose_option
+    val confirmNewEmail = R.string.confirm_new_email
+    val confirmNewUsername = R.string.confirm_new_username
     val comparePlayersStats = R.string.compare_players_stats
     val continueText = R.string.continue_text
     val clickMeToCreateAccount = R.string.click_me_to_create_account
@@ -24,6 +26,8 @@ object StringsIds {
     val createPlayer = R.string.create_player
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount =
         R.string.current_account_has_not_been_verified_please_open_email_to_verify_account
+    val currentEmail = R.string.current_email
+    val currentUsername = R.string.current_username
     val currentShotHasBeenUpdatedDescription = R.string.current_shot_has_been_updated_description
     val currentPlayerHasNoChangesDescription = R.string.current_players_has_no_changes_description
     val currentShotHasNoChangesDescription = R.string.current_shot_has_no_changes_description
@@ -44,6 +48,7 @@ object StringsIds {
     val enabledPermissions = R.string.enabled_permissions
     val firstName = R.string.first_name
     val forgotPassword = R.string.forgot_password
+    val editAccountInfo = R.string.edit_account_info
     val editPlayer = R.string.edit_player
     val empty = R.string.empty
     val emptyField = R.string.empty_field
@@ -85,6 +90,8 @@ object StringsIds {
     val logShot = R.string.log_shot
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
+    val newEmail = R.string.new_email
+    val newUsername = R.string.new_username
     val no = R.string.no
     val noChangesMade = R.string.no_changes_made
     val noCurrentPlayersAdded = R.string.no_current_players_added
@@ -163,6 +170,7 @@ object StringsIds {
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
     val unableToUploadImage = R.string.unable_to_upload_image
     val unsavedPlayerChanges = R.string.unsaved_player_changes
+    val username = R.string.username
     val usernameRequired = R.string.username_required
     val usernameInUse = R.string.username_in_use
     val usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat =
