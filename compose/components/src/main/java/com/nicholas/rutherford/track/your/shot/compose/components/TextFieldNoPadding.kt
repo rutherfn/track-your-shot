@@ -48,7 +48,7 @@ fun TextFieldNoPadding(
     textStyle: TextStyle = TextStyles.body,
     singleLine: Boolean = true,
     colors: TextFieldColors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor),
-    keyboardActions: KeyboardActions = KeyboardActions(),
+    keyboardActions: KeyboardActions = KeyboardActions()
 ) {
     // removes the starting padding of the TextField
     val negativeOffSetPaddingX = (-8).dp
