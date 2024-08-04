@@ -65,22 +65,6 @@ class AccountManagerImpl(
         }
     }
 
-    override fun checkIfWeNeedToLogoutOnLaunch() {
-        if (existingUserFirebase.isLoggedIn()) {
-            scope.launch {
-                existingUserFirebase.logout()
-                clearOutDatabase()
-            }
-        }
-    }
-
-    internal suspend fun clearOutDatabase() {
-        activeUserRepository.deleteActiveUser()
-        playerRepository.deleteAllPlayers()
-        pendingPlayerRepository.deleteAllPendingPlayers()
-        userRepository.deleteAllUsers()
-    }
-
     override fun login(email: String, password: String) {
         navigator.progress(progressAction = Progress())
 
@@ -101,6 +85,22 @@ class AccountManagerImpl(
                 }
             }
         }
+    }
+
+    override fun checkIfWeNeedToLogoutOnLaunch() {
+        if (existingUserFirebase.isLoggedIn()) {
+            scope.launch {
+                existingUserFirebase.logout()
+                clearOutDatabase()
+            }
+        }
+    }
+
+    internal suspend fun clearOutDatabase() {
+        activeUserRepository.deleteActiveUser()
+        playerRepository.deleteAllPlayers()
+        pendingPlayerRepository.deleteAllPendingPlayers()
+        userRepository.deleteAllUsers()
     }
 
     override fun deleteAllPendingShotsAndPlayers() {

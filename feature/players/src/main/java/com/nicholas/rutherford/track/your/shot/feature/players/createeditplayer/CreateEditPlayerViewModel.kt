@@ -184,16 +184,20 @@ class CreateEditPlayerViewModel(
         }
     }
 
+    private fun resetState() {
+        scope.launch {
+            delay(RESET_SCREEN_DELAY_IN_MILLIS)
+            clearLocalDeclarations()
+            clearState()
+        }
+    }
+
     fun onToolbarMenuClicked() {
         if (pendingPlayers.size == Constants.PENDING_PLAYERS_EXPECTED_SIZE || pendingShotLoggedList.isNotEmpty()) {
             navigation.alert(alert = unsavedPlayerChangesAlert())
         } else {
             navigation.pop()
-            scope.launch {
-                delay(RESET_SCREEN_DELAY_IN_MILLIS)
-                clearLocalDeclarations()
-                clearState()
-            }
+            resetState()
         }
     }
 
@@ -579,11 +583,10 @@ class CreateEditPlayerViewModel(
 
             currentPendingShot.clearShotList()
 
-            clearLocalDeclarations()
-            clearState()
-
             navigation.disableProgress()
             navigation.pop()
+
+            resetState()
         } ?: run {
             navigation.disableProgress()
             navigation.alert(alert = yourPlayerCouldNotBeRetrievedAlert())

@@ -27,6 +27,7 @@ class CreateFirebaseUserInfoImpl(
 
     override fun attemptToCreateAccountFirebaseAuthResponseFlow(email: String, password: String): Flow<CreateAccountFirebaseAuthResponse> {
         return callbackFlow {
+            firebaseAuth
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {

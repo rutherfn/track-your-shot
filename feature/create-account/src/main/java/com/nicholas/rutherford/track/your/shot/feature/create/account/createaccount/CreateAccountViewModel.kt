@@ -2,16 +2,18 @@ package com.nicholas.rutherford.track.your.shot.feature.create.account.createacc
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.RESET_SCREEN_DELAY_IN_MILLIS
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -34,7 +36,8 @@ class CreateAccountViewModel(
     private val network: Network,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val authenticationFirebase: AuthenticationFirebase,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val scope: CoroutineScope
 ) : ViewModel() {
 
     internal var isUsernameEmptyOrNull: Boolean = false
@@ -50,13 +53,7 @@ class CreateAccountViewModel(
     internal var allStoredUsernamesArrayList: ArrayList<String> = arrayListOf()
     internal var allStoredEmailsArrayList: ArrayList<String> = arrayListOf()
 
-    private val createAccountMutableStateFlow = MutableStateFlow(
-        value = CreateAccountState(
-            username = null,
-            email = null,
-            password = null
-        )
-    )
+    private val createAccountMutableStateFlow = MutableStateFlow(value = CreateAccountState())
     val createAccountStateFlow = createAccountMutableStateFlow.asStateFlow()
 
     internal val defaultAlert = Alert(
@@ -67,7 +64,24 @@ class CreateAccountViewModel(
     )
 
     init {
-        viewModelScope.launch { updateStoredUsernamesAndEmailsArrayList() }
+        scope.launch { updateStoredUsernamesAndEmailsArrayList() }
+    }
+
+    private fun clearStateAndLocalDeclarations() {
+        scope.launch {
+            delay(RESET_SCREEN_DELAY_IN_MILLIS)
+            clearState()
+            clearLocalDeclarations()
+        }
+    }
+
+    internal fun clearState() {
+        createAccountMutableStateFlow.value = CreateAccountState()
+    }
+
+    internal fun clearLocalDeclarations() {
+        allStoredEmailsArrayList = arrayListOf()
+        allStoredUsernamesArrayList = arrayListOf()
     }
 
     suspend fun updateStoredUsernamesAndEmailsArrayList() {
@@ -103,7 +117,7 @@ class CreateAccountViewModel(
         setIsTwoOrMoreFieldsEmptyOrNull()
 
         // Attempt to show error alert or create Firebase Auth
-        viewModelScope.launch {
+        scope.launch {
             attemptToShowErrorAlertOrCreateFirebaseAuth(createAccountState = createAccountState)
         }
     }
@@ -232,6 +246,7 @@ class CreateAccountViewModel(
                         .collectLatest { authenticatedUserViaEmailFirebaseResponse ->
                             if (authenticatedUserViaEmailFirebaseResponse.isSuccessful) {
                                 navigateToAuthentication(email = email, username = username)
+                                clearStateAndLocalDeclarations()
                             } else {
                                 showUnableToSendEmailVerificationAlert(email = email, username = username)
                             }

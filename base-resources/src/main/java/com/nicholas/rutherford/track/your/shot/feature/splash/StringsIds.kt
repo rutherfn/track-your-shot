@@ -7,6 +7,7 @@ object StringsIds {
     val accountHasNotBeenVerified = R.string.account_has_not_been_verified
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
     val areYouSureYouWantLeaveTrackYourShot = R.string.are_you_sure_you_want_to_leave_track_your_shot
+    val areYouSureYouWantToDeletePendingAccountDescription = R.string.are_you_sure_you_want_to_delete_pending_account_description
     val c = R.string.c
     val camera = R.string.camera
     val cancel = R.string.cancel
@@ -28,6 +29,8 @@ object StringsIds {
     val currentShotHasNoChangesDescription = R.string.current_shot_has_no_changes_description
     val dateShotsLogged = R.string.date_shots_logged
     val dateShotsTaken = R.string.date_shots_taken
+    val deletePendingAccount = R.string.delete_pending_account
+    val deletingPendingAccount = R.string.deleting_pending_account
     val deleteX = R.string.delete_x
     val deviceIsCurrentlyNotConnectedToInternetDesc =
         R.string.device_is_currently_not_connected_to_internet_desc
@@ -59,6 +62,7 @@ object StringsIds {
     val enterShotsMade = R.string.enter_shots_made
     val enterShotsMissed = R.string.enter_shots_missed
     val errorCreatingAccount = R.string.error_creating_account
+    val errorDeletingPendingAccount = R.string.error_deleting_pending_account
     val findShotsByName = R.string.find_shots_by_name
     val general = R.string.general
     val gotIt = R.string.got_it
@@ -150,6 +154,8 @@ object StringsIds {
     val theImageUploadWasUnsuccessful = R.string.the_image_upload_was_unsuccessful
     val thereWasAErrorCreatingYourAccountPleaseTryAgain =
         R.string.there_was_a_error_creating_your_account_please_try_again
+    val thereWasAErrorDeletingPendingAccountPleaseTryAgain =
+        R.string.there_was_a_error_deleting_your_account_please_try_again
     val unableToCreateAccount = R.string.unable_to_create_account
     val unableToDeletePlayerPleaseContactSupport = R.string.unable_to_delete_player_please_contact_support
     val unableToLoginToAccount = R.string.unable_to_login_to_account

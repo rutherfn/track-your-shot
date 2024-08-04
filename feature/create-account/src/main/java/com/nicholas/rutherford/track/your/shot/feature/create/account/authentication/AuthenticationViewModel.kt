@@ -13,7 +13,9 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUs
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
@@ -21,7 +23,8 @@ class AuthenticationViewModel(
     private val application: Application,
     private val authenticationFirebase: AuthenticationFirebase,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
-    private val activeUserRepository: ActiveUserRepository
+    private val activeUserRepository: ActiveUserRepository,
+    private val scope: CoroutineScope
 ) : ViewModel() {
 
     internal var username: String? = null
@@ -124,9 +127,53 @@ class AuthenticationViewModel(
             }
     }
 
+    fun onDeletePendingAccountClicked() =
+        navigation.alert(alert = areYouSureYouWantToDeleteAccountAlert())
+
+    internal suspend fun onYesDeletePendingAccountClicked() {
+        navigation.enableProgress(progress = Progress())
+        authenticationFirebase.attemptToDeleteCurrentUserFlow()
+            .collectLatest { isSuccessful ->
+                if (isSuccessful) {
+                    activeUserRepository.deleteActiveUser()
+                    navigation.disableProgress()
+                    navigation.navigateToLogin()
+                } else {
+                    navigation.disableProgress()
+                    navigation.alert(alert = errorDeletingPendingAccountAlert())
+                }
+            }
+    }
+
+    internal fun areYouSureYouWantToDeleteAccountAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.deletingPendingAccount),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.yes),
+                onButtonClicked = {
+                    scope.launch { onYesDeletePendingAccountClicked() }
+                }
+            ),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.no)
+            ),
+            description = application.getString(StringsIds.areYouSureYouWantToDeletePendingAccountDescription)
+        )
+    }
+
     internal fun errorCreatingAccountAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.errorCreatingAccount),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            ),
+            description = application.getString(StringsIds.thereWasAErrorDeletingPendingAccountPleaseTryAgain)
+        )
+    }
+
+    internal fun errorDeletingPendingAccountAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.errorDeletingPendingAccount),
             dismissButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.gotIt)
             ),

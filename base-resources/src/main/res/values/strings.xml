@@ -6,6 +6,7 @@
     <string name="add_player_stats">Add Player Stats</string>
     <string name="are_you_certain_you_wish_to_remove_x">Are you certain you wish to remove %s?</string>
     <string name="are_you_sure_you_want_to_leave_track_your_shot">Are you sure you want to leave Track Your Shot?</string>
+    <string name="are_you_sure_you_want_to_delete_pending_account_description">Deleting your pending account will require you to either register a new account or log in to an existing one. Are you sure you want to proceed with deleting your pending account?</string>
     <string name="by_nicholas_rutherford">By Nicholas Rutherford</string>
     <string name="c" translatable="false">C</string>
     <string name="camera">Camera</string>
@@ -28,6 +29,8 @@
     <string name="current_shots_x">Current Shots %s</string>
     <string name="date_shots_logged">Date Shots Logged</string>
     <string name="date_shots_taken">Date Shots Taken</string>
+    <string name="delete_pending_account">Delete Pending Account</string>
+    <string name="deleting_pending_account">Deleting Pending Account</string>
     <string name="delete_x">Delete %s</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
     <string name="do_you_wish_to_proceed_description">Do you wish to proceed despite having unsaved player modifications? Any changes made will not be saved.</string>
@@ -53,6 +56,7 @@
     <string name="empty_field">Empty Field</string>
     <string name="empty_fields">Empty Fields</string>
     <string name="error_creating_account">Error Creating Account</string>
+    <string name="error_deleting_pending_account">Error deleting pending account</string>
     <string name="find_shots_by_name">Find shots by name </string>
     <string name="general">General</string>
     <string name="general_information">General Information</string>
@@ -144,6 +148,7 @@
     <string name="terms_conditions">Terms &amp; Conditions</string>
     <string name="the_image_upload_was_unsuccessful">The image upload was unsuccessful. Please attempt it once more.</string>
     <string name="there_was_a_error_creating_your_account_please_try_again">There was a error creating your account. Please try again.</string>
+    <string name="there_was_a_error_deleting_your_account_please_try_again">There was a error deleting your account. Please try again.</string>
     <string name="this_email_is_already_used_for_another_account_please_enter_a_new_email">This email is already used for another account. Please enter a new email.</string>
     <string name="this_username_is_already_used_for_another_account_please_enter_a_new_username">This username is already used for another account. Please enter a new username.</string>
     <string name="track_your_shot">Track Your Shot</string>

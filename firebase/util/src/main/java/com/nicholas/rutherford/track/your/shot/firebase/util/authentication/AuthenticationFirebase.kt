@@ -4,6 +4,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.AuthenticateUserViaEmail
 import kotlinx.coroutines.flow.Flow
 
 interface AuthenticationFirebase {
+    fun attemptToDeleteCurrentUserFlow(): Flow<Boolean>
     fun attemptToSendEmailVerificationForCurrentUser(): Flow<AuthenticateUserViaEmailFirebaseResponse>
     fun attemptToSendPasswordResetFlow(email: String): Flow<Boolean>
 }

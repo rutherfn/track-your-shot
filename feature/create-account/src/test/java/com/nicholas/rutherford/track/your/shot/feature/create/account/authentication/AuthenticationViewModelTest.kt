@@ -10,10 +10,13 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFireba
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import io.mockk.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -38,14 +41,18 @@ class AuthenticationViewModelTest {
 
     private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val testDispatcher = UnconfinedTestDispatcher()
+
+    private val scope = CoroutineScope(SupervisorJob() + testDispatcher)
+
     private val activeUser = TestActiveUser().create()
 
     private val username = activeUser.username
     private val email = activeUser.email
     private val firebaseAccountInfoKey = activeUser.firebaseAccountInfoKey
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val dispatcher = StandardTestDispatcher()
+    private val dispatcher = StandardTestDispatcher()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
@@ -57,7 +64,8 @@ class AuthenticationViewModelTest {
             application = application,
             authenticationFirebase = authenticationFirebase,
             createFirebaseUserInfo = createFirebaseUserInfo,
-            activeUserRepository = activeUserRepository
+            activeUserRepository = activeUserRepository,
+            scope = scope
         )
     }
 
@@ -67,7 +75,6 @@ class AuthenticationViewModelTest {
         Dispatchers.resetMain()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `updateUsernameAndEmail should update local username and email and call createSharedPreferencesForUnAuthenticatedUser`() = runTest {
         Assertions.assertEquals(null, viewModel.username)
@@ -89,7 +96,6 @@ class AuthenticationViewModelTest {
             firebaseAccountInfoKey = firebaseAccountInfoKey
         )
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when fetchActiveUser does not return null should not call create active user function`() = runTest {
             coEvery { activeUserRepository.fetchActiveUser() } returns newActiveUser
@@ -99,7 +105,6 @@ class AuthenticationViewModelTest {
             coVerify(exactly = 0) { activeUserRepository.createActiveUser(activeUser = newActiveUser.copy(firebaseAccountInfoKey = null)) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when fetchActiveUser does return null and all conditions are met should call create active user function`() = runTest {
             coEvery { activeUserRepository.fetchActiveUser() } returns null
@@ -113,7 +118,6 @@ class AuthenticationViewModelTest {
     @Nested
     inner class OnCheckIfAccountHasBeenVerifiedClicked {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back false should not attempt to create account`() = runTest {
             every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
@@ -128,7 +132,6 @@ class AuthenticationViewModelTest {
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true and username is null should not attempt to create account`() = runTest {
             every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
@@ -142,7 +145,6 @@ class AuthenticationViewModelTest {
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true and email is null should not attempt to create account`() = runTest {
             every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
@@ -156,7 +158,6 @@ class AuthenticationViewModelTest {
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back not successful should show error creating account alert`() = runTest {
             every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
@@ -171,7 +172,8 @@ class AuthenticationViewModelTest {
                 application = application,
                 authenticationFirebase = authenticationFirebase,
                 createFirebaseUserInfo = createFirebaseUserInfo,
-                activeUserRepository = activeUserRepository
+                activeUserRepository = activeUserRepository,
+                scope = scope
             )
 
             viewModel.username = username
@@ -184,7 +186,6 @@ class AuthenticationViewModelTest {
             verify { navigation.alert(alert = viewModel.errorCreatingAccountAlert()) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back successful should navigate to players list`() = runTest {
             every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
@@ -199,7 +200,8 @@ class AuthenticationViewModelTest {
                 application = application,
                 authenticationFirebase = authenticationFirebase,
                 createFirebaseUserInfo = createFirebaseUserInfo,
-                activeUserRepository = activeUserRepository
+                activeUserRepository = activeUserRepository,
+                scope = scope
             )
 
             viewModel.username = username
@@ -232,7 +234,6 @@ class AuthenticationViewModelTest {
     inner class OnResume {
         private val username = "username"
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back false should not attempt to create account`() = runTest {
             every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = false)
@@ -246,7 +247,6 @@ class AuthenticationViewModelTest {
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true and username is null should not attempt to create account`() = runTest {
             every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
@@ -259,7 +259,6 @@ class AuthenticationViewModelTest {
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true and email is null should not attempt to create account`() = runTest {
             every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
@@ -272,7 +271,6 @@ class AuthenticationViewModelTest {
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back not successful should show error creating account alert`() = runTest {
             every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
@@ -287,7 +285,8 @@ class AuthenticationViewModelTest {
                 application = application,
                 authenticationFirebase = authenticationFirebase,
                 createFirebaseUserInfo = createFirebaseUserInfo,
-                activeUserRepository = activeUserRepository
+                activeUserRepository = activeUserRepository,
+                scope = scope
             )
 
             viewModel.username = username
@@ -300,7 +299,6 @@ class AuthenticationViewModelTest {
             verify { navigation.alert(alert = viewModel.errorCreatingAccountAlert()) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back successful should navigate to players list`() = runTest {
             every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
@@ -315,7 +313,8 @@ class AuthenticationViewModelTest {
                 application = application,
                 authenticationFirebase = authenticationFirebase,
                 createFirebaseUserInfo = createFirebaseUserInfo,
-                activeUserRepository = activeUserRepository
+                activeUserRepository = activeUserRepository,
+                scope = scope
             )
 
             viewModel.username = username
@@ -334,7 +333,6 @@ class AuthenticationViewModelTest {
 
         private val authenticateViaEmailFirebaseResponse = TestAuthenticateUserViaEmailFirebaseResponse().create()
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when attemptToSendEmailVerificationForCurrentUser returns back not successful should call unsuccessfullySendEmailVerificationAlert`() = runTest {
             coEvery {
@@ -346,7 +344,6 @@ class AuthenticationViewModelTest {
             verify { navigation.alert(alert = viewModel.unsuccessfullySendEmailVerificationAlert()) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when attemptToSendEmailVerificationForCurrentUser returns back successful should call successfullySentEmailVerificationAlert`() = runTest {
             coEvery {
@@ -357,6 +354,68 @@ class AuthenticationViewModelTest {
 
             verify { navigation.alert(alert = viewModel.successfullySentEmailVerificationAlert()) }
         }
+    }
+
+    @Test
+    fun `on delete pending account clicked`() {
+        viewModel.onDeletePendingAccountClicked()
+
+        verify { navigation.alert(alert = any()) }
+    }
+
+    @Nested
+    inner class `on yes delete pending account clicked` {
+
+        @Test
+        fun `when attemptToDeleteCurrentUserFlow returns back a flow of true should navigate to login`() = runTest {
+            every { authenticationFirebase.attemptToDeleteCurrentUserFlow() } returns flowOf(value = true)
+
+            viewModel.onYesDeletePendingAccountClicked()
+
+            verify { navigation.enableProgress(progress = any()) }
+            coVerify { activeUserRepository.deleteActiveUser() }
+            verify { navigation.disableProgress() }
+            verify { navigation.navigateToLogin() }
+        }
+
+        @Test
+        fun `when attemptToDeleteCurrentUserFlow returns back a flow of false should show alert`() = runTest {
+            every { authenticationFirebase.attemptToDeleteCurrentUserFlow() } returns flowOf(value = false)
+
+            viewModel.onYesDeletePendingAccountClicked()
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+        }
+    }
+
+    @Test
+    fun `are you sure you want to delete account alert`() {
+        every { application.getString(StringsIds.deletingPendingAccount) } returns "Deleting Pending Account"
+        every { application.getString(StringsIds.yes) } returns "Yes"
+        every { application.getString(StringsIds.no) } returns "No"
+        every { application.getString(StringsIds.areYouSureYouWantToDeletePendingAccountDescription) } returns "Deleting your pending account will require you to either register a new account or log in to an existing one. Are you sure you want to proceed with deleting your pending account?"
+
+        val alert = viewModel.areYouSureYouWantToDeleteAccountAlert()
+
+        Assertions.assertEquals(alert.title, "Deleting Pending Account")
+        Assertions.assertEquals(alert.confirmButton!!.buttonText, "Yes")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "No")
+        Assertions.assertEquals(alert.description, "Deleting your pending account will require you to either register a new account or log in to an existing one. Are you sure you want to proceed with deleting your pending account?")
+    }
+
+    @Test
+    fun `error creating account alert`() {
+        every { application.getString(StringsIds.errorCreatingAccount) } returns "Error Creating Account"
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+        every { application.getString(StringsIds.thereWasAErrorDeletingPendingAccountPleaseTryAgain) } returns "There was a error deleting your account. Please try again."
+
+        val alert = viewModel.errorCreatingAccountAlert()
+
+        Assertions.assertEquals(alert.title, "Error Creating Account")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Got It")
+        Assertions.assertEquals(alert.description, "There was a error deleting your account. Please try again.")
     }
 
     @Test

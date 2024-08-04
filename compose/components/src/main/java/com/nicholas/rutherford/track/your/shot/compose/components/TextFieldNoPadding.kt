@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -17,6 +18,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
@@ -41,10 +43,12 @@ fun TextFieldNoPadding(
     label: String,
     value: String,
     onValueChange: ((String) -> Unit),
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     textStyle: TextStyle = TextStyles.body,
     singleLine: Boolean = true,
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
+    colors: TextFieldColors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor),
+    keyboardActions: KeyboardActions = KeyboardActions()
 ) {
     // removes the starting padding of the TextField
     val negativeOffSetPaddingX = (-8).dp
@@ -59,11 +63,10 @@ fun TextFieldNoPadding(
                 .offset(x = negativeOffSetPaddingX)
                 .fillMaxWidth(),
             value = value,
+            visualTransformation = visualTransformation,
             keyboardOptions = keyboardOptions,
-            onValueChange = {
-                    newUsername ->
-                onValueChange.invoke(newUsername)
-            },
+            keyboardActions = keyboardActions,
+            onValueChange = { newUsername -> onValueChange.invoke(newUsername) },
             textStyle = textStyle,
             singleLine = singleLine,
             colors = colors

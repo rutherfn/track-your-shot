@@ -123,7 +123,7 @@ fun CustomDatePickerDialog(datePickerInfo: DatePickerInfo) {
                 ) {
                     Text(
                         text = stringResource(id = StringsIds.cancel),
-                        color = AppColors.Black
+                        color = AppColors.OrangeVariant
                     )
                 }
 
@@ -135,7 +135,7 @@ fun CustomDatePickerDialog(datePickerInfo: DatePickerInfo) {
                 ) {
                     Text(
                         text = stringResource(id = StringsIds.ok),
-                        color = AppColors.Black
+                        color = AppColors.Orange
                     )
                 }
             }

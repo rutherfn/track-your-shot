@@ -38,6 +38,20 @@ class AuthenticationNavigationImplTest {
     }
 
     @Test
+    fun `navigate to login`() {
+        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+
+        authenticationNavigationImpl.navigateToLogin()
+
+        verify { navigator.navigate(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+        val expectedAction = NavigationActions.AuthenticationScreen.login()
+
+        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
+    }
+
+    @Test
     fun `navigate to players list`() {
         val argumentCapture: CapturingSlot<NavigationAction> = slot()
 

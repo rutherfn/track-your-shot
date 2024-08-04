@@ -162,5 +162,25 @@ fun AuthenticationScreenContent(
                 )
             }
         )
+
+        Button(
+            onClick = {
+                coroutineScope.launch {
+                    viewModel.onDeletePendingAccountClicked()
+                }
+            },
+            shape = RoundedCornerShape(size = Shared.buttonDefaultShapeSize),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(Padding.eight),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
+            content = {
+                Text(
+                    text = stringResource(id = StringsIds.deletePendingAccount),
+                    style = TextStyles.small,
+                    color = Color.White
+                )
+            }
+        )
     }
 }
