@@ -143,7 +143,7 @@ dependencies {
     implementation(Dependencies.Koin.core)
 
     implementation(Dependencies.Room.runtime)
-  //  implementation(Dependencies.Timber.core)
+    implementation(Dependencies.Timber.core)
 
     implementation(Dependencies.Material.material)
 

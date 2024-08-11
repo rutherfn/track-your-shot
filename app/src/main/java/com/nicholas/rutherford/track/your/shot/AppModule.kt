@@ -160,11 +160,12 @@ class AppModule {
                 firebaseAuth = get(),
                 createFirebaseLastUpdated = get(),
                 firebaseStorage = get(),
-                firebaseDatabase = get()
+                firebaseDatabase = get(),
+                scope = defaultCoroutineScope
             )
         }
         single<CreateFirebaseLastUpdated> {
-            CreateFirebaseLastUpdatedImpl(firebaseDatabase = get())
+            CreateFirebaseLastUpdatedImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
         single<AuthenticationFirebase> {
             AuthenticationFirebaseImpl(firebaseAuth = get())

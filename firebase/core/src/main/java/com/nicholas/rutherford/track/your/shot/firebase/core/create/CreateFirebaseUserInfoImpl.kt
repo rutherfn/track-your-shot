@@ -8,6 +8,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAut
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.CreateAccountFirebaseRealtimeDatabaseResult
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -20,7 +21,8 @@ class CreateFirebaseUserInfoImpl(
     private val firebaseAuth: FirebaseAuth,
     private val createFirebaseLastUpdated: CreateFirebaseLastUpdated,
     private val firebaseStorage: FirebaseStorage,
-    private val firebaseDatabase: FirebaseDatabase
+    private val firebaseDatabase: FirebaseDatabase,
+    private val scope: CoroutineScope
 ) : CreateFirebaseUserInfo {
 
     override fun attemptToCreateAccountFirebaseAuthResponseFlow(email: String, password: String): Flow<CreateAccountFirebaseAuthResponse> {
@@ -29,24 +31,25 @@ class CreateFirebaseUserInfoImpl(
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         trySend(
-                            CreateAccountFirebaseAuthResponse(
+                            element = CreateAccountFirebaseAuthResponse(
                                 isSuccessful = true,
                                 username = task.result?.additionalUserInfo?.username,
                                 isNewUser = task.result?.additionalUserInfo?.isNewUser,
                                 exception = null
                             )
                         )
-                    } else {
-                        Timber.e(message = "Error(attemptToCreateAccountFirebaseAuthResponseFlow) -> Creating account failed to create in Firebase Authentication")
-                        trySend(
-                            CreateAccountFirebaseAuthResponse(
-                                isSuccessful = false,
-                                username = null,
-                                isNewUser = null,
-                                exception = task.exception
-                            )
-                        )
                     }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(attemptToCreateAccountFirebaseAuthResponseFlow) -> Creating account failed to create in Firebase Authentication, with following stack trace ${exception.stackTrace}")
+                    trySend(
+                        element = CreateAccountFirebaseAuthResponse(
+                            isSuccessful = false,
+                            username = null,
+                            isNewUser = null,
+                            exception = exception
+                        )
+                    )
                 }
             awaitClose()
         }
@@ -66,14 +69,13 @@ class CreateFirebaseUserInfoImpl(
             reference.push().setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val currentDate = Date()
-                        launch { createFirebaseLastUpdated.attemptToCreateLastUpdatedFlow(date = currentDate).collect() }
-                        trySend(Pair(first = task.isSuccessful, second = reference.key))
-                        Timber.log()
-                    } else {
-                        Timber.e(message = "Error(attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow) -> Creating account failed to create in Firebase Realtime Database")
-                        trySend(Pair(first = false, second = null))
+                        scope.launch { createFirebaseLastUpdated.attemptToCreateLastUpdatedFlow(date = Date()).collect() }
+                        trySend(Pair(first = true, second = reference.key))
                     }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow) -> Creating account failed to create in Firebase Realtime Database following stack trace ${exception.stackTrace}")
+                    trySend(Pair(first = false, second = null))
                 }
             awaitClose()
         }
@@ -95,7 +97,13 @@ class CreateFirebaseUserInfoImpl(
 
             firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.PLAYERS}").push().setValue(values)
                 .addOnCompleteListener { task ->
-                    trySend(task.isSuccessful)
+                    if (task.isSuccessful) {
+                        trySend(element = true)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow) -> Creating player failed to create in Firebase Realtime Database with following stack trace - ${exception.stackTrace}")
+                    trySend(element = false)
                 }
             awaitClose()
         }
@@ -103,26 +111,18 @@ class CreateFirebaseUserInfoImpl(
 
     override fun attemptToCreateImageFirebaseStorageResponseFlow(uri: Uri): Flow<String?> {
         return callbackFlow {
-            val storageReference = firebaseStorage.getReference(Constants.IMAGES)
-                .child(System.currentTimeMillis().toString())
+            val storageReference = firebaseStorage.getReference("${Constants.IMAGES}/${System.currentTimeMillis()}")
 
             storageReference.putFile(uri)
-                .continueWithTask { task ->
-                    if (!task.isSuccessful) {
-                        task.exception?.let { throw it }
-                    }
-                    storageReference.downloadUrl
-                }
+                .continueWithTask { storageReference.downloadUrl }
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val downloadUrl = task.result.toString()
-                        trySend(downloadUrl)
-                    } else {
-                        trySend(null)
+                        trySend(element = task.result.toString())
                     }
                 }
-                .addOnFailureListener {
-                    trySend(null)
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(attemptToCreateImageFirebaseStorageResponseFlow) -> Creating image url for player failed to create in Firebase Storage with following stack trace - ${exception.stackTrace}")
+                    trySend(element = null)
                 }
 
             awaitClose()
