@@ -165,7 +165,7 @@ class AppModule {
             )
         }
         single<CreateFirebaseLastUpdated> {
-            CreateFirebaseLastUpdatedImpl(firebaseAuth = get(), firebaseDatabase = get())
+            CreateFirebaseLastUpdatedImpl(firebaseDatabase = get())
         }
         single<AuthenticationFirebase> {
             AuthenticationFirebaseImpl(firebaseAuth = get())
