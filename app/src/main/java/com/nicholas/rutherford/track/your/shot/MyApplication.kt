@@ -3,12 +3,16 @@ package com.nicholas.rutherford.track.your.shot
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+//import timber.log.Timber
 
 open class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
         startKoinOnCreate()
+//        if (BuildConfig.DEBUG) {
+//            Timber.plant(Timber.DebugTree())
+//        }
     }
 
     fun startKoinOnCreate() {

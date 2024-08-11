@@ -37,7 +37,7 @@ class CreateFirebaseUserInfoImpl(
                             )
                         )
                     } else {
-                        Timber.e(message = "Warning(attemptToCreateAccountFirebaseAuthResponseFlow) -> Creating account failed to create in Firebase Authentication")
+                        Timber.e(message = "Error(attemptToCreateAccountFirebaseAuthResponseFlow) -> Creating account failed to create in Firebase Authentication")
                         trySend(
                             CreateAccountFirebaseAuthResponse(
                                 isSuccessful = false,
@@ -58,18 +58,20 @@ class CreateFirebaseUserInfoImpl(
             val values = hashMapOf<String, String>()
 
             val uid = firebaseAuth.currentUser?.uid ?: ""
+            val reference = firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid")
 
             values[Constants.USERNAME] = createAccountResult.username
             values[Constants.EMAIL] = createAccountResult.email
 
-            firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid").push().setValue(values)
+            reference.push().setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val currentDate = Date()
                         launch { createFirebaseLastUpdated.attemptToCreateLastUpdatedFlow(date = currentDate).collect() }
-                        trySend(Pair(first = task.isSuccessful, second = task.))
+                        trySend(Pair(first = task.isSuccessful, second = reference.key))
+                        Timber.log()
                     } else {
-                        Timber.e(message = "Warning(attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow) -> Creating account failed to create in Firebase Realtime Database")
+                        Timber.e(message = "Error(attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow) -> Creating account failed to create in Firebase Realtime Database")
                         trySend(Pair(first = false, second = null))
                     }
                 }
