@@ -75,7 +75,7 @@ class AccountManagerImpl(
                 password = password
             ).collectLatest { isSuccessful ->
                 if (isSuccessful) {
-                    readFirebaseUserInfo.getAccountInfoFlowByEmail(email = email)
+                    readFirebaseUserInfo.getAccountInfoFlow()
                         .collectLatest { accountInfoRealtimeResponse ->
                             accountInfoRealtimeResponse?.let { accountInfo ->
                                 updateActiveUserFromLoggedInUser(email = accountInfo.email, username = accountInfo.userName)
@@ -141,7 +141,7 @@ class AccountManagerImpl(
     }
 
     internal suspend fun updateActiveUserFromLoggedInUser(email: String, username: String) {
-        readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email).collectLatest { key ->
+        readFirebaseUserInfo.getAccountInfoKeyFlow().collectLatest { key ->
             key?.let { firebaseAccountInfoKey ->
                 checkForActiveUserAndPlayers()
 
