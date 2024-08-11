@@ -5,6 +5,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.nicholas.rutherford.track.your.shot.firebase.TestCreateAccountFirebaseAuthResponse
@@ -130,7 +131,11 @@ class CreateFirebaseUserInfoImplTest {
         @Test
         fun `when add on complete listener is executed should set flow to true and value Pair when isSuccessful returns back true`() =
             runTest {
+                val uid = "uid"
+                val path = "${Constants.USERS_PATH}/$uid"
+
                 val mockTaskVoidResult = mockk<Task<Void>>()
+                val mockFirebaseUser = mockk<FirebaseUser>()
                 val slot = slot<OnCompleteListener<Void>>()
 
                 val values = hashMapOf<String, String>()
@@ -139,20 +144,22 @@ class CreateFirebaseUserInfoImplTest {
                 values[Constants.EMAIL] = createAccountResult.email
 
                 mockkStatic(Tasks::class)
+                mockkStatic(FirebaseUser::class)
 
                 every { mockTaskVoidResult.isSuccessful } returns true
 
+                every { mockFirebaseUser.uid } returns uid
+                every { firebaseAuth.currentUser } returns mockFirebaseUser
+
                 every {
-                    firebaseDatabase.getReference(Constants.USERS_PATH)
-                        .child(Constants.ACCOUNT_INFO).push().setValue(values)
+                    firebaseDatabase.getReference(path).push().setValue(values)
                         .addOnCompleteListener(capture(slot))
                 } answers {
                     slot.captured.onComplete(mockTaskVoidResult)
                     mockTaskVoidResult
                 }
 
-                val reference = firebaseDatabase.getReference(Constants.USERS_PATH)
-                    .child(Constants.ACCOUNT_INFO).push()
+                val reference = firebaseDatabase.getReference(path).push()
 
                 every { reference.setValue(values, any()) }
 
@@ -162,13 +169,17 @@ class CreateFirebaseUserInfoImplTest {
                         email = createAccountResult.email
                     ).first()
 
-                Assertions.assertEquals(Pair(true, reference.key), value)
+                Assertions.assertEquals(Pair(true, uid), value)
             }
 
         @Test
         fun `when add on complete listener is executed should set flow to false and null Pair when isSuccessful returns back false`() =
             runTest {
+                val uid = "uid"
+                val path = "${Constants.USERS_PATH}/$uid"
+
                 val mockTaskVoidResult = mockk<Task<Void>>()
+                val mockFirebaseUser = mockk<FirebaseUser>()
                 val slot = slot<OnCompleteListener<Void>>()
 
                 val values = hashMapOf<String, String>()
@@ -177,12 +188,15 @@ class CreateFirebaseUserInfoImplTest {
                 values[Constants.EMAIL] = createAccountResult.email
 
                 mockkStatic(Tasks::class)
+                mockkStatic(FirebaseUser::class)
+
+                every { mockFirebaseUser.uid } returns uid
+                every { firebaseAuth.currentUser } returns mockFirebaseUser
 
                 every { mockTaskVoidResult.isSuccessful } returns false
 
                 every {
-                    firebaseDatabase.getReference(Constants.USERS_PATH)
-                        .child(Constants.ACCOUNT_INFO).push().setValue(values)
+                    firebaseDatabase.getReference(path).push().setValue(values)
                         .addOnCompleteListener(capture(slot))
                 } answers {
                     slot.captured.onComplete(mockTaskVoidResult)
@@ -204,7 +218,11 @@ class CreateFirebaseUserInfoImplTest {
 
         @Test
         fun `when add on complete listener is executed should set flow to false when isSuccessful returns back false`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.PLAYERS}"
+
             val mockTaskVoidResult = mockk<Task<Void>>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
             val slot = slot<OnCompleteListener<Void>>()
 
             val values = hashMapOf<String, Any>()
@@ -216,14 +234,15 @@ class CreateFirebaseUserInfoImplTest {
             values[Constants.SHOTS_LOGGED] = playerInfoRealtimeResponse.shotsLogged
 
             mockkStatic(Tasks::class)
+            mockkStatic(FirebaseUser::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
 
             every { mockTaskVoidResult.isSuccessful } returns false
 
             every {
-                firebaseDatabase.getReference(Constants.USERS_PATH)
-                    .child(Constants.ACCOUNT_INFO)
-                    .child(key)
-                    .child(Constants.PLAYERS).push().setValue(values).addOnCompleteListener(capture(slot))
+                firebaseDatabase.getReference(path).push().setValue(values).addOnCompleteListener(capture(slot))
             } answers {
                 slot.captured.onComplete(mockTaskVoidResult)
                 mockTaskVoidResult
@@ -239,7 +258,11 @@ class CreateFirebaseUserInfoImplTest {
 
         @Test
         fun `when add on complete listener is executed should set flow to true when isSuccessful returns back true`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.PLAYERS}"
+
             val mockTaskVoidResult = mockk<Task<Void>>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
             val slot = slot<OnCompleteListener<Void>>()
 
             val values = hashMapOf<String, Any>()
@@ -251,14 +274,15 @@ class CreateFirebaseUserInfoImplTest {
             values[Constants.SHOTS_LOGGED] = playerInfoRealtimeResponse.shotsLogged
 
             mockkStatic(Tasks::class)
+            mockkStatic(FirebaseUser::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
 
             every { mockTaskVoidResult.isSuccessful } returns true
 
             every {
-                firebaseDatabase.getReference(Constants.USERS_PATH)
-                    .child(Constants.ACCOUNT_INFO)
-                    .child(key)
-                    .child(Constants.PLAYERS).push().setValue(values).addOnCompleteListener(capture(slot))
+                firebaseDatabase.getReference(path).push().setValue(values).addOnCompleteListener(capture(slot))
             } answers {
                 slot.captured.onComplete(mockTaskVoidResult)
                 mockTaskVoidResult

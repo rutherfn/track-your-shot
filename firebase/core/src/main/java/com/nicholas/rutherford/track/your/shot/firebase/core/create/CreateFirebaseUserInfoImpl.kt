@@ -20,14 +20,11 @@ class CreateFirebaseUserInfoImpl(
     private val firebaseAuth: FirebaseAuth,
     private val createFirebaseLastUpdated: CreateFirebaseLastUpdated,
     private val firebaseStorage: FirebaseStorage,
-    firebaseDatabase: FirebaseDatabase
+    private val firebaseDatabase: FirebaseDatabase
 ) : CreateFirebaseUserInfo {
-
-    private val userReference = firebaseDatabase.getReference(Constants.USERS_PATH)
 
     override fun attemptToCreateAccountFirebaseAuthResponseFlow(email: String, password: String): Flow<CreateAccountFirebaseAuthResponse> {
         return callbackFlow {
-            firebaseAuth
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -40,7 +37,7 @@ class CreateFirebaseUserInfoImpl(
                             )
                         )
                     } else {
-                        Timber.w(message = "Warning(attemptToCreateAccountFirebaseAuthResponseFlow) -> Creating account failed to create in Firebase Authentication")
+                        Timber.e(message = "Warning(attemptToCreateAccountFirebaseAuthResponseFlow) -> Creating account failed to create in Firebase Authentication")
                         trySend(
                             CreateAccountFirebaseAuthResponse(
                                 isSuccessful = false,
@@ -60,19 +57,19 @@ class CreateFirebaseUserInfoImpl(
             val createAccountResult = CreateAccountFirebaseRealtimeDatabaseResult(username = userName, email = email)
             val values = hashMapOf<String, String>()
 
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+
             values[Constants.USERNAME] = createAccountResult.username
             values[Constants.EMAIL] = createAccountResult.email
 
-            val accountInfoReference = userReference.child(Constants.ACCOUNT_INFO).push()
-
-            accountInfoReference.setValue(values)
+            firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid").push().setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val currentDate = Date()
                         launch { createFirebaseLastUpdated.attemptToCreateLastUpdatedFlow(date = currentDate).collect() }
-                        trySend(Pair(first = task.isSuccessful, second = accountInfoReference.key))
+                        trySend(Pair(first = task.isSuccessful, second = task.))
                     } else {
-                        Timber.w(message = "Warning(attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow) -> Creating account failed to create in Firebase Realtime Database")
+                        Timber.e(message = "Warning(attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow) -> Creating account failed to create in Firebase Realtime Database")
                         trySend(Pair(first = false, second = null))
                     }
                 }
@@ -85,13 +82,7 @@ class CreateFirebaseUserInfoImpl(
         playerInfoRealtimeResponse: PlayerInfoRealtimeResponse
     ): Flow<Boolean> {
         return callbackFlow {
-            val userAccountInfoDatabaseReference =
-                userReference
-                    .child(Constants.ACCOUNT_INFO)
-                    .child(key)
-                    .child(Constants.PLAYERS)
-
-            val newPlayerReference = userAccountInfoDatabaseReference.push()
+            val uid = firebaseAuth.currentUser?.uid ?: ""
             val values = hashMapOf<String, Any>()
 
             values[Constants.FIRST_NAME] = playerInfoRealtimeResponse.firstName
@@ -100,7 +91,7 @@ class CreateFirebaseUserInfoImpl(
             values[Constants.IMAGE_URL] = playerInfoRealtimeResponse.imageUrl
             values[Constants.SHOTS_LOGGED] = playerInfoRealtimeResponse.shotsLogged
 
-            newPlayerReference.setValue(values)
+            firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.PLAYERS}").push().setValue(values)
                 .addOnCompleteListener { task ->
                     trySend(task.isSuccessful)
                 }
