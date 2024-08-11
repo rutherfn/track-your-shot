@@ -35,21 +35,17 @@ class ReadFirebaseUserInfoImpl(
 
     override fun getAccountInfoFlowByEmail(email: String): Flow<AccountInfoRealtimeResponse?> {
         return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
             var accountInfoRealTimeResponse: AccountInfoRealtimeResponse? = null
 
             firebaseDatabase.getReference(Constants.USERS)
-                .child(Constants.ACCOUNT_INFO)
-                .orderByChild(Constants.EMAIL)
-                .equalTo(email)
+                .child(uid)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
-                            if (snapshot.children.count() == 1) {
-                                snapshot.children.map { child ->
-                                    accountInfoRealTimeResponse = child.getValue(
-                                        AccountInfoRealtimeResponse::class.java
-                                    )
-                                }
+                            if (snapshot.children.count() == 2) {
+                                val child = snapshot.children.first()
+                                accountInfoRealTimeResponse = child.getValue(AccountInfoRealtimeResponse::class.java)
                                 trySend(element = accountInfoRealTimeResponse)
                             } else {
                                 Timber.w(message = "Error(getAccountInfoFlowByEmail) -> Current snapshot contains the same email more then once")
@@ -70,37 +66,6 @@ class ReadFirebaseUserInfoImpl(
         }
     }
 
-    override fun getAccountInfoListFlow(): Flow<List<AccountInfoRealtimeResponse>?> {
-        return callbackFlow {
-            val accountInfoRealTimeResponseArrayList: ArrayList<AccountInfoRealtimeResponse> = arrayListOf()
-
-            firebaseDatabase.getReference(Constants.USERS)
-                .child(Constants.ACCOUNT_INFO)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.exists()) {
-                            snapshot.children.map { child ->
-                                child.getValue(AccountInfoRealtimeResponse::class.java)
-                                    ?.let { accountInfoRealTimeResponse ->
-                                        accountInfoRealTimeResponseArrayList.add(accountInfoRealTimeResponse)
-                                    }
-                            }
-                            trySend(element = accountInfoRealTimeResponseArrayList.toList())
-                        } else {
-                            Timber.e(message = "Error(getAccountInfoListFlow) -> Current snapshot does not exist")
-                            trySend(element = null)
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Timber.e(message = "Error(getAccountInfoListFlow) -> Database error when attempting to get account info")
-                        trySend(element = null)
-                    }
-                })
-            awaitClose()
-        }
-    }
-
     override fun getLastUpdatedDateFlow(): Flow<Date?> {
         return callbackFlow {
             firebaseDatabase.getReference(Constants.CONTENT_LAST_UPDATED_PATH)
@@ -114,7 +79,7 @@ class ReadFirebaseUserInfoImpl(
                                 val lastUpdatedDate = Date(lastUpdatedValue)
                                 trySend(lastUpdatedDate)
                             } else {
-                                Timber.e(message = "Error(getLastUpdatedDateFlow) -> Value is null")
+                                Timber.e(message = "Error(getLastUpdatedDateFlow) -> Value we are reading from is currently null")
                                 trySend(element = null)
                             }
                         } else {
@@ -124,7 +89,7 @@ class ReadFirebaseUserInfoImpl(
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        Timber.e(message = "Error(getLastUpdatedDateFlow) -> Database error when attempting to get updated date info")
+                        Timber.e(message = "Error(getLastUpdatedDateFlow) -> Database error when attempting to get updated date info ${error.message}")
                         trySend(element = null)
                     }
                 })
@@ -134,10 +99,8 @@ class ReadFirebaseUserInfoImpl(
 
     override fun getAccountInfoKeyFlowByEmail(email: String): Flow<String?> {
         return callbackFlow {
-            firebaseDatabase.getReference(Constants.USERS)
-                .child(Constants.ACCOUNT_INFO)
-                .orderByChild(Constants.EMAIL)
-                .equalTo(email)
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            firebaseDatabase.getReference("${Constants.USERS}/$uid")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
@@ -164,12 +127,12 @@ class ReadFirebaseUserInfoImpl(
 
     override fun getPlayerInfoList(accountKey: String): Flow<List<PlayerInfoRealtimeWithKeyResponse>> {
         return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val path = "${Constants.USERS}/$uid/${Constants.PLAYERS}"
+
             val playerInfoRealtimeWithKeyResponseArrayList: ArrayList<PlayerInfoRealtimeWithKeyResponse> = arrayListOf()
 
-            firebaseDatabase.getReference(Constants.USERS)
-                .child(Constants.ACCOUNT_INFO)
-                .child(accountKey)
-                .child(Constants.PLAYERS)
+            firebaseDatabase.getReference(path)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
@@ -207,14 +170,16 @@ class ReadFirebaseUserInfoImpl(
     override fun isEmailVerifiedFlow(): Flow<Boolean> {
         return callbackFlow {
             firebaseAuth.currentUser?.let { firebaseUser ->
-                firebaseUser.reload().addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        trySend(element = firebaseUser.isEmailVerified)
-                    } else {
-                        Timber.e(message = "Error(isEmailVerifiedFlow) -> Add on complete listener was not successful")
+                firebaseUser.reload()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            trySend(element = firebaseUser.isEmailVerified)
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Timber.e(message = "Error(isEmailVerifiedFlow) -> We were not able to get info on if the email has been verified. Returned stack trace ${exception.stackTrace}")
                         trySend(element = false)
                     }
-                }
             } ?: run {
                 Timber.e(message = "Error(isEmailVerifiedFlow) -> Current user is set to null")
                 trySend(element = false)

@@ -1237,12 +1237,9 @@ class CreateEditPlayerViewModelTest {
 
         @Test
         fun `when key is not empty and attempt to create firebase response flow returns a boolean should call alert`() = runTest {
-            val key = "key1"
-
             coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(firebaseAccountInfoKey = key)
             coEvery {
                 createFirebaseUserInfo.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
-                    key = key,
                     playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
                         firstName = defaultState.firstName,
                         lastName = defaultState.lastName,

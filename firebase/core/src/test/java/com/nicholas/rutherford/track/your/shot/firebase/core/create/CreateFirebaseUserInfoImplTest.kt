@@ -271,12 +271,9 @@ class CreateFirebaseUserInfoImplTest {
                 mockTaskVoidResult
             }
 
-            val value = createFirebaseUserInfoImpl.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
-                key = key,
-                playerInfoRealtimeResponse = playerInfoRealtimeResponse
-            ).first()
+            val value = createFirebaseUserInfoImpl.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(playerInfoRealtimeResponse = playerInfoRealtimeResponse).first()
 
-            Assertions.assertEquals(false, value)
+            Assertions.assertEquals(Pair(false, null), value)
         }
 
         @Test
@@ -290,6 +287,8 @@ class CreateFirebaseUserInfoImplTest {
             val failureListenerSlot = slot<OnFailureListener>()
 
             val values = hashMapOf<String, Any>()
+
+            val reference = firebaseDatabase.getReference(path)
 
             values[Constants.FIRST_NAME] = playerInfoRealtimeResponse.firstName
             values[Constants.LAST_NAME] = playerInfoRealtimeResponse.lastName
@@ -305,8 +304,10 @@ class CreateFirebaseUserInfoImplTest {
 
             every { mockTaskVoidResult.isSuccessful } returns true
 
+            every { reference.key } returns key
+
             every {
-                firebaseDatabase.getReference(path).push().setValue(values)
+                reference.push().setValue(values)
                     .addOnCompleteListener(capture(completeListenerSlot))
                     .addOnFailureListener(capture(failureListenerSlot))
             } answers {
@@ -314,12 +315,9 @@ class CreateFirebaseUserInfoImplTest {
                 mockTaskVoidResult
             }
 
-            val value = createFirebaseUserInfoImpl.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
-                key = key,
-                playerInfoRealtimeResponse = playerInfoRealtimeResponse
-            ).first()
+            val value = createFirebaseUserInfoImpl.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(playerInfoRealtimeResponse = playerInfoRealtimeResponse).first()
 
-            Assertions.assertEquals(true, value)
+            Assertions.assertEquals(Pair(true, key), value)
         }
     }
 }

@@ -48,6 +48,7 @@ class AccountManagerImpl(
 
     private val _loggedInDeclaredShotListStateFlow: MutableStateFlow<List<DeclaredShot>> = MutableStateFlow(value = emptyList())
     override val loggedInDeclaredShotListStateFlow: StateFlow<List<DeclaredShot>> = _loggedInDeclaredShotListStateFlow.asStateFlow()
+
     override fun logout() {
         scope.launch {
             navigator.progress(progressAction = Progress())

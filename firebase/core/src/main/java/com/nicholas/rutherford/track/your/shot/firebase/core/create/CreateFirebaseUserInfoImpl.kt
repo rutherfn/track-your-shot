@@ -81,12 +81,11 @@ class CreateFirebaseUserInfoImpl(
         }
     }
 
-    override fun attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
-        key: String,
-        playerInfoRealtimeResponse: PlayerInfoRealtimeResponse
-    ): Flow<Boolean> {
+    override fun attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(playerInfoRealtimeResponse: PlayerInfoRealtimeResponse): Flow<Pair<Boolean, String?>> {
         return callbackFlow {
             val uid = firebaseAuth.currentUser?.uid ?: ""
+            val reference = firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.PLAYERS}")
+
             val values = hashMapOf<String, Any>()
 
             values[Constants.FIRST_NAME] = playerInfoRealtimeResponse.firstName
@@ -95,15 +94,15 @@ class CreateFirebaseUserInfoImpl(
             values[Constants.IMAGE_URL] = playerInfoRealtimeResponse.imageUrl
             values[Constants.SHOTS_LOGGED] = playerInfoRealtimeResponse.shotsLogged
 
-            firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.PLAYERS}").push().setValue(values)
+            reference.push().setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        trySend(element = true)
+                        trySend(element = Pair(true, reference.key))
                     }
                 }
                 .addOnFailureListener { exception ->
                     Timber.e(message = "Error(attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow) -> Creating player failed to create in Firebase Realtime Database with following stack trace - ${exception.stackTrace}")
-                    trySend(element = false)
+                    trySend(element = Pair(false, null))
                 }
             awaitClose()
         }

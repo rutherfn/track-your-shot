@@ -1,9 +1,11 @@
 package com.nicholas.rutherford.track.your.shot.firebase.core.read
 
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -73,80 +75,14 @@ class ReadFirebaseUserInfoImplTest {
     }
 
     @Nested
-    inner class GetAccountInfoListFlow {
-
-        @Test
-        fun `when onCancelled is called should return null`() = runTest {
-            val mockDatabaseError = mockk<DatabaseError>()
-            val slot = slot<ValueEventListener>()
-
-            every {
-                firebaseDatabase.getReference(Constants.USERS)
-                    .child(Constants.ACCOUNT_INFO)
-                    .addListenerForSingleValueEvent(capture(slot))
-            } answers {
-                slot.captured.onCancelled(mockDatabaseError)
-            }
-
-            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoListFlow().first())
-        }
-
-        @Test
-        fun `when onDataChange is called with snapshot exists return back as false should return null`() = runTest {
-            val mockDataSnapshot = mockk<DataSnapshot>()
-            val mockDataSnapshotList = listOf(mockDataSnapshot)
-            val slot = slot<ValueEventListener>()
-
-            every { mockDataSnapshot.exists() } returns false
-            every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
-            every { mockDataSnapshot.getValue(AccountInfoRealtimeResponse::class.java) } returns accountInfoRealtimeResponse
-            every { mockDataSnapshot.children } returns mockDataSnapshotList
-
-            mockkStatic(DataSnapshot::class)
-
-            every {
-                firebaseDatabase.getReference(Constants.USERS)
-                    .child(Constants.ACCOUNT_INFO)
-                    .addListenerForSingleValueEvent(capture(slot))
-            } answers {
-                slot.captured.onDataChange(mockDataSnapshot)
-            }
-
-            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoListFlow().first())
-        }
-
-        @Test
-        fun `when onDataChange is called with snapshot exists return back as true with snapshot child data should return info`() = runTest {
-            val mockDataSnapshot = mockk<DataSnapshot>()
-            val mockDataSnapshotList = listOf(mockDataSnapshot)
-            val slot = slot<ValueEventListener>()
-
-            every { mockDataSnapshot.exists() } returns true
-            every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
-            every { mockDataSnapshot.getValue(AccountInfoRealtimeResponse::class.java) } returns accountInfoRealtimeResponse
-            every { mockDataSnapshot.children } returns mockDataSnapshotList
-
-            mockkStatic(DataSnapshot::class)
-
-            every {
-                firebaseDatabase.getReference(Constants.USERS)
-                    .child(Constants.ACCOUNT_INFO)
-                    .addListenerForSingleValueEvent(capture(slot))
-            } answers {
-                slot.captured.onDataChange(mockDataSnapshot)
-            }
-
-            Assertions.assertEquals(listOf(accountInfoRealtimeResponse), readFirebaseUserInfoImpl.getAccountInfoListFlow().first())
-        }
-    }
-
-    @Nested
     inner class GetLastUpdatedDateFlow {
 
         @Test
         fun `when onCancelled is called should return null`() = runTest {
             val mockDatabaseError = mockk<DatabaseError>()
             val slot = slot<ValueEventListener>()
+
+            every { mockDatabaseError.message } returns "Message"
 
             every {
                 firebaseDatabase.getReference(Constants.CONTENT_LAST_UPDATED_PATH)
@@ -447,15 +383,20 @@ class ReadFirebaseUserInfoImplTest {
 
         @Test
         fun `when onCancelled is called should return empty list`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS}/$uid/${Constants.PLAYERS}"
+
             val mockDatabaseError = mockk<DatabaseError>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
             val slot = slot<ValueEventListener>()
 
+            mockkStatic(FirebaseUser::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
             every {
-                firebaseDatabase.getReference(Constants.USERS)
-                    .child(Constants.ACCOUNT_INFO)
-                    .child(firebaseAccountKey)
-                    .child(Constants.PLAYERS)
-                    .addListenerForSingleValueEvent(capture(slot))
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
             } answers {
                 slot.captured.onCancelled(mockDatabaseError)
             }
@@ -465,19 +406,23 @@ class ReadFirebaseUserInfoImplTest {
 
         @Test
         fun `when on data change is called but snapshot does not exist should return empty list`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS}/$uid/${Constants.PLAYERS}"
+
             val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
             val slot = slot<ValueEventListener>()
 
             every { mockDataSnapshot.exists() } returns false
 
+            mockkStatic(FirebaseUser::class)
             mockkStatic(DataSnapshot::class)
 
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
             every {
-                firebaseDatabase.getReference(Constants.USERS)
-                    .child(Constants.ACCOUNT_INFO)
-                    .child(firebaseAccountKey)
-                    .child(Constants.PLAYERS)
-                    .addListenerForSingleValueEvent(capture(slot))
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
             } answers {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
@@ -487,20 +432,24 @@ class ReadFirebaseUserInfoImplTest {
 
         @Test
         fun `when snapshot exists but children count is zero should return empty list`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS}/$uid/${Constants.PLAYERS}"
+
             val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
             val slot = slot<ValueEventListener>()
 
             every { mockDataSnapshot.exists() } returns true
             every { mockDataSnapshot.childrenCount } returns 0
 
+            mockkStatic(FirebaseUser::class)
             mockkStatic(DataSnapshot::class)
 
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
             every {
-                firebaseDatabase.getReference(Constants.USERS)
-                    .child(Constants.ACCOUNT_INFO)
-                    .child(firebaseAccountKey)
-                    .child(Constants.PLAYERS)
-                    .addListenerForSingleValueEvent(capture(slot))
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
             } answers {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
@@ -510,7 +459,11 @@ class ReadFirebaseUserInfoImplTest {
 
         @Test
         fun `when snapshot exists and has children should return list of player info`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS}/$uid/${Constants.PLAYERS}"
+
             val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
             val slot = slot<ValueEventListener>()
 
             val playerInfoRealtimeWithKeyResponseList = listOf(
@@ -528,14 +481,14 @@ class ReadFirebaseUserInfoImplTest {
                 mockChildSnapshot
             }
 
+            mockkStatic(FirebaseUser::class)
             mockkStatic(DataSnapshot::class)
 
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
             every {
-                firebaseDatabase.getReference(Constants.USERS)
-                    .child(Constants.ACCOUNT_INFO)
-                    .child(firebaseAccountKey)
-                    .child(Constants.PLAYERS)
-                    .addListenerForSingleValueEvent(capture(slot))
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
             } answers {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
@@ -556,34 +509,22 @@ class ReadFirebaseUserInfoImplTest {
         }
 
         @Test
-        fun `when currentUser is not null but complete listener is not successful should be set to false`() = runTest {
+        fun `when currentUser is not null and complete listener is successful with email verified set to false should be set to false`() = runTest {
             val mockTaskReloadResult = mockk<Task<Void>>()
-            val slot = slot<OnCompleteListener<Void>>()
-
-            every { mockTaskReloadResult.isSuccessful } returns false
-
-            mockkStatic(Tasks::class)
-
-            every { firebaseAuth.currentUser!!.reload().addOnCompleteListener(capture(slot)) } answers {
-                slot.captured.onComplete(mockTaskReloadResult)
-                mockTaskReloadResult
-            }
-
-            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
-        }
-
-        @Test
-        fun `when currentUser is not null but complete listener is successful with email verified set to false should be set to false`() = runTest {
-            val mockTaskReloadResult = mockk<Task<Void>>()
-            val slot = slot<OnCompleteListener<Void>>()
+            val completeListenerSlot = slot<OnCompleteListener<Void>>()
+            val failureListenerSlot = slot<OnFailureListener>()
 
             every { firebaseAuth.currentUser!!.isEmailVerified } returns false
             every { mockTaskReloadResult.isSuccessful } returns true
 
             mockkStatic(Tasks::class)
 
-            every { firebaseAuth.currentUser!!.reload().addOnCompleteListener(capture(slot)) } answers {
-                slot.captured.onComplete(mockTaskReloadResult)
+            every {
+                firebaseAuth.currentUser!!.reload()
+                    .addOnCompleteListener(capture(completeListenerSlot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                completeListenerSlot.captured.onComplete(mockTaskReloadResult)
                 mockTaskReloadResult
             }
 
@@ -593,19 +534,46 @@ class ReadFirebaseUserInfoImplTest {
         @Test
         fun `when currentUser is not null but complete listener is successful with email verified set to true should be set to true`() = runTest {
             val mockTaskReloadResult = mockk<Task<Void>>()
-            val slot = slot<OnCompleteListener<Void>>()
+            val completeListenerSlot = slot<OnCompleteListener<Void>>()
+            val failureListenerSlot = slot<OnFailureListener>()
 
             every { firebaseAuth.currentUser!!.isEmailVerified } returns true
             every { mockTaskReloadResult.isSuccessful } returns true
 
             mockkStatic(Tasks::class)
 
-            every { firebaseAuth.currentUser!!.reload().addOnCompleteListener(capture(slot)) } answers {
-                slot.captured.onComplete(mockTaskReloadResult)
+            every {
+                firebaseAuth.currentUser!!.reload()
+                    .addOnCompleteListener(capture(completeListenerSlot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                completeListenerSlot.captured.onComplete(mockTaskReloadResult)
                 mockTaskReloadResult
             }
 
             Assertions.assertEquals(true, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
+        }
+
+        @Test
+        fun `when currentUser is not null but failure listener is executed should return false`() = runTest {
+            val mockTaskReloadResult = mockk<Task<Void>>()
+            val completeListenerSlot = slot<OnCompleteListener<Void>>()
+            val failureListenerSlot = slot<OnFailureListener>()
+
+            val mockException = Exception("Simulated failure")
+
+            every { firebaseAuth.currentUser!!.isEmailVerified } returns true
+
+            every {
+                firebaseAuth.currentUser!!.reload()
+                    .addOnCompleteListener(capture(completeListenerSlot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                failureListenerSlot.captured.onFailure(mockException)
+                mockTaskReloadResult
+            }
+
+            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
         }
     }
 
