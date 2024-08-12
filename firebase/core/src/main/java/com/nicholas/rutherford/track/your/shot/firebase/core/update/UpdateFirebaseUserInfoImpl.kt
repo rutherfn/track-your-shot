@@ -15,25 +15,24 @@ class UpdateFirebaseUserInfoImpl(
 ) : UpdateFirebaseUserInfo {
 
     override fun updatePlayer(playerInfoRealtimeWithKeyResponse: PlayerInfoRealtimeWithKeyResponse): Flow<Boolean> {
-        val uid = firebaseAuth.currentUser?.uid ?: ""
-        val path = "${Constants.USERS}/$uid/${Constants.PLAYERS}/${playerInfoRealtimeWithKeyResponse.playerFirebaseKey}"
-        val playerDataToUpdate =
-            mapOf(
-                Constants.FIRST_NAME to playerInfoRealtimeWithKeyResponse.playerInfo.firstName,
-                Constants.LAST_NAME to playerInfoRealtimeWithKeyResponse.playerInfo.lastName,
-                Constants.IMAGE_URL to playerInfoRealtimeWithKeyResponse.playerInfo.imageUrl,
-                Constants.POSITION_VALUE to playerInfoRealtimeWithKeyResponse.playerInfo.positionValue,
-                Constants.SHOTS_LOGGED to playerInfoRealtimeWithKeyResponse.playerInfo.shotsLogged
-            )
         return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val path = "${Constants.USERS}/$uid/${Constants.PLAYERS}/${playerInfoRealtimeWithKeyResponse.playerFirebaseKey}"
+
+            val playerDataToUpdate =
+                mapOf(
+                    Constants.FIRST_NAME to playerInfoRealtimeWithKeyResponse.playerInfo.firstName,
+                    Constants.LAST_NAME to playerInfoRealtimeWithKeyResponse.playerInfo.lastName,
+                    Constants.IMAGE_URL to playerInfoRealtimeWithKeyResponse.playerInfo.imageUrl,
+                    Constants.POSITION_VALUE to playerInfoRealtimeWithKeyResponse.playerInfo.positionValue,
+                    Constants.SHOTS_LOGGED to playerInfoRealtimeWithKeyResponse.playerInfo.shotsLogged
+                )
+
             firebaseDatabase.getReference(path)
                 .updateChildren(playerDataToUpdate)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         trySend(element = true)
-                    } else {
-                        Timber.w(message = "Warning(updatePlayer) -> Was not able to update current player from given account.")
-                        trySend(element = false)
                     }
                 }
                 .addOnFailureListener { exception ->
