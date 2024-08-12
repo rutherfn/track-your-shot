@@ -17,11 +17,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.slot
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -32,12 +28,6 @@ class CreateFirebaseUserInfoImplTest {
 
     private lateinit var createFirebaseUserInfoImpl: CreateFirebaseUserInfoImpl
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private val testDispatcher = UnconfinedTestDispatcher()
-
-    private val scope = CoroutineScope(SupervisorJob() + testDispatcher)
-
-    private val createFirebaseLastUpdated = mockk<CreateFirebaseLastUpdated>(relaxed = true)
     private val firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
     private val firebaseDatabase = mockk<FirebaseDatabase>(relaxed = true)
     private val firebaseStorage = mockk<FirebaseStorage>(relaxed = true)
@@ -55,10 +45,8 @@ class CreateFirebaseUserInfoImplTest {
     fun beforeEach() {
         createFirebaseUserInfoImpl = CreateFirebaseUserInfoImpl(
             firebaseAuth = firebaseAuth,
-            createFirebaseLastUpdated = createFirebaseLastUpdated,
             firebaseDatabase = firebaseDatabase,
-            firebaseStorage = firebaseStorage,
-            scope = scope
+            firebaseStorage = firebaseStorage
         )
     }
 

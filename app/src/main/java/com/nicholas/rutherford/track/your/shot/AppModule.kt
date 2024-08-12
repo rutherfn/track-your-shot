@@ -56,8 +56,6 @@ import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationIm
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson.DeclaredShotsJson
 import com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson.DeclaredShotsJsonImpl
-import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseLastUpdated
-import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseLastUpdatedImpl
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
@@ -159,14 +157,9 @@ class AppModule {
         single<CreateFirebaseUserInfo> {
             CreateFirebaseUserInfoImpl(
                 firebaseAuth = get(),
-                createFirebaseLastUpdated = get(),
                 firebaseStorage = get(),
-                firebaseDatabase = get(),
-                scope = defaultCoroutineScope
+                firebaseDatabase = get()
             )
-        }
-        single<CreateFirebaseLastUpdated> {
-            CreateFirebaseLastUpdatedImpl(firebaseDatabase = get())
         }
         single<AuthenticationFirebase> {
             AuthenticationFirebaseImpl(firebaseAuth = get())

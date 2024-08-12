@@ -8,21 +8,15 @@ import com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAut
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.CreateAccountFirebaseRealtimeDatabaseResult
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.Date
 
 class CreateFirebaseUserInfoImpl(
     private val firebaseAuth: FirebaseAuth,
-    private val createFirebaseLastUpdated: CreateFirebaseLastUpdated,
     private val firebaseStorage: FirebaseStorage,
-    private val firebaseDatabase: FirebaseDatabase,
-    private val scope: CoroutineScope
+    private val firebaseDatabase: FirebaseDatabase
 ) : CreateFirebaseUserInfo {
 
     override fun attemptToCreateAccountFirebaseAuthResponseFlow(email: String, password: String): Flow<CreateAccountFirebaseAuthResponse> {
@@ -69,7 +63,6 @@ class CreateFirebaseUserInfoImpl(
             reference.push().setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        scope.launch { createFirebaseLastUpdated.attemptToCreateLastUpdatedFlow(date = Date()).collect() }
                         trySend(Pair(first = true, second = reference.key))
                     }
                 }
