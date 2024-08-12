@@ -486,7 +486,6 @@ class CreateEditPlayerViewModel(
 
                 if (key.isNotEmpty() && playerKey.isNotEmpty()) {
                     updateFirebaseUserInfo.updatePlayer(
-                        accountKey = key,
                         playerInfoRealtimeWithKeyResponse = PlayerInfoRealtimeWithKeyResponse(
                             playerFirebaseKey = playerKey,
                             playerInfo = PlayerInfoRealtimeResponse(

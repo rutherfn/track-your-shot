@@ -88,6 +88,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
+
 class AppModule {
     private val defaultCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -177,10 +178,10 @@ class AppModule {
             ReadFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
         single<UpdateFirebaseUserInfo> {
-            UpdateFirebaseUserInfoImpl(firebaseDatabase = get())
+            UpdateFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
         single<DeleteFirebaseUserInfo> {
-            DeleteFirebaseUserInfoImpl(firebaseDatabase = get())
+            DeleteFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
         single<Network> {
             NetworkImpl()

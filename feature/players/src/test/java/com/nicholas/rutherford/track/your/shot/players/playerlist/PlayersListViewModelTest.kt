@@ -504,7 +504,7 @@ class PlayersListViewModelTest {
             )
             coEvery { network.isDeviceConnectedToInternet() } returns true
             coEvery { activeUserRepository.fetchActiveUser() } returns user
-            coEvery { deleteFirebaseUserInfo.deletePlayer(user.firebaseAccountInfoKey!!, player.firebaseKey) } returns flowOf(false)
+            coEvery { deleteFirebaseUserInfo.deletePlayer(player.firebaseKey) } returns flowOf(false)
 
             playersListViewModel.deletePlayer(player = player)
 
@@ -536,7 +536,7 @@ class PlayersListViewModelTest {
 
             coEvery { network.isDeviceConnectedToInternet() } returns true
             coEvery { activeUserRepository.fetchActiveUser() } returns user
-            coEvery { deleteFirebaseUserInfo.deletePlayer(user.firebaseAccountInfoKey!!, player.firebaseKey) } returns flowOf(true)
+            coEvery { deleteFirebaseUserInfo.deletePlayer(player.firebaseKey) } returns flowOf(true)
 
             playersListViewModel.deletePlayer(player = player)
 

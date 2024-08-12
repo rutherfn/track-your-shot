@@ -133,12 +133,7 @@ class PlayersListViewModel(
 
     internal suspend fun deletePlayer(player: Player) {
         if (network.isDeviceConnectedToInternet()) {
-            activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey?.let { accountKey ->
-                deleteFirebaseUserInfo.deletePlayer(
-                    accountKey = accountKey,
-                    playerKey = player.firebaseKey
-                )
-                    .collectLatest { isSuccessful ->
+                deleteFirebaseUserInfo.deletePlayer(playerKey = player.firebaseKey).collectLatest { isSuccessful ->
                         if (isSuccessful) {
                             playerRepository.deletePlayerByName(
                                 firstName = player.firstName,
@@ -152,10 +147,6 @@ class PlayersListViewModel(
                             navigation.alert(alert = unableToDeletePlayerAlert())
                         }
                     }
-            } ?: run {
-                navigation.disableProgress()
-                navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
-            }
         } else {
             navigation.disableProgress()
             navigation.alert(alert = notConnectedToInternetAlert())
