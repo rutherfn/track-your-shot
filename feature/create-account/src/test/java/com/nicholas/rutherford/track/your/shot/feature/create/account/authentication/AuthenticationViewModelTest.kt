@@ -357,7 +357,7 @@ class AuthenticationViewModelTest {
     }
 
     @Nested
-    inner class `on yes delete pending account clicked` {
+    inner class OnYesDeletePendingAccountClicked {
 
         @Test
         fun `when attemptToDeleteCurrentUserFlow returns back a flow of true should navigate to login`() = runTest {

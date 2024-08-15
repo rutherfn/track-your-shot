@@ -472,38 +472,13 @@ class PlayersListViewModelTest {
         }
 
         @Test
-        fun `when device is connected to internet returns true, and active user returns null should show alert`() = runTest {
-            val expectedAlert = Alert(
-                title = empty,
-                description = weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue,
-                dismissButton = AlertConfirmAndDismissButton(buttonText = gotIt)
-            )
-            coEvery { network.isDeviceConnectedToInternet() } returns true
-            coEvery { activeUserRepository.fetchActiveUser() } returns null
-
-            playersListViewModel.deletePlayer(player = player)
-
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = emptyList())
-            )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                emptyPlayerList
-            )
-            verify { navigation.disableProgress() }
-            verify { navigation.alert(alert = expectedAlert) }
-        }
-
-        @Test
-        fun `when device is connected to internet returns false, active user returns user, and delete player was not successful should show alert`() = runTest {
+        fun `when device is connected to internet returns true  and delete player was not successful should show alert`() = runTest {
             val expectedAlert = Alert(
                 title = empty,
                 description = unableToDeletePlayerPleaseContactSupport,
                 dismissButton = AlertConfirmAndDismissButton(buttonText = gotIt)
             )
             coEvery { network.isDeviceConnectedToInternet() } returns true
-            coEvery { activeUserRepository.fetchActiveUser() } returns user
             coEvery { deleteFirebaseUserInfo.deletePlayer(player.firebaseKey) } returns flowOf(false)
 
             playersListViewModel.deletePlayer(player = player)
@@ -535,7 +510,6 @@ class PlayersListViewModelTest {
             )
 
             coEvery { network.isDeviceConnectedToInternet() } returns true
-            coEvery { activeUserRepository.fetchActiveUser() } returns user
             coEvery { deleteFirebaseUserInfo.deletePlayer(player.firebaseKey) } returns flowOf(true)
 
             playersListViewModel.deletePlayer(player = player)

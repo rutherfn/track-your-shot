@@ -229,10 +229,6 @@ fun NavigationComponent(
             DrawerContent(
                 actions = listOf(
                     PlayersListAction,
-                    // todo -> uncomment out when functionality introduced for them
-//                    StatsAction,
-//                    ComparePlayersStatsAction,
-//                    VoiceCommandsAction,
                     SettingsAction,
                     LogoutAction
                 ),
