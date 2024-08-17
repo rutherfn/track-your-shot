@@ -4,6 +4,7 @@ import com.nicholas.rutherford.track.your.shot.base.resources.R
 
 object DrawablesIds {
     val email = R.mipmap.ic_email
+    val placeholder = R.drawable.ic_placeholder
     val splash = R.drawable.ic_splash_icon
     val launcherRound = R.mipmap.ic_launcher_round
     val launcherRoundStage = R.mipmap.ic_launcher_round_stage
