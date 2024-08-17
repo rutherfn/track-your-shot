@@ -1,5 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation
 
-class PermissionEducationScreen
-{
+import androidx.compose.runtime.Composable
+
+@Composable
+fun PermissionEducationScreen() {
+
 }

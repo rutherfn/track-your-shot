@@ -79,8 +79,6 @@ dependencies {
 
     debugImplementation(Dependencies.Compose.uiTooling)
 
-    implementation("com.google.accompanist:accompanist-pager:0.30.1")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.materialDesignIconsCore)
     implementation(Dependencies.Compose.materialDesignIconsExtended)
