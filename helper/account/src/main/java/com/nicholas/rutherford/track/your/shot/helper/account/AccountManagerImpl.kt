@@ -48,6 +48,7 @@ class AccountManagerImpl(
 
     private val _loggedInDeclaredShotListStateFlow: MutableStateFlow<List<DeclaredShot>> = MutableStateFlow(value = emptyList())
     override val loggedInDeclaredShotListStateFlow: StateFlow<List<DeclaredShot>> = _loggedInDeclaredShotListStateFlow.asStateFlow()
+
     override fun logout() {
         scope.launch {
             navigator.progress(progressAction = Progress())
@@ -74,7 +75,7 @@ class AccountManagerImpl(
                 password = password
             ).collectLatest { isSuccessful ->
                 if (isSuccessful) {
-                    readFirebaseUserInfo.getAccountInfoFlowByEmail(email = email)
+                    readFirebaseUserInfo.getAccountInfoFlow()
                         .collectLatest { accountInfoRealtimeResponse ->
                             accountInfoRealtimeResponse?.let { accountInfo ->
                                 updateActiveUserFromLoggedInUser(email = accountInfo.email, username = accountInfo.userName)
@@ -140,7 +141,7 @@ class AccountManagerImpl(
     }
 
     internal suspend fun updateActiveUserFromLoggedInUser(email: String, username: String) {
-        readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email).collectLatest { key ->
+        readFirebaseUserInfo.getAccountInfoKeyFlow().collectLatest { key ->
             key?.let { firebaseAccountInfoKey ->
                 checkForActiveUserAndPlayers()
 

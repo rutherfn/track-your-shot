@@ -133,28 +133,19 @@ class PlayersListViewModel(
 
     internal suspend fun deletePlayer(player: Player) {
         if (network.isDeviceConnectedToInternet()) {
-            activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey?.let { accountKey ->
-                deleteFirebaseUserInfo.deletePlayer(
-                    accountKey = accountKey,
-                    playerKey = player.firebaseKey
-                )
-                    .collectLatest { isSuccessful ->
-                        if (isSuccessful) {
-                            playerRepository.deletePlayerByName(
-                                firstName = player.firstName,
-                                lastName = player.lastName
-                            )
-                            currentPlayerArrayList.remove(player)
-                            playerListMutableStateFlow.value = PlayersListState(playerList = currentPlayerArrayList.toList())
-                            navigation.disableProgress()
-                        } else {
-                            navigation.disableProgress()
-                            navigation.alert(alert = unableToDeletePlayerAlert())
-                        }
-                    }
-            } ?: run {
-                navigation.disableProgress()
-                navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
+            deleteFirebaseUserInfo.deletePlayer(playerKey = player.firebaseKey).collectLatest { isSuccessful ->
+                if (isSuccessful) {
+                    playerRepository.deletePlayerByName(
+                        firstName = player.firstName,
+                        lastName = player.lastName
+                    )
+                    currentPlayerArrayList.remove(player)
+                    playerListMutableStateFlow.value = PlayersListState(playerList = currentPlayerArrayList.toList())
+                    navigation.disableProgress()
+                } else {
+                    navigation.disableProgress()
+                    navigation.alert(alert = unableToDeletePlayerAlert())
+                }
             }
         } else {
             navigation.disableProgress()

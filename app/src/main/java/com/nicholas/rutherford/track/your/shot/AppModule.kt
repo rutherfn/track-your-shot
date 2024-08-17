@@ -56,8 +56,6 @@ import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationIm
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson.DeclaredShotsJson
 import com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson.DeclaredShotsJsonImpl
-import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseLastUpdated
-import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseLastUpdatedImpl
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
@@ -158,13 +156,9 @@ class AppModule {
         single<CreateFirebaseUserInfo> {
             CreateFirebaseUserInfoImpl(
                 firebaseAuth = get(),
-                createFirebaseLastUpdated = get(),
                 firebaseStorage = get(),
                 firebaseDatabase = get()
             )
-        }
-        single<CreateFirebaseLastUpdated> {
-            CreateFirebaseLastUpdatedImpl(firebaseDatabase = get())
         }
         single<AuthenticationFirebase> {
             AuthenticationFirebaseImpl(firebaseAuth = get())
@@ -176,10 +170,10 @@ class AppModule {
             ReadFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
         single<UpdateFirebaseUserInfo> {
-            UpdateFirebaseUserInfoImpl(firebaseDatabase = get())
+            UpdateFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
         single<DeleteFirebaseUserInfo> {
-            DeleteFirebaseUserInfoImpl(firebaseDatabase = get())
+            DeleteFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
         single<Network> {
             NetworkImpl()

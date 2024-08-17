@@ -23,9 +23,6 @@ class FakeReadFirebaseUserInfo(
     override fun getAccountInfoFlowByEmail(email: String): Flow<AccountInfoRealtimeResponse?> =
         flowOf(accountInfoByEmail)
 
-    override fun getAccountInfoListFlow(): Flow<List<AccountInfoRealtimeResponse>?> =
-        flowOf(accountInfoList)
-
     override fun getAccountInfoKeyFlowByEmail(email: String): Flow<String?> =
         flowOf(accountInfoKey)
 

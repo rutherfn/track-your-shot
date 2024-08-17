@@ -409,29 +409,31 @@ class CreateEditPlayerViewModel(
     }
 
     suspend fun createUserInFirebase(state: CreateEditPlayerState, imageUrl: String?) {
-        val key = activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey ?: ""
-
-        if (key.isNotEmpty()) {
-            createFirebaseUserInfo.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
-                key = key,
-                playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
-                    firstName = state.firstName,
-                    lastName = state.lastName,
-                    positionValue = state.playerPositionString.toPlayerPosition(application = application).value,
-                    imageUrl = imageUrl ?: "",
-                    shotsLogged = currentShotLoggedRealtimeResponseList(currentShotList = state.shots.map { shots -> shots.toRealtimeResponse() })
-                )
-            ).collectLatest { isSuccessful ->
-                handleFirebaseResponseForSavingPlayer(
-                    isSuccessful = isSuccessful,
-                    key = key,
-                    state = state,
-                    imageUrl = imageUrl
-                )
+        createFirebaseUserInfo.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
+            playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
+                firstName = state.firstName,
+                lastName = state.lastName,
+                positionValue = state.playerPositionString.toPlayerPosition(application = application).value,
+                imageUrl = imageUrl ?: "",
+                shotsLogged = currentShotLoggedRealtimeResponseList(currentShotList = state.shots.map { shots -> shots.toRealtimeResponse() })
+            )
+        ).collectLatest { result ->
+            result.second?.let { key ->
+                if (key.isNotEmpty()) {
+                    handleFirebaseResponseForSavingPlayer(
+                        isSuccessful = result.first,
+                        key = key,
+                        state = state,
+                        imageUrl = imageUrl
+                    )
+                } else {
+                    navigation.disableProgress()
+                    navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
+                }
+            } ?: run {
+                navigation.disableProgress()
+                navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
             }
-        } else {
-            navigation.disableProgress()
-            navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
         }
     }
 
@@ -484,7 +486,6 @@ class CreateEditPlayerViewModel(
 
                 if (key.isNotEmpty() && playerKey.isNotEmpty()) {
                     updateFirebaseUserInfo.updatePlayer(
-                        accountKey = key,
                         playerInfoRealtimeWithKeyResponse = PlayerInfoRealtimeWithKeyResponse(
                             playerFirebaseKey = playerKey,
                             playerInfo = PlayerInfoRealtimeResponse(

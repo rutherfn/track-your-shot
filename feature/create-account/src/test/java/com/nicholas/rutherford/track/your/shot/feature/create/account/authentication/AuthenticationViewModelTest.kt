@@ -120,7 +120,6 @@ class AuthenticationViewModelTest {
 
         @Test
         fun `when isEmailVerified returns back false should not attempt to create account`() = runTest {
-            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = false)
 
             viewModel.username = username
@@ -134,7 +133,6 @@ class AuthenticationViewModelTest {
 
         @Test
         fun `when isEmailVerified returns back true and username is null should not attempt to create account`() = runTest {
-            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
 
             viewModel.username = null
@@ -147,7 +145,6 @@ class AuthenticationViewModelTest {
 
         @Test
         fun `when isEmailVerified returns back true and email is null should not attempt to create account`() = runTest {
-            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
 
             viewModel.username = username
@@ -160,7 +157,6 @@ class AuthenticationViewModelTest {
 
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back not successful should show error creating account alert`() = runTest {
-            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
@@ -188,7 +184,6 @@ class AuthenticationViewModelTest {
 
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back successful should navigate to players list`() = runTest {
-            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
@@ -273,7 +268,6 @@ class AuthenticationViewModelTest {
 
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back not successful should show error creating account alert`() = runTest {
-            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
@@ -301,7 +295,6 @@ class AuthenticationViewModelTest {
 
         @Test
         fun `when isEmailVerified returns back true, fields are not null, with attemptToCreateAccountFirebase returns back successful should navigate to players list`() = runTest {
-            every { readFirebaseUserInfo.getAccountInfoListFlow() } returns flowOf(value = emptyList())
             coEvery { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(value = true)
             coEvery {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
@@ -364,7 +357,7 @@ class AuthenticationViewModelTest {
     }
 
     @Nested
-    inner class `on yes delete pending account clicked` {
+    inner class OnYesDeletePendingAccountClicked {
 
         @Test
         fun `when attemptToDeleteCurrentUserFlow returns back a flow of true should navigate to login`() = runTest {

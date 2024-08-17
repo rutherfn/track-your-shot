@@ -6,7 +6,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.Auth
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -54,7 +53,6 @@ class ForgotPasswordViewModelTest {
 
         private val emailTest = "newuser@yahoo.com"
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when newEmail is set to null should show email empty alert`() = runTest {
             viewModel.onSendPasswordResetButtonClicked(newEmail = null)
@@ -62,7 +60,6 @@ class ForgotPasswordViewModelTest {
             verify { navigation.alert(alert = viewModel.emailEmptyAlert()) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when newEmail is set to empty should show email empty alert`() = runTest {
             viewModel.onSendPasswordResetButtonClicked(newEmail = "")
@@ -70,7 +67,6 @@ class ForgotPasswordViewModelTest {
             verify { navigation.alert(alert = viewModel.emailEmptyAlert()) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when newEmail is not empty or null and attemptToSendPasswordResetFlow returns back not successful should call unable to send reset password alert`() = runTest {
             coEvery { authenticationFirebase.attemptToSendPasswordResetFlow(email = emailTest) } returns flowOf(value = false)
@@ -82,9 +78,8 @@ class ForgotPasswordViewModelTest {
             verify { navigation.alert(alert = viewModel.unableToSendResetPasswordAlert()) }
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when newEmail is not empty or nnull and attemptToSendPasswordResetFlow returns back successful should call success sending reset password alert`() = runTest {
+        fun `when newEmail is not empty or null and attemptToSendPasswordResetFlow returns back successful should call success sending reset password alert`() = runTest {
             coEvery { authenticationFirebase.attemptToSendPasswordResetFlow(email = emailTest) } returns flowOf(value = true)
 
             viewModel.onSendPasswordResetButtonClicked(newEmail = emailTest)

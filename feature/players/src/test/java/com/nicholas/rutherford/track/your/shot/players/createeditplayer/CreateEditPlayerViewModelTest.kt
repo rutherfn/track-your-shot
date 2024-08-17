@@ -658,7 +658,7 @@ class CreateEditPlayerViewModelTest {
     }
 
     @Test
-    fun `clearLocatDeclartion should clear out properties`() {
+    fun `clearLocalDeclartion should clear out properties`() {
         val emptyPendingPlayersList: List<Player> = listOf()
         val emptyPendingShotList: List<PendingShot> = listOf()
 
@@ -1111,19 +1111,6 @@ class CreateEditPlayerViewModelTest {
     inner class CheckIfPlayerAlreadyExists {
 
         @Test
-        fun `if fetch player by name returns null should call checkImageUri`() = runTest {
-            coEvery { playerRepository.fetchPlayerByName(firstName = defaultState.firstName, lastName = defaultState.lastName) } returns null
-            coEvery { activeUserRepository.fetchActiveUser() } returns null
-            coEvery { activeUserRepository.fetchActiveUser()!!.firebaseAccountInfoKey } returns null
-
-            createEditPlayerViewModel.checkIfPlayerAlreadyExists(state = defaultState, uri = null)
-
-            verify { createEditPlayerViewModel.checkImageUri(state = defaultState, uri = null) }
-            verify { navigation.disableProgress() }
-            verify { navigation.alert(alert = any()) }
-        }
-
-        @Test
         fun `if fetch player does not return null should call alert`() = runTest {
             val uriString = "uriString"
             val player = TestPlayer().create()
@@ -1143,12 +1130,29 @@ class CreateEditPlayerViewModelTest {
 
         @Test
         fun `when uri passed in is set to null should call determineToUpdateOrCreateUserInFirebase`() = runTest {
-            coEvery { activeUserRepository.fetchActiveUser() } returns null
-            coEvery { activeUserRepository.fetchActiveUser()!!.firebaseAccountInfoKey } returns null
+            val key = "key1"
+
+            coEvery {
+                createFirebaseUserInfo.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
+                    playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
+                        firstName = defaultState.firstName,
+                        lastName = defaultState.lastName,
+                        positionValue = defaultState.playerPositionString.toPlayerPosition(application = application).value,
+                        imageUrl = ""
+                    )
+                )
+            } returns flowOf(value = Pair(false, key))
 
             createEditPlayerViewModel.checkImageUri(state = defaultState, uri = null)
 
-            coVerify { createEditPlayerViewModel.determineToUpdateOrCreateUserInFirebase(state = defaultState, imageUrl = null) }
+            coVerify {
+                createEditPlayerViewModel.handleFirebaseResponseForSavingPlayer(
+                    isSuccessful = false,
+                    key = key,
+                    state = defaultState,
+                    imageUrl = ""
+                )
+            }
         }
 
         @Test
@@ -1162,20 +1166,6 @@ class CreateEditPlayerViewModelTest {
 
             verify { navigation.disableProgress() }
             verify { navigation.alert(alert = any()) }
-        }
-
-        @Test
-        fun `when uri passed in is not null and create image firebase storage returns a valid imageUrl should call determineToUpdateOrCreateUserInFirebase`() = runTest {
-            val uriString = "uriString"
-
-            every { uri.toString() } returns uriString
-            coEvery { createFirebaseUserInfo.attemptToCreateImageFirebaseStorageResponseFlow(uri = uri) } returns flowOf(value = uriString)
-            coEvery { activeUserRepository.fetchActiveUser() } returns null
-            coEvery { activeUserRepository.fetchActiveUser()!!.firebaseAccountInfoKey } returns null
-
-            createEditPlayerViewModel.checkImageUri(state = defaultState, uri = uri)
-
-            coVerify { createEditPlayerViewModel.determineToUpdateOrCreateUserInFirebase(state = defaultState, imageUrl = uriString) }
         }
     }
 
@@ -1223,26 +1213,13 @@ class CreateEditPlayerViewModelTest {
 
     @Nested
     inner class CreateUserInFirebase {
-        private val activeUser = TestActiveUser().create()
-
-        @Test
-        fun `when key is empty should call alert`() = runTest {
-            coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(firebaseAccountInfoKey = "")
-
-            createEditPlayerViewModel.createUserInFirebase(state = defaultState, imageUrl = "")
-
-            verify { navigation.disableProgress() }
-            verify { navigation.alert(alert = any()) }
-        }
 
         @Test
         fun `when key is not empty and attempt to create firebase response flow returns a boolean should call alert`() = runTest {
             val key = "key1"
 
-            coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(firebaseAccountInfoKey = key)
             coEvery {
                 createFirebaseUserInfo.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
-                    key = key,
                     playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
                         firstName = defaultState.firstName,
                         lastName = defaultState.lastName,
@@ -1250,7 +1227,7 @@ class CreateEditPlayerViewModelTest {
                         imageUrl = ""
                     )
                 )
-            } returns flowOf(value = false)
+            } returns flowOf(value = Pair(false, key))
 
             createEditPlayerViewModel.createUserInFirebase(state = defaultState, imageUrl = "")
 

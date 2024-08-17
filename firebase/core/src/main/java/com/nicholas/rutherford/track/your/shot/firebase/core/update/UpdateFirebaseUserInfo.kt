@@ -4,5 +4,5 @@ import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealt
 import kotlinx.coroutines.flow.Flow
 
 interface UpdateFirebaseUserInfo {
-    fun updatePlayer(accountKey: String, playerInfoRealtimeWithKeyResponse: PlayerInfoRealtimeWithKeyResponse): Flow<Boolean>
+    fun updatePlayer(playerInfoRealtimeWithKeyResponse: PlayerInfoRealtimeWithKeyResponse): Flow<Boolean>
 }
