@@ -17,12 +17,12 @@ fun PermissionEducationScreen(permissionEducationParams: PermissionEducationPara
             EducationPager(
                 items = permissionEducationParams.state.educationInfoList,
                 pagerState = pagerState,
-                pageContent =  { page ->
+                pageContent = { page ->
                     EducationScreen(
                         educationInfo = page,
                         pagerState = pagerState,
                         nextPage = (pagerState.currentPage + 1).coerceAtMost(maximumValue = permissionEducationParams.state.educationInfoList.size - 1),
-                        onButtonClicked =  if (pagerState.currentPage == 1) {
+                        onButtonClicked = if (pagerState.currentPage == 1) {
                             permissionEducationParams.onGotItButtonClicked
                         } else {
                             null

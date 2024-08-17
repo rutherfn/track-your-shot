@@ -50,25 +50,25 @@ fun EducationPager(
 @Preview
 @Composable
 fun EducationPagerPreview() {
-        val educationInfoList = listOf(
-            EducationInfo(
-                title = "This is the title",
-                description = "Lorem ipsum odor amet, consectetuer adipiscing elit. Sit nostra facilisis euismod; placerat pharetra nostra rhoncus nisi sagittis? Porttitor mattis vitae congue dignissim mus imperdiet. Commodo habitasse euismod aptent ipsum vestibulum odio aenean pulvinar. Maximus nisl metus libero eros quam faucibus et.",
-                drawableResId = DrawablesIds.placeholder,
-                buttonText = "Next"
-            )
+    val educationInfoList = listOf(
+        EducationInfo(
+            title = "This is the title",
+            description = "Lorem ipsum odor amet, consectetuer adipiscing elit. Sit nostra facilisis euismod; placerat pharetra nostra rhoncus nisi sagittis? Porttitor mattis vitae congue dignissim mus imperdiet. Commodo habitasse euismod aptent ipsum vestibulum odio aenean pulvinar. Maximus nisl metus libero eros quam faucibus et.",
+            drawableResId = DrawablesIds.placeholder,
+            buttonText = "Next"
         )
-        val pagerState = rememberPagerState { educationInfoList.size }
+    )
+    val pagerState = rememberPagerState { educationInfoList.size }
 
-        EducationPager(
-            items = educationInfoList,
-            modifier = Modifier.background(Color.White),
-            pageContent = { page ->
-                EducationScreen(
-                    educationInfo = page,
-                    pagerState = pagerState,
-                    nextPage = 2
-                )
-            }
-        )
-                    }
+    EducationPager(
+        items = educationInfoList,
+        modifier = Modifier.background(Color.White),
+        pageContent = { page ->
+            EducationScreen(
+                educationInfo = page,
+                pagerState = pagerState,
+                nextPage = 2
+            )
+        }
+    )
+}

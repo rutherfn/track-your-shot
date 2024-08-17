@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -20,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
-import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 
 /**
  * Page Indicator that uses [pagerState] to show how many indicators as well as
@@ -45,7 +43,7 @@ fun BoxScope.EducationPageIndicator(pagerState: PagerState) {
                 AppColors.Orange
             } else {
                 Color.LightGray
-                }
+            }
             Box(
                 modifier = Modifier
                     .padding(2.dp)

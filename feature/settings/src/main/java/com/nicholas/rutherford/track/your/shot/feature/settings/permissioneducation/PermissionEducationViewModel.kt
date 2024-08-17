@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 
 class PermissionEducationViewModel(
     private val navigation: PermissionEducationNavigation,
-    private val application: Application,
+    private val application: Application
 ) : ViewModel() {
 
     internal val permissionEducationMutableStateFlow = MutableStateFlow(value = PermissionEducationState())

@@ -51,7 +51,7 @@ fun EducationScreen(
     pagerState: PagerState,
     nextPage: Int,
     modifier: Modifier = Modifier,
-    onButtonClicked: (() -> Unit)? = null,
+    onButtonClicked: (() -> Unit)? = null
 ) {
     val coroutineScope = rememberCoroutineScope()
     var buttonEnabled by remember { mutableStateOf(true) }
