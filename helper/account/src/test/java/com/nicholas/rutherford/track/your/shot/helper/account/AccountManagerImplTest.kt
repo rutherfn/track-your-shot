@@ -133,7 +133,7 @@ class AccountManagerImplTest {
         @Test
         fun `when loginFlow returns as successful and get account info flow by email returns null should call disableProgressAndShowUnableToLoginAlert`() {
             coEvery { existingUserFirebase.loginFlow(email = accountInfoRealtimeResponse.email, password = password) } returns flowOf(value = true)
-            coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = null)
+            coEvery { readFirebaseUserInfo.getAccountInfoFlow() } returns flowOf(value = null)
             accountManagerImpl.login(email = accountInfoRealtimeResponse.email, password = password)
 
             verify { navigator.progress(progressAction = any()) }
@@ -143,7 +143,7 @@ class AccountManagerImplTest {
         @Test
         fun `when loginFlow returns as successful and get account info flow by email returns info should not call disableProgressAndShowUnableToLoginAlert`() {
             coEvery { existingUserFirebase.loginFlow(email = accountInfoRealtimeResponse.email, password = password) } returns flowOf(value = true)
-            coEvery { readFirebaseUserInfo.getAccountInfoFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = accountInfoRealtimeResponse)
+            coEvery { readFirebaseUserInfo.getAccountInfoFlow() } returns flowOf(value = accountInfoRealtimeResponse)
             accountManagerImpl.login(email = accountInfoRealtimeResponse.email, password = password)
 
             verify { navigator.progress(progressAction = any()) }
@@ -272,7 +272,7 @@ class AccountManagerImplTest {
 
         @Test
         fun `when getAccountInfoKeyFlowByEmail returns null should call disableProgressAndShowUnableToLoginAlert`() = runTest {
-            coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = accountInfoRealtimeResponse.email) } returns flowOf(value = null)
+            coEvery { readFirebaseUserInfo.getAccountInfoKeyFlow() } returns flowOf(value = null)
 
             accountManagerImpl.updateActiveUserFromLoggedInUser(email = accountInfoRealtimeResponse.email, username = accountInfoRealtimeResponse.userName)
 
@@ -281,7 +281,7 @@ class AccountManagerImplTest {
 
         @Test
         fun `when getAccountInfoKeyFlowByEmail returns value and fetchActiveUser returns info should call delete active user`() = runTest {
-            coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = activeUserEntity.email) } returns flowOf(value = key)
+            coEvery { readFirebaseUserInfo.getAccountInfoKeyFlow() } returns flowOf(value = key)
             coEvery { activeUserRepository.fetchActiveUser() } returns activeUserEntity.toActiveUser()
 
             accountManagerImpl.updateActiveUserFromLoggedInUser(email = activeUserEntity.email, username = activeUserEntity.username)
@@ -305,7 +305,7 @@ class AccountManagerImplTest {
         fun `when getAccountInfoKeyFlowByEmail returns value, fetchActiveUser returns null, when get playerInfoList returns empty should not call create list of players`() = runTest {
             val declaredShotList = listOf(TestDeclaredShot.build())
 
-            coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = activeUserEntity.email) } returns flowOf(value = key)
+            coEvery { readFirebaseUserInfo.getAccountInfoKeyFlow() } returns flowOf(value = key)
             coEvery { activeUserRepository.fetchActiveUser() } returns null
             coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotList
             coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(emptyList())
@@ -337,7 +337,7 @@ class AccountManagerImplTest {
         fun `when getAccountInfoKeyFlowByEmail returns value, fetchActiveUser returns null, when get playerInfoList returns data should call create list of players`() = runTest {
             val declaredShotList = listOf(TestDeclaredShot.build())
 
-            coEvery { readFirebaseUserInfo.getAccountInfoKeyFlowByEmail(email = activeUserEntity.email) } returns flowOf(value = key)
+            coEvery { readFirebaseUserInfo.getAccountInfoKeyFlow() } returns flowOf(value = key)
             coEvery { activeUserRepository.fetchActiveUser() } returns null
             coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotList
             coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(playerInfoRealtimeWithKeyResponseList)
