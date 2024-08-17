@@ -11,6 +11,8 @@ object StringsIds {
     val c = R.string.c
     val camera = R.string.camera
     val cancel = R.string.cancel
+    val cameraPermissionExplanation = R.string.camera_permission_explanation
+    val cameraPermission = R.string.camera_permission
     val cameraPermissionHasBeenDeniedDescription = R.string.camera_permission_has_been_denied_description
     val center = R.string.center
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
@@ -85,6 +87,7 @@ object StringsIds {
     val logShot = R.string.log_shot
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
+    val next = R.string.next
     val no = R.string.no
     val noChangesMade = R.string.no_changes_made
     val noCurrentPlayersAdded = R.string.no_current_players_added
@@ -117,7 +120,10 @@ object StringsIds {
     val playersFirstNameEmptyDescription = R.string.players_first_name_empty_description
     val playersLastNameEmptyDescription = R.string.players_last_name_empty_description
     val proceedWithYourAccount = R.string.proceed_with_your_account
-    val readExternalStorage = R.string.read_external_storage
+    val readExternalStoragePermissionExplanation = R.string.read_external_storage_permission_explanation
+    val readExternalStoragePermission = R.string.read_external_storage_permission
+    val readMediaImagesPermission = R.string.read_media_images_permission
+    val readMediaImagesPermissionExplanation = R.string.read_media_images_permission_explanation
     val readMediaStorage = R.string.read_media_images
     val readExternalStorageDescription = R.string.read_external_storage_description
     val readMediaImagesDescription = R.string.read_media_images_description

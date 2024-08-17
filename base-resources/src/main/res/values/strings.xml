@@ -10,6 +10,8 @@
     <string name="by_nicholas_rutherford">By Nicholas Rutherford</string>
     <string name="c" translatable="false">C</string>
     <string name="camera">Camera</string>
+    <string name="camera_permission_explanation">We ask for camera permission so users can take photos with their phone\'s camera when creating or editing a player profile. This permission allows the app to access the device\'s camera hardware, enabling users to capture and associate images with their player profiles. Without this permission, the app would not be able to use the camera for this feature.</string>
+    <string name="camera_permission">Camera Permission</string>
     <string name="camera_permission_has_been_denied_description">Camera permission has been denied. To manually grant permission for the camera and upload pictures for the Player, kindly navigate to Settings.</string>
     <string name="cancel">Cancel</string>
     <string name="center">Center</string>
@@ -77,6 +79,7 @@
     <string name="log_shots">Log Shots</string>
     <string name="menu">Menu</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
+    <string name="next">Next</string>
     <string name="no">No</string>
     <string name="no_changes_made">No Changes Made</string>
     <string name="not_connected_to_internet">Not connected to internet</string>
@@ -114,7 +117,10 @@
     <string name="players_last_name_empty_description">The player\'s last name is missing. Kindly provide a first name to proceed.</string>
     <string name="position">Position</string>
     <string name="proceed_with_your_account">Proceed With Your Account</string>
-    <string name="read_external_storage">Read External Storage</string>
+    <string name="read_external_storage_permission_explanation"> We ask for read external storage permission so users can select an image from their gallery when creating or editing a player profile. This permission allows the app to access images stored on the device\'s external storage, enabling users to choose and associate images with their player profiles. Without this permission, users would not be able to select images from external storage for this feature.</string>
+    <string name="read_external_storage_permission">Read External Storage Permission</string>
+    <string name="read_media_images_permission">Read Media Images Permission</string>
+    <string name="read_media_images_permission_explanation"> We ask for read media images permission so users can select an image from their gallery when creating or editing a player profile. This permission allows the app to access the images stored on the device, enabling users to choose and associate images with their player profiles. Without this permission, users would not be able to select images from their gallery for this feature.</string>
     <string name="read_media_images">Read Media Images</string>
     <string name="read_external_storage_description">Permission to read external storage has been declined. To manually enable the "Read External Storage" permission and select an image from the gallery for the Player, please navigate to settings.</string>
     <string name="read_media_images_description">Permission to read media images has been declined. To manually enable the "Read Media Images" permission and select an image from the gallery for the Player, please navigate to settings.</string>

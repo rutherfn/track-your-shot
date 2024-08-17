@@ -44,6 +44,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
@@ -126,6 +128,7 @@ fun NavigationComponent(
     val selectShotViewModel = viewModels.selectShotViewModel
     val logShotViewModel = viewModels.logShotViewModel
     val settingsViewModel = viewModels.settingsViewModel
+    val permissionEducationViewModel = viewModels.permissionEducationViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -393,6 +396,15 @@ fun NavigationComponent(
                             settingsViewModel.onSettingItemClicked(value = value)
                         },
                         state = settingsViewModel.settingsStateFlow.collectAsState().value
+                    )
+                )
+            }
+            composable(
+                route = NavigationDestinations.PERMISSION_EDUCATION_SCREEN
+            ) {
+                PermissionEducationScreen(
+                    permissionEducationParams = PermissionEducationParams(
+                        state = permissionEducationViewModel.permissionEducationStateFlow.collectAsState().value
                     )
                 )
             }
