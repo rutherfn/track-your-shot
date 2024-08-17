@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.compose.components.education
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -35,7 +36,13 @@ fun EducationPager(
         modifier = modifier.fillMaxSize(),
         state = pagerState
     ) { page ->
-        pageContent(items[page])
+        Box(
+            Modifier
+                .fillMaxSize()
+        ) {
+            pageContent(items[page])
+            EducationPageIndicator(pagerState = pagerState)
+        }
     }
 }
 
@@ -64,4 +71,4 @@ fun EducationPagerPreview() {
                 )
             }
         )
-}
+                    }

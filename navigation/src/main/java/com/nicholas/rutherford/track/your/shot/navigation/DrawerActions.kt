@@ -52,6 +52,7 @@ data object SettingsAction : DrawerAction(
     imageVector = Icons.Filled.Settings,
     navOptions = NavOptions.Builder()
         .setPopUpTo(0, true)
+        .setLaunchSingleTop(true)
         .build()
 )
 

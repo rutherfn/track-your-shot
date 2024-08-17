@@ -404,6 +404,7 @@ fun NavigationComponent(
             ) {
                 PermissionEducationScreen(
                     permissionEducationParams = PermissionEducationParams(
+                        onGotItButtonClicked = { permissionEducationViewModel.onGotItButtonClicked() },
                         state = permissionEducationViewModel.permissionEducationStateFlow.collectAsState().value
                     )
                 )

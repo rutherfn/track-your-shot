@@ -45,7 +45,9 @@ class NavigatorImpl : Navigator {
 
     override fun navigate(navigationAction: NavigationAction?) = _navActions.update { navigationAction }
 
-    override fun pop(popRouteAction: String?) = _popRouteActions.update { popRouteAction }
+    override fun pop(popRouteAction: String?) {
+        _popRouteActions.update { popRouteAction }
+    }
 
     override fun progress(progressAction: Progress?) = _progressActions.update { progressAction }
 

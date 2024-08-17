@@ -22,6 +22,10 @@ class PermissionEducationViewModel(
         updateState()
     }
 
+    fun onGotItButtonClicked() {
+        navigation.pop()
+    }
+
     private fun educationInfoList(): List<EducationInfo> {
         val readPermissionTitle = if (shouldAskForReadMediaImages()) {
             StringsIds.readMediaImagesPermission

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,7 +17,11 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,9 +50,11 @@ fun EducationScreen(
     educationInfo: EducationInfo,
     pagerState: PagerState,
     nextPage: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onButtonClicked: (() -> Unit)? = null,
 ) {
     val coroutineScope = rememberCoroutineScope()
+    var buttonEnabled by remember { mutableStateOf(true) }
 
     Column(
         modifier = modifier
@@ -86,13 +91,18 @@ fun EducationScreen(
 
         Button(
             onClick = {
-                if (nextPage <pagerState.pageCount) {
-                    coroutineScope.launch {
+                onButtonClicked?.invoke() ?: run {
+                    buttonEnabled = false
+                    if (nextPage < pagerState.pageCount) {
+                        coroutineScope.launch {
                             pagerState.animateScrollToPage(nextPage)
+                            buttonEnabled = true
+                        }
                     }
                 }
             },
             shape = RoundedCornerShape(size = 50.dp),
+            enabled = buttonEnabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = Padding.twelve),
@@ -125,7 +135,7 @@ fun EducationScreenPreview() {
         educationInfo = educationInfoList.first(),
         pagerState = pagerState,
         nextPage = 2,
-        modifier = Modifier.background(Color.White)
-
+        modifier = Modifier.background(Color.White),
+        onButtonClicked = null
     )
 }
