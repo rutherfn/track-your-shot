@@ -30,7 +30,8 @@ fun PermissionEducationScreen(permissionEducationParams: PermissionEducationPara
                         } else {
                             null
                         },
-                        onMoreInfoClicked = permissionEducationParams.onMoreInfoClicked
+                        onMoreInfoClicked = permissionEducationParams.onMoreInfoClicked,
+                        onCloseIconClicked = permissionEducationParams.onGotItButtonClicked
                     )
                 }
             )
