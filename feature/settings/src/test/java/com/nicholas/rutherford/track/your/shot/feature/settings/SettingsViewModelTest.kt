@@ -7,6 +7,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class SettingsViewModelTest {
@@ -59,5 +60,16 @@ class SettingsViewModelTest {
         settingsViewModel.onToolbarMenuClicked()
 
         verify { navigation.openNavigationDrawer() }
+    }
+
+    @Nested
+    inner class OnSettingItemClicked {
+
+        @Test
+        fun `when value passed in does not meet any conditions should navigate to permission education screen`() {
+            settingsViewModel.onSettingItemClicked(value = "View Mode Info")
+
+            verify { navigation.navigateToPermissionEducationScreen() }
+        }
     }
 }

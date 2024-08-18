@@ -117,9 +117,10 @@ class DrawerActionsTest {
             NavigationDestinations.SETTINGS_SCREEN
         )
         Assertions.assertEquals(
-            VoiceCommandsAction.navOptions,
+            SettingsAction.navOptions,
             NavOptions.Builder()
                 .setPopUpTo(0, true)
+                .setLaunchSingleTop(true)
                 .build()
         )
     }

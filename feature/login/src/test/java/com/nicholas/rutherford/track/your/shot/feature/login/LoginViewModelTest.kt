@@ -22,6 +22,7 @@ class LoginViewModelTest {
 
     private var accountManager = mockk<AccountManager>(relaxed = true)
 
+    private val sdkValue = 2
     private val debugVersionName = "debug"
     private val releaseVersionName = "release"
     private val stageVersionName = "stage"
@@ -29,9 +30,9 @@ class LoginViewModelTest {
     private val emailTest = "newuser@yahoo.com"
     private val passwordTest = "password1"
 
-    private val buildTypeDebug = BuildTypeImpl(buildTypeValue = debugVersionName)
-    private val buildTypeRelease = BuildTypeImpl(buildTypeValue = releaseVersionName)
-    private val buildTypeStage = BuildTypeImpl(buildTypeValue = stageVersionName)
+    private val buildTypeDebug = BuildTypeImpl(sdkValue = sdkValue, buildTypeValue = debugVersionName)
+    private val buildTypeRelease = BuildTypeImpl(sdkValue = sdkValue, buildTypeValue = releaseVersionName)
+    private val buildTypeStage = BuildTypeImpl(sdkValue = sdkValue, buildTypeValue = stageVersionName)
 
     private val state = LoginState(launcherDrawableId = null, email = null, password = null)
 

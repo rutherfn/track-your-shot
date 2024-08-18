@@ -5,6 +5,7 @@ import com.nicholas.rutherford.track.your.shot.base.resources.R
 object StringsIds {
     val accountInfo = R.string.account_info
     val accountHasNotBeenVerified = R.string.account_has_not_been_verified
+    val androidPermissionsUrl = R.string.android_permissions_url
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
     val areYouSureYouWantLeaveTrackYourShot = R.string.are_you_sure_you_want_to_leave_track_your_shot
     val areYouSureYouWantToDeletePendingAccountDescription = R.string.are_you_sure_you_want_to_delete_pending_account_description
@@ -85,6 +86,7 @@ object StringsIds {
     val loginIconDescription = R.string.login_icon_description
     val logout = R.string.logout
     val logShot = R.string.log_shot
+    val moreInfo = R.string.more_info
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
     val next = R.string.next

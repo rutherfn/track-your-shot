@@ -20,6 +20,7 @@ class NavigatorImpl : Navigator {
     private val _popRouteActions: MutableStateFlow<String?> = MutableStateFlow(value = null)
     private val _progressActions: MutableStateFlow<Progress?> = MutableStateFlow(value = null)
     private val _navigationDrawerAction: MutableStateFlow<Boolean?> = MutableStateFlow(value = null)
+    private val _urlAction: MutableStateFlow<String?> = MutableStateFlow(value = null)
 
     override val alertActions: StateFlow<Alert?> = _alertActions.asStateFlow()
     override val appSettingsActions: StateFlow<Boolean?> = _appSettingsActions.asStateFlow()
@@ -31,6 +32,7 @@ class NavigatorImpl : Navigator {
     override val navActions: StateFlow<NavigationAction?> = _navActions.asStateFlow()
     override val progressActions: StateFlow<Progress?> = _progressActions.asStateFlow()
     override val navigationDrawerAction: StateFlow<Boolean?> = _navigationDrawerAction.asStateFlow()
+    override val urlAction: StateFlow<String?> = _urlAction.asStateFlow()
 
     override fun alert(alertAction: Alert?) = _alertActions.update { alertAction }
 
@@ -52,4 +54,6 @@ class NavigatorImpl : Navigator {
     override fun progress(progressAction: Progress?) = _progressActions.update { progressAction }
 
     override fun showNavigationDrawer(navigationDrawerAction: Boolean?) = _navigationDrawerAction.update { navigationDrawerAction }
+
+    override fun url(url: String?) = _urlAction.update { url }
 }

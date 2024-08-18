@@ -267,5 +267,23 @@ class NavigationActionsTest {
                 )
             }
         }
+
+        @Nested
+        inner class Settings {
+
+            @Test
+            fun permissionEducation() {
+                Assertions.assertEquals(
+                    Actions.Settings.permissionEducation().destination,
+                    NavigationDestinations.PERMISSION_EDUCATION_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.Settings.permissionEducation().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                        .build()
+                )
+            }
+        }
     }
 }
