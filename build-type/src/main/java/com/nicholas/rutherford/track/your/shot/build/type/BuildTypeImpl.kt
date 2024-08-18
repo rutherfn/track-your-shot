@@ -4,7 +4,12 @@ const val DEBUG_VERSION_NAME = "debug"
 const val RELEASE_VERSION_NAME = "release"
 const val STAGE_VERSION_NAME = "stage"
 
-class BuildTypeImpl(private val buildTypeValue: String) : BuildType {
+class BuildTypeImpl(
+    sdkValue: Int,
+    private val buildTypeValue: String
+) : BuildType {
+
+    override val sdk = sdkValue
 
     override fun isDebug(): Boolean = buildTypeValue == DEBUG_VERSION_NAME
 

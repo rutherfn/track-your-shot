@@ -4,6 +4,7 @@
     <string name="account_has_not_been_verified">Account Has Not Been Verified</string>
     <string name="add_player">Add Player</string>
     <string name="add_player_stats">Add Player Stats</string>
+    <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
     <string name="are_you_certain_you_wish_to_remove_x">Are you certain you wish to remove %s?</string>
     <string name="are_you_sure_you_want_to_leave_track_your_shot">Are you sure you want to leave Track Your Shot?</string>
     <string name="are_you_sure_you_want_to_delete_pending_account_description">Deleting your pending account will require you to either register a new account or log in to an existing one. Are you sure you want to proceed with deleting your pending account?</string>
@@ -78,6 +79,7 @@
     <string name="log_shot">Log Shot</string>
     <string name="log_shots">Log Shots</string>
     <string name="menu">Menu</string>
+    <string name="more_info">More Info</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
     <string name="next">Next</string>
     <string name="no">No</string>
@@ -117,10 +119,10 @@
     <string name="players_last_name_empty_description">The player\'s last name is missing. Kindly provide a first name to proceed.</string>
     <string name="position">Position</string>
     <string name="proceed_with_your_account">Proceed With Your Account</string>
-    <string name="read_external_storage_permission_explanation"> We ask for read external storage permission so users can select an image from their gallery when creating or editing a player profile. This permission allows the app to access images stored on the device\'s external storage, enabling users to choose and associate images with their player profiles. Without this permission, users would not be able to select images from external storage for this feature.</string>
+    <string name="read_external_storage_permission_explanation">We ask for read external storage permission so users can select an image from their gallery when creating or editing a player profile. This permission allows the app to access images stored on the device\'s external storage, enabling users to choose and associate images with their player profiles. Without this permission, users would not be able to select images from external storage for this feature.</string>
     <string name="read_external_storage_permission">Read External Storage Permission</string>
     <string name="read_media_images_permission">Read Media Images Permission</string>
-    <string name="read_media_images_permission_explanation"> We ask for read media images permission so users can select an image from their gallery when creating or editing a player profile. This permission allows the app to access the images stored on the device, enabling users to choose and associate images with their player profiles. Without this permission, users would not be able to select images from their gallery for this feature.</string>
+    <string name="read_media_images_permission_explanation">We ask for read media images permission so users can select an image from their gallery when creating or editing a player profile. This permission allows the app to access the images stored on the device, enabling users to choose and associate images with their player profiles. Without this permission, users would not be able to select images from their gallery for this feature.</string>
     <string name="read_media_images">Read Media Images</string>
     <string name="read_external_storage_description">Permission to read external storage has been declined. To manually enable the "Read External Storage" permission and select an image from the gallery for the Player, please navigate to settings.</string>
     <string name="read_media_images_description">Permission to read media images has been declined. To manually enable the "Read Media Images" permission and select an image from the gallery for the Player, please navigate to settings.</string>

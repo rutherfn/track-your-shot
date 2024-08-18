@@ -135,6 +135,8 @@ fun hasReadImagePermissionEnabled(context: Context): Boolean {
     }
 }
 
+fun isTiramisuOrAbove(sdk: Int): Boolean = sdk >= Build.VERSION_CODES.TIRAMISU
+
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.TIRAMISU)
 fun shouldAskForReadMediaImages() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 

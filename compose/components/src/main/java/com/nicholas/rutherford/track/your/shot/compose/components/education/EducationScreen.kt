@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.compose.components.education
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -26,12 +29,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
+import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import kotlinx.coroutines.launch
@@ -39,10 +45,12 @@ import kotlinx.coroutines.launch
 /**
  * Education screen gets used in [EducationPager] to load screen content for Pager.
  *
- * @param educationInfo [EducationInfo] info that gets loaded in the content fpr tje govem screem
+ * @param educationInfo [EducationInfo] info that gets loaded in the content for the given screen
  * @param pagerState [PagerState] handles pager view that gets passed down from [EducationPager]
  * @param nextPage [Int] defines the next page we want to go to in the [PagerState]
  * @param modifier [Modifier] sets the [Modifier] that the [Column] wraps inside of view
+ * @param onButtonClicked [Unit] function that gets invoked when button is clicked
+ * @param onMoreInfoClicked [Unit] function that gets invoked when text of More Info is clicked
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -51,7 +59,8 @@ fun EducationScreen(
     pagerState: PagerState,
     nextPage: Int,
     modifier: Modifier = Modifier,
-    onButtonClicked: (() -> Unit)? = null
+    onButtonClicked: (() -> Unit)? = null,
+    onMoreInfoClicked: (() -> Unit)? = null
 ) {
     val coroutineScope = rememberCoroutineScope()
     var buttonEnabled by remember { mutableStateOf(true) }
@@ -59,7 +68,8 @@ fun EducationScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -88,6 +98,15 @@ fun EducationScreen(
         )
 
         Spacer(modifier = Modifier.padding(8.dp))
+
+        if (educationInfo.moreInfoVisible) {
+            Text(
+                text = stringResource(id = StringsIds.moreInfo),
+                textAlign = TextAlign.Center,
+                style = TextStyles.hyperLink.copy(fontSize = 16.sp, color = Color.Blue),
+                modifier = Modifier.padding(8.dp).clickable { onMoreInfoClicked?.invoke() }
+            )
+        }
 
         Button(
             onClick = {

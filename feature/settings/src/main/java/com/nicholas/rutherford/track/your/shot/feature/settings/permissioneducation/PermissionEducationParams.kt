@@ -2,5 +2,6 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.permissioneduca
 
 data class PermissionEducationParams(
     val onGotItButtonClicked: () -> Unit,
+    val onMoreInfoClicked: () -> Unit,
     val state: PermissionEducationState
 )

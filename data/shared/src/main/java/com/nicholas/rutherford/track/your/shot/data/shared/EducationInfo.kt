@@ -4,5 +4,6 @@ data class EducationInfo(
     val title: String,
     val description: String,
     val drawableResId: Int,
-    val buttonText: String
+    val buttonText: String,
+    val moreInfoVisible: Boolean = false
 )

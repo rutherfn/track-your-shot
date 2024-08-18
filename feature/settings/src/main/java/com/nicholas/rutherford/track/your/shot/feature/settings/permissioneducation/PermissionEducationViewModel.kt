@@ -2,9 +2,11 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.permissioneduca
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import com.nicholas.rutherford.track.your.shot.build.type.BuildType
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.helper.extensions.isTiramisuOrAbove
 import com.nicholas.rutherford.track.your.shot.helper.extensions.shouldAskForReadMediaImages
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,6 +14,7 @@ import kotlinx.coroutines.flow.update
 
 class PermissionEducationViewModel(
     private val navigation: PermissionEducationNavigation,
+    private val buildType: BuildType,
     private val application: Application
 ) : ViewModel() {
 
@@ -22,17 +25,19 @@ class PermissionEducationViewModel(
         updateState()
     }
 
-    fun onGotItButtonClicked() {
-        navigation.pop()
-    }
+    fun onGotItButtonClicked() = navigation.pop()
 
-    private fun educationInfoList(): List<EducationInfo> {
-        val readPermissionTitle = if (shouldAskForReadMediaImages()) {
+    fun onMoreInfoClicked() = navigation.navigateToUrl(url = application.getString(StringsIds.androidPermissionsUrl))
+
+    internal fun educationInfoList(): List<EducationInfo> {
+        val isTiramisuOrAbove = isTiramisuOrAbove(sdk = buildType.sdk)
+
+        val readPermissionTitle = if (isTiramisuOrAbove) {
             StringsIds.readMediaImagesPermission
         } else {
             StringsIds.readExternalStoragePermission
         }
-        val readPermissionExplanation = if (shouldAskForReadMediaImages()) {
+        val readPermissionExplanation = if (isTiramisuOrAbove) {
             StringsIds.readMediaImagesPermissionExplanation
         } else {
             StringsIds.readExternalStoragePermissionExplanation
@@ -43,13 +48,15 @@ class PermissionEducationViewModel(
                 title = application.getString(readPermissionTitle),
                 description = application.getString(readPermissionExplanation),
                 drawableResId = DrawablesIds.placeholder,
-                buttonText = application.getString(StringsIds.next)
+                buttonText = application.getString(StringsIds.next),
+                moreInfoVisible = true
             ),
             EducationInfo(
                 title = application.getString(StringsIds.cameraPermission),
                 description = application.getString(StringsIds.cameraPermissionExplanation),
                 drawableResId = DrawablesIds.placeholder,
-                buttonText = application.getString(StringsIds.gotIt)
+                buttonText = application.getString(StringsIds.gotIt),
+                moreInfoVisible = true
             )
         )
     }

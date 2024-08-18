@@ -111,6 +111,10 @@ fun NavigationComponent(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
+    val urlState by navigator.urlAction.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
 
     var alert: Alert? by remember { mutableStateOf(value = null) }
     var datePicker: DatePickerInfo? by remember { mutableStateOf(value = null) }
@@ -221,6 +225,14 @@ fun NavigationComponent(
                 }
                 navigator.showNavigationDrawer(navigationDrawerAction = null)
             }
+        }
+    }
+
+    LaunchedEffect(urlState) {
+        urlState?.let { url ->
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            activity.startActivity(intent)
+            navigator.url(url = null)
         }
     }
 
@@ -405,6 +417,7 @@ fun NavigationComponent(
                 PermissionEducationScreen(
                     permissionEducationParams = PermissionEducationParams(
                         onGotItButtonClicked = { permissionEducationViewModel.onGotItButtonClicked() },
+                        onMoreInfoClicked = { permissionEducationViewModel.onMoreInfoClicked() },
                         state = permissionEducationViewModel.permissionEducationStateFlow.collectAsState().value
                     )
                 )

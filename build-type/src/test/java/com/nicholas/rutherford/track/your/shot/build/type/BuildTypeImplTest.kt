@@ -13,9 +13,26 @@ class BuildTypeImplTest {
     internal val releaseVersionName = "release"
     internal val stageVersionName = "stage"
 
+    internal val sdkValue = 2
+
     @BeforeEach
     fun beforeEach() {
-        buildTypeImpl = BuildTypeImpl(buildTypeValue = debugVersionName)
+        buildTypeImpl = BuildTypeImpl(
+            sdkValue = sdkValue,
+            buildTypeValue = debugVersionName
+        )
+    }
+
+    @Test
+    fun `sdk should be set based on param`() {
+        val value = 22
+
+        buildTypeImpl = BuildTypeImpl(
+            sdkValue = value,
+            buildTypeValue = debugVersionName
+        )
+
+        Assertions.assertEquals(buildTypeImpl.sdk, value)
     }
 
     @Nested inner class Constants {
@@ -36,19 +53,28 @@ class BuildTypeImplTest {
     @Nested inner class IsDebug {
 
         @Test fun `isDebug should result in true when buildTypeValue is debug`() {
-            buildTypeImpl = BuildTypeImpl(buildTypeValue = debugVersionName)
+            buildTypeImpl = BuildTypeImpl(
+                sdkValue = sdkValue,
+                buildTypeValue = debugVersionName
+            )
 
             Assertions.assertTrue(buildTypeImpl.isDebug())
         }
 
         @Test fun `isDebug should result in false when buildTypeValue is stage`() {
-            buildTypeImpl = BuildTypeImpl(buildTypeValue = stageVersionName)
+            buildTypeImpl = BuildTypeImpl(
+                sdkValue = sdkValue,
+                buildTypeValue = stageVersionName
+            )
 
             Assertions.assertFalse(buildTypeImpl.isDebug())
         }
 
         @Test fun `isDebug should result in false when buildTypeValue is release`() {
-            buildTypeImpl = BuildTypeImpl(buildTypeValue = releaseVersionName)
+            buildTypeImpl = BuildTypeImpl(
+                sdkValue = sdkValue,
+                buildTypeValue = releaseVersionName
+            )
 
             Assertions.assertFalse(buildTypeImpl.isDebug())
         }
@@ -57,19 +83,28 @@ class BuildTypeImplTest {
     @Nested inner class IsRelease {
 
         @Test fun `isRelease should result in true when buildTypeValue is release`() {
-            buildTypeImpl = BuildTypeImpl(buildTypeValue = releaseVersionName)
+            buildTypeImpl = BuildTypeImpl(
+                sdkValue = sdkValue,
+                buildTypeValue = releaseVersionName
+            )
 
             Assertions.assertTrue(buildTypeImpl.isRelease())
         }
 
         @Test fun `isRelease should result in false when buildTypeValue is debug`() {
-            buildTypeImpl = BuildTypeImpl(buildTypeValue = debugVersionName)
+            buildTypeImpl = BuildTypeImpl(
+                sdkValue = sdkValue,
+                buildTypeValue = debugVersionName
+            )
 
             Assertions.assertFalse(buildTypeImpl.isRelease())
         }
 
         @Test fun `isRelease should result in false when buildTypeValue is stage`() {
-            buildTypeImpl = BuildTypeImpl(buildTypeValue = stageVersionName)
+            buildTypeImpl = BuildTypeImpl(
+                sdkValue = sdkValue,
+                buildTypeValue = stageVersionName
+            )
 
             Assertions.assertFalse(buildTypeImpl.isRelease())
         }
@@ -78,19 +113,28 @@ class BuildTypeImplTest {
     @Nested inner class IsStage {
 
         @Test fun `isStage should result in true when buildTypeValue is stage`() {
-            buildTypeImpl = BuildTypeImpl(buildTypeValue = stageVersionName)
+            buildTypeImpl = BuildTypeImpl(
+                sdkValue = sdkValue,
+                buildTypeValue = stageVersionName
+            )
 
             Assertions.assertTrue(buildTypeImpl.isStage())
         }
 
         @Test fun `isStage should result in false when buildTypeValue is debug`() {
-            buildTypeImpl = BuildTypeImpl(buildTypeValue = debugVersionName)
+            buildTypeImpl = BuildTypeImpl(
+                sdkValue = sdkValue,
+                buildTypeValue = debugVersionName
+            )
 
             Assertions.assertFalse(buildTypeImpl.isStage())
         }
 
         @Test fun `isStage should result in false when buildTypeValue is release`() {
-            buildTypeImpl = BuildTypeImpl(buildTypeValue = releaseVersionName)
+            buildTypeImpl = BuildTypeImpl(
+                sdkValue = sdkValue,
+                buildTypeValue = releaseVersionName
+            )
 
             Assertions.assertFalse(buildTypeImpl.isStage())
         }

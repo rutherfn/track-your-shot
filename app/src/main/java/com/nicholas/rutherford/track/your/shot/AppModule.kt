@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot
 
 import android.app.Application
+import android.os.Build
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -182,7 +183,10 @@ class AppModule {
             NetworkImpl()
         }
         single<BuildType> {
-            BuildTypeImpl(buildTypeValue = BuildConfig.BUILD_TYPE)
+            BuildTypeImpl(
+                sdkValue = Build.VERSION.SDK_INT,
+                buildTypeValue = BuildConfig.BUILD_TYPE
+            )
         }
         single<AppCenter> {
             AppCenterImpl(application = androidApplication(), buildType = get())
@@ -356,6 +360,7 @@ class AppModule {
         viewModel {
             PermissionEducationViewModel(
                 navigation = get(),
+                buildType = get(),
                 application = androidApplication()
             )
         }

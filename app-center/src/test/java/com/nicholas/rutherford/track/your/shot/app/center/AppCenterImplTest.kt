@@ -15,15 +15,16 @@ class AppCenterImplTest {
     internal val releaseAppCenterSecretValue = "babe5ef0-7d3f-470c-b396-ecd83744e35"
     internal val stageAppCenterSecretValue = "b5f5d03d-27a9-4186-874a-5c85e184f0bc"
 
+    private val sdkValue = 2
     private val debugVersionName = "debug"
     private val releaseVersionName = "release"
     private val stageVersionName = "stage"
 
     internal val application = Application()
 
-    private val buildTypeDebug = BuildTypeImpl(buildTypeValue = debugVersionName)
-    private val buildTypeRelease = BuildTypeImpl(buildTypeValue = releaseVersionName)
-    private val buildTypeStage = BuildTypeImpl(buildTypeValue = stageVersionName)
+    private val buildTypeDebug = BuildTypeImpl(sdkValue = sdkValue, buildTypeValue = debugVersionName)
+    private val buildTypeRelease = BuildTypeImpl(sdkValue = sdkValue, buildTypeValue = releaseVersionName)
+    private val buildTypeStage = BuildTypeImpl(sdkValue = sdkValue, buildTypeValue = stageVersionName)
 
     @BeforeEach
     fun beforeEach() {
