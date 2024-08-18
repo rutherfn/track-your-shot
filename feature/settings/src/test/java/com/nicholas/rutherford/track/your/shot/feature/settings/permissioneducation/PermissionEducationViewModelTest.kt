@@ -41,7 +41,6 @@ class PermissionEducationViewModelTest {
             buildType = buildType,
             application = application
         )
-
     }
 
     @Nested

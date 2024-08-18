@@ -155,7 +155,6 @@ fun EducationScreen(
                 tint = Color.Black
             )
         }
-
     }
 }
 

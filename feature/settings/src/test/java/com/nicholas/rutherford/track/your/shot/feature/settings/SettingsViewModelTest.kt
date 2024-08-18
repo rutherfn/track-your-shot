@@ -63,7 +63,7 @@ class SettingsViewModelTest {
     }
 
     @Nested
-    inner class OnSettingItemClicked{
+    inner class OnSettingItemClicked {
 
         @Test
         fun `when value passed in does not meet any conditions should navigate to permission education screen`() {
