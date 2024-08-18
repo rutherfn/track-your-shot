@@ -7,7 +7,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.isTiramisuOrAbove
-import com.nicholas.rutherford.track.your.shot.helper.extensions.shouldAskForReadMediaImages
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -29,7 +28,7 @@ class PermissionEducationViewModel(
 
     fun onMoreInfoClicked() = navigation.navigateToUrl(url = application.getString(StringsIds.androidPermissionsUrl))
 
-    internal fun educationInfoList(): List<EducationInfo> {
+    private fun educationInfoList(): List<EducationInfo> {
         val isTiramisuOrAbove = isTiramisuOrAbove(sdk = buildType.sdk)
 
         val readPermissionTitle = if (isTiramisuOrAbove) {
@@ -47,14 +46,14 @@ class PermissionEducationViewModel(
             EducationInfo(
                 title = application.getString(readPermissionTitle),
                 description = application.getString(readPermissionExplanation),
-                drawableResId = DrawablesIds.placeholder,
+                drawableResId = DrawablesIds.gallery,
                 buttonText = application.getString(StringsIds.next),
                 moreInfoVisible = true
             ),
             EducationInfo(
                 title = application.getString(StringsIds.cameraPermission),
                 description = application.getString(StringsIds.cameraPermissionExplanation),
-                drawableResId = DrawablesIds.placeholder,
+                drawableResId = DrawablesIds.camera,
                 buttonText = application.getString(StringsIds.gotIt),
                 moreInfoVisible = true
             )

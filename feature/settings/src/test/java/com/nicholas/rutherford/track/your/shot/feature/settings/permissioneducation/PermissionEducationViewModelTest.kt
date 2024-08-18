@@ -62,14 +62,14 @@ class PermissionEducationViewModelTest {
                         EducationInfo(
                             title = "Read External Storage Permission",
                             description = "We ask for read external storage permission so users can select an image from their gallery when creating or editing a player profile. This permission allows the app to access images stored on the device's external storage, enabling users to choose and associate images with their player profiles. Without this permission, users would not be able to select images from external storage for this feature.",
-                            drawableResId = DrawablesIds.placeholder,
+                            drawableResId = DrawablesIds.gallery,
                             buttonText = "Next",
                             moreInfoVisible = true
                         ),
                         EducationInfo(
                             title = "Camera Permission",
                             description = "We ask for camera permission so users can take photos with their phone's camera when creating or editing a player profile. This permission allows the app to access the device's camera hardware, enabling users to capture and associate images with their player profiles. Without this permission, the app would not be able to use the camera for this feature.",
-                            drawableResId = DrawablesIds.placeholder,
+                            drawableResId = DrawablesIds.camera,
                             buttonText = "Got It",
                             moreInfoVisible = true
                         )
@@ -93,14 +93,14 @@ class PermissionEducationViewModelTest {
                         EducationInfo(
                             title = "Read Media Images Permission",
                             description = "We ask for read media images permission so users can select an image from their gallery when creating or editing a player profile. This permission allows the app to access the images stored on the device, enabling users to choose and associate images with their player profiles. Without this permission, users would not be able to select images from their gallery for this feature.",
-                            drawableResId = DrawablesIds.placeholder,
+                            drawableResId = DrawablesIds.gallery,
                             buttonText = "Next",
                             moreInfoVisible = true
                         ),
                         EducationInfo(
                             title = "Camera Permission",
                             description = "We ask for camera permission so users can take photos with their phone's camera when creating or editing a player profile. This permission allows the app to access the device's camera hardware, enabling users to capture and associate images with their player profiles. Without this permission, the app would not be able to use the camera for this feature.",
-                            drawableResId = DrawablesIds.placeholder,
+                            drawableResId = DrawablesIds.camera,
                             buttonText = "Got It",
                             moreInfoVisible = true
                         )
