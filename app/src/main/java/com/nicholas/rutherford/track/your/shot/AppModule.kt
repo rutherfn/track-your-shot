@@ -52,6 +52,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
@@ -362,6 +363,11 @@ class AppModule {
                 navigation = get(),
                 buildType = get(),
                 application = androidApplication()
+            )
+        }
+        viewModel {
+            EnabledPermissionsViewModel(
+                navigator = get()
             )
         }
     }

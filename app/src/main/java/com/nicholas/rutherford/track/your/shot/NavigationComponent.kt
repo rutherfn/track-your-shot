@@ -44,6 +44,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
@@ -133,6 +135,7 @@ fun NavigationComponent(
     val logShotViewModel = viewModels.logShotViewModel
     val settingsViewModel = viewModels.settingsViewModel
     val permissionEducationViewModel = viewModels.permissionEducationViewModel
+    val enabledPermissionsViewModel = viewModels.enabledPermissionsViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -408,6 +411,16 @@ fun NavigationComponent(
                             settingsViewModel.onSettingItemClicked(value = value)
                         },
                         state = settingsViewModel.settingsStateFlow.collectAsState().value
+                    )
+                )
+            }
+            composable(
+                route = NavigationDestinations.ENABLED_PERMISSIONS_SCREEN
+            ) {
+                EnabledPermissionsScreen(
+                    enabledPermissionsParams = EnabledPermissionsParams(
+                        onBackButtonClicked = { enabledPermissionsViewModel.onBackButtonClicked() },
+                        state = enabledPermissionsViewModel.enabledPermissionStateFlow.collectAsState().value
                     )
                 )
             }

@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,24 +17,31 @@ fun PermissionEducationScreen(permissionEducationParams: PermissionEducationPara
     val pagerState = rememberPagerState { permissionEducationParams.state.educationInfoList.size }
 
     Content(
-        ui = {
-            EducationPager(
-                items = permissionEducationParams.state.educationInfoList,
+        ui = { PermissionEducationScreenUi(permissionEducationParams = permissionEducationParams, pagerState = pagerState) }
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun PermissionEducationScreenUi(
+    permissionEducationParams: PermissionEducationParams,
+    pagerState: PagerState
+) {
+    EducationPager(
+        items = permissionEducationParams.state.educationInfoList,
+        pagerState = pagerState,
+        pageContent = { page ->
+            EducationScreen(
+                educationInfo = page,
                 pagerState = pagerState,
-                pageContent = { page ->
-                    EducationScreen(
-                        educationInfo = page,
-                        pagerState = pagerState,
-                        nextPage = (pagerState.currentPage + 1).coerceAtMost(maximumValue = permissionEducationParams.state.educationInfoList.size - 1),
-                        onButtonClicked = if (pagerState.currentPage == 1) {
-                            permissionEducationParams.onGotItButtonClicked
-                        } else {
-                            null
-                        },
-                        onMoreInfoClicked = permissionEducationParams.onMoreInfoClicked,
-                        onCloseIconClicked = permissionEducationParams.onGotItButtonClicked
-                    )
-                }
+                nextPage = (pagerState.currentPage + 1).coerceAtMost(maximumValue = permissionEducationParams.state.educationInfoList.size - 1),
+                onButtonClicked = if (pagerState.currentPage == 1) {
+                    permissionEducationParams.onGotItButtonClicked
+                } else {
+                    null
+                },
+                onMoreInfoClicked = permissionEducationParams.onMoreInfoClicked,
+                onCloseIconClicked = permissionEducationParams.onGotItButtonClicked
             )
         }
     )
@@ -41,7 +49,7 @@ fun PermissionEducationScreen(permissionEducationParams: PermissionEducationPara
 
 @Preview
 @Composable
-fun PermissionEducationScreenPreview() {
+private fun PermissionEducationScreenPreview() {
     PermissionEducationScreen(
         permissionEducationParams = PermissionEducationParams(
             onGotItButtonClicked = {},

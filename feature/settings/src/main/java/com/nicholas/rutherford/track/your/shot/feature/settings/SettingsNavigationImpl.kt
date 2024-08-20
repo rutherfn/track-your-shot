@@ -7,5 +7,7 @@ class SettingsNavigationImpl(private val navigator: Navigator) : SettingsNavigat
 
     override fun openNavigationDrawer() = navigator.showNavigationDrawer(navigationDrawerAction = true)
 
+    override fun navigateToEnabledPermissionsScreen() = navigator.navigate(navigationAction = NavigationActions.Settings.enabledPermissions())
+
     override fun navigateToPermissionEducationScreen() = navigator.navigate(navigationAction = NavigationActions.Settings.permissionEducation())
 }
