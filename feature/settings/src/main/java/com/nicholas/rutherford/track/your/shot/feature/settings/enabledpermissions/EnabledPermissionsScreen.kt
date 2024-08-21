@@ -50,16 +50,32 @@ private fun EnabledPermissionsScreenUi(enabledPermissionsParams: EnabledPermissi
             modifier = Modifier
                 .background(AppColors.White)
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
             elevation = 2.dp
         ) {
             Column {
             SwitchRow(
                 enabled = false,
-                title = "dada",
+                title = stringResource(id = enabledPermissionsParams.state.mediaOrExternalStorageStringId),
                 onSwitchChanged = {}
             )
                 }
+        }
+
+        Card(
+            modifier = Modifier
+                .background(AppColors.White)
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            elevation = 2.dp
+        ) {
+            Column {
+                SwitchRow(
+                    enabled = false,
+                    title = stringResource(id = enabledPermissionsParams.state.cameraPermissionStringId),
+                    onSwitchChanged = {}
+                )
+            }
         }
     }
 }

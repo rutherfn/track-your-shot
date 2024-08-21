@@ -3,6 +3,6 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissi
 import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 
 data class EnabledPermissionsState(
-    val mediaOrExternalStorageEnabled: Boolean = false,
-    val cameraPermissionEnabled: Boolean = false
+    val mediaOrExternalStorageStringId: Int = StringsIds.empty,
+    val cameraPermissionStringId: Int = StringsIds.empty
 )

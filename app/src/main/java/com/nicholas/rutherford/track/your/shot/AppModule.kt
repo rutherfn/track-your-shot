@@ -367,6 +367,7 @@ class AppModule {
         }
         viewModel {
             EnabledPermissionsViewModel(
+                buildType = get(),
                 navigator = get()
             )
         }
