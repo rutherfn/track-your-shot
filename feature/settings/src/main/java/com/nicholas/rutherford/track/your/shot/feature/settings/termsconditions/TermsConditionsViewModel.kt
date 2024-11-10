@@ -21,7 +21,7 @@ class TermsConditionsViewModel(
         updateInfoListState()
     }
 
-    fun buildInfoList(): List<TermsConditionInfo> {
+    internal fun buildInfoList(): List<TermsConditionInfo> {
         return listOf(
             TermsConditionInfo(
                 title = application.getString(StringsIds.introduction),
