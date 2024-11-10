@@ -18,6 +18,10 @@ object NavigationDestinationsWithParams {
         viewCurrentPendingShot: Boolean
     ): String = "${NavigationDestinations.LOG_SHOT_SCREEN}/$isExistingPlayer/$playerId/$shotType/$shotId/$viewCurrentExistingShot/$viewCurrentPendingShot"
 
+    fun termsConditionsWithParams(
+        isAcknowledgeConditions: Boolean
+    ): String = "${NavigationDestinations.TERMS_CONDITIONS_SCREEN}/$isAcknowledgeConditions"
+
     fun selectShotWithParams(
         isExistingPlayer: Boolean,
         playerId: Int

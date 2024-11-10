@@ -13,8 +13,12 @@ class ExistingUserFirebaseImpl(private val firebaseAuth: FirebaseAuth) : Existin
 
     override fun loginFlow(email: String, password: String): Flow<Boolean> {
         return callbackFlow {
+            println(email)
+            println(password)
             firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
+                    println(task.exception)
+                    println("task test ${task.isSuccessful}")
                     trySend(task.isSuccessful)
                 }
             awaitClose()

@@ -25,6 +25,14 @@ object NavigationActions {
                 .setPopUpTo(0, true)
                 .build()
         }
+
+        fun termsConditions(isAcknowledgeConditions: Boolean) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = isAcknowledgeConditions)
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .setLaunchSingleTop(true)
+                .build()
+        }
     }
 
     object LoginScreen {
@@ -59,20 +67,20 @@ object NavigationActions {
 
     object AuthenticationScreen {
 
-        fun playersList() = object : NavigationAction {
-            override val destination = NavigationDestinations.PLAYERS_LIST_SCREEN
-            override val navOptions = NavOptions.Builder()
-                .setPopUpTo(0, true)
-                .setLaunchSingleTop(true)
-                .build()
-        }
-
         fun login() = object : NavigationAction {
             override val destination: String = NavigationDestinations.LOGIN_SCREEN
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(0, true)
                 .setLaunchSingleTop(true)
                 .build()
+        }
+
+        fun termsConditions(isAcknowledgeConditions: Boolean) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = isAcknowledgeConditions)
+            override val navOptions = NavOptions.Builder()
+                    .setPopUpTo(0, true)
+                    .setLaunchSingleTop(true)
+                    .build()
         }
     }
 
@@ -178,10 +186,26 @@ object NavigationActions {
                 .build()
         }
 
-        fun termsConditions() = object : NavigationAction {
-            override val destination = NavigationDestinations.TERMS_CONDITIONS_SCREEN
+        fun termsConditions(isAcknowledgeConditions: Boolean) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = isAcknowledgeConditions)
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                .build()
+        }
+    }
+
+    object TermsConditions {
+        fun playerList() = object : NavigationAction {
+            override val destination = NavigationDestinations.PLAYERS_LIST_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .build()
+        }
+
+        fun settings() = object : NavigationAction {
+            override val destination = NavigationDestinations.SETTINGS_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
                 .build()
         }
     }

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="acceptance_of_these_terms">Acceptance Of These Terms</string>
+    <string name="acceptance_of_these_terms_description"><![CDATA[You acknowledge that you have read this Agreement and agree to all its terms and conditions. By accessing and using the Mobile Application and Services, you agree to be bound by this Agreement. If you do not agree to abide by the terms of this Agreement, you are not authorized to access or use the Mobile Application and Services.]]></string>
+    <string name="accounts">Accounts</string>
     <string name="account_info">Account Info</string>
     <string name="account_has_not_been_verified">Account Has Not Been Verified</string>
+    <string name="account_security_description">If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. We may monitor and review new accounts before you may sign in and start using the Services. Providing false contact information of any kind may result in the termination of your account. You must immediately notify us of any unauthorized uses of your account or any other breaches of security. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions. We may suspend, disable, or delete your account (or any part thereof) if we determine that you have violated any provision of this Agreement or that your conduct or content would tend to damage our reputation and goodwill. If we delete your account for the foregoing reasons, you may not re-register for our Services. We may block your email address and Internet protocol address to prevent further registration.</string>
     <string name="add_player">Add Player</string>
     <string name="add_player_stats">Add Player Stats</string>
+    <string name="acknowledge_and_agree_to_terms">Acknowledge / Agree To Terms</string>
     <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
     <string name="are_you_certain_you_wish_to_remove_x">Are you certain you wish to remove %s?</string>
     <string name="are_you_sure_you_want_to_leave_track_your_shot">Are you sure you want to leave Track Your Shot?</string>
@@ -16,11 +21,16 @@
     <string name="camera_permission_has_been_denied_description">Camera permission has been denied. To manually grant permission for the camera and upload pictures for the Player, kindly navigate to Settings.</string>
     <string name="cancel">Cancel</string>
     <string name="center">Center</string>
+    <string name="changes_and_amendments">Changes And Amendments</string>
+    <string name="changes_and_amendments_description"><![CDATA[We reserve the right to modify this Agreement or its terms related to the Mobile Application and Services at any time at our discretion. When we do, we will send you an email to notify you. We may also provide notice to you in other ways at our discretion, such as through the contact information you have provided. An updated version of this Agreement will be effective immediately upon the posting of the revised Agreement unless otherwise specified. Your continued use of the Mobile Application and Services after the effective date of the revised Agreement (or such other act specified at that time) will constitute your consent to those changes.]]></string>
     <string name="check_if_account_has_been_verified">Check if account has been verified</string>
     <string name="choose_a_shot_to_log_info_description">Choose a shot to log its information. To view additional details about the shot, click \"Show More\",</string>
     <string name="choose_image_from_gallery">Choose Image From Gallery</string>
     <string name="choose_option">Choose Option</string>
+    <string name="close">Close</string>
     <string name="compare_players_stats">Compare Players &amp; Stats</string>
+    <string name="contacting_us">Contacting Us</string>
+    <string name="contacting_us_description">If you have any questions, concerns, or complaints regarding this Agreement, we encourage you to contact us with the email below: </string>
     <string name="continue_text">Continue</string>
     <string name="click_me_to_create_account">Click me to create account</string>
     <string name="create_account">Create Account</string>
@@ -35,6 +45,7 @@
     <string name="delete_pending_account">Delete Pending Account</string>
     <string name="deleting_pending_account">Deleting Pending Account</string>
     <string name="delete_x">Delete %s</string>
+    <string name="dev_email" translatable="false">nicholasrutherforddeveloper@gmail.com</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
     <string name="do_you_wish_to_proceed_description">Do you wish to proceed despite having unsaved player modifications? Any changes made will not be saved.</string>
     <string name="edit_x">Edit %s</string>
@@ -70,6 +81,7 @@
     <string name="hint_add_new_player">Tap the "+" icon in the right-side toolbar to add a new player</string>
     <string name="hint_log_new_shots">Press the "Log Shots" button to record shots for the player.</string>
     <string name="hint_log_new_shots_for_player">Press the "Log Shots" button to record shots for</string>
+    <string name="introduction">Introduction</string>
     <string name="issue_occurred">Issue Occurred</string>
     <string name="last_name">Last Name</string>
     <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">Leaving the app will result you in not finishing the account creation process. You will not be able to continue until you verify your email. If you verify your email and then come back to the app, you can continue to create your account.</string>
@@ -92,6 +104,8 @@
     <string name="no_current_shots_logged_for_player">No Current Shots Logged For Player</string>
     <string name="open_email">Open Email</string>
     <string name="ok">Ok</string>
+    <string name="other_resources">Other Resources</string>
+    <string name="other_resources_description">Although the Mobile Application and Services may link to other resources (such as websites, mobile applications, etc.), we are not, directly or indirectly, implying any approval, association, sponsorship, endorsement, or affiliation with any linked resource, unless specifically stated herein. We are not responsible for examining or evaluating, and we do not warrant the offerings of, any businesses or individuals or the content of their resources. We do not assume any responsibility or liability for the actions, products, services, and content of any other third parties. You should carefully review the legal statements and other conditions of use of any resource which you access through a link in the Mobile Application. Your linking to any other off-site resources is at your own risk.</string>
     <string name="reset_password">Reset Password</string>
     <string name="reset_password_email_sent">Reset Password Email Sent</string>
     <string name="resend_email">Resend Email</string>
@@ -158,6 +172,7 @@
     <string name="the_image_upload_was_unsuccessful">The image upload was unsuccessful. Please attempt it once more.</string>
     <string name="there_was_a_error_creating_your_account_please_try_again">There was a error creating your account. Please try again.</string>
     <string name="there_was_a_error_deleting_your_account_please_try_again">There was a error deleting your account. Please try again.</string>
+    <string name="this_document_was_last_updated_on">This document was last updated on November 9, 2024</string>
     <string name="this_email_is_already_used_for_another_account_please_enter_a_new_email">This email is already used for another account. Please enter a new email.</string>
     <string name="this_username_is_already_used_for_another_account_please_enter_a_new_username">This username is already used for another account. Please enter a new username.</string>
     <string name="track_your_shot">Track Your Shot</string>

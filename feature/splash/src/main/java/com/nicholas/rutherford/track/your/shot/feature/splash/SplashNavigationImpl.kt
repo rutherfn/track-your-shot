@@ -10,4 +10,6 @@ class SplashNavigationImpl(private val navigator: Navigator) : SplashNavigation 
     override fun navigateToPlayersList() = navigator.navigate(navigationAction = NavigationActions.SplashScreen.playersList())
 
     override fun navigateToLogin() = navigator.navigate(navigationAction = NavigationActions.SplashScreen.login())
+
+    override fun navigateToTermsAndConditions() = navigator.navigate(navigationAction = NavigationActions.SplashScreen.termsConditions(isAcknowledgeConditions = true))
 }

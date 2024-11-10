@@ -92,4 +92,22 @@ class CreateSharedPreferencesImplTest {
             }
             verify { editor.apply() }
         }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `createShouldShowTermsAndConditionsPreference should call editor putBoolean and apply`() =
+        runTest {
+            val defaultValue = true
+
+            coEvery { sharedPreferences.edit() } returns editor
+
+            init()
+
+            createSharedPreferencesImpl.createShouldShowTermsAndConditionsPreference(value = defaultValue)
+
+            verify {
+                editor.putBoolean(Constants.Preferences.SHOULD_SHOW_TERM_AND_CONDITIONS, defaultValue)
+            }
+            verify { editor.apply() }
+        }
 }

@@ -46,6 +46,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
@@ -134,6 +135,7 @@ fun NavigationComponent(
     val logShotViewModel = viewModels.logShotViewModel
     val settingsViewModel = viewModels.settingsViewModel
     val permissionEducationViewModel = viewModels.permissionEducationViewModel
+    val termsConditionsViewModel = viewModels.termsConditionsViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -423,10 +425,22 @@ fun NavigationComponent(
                     )
                 )
             }
+
             composable(
-                route = NavigationDestinations.TERMS_CONDITIONS_SCREEN
-            ) {
-                TermsConditionsScreen()
+                route = NavigationDestinations.TERMS_CONDITIONS_WITH_PARAMS,
+                arguments = NavArguments.termsConditions
+            ) { entry ->
+                entry.arguments?.let { bundle ->
+                    val isAcknowledgeConditions = bundle.getBoolean(NamedArguments.IS_ACKNOWLEDGE_CONDITIONS)
+                    TermsConditionsScreen(
+                        params = TermsConditionsParams(
+                            updateButtonTextState = { termsConditionsViewModel.updateButtonTextState(isAcknowledgeConditions = isAcknowledgeConditions) },
+                            onCloseAcceptButtonClicked = { termsConditionsViewModel.onCloseAcceptButtonClicked(isAcknowledgeConditions = isAcknowledgeConditions) },
+                            state = termsConditionsViewModel.termsConditionsStateFlow.collectAsState().value,
+                            isAcknowledgeConditions = isAcknowledgeConditions
+                        )
+                    )
+                }
             }
             composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
                 CreateAccountScreen(

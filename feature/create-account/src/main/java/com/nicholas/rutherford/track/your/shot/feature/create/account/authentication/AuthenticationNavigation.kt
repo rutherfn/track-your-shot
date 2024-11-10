@@ -7,7 +7,7 @@ interface AuthenticationNavigation {
     fun alert(alert: Alert)
     fun disableProgress()
     fun enableProgress(progress: Progress)
-    fun navigateToPlayersList()
+    fun navigateToTermsAndConditions()
     fun navigateToLogin()
     fun openEmail()
     fun finish()

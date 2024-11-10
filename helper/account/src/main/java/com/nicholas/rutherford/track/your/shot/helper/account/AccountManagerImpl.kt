@@ -62,6 +62,7 @@ class AccountManagerImpl(
 
             existingUserFirebase.logout()
 
+            createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
             clearOutDatabase()
         }
     }
@@ -75,6 +76,7 @@ class AccountManagerImpl(
                 password = password
             ).collectLatest { isSuccessful ->
                 if (isSuccessful) {
+                    createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
                     readFirebaseUserInfo.getAccountInfoFlow()
                         .collectLatest { accountInfoRealtimeResponse ->
                             accountInfoRealtimeResponse?.let { accountInfo ->

@@ -11,6 +11,7 @@ object NavigationDestinations {
     const val LOG_SHOT_SCREEN = "logShotScreen"
     const val PERMISSION_EDUCATION_SCREEN = "permissionEducationScreen"
     const val TERMS_CONDITIONS_SCREEN = "termsConditionsScreen"
+    const val TERMS_CONDITIONS_WITH_PARAMS = "termsConditionsScreen/{isAcknowledgeConditions}"
     const val SELECT_SHOT_SCREEN = "selectShotScreen"
     const val SELECT_SHOT_SCREEN_WITH_PARAMS = "selectShotScreen/{isExistingPlayer}/{playerId}"
     const val PLAYERS_LIST_SCREEN = "playersListScreen"

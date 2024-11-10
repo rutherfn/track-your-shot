@@ -129,4 +129,54 @@ class ReadSharedPreferencesImplTest {
                 Assertions.assertEquals(readSharedPreferencesImpl.shouldUpdateLoggedInDeclaredShotListState(), false)
             }
     }
+
+    @Nested
+    inner class ShouldShowTermsAndConditions {
+
+        @BeforeEach
+        fun beforeEach() {
+            mockkStatic(SharedPreferences::class)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return true when getBoolean returns back true`() =
+            runTest {
+                coEvery {
+                    sharedPreferences.getBoolean(
+                        Constants.Preferences.SHOULD_SHOW_TERM_AND_CONDITIONS,
+                        false
+                    )
+                } returns true
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.shouldShowTermsAndConditions(), true)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return true when getBoolean returns back false`() =
+            runTest {
+                coEvery {
+                    sharedPreferences.getBoolean(
+                        Constants.Preferences.SHOULD_SHOW_TERM_AND_CONDITIONS,
+                        false
+                    )
+                } returns false
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.shouldShowTermsAndConditions(), false)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return false when getBoolean returns back no value`() =
+            runTest {
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.shouldShowTermsAndConditions(), false)
+            }
+    }
 }

@@ -288,13 +288,14 @@ class NavigationActionsTest {
             @Test
             fun termsConditions() {
                 Assertions.assertEquals(
-                    Actions.Settings.termsConditions().destination,
-                    NavigationDestinations.TERMS_CONDITIONS_SCREEN
+                    Actions.Settings.termsConditions(isAcknowledgeConditions = false).destination,
+                    "termsConditionsScreen/false"
                 )
                 Assertions.assertEquals(
-                    Actions.Settings.termsConditions().navOptions,
+                    Actions.Settings.termsConditions(isAcknowledgeConditions = false).navOptions,
                     NavOptions.Builder()
-                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                        .setPopUpTo(0, true)
+                        .setLaunchSingleTop(true)
                         .build()
                 )
             }

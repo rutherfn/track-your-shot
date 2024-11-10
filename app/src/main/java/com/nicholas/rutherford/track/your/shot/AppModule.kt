@@ -57,6 +57,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
@@ -353,6 +354,7 @@ class AppModule {
                 authenticationFirebase = get(),
                 createFirebaseUserInfo = get(),
                 activeUserRepository = get(),
+                createSharedPreferences = get(),
                 scope = defaultCoroutineScope
             )
         }
@@ -367,6 +369,13 @@ class AppModule {
                 navigation = get(),
                 buildType = get(),
                 application = androidApplication()
+            )
+        }
+        viewModel {
+            TermsConditionsViewModel(
+                navigation = get(),
+                application = androidApplication(),
+                createSharedPreferences = get()
             )
         }
     }
