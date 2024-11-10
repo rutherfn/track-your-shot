@@ -284,6 +284,20 @@ class NavigationActionsTest {
                         .build()
                 )
             }
+
+            @Test
+            fun termsConditions() {
+                Assertions.assertEquals(
+                    Actions.Settings.termsConditions().destination,
+                    NavigationDestinations.TERMS_CONDITIONS_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.Settings.termsConditions().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                        .build()
+                )
+            }
         }
     }
 }

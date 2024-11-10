@@ -177,5 +177,12 @@ object NavigationActions {
                 .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                 .build()
         }
+
+        fun termsConditions() = object : NavigationAction {
+            override val destination = NavigationDestinations.TERMS_CONDITIONS_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                .build()
+        }
     }
 }

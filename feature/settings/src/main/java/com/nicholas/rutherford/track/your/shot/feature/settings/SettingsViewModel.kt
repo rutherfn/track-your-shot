@@ -48,7 +48,7 @@ class SettingsViewModel(
                 // navigate the onboarding screen
             }
             application.getString(StringsIds.termsConditions) -> {
-                // navigate to terms and conditions page
+                navigation.navigateToTermsConditions()
             }
             application.getString(StringsIds.accountInfo) -> {
                 // navigate to account info page

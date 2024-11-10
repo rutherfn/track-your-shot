@@ -46,6 +46,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
@@ -421,6 +422,11 @@ fun NavigationComponent(
                         state = permissionEducationViewModel.permissionEducationStateFlow.collectAsState().value
                     )
                 )
+            }
+            composable(
+                route = NavigationDestinations.TERMS_CONDITIONS_SCREEN
+            ) {
+                TermsConditionsScreen()
             }
             composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
                 CreateAccountScreen(

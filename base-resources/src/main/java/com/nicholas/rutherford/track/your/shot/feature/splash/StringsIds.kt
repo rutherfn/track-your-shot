@@ -159,6 +159,7 @@ object StringsIds {
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
     val takeAPicture = R.string.take_a_picture
     val termsConditions = R.string.terms_conditions
+    val termsConditionsDescription = R.string.terms_conditions_description
     val theImageUploadWasUnsuccessful = R.string.the_image_upload_was_unsuccessful
     val thereWasAErrorCreatingYourAccountPleaseTryAgain =
         R.string.there_was_a_error_creating_your_account_please_try_again

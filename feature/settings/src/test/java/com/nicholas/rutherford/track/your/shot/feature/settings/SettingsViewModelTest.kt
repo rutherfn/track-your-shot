@@ -66,6 +66,13 @@ class SettingsViewModelTest {
     inner class OnSettingItemClicked {
 
         @Test
+        fun `when value passed in is terms and conditions should navigate to terms and conditions screen`() {
+            settingsViewModel.onSettingItemClicked(value = "Terms & Conditions")
+
+            verify { navigation.navigateToTermsConditions() }
+        }
+
+        @Test
         fun `when value passed in does not meet any conditions should navigate to permission education screen`() {
             settingsViewModel.onSettingItemClicked(value = "View Mode Info")
 
