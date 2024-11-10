@@ -30,7 +30,6 @@ class TermsConditionsViewModel(
             TermsConditionInfo(
                 title = application.getString(StringsIds.accounts),
                 description = application.getString(StringsIds.accountSecurityDescription)
-
             ),
             TermsConditionInfo(
                 title = application.getString(StringsIds.otherResources),
@@ -74,5 +73,9 @@ class TermsConditionsViewModel(
         } else {
             navigation.navigateToSettings()
         }
+    }
+
+    fun onDevEmailClicked() {
+        navigation.navigateToDevEmail(email = application.getString(StringsIds.devEmail))
     }
 }

@@ -62,7 +62,7 @@ fun TermsConditionsContent(params: TermsConditionsParams) {
                 TermsConditionsItem(info = info)
             }
             item {
-                TermsConditionFooterItem()
+                TermsConditionFooterItem(params = params)
             }
         }
 
@@ -104,13 +104,13 @@ fun TermsConditionsItem(info: TermsConditionInfo) {
 }
 
 @Composable
-fun TermsConditionFooterItem() {
+fun TermsConditionFooterItem(params: TermsConditionsParams) {
     Spacer(modifier = Modifier.height(Padding.eight))
 
     ClickableText(
         text = AnnotatedString(stringResource(id = StringsIds.devEmail)),
         style = TextStyles.hyperLink.copy(color = Color.Blue),
-        onClick = {},
+        onClick = { params.onDevEmailClicked.invoke() },
     )
 
     Spacer(modifier = Modifier.height(Padding.eight))
@@ -128,6 +128,7 @@ fun TermsConditionsScreenPreview() {
         TermsConditionsScreen(params = TermsConditionsParams(
             updateButtonTextState = {},
             onCloseAcceptButtonClicked = {},
+            onDevEmailClicked = {},
             state = TermsConditionsState(
                 infoList = listOf(
                     TermsConditionInfo(

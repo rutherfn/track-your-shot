@@ -89,6 +89,10 @@ fun NavigationComponent(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
+    val emailDevState by navigator.emailDevActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
     val finishState by navigator.finishActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
@@ -181,6 +185,20 @@ fun NavigationComponent(
                 } catch (ex: ActivityNotFoundException) {
                     ex.printStackTrace()
                 }
+            }
+        }
+    }
+    LaunchedEffect(emailDevState) {
+        emailDevState?.let { devEmail ->
+            try {
+                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:$devEmail")
+                }
+
+                activity.startActivity(intent)
+                navigator.emailDevAction(emailDevAction = null)
+            } catch (ex: ActivityNotFoundException) {
+                ex.printStackTrace()
             }
         }
     }
@@ -436,6 +454,7 @@ fun NavigationComponent(
                         params = TermsConditionsParams(
                             updateButtonTextState = { termsConditionsViewModel.updateButtonTextState(isAcknowledgeConditions = isAcknowledgeConditions) },
                             onCloseAcceptButtonClicked = { termsConditionsViewModel.onCloseAcceptButtonClicked(isAcknowledgeConditions = isAcknowledgeConditions) },
+                            onDevEmailClicked = { termsConditionsViewModel.onDevEmailClicked() },
                             state = termsConditionsViewModel.termsConditionsStateFlow.collectAsState().value,
                             isAcknowledgeConditions = isAcknowledgeConditions
                         )
