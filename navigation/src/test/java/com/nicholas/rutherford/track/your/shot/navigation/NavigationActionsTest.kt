@@ -38,7 +38,7 @@ class NavigationActionsTest {
                     NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = true)
                 )
                 Assertions.assertEquals(
-                    Actions.SplashScreen.termsConditions(isAcknowledgeConditions = true),
+                    Actions.SplashScreen.termsConditions(isAcknowledgeConditions = true).navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
                         .setLaunchSingleTop(true)
@@ -144,7 +144,7 @@ class NavigationActionsTest {
                     NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = true)
                 )
                 Assertions.assertEquals(
-                    Actions.AuthenticationScreen.termsConditions(isAcknowledgeConditions = true),
+                    Actions.AuthenticationScreen.termsConditions(isAcknowledgeConditions = true).navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
                         .setLaunchSingleTop(true)
@@ -309,8 +309,7 @@ class NavigationActionsTest {
                 Assertions.assertEquals(
                     Actions.Settings.termsConditions(isAcknowledgeConditions = false).navOptions,
                     NavOptions.Builder()
-                        .setPopUpTo(0, true)
-                        .setLaunchSingleTop(true)
+                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                         .build()
                 )
             }
