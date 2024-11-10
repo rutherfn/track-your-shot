@@ -14,6 +14,7 @@ class NamedArgumentsTest {
         Assertions.assertEquals(NamedArguments.LAST_NAME, "lastName")
 
         Assertions.assertEquals(NamedArguments.IS_EXISTING_PLAYER, "isExistingPlayer")
+        Assertions.assertEquals(NamedArguments.IS_ACKNOWLEDGE_CONDITIONS, "isAcknowledgeConditions")
         Assertions.assertEquals(NamedArguments.PLAYER_ID, "playerId")
 
         Assertions.assertEquals(NamedArguments.SHOT_TYPE, "shotType")
