@@ -110,7 +110,7 @@ fun TermsConditionFooterItem(params: TermsConditionsParams) {
     ClickableText(
         text = AnnotatedString(stringResource(id = StringsIds.devEmail)),
         style = TextStyles.hyperLink.copy(color = Color.Blue),
-        onClick = { params.onDevEmailClicked.invoke() },
+        onClick = { params.onDevEmailClicked.invoke() }
     )
 
     Spacer(modifier = Modifier.height(Padding.eight))
@@ -125,19 +125,21 @@ fun TermsConditionFooterItem(params: TermsConditionsParams) {
 @Composable
 fun TermsConditionsScreenPreview() {
     Column(modifier = Modifier.background(Color.White)) {
-        TermsConditionsScreen(params = TermsConditionsParams(
-            updateButtonTextState = {},
-            onCloseAcceptButtonClicked = {},
-            onDevEmailClicked = {},
-            state = TermsConditionsState(
-                infoList = listOf(
-                    TermsConditionInfo(
-                        title = stringResource(StringsIds.termsConditions),
-                        description = stringResource(StringsIds.termsConditionsDescription)
+        TermsConditionsScreen(
+            params = TermsConditionsParams(
+                updateButtonTextState = {},
+                onCloseAcceptButtonClicked = {},
+                onDevEmailClicked = {},
+                state = TermsConditionsState(
+                    infoList = listOf(
+                        TermsConditionInfo(
+                            title = stringResource(StringsIds.termsConditions),
+                            description = stringResource(StringsIds.termsConditionsDescription)
+                        )
                     )
-                )
-            ),
-            isAcknowledgeConditions = false
-        ))
+                ),
+                isAcknowledgeConditions = false
+            )
+        )
     }
 }

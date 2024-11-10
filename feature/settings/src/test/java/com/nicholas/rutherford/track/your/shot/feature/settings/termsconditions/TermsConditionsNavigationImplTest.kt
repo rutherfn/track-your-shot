@@ -37,7 +37,6 @@ class TermsConditionsNavigationImplTest {
         Assertions.assertEquals(expectedAction, capturedArgument)
     }
 
-
     @Test
     fun `navigate to player list`() {
         val argumentCapture: CapturingSlot<NavigationAction> = slot()
