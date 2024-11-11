@@ -32,6 +32,21 @@ class NavigationActionsTest {
             }
 
             @Test
+            fun termsConditions() {
+                Assertions.assertEquals(
+                    Actions.SplashScreen.termsConditions(isAcknowledgeConditions = true).destination,
+                    NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = true)
+                )
+                Assertions.assertEquals(
+                    Actions.SplashScreen.termsConditions(isAcknowledgeConditions = true).navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(0, true)
+                        .setLaunchSingleTop(true)
+                        .build()
+                )
+            }
+
+            @Test
             fun login() {
                 Assertions.assertEquals(
                     Actions.SplashScreen.login().destination,
@@ -123,13 +138,13 @@ class NavigationActionsTest {
         inner class AuthenticationScreen {
 
             @Test
-            fun playersList() {
+            fun termsConditions() {
                 Assertions.assertEquals(
-                    Actions.AuthenticationScreen.playersList().destination,
-                    NavigationDestinations.PLAYERS_LIST_SCREEN
+                    Actions.AuthenticationScreen.termsConditions(isAcknowledgeConditions = true).destination,
+                    NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = true)
                 )
                 Assertions.assertEquals(
-                    Actions.AuthenticationScreen.playersList().navOptions,
+                    Actions.AuthenticationScreen.termsConditions(isAcknowledgeConditions = true).navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
                         .setLaunchSingleTop(true)
@@ -279,6 +294,20 @@ class NavigationActionsTest {
                 )
                 Assertions.assertEquals(
                     Actions.Settings.permissionEducation().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                        .build()
+                )
+            }
+
+            @Test
+            fun termsConditions() {
+                Assertions.assertEquals(
+                    Actions.Settings.termsConditions(isAcknowledgeConditions = false).destination,
+                    "termsConditionsScreen/false"
+                )
+                Assertions.assertEquals(
+                    Actions.Settings.termsConditions(isAcknowledgeConditions = false).navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                         .build()

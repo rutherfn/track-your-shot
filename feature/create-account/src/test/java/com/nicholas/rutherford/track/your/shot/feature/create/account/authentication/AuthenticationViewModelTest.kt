@@ -9,6 +9,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.TestAuthenticateUserViaE
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +42,8 @@ class AuthenticationViewModelTest {
 
     private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
 
+    internal val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher = UnconfinedTestDispatcher()
 
@@ -65,6 +68,7 @@ class AuthenticationViewModelTest {
             authenticationFirebase = authenticationFirebase,
             createFirebaseUserInfo = createFirebaseUserInfo,
             activeUserRepository = activeUserRepository,
+            createSharedPreferences = createSharedPreferences,
             scope = scope
         )
     }
@@ -169,6 +173,7 @@ class AuthenticationViewModelTest {
                 authenticationFirebase = authenticationFirebase,
                 createFirebaseUserInfo = createFirebaseUserInfo,
                 activeUserRepository = activeUserRepository,
+                createSharedPreferences = createSharedPreferences,
                 scope = scope
             )
 
@@ -196,6 +201,7 @@ class AuthenticationViewModelTest {
                 authenticationFirebase = authenticationFirebase,
                 createFirebaseUserInfo = createFirebaseUserInfo,
                 activeUserRepository = activeUserRepository,
+                createSharedPreferences = createSharedPreferences,
                 scope = scope
             )
 
@@ -207,7 +213,7 @@ class AuthenticationViewModelTest {
             verify { navigation.enableProgress(progress = any()) }
             coVerify { activeUserRepository.updateActiveUser(activeUser = activeUser.copy(accountHasBeenCreated = true)) }
             verify { navigation.disableProgress() }
-            verify { navigation.navigateToPlayersList() }
+            verify { navigation.navigateToTermsAndConditions() }
         }
     }
 
@@ -280,6 +286,7 @@ class AuthenticationViewModelTest {
                 authenticationFirebase = authenticationFirebase,
                 createFirebaseUserInfo = createFirebaseUserInfo,
                 activeUserRepository = activeUserRepository,
+                createSharedPreferences = createSharedPreferences,
                 scope = scope
             )
 
@@ -307,6 +314,7 @@ class AuthenticationViewModelTest {
                 authenticationFirebase = authenticationFirebase,
                 createFirebaseUserInfo = createFirebaseUserInfo,
                 activeUserRepository = activeUserRepository,
+                createSharedPreferences = createSharedPreferences,
                 scope = scope
             )
 
@@ -317,7 +325,7 @@ class AuthenticationViewModelTest {
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
-            verify { navigation.navigateToPlayersList() }
+            verify { navigation.navigateToTermsAndConditions() }
         }
     }
 

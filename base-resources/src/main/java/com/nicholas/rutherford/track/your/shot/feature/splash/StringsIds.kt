@@ -3,9 +3,14 @@ package com.nicholas.rutherford.track.your.shot.feature.splash
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 
 object StringsIds {
+    val acceptanceOfTheseTerms = R.string.acceptance_of_these_terms
+    val acceptanceOfTheseTermsDescription = R.string.acceptance_of_these_terms_description
+    val accounts = R.string.accounts
+    val acknowledgeAndAgreeToTerms = R.string.acknowledge_and_agree_to_terms
     val accountInfo = R.string.account_info
     val accountHasNotBeenVerified = R.string.account_has_not_been_verified
     val androidPermissionsUrl = R.string.android_permissions_url
+    val accountSecurityDescription = R.string.account_security_description
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
     val areYouSureYouWantLeaveTrackYourShot = R.string.are_you_sure_you_want_to_leave_track_your_shot
     val areYouSureYouWantToDeletePendingAccountDescription = R.string.are_you_sure_you_want_to_delete_pending_account_description
@@ -16,11 +21,16 @@ object StringsIds {
     val cameraPermission = R.string.camera_permission
     val cameraPermissionHasBeenDeniedDescription = R.string.camera_permission_has_been_denied_description
     val center = R.string.center
+    val changesAndAmendments = R.string.changes_and_amendments
+    val changesAndAmendmentsDescription = R.string.changes_and_amendments_description
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
     val chooseAShotToLogInfoDescription = R.string.choose_a_shot_to_log_info_description
     val chooseImageFromGallery = R.string.choose_image_from_gallery
     val chooseOption = R.string.choose_option
+    val close = R.string.close
     val comparePlayersStats = R.string.compare_players_stats
+    val contactingUs = R.string.contacting_us
+    val contactingUsDescription = R.string.contacting_us_description
     val continueText = R.string.continue_text
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val createAccount = R.string.create_account
@@ -35,6 +45,7 @@ object StringsIds {
     val deletePendingAccount = R.string.delete_pending_account
     val deletingPendingAccount = R.string.deleting_pending_account
     val deleteX = R.string.delete_x
+    val devEmail = R.string.dev_email
     val deviceIsCurrentlyNotConnectedToInternetDesc =
         R.string.device_is_currently_not_connected_to_internet_desc
     val doYouWishToProceedDescription =
@@ -78,6 +89,7 @@ object StringsIds {
     val hintAddNewPlayer = R.string.hint_add_new_player
     val hintLogNewShots = R.string.hint_log_new_shots
     val hintLogNewShotsForPlayer = R.string.hint_log_new_shots_for_player
+    val introduction = R.string.introduction
     val issueOccurred = R.string.issue_occurred
     val lastName = R.string.last_name
     val leavingTheAppWillResultInYouNotFinishingTheAccountCreationProcessDescription =
@@ -100,6 +112,8 @@ object StringsIds {
     val notNow = R.string.not_now
     val openEmail = R.string.open_email
     val ok = R.string.ok
+    val otherResources = R.string.other_resources
+    val otherResourcesDescription = R.string.other_resources_description
     val password = R.string.password
     val passwordRequired = R.string.password_required
     val passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat =
@@ -159,11 +173,13 @@ object StringsIds {
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
     val takeAPicture = R.string.take_a_picture
     val termsConditions = R.string.terms_conditions
+    val termsConditionsDescription = R.string.terms_conditions_description
     val theImageUploadWasUnsuccessful = R.string.the_image_upload_was_unsuccessful
     val thereWasAErrorCreatingYourAccountPleaseTryAgain =
         R.string.there_was_a_error_creating_your_account_please_try_again
     val thereWasAErrorDeletingPendingAccountPleaseTryAgain =
         R.string.there_was_a_error_deleting_your_account_please_try_again
+    val thisDocumentWasLastUpdatedOn = R.string.this_document_was_last_updated_on
     val unableToCreateAccount = R.string.unable_to_create_account
     val unableToDeletePlayerPleaseContactSupport = R.string.unable_to_delete_player_please_contact_support
     val unableToLoginToAccount = R.string.unable_to_login_to_account

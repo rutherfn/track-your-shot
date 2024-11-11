@@ -19,4 +19,9 @@ class CreateSharedPreferencesImpl(private val editor: SharedPreferences.Editor) 
         editor.putBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST, value)
         editor.apply()
     }
+
+    override fun createShouldShowTermsAndConditionsPreference(value: Boolean) {
+        editor.putBoolean(Constants.Preferences.SHOULD_SHOW_TERM_AND_CONDITIONS, value)
+        editor.apply()
+    }
 }

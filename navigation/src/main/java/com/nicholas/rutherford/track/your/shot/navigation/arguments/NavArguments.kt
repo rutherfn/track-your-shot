@@ -24,4 +24,7 @@ object NavArguments {
         navArgument(NamedArguments.VIEW_CURRENT_EXISTING_SHOT) { type = NavType.BoolType },
         navArgument(NamedArguments.VIEW_CURRENT_PENDING_SHOT) { type = NavType.BoolType }
     )
+    val termsConditions = listOf(
+        navArgument(NamedArguments.IS_ACKNOWLEDGE_CONDITIONS) { type = NavType.BoolType }
+    )
 }

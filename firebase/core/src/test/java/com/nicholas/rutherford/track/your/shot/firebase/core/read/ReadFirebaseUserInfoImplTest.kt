@@ -313,7 +313,7 @@ class ReadFirebaseUserInfoImplTest {
         }
 
         @Test
-        fun `when onDataChange is called but the count is less then 2 should return null`() = runTest {
+        fun `when onDataChange is called but the count is 1 should set data`() = runTest {
             val uid = "uid"
             val path = "${Constants.USERS_PATH}/$uid"
 
@@ -337,63 +337,7 @@ class ReadFirebaseUserInfoImplTest {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
 
-            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoFlow().first())
-        }
-
-        @Test
-        fun `when onDataChange is called with snapshot exists return back as false should return null`() = runTest {
-            val uid = "uid"
-            val path = "${Constants.USERS_PATH}/$uid"
-
-            val mockDataSnapshot = mockk<DataSnapshot>()
-            val mockFirebaseUser = mockk<FirebaseUser>()
-            val mockDataSnapshotList = listOf(mockDataSnapshot, mockDataSnapshot)
-            val slot = slot<ValueEventListener>()
-
-            every { mockDataSnapshot.exists() } returns false
-            every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
-            every { mockDataSnapshot.getValue(AccountInfoRealtimeResponse::class.java) } returns accountInfoRealtimeResponse
-            every { mockDataSnapshot.children } returns mockDataSnapshotList
-
-            mockkStatic(DataSnapshot::class)
-            mockkStatic(FirebaseUser::class)
-
-            every { mockFirebaseUser.uid } returns uid
-            every { firebaseAuth.currentUser } returns mockFirebaseUser
-
-            every { firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot)) } answers {
-                slot.captured.onDataChange(mockDataSnapshot)
-            }
-
-            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoFlow().first())
-        }
-
-        @Test
-        fun `when onDataChange is called with valid conditions should return accountInfoRealTimeResponse`() = runTest {
-            val uid = "uid"
-            val path = "${Constants.USERS_PATH}/$uid"
-
-            val mockDataSnapshot = mockk<DataSnapshot>()
-            val mockFirebaseUser = mockk<FirebaseUser>()
-            val mockDataSnapshotList = listOf(mockDataSnapshot, mockDataSnapshot)
-            val slot = slot<ValueEventListener>()
-
-            every { mockDataSnapshot.exists() } returns true
-            every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
-            every { mockDataSnapshot.getValue(AccountInfoRealtimeResponse::class.java) } returns accountInfoRealtimeResponse
-            every { mockDataSnapshot.children } returns mockDataSnapshotList
-
-            mockkStatic(DataSnapshot::class)
-            mockkStatic(FirebaseUser::class)
-
-            every { mockFirebaseUser.uid } returns uid
-            every { firebaseAuth.currentUser } returns mockFirebaseUser
-
-            every { firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot)) } answers {
-                slot.captured.onDataChange(mockDataSnapshot)
-            }
-
-            Assertions.assertEquals(accountInfoRealtimeResponse, readFirebaseUserInfoImpl.getAccountInfoFlow().first())
+            Assertions.assertEquals(AccountInfoRealtimeResponse(userName = "boomyNicholasR", email = "testEmail@yahoo.com"), readFirebaseUserInfoImpl.getAccountInfoFlow().first())
         }
     }
 

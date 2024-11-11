@@ -10,4 +10,6 @@ class ReadSharedPreferencesImpl(private val sharedPreferences: SharedPreferences
     override fun shouldUpdateLoggedInPlayerListState(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST, false)
 
     override fun shouldUpdateLoggedInDeclaredShotListState(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST, false)
+
+    override fun shouldShowTermsAndConditions(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.SHOULD_SHOW_TERM_AND_CONDITIONS, false)
 }

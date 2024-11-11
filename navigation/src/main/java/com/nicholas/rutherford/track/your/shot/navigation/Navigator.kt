@@ -11,6 +11,7 @@ interface Navigator {
     val appSettingsActions: StateFlow<Boolean?>
     val datePickerActions: StateFlow<DatePickerInfo?>
     val emailActions: StateFlow<Boolean?>
+    val emailDevActions: StateFlow<String?>
     val finishActions: StateFlow<Boolean?>
     val inputInfoActions: StateFlow<InputInfo?>
     val navActions: StateFlow<NavigationAction?>
@@ -23,6 +24,7 @@ interface Navigator {
     fun appSettings(appSettingsAction: Boolean?)
     fun datePicker(datePickerAction: DatePickerInfo?)
     fun emailAction(emailAction: Boolean?)
+    fun emailDevAction(emailDevAction: String?)
     fun finish(finishAction: Boolean?)
     fun inputInfo(inputInfoAction: InputInfo?)
     fun navigate(navigationAction: NavigationAction?)

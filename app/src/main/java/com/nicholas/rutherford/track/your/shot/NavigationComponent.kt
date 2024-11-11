@@ -46,6 +46,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
@@ -84,6 +86,10 @@ fun NavigationComponent(
         initialState = null
     )
     val emailState by navigator.emailActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
+    val emailDevState by navigator.emailDevActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
@@ -133,6 +139,7 @@ fun NavigationComponent(
     val logShotViewModel = viewModels.logShotViewModel
     val settingsViewModel = viewModels.settingsViewModel
     val permissionEducationViewModel = viewModels.permissionEducationViewModel
+    val termsConditionsViewModel = viewModels.termsConditionsViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -178,6 +185,20 @@ fun NavigationComponent(
                 } catch (ex: ActivityNotFoundException) {
                     ex.printStackTrace()
                 }
+            }
+        }
+    }
+    LaunchedEffect(emailDevState) {
+        emailDevState?.let { devEmail ->
+            try {
+                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:$devEmail")
+                }
+
+                activity.startActivity(intent)
+                navigator.emailDevAction(emailDevAction = null)
+            } catch (ex: ActivityNotFoundException) {
+                ex.printStackTrace()
             }
         }
     }
@@ -421,6 +442,24 @@ fun NavigationComponent(
                         state = permissionEducationViewModel.permissionEducationStateFlow.collectAsState().value
                     )
                 )
+            }
+
+            composable(
+                route = NavigationDestinations.TERMS_CONDITIONS_WITH_PARAMS,
+                arguments = NavArguments.termsConditions
+            ) { entry ->
+                entry.arguments?.let { bundle ->
+                    val isAcknowledgeConditions = bundle.getBoolean(NamedArguments.IS_ACKNOWLEDGE_CONDITIONS)
+                    TermsConditionsScreen(
+                        params = TermsConditionsParams(
+                            updateButtonTextState = { termsConditionsViewModel.updateButtonTextState(isAcknowledgeConditions = isAcknowledgeConditions) },
+                            onCloseAcceptButtonClicked = { termsConditionsViewModel.onCloseAcceptButtonClicked(isAcknowledgeConditions = isAcknowledgeConditions) },
+                            onDevEmailClicked = { termsConditionsViewModel.onDevEmailClicked() },
+                            state = termsConditionsViewModel.termsConditionsStateFlow.collectAsState().value,
+                            isAcknowledgeConditions = isAcknowledgeConditions
+                        )
+                    )
+                }
             }
             composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
                 CreateAccountScreen(

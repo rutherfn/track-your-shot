@@ -13,6 +13,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUs
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -24,6 +25,7 @@ class AuthenticationViewModel(
     private val authenticationFirebase: AuthenticationFirebase,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val activeUserRepository: ActiveUserRepository,
+    private val createSharedPreferences: CreateSharedPreferences,
     private val scope: CoroutineScope
 ) : ViewModel() {
 
@@ -100,8 +102,9 @@ class AuthenticationViewModel(
                                     firebaseAccountInfoKey = firebaseAccountInfoKey
                                 )
                             )
+                            createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true)
                             navigation.disableProgress()
-                            navigation.navigateToPlayersList()
+                            navigation.navigateToTermsAndConditions()
                         } else {
                             navigation.disableProgress()
                             navigation.alert(alert = errorCreatingAccountAlert())

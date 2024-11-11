@@ -52,15 +52,15 @@ class AuthenticationNavigationImplTest {
     }
 
     @Test
-    fun `navigate to players list`() {
+    fun `navigate to terms and conditions`() {
         val argumentCapture: CapturingSlot<NavigationAction> = slot()
 
-        authenticationNavigationImpl.navigateToPlayersList()
+        authenticationNavigationImpl.navigateToTermsAndConditions()
 
         verify { navigator.navigate(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationActions.AuthenticationScreen.playersList()
+        val expectedAction = NavigationActions.AuthenticationScreen.termsConditions(isAcknowledgeConditions = true)
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }

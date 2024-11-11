@@ -14,6 +14,7 @@ class NavigatorImpl : Navigator {
     private val _appSettingsActions: MutableStateFlow<Boolean?> = MutableStateFlow(value = null)
     private val _datePickerActions: MutableStateFlow<DatePickerInfo?> = MutableStateFlow(value = null)
     private val _emailActions: MutableStateFlow<Boolean?> = MutableStateFlow(value = null)
+    private val _emailDevActions: MutableStateFlow<String?> = MutableStateFlow(value = null)
     private val _finishActions: MutableStateFlow<Boolean?> = MutableStateFlow(value = null)
     private val _inputInfoActions: MutableStateFlow<InputInfo?> = MutableStateFlow(value = null)
     private val _navActions: MutableStateFlow<NavigationAction?> = MutableStateFlow(value = null)
@@ -26,6 +27,7 @@ class NavigatorImpl : Navigator {
     override val appSettingsActions: StateFlow<Boolean?> = _appSettingsActions.asStateFlow()
     override val datePickerActions: StateFlow<DatePickerInfo?> = _datePickerActions.asStateFlow()
     override val emailActions: StateFlow<Boolean?> = _emailActions.asStateFlow()
+    override val emailDevActions: StateFlow<String?> = _emailDevActions.asStateFlow()
     override val finishActions: StateFlow<Boolean?> = _finishActions.asStateFlow()
     override val inputInfoActions: StateFlow<InputInfo?> = _inputInfoActions.asStateFlow()
     override val popRouteActions: StateFlow<String?> = _popRouteActions.asStateFlow()
@@ -41,6 +43,7 @@ class NavigatorImpl : Navigator {
     override fun datePicker(datePickerAction: DatePickerInfo?) = _datePickerActions.update { datePickerAction }
 
     override fun emailAction(emailAction: Boolean?) = _emailActions.update { emailAction }
+    override fun emailDevAction(emailDevAction: String?) = _emailDevActions.update { emailDevAction }
     override fun inputInfo(inputInfoAction: InputInfo?) = _inputInfoActions.update { inputInfoAction }
 
     override fun finish(finishAction: Boolean?) = _finishActions.update { finishAction }

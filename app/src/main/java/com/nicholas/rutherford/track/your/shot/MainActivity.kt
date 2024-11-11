@@ -32,7 +32,8 @@ open class MainActivity : ComponentActivity() {
                     selectShotViewModel = getViewModel(),
                     logShotViewModel = getViewModel(),
                     settingsViewModel = getViewModel(),
-                    permissionEducationViewModel = getViewModel()
+                    permissionEducationViewModel = getViewModel(),
+                    termsConditionsViewModel = getViewModel()
                 )
             )
         }

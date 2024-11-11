@@ -42,6 +42,16 @@ class NavigationDestinationsWithParamsTest {
     }
 
     @Test
+    fun `terms conditions with params`() {
+        val isAcknowledgeConditions = false
+
+        Assertions.assertEquals(
+            navigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = isAcknowledgeConditions),
+            "termsConditionsScreen/false"
+        )
+    }
+
+    @Test
     fun `select shot with params`() {
         val isExistingPlayer = false
         val playerId = 22

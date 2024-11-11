@@ -10,7 +10,7 @@ class AuthenticationNavigationImpl(private val navigator: Navigator) : Authentic
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
     override fun disableProgress() = navigator.progress(progressAction = null)
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
-    override fun navigateToPlayersList() = navigator.navigate(navigationAction = NavigationActions.AuthenticationScreen.playersList())
+    override fun navigateToTermsAndConditions() = navigator.navigate(navigationAction = NavigationActions.AuthenticationScreen.termsConditions(isAcknowledgeConditions = true))
 
     override fun navigateToLogin() = navigator.navigate(navigationAction = NavigationActions.AuthenticationScreen.login())
     override fun openEmail() = navigator.emailAction(emailAction = true)

@@ -55,6 +55,9 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewMode
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsNavigation
+import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
@@ -245,6 +248,9 @@ class AppModule {
         single<PermissionEducationNavigation> {
             PermissionEducationNavigationImpl(navigator = get())
         }
+        single<TermsConditionsNavigation> {
+            TermsConditionsNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(appCenter = get(), accountManager = get())
         }
@@ -348,6 +354,7 @@ class AppModule {
                 authenticationFirebase = get(),
                 createFirebaseUserInfo = get(),
                 activeUserRepository = get(),
+                createSharedPreferences = get(),
                 scope = defaultCoroutineScope
             )
         }
@@ -362,6 +369,13 @@ class AppModule {
                 navigation = get(),
                 buildType = get(),
                 application = androidApplication()
+            )
+        }
+        viewModel {
+            TermsConditionsViewModel(
+                navigation = get(),
+                application = androidApplication(),
+                createSharedPreferences = get()
             )
         }
     }

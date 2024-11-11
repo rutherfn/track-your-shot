@@ -72,7 +72,9 @@ class SplashViewModel(
     }
 
     private fun navigateToLoginOrPlayersList(isLoggedIn: Boolean, email: String?) {
-        if (isLoggedIn) {
+        if (readSharedPreferences.shouldShowTermsAndConditions()) {
+            navigation.navigateToTermsAndConditions()
+        } else if (isLoggedIn) {
             email?.let {
                 navigation.navigateToPlayersList()
             } ?: navigation.navigateToLogin()

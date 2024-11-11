@@ -73,7 +73,7 @@ class ReadFirebaseUserInfoImpl(
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
-                            if (snapshot.children.count() == 2) {
+                            if (snapshot.children.count() == 1) {
                                 accountInfoRealTimeResponse = snapshot.children.first().getValue(AccountInfoRealtimeResponse::class.java)
                                 trySend(element = accountInfoRealTimeResponse)
                             } else {
