@@ -179,6 +179,13 @@ object NavigationActions {
 
     object Settings {
 
+        fun enabledPermissions() = object : NavigationAction {
+            override val destination = NavigationDestinations.ENABLED_PERMISSIONS_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                .build()
+        }
+
         fun permissionEducation() = object : NavigationAction {
             override val destination = NavigationDestinations.PERMISSION_EDUCATION_SCREEN
             override val navOptions = NavOptions.Builder()

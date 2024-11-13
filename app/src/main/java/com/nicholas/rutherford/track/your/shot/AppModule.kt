@@ -52,6 +52,9 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigation
+import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
@@ -251,6 +254,9 @@ class AppModule {
         single<TermsConditionsNavigation> {
             TermsConditionsNavigationImpl(navigator = get())
         }
+        single<EnabledPermissionsNavigation> {
+            EnabledPermissionsNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(appCenter = get(), accountManager = get())
         }
@@ -376,6 +382,11 @@ class AppModule {
                 navigation = get(),
                 application = androidApplication(),
                 createSharedPreferences = get()
+            )
+        }
+        viewModel {
+            EnabledPermissionsViewModel(
+                navigation = get()
             )
         }
     }
