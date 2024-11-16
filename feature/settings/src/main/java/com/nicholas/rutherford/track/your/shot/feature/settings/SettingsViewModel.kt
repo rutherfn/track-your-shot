@@ -54,7 +54,7 @@ class SettingsViewModel(
                 // navigate to account info page
             }
             application.getString(StringsIds.enabledPermissions) -> {
-                // navigate to enabled permissions page
+                navigation.navigateToEnabledPermissions()
             }
             else -> {
                 navigation.navigateToPermissionEducationScreen()

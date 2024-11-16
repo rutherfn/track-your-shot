@@ -70,11 +70,13 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
     api(project(path = ":compose:components"))
+    api(project(path = ":helper:extensions"))
     api(project(path = ":navigation"))
     api(project(path = ":shared-preference"))
 
     debugImplementation(Dependencies.Compose.uiToolingPreview)
 
+    implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.materialDesignIconsCore)
     implementation(Dependencies.Compose.materialDesignIconsExtended)

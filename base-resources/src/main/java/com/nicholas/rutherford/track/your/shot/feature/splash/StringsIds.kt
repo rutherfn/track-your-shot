@@ -55,7 +55,6 @@ object StringsIds {
         R.string.email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password
     val emailHasBeenSentToVerifyAccountPleaseOpenEmailSentEmailToVerifyAccount =
         R.string.email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account
-    val enabledPermissions = R.string.enabled_permissions
     val firstName = R.string.first_name
     val forgotPassword = R.string.forgot_password
     val editPlayer = R.string.edit_player
@@ -73,6 +72,7 @@ object StringsIds {
     val emailIsRequiredPleaseEnterAEmailToResetPasswordForExistingAccount =
         R.string.email_is_required_please_enter_a_email_to_reset_password_for_existing_account
     val emailRequired = R.string.email_required
+    val enabledPermissions = R.string.enabled_permissions
     val enterShotsMade = R.string.enter_shots_made
     val enterShotsMissed = R.string.enter_shots_missed
     val errorCreatingAccount = R.string.error_creating_account

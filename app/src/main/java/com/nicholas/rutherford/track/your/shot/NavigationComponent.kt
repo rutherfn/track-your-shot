@@ -44,6 +44,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsParams
@@ -140,6 +142,7 @@ fun NavigationComponent(
     val settingsViewModel = viewModels.settingsViewModel
     val permissionEducationViewModel = viewModels.permissionEducationViewModel
     val termsConditionsViewModel = viewModels.termsConditionsViewModel
+    val enabledPermissionsViewModel = viewModels.enabledPermissionsViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -443,7 +446,18 @@ fun NavigationComponent(
                     )
                 )
             }
-
+            composable(
+                route = NavigationDestinations.ENABLED_PERMISSIONS_SCREEN
+            ) {
+                EnabledPermissionsScreen(
+                    params = EnabledPermissionsParams(
+                        onToolbarMenuClicked = { enabledPermissionsViewModel.onToolbarMenuClicked() },
+                        onSwitchChangedToTurnOffPermission = { enabledPermissionsViewModel.onSwitchChangedToTurnOffPermission() },
+                        permissionNotGrantedForCameraAlert = { enabledPermissionsViewModel.permissionNotGrantedForCameraAlert() },
+                        permissionNotGrantedForReadMediaOrExternalStorageAlert = { enabledPermissionsViewModel.permissionNotGrantedForReadMediaOrExternalStorageAlert() }
+                    )
+                )
+            }
             composable(
                 route = NavigationDestinations.TERMS_CONDITIONS_WITH_PARAMS,
                 arguments = NavArguments.termsConditions
