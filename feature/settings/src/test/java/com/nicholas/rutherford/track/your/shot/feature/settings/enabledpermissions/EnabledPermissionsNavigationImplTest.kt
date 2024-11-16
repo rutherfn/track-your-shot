@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot
@@ -47,7 +48,7 @@ class EnabledPermissionsNavigationImplTest {
         verify { navigator.pop(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationDestinations.PLAYERS_LIST_SCREEN
+        val expectedAction =  Constants.POP_DEFAULT_ACTION
 
         Assertions.assertEquals(expectedAction, capturedArgument)
     }
