@@ -386,7 +386,8 @@ class AppModule {
         }
         viewModel {
             EnabledPermissionsViewModel(
-                navigation = get()
+                navigation = get(),
+                application = androidApplication()
             )
         }
     }

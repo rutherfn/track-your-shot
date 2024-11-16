@@ -76,6 +76,7 @@ dependencies {
 
     debugImplementation(Dependencies.Compose.uiToolingPreview)
 
+    implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.materialDesignIconsCore)
     implementation(Dependencies.Compose.materialDesignIconsExtended)

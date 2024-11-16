@@ -446,15 +446,18 @@ fun NavigationComponent(
                     )
                 )
             }
-             composable(
-                 route = NavigationDestinations.ENABLED_PERMISSIONS_SCREEN
-             ) {
-                 EnabledPermissionsScreen(
-                     params = EnabledPermissionsParams(
-                         onToolbarMenuClicked = { enabledPermissionsViewModel.onToolbarMenuClicked() }
-                     )
-                 )
-             }
+            composable(
+                route = NavigationDestinations.ENABLED_PERMISSIONS_SCREEN
+            ) {
+                EnabledPermissionsScreen(
+                    params = EnabledPermissionsParams(
+                        onToolbarMenuClicked = { enabledPermissionsViewModel.onToolbarMenuClicked() },
+                        onSwitchChangedToTurnOffPermission = { enabledPermissionsViewModel.onSwitchChangedToTurnOffPermission() },
+                        permissionNotGrantedForCameraAlert = { enabledPermissionsViewModel.permissionNotGrantedForCameraAlert() },
+                        permissionNotGrantedForReadMediaOrExternalStorageAlert = { enabledPermissionsViewModel.permissionNotGrantedForReadMediaOrExternalStorageAlert() }
+                    )
+                )
+            }
             composable(
                 route = NavigationDestinations.TERMS_CONDITIONS_WITH_PARAMS,
                 arguments = NavArguments.termsConditions
