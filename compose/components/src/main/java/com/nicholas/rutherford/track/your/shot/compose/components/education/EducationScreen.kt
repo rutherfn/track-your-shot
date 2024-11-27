@@ -39,10 +39,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import kotlinx.coroutines.launch

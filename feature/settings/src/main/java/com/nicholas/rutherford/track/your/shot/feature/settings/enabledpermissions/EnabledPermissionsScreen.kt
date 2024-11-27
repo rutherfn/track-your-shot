@@ -25,10 +25,10 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.SwitchCard
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
-import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.hasCameraPermissionEnabled
 import com.nicholas.rutherford.track.your.shot.helper.extensions.hasReadImagePermissionEnabled
 import com.nicholas.rutherford.track.your.shot.helper.extensions.readMediaImagesOrExternalStoragePermission

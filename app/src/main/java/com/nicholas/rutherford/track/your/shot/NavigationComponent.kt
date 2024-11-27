@@ -483,9 +483,9 @@ fun NavigationComponent(
             ) {
                 OnboardingEducationScreen(
                     onboardingEducationParams = OnboardingEducationParams(
-                    onGotItButtonClicked = { onboardingEducationViewModel.onGotItButtonClicked() },
-                    state = onboardingEducationViewModel.onboardingEducationStateFlow.collectAsState().value,
-                )
+                        onGotItButtonClicked = { onboardingEducationViewModel.onGotItButtonClicked() },
+                        state = onboardingEducationViewModel.onboardingEducationStateFlow.collectAsState().value
+                    )
                 )
             }
             composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {

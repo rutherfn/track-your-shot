@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.players.playerlist
 
 import android.app.Application
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
@@ -14,7 +15,6 @@ import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUp
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListState
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
-import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.network.Network

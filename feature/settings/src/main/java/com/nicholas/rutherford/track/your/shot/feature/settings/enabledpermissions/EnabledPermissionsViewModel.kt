@@ -2,9 +2,9 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissi
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.extensions.shouldAskForReadMediaImages
 
 class EnabledPermissionsViewModel(

@@ -1,9 +1,9 @@
 package com.nicholas.rutherford.track.your.shot.robots
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.compose.components.TopAppBarTestTags
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationTags
-import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.yourshot.compose.content.test.rule.verifyTagIsDisplayed
 import com.nicholas.rutherford.track.yourshot.compose.content.test.rule.verifyTagWithImageResIsDisplayed
 import com.nicholas.rutherford.track.yourshot.compose.content.test.rule.verifyTagWithTextIsDisplayed

@@ -2,11 +2,11 @@ package com.nicholas.rutherford.track.your.shot.feature.login
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.build.type.BuildType
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
-import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

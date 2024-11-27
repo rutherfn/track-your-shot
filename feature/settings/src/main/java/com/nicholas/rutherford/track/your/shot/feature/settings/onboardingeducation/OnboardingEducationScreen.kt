@@ -10,7 +10,6 @@ import com.nicholas.rutherford.track.your.shot.compose.components.education.Educ
 import com.nicholas.rutherford.track.your.shot.compose.components.education.EducationScreen
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingEducationScreen(onboardingEducationParams: OnboardingEducationParams) {

@@ -70,7 +70,7 @@ class TermsConditionsViewModelTest {
     }
 
     @Test
-    fun constants () {
+    fun constants() {
         Assertions.assertEquals(DELAY_BEFORE_ONBOARDING, 750L)
     }
 
