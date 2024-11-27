@@ -1,9 +1,9 @@
 package com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount
 
 import android.app.Application
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestUser
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.your.shot.firebase.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
@@ -1035,7 +1035,16 @@ class CreateAccountViewModelTest {
 
             verify { navigation.disableProgress() }
 
-            verify { navigation.alert(alert = viewModel.defaultAlert.copy(title = application.getString(StringsIds.unableToCreateAccount), description = message)) }
+            verify {
+                navigation.alert(
+                    alert = viewModel.defaultAlert.copy(
+                        title = application.getString(
+                            StringsIds.unableToCreateAccount
+                        ),
+                        description = message
+                    )
+                )
+            }
         }
 
         @Test
@@ -1044,7 +1053,16 @@ class CreateAccountViewModelTest {
 
             verify { navigation.disableProgress() }
 
-            verify { navigation.alert(alert = viewModel.defaultAlert.copy(title = application.getString(StringsIds.unableToCreateAccount), description = application.getString(StringsIds.havingTroubleCreatingYourAccountPleaseTryAgain))) }
+            verify {
+                navigation.alert(
+                    alert = viewModel.defaultAlert.copy(
+                        title = application.getString(
+                            StringsIds.unableToCreateAccount
+                        ),
+                        description = application.getString(StringsIds.havingTroubleCreatingYourAccountPleaseTryAgain)
+                    )
+                )
+            }
         }
     }
 

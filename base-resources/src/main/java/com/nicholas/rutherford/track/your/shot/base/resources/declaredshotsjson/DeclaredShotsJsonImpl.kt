@@ -1,7 +1,7 @@
-package com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson
+package com.nicholas.rutherford.track.your.shot.base.resources.declaredshotsjson
 
 import android.app.Application
-import com.nicholas.rutherford.track.your.shot.feature.splash.RawIds
+import com.nicholas.rutherford.track.your.shot.base.resources.RawIds
 
 class DeclaredShotsJsonImpl(private val application: Application) : DeclaredShotsJson {
     override fun fetchJsonDeclaredShots(): String {

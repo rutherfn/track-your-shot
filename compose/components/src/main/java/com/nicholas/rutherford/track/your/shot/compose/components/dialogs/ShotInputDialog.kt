@@ -22,8 +22,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.nicholas.rutherford.track.your.shot.TrackMyShotTheme
 import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
-import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.resources.Colors
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 
 @Composable
 fun ShotInputDialog(inputInfo: InputInfo) {

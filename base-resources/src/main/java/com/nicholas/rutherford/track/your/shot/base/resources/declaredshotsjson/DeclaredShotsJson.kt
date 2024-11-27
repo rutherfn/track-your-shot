@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson
+package com.nicholas.rutherford.track.your.shot.base.resources.declaredshotsjson
 
 interface DeclaredShotsJson {
 

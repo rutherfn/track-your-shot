@@ -35,6 +35,8 @@
     <string name="click_me_to_create_account">Click me to create account</string>
     <string name="create_account">Create Account</string>
     <string name="create_player">Create Player</string>
+    <string name="create_your_players_profile">Create Your Players Profile</string>
+    <string name="create_your_player_profile_description">Begin by creating a player profile, including details like first name, last name, position, and a player image.</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
     <string name="current_players_has_no_changes_description">There haven\'t been any recent updates or modifications to the current player. Please make adjustments to the existing player to proceed.</string>
     <string name="current_shot_has_been_updated_description">The current shot has been updated. To see the latest information, click on the shot to view the updates.</string>
@@ -90,6 +92,8 @@
     <string name="logout">Logout</string>
     <string name="log_shot">Log Shot</string>
     <string name="log_shots">Log Shots</string>
+    <string name="log_your_shots">Log Your Shots</string>
+    <string name="log_your_shots_description">Choose the type of shot you want to record and input the makes and misses for the day the player took them.</string>
     <string name="menu">Menu</string>
     <string name="more_info">More Info</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
@@ -169,6 +173,8 @@
     <string name="take_a_picture">Take A Picture</string>
     <string name="terms_conditions">Terms &amp; Conditions</string>
     <string name="terms_conditions_description">These terms and conditions (&quot;Agreement&quot;) set forth the general terms and conditions of your use of the &quot;Track Your Shot&quot; mobile application (&quot;Mobile Application&quot; or &quot;Service&quot;) and any of its related products and services (collectively, &quot;Services&quot;). This Agreement is legally binding between you (&quot;User&quot;, &quot;you&quot; or &quot;your&quot;) and Track Your Shot (&quot;Track Your Shot&quot;, &quot;we&quot;, &quot;us&quot; or &quot;our&quot;). If you are entering into this Agreement on behalf of a business or other legal entity, you represent that you have the authority to bind such entity to this Agreement, in which case the terms &quot;User&quot;, &quot;you&quot; or &quot;your&quot; shall refer to such entity. If you do not have such authority, or if you do not agree with the terms of this Agreement, you must not accept this Agreement and may not access and use the Mobile Application and Services. By accessing and using the Mobile Application and Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Agreement. You acknowledge that this Agreement is a contract between you and Track Your Shot, even though it is electronic and is not physically signed by you, and it governs your use of the Mobile Application and Services.</string>
+    <string name="track_your_progress">Track Your Progress</string>
+    <string name="track_your_progress_description">Record shooting percentages for various shot types over multiple days and view the saved stats directly in the mobile app.</string>
     <string name="the_image_upload_was_unsuccessful">The image upload was unsuccessful. Please attempt it once more.</string>
     <string name="there_was_a_error_creating_your_account_please_try_again">There was a error creating your account. Please try again.</string>
     <string name="there_was_a_error_deleting_your_account_please_try_again">There was a error deleting your account. Please try again.</string>

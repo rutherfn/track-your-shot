@@ -16,7 +16,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePicker
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.parseDateValueToString
 import com.nicholas.rutherford.track.your.shot.helper.extensions.parseValueToDate
@@ -330,7 +330,8 @@ class LogShotViewModel(
     fun invalidLogShotAlert(description: String): Alert {
         return Alert(
             title = application.getString(StringsIds.empty),
-            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt)),
+            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(
+                StringsIds.gotIt)),
             description = description
         )
     }
@@ -409,7 +410,8 @@ class LogShotViewModel(
                         )
                     }
                 }
-            } ?: navigation.alert(alert = invalidLogShotAlert(description = application.getString(StringsIds.playerIsInvalidPleaseTryAgain)))
+            } ?: navigation.alert(alert = invalidLogShotAlert(description = application.getString(
+                StringsIds.playerIsInvalidPleaseTryAgain)))
         }
     }
 

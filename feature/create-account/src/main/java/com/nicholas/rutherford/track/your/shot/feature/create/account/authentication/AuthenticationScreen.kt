@@ -32,11 +32,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
+import com.nicholas.rutherford.track.your.shot.base.resources.Colors
+import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
-import com.nicholas.rutherford.track.your.shot.feature.splash.Colors
-import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.Shared
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles

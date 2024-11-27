@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.splash
+package com.nicholas.rutherford.track.your.shot.base.resources
 
 import androidx.compose.ui.graphics.Color
 

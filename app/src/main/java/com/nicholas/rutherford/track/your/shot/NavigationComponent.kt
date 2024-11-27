@@ -46,6 +46,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsParams
@@ -142,6 +144,7 @@ fun NavigationComponent(
     val settingsViewModel = viewModels.settingsViewModel
     val permissionEducationViewModel = viewModels.permissionEducationViewModel
     val termsConditionsViewModel = viewModels.termsConditionsViewModel
+    val onboardingEducationViewModel = viewModels.onboardingEducationViewModel
     val enabledPermissionsViewModel = viewModels.enabledPermissionsViewModel
 
     LaunchedEffect(alertState) {
@@ -474,6 +477,16 @@ fun NavigationComponent(
                         )
                     )
                 }
+            }
+            composable(
+                route = NavigationDestinations.ONBOARDING_EDUCATION_SCREEN
+            ) {
+                OnboardingEducationScreen(
+                    onboardingEducationParams = OnboardingEducationParams(
+                    onGotItButtonClicked = { onboardingEducationViewModel.onGotItButtonClicked() },
+                    state = onboardingEducationViewModel.onboardingEducationStateFlow.collectAsState().value,
+                )
+                )
             }
             composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
                 CreateAccountScreen(

@@ -4,5 +4,6 @@ interface SettingsNavigation {
     fun openNavigationDrawer()
     fun navigateToEnabledPermissions()
     fun navigateToPermissionEducationScreen()
+    fun navigateToOnboardingEducationScreen()
     fun navigateToTermsConditions()
 }

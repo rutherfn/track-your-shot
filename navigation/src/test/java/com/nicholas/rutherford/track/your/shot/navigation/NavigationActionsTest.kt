@@ -301,6 +301,20 @@ class NavigationActionsTest {
             }
 
             @Test
+            fun onboardingEducation() {
+                Assertions.assertEquals(
+                    Actions.Settings.onboardingEducation().destination,
+                    NavigationDestinations.ONBOARDING_EDUCATION_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.Settings.onboardingEducation().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                        .build()
+                )
+            }
+
+            @Test
             fun termsConditions() {
                 Assertions.assertEquals(
                     Actions.Settings.termsConditions(isAcknowledgeConditions = false).destination,

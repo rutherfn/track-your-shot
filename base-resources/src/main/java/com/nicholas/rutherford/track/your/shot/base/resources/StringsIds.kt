@@ -1,6 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.splash
-
-import com.nicholas.rutherford.track.your.shot.base.resources.R
+package com.nicholas.rutherford.track.your.shot.base.resources
 
 object StringsIds {
     val acceptanceOfTheseTerms = R.string.acceptance_of_these_terms
@@ -12,14 +10,17 @@ object StringsIds {
     val androidPermissionsUrl = R.string.android_permissions_url
     val accountSecurityDescription = R.string.account_security_description
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
-    val areYouSureYouWantLeaveTrackYourShot = R.string.are_you_sure_you_want_to_leave_track_your_shot
-    val areYouSureYouWantToDeletePendingAccountDescription = R.string.are_you_sure_you_want_to_delete_pending_account_description
+    val areYouSureYouWantLeaveTrackYourShot =
+        R.string.are_you_sure_you_want_to_leave_track_your_shot
+    val areYouSureYouWantToDeletePendingAccountDescription =
+        R.string.are_you_sure_you_want_to_delete_pending_account_description
     val c = R.string.c
     val camera = R.string.camera
     val cancel = R.string.cancel
     val cameraPermissionExplanation = R.string.camera_permission_explanation
     val cameraPermission = R.string.camera_permission
-    val cameraPermissionHasBeenDeniedDescription = R.string.camera_permission_has_been_denied_description
+    val cameraPermissionHasBeenDeniedDescription =
+        R.string.camera_permission_has_been_denied_description
     val center = R.string.center
     val changesAndAmendments = R.string.changes_and_amendments
     val changesAndAmendmentsDescription = R.string.changes_and_amendments_description
@@ -35,6 +36,8 @@ object StringsIds {
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val createAccount = R.string.create_account
     val createPlayer = R.string.create_player
+    val createYourPlayersProfile = R.string.create_your_players_profile
+    val createYourPlayerProfileDescription = R.string.create_your_player_profile_description
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount =
         R.string.current_account_has_not_been_verified_please_open_email_to_verify_account
     val currentShotHasBeenUpdatedDescription = R.string.current_shot_has_been_updated_description
@@ -98,6 +101,8 @@ object StringsIds {
     val loginIconDescription = R.string.login_icon_description
     val logout = R.string.logout
     val logShot = R.string.log_shot
+    val logYourShotsDescription = R.string.log_your_shots_description
+    val logYourShots = R.string.log_your_shots
     val moreInfo = R.string.more_info
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
@@ -136,7 +141,8 @@ object StringsIds {
     val playersFirstNameEmptyDescription = R.string.players_first_name_empty_description
     val playersLastNameEmptyDescription = R.string.players_last_name_empty_description
     val proceedWithYourAccount = R.string.proceed_with_your_account
-    val readExternalStoragePermissionExplanation = R.string.read_external_storage_permission_explanation
+    val readExternalStoragePermissionExplanation =
+        R.string.read_external_storage_permission_explanation
     val readExternalStoragePermission = R.string.read_external_storage_permission
     val readMediaImagesPermission = R.string.read_media_images_permission
     val readMediaImagesPermissionExplanation = R.string.read_media_images_permission_explanation
@@ -174,6 +180,8 @@ object StringsIds {
     val takeAPicture = R.string.take_a_picture
     val termsConditions = R.string.terms_conditions
     val termsConditionsDescription = R.string.terms_conditions_description
+    val trackYourProgress = R.string.track_your_progress
+    val trackYourProgressDescription = R.string.track_your_progress_description
     val theImageUploadWasUnsuccessful = R.string.the_image_upload_was_unsuccessful
     val thereWasAErrorCreatingYourAccountPleaseTryAgain =
         R.string.there_was_a_error_creating_your_account_please_try_again
@@ -181,7 +189,8 @@ object StringsIds {
         R.string.there_was_a_error_deleting_your_account_please_try_again
     val thisDocumentWasLastUpdatedOn = R.string.this_document_was_last_updated_on
     val unableToCreateAccount = R.string.unable_to_create_account
-    val unableToDeletePlayerPleaseContactSupport = R.string.unable_to_delete_player_please_contact_support
+    val unableToDeletePlayerPleaseContactSupport =
+        R.string.unable_to_delete_player_please_contact_support
     val unableToLoginToAccount = R.string.unable_to_login_to_account
     val unableToResetPassword = R.string.unable_to_reset_password
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
@@ -197,8 +206,10 @@ object StringsIds {
     val verifyAccount = R.string.verify_account
     val viewMoreInfo = R.string.view_more_info
     val voiceCommands = R.string.voice_commands
-    val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue = R.string.we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue
-    val weHaveDetectedCurrentlyNotConnectedToInternetDescription = R.string.we_have_detected_currently_not_connected_to_internet_description
+    val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue =
+        R.string.we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue
+    val weHaveDetectedCurrentlyNotConnectedToInternetDescription =
+        R.string.we_have_detected_currently_not_connected_to_internet_description
     val weWereAbleToSendEmailVerificationPleaseCheckYourEmailToVerifyAccount =
         R.string.we_were_able_to_send_email_verification_please_check_your_email_to_verify_account
     val weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain =
@@ -206,5 +217,6 @@ object StringsIds {
     val xShot = R.string.x_shot
     val xShots = R.string.x_shots
     val yes = R.string.yes
-    val yourPlayerCouldNotBeRetrievedDescription = R.string.your_player_could_not_be_retrieved_description
+    val yourPlayerCouldNotBeRetrievedDescription =
+        R.string.your_player_could_not_be_retrieved_description
 }

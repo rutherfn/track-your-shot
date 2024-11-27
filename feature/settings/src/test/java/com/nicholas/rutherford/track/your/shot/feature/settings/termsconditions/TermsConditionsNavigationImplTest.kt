@@ -38,6 +38,20 @@ class TermsConditionsNavigationImplTest {
     }
 
     @Test
+    fun `navigation to onboarding`() {
+        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+
+        termsConditionsNavigationImpl.navigateToOnboarding()
+
+        verify { navigator.navigate(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+        val expectedAction = NavigationActions.TermsConditions.onboardingEducation()
+
+        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
+    }
+
+    @Test
     fun `navigate to player list`() {
         val argumentCapture: CapturingSlot<NavigationAction> = slot()
 

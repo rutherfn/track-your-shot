@@ -3,8 +3,8 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.permissioneduca
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
-import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

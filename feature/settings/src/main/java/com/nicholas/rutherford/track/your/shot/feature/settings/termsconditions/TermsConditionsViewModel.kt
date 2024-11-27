@@ -2,16 +2,22 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
+const val DELAY_BEFORE_ONBOARDING = 750L
 
 class TermsConditionsViewModel(
     private val navigation: TermsConditionsNavigation,
     private val application: Application,
-    private val createSharedPreferences: CreateSharedPreferences
+    private val createSharedPreferences: CreateSharedPreferences,
+    private val scope: CoroutineScope
 ) : ViewModel() {
 
     internal var termsConditionsMutableStateFlow = MutableStateFlow(value = TermsConditionsState())
@@ -68,8 +74,13 @@ class TermsConditionsViewModel(
 
     fun onCloseAcceptButtonClicked(isAcknowledgeConditions: Boolean) {
         if (isAcknowledgeConditions) {
-            createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
-            navigation.navigateToPlayerList()
+            scope.launch {
+                createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
+                navigation.navigateToPlayerList()
+
+                delay(DELAY_BEFORE_ONBOARDING)
+                navigation.navigateToOnboarding()
+            }
         } else {
             navigation.navigateToSettings()
         }
