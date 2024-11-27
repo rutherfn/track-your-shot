@@ -21,7 +21,7 @@ class OnboardingEducationViewModel(
         updateState()
     }
 
-    fun buildEducationInfoList(): List<EducationInfo> {
+    internal fun buildEducationInfoList(): List<EducationInfo> {
         return listOf(
             EducationInfo(
                 title = application.getString(StringsIds.createYourPlayersProfile),
@@ -40,7 +40,6 @@ class OnboardingEducationViewModel(
                 description = application.getString(StringsIds.trackYourProgressDescription),
                 drawableResId = DrawablesIds.basketballShotMade,
                 buttonText = application.getString(StringsIds.gotIt)
-
             )
         )
     }
