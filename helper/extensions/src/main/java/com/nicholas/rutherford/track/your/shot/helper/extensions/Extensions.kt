@@ -10,8 +10,8 @@ import android.os.Build
 import android.provider.MediaStore
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.core.content.ContextCompat
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants.DATE_PATTERN
 import java.text.SimpleDateFormat
 import java.time.LocalDate

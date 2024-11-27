@@ -3,11 +3,11 @@ package com.nicholas.rutherford.track.your.shot.data.room
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.nicholas.rutherford.track.your.shot.base.resources.declaredshotsjson.FakeDeclaredShotsJson
 import com.nicholas.rutherford.track.your.shot.data.room.dao.DeclaredShotDao
 import com.nicholas.rutherford.track.your.shot.data.room.database.AppDatabase
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
-import com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson.FakeDeclaredShotsJson
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat

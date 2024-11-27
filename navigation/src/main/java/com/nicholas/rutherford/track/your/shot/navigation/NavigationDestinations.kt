@@ -9,6 +9,7 @@ object NavigationDestinations {
     const val FORGOT_PASSWORD_SCREEN = "forgotPasswordScreen"
     const val LOG_SHOT_WITH_PARAMS = "logShotScreen/{isExistingPlayer}/{playerId}/{shotType}/{shotId}/{viewCurrentExistingShot}/{viewCurrentPendingShot}"
     const val LOG_SHOT_SCREEN = "logShotScreen"
+    const val ONBOARDING_EDUCATION_SCREEN = "onboardingEducationScreen"
     const val PERMISSION_EDUCATION_SCREEN = "permissionEducationScreen"
     const val ENABLED_PERMISSIONS_SCREEN = "enabledPermissionsScreen"
     const val TERMS_CONDITIONS_SCREEN = "termsConditionsScreen"

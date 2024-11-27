@@ -1,11 +1,21 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 
 import android.app.Application
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -21,8 +31,15 @@ class TermsConditionsViewModelTest {
 
     private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val dispatcher = UnconfinedTestDispatcher()
+
+    private val scope = CoroutineScope(SupervisorJob() + dispatcher)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
     fun beforeEach() {
+        Dispatchers.setMain(dispatcher)
         every { application.getString(StringsIds.introduction) } returns "Introduction"
         every { application.getString(StringsIds.termsConditionsDescription) } returns "These terms and conditions (&quot;Agreement&quot;) set forth the general terms and conditions of your use of the &quot;Track Your Shot&quot; mobile application (&quot;Mobile Application&quot; or &quot;Service&quot;) and any of its related products and services (collectively, &quot;Services&quot;). This Agreement is legally binding between you (&quot;User&quot;, &quot;you&quot; or &quot;your&quot;) and Track Your Shot (&quot;Track Your Shot&quot;, &quot;we&quot;, &quot;us&quot; or &quot;our&quot;). If you are entering into this Agreement on behalf of a business or other legal entity, you represent that you have the authority to bind such entity to this Agreement, in which case the terms &quot;User&quot;, &quot;you&quot; or &quot;your&quot; shall refer to such entity. If you do not have such authority, or if you do not agree with the terms of this Agreement, you must not accept this Agreement and may not access and use the Mobile Application and Services. By accessing and using the Mobile Application and Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Agreement. You acknowledge that this Agreement is a contract between you and Track Your Shot, even though it is electronic and is not physically signed by you, and it governs your use of the Mobile Application and Services."
         every { application.getString(StringsIds.accounts) } returns "Accounts"
@@ -41,8 +58,20 @@ class TermsConditionsViewModelTest {
         termsConditionsViewModel = TermsConditionsViewModel(
             navigation = navigation,
             application = application,
-            createSharedPreferences = createSharedPreferences
+            createSharedPreferences = createSharedPreferences,
+            scope = scope
         )
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @AfterEach
+    fun afterEach() {
+        Dispatchers.resetMain()
+    }
+
+    @Test
+    fun constants() {
+        Assertions.assertEquals(DELAY_BEFORE_ONBOARDING, 750L)
     }
 
     @Test
@@ -190,12 +219,25 @@ class TermsConditionsViewModelTest {
     @Nested
     inner class OnCloseAcceptButtonClicked {
 
+        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isAcknowledgeConditions is set to true should call navigate to player list`() {
+        fun `when isAcknowledgeConditions is set to true should call navigate to player list`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            termsConditionsViewModel = TermsConditionsViewModel(
+                navigation = navigation,
+                application = application,
+                createSharedPreferences = createSharedPreferences,
+                scope = scope
+            )
+
             termsConditionsViewModel.onCloseAcceptButtonClicked(isAcknowledgeConditions = true)
+
+            delay(750L)
 
             verify { createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false) }
             verify { navigation.navigateToPlayerList() }
+            verify { navigation.navigateToOnboarding() }
         }
 
         @Test

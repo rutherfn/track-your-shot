@@ -193,6 +193,13 @@ object NavigationActions {
                 .build()
         }
 
+        fun onboardingEducation() = object : NavigationAction {
+            override val destination = NavigationDestinations.ONBOARDING_EDUCATION_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                .build()
+        }
+
         fun termsConditions(isAcknowledgeConditions: Boolean) = object : NavigationAction {
             override val destination = NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = isAcknowledgeConditions)
             override val navOptions = NavOptions.Builder()
@@ -202,6 +209,11 @@ object NavigationActions {
     }
 
     object TermsConditions {
+        fun onboardingEducation() = object : NavigationAction {
+            override val destination = NavigationDestinations.ONBOARDING_EDUCATION_SCREEN
+            override val navOptions = NavOptions.Builder().build()
+        }
+
         fun playerList() = object : NavigationAction {
             override val destination = NavigationDestinations.PLAYERS_LIST_SCREEN
             override val navOptions = NavOptions.Builder()

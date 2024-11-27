@@ -1,7 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.forgot.password
 
 import android.app.Application
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import io.mockk.coEvery
 import io.mockk.mockk

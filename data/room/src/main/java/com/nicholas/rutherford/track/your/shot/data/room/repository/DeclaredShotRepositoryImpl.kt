@@ -2,11 +2,11 @@ package com.nicholas.rutherford.track.your.shot.data.room.repository
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.nicholas.rutherford.track.your.shot.base.resources.declaredshotsjson.DeclaredShotsJson
 import com.nicholas.rutherford.track.your.shot.data.room.dao.DeclaredShotDao
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.toDeclaredShotEntity
-import com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson.DeclaredShotsJson
 
 class DeclaredShotRepositoryImpl(
     private val declaredShotDao: DeclaredShotDao,

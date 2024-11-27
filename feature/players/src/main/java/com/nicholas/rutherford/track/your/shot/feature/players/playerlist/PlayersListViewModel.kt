@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.feature.players.playerlist
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
@@ -11,7 +12,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
@@ -175,7 +175,11 @@ class PlayersListViewModel(
         return Alert(
             title = application.getString(StringsIds.notConnectedToInternet),
             description = application.getString(StringsIds.weHaveDetectedCurrentlyNotConnectedToInternetDescription),
-            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(
+                    StringsIds.gotIt
+                )
+            )
         )
     }
 
@@ -183,7 +187,11 @@ class PlayersListViewModel(
         return Alert(
             title = application.getString(StringsIds.empty),
             description = application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue),
-            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(
+                    StringsIds.gotIt
+                )
+            )
         )
     }
 
@@ -191,7 +199,11 @@ class PlayersListViewModel(
         return Alert(
             title = application.getString(StringsIds.empty),
             description = application.getString(StringsIds.unableToDeletePlayerPleaseContactSupport),
-            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(
+                    StringsIds.gotIt
+                )
+            )
         )
     }
 }

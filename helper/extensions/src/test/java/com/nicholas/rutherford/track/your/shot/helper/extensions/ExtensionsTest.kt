@@ -1,6 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.helper.extensions
 
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

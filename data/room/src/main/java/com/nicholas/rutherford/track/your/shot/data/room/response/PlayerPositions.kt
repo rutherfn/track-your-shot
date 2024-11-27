@@ -1,7 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.data.room.response
 
 import android.app.Application
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 
 sealed class PlayerPositions(val value: Int) {

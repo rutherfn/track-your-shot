@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
-import com.nicholas.rutherford.track.your.shot.feature.splash.DrawablesIds
 
 /**
  * Default [HorizontalPager] that load items from [EducationInfo]

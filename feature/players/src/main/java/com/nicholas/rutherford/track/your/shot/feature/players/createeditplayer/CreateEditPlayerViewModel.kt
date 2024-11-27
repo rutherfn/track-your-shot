@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
@@ -16,7 +17,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
-import com.nicholas.rutherford.track.your.shot.feature.splash.StringsIds
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
@@ -93,7 +93,11 @@ class CreateEditPlayerViewModel(
     internal fun showUpdatedAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.shotUpdated),
-            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt)),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(
+                    StringsIds.gotIt
+                )
+            ),
             description = application.getString(StringsIds.currentShotHasBeenUpdatedDescription)
         )
     }

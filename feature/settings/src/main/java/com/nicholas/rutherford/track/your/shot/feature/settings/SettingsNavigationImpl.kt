@@ -11,5 +11,7 @@ class SettingsNavigationImpl(private val navigator: Navigator) : SettingsNavigat
 
     override fun navigateToPermissionEducationScreen() = navigator.navigate(navigationAction = NavigationActions.Settings.permissionEducation())
 
+    override fun navigateToOnboardingEducationScreen() = navigator.navigate(navigationAction = NavigationActions.Settings.onboardingEducation())
+
     override fun navigateToTermsConditions() = navigator.navigate(navigationAction = NavigationActions.Settings.termsConditions(isAcknowledgeConditions = false))
 }

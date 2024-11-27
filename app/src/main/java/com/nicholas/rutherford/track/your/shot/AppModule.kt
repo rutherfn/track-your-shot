@@ -8,6 +8,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.nicholas.rutherford.track.your.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.your.shot.app.center.AppCenterImpl
+import com.nicholas.rutherford.track.your.shot.base.resources.declaredshotsjson.DeclaredShotsJson
+import com.nicholas.rutherford.track.your.shot.base.resources.declaredshotsjson.DeclaredShotsJsonImpl
 import com.nicholas.rutherford.track.your.shot.build.type.BuildType
 import com.nicholas.rutherford.track.your.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.your.shot.data.room.database.AppDatabase
@@ -55,6 +57,9 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewMode
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationNavigation
+import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
@@ -64,8 +69,6 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
-import com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson.DeclaredShotsJson
-import com.nicholas.rutherford.track.your.shot.feature.splash.declaredshotsjson.DeclaredShotsJsonImpl
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfoImpl
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
@@ -257,6 +260,9 @@ class AppModule {
         single<EnabledPermissionsNavigation> {
             EnabledPermissionsNavigationImpl(navigator = get())
         }
+        single<OnboardingEducationNavigation> {
+            OnboardingEducationNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(appCenter = get(), accountManager = get())
         }
@@ -378,10 +384,17 @@ class AppModule {
             )
         }
         viewModel {
+            OnboardingEducationViewModel(
+                navigation = get(),
+                application = androidApplication()
+            )
+        }
+        viewModel {
             TermsConditionsViewModel(
                 navigation = get(),
                 application = androidApplication(),
-                createSharedPreferences = get()
+                createSharedPreferences = get(),
+                scope = defaultCoroutineScope
             )
         }
         viewModel {

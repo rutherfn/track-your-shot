@@ -5,6 +5,7 @@ import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
 class TermsConditionsNavigationImpl(private val navigator: Navigator) : TermsConditionsNavigation {
     override fun navigateToDevEmail(email: String) = navigator.emailDevAction(emailDevAction = email)
+    override fun navigateToOnboarding() = navigator.navigate(navigationAction = NavigationActions.TermsConditions.onboardingEducation())
     override fun navigateToPlayerList() = navigator.navigate(navigationAction = NavigationActions.TermsConditions.playerList())
     override fun navigateToSettings() = navigator.navigate(navigationAction = NavigationActions.TermsConditions.settings())
 }

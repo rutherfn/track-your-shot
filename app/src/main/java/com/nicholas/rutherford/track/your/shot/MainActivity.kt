@@ -34,6 +34,7 @@ open class MainActivity : ComponentActivity() {
                     settingsViewModel = getViewModel(),
                     permissionEducationViewModel = getViewModel(),
                     termsConditionsViewModel = getViewModel(),
+                    onboardingEducationViewModel = getViewModel(),
                     enabledPermissionsViewModel = getViewModel()
                 )
             )
