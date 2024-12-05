@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.your.shot.feature.settings
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -63,4 +65,17 @@ class SettingsViewModel(
     }
 
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
+
+    fun settingsHelpAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.settings),
+            description = application.getString(StringsIds.settingsHelpDescription),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            )
+
+        )
+    }
+
+    fun onHelpClicked() = navigation.alert(alert = settingsHelpAlert())
 }

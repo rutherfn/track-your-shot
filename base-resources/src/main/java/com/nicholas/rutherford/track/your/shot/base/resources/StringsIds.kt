@@ -157,6 +157,7 @@ object StringsIds {
     val selectingAShot = R.string.selecting_a_shot
     val selectDate = R.string.select_date
     val settings = R.string.settings
+    val settingsHelpDescription = R.string.settings_help_description
     val shotPercentage = R.string.shot_percentage
     val shotUpdated = R.string.shot_updated
     val shots = R.string.shots

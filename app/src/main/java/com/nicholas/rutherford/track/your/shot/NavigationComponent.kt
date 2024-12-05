@@ -431,6 +431,9 @@ fun NavigationComponent(
                         onToolbarMenuClicked = {
                             settingsViewModel.onToolbarMenuClicked()
                         },
+                        onHelpClicked = {
+                            settingsViewModel.onHelpClicked()
+                        },
                         onSettingItemClicked = { value ->
                             settingsViewModel.onSettingItemClicked(value = value)
                         },
