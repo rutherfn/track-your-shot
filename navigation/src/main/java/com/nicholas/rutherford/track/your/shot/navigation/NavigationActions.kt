@@ -179,6 +179,14 @@ object NavigationActions {
 
     object Settings {
 
+        fun accountInfo(username: String, email: String) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.accountInfoWithParams(
+                username = username,
+                email = email
+            )
+            override val navOptions = NavOptions.Builder().build()
+        }
+
         fun enabledPermissions() = object : NavigationAction {
             override val destination = NavigationDestinations.ENABLED_PERMISSIONS_SCREEN
             override val navOptions = NavOptions.Builder()

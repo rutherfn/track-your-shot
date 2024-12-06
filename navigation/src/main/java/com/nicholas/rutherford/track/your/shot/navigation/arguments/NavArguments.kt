@@ -4,6 +4,10 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
 object NavArguments {
+    val accountInfo = listOf(
+        navArgument(NamedArguments.USERNAME) { type = NavType.StringType },
+        navArgument(NamedArguments.EMAIL) { type = NavType.StringType }
+    )
     val authentication = listOf(
         navArgument(NamedArguments.USERNAME) { type = NavType.StringType },
         navArgument(NamedArguments.EMAIL) { type = NavType.StringType }
