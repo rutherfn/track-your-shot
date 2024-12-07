@@ -103,6 +103,8 @@
     <string name="not_connected_to_internet">Not connected to internet</string>
     <string name="no_first_name_entered">No First Name Entered</string>
     <string name="no_last_name_entered">No Last Name Entered</string>
+    <string name="no_shots_results_found">No Shots Results Found</string>
+    <string name="no_shots_results_found_description">No matching shot was found in your search. Please search for an existing shot or create a new one.</string>
     <string name="not_now">Not Now</string>
     <string name="no_current_players_added">No Current Players Added</string>
     <string name="no_current_shots_logged_for_player">No Current Shots Logged For Player</string>

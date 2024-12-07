@@ -35,7 +35,7 @@ object BuildTypes {
             override var applicationIdSuffix: String = ".release"
             override var buildName: String = "release"
             override var isDebuggable: Boolean = false
-            override var isMinifyEnabled: Boolean = true
+            override var isMinifyEnabled: Boolean = false
             override var appIconRoute: String = "@mipmap/ic_launcher"
             override var roundAppIconRoute: String = "@mipmap/ic_launcher_round"
         }

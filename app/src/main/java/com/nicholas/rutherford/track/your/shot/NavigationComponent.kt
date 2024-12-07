@@ -362,7 +362,7 @@ fun NavigationComponent(
                         state = selectShotViewModel.selectShotStateFlow.collectAsState().value,
                         onSearchValueChanged = { newSearchQuery -> selectShotViewModel.onSearchValueChanged(newSearchQuery = newSearchQuery) },
                         onBackButtonClicked = { selectShotViewModel.onBackButtonClicked() },
-                        onCancelIconClicked = { selectShotViewModel.onCancelIconClicked() },
+                        onCancelIconClicked = { query -> selectShotViewModel.onCancelIconClicked(query) },
                         onnDeclaredShotItemClicked = {},
                         onHelpIconClicked = { selectShotViewModel.onHelpIconClicked() },
                         updateIsExistingPlayerAndPlayerId = {
@@ -536,11 +536,13 @@ fun NavigationComponent(
                     val usernameArgument = bundle.getString(NamedArguments.USERNAME) ?: ""
                     val emailArgument = bundle.getString(NamedArguments.EMAIL) ?: ""
 
-                    AccountInfoScreen(params = AccountInfoParams(
-                    onToolbarMenuClicked = { accountInfoViewModel.onToolbarMenuClicked() },
-                    usernameArgument = usernameArgument,
-                    emailArgument = emailArgument
-                ))
+                    AccountInfoScreen(
+                        params = AccountInfoParams(
+                            onToolbarMenuClicked = { accountInfoViewModel.onToolbarMenuClicked() },
+                            usernameArgument = usernameArgument,
+                            emailArgument = emailArgument
+                        )
+                    )
                 }
             }
         }

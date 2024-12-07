@@ -23,10 +23,10 @@ fun AccountInfoScreen(params: AccountInfoParams) {
     Content(
         ui = {
             AccountInfoContent(username = params.usernameArgument, email = params.emailArgument)
-        }, 
+        },
         appBar = AppBar(
             toolbarTitle = stringResource(id = StringsIds.accountInfo),
-            shouldShowMiddleContentAppBar = false, 
+            shouldShowMiddleContentAppBar = false,
             onIconButtonClicked = {
                 params.onToolbarMenuClicked.invoke()
             }

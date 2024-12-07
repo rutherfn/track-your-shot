@@ -6,7 +6,7 @@ data class SelectShotParams(
     val state: SelectShotState,
     val onSearchValueChanged: (newSearchQuery: String) -> Unit,
     val onBackButtonClicked: () -> Unit,
-    val onCancelIconClicked: () -> Unit,
+    val onCancelIconClicked: (query: String) -> Unit,
     val onnDeclaredShotItemClicked: (declaredShot: DeclaredShot) -> Unit,
     val onHelpIconClicked: () -> Unit,
     val updateIsExistingPlayerAndPlayerId: () -> Unit,

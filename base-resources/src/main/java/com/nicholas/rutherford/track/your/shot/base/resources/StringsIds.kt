@@ -113,6 +113,8 @@ object StringsIds {
     val noCurrentShotsLoggedForPlayer = R.string.no_current_shots_logged_for_player
     val noFirstNameEntered = R.string.no_first_name_entered
     val noLastNameEntered = R.string.no_last_name_entered
+    val noShotsResultsFound = R.string.no_shots_results_found
+    val noShotsResultsFoundDescription = R.string.no_shots_results_found_description
     val notConnectedToInternet = R.string.not_connected_to_internet
     val notNow = R.string.not_now
     val openEmail = R.string.open_email

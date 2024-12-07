@@ -21,7 +21,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -243,7 +242,7 @@ class SelectShotViewModelTest {
 
         Assertions.assertEquals(
             selectShotViewModel.selectShotMutableStateFlow.value,
-            SelectShotState(declaredShotList = shotDeclaredList, searchQuery = title)
+            SelectShotState(declaredShotList = shotDeclaredList)
         )
         Assertions.assertEquals(
             selectShotViewModel.currentDeclaredShotArrayList.toList(),
@@ -258,15 +257,11 @@ class SelectShotViewModelTest {
         fun `when search query is not empty should update state`() {
             val searchQuery = "searchQuery"
 
-            selectShotViewModel.selectShotMutableStateFlow.update {
-                it.copy(searchQuery = searchQuery)
-            }
-
             val shotDeclaredList = listOf(TestDeclaredShot.build())
 
             coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns shotDeclaredList
 
-            selectShotViewModel.onCancelIconClicked()
+            selectShotViewModel.onCancelIconClicked(query = searchQuery)
 
             Assertions.assertEquals(
                 selectShotViewModel.selectShotMutableStateFlow.value,
@@ -281,11 +276,8 @@ class SelectShotViewModelTest {
         @Test
         fun `when search query is empty should not update state`() {
             val emptyShotDeclaredList: List<DeclaredShot> = emptyList()
-            selectShotViewModel.selectShotMutableStateFlow.update {
-                it.copy(searchQuery = "")
-            }
 
-            selectShotViewModel.onCancelIconClicked()
+            selectShotViewModel.onCancelIconClicked(query = "")
 
             Assertions.assertEquals(
                 selectShotViewModel.selectShotMutableStateFlow.value,
