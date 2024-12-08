@@ -57,7 +57,7 @@ private fun AccountInfoContent(username: String, email: String) {
         Spacer(modifier = Modifier.height(Padding.four))
 
         Text(
-            text = username,
+            text = email,
             style = TextStyles.body
         )
 
@@ -71,7 +71,7 @@ private fun AccountInfoContent(username: String, email: String) {
         Spacer(modifier = Modifier.height(Padding.four))
 
         Text(
-            text = email,
+            text = username,
             style = TextStyles.body
         )
     }

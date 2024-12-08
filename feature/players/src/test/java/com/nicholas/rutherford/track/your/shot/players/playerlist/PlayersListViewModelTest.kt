@@ -9,7 +9,6 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
@@ -67,7 +66,6 @@ class PlayersListViewModelTest {
     private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
     private val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
 
-    val user = TestActiveUser().create()
     val player = TestPlayer().create()
 
     val emptyPlayerList: List<Player> = listOf()

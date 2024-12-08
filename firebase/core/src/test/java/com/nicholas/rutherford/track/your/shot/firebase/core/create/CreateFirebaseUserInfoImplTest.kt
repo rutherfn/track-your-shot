@@ -156,7 +156,7 @@ class CreateFirebaseUserInfoImplTest {
                 every { firebaseDatabase.getReference(path).key } returns key
 
                 every {
-                    firebaseDatabase.getReference(path).push().setValue(values)
+                    firebaseDatabase.getReference(path).setValue(values)
                         .addOnCompleteListener(capture(onCompleteListenerSlot))
                         .addOnFailureListener(capture(failureListenerSlot))
                 } answers {
@@ -200,7 +200,7 @@ class CreateFirebaseUserInfoImplTest {
             every { firebaseAuth.currentUser } returns mockFirebaseUser
 
             every {
-                firebaseDatabase.getReference(path).push().setValue(values)
+                firebaseDatabase.getReference(path).setValue(values)
                     .addOnCompleteListener(capture(completeListenerSlot))
                     .addOnFailureListener(capture(failureListenerSlot))
             } answers {

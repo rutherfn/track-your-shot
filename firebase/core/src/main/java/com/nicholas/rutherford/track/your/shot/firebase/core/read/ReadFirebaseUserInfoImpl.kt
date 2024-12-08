@@ -67,17 +67,17 @@ class ReadFirebaseUserInfoImpl(
     override fun getAccountInfoFlow(): Flow<AccountInfoRealtimeResponse?> {
         return callbackFlow {
             val uid = firebaseAuth.currentUser?.uid ?: ""
-            var accountInfoRealTimeResponse: AccountInfoRealtimeResponse?
 
             firebaseDatabase.getReference("${Constants.USERS}/$uid")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
-                            if (snapshot.children.count() == 1) {
-                                accountInfoRealTimeResponse = snapshot.children.first().getValue(AccountInfoRealtimeResponse::class.java)
-                                trySend(element = accountInfoRealTimeResponse)
-                            } else {
-                                Timber.w(message = "Error(getAccountInfoFlowByEmail) -> Current snapshot contains the same email more then once")
+                            val email = snapshot.child(Constants.EMAIL).getValue(String::class.java)
+                            val username = snapshot.child(Constants.USERNAME).getValue(String::class.java)
+                            safeLet(email, username) { accountEmail, accountUsername ->
+                                trySend(element = AccountInfoRealtimeResponse(accountEmail, accountUsername))
+                            } ?: run {
+                                Timber.e(message = "Error(getAccountInfoFlowByEmail) -> Current snapshot exists but email is $email and username is $username")
                                 trySend(element = null)
                             }
                         } else {

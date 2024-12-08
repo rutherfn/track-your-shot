@@ -13,8 +13,16 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -38,6 +46,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
  * @param singleLine sets whenever the [TextField] is a single line or not
  * @param colors sets the [TextFieldColors] inside the [TextField]
  */
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFieldNoPadding(
     label: String,
@@ -47,9 +56,19 @@ fun TextFieldNoPadding(
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     textStyle: TextStyle = TextStyles.body,
     singleLine: Boolean = true,
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor),
-    keyboardActions: KeyboardActions = KeyboardActions()
+    colors: TextFieldColors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
 ) {
+    var isFocused by remember { mutableStateOf(false) }
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    var shouldClearFocus by remember { mutableStateOf(false) }
+
+    if (shouldClearFocus) {
+        LocalFocusManager.current.clearFocus()
+        shouldClearFocus = false
+    }
+
     // removes the starting padding of the TextField
     val negativeOffSetPaddingX = (-8).dp
 
@@ -61,11 +80,18 @@ fun TextFieldNoPadding(
             modifier = Modifier
                 .requiredWidth(maxWidth + Padding.sixteen)
                 .offset(x = negativeOffSetPaddingX)
+                .onFocusChanged { isFocused = it.isFocused }
                 .fillMaxWidth(),
             value = value,
             visualTransformation = visualTransformation,
             keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    keyboardController?.hide()
+                    isFocused = false
+                    shouldClearFocus = true
+                }
+            ),
             onValueChange = { newUsername -> onValueChange.invoke(newUsername) },
             textStyle = textStyle,
             singleLine = singleLine,
