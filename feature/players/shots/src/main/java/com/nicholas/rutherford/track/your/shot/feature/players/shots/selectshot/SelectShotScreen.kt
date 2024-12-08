@@ -1,12 +1,17 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,8 +26,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -41,7 +48,7 @@ import java.util.Locale
 
 @Composable
 fun SelectShotScreen(selectShotParams: SelectShotParams) {
-    val isShotsDeclaredListEmpty = selectShotParams.state.declaredShotList.isEmpty()
+    var query by remember { mutableStateOf("") }
 
     BackHandler(true) {
         selectShotParams.onBackButtonClicked.invoke()
@@ -54,12 +61,18 @@ fun SelectShotScreen(selectShotParams: SelectShotParams) {
     Content(
         ui = {
             SearchTextField(
-                value = selectShotParams.state.searchQuery,
-                onValueChange = { newSearchQuery -> selectShotParams.onSearchValueChanged.invoke(newSearchQuery) },
-                onCancelIconClicked = { selectShotParams.onCancelIconClicked.invoke() },
+                value = query,
+                onValueChange = { newSearchQuery ->
+                    query = newSearchQuery
+                    selectShotParams.onSearchValueChanged.invoke(newSearchQuery)
+                },
+                onCancelIconClicked = {
+                    selectShotParams.onCancelIconClicked.invoke(query)
+                    query = ""
+                },
                 placeholderValue = stringResource(id = StringsIds.findShotsByName)
             )
-            if (!isShotsDeclaredListEmpty) {
+            if (selectShotParams.state.declaredShotList.isNotEmpty()) {
                 LazyColumn {
                     items(selectShotParams.state.declaredShotList) { declaredShot ->
                         DeclaredShotItem(
@@ -71,7 +84,7 @@ fun SelectShotScreen(selectShotParams: SelectShotParams) {
                     }
                 }
             } else {
-                // empty state
+                SelectShotEmptyState()
             }
         },
         appBar = AppBar(
@@ -79,7 +92,9 @@ fun SelectShotScreen(selectShotParams: SelectShotParams) {
             shouldShowMiddleContentAppBar = false,
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = true,
-            onIconButtonClicked = { selectShotParams.onBackButtonClicked.invoke() },
+            onIconButtonClicked = {
+                selectShotParams.onBackButtonClicked.invoke()
+            },
             onSecondaryIconButtonClicked = { selectShotParams.onHelpIconClicked.invoke() }
         ),
         secondaryImageVector = Icons.Filled.Help
@@ -161,6 +176,43 @@ fun DeclaredShotItem(
                     }
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun SelectShotEmptyState() {
+    println("get here test")
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppColors.White),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_basketball_log_shot_empty_state),
+                contentDescription = null,
+                modifier = Modifier.size(120.dp)
+            )
+
+            Text(
+                text = stringResource(id = StringsIds.noShotsResultsFound),
+                style = TextStyles.medium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+
+            Text(
+                text = stringResource(id = StringsIds.noShotsResultsFoundDescription),
+                style = TextStyles.smallBold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
         }
     }
 }

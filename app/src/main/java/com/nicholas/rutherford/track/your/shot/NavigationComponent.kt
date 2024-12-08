@@ -44,6 +44,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationParams
@@ -146,6 +148,7 @@ fun NavigationComponent(
     val termsConditionsViewModel = viewModels.termsConditionsViewModel
     val onboardingEducationViewModel = viewModels.onboardingEducationViewModel
     val enabledPermissionsViewModel = viewModels.enabledPermissionsViewModel
+    val accountInfoViewModel = viewModels.accountInfoViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -359,7 +362,7 @@ fun NavigationComponent(
                         state = selectShotViewModel.selectShotStateFlow.collectAsState().value,
                         onSearchValueChanged = { newSearchQuery -> selectShotViewModel.onSearchValueChanged(newSearchQuery = newSearchQuery) },
                         onBackButtonClicked = { selectShotViewModel.onBackButtonClicked() },
-                        onCancelIconClicked = { selectShotViewModel.onCancelIconClicked() },
+                        onCancelIconClicked = { query -> selectShotViewModel.onCancelIconClicked(query) },
                         onnDeclaredShotItemClicked = {},
                         onHelpIconClicked = { selectShotViewModel.onHelpIconClicked() },
                         updateIsExistingPlayerAndPlayerId = {
@@ -430,6 +433,9 @@ fun NavigationComponent(
                     params = SettingsParams(
                         onToolbarMenuClicked = {
                             settingsViewModel.onToolbarMenuClicked()
+                        },
+                        onHelpClicked = {
+                            settingsViewModel.onHelpClicked()
                         },
                         onSettingItemClicked = { value ->
                             settingsViewModel.onSettingItemClicked(value = value)
@@ -521,6 +527,23 @@ fun NavigationComponent(
                     usernameArgument = it.arguments?.getString(NamedArguments.USERNAME),
                     emailArgument = it.arguments?.getString(NamedArguments.EMAIL)
                 )
+            }
+            composable(
+                route = NavigationDestinations.ACCOUNT_INFO_SCREEN_PARAMS,
+                arguments = NavArguments.accountInfo
+            ) { entry ->
+                entry.arguments?.let { bundle ->
+                    val usernameArgument = bundle.getString(NamedArguments.USERNAME) ?: ""
+                    val emailArgument = bundle.getString(NamedArguments.EMAIL) ?: ""
+
+                    AccountInfoScreen(
+                        params = AccountInfoParams(
+                            onToolbarMenuClicked = { accountInfoViewModel.onToolbarMenuClicked() },
+                            usernameArgument = usernameArgument,
+                            emailArgument = emailArgument
+                        )
+                    )
+                }
             }
         }
     }

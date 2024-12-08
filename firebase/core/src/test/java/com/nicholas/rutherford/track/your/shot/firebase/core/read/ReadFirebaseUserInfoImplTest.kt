@@ -296,7 +296,8 @@ class ReadFirebaseUserInfoImplTest {
 
             every { mockDataSnapshot.exists() } returns true
             every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
-            every { mockDataSnapshot.getValue(AccountInfoRealtimeResponse::class.java) } returns null
+            every { mockDataSnapshot.child(Constants.EMAIL).getValue(String::class.java) } returns null
+            every { mockDataSnapshot.child(Constants.USERNAME).getValue(String::class.java) } returns null
             every { mockDataSnapshot.children } returns mockDataSnapshotList
 
             mockkStatic(DataSnapshot::class)
@@ -324,7 +325,8 @@ class ReadFirebaseUserInfoImplTest {
 
             every { mockDataSnapshot.exists() } returns true
             every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
-            every { mockDataSnapshot.getValue(AccountInfoRealtimeResponse::class.java) } returns accountInfoRealtimeResponse
+            every { mockDataSnapshot.child(Constants.EMAIL).getValue(String::class.java) } returns accountInfoRealtimeResponse.email
+            every { mockDataSnapshot.child(Constants.USERNAME).getValue(String::class.java) } returns accountInfoRealtimeResponse.userName
             every { mockDataSnapshot.children } returns mockDataSnapshotList
 
             mockkStatic(DataSnapshot::class)

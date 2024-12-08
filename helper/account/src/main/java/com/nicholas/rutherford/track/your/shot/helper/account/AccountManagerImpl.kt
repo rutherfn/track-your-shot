@@ -22,7 +22,10 @@ import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -49,21 +52,21 @@ class AccountManagerImpl(
     private val _loggedInDeclaredShotListStateFlow: MutableStateFlow<List<DeclaredShot>> = MutableStateFlow(value = emptyList())
     override val loggedInDeclaredShotListStateFlow: StateFlow<List<DeclaredShot>> = _loggedInDeclaredShotListStateFlow.asStateFlow()
 
+    private val hasNoPlayersMutableSharedFlow = MutableSharedFlow<Boolean>(extraBufferCapacity = Channel.UNLIMITED)
+    override val hasNoPlayersFlow: Flow<Boolean> = hasNoPlayersMutableSharedFlow
+
     override fun logout() {
         scope.launch {
             navigator.progress(progressAction = Progress())
+
+            existingUserFirebase.logout()
+            createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
+            clearOutDatabase()
 
             delay(Constants.DELAY_IN_MILLISECONDS_TO_SHOW_PROGRESS_MASK_ON_LOG_OUT)
 
             navigator.progress(progressAction = null)
             navigator.navigate(navigationAction = NavigationActions.DrawerScreen.logout())
-
-            delay(Constants.DELAY_IN_MILLISECONDS_BEFORE_LOGGING_OUT)
-
-            existingUserFirebase.logout()
-
-            createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
-            clearOutDatabase()
         }
     }
 
@@ -199,9 +202,11 @@ class AccountManagerImpl(
                     createSharedPreferences.createShouldUpdateLoggedInPlayerListPreference(value = true)
                     _loggedInPlayerListStateFlow.value = playerList
                     playerRepository.createListOfPlayers(playerList = playerList)
+                    hasNoPlayersMutableSharedFlow.tryEmit(value = false)
 
                     disableProcessAndNavigateToPlayersList()
                 } else {
+                    hasNoPlayersMutableSharedFlow.tryEmit(value = true)
                     disableProcessAndNavigateToPlayersList()
                 }
             }

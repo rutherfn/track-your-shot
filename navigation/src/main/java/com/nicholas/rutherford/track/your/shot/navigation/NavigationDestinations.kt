@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.navigation
 
 object NavigationDestinations {
+    const val ACCOUNT_INFO_SCREEN = "accountInfoScreen"
+    const val ACCOUNT_INFO_SCREEN_PARAMS = "accountInfoScreen/{username}/{email}"
     const val AUTHENTICATION_SCREEN = "authenticationScreen"
     const val AUTHENTICATION_SCREEN_WITH_PARAMS = "authenticationScreen/{username}/{email}"
     const val CREATE_ACCOUNT_SCREEN = "createAccountScreen"

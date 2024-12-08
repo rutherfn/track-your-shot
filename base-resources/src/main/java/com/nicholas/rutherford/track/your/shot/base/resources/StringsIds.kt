@@ -113,6 +113,8 @@ object StringsIds {
     val noCurrentShotsLoggedForPlayer = R.string.no_current_shots_logged_for_player
     val noFirstNameEntered = R.string.no_first_name_entered
     val noLastNameEntered = R.string.no_last_name_entered
+    val noShotsResultsFound = R.string.no_shots_results_found
+    val noShotsResultsFoundDescription = R.string.no_shots_results_found_description
     val notConnectedToInternet = R.string.not_connected_to_internet
     val notNow = R.string.not_now
     val openEmail = R.string.open_email
@@ -157,6 +159,7 @@ object StringsIds {
     val selectingAShot = R.string.selecting_a_shot
     val selectDate = R.string.select_date
     val settings = R.string.settings
+    val settingsHelpDescription = R.string.settings_help_description
     val shotPercentage = R.string.shot_percentage
     val shotUpdated = R.string.shot_updated
     val shots = R.string.shots
@@ -196,6 +199,7 @@ object StringsIds {
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
     val unableToUploadImage = R.string.unable_to_upload_image
     val unsavedPlayerChanges = R.string.unsaved_player_changes
+    val username = R.string.username
     val usernameRequired = R.string.username_required
     val usernameInUse = R.string.username_in_use
     val usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat =

@@ -60,7 +60,7 @@ class CreateFirebaseUserInfoImpl(
             values[Constants.USERNAME] = createAccountResult.username
             values[Constants.EMAIL] = createAccountResult.email
 
-            reference.push().setValue(values)
+            reference.setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         trySend(Pair(first = true, second = reference.key))

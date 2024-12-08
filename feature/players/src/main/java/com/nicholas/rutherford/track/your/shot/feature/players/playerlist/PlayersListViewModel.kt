@@ -22,6 +22,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 const val DELETE_PLAYER_DELAY_IN_MILLIS = 2000L
@@ -51,6 +52,7 @@ class PlayersListViewModel(
         collectPlayerAdditionUpdates()
         collectLoggedInPlayerListStateFlow()
         deleteAllNonEmptyPendingPlayers()
+        collectHasNoPlayersFlow()
     }
 
     fun updatePlayerListState() {
@@ -82,6 +84,16 @@ class PlayersListViewModel(
                 if (shouldUpdateFromUserLoggedIn(loggedInPlayerList = loggedInPlayerList, shouldUpdateLoggedInPlayerListState = readSharedPreferences.shouldUpdateLoggedInPlayerListState())) {
                     handleLoggedInPlayerList(playerList = loggedInPlayerList)
                     createSharedPreferences.createShouldUpdateLoggedInPlayerListPreference(value = false)
+                }
+            }
+        }
+    }
+
+    private fun collectHasNoPlayersFlow() {
+        scope.launch {
+            accountManager.hasNoPlayersFlow.collectLatest { hasNoPlayers ->
+                if (hasNoPlayers) {
+                    playerListMutableStateFlow.update { it.copy(playerList = emptyList()) }
                 }
             }
         }

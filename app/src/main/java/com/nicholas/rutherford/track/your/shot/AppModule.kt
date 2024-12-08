@@ -54,6 +54,9 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoNavigation
+import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsViewModel
@@ -263,6 +266,9 @@ class AppModule {
         single<OnboardingEducationNavigation> {
             OnboardingEducationNavigationImpl(navigator = get())
         }
+        single<AccountInfoNavigation> {
+            AccountInfoNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(appCenter = get(), accountManager = get())
         }
@@ -373,7 +379,9 @@ class AppModule {
         viewModel {
             SettingsViewModel(
                 navigation = get(),
-                application = androidApplication()
+                application = androidApplication(),
+                scope = defaultCoroutineScope,
+                activeUserRepository = get()
             )
         }
         viewModel {
@@ -402,6 +410,9 @@ class AppModule {
                 navigation = get(),
                 application = androidApplication()
             )
+        }
+        viewModel {
+            AccountInfoViewModel(navigation = get())
         }
     }
 

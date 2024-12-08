@@ -45,6 +45,9 @@ fun SettingsScreen(params: SettingsParams) {
             shouldShowMiddleContentAppBar = true,
             onIconButtonClicked = {
                 params.onToolbarMenuClicked.invoke()
+            },
+            onSecondaryIconButtonClicked = {
+                params.onHelpClicked.invoke()
             }
         ),
         secondaryImageVector = Icons.Filled.Help
@@ -130,6 +133,7 @@ fun SettingsScreenPreview() {
         SettingsScreen(
             params = SettingsParams(
                 onToolbarMenuClicked = {},
+                onHelpClicked = {},
                 onSettingItemClicked = {},
                 state = SettingsState(
                     generalSettings = listOf(

@@ -16,11 +16,14 @@ import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+
+const val UPDATING_DECLARED_SHOT_LIST_DELAY = 400L
 
 class SelectShotViewModel(
     private val application: Application,
@@ -52,11 +55,14 @@ class SelectShotViewModel(
         this.playerId = playerIdArgument
     }
 
-    internal fun fetchDeclaredShotsAndUpdateState() {
+    internal fun fetchDeclaredShotsAndUpdateState(shouldDelay: Boolean = false) {
         scope.launch {
+            if (shouldDelay) {
+                delay(UPDATING_DECLARED_SHOT_LIST_DELAY)
+            }
             currentDeclaredShotArrayList.addAll(declaredShotRepository.fetchAllDeclaredShots())
             selectShotMutableStateFlow.update { state ->
-                state.copy(searchQuery = "", declaredShotList = currentDeclaredShotArrayList)
+                state.copy(declaredShotList = currentDeclaredShotArrayList)
             }
         }
     }
@@ -71,7 +77,7 @@ class SelectShotViewModel(
                 ) {
                     currentDeclaredShotArrayList.addAll(declaredShotList)
                     selectShotMutableStateFlow.update { state ->
-                        state.copy(searchQuery = "", declaredShotList = currentDeclaredShotArrayList)
+                        state.copy(declaredShotList = currentDeclaredShotArrayList)
                     }
                     createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = false)
                 }
@@ -91,13 +97,13 @@ class SelectShotViewModel(
                 currentDeclaredShotArrayList.add(declaredShot)
             }
             selectShotMutableStateFlow.update { state ->
-                state.copy(declaredShotList = currentDeclaredShotArrayList, searchQuery = newSearchQuery)
+                state.copy(declaredShotList = currentDeclaredShotArrayList)
             }
         }
     }
 
-    fun onCancelIconClicked() {
-        if (selectShotMutableStateFlow.value.searchQuery.isNotEmpty()) {
+    fun onCancelIconClicked(query: String) {
+        if (query.isNotEmpty()) {
             currentDeclaredShotArrayList.clear()
             fetchDeclaredShotsAndUpdateState()
         }
@@ -109,6 +115,7 @@ class SelectShotViewModel(
         } else {
             navigation.popFromEditPlayer()
         }
+        fetchDeclaredShotsAndUpdateState(shouldDelay = true)
     }
 
     internal fun moreInfoAlert(): Alert {

@@ -15,16 +15,25 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,8 +57,28 @@ fun LoginScreen(loginScreenParams: LoginScreenParams) {
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
+    var isFocusedFirst by remember { mutableStateOf(false) }
+    var isFocusedSecond by remember { mutableStateOf(false) }
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val keyboardControllerTwo = LocalSoftwareKeyboardController.current
+
+    var shouldClearFocusOne by remember { mutableStateOf(false) }
+    var shouldClearFocusTwo by remember { mutableStateOf(false) }
+
+    if (shouldClearFocusOne) {
+        LocalFocusManager.current.clearFocus()
+        shouldClearFocusOne = false
+    }
+
+    if (shouldClearFocusTwo) {
+        LocalFocusManager.current.clearFocus()
+        shouldClearFocusTwo = false
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -86,15 +115,25 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))
+
         TextField(
             label = { Text(text = stringResource(id = StringsIds.email)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
+                .onFocusChanged { isFocusedFirst = it.isFocused }
                 .testTag(tag = LoginTags.EMAIL_TEXT_FIELD),
             value = loginScreenParams.state.email ?: stringResource(id = StringsIds.empty),
             onValueChange = { newEmail -> loginScreenParams.onEmailValueChanged.invoke(newEmail) },
             textStyle = TextStyles.body,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    keyboardController?.hide()
+                    isFocusedFirst = false
+                    shouldClearFocusOne = true
+                }
+            ),
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
         )
@@ -108,13 +147,17 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
                 .testTag(tag = LoginTags.PASSWORD_TEXT_FIELD),
             value = loginScreenParams.state.password ?: stringResource(id = StringsIds.empty),
             visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
             onValueChange = { newPassword -> loginScreenParams.onPasswordValueChanged.invoke(newPassword) },
             textStyle = TextStyles.body,
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor),
             keyboardActions = KeyboardActions(
-                onDone = { loginScreenParams.onLoginButtonClicked.invoke() }
+                onDone = {
+                    keyboardControllerTwo?.hide()
+                    isFocusedSecond = false
+                    shouldClearFocusTwo = true
+                }
             )
         )
 

@@ -103,6 +103,8 @@
     <string name="not_connected_to_internet">Not connected to internet</string>
     <string name="no_first_name_entered">No First Name Entered</string>
     <string name="no_last_name_entered">No Last Name Entered</string>
+    <string name="no_shots_results_found">No Shots Results Found</string>
+    <string name="no_shots_results_found_description">No matching shot was found in your search. Please update search with existing shot name.</string>
     <string name="not_now">Not Now</string>
     <string name="no_current_players_added">No Current Players Added</string>
     <string name="no_current_shots_logged_for_player">No Current Shots Logged For Player</string>
@@ -146,6 +148,7 @@
     <string name="read_media_images_description">Permission to read media images has been declined. To manually enable the "Read Media Images" permission and select an image from the gallery for the Player, please navigate to settings.</string>
     <string name="remove_image">Remove Image</string>
     <string name="settings">Settings</string>
+    <string name="settings_help_description">On the settings page, you can view your account information, review terms and conditions, access app usage details, and learn about the permissions we request and why we need them.</string>
     <string name="shot_percentage">%s %%</string>
     <string name="shot_updated">Shot Updated</string>
     <string name="shots">Shots</string>

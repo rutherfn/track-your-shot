@@ -88,8 +88,10 @@ class AccountManagerImplTest {
     fun `logout verify should call functions in order`() = runTest {
         accountManagerImpl.logout()
 
-        verify {
+        coVerifyOrder {
             navigator.progress(progressAction = any())
+            existingUserFirebase.logout()
+            accountManagerImpl.clearOutDatabase()
         }
 
         testDispatcher.scheduler.apply { advanceTimeBy(9000); runCurrent() }
@@ -97,13 +99,6 @@ class AccountManagerImplTest {
         verifyOrder {
             navigator.progress(progressAction = any())
             navigator.navigate(navigationAction = any())
-        }
-
-        testDispatcher.scheduler.apply { advanceTimeBy(Constants.DELAY_IN_MILLISECONDS_TO_SHOW_PROGRESS_MASK_ON_LOG_OUT); runCurrent() }
-
-        coVerifyOrder {
-            existingUserFirebase.logout()
-            accountManagerImpl.clearOutDatabase()
         }
     }
 
