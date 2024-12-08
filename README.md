@@ -81,4 +81,4 @@ More info can be found here [MVVM](https://developer.android.com/codelabs/basic-
 Coming Soon
 
 ## Project Status
-:white_check_mark: In Progress / Awaiting application first upload release review
+:white_check_mark: In Progress
