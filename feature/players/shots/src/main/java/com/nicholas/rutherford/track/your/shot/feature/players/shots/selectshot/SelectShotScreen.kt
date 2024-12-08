@@ -182,7 +182,6 @@ fun DeclaredShotItem(
 
 @Composable
 fun SelectShotEmptyState() {
-    println("get here test")
     Box(
         modifier = Modifier
             .fillMaxSize()

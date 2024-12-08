@@ -24,8 +24,6 @@ class SplashViewModel(
 ) : ViewModel() {
 
     internal fun checkIfAppHasBeenLaunchedBefore() {
-        val test = readSharedPreferences.appHasBeenLaunched()
-        println("test here 1 $test")
         if (!readSharedPreferences.appHasBeenLaunched()) {
             accountManager.checkIfWeNeedToLogoutOnLaunch()
             createSharedPreferences.createAppHasLaunchedPreference(value = true)
@@ -33,8 +31,6 @@ class SplashViewModel(
     }
 
     fun navigateToPlayersListLoginOrAuthentication() {
-        val test = readSharedPreferences.appHasBeenLaunched()
-        println("test here 2 $test")
         checkIfAppHasBeenLaunchedBefore()
 
         viewModelScope.launch {
