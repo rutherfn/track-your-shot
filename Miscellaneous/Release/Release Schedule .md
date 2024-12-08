@@ -11,7 +11,7 @@
 5. Providing users with the capability to log out of their current account.
 6. Incorporating comprehensive app settings to optimize and enhance the user experience.
 
-**Version 1.1** - Release Date: 07/10/23
+**Version 1.1** - December 2024 - January 2025
 
 **Features:**
 
