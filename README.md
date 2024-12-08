@@ -73,7 +73,7 @@ More info can be found here [MVVM](https://developer.android.com/codelabs/basic-
 - **Koin**: Dependency injection framework for Kotlin, lightweight and easy to use.
 - **Kover**: Used to manage unit test coverage across the mobile application, and indicate what as been tested vs what has not been tested. 
 - **Material**: Provides Material Design components for building consistent UIs.
-- **MockK**: A mocking library for Kotlin for writing unit tests.
+- **Mockk**: A mocking library for Kotlin for writing unit tests.
 - **Room**: Jetpack library for local database storage with SQLite, built on top of SQLite.
 - **Timber**: A logging utility for Android that simplifies and enhances the logging process.
 
