@@ -2,7 +2,6 @@ package com.nicholas.rutherford.track.your.shot.feature.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,7 +43,6 @@ import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
-import com.nicholas.rutherford.track.your.shot.compose.components.CoreTextField
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import com.nicholas.rutherford.track.yourshot.compose.content.test.rule.drawableId
@@ -149,7 +147,7 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
                 .testTag(tag = LoginTags.PASSWORD_TEXT_FIELD),
             value = loginScreenParams.state.password ?: stringResource(id = StringsIds.empty),
             visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password,  imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
             onValueChange = { newPassword -> loginScreenParams.onPasswordValueChanged.invoke(newPassword) },
             textStyle = TextStyles.body,
             singleLine = true,

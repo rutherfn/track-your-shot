@@ -84,7 +84,7 @@ class AccountManagerImpl(
                         .collectLatest { accountInfoRealtimeResponse ->
                             accountInfoRealtimeResponse?.let { accountInfo ->
                                 updateActiveUserFromLoggedInUser(email = accountInfo.email, username = accountInfo.userName)
-                            } ?:disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
+                            } ?: disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
                         }
                 } else {
                     disableProgressAndShowUnableToLoginAlert()
