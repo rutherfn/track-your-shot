@@ -75,7 +75,7 @@ class ReadFirebaseUserInfoImpl(
                             val email = snapshot.child(Constants.EMAIL).getValue(String::class.java)
                             val username = snapshot.child(Constants.USERNAME).getValue(String::class.java)
                             safeLet(email, username) { accountEmail, accountUsername ->
-                                trySend(element = AccountInfoRealtimeResponse(accountEmail, accountUsername))
+                                trySend(element = AccountInfoRealtimeResponse(userName = accountUsername, email = accountEmail))
                             } ?: run {
                                 Timber.e(message = "Error(getAccountInfoFlowByEmail) -> Current snapshot exists but email is $email and username is $username")
                                 trySend(element = null)
