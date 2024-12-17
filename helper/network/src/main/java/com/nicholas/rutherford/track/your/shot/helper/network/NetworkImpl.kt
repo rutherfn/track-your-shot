@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.helper.network
 
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import java.io.IOException
 import java.net.InetSocketAddress
@@ -11,10 +10,9 @@ const val HOST_NAME = "8.8.8.8"
 const val PORT = 53
 const val TIMEOUT_MS = 1500
 
-class NetworkImpl : Network {
+class NetworkImpl(private val scope: CoroutineScope) : Network {
 
-    @OptIn(DelicateCoroutinesApi::class)
-    override suspend fun isDeviceConnectedToInternet(): Boolean = GlobalScope.async {
+    override suspend fun isDeviceConnectedToInternet(): Boolean = scope.async {
         try {
             val sock = Socket()
             return@async runCatching {
