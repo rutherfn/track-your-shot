@@ -6,7 +6,6 @@ import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import com.nicholas.rutherford.track.your.shot.app.center.AppCenterImpl
 import com.nicholas.rutherford.track.your.shot.base.resources.declaredshotsjson.DeclaredShotsJson
 import com.nicholas.rutherford.track.your.shot.base.resources.declaredshotsjson.DeclaredShotsJsonImpl
 import com.nicholas.rutherford.track.your.shot.build.type.BuildType
@@ -198,9 +197,6 @@ class AppModule {
                 sdkValue = Build.VERSION.SDK_INT,
                 buildTypeValue = BuildConfig.BUILD_TYPE
             )
-        }
-        single<AppCenter> {
-            AppCenterImpl(application = androidApplication(), buildType = get())
         }
         single<Navigator> {
             NavigatorImpl()

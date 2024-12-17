@@ -42,7 +42,6 @@ class MyApplicationTest : KoinTest {
 
     private val network: Network by inject()
     private val buildType: BuildType by inject()
-    private val appCenter: AppCenter by inject()
     private val navigator: Navigator by inject()
 
     private val splashNavigation: SplashNavigation by inject()
@@ -64,8 +63,7 @@ class MyApplicationTest : KoinTest {
         modules(AppModule().modules)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val dispatcher = StandardTestDispatcher()
+    private val dispatcher = StandardTestDispatcher()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
@@ -92,7 +90,6 @@ class MyApplicationTest : KoinTest {
 
         assertNotNull(network)
         assertNotNull(buildType)
-        assertNotNull(appCenter)
         assertNotNull(navigator)
 
         assertNotNull(splashNavigation)
