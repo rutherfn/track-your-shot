@@ -1,28 +1,45 @@
-**Track My Shot** Mobile App Release Schedule
+# Track Your Shot App Release Schedule
 
-**Version 1.0** - Release Date: 06/26/23
+## Project Overview
 
-**Features:**
+**App Name:** Track Your Shot
+**Platform(s):** Android
+**Owner:** Nicholas Rutherford
+**Development Team:** N/A
 
-1. Facilitating the ability for users to both create designated accounts and subsequently log into their existing accounts using previously created credentials.
-2. Providing users with the capability to reset the password for their designated account.
-3. Empowering users to create and edit the details of a designated player within the app's interface.
-4. Allowing users to retrospectively input shooting percentages for selected shots on past days, enabling them to record **makes** and **misses** for each shot taken on those specific days. **Please note that this feature does not support entering shots from a live standpoint or for future dates.**
-5. Providing users with the capability to log out of their current account.
-6. Incorporating comprehensive app settings to optimize and enhance the user experience.
+## Release Schedule
 
-**Version 1.1** - December 2024 - January 2025
+### Version 1.0.0
 
-**Features:**
+- **Release Date:** January
+- **Features:**
+    - Facilitating the ability for users to both create designated accounts and subsequently log into their existing accounts using previously created credentials.
+    - Providing users with the capability to reset the password for their designated account.
+    - Empowering users to create and edit the details of a designated player within the app's interface.
+    - Allowing users to retrospectively input shooting percentages for selected shots on past days, enabling them to record **makes** and **misses** for each shot taken on those specific days. **Please note that this feature does not support entering shots from a live standpoint or for future dates.**
+    - Providing users with the capability to log out of their current account.
+    - Incorporating comprehensive app settings to optimize and enhance the user experience.
 
-1. Enabling users to efficiently search through an added player list for quick and convenient access.
-2. Empowering users to save voice commands within the app, which will allow them to conveniently record whether a given shot by a player is a miss or a make.
-3. Implementing an in-app survey to gather feedback from users regarding their experience with the app's performance.
+### Version 1.1.0
 
-**Version 1.2** - TBD
+- **Release Date:**  End Of January - To Early Februrary
+- **Features:**
+    - Enabling users to efficiently search through an added player list for quick and convenient access.
+    - Empowering users to save voice commands within the app, which will allow them to conveniently record whether a given shot by a player is a miss or a make.
+    - Implementing an in-app survey to gather feedback from users regarding their experience with the app's performance.
+    - UI/UX enhancements based on user feedback.
+    - Bug fixes and on going maintenance improvements
 
-**Features:**
+### Version 2.0.0
 
-1. TBD
+- **Release Date:** March
+- **Features:**
+    - Enabling users to filter the main players and shot list by selecting a list of pre defined filters.
+    - Providing users the ability to search through all shots across all created players, making it easy to locate a shot by a specific player.
+    - Allowing users to create a custom shot, eliminating the need to choose from predefined options.
+    - Visual display of the shots taken by a specific player, allowing a visual comparison of shots made versus shots missed.
+    - UI/UX enhancements based on user feedback.
+    - Bug fixes and on going maintenance improvements
 
-Please note that the above release schedule and features are subject to change based on development progress and other factors. We appreciate your support and patience as we work to improve and enhance your experience with our mobile app.
+**Prepared By:** Nicholas Rutherford
+**Date:** 12-16-2024
