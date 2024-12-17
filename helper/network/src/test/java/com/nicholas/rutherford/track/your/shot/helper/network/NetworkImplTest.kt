@@ -48,7 +48,7 @@ class NetworkImplTest {
     }
 
     @Nested
-    inner class consts {
+    inner class Constants {
 
         @Test
         fun `host name`() {
@@ -69,6 +69,7 @@ class NetworkImplTest {
     @Nested
     inner class IsDeviceConnectedToInternet {
 
+        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `with a successful connection should return true`() = runTest{
             every { socket.connect(any<InetSocketAddress>(), any()) } just Runs
@@ -83,6 +84,7 @@ class NetworkImplTest {
             Assertions.assertEquals(true, result)
         }
 
+        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `with a successful connect with delay should return true`() = runTest {
             every { socket.connect(any<InetSocketAddress>(), any()) } just Runs
@@ -97,6 +99,7 @@ class NetworkImplTest {
             Assertions.assertEquals(true, result)
         }
 
+        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `with a failed connection due to IOException should return false`() = runTest {
             every { socket.connect(any<InetSocketAddress>(), any()) } throws IOException()
