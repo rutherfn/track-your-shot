@@ -5,11 +5,8 @@ import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 
 class MainActivityViewModel(
-    private val appCenter: AppCenter,
     private val accountManager: AccountManager
 ) : ViewModel() {
-
-    fun initAppCenter() = appCenter.start()
 
     fun logout(titleId: Int) {
         if (titleId == StringsIds.logout) {

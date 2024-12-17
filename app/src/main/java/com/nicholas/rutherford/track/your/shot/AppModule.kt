@@ -265,7 +265,7 @@ class AppModule {
             AccountInfoNavigationImpl(navigator = get())
         }
         viewModel {
-            MainActivityViewModel(appCenter = get(), accountManager = get())
+            MainActivityViewModel(accountManager = get())
         }
         viewModel {
             SplashViewModel(

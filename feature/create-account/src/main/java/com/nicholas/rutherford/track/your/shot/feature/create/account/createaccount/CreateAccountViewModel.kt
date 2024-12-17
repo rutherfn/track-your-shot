@@ -214,10 +214,10 @@ class CreateAccountViewModel(
     }
 
     internal suspend fun validateFieldsWithOptionalAlert(): Alert? {
-        val alertTitle = application.getString(StringsIds.emptyField)
+        val alertTitle = application.getString(StringsIds.error)
 
         return when {
-            !network.isDeviceConnectedToInternet() -> createAlert(alertTitle, StringsIds.notConnectedToInternet)
+            !network.isDeviceConnectedToInternet() -> createAlert(application.getString(StringsIds.notConnectedToInternet), StringsIds.notConnectedToInternet)
             isTwoOrMoreFieldsEmptyOrNull -> createAlert(alertTitle, StringsIds.emptyFields)
             isUsernameEmptyOrNull -> createAlert(alertTitle, StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
             isUsernameInNotCorrectFormat -> createAlert(alertTitle, StringsIds.usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat)

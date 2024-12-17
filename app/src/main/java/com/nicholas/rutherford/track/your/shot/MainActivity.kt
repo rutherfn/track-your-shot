@@ -14,7 +14,6 @@ open class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.initAppCenter()
         setContent {
             NavigationComponent(
                 activity = this,
