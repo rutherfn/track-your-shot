@@ -71,7 +71,7 @@ class NetworkImplTest {
 
         @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `with a successful connection should return true`() = runTest{
+        fun `with a successful connection should return true`() = runTest {
             every { socket.connect(any<InetSocketAddress>(), any()) } just Runs
             every { socket.close() } just Runs
 
