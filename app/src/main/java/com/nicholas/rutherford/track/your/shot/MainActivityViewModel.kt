@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.your.shot
 
 import androidx.lifecycle.ViewModel
-import com.nicholas.rutherford.track.your.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 
