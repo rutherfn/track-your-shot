@@ -12,11 +12,6 @@ object Dependencies {
         const val testRules = "androidx.test:rules:${Versions.Dependencies.Android.testRules}"
     }
 
-    object AppCenter {
-        const val analytics = "com.microsoft.appcenter:appcenter-analytics:${Versions.Dependencies.AppCenter.core}"
-        const val crashes = "com.microsoft.appcenter:appcenter-crashes:${Versions.Dependencies.AppCenter.core}"
-    }
-
     object Accompanist {
         const val permissions = "com.google.accompanist:accompanist-permissions:${Versions.Dependencies.Accompanist.permissions}"
         const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${Versions.Dependencies.Accompanist.systemUiController}"

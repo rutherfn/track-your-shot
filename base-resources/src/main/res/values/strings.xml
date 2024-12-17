@@ -71,6 +71,7 @@
     <string name="empty" translatable="false" />
     <string name="empty_field">Empty Field</string>
     <string name="empty_fields">Empty Fields</string>
+    <string name="error">Error</string>
     <string name="error_creating_account">Error Creating Account</string>
     <string name="error_deleting_pending_account">Error deleting pending account</string>
     <string name="find_shots_by_name">Find shots by name </string>

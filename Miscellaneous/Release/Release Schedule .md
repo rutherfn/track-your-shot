@@ -29,6 +29,7 @@
     - Implementing an in-app survey to gather feedback from users regarding their experience with the app's performance.
     - UI/UX enhancements based on user feedback.
     - Bug fixes and on going maintenance improvements
+    - Dark Mode Support across the application
 
 ### Version 2.0.0
 

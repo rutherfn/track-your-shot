@@ -98,7 +98,6 @@ dependencies {
     androidTestImplementation(Dependencies.Espresso.core)
     androidTestImplementation(Dependencies.Espresso.idilingResource)
 
-    api(project(path = ":app-center"))
     api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
     api(project(path = ":feature:create-account"))
@@ -115,7 +114,6 @@ dependencies {
     debugImplementation(Dependencies.Compose.uiTestManifest)
     debugImplementation(Dependencies.Compose.uiTooling)
 
-    kover(project(":app-center"))
     kover(project(":build-type"))
     kover(project(":feature:create-account"))
     kover(project(":feature:forgot-password"))

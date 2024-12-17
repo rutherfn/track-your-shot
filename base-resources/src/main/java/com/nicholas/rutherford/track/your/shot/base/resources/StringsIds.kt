@@ -78,6 +78,7 @@ object StringsIds {
     val enabledPermissions = R.string.enabled_permissions
     val enterShotsMade = R.string.enter_shots_made
     val enterShotsMissed = R.string.enter_shots_missed
+    val error = R.string.error
     val errorCreatingAccount = R.string.error_creating_account
     val errorDeletingPendingAccount = R.string.error_deleting_pending_account
     val findShotsByName = R.string.find_shots_by_name

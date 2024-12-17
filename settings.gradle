@@ -16,7 +16,6 @@ dependencyResolutionManagement {
 rootProject.name = "TrackYourShot"
 
 include ':app'
-include ':app-center'
 include ':base-resources'
 include ':build-type'
 include ':compose:components'

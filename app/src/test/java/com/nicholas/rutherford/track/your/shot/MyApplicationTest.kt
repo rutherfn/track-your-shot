@@ -3,7 +3,6 @@ package com.nicholas.rutherford.track.your.shot
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import com.nicholas.rutherford.track.your.shot.app.center.AppCenter
 import com.nicholas.rutherford.track.your.shot.build.type.BuildType
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationNavigation
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountNavigation
@@ -43,7 +42,6 @@ class MyApplicationTest : KoinTest {
 
     private val network: Network by inject()
     private val buildType: BuildType by inject()
-    private val appCenter: AppCenter by inject()
     private val navigator: Navigator by inject()
 
     private val splashNavigation: SplashNavigation by inject()
@@ -65,8 +63,7 @@ class MyApplicationTest : KoinTest {
         modules(AppModule().modules)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val dispatcher = StandardTestDispatcher()
+    private val dispatcher = StandardTestDispatcher()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
@@ -93,7 +90,6 @@ class MyApplicationTest : KoinTest {
 
         assertNotNull(network)
         assertNotNull(buildType)
-        assertNotNull(appCenter)
         assertNotNull(navigator)
 
         assertNotNull(splashNavigation)

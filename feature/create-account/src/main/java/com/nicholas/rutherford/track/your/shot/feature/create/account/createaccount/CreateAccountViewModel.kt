@@ -75,11 +75,11 @@ class CreateAccountViewModel(
         }
     }
 
-    internal fun clearState() {
+    private fun clearState() {
         createAccountMutableStateFlow.value = CreateAccountState()
     }
 
-    internal fun clearLocalDeclarations() {
+    private fun clearLocalDeclarations() {
         allStoredEmailsArrayList = arrayListOf()
         allStoredUsernamesArrayList = arrayListOf()
     }
@@ -214,10 +214,10 @@ class CreateAccountViewModel(
     }
 
     internal suspend fun validateFieldsWithOptionalAlert(): Alert? {
-        val alertTitle = application.getString(StringsIds.emptyField)
+        val alertTitle = application.getString(StringsIds.error)
 
         return when {
-            !network.isDeviceConnectedToInternet() -> createAlert(alertTitle, StringsIds.notConnectedToInternet)
+            !network.isDeviceConnectedToInternet() -> createAlert(application.getString(StringsIds.notConnectedToInternet), StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
             isTwoOrMoreFieldsEmptyOrNull -> createAlert(alertTitle, StringsIds.emptyFields)
             isUsernameEmptyOrNull -> createAlert(alertTitle, StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
             isUsernameInNotCorrectFormat -> createAlert(alertTitle, StringsIds.usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat)
