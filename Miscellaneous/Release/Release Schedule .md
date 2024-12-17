@@ -22,7 +22,7 @@
 
 ### Version 1.1.0
 
-- **Release Date:**  End Of January - To Early Februrary
+- **Release Date:**  End Of January - To Early February
 - **Features:**
     - Enabling users to efficiently search through an added player list for quick and convenient access.
     - Empowering users to save voice commands within the app, which will allow them to conveniently record whether a given shot by a player is a miss or a make.
