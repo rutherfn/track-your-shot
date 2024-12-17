@@ -192,7 +192,7 @@ class AppModule {
             DeleteFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
         single<Network> {
-            NetworkImpl()
+            NetworkImpl(scope = defaultCoroutineScope)
         }
         single<BuildType> {
             BuildTypeImpl(
