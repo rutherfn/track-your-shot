@@ -51,6 +51,12 @@ object TextStyles {
         fontFamily = FontFamily.Default
     )
 
+    val bodySmall = TextStyle(
+        fontSize = 12.sp,
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold
+    )
+
     val hyperLink = TextStyle(
         fontSize = 14.sp,
         fontFamily = FontFamily.Default,

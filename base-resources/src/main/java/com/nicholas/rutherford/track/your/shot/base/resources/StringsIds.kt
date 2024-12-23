@@ -123,6 +123,7 @@ object StringsIds {
     val otherResources = R.string.other_resources
     val otherResourcesDescription = R.string.other_resources_description
     val password = R.string.password
+    val passwordHelperText = R.string.password_helper_text
     val passwordRequired = R.string.password_required
     val passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat =
         R.string.password_is_not_in_correct_format_please_enter_password_in_correct_format

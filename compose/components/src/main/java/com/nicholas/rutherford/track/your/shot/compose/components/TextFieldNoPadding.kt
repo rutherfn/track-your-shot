@@ -3,7 +3,9 @@ package com.nicholas.rutherford.track.your.shot.compose.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.text.KeyboardActions
@@ -45,6 +47,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
  * @param textStyle sets the [TextStyles] inside the [TextField]
  * @param singleLine sets whenever the [TextField] is a single line or not
  * @param colors sets the [TextFieldColors] inside the [TextField]
+ * @param footerText sets the [Text] of the footer of the [TextField] if not null
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -56,7 +59,8 @@ fun TextFieldNoPadding(
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     textStyle: TextStyle = TextStyles.body,
     singleLine: Boolean = true,
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
+    colors: TextFieldColors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor),
+    footerText: String? = null
 ) {
     var isFocused by remember { mutableStateOf(false) }
 
@@ -67,11 +71,13 @@ fun TextFieldNoPadding(
     if (shouldClearFocus) {
         LocalFocusManager.current.clearFocus()
         shouldClearFocus = false
+        isFocused = false
     }
 
     // removes the starting padding of the TextField
     val negativeOffSetPaddingX = (-8).dp
 
+    Column {
     BoxWithConstraints(
         modifier = Modifier.clipToBounds()
     ) {
@@ -97,6 +103,18 @@ fun TextFieldNoPadding(
             singleLine = singleLine,
             colors = colors
         )
+    }
+
+        if (isFocused) {
+        footerText?.let { value ->
+            Spacer(modifier = Modifier.height(Padding.eight))
+            Text(
+                text = value,
+                style = TextStyles.bodySmall,
+                color = AppColors.LightGray
+            )
+        }
+        }
     }
 }
 

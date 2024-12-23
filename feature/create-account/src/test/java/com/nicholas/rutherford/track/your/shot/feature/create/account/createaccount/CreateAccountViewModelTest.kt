@@ -75,7 +75,7 @@ class CreateAccountViewModelTest {
 
     @Test
     fun constants() {
-        Assertions.assertEquals(EMAIL_PATTERN, "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}\$")
+        Assertions.assertEquals(EMAIL_PATTERN, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
         Assertions.assertEquals(PASSWORD_PATTERN, "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$")
         Assertions.assertEquals(USERNAME_PATTERN, "^(?=[a-zA-Z\\d._]{8,20}\$)(?!.*[_.]{2})[^_.].*[^_.]\$")
     }
@@ -127,9 +127,9 @@ class CreateAccountViewModelTest {
         private val regex = EMAIL_PATTERN.toRegex()
 
         private val invalidEmails = listOf(
-            "joe@123aspx.com",
-            "joe@web.info ",
-            "joe@company.co.uk"
+            "joe@123aspx@",
+            "joe@web.info.com ",
+            "user@domain.c"
         )
         private val validEmails = listOf(
             "oe@aol.com",

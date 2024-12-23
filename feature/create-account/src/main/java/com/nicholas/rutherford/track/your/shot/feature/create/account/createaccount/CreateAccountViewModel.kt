@@ -19,10 +19,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-// Simple email expression. Doesn't allow numbers in the domain name and doesn't allow for top level domains
-// that are less than 2 or more than 3 letters (which is fine until they allow more).
-// Doesn't handle multiple &quot;.&quot; in the domain
-const val EMAIL_PATTERN = "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}\$"
+// Improved email regex for basic validation.
+// - Allows dots, underscores, pluses, and other common characters in the local part of the email.
+// - Supports domains with numbers, hyphens, and multiple subdomains (e.g., "sub.domain.com").
+// - Permits top-level domains (TLDs) with 2 or more letters (e.g., ".com", ".info").
+// Limitations:
+// - Does not validate against all RFC 5322-compliant emails (e.g., quoted local parts or unusual characters).
+// - Does not verify the actual existence of the email domain or address.
+// - Uniqueness must still be checked separately in a database or storage
+const val EMAIL_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
 
 // Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
 const val PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$"

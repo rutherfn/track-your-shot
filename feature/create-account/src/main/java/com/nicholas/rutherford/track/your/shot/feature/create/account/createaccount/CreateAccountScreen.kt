@@ -70,7 +70,8 @@ fun CreateAccountScreenContent(createAccountScreenParams: CreateAccountScreenPar
             value = createAccountScreenParams.state.username ?: stringResource(id = StringsIds.empty),
             onValueChange = { newUsername ->
                 createAccountScreenParams.onUsernameValueChanged(newUsername)
-            }
+            },
+            footerText = "Username must be 8-30 characters long, contain only letters, numbers, underscores (_), and periods (.), start with a letter, and cannot have consecutive underscores or periods, or start/end with an underscore or period."
         )
 
         Spacer(modifier = Modifier.height(Padding.four))
@@ -81,7 +82,8 @@ fun CreateAccountScreenContent(createAccountScreenParams: CreateAccountScreenPar
             onValueChange = { newEmail ->
                 createAccountScreenParams.onEmailValueChanged(newEmail)
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            footerText = "Email must include: a local part (e.g., yourname), an '@' symbol, and a domain (e.g., example.com)."
         )
 
         Spacer(modifier = Modifier.height(Padding.four))
@@ -93,7 +95,8 @@ fun CreateAccountScreenContent(createAccountScreenParams: CreateAccountScreenPar
                 createAccountScreenParams.onPasswordValueChanged(newPassword)
             },
             visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            footerText = stringResource(id = StringsIds.passwordHelperText)
         )
 
         Spacer(modifier = Modifier.height(Padding.eight))
