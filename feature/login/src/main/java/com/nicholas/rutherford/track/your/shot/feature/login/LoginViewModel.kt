@@ -8,14 +8,18 @@ import com.nicholas.rutherford.track.your.shot.build.type.BuildType
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val application: Application,
     private val navigation: LoginNavigation,
     private val buildType: BuildType,
-    private val accountManager: AccountManager
+    private val accountManager: AccountManager,
+    private val scope: CoroutineScope
 ) : ViewModel() {
 
     internal val loginMutableStateFlow = MutableStateFlow(LoginState())
@@ -23,6 +27,7 @@ class LoginViewModel(
 
     init {
         updateLauncherDrawableIdState()
+        collectHasLoggedInSuccessfulFlow()
     }
 
     internal fun updateLauncherDrawableIdState() {
@@ -32,6 +37,17 @@ class LoginViewModel(
             loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundStage)
         } else if (buildType.isRelease()) {
             loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRound)
+        }
+    }
+
+    internal fun collectHasLoggedInSuccessfulFlow() {
+        scope.launch {
+            accountManager.hasLoggedInSuccessfulFlow.collectLatest { isSuccessful ->
+                if (isSuccessful) {
+                    onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
+                    onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
+                }
+            }
         }
     }
 
@@ -62,9 +78,6 @@ class LoginViewModel(
         val emptyString = application.getString(StringsIds.empty)
         val newEmail = email?.filterNot { it.isWhitespace() } ?: emptyString
         val newPassword = password?.filterNot { it.isWhitespace() } ?: emptyString
-
-        onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
-        onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
 
         accountManager.login(
             email = newEmail,

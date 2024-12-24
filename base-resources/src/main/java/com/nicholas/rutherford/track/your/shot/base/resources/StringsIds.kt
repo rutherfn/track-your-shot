@@ -64,8 +64,10 @@ object StringsIds {
     val empty = R.string.empty
     val emptyField = R.string.empty_field
     val emptyFields = R.string.empty_fields
+    val emptyFieldsDescription = R.string.empty_fields_description
     val email = R.string.email
     val emailInUse = R.string.email_in_use
+    val emailInUseDescription = R.string.email_in_use_description
     val emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat =
         R.string.email_is_not_in_correct_format_please_enter_email_in_correct_format
     val emailIsRequiredPleaseEnterAEmailToCreateAAccount =
@@ -204,6 +206,7 @@ object StringsIds {
     val username = R.string.username
     val usernameRequired = R.string.username_required
     val usernameInUse = R.string.username_in_use
+    val usernameInUseDescription = R.string.username_in_use_description
     val usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat =
         R.string.username_is_not_in_correct_format_please_enter_username_in_correct_format
     val usernameIsRequiredPleaseEnterAUsernameToCreateAAccount =

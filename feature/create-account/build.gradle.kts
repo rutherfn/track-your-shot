@@ -76,6 +76,7 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":compose:components"))
     api(project(path = ":data:room"))
+    api(project(path = ":feature:players"))
     api(project(path = ":firebase:core"))
     api(project(path = ":firebase:util"))
     api(project(path = ":helper:compose-content-test-rule"))
@@ -86,19 +87,18 @@ dependencies {
     api(project(path = ":navigation"))
     api(project(path = ":shared-preference"))
 
+    implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
-    implementation(project(":feature:players"))
 
     testImplementation(Dependencies.Coroutine.test)
-
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)
     testImplementation(Dependencies.Junit.junit)
-
     testImplementation(Dependencies.Mockk.core)
-    testImplementation(project(mapOf("path" to ":data-test:room")))
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
-    testImplementation(project(":data-test:firebase"))
+
+    testImplementation(project(path = ":data-test:firebase"))
+    testImplementation(project(path = ":data-test:room"))
 }

@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface AccountManager {
     val loggedInPlayerListStateFlow: StateFlow<List<Player>>
     val loggedInDeclaredShotListStateFlow: StateFlow<List<DeclaredShot>>
+    val hasLoggedInSuccessfulFlow: Flow<Boolean>
     val hasNoPlayersFlow: Flow<Boolean>
 
     fun logout()

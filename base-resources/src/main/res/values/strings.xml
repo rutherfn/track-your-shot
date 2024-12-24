@@ -57,6 +57,7 @@
     <string name="forgot_password">Forgot Password</string>
     <string name="email">Email</string>
     <string name="email_in_use">Email in use</string>
+    <string name="email_in_use_description">This email is already in use on Track Your Shot. Please use a different email address.</string>
     <string name="email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password">Email has been sent to reset password. Please follow directions to reset password.</string>
     <string name="email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account">Email has been sent to verify account. Please open sent email to verify account.</string>
     <string name="email_is_not_in_correct_format_please_enter_email_in_correct_format">Email is not in correct format. Please enter email in correct format</string>
@@ -71,6 +72,7 @@
     <string name="empty" translatable="false" />
     <string name="empty_field">Empty Field</string>
     <string name="empty_fields">Empty Fields</string>
+    <string name="empty_fields_description">Required information is missing to continue creating your account. Please provide the necessary details.</string>
     <string name="error">Error</string>
     <string name="error_creating_account">Error Creating Account</string>
     <string name="error_deleting_pending_account">Error deleting pending account</string>
@@ -191,6 +193,7 @@
     <string name="username">Username</string>
     <string name="username_required">Username*</string>
     <string name="username_in_use">Username in use</string>
+    <string name="username_in_use_description">This username is already in use on Track Your Shot. Please use a different username.</string>
     <string name="username_is_not_in_correct_format_please_enter_username_in_correct_format">Username is not in correct format. Please enter username in correct format</string>
     <string name="unable_to_create_account">Unable to create account</string>
     <string name="unable_to_delete_player_please_contact_support">Unable to delete player. Please contact support.</string>

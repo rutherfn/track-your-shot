@@ -78,42 +78,42 @@ fun TextFieldNoPadding(
     val negativeOffSetPaddingX = (-8).dp
 
     Column {
-    BoxWithConstraints(
-        modifier = Modifier.clipToBounds()
-    ) {
-        TextField(
-            label = { Text(text = label) },
-            modifier = Modifier
-                .requiredWidth(maxWidth + Padding.sixteen)
-                .offset(x = negativeOffSetPaddingX)
-                .onFocusChanged { isFocused = it.isFocused }
-                .fillMaxWidth(),
-            value = value,
-            visualTransformation = visualTransformation,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    keyboardController?.hide()
-                    isFocused = false
-                    shouldClearFocus = true
-                }
-            ),
-            onValueChange = { newUsername -> onValueChange.invoke(newUsername) },
-            textStyle = textStyle,
-            singleLine = singleLine,
-            colors = colors
-        )
-    }
-
-        if (isFocused) {
-        footerText?.let { value ->
-            Spacer(modifier = Modifier.height(Padding.eight))
-            Text(
-                text = value,
-                style = TextStyles.bodySmall,
-                color = AppColors.LightGray
+        BoxWithConstraints(
+            modifier = Modifier.clipToBounds()
+        ) {
+            TextField(
+                label = { Text(text = label) },
+                modifier = Modifier
+                    .requiredWidth(maxWidth + Padding.sixteen)
+                    .offset(x = negativeOffSetPaddingX)
+                    .onFocusChanged { isFocused = it.isFocused }
+                    .fillMaxWidth(),
+                value = value,
+                visualTransformation = visualTransformation,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        keyboardController?.hide()
+                        isFocused = false
+                        shouldClearFocus = true
+                    }
+                ),
+                onValueChange = { newUsername -> onValueChange.invoke(newUsername) },
+                textStyle = textStyle,
+                singleLine = singleLine,
+                colors = colors
             )
         }
+
+        if (isFocused) {
+            footerText?.let { value ->
+                Spacer(modifier = Modifier.height(Padding.eight))
+                Text(
+                    text = value,
+                    style = TextStyles.bodySmall,
+                    color = AppColors.LightGray
+                )
+            }
         }
     }
 }

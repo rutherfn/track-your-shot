@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -35,6 +36,9 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun CreateAccountScreen(createAccountScreenParams: CreateAccountScreenParams) {
+    BackHandler(enabled = true) {
+        createAccountScreenParams.onBackButtonClicked.invoke()
+    }
     Content(
         ui = {
             CreateAccountScreenContent(createAccountScreenParams = createAccountScreenParams)
