@@ -7,6 +7,10 @@ import com.nicholas.rutherford.track.your.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -21,6 +25,11 @@ class LoginViewModelTest {
     private var application = mockk<Application>(relaxed = true)
 
     private var accountManager = mockk<AccountManager>(relaxed = true)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val testDispatcher = UnconfinedTestDispatcher()
+
+    private val scope = CoroutineScope(SupervisorJob() + testDispatcher)
 
     private val sdkValue = 2
     private val debugVersionName = "debug"
@@ -42,7 +51,8 @@ class LoginViewModelTest {
             application = application,
             navigation = navigation,
             buildType = buildTypeDebug,
-            accountManager = accountManager
+            accountManager = accountManager,
+            scope = scope
         )
     }
 
@@ -60,7 +70,8 @@ class LoginViewModelTest {
                 application = application,
                 navigation = navigation,
                 buildType = buildTypeDebug,
-                accountManager = accountManager
+                accountManager = accountManager,
+                scope = scope
             )
 
             viewModel.updateLauncherDrawableIdState()
@@ -76,7 +87,8 @@ class LoginViewModelTest {
                 application = application,
                 navigation = navigation,
                 buildType = buildTypeStage,
-                accountManager = accountManager
+                accountManager = accountManager,
+                scope = scope
             )
 
             viewModel.updateLauncherDrawableIdState()
@@ -92,7 +104,8 @@ class LoginViewModelTest {
                 application = application,
                 navigation = navigation,
                 buildType = buildTypeRelease,
-                accountManager = accountManager
+                accountManager = accountManager,
+                scope = scope
             )
 
             viewModel.updateLauncherDrawableIdState()
@@ -194,8 +207,8 @@ class LoginViewModelTest {
         Assertions.assertEquals(
             LoginState(
                 launcherDrawableId = DrawablesIds.launcherRoundTest,
-                email = "",
-                password = ""
+                email = null,
+                password = null
             ),
             viewModel.loginMutableStateFlow.value
         )

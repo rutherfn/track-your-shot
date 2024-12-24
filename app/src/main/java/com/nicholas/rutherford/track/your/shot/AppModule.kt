@@ -282,7 +282,8 @@ class AppModule {
                 application = androidApplication(),
                 navigation = get(),
                 buildType = get(),
-                accountManager = get()
+                accountManager = get(),
+                scope = defaultCoroutineScope
             )
         }
         viewModel {
@@ -355,7 +356,6 @@ class AppModule {
                 network = get(),
                 createFirebaseUserInfo = get(),
                 authenticationFirebase = get(),
-                userRepository = get(),
                 scope = defaultCoroutineScope
             )
         }

@@ -3,7 +3,6 @@ package com.nicholas.rutherford.track.your.shot.feature.create.account.createacc
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
@@ -19,10 +18,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-// Simple email expression. Doesn't allow numbers in the domain name and doesn't allow for top level domains
-// that are less than 2 or more than 3 letters (which is fine until they allow more).
-// Doesn't handle multiple &quot;.&quot; in the domain
-const val EMAIL_PATTERN = "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}\$"
+// - Allows dots, underscores, pluses, and other common characters in the local part of the email.
+// - Supports domains with numbers, hyphens, and multiple subdomains (e.g., "sub.domain.com").
+// - Permits top-level domains (TLDs) with 2 or more letters (e.g., ".com", ".info").
+const val EMAIL_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
 
 // Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
 const val PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$"
@@ -36,22 +35,16 @@ class CreateAccountViewModel(
     private val network: Network,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val authenticationFirebase: AuthenticationFirebase,
-    private val userRepository: UserRepository,
     private val scope: CoroutineScope
 ) : ViewModel() {
 
     internal var isUsernameEmptyOrNull: Boolean = false
     internal var isUsernameInNotCorrectFormat: Boolean = false
-    internal var isUsernameStoredInFirebase: Boolean = false
     internal var isEmailEmptyOrNull: Boolean = false
     internal var isEmailInNotCorrectFormat: Boolean = false
-    internal var isEmailStoredInFirebase: Boolean = false
     internal var isPasswordEmptyOrNull: Boolean = false
     internal var isPasswordInNotCorrectFormat: Boolean = false
     internal var isTwoOrMoreFieldsEmptyOrNull: Boolean = false
-
-    internal var allStoredUsernamesArrayList: ArrayList<String> = arrayListOf()
-    internal var allStoredEmailsArrayList: ArrayList<String> = arrayListOf()
 
     private val createAccountMutableStateFlow = MutableStateFlow(value = CreateAccountState())
     val createAccountStateFlow = createAccountMutableStateFlow.asStateFlow()
@@ -63,35 +56,17 @@ class CreateAccountViewModel(
         )
     )
 
-    init {
-        scope.launch { updateStoredUsernamesAndEmailsArrayList() }
-    }
-
-    private fun clearStateAndLocalDeclarations() {
+    private fun clearState() {
         scope.launch {
             delay(RESET_SCREEN_DELAY_IN_MILLIS)
-            clearState()
-            clearLocalDeclarations()
+            createAccountMutableStateFlow.value = CreateAccountState()
         }
     }
 
-    private fun clearState() {
-        createAccountMutableStateFlow.value = CreateAccountState()
+    fun onBackButtonClicked() {
+        clearState()
+        navigation.pop()
     }
-
-    private fun clearLocalDeclarations() {
-        allStoredEmailsArrayList = arrayListOf()
-        allStoredUsernamesArrayList = arrayListOf()
-    }
-
-    suspend fun updateStoredUsernamesAndEmailsArrayList() {
-        userRepository.fetchAllUsers().map { user ->
-            allStoredEmailsArrayList.add(user.email)
-            allStoredUsernamesArrayList.add(user.username)
-        }
-    }
-
-    fun onBackButtonClicked() = navigation.pop()
 
     fun onCreateAccountButtonClicked() {
         val createAccountState = createAccountMutableStateFlow.value
@@ -102,12 +77,10 @@ class CreateAccountViewModel(
         // Validate username
         setIsUsernameEmptyOrNull(username = createAccountState.username)
         setIsUsernameInNotCorrectFormat(username = createAccountState.username)
-        setIsUsernameStoredInFirebase(username = createAccountState.username)
 
         // Validate email
         setIsEmailEmptyOrNull(email = createAccountState.email)
         setIsEmailInNotCorrectFormat(email = createAccountState.email)
-        setIsEmailStoredInFirebase(email = createAccountState.email)
 
         // Validate password
         setIsPasswordEmptyOrNull(password = createAccountState.password)
@@ -149,14 +122,6 @@ class CreateAccountViewModel(
         }
     }
 
-    internal fun setIsUsernameStoredInFirebase(username: String?) {
-        username?.let { value ->
-            isUsernameStoredInFirebase = allStoredUsernamesArrayList.contains(value) == true
-        } ?: run {
-            isUsernameStoredInFirebase = false
-        }
-    }
-
     internal fun setIsEmailEmptyOrNull(email: String?) {
         email?.let { value ->
             isEmailEmptyOrNull = value.isEmpty()
@@ -170,14 +135,6 @@ class CreateAccountViewModel(
             isEmailInNotCorrectFormat = !EMAIL_PATTERN.toRegex().matches(value)
         } ?: run {
             isEmailInNotCorrectFormat = true
-        }
-    }
-
-    internal fun setIsEmailStoredInFirebase(email: String?) {
-        email?.let { value ->
-            isEmailStoredInFirebase = allStoredEmailsArrayList.contains(value)
-        } ?: run {
-            isEmailStoredInFirebase = false
         }
     }
 
@@ -218,15 +175,13 @@ class CreateAccountViewModel(
 
         return when {
             !network.isDeviceConnectedToInternet() -> createAlert(application.getString(StringsIds.notConnectedToInternet), StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
-            isTwoOrMoreFieldsEmptyOrNull -> createAlert(alertTitle, StringsIds.emptyFields)
+            isTwoOrMoreFieldsEmptyOrNull -> createAlert(application.getString(StringsIds.emptyFields), StringsIds.emptyFieldsDescription)
             isUsernameEmptyOrNull -> createAlert(alertTitle, StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
             isUsernameInNotCorrectFormat -> createAlert(alertTitle, StringsIds.usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat)
             isEmailEmptyOrNull -> createAlert(alertTitle, StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount)
             isEmailInNotCorrectFormat -> createAlert(alertTitle, StringsIds.emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat)
             isPasswordEmptyOrNull -> createAlert(alertTitle, StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
             isPasswordInNotCorrectFormat -> createAlert(alertTitle, StringsIds.passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat)
-            isUsernameStoredInFirebase -> createAlert(alertTitle, StringsIds.usernameInUse)
-            isEmailStoredInFirebase -> createAlert(alertTitle, StringsIds.emailInUse)
             else -> null
         }
     }
@@ -246,7 +201,7 @@ class CreateAccountViewModel(
                         .collectLatest { authenticatedUserViaEmailFirebaseResponse ->
                             if (authenticatedUserViaEmailFirebaseResponse.isSuccessful) {
                                 navigateToAuthentication(email = email, username = username)
-                                clearStateAndLocalDeclarations()
+                                clearState()
                             } else {
                                 showUnableToSendEmailVerificationAlert(email = email, username = username)
                             }

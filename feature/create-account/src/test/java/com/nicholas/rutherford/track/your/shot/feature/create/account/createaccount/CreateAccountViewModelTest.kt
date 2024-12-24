@@ -2,8 +2,6 @@ package com.nicholas.rutherford.track.your.shot.feature.create.account.createacc
 
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
-import com.nicholas.rutherford.track.your.shot.data.test.room.TestUser
 import com.nicholas.rutherford.track.your.shot.firebase.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.your.shot.firebase.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
@@ -40,8 +38,6 @@ class CreateAccountViewModelTest {
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
     private val authenticationFirebase = mockk<AuthenticationFirebase>(relaxed = true)
 
-    private val userRepository = mockk<UserRepository>(relaxed = true)
-
     private val state = CreateAccountState(username = null, email = null, password = null)
 
     private val createAccountFirebaseAuthResponse = TestCreateAccountFirebaseAuthResponse().create()
@@ -62,7 +58,6 @@ class CreateAccountViewModelTest {
             network = network,
             createFirebaseUserInfo = createFirebaseUserInfo,
             authenticationFirebase = authenticationFirebase,
-            userRepository = userRepository,
             scope = scope
         )
     }
@@ -75,7 +70,7 @@ class CreateAccountViewModelTest {
 
     @Test
     fun constants() {
-        Assertions.assertEquals(EMAIL_PATTERN, "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}\$")
+        Assertions.assertEquals(EMAIL_PATTERN, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
         Assertions.assertEquals(PASSWORD_PATTERN, "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$")
         Assertions.assertEquals(USERNAME_PATTERN, "^(?=[a-zA-Z\\d._]{8,20}\$)(?!.*[_.]{2})[^_.].*[^_.]\$")
     }
@@ -89,36 +84,10 @@ class CreateAccountViewModelTest {
     }
 
     @Test
-    fun `clear local declarations`() {
-        val emptyArray: ArrayList<String> = arrayListOf()
-
-        Assertions.assertEquals(viewModel.allStoredEmailsArrayList, emptyArray)
-        Assertions.assertEquals(viewModel.allStoredUsernamesArrayList, emptyArray)
-    }
-
-    @Test
     fun initializeCreateAccountState() {
         Assertions.assertEquals(
             viewModel.createAccountStateFlow.value,
             state
-        )
-    }
-
-    @Test
-    fun `updateStoredUsernamesAndEmailsArrayList when fetch all users return users should update allStoredEmailsArrayList and allStoredUsernamesArrayList`() = runTest {
-        val user = TestUser().create()
-
-        coEvery { userRepository.fetchAllUsers() } returns listOf(user)
-
-        viewModel.updateStoredUsernamesAndEmailsArrayList()
-
-        Assertions.assertEquals(
-            viewModel.allStoredEmailsArrayList,
-            arrayListOf(user.email)
-        )
-        Assertions.assertEquals(
-            viewModel.allStoredUsernamesArrayList,
-            arrayListOf(user.username)
         )
     }
 
@@ -127,9 +96,9 @@ class CreateAccountViewModelTest {
         private val regex = EMAIL_PATTERN.toRegex()
 
         private val invalidEmails = listOf(
-            "joe@123aspx.com",
-            "joe@web.info ",
-            "joe@company.co.uk"
+            "joe@123aspx@",
+            "joe@web.info.com ",
+            "user@domain.c"
         )
         private val validEmails = listOf(
             "oe@aol.com",
@@ -310,40 +279,6 @@ class CreateAccountViewModelTest {
     }
 
     @Nested
-    inner class SetIsUsernameStoredInFirebase {
-        private val username = "username"
-
-        @Test
-        fun `username passed in is set to null should set isUsernameStoredInFirebase to false`() {
-            viewModel.isUsernameStoredInFirebase = false
-
-            viewModel.setIsUsernameStoredInFirebase(username = null)
-
-            Assertions.assertFalse(viewModel.isUsernameStoredInFirebase)
-        }
-
-        @Test
-        fun `username passed in is not null and is not contained in allStoredUsernamesArrayList should be set to false`() {
-            viewModel.isUsernameStoredInFirebase = false
-            viewModel.allStoredUsernamesArrayList = arrayListOf("username1", "username2")
-
-            viewModel.setIsUsernameStoredInFirebase(username = username)
-
-            Assertions.assertFalse(viewModel.isUsernameStoredInFirebase)
-        }
-
-        @Test
-        fun `username passed in is not null and is contained in allStoredUsernamesArrayList should be set to true`() {
-            viewModel.isUsernameStoredInFirebase = false
-            viewModel.allStoredUsernamesArrayList = arrayListOf(username, "username1", "username2")
-
-            viewModel.setIsUsernameStoredInFirebase(username = username)
-
-            Assertions.assertTrue(viewModel.isUsernameStoredInFirebase)
-        }
-    }
-
-    @Nested
     inner class SetIsEmailEmptyOrNull {
 
         @Test fun `when email is null should set isEmailEmptyOrNull to true`() {
@@ -454,49 +389,6 @@ class CreateAccountViewModelTest {
             Assertions.assertEquals(
                 viewModel.isEmailInNotCorrectFormat,
                 false
-            )
-        }
-    }
-
-    @Nested
-    inner class SetIsEmailStoredInFirebase {
-        private val testEmail = "testemail@yahoo.com"
-
-        @Test
-        fun `when email passed in is set to null should set isEmailStoredInFirebase to false`() {
-            viewModel.isEmailStoredInFirebase = false
-
-            viewModel.setIsEmailStoredInFirebase(email = null)
-
-            Assertions.assertEquals(
-                viewModel.isEmailStoredInFirebase,
-                false
-            )
-        }
-
-        @Test
-        fun `when email passed in is not set to null and allStoredEmailsArrayList does not contain email should set isEmailStoredInFirebase to false`() {
-            viewModel.isEmailStoredInFirebase = false
-            viewModel.allStoredEmailsArrayList = arrayListOf("test1email@yahoo.com", "test2email@yahoo.com")
-
-            viewModel.setIsEmailStoredInFirebase(email = testEmail)
-
-            Assertions.assertEquals(
-                viewModel.isEmailStoredInFirebase,
-                false
-            )
-        }
-
-        @Test
-        fun `when email passed in is not set to null and allStoredEmailsArrayList contains email should set isEmailStoredInFirebase to true`() {
-            viewModel.isEmailStoredInFirebase = false
-            viewModel.allStoredEmailsArrayList = arrayListOf(testEmail, "test1email@yahoo.com", "test2email@yahoo.com")
-
-            viewModel.setIsEmailStoredInFirebase(email = testEmail)
-
-            Assertions.assertEquals(
-                viewModel.isEmailStoredInFirebase,
-                true
             )
         }
     }

@@ -52,6 +52,9 @@ class AccountManagerImpl(
     private val _loggedInDeclaredShotListStateFlow: MutableStateFlow<List<DeclaredShot>> = MutableStateFlow(value = emptyList())
     override val loggedInDeclaredShotListStateFlow: StateFlow<List<DeclaredShot>> = _loggedInDeclaredShotListStateFlow.asStateFlow()
 
+    private val hasLoggedInSuccessfulMutableSharedFlow = MutableSharedFlow<Boolean>(extraBufferCapacity = Channel.UNLIMITED)
+    override val hasLoggedInSuccessfulFlow: Flow<Boolean> = hasLoggedInSuccessfulMutableSharedFlow
+
     private val hasNoPlayersMutableSharedFlow = MutableSharedFlow<Boolean>(extraBufferCapacity = Channel.UNLIMITED)
     override val hasNoPlayersFlow: Flow<Boolean> = hasNoPlayersMutableSharedFlow
 
@@ -203,10 +206,12 @@ class AccountManagerImpl(
                     _loggedInPlayerListStateFlow.value = playerList
                     playerRepository.createListOfPlayers(playerList = playerList)
                     hasNoPlayersMutableSharedFlow.tryEmit(value = false)
+                    hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
 
                     disableProcessAndNavigateToPlayersList()
                 } else {
                     hasNoPlayersMutableSharedFlow.tryEmit(value = true)
+                    hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
                     disableProcessAndNavigateToPlayersList()
                 }
             }
@@ -225,6 +230,7 @@ class AccountManagerImpl(
         navigator.progress(progressAction = null)
         navigator.alert(alertAction = null)
         navigator.alert(alertAction = unableToLoginToAccountAlert())
+        hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = false)
     }
 
     internal fun unableToLoginToAccountAlert(): Alert {
