@@ -123,7 +123,8 @@ class LogShotViewModel(
                             shotsMade = shot.shotsMade.toDouble(),
                             shotsMissed = shot.shotsMissed.toDouble(),
                             isShotsMade = false
-                        )
+                        ),
+                        deleteShotButtonVisible = true
                     )
                 }
             }
@@ -151,7 +152,8 @@ class LogShotViewModel(
                             shotsMade = shot.shotsMade.toDouble(),
                             shotsMissed = shot.shotsMissed.toDouble(),
                             isShotsMade = false
-                        )
+                        ),
+                        deleteShotButtonVisible = false
                     )
                 }
             }
@@ -509,4 +511,21 @@ class LogShotViewModel(
     }
 
     fun onBackClicked() = navigation.pop()
+
+    fun deleteShotAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.deleteShot),
+            description = application.getString(StringsIds.areYouSureYouWantToDeleteXShot, logShotMutableStateFlow.value.shotName),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.yes),
+                onButtonClicked = {}
+            ),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.no),
+                onButtonClicked = {}
+            )
+        )
+    }
+
+    fun onDeleteShotClicked() = navigation.alert(alert = deleteShotAlert())
 }

@@ -32,4 +32,24 @@ class DeleteFirebaseUserInfoImpl(
             awaitClose()
         }
     }
+
+    override fun deleteShot(playerKey: String, index: Int): Flow<Boolean> {
+        return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val path = "${Constants.USERS}/$uid/${Constants.PLAYERS}/$playerKey/shotsLogged/$index"
+
+            firebaseDatabase.getReference(path)
+                .removeValue()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        trySend(element = true)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(deletePlayer) -> Was not able to delete current player shot from given account. With following stack trace $exception")
+                    trySend(element = false)
+                }
+            awaitClose()
+        }
+    }
 }

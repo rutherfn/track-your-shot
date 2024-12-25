@@ -2,13 +2,19 @@ package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.ChevronRight
@@ -24,9 +30,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
@@ -77,6 +85,36 @@ fun LogShotContent(logShotParams: LogShotParams) {
             onShotsMissedClicked = logShotParams.onShotsMissedClicked
         )
         PlayerInfoContent(state = logShotParams.state)
+
+        if (logShotParams.state.deleteShotButtonVisible) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(AppColors.White),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Button(
+                        onClick = { logShotParams.onDeleteShotClicked.invoke() },
+                        shape = RoundedCornerShape(size = 50.dp),
+                        modifier = Modifier
+                            .padding(vertical = Padding.twelve)
+                            .fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor)
+                    ) {
+                        Text(
+                            text = stringResource(id = StringsIds.deleteX, logShotParams.state.shotName),
+                            style = TextStyles.smallBold,
+                            textAlign = TextAlign.Center,
+                            color = Color.White
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 

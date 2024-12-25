@@ -4,4 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface DeleteFirebaseUserInfo {
     fun deletePlayer(playerKey: String): Flow<Boolean>
+    fun deleteShot(playerKey: String, index: Int): Flow<Boolean>
 }

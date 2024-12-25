@@ -2,7 +2,6 @@ package com.nicholas.rutherford.track.your.shot.players.playerlist
 
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
@@ -56,7 +55,6 @@ class PlayersListViewModelTest {
     private val accountManager = mockk<AccountManager>(relaxed = true)
 
     private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
-    private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
 
     private val playersAdditionUpdates = mockk<PlayersAdditionUpdates>(relaxed = true)
 
@@ -79,7 +77,6 @@ class PlayersListViewModelTest {
             network = network,
             accountManager = accountManager,
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-            activeUserRepository = activeUserRepository,
             playersAdditionUpdates = playersAdditionUpdates,
             playerRepository = playerRepository,
             pendingPlayerRepository = pendingPlayerRepository,
@@ -172,7 +169,6 @@ class PlayersListViewModelTest {
                 network = network,
                 accountManager = accountManager,
                 deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-                activeUserRepository = activeUserRepository,
                 playersAdditionUpdates = playersAdditionUpdates,
                 playerRepository = playerRepository,
                 pendingPlayerRepository = pendingPlayerRepository,
@@ -211,7 +207,6 @@ class PlayersListViewModelTest {
                 network = network,
                 accountManager = accountManager,
                 deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-                activeUserRepository = activeUserRepository,
                 playersAdditionUpdates = playersAdditionUpdates,
                 playerRepository = playerRepository,
                 createSharedPreferences = createSharedPreferences,
@@ -251,7 +246,6 @@ class PlayersListViewModelTest {
                 network = network,
                 accountManager = accountManager,
                 deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-                activeUserRepository = activeUserRepository,
                 playersAdditionUpdates = playersAdditionUpdates,
                 playerRepository = playerRepository,
                 createSharedPreferences = createSharedPreferences,

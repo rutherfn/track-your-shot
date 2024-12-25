@@ -7,5 +7,6 @@ data class LogShotParams(
     val updateIsExistingPlayerAndPlayerId: () -> Unit,
     val onShotsMadeClicked: () -> Unit,
     val onShotsMissedClicked: () -> Unit,
-    val onSaveClicked: () -> Unit
+    val onSaveClicked: () -> Unit,
+    val onDeleteShotClicked: () -> Unit
 )

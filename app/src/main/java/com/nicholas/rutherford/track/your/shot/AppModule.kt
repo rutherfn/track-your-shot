@@ -294,7 +294,6 @@ class AppModule {
                 network = get(),
                 accountManager = get(),
                 deleteFirebaseUserInfo = get(),
-                activeUserRepository = get(),
                 playersAdditionUpdates = get(),
                 playerRepository = get(),
                 pendingPlayerRepository = get(),

@@ -11,6 +11,7 @@
     <string name="acknowledge_and_agree_to_terms">Acknowledge / Agree To Terms</string>
     <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
     <string name="are_you_certain_you_wish_to_remove_x">Are you certain you wish to remove %s?</string>
+    <string name="are_you_sure_you_want_to_delete_x_shot">Are you sure you want to delete %s shot?</string>
     <string name="are_you_sure_you_want_to_leave_track_your_shot">Are you sure you want to leave Track Your Shot?</string>
     <string name="are_you_sure_you_want_to_delete_pending_account_description">Deleting your pending account will require you to either register a new account or log in to an existing one. Are you sure you want to proceed with deleting your pending account?</string>
     <string name="by_nicholas_rutherford">By Nicholas Rutherford</string>
@@ -46,6 +47,7 @@
     <string name="date_shots_taken">Date Shots Taken</string>
     <string name="delete_pending_account">Delete Pending Account</string>
     <string name="deleting_pending_account">Deleting Pending Account</string>
+    <string name="delete_Shot">Delete Shot</string>
     <string name="delete_x">Delete %s</string>
     <string name="dev_email" translatable="false">nicholasrutherforddeveloper@gmail.com</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>

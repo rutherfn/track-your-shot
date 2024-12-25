@@ -3,7 +3,6 @@ package com.nicholas.rutherford.track.your.shot.feature.players.playerlist
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
@@ -34,7 +33,6 @@ class PlayersListViewModel(
     private val network: Network,
     private val accountManager: AccountManager,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
-    private val activeUserRepository: ActiveUserRepository,
     private val playersAdditionUpdates: PlayersAdditionUpdates,
     private val playerRepository: PlayerRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
@@ -187,18 +185,6 @@ class PlayersListViewModel(
         return Alert(
             title = application.getString(StringsIds.notConnectedToInternet),
             description = application.getString(StringsIds.weHaveDetectedCurrentlyNotConnectedToInternetDescription),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(
-                    StringsIds.gotIt
-                )
-            )
-        )
-    }
-
-    private fun weHaveDetectedAProblemWithYourAccountAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.empty),
-            description = application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue),
             dismissButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(
                     StringsIds.gotIt

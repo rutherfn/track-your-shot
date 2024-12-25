@@ -10,6 +10,8 @@ object StringsIds {
     val androidPermissionsUrl = R.string.android_permissions_url
     val accountSecurityDescription = R.string.account_security_description
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
+    val areYouSureYouWantToDeleteXShot =
+        R.string.are_you_sure_you_want_to_delete_x_shot
     val areYouSureYouWantLeaveTrackYourShot =
         R.string.are_you_sure_you_want_to_leave_track_your_shot
     val areYouSureYouWantToDeletePendingAccountDescription =
@@ -47,6 +49,7 @@ object StringsIds {
     val dateShotsTaken = R.string.date_shots_taken
     val deletePendingAccount = R.string.delete_pending_account
     val deletingPendingAccount = R.string.deleting_pending_account
+    val deleteShot = R.string.delete_Shot
     val deleteX = R.string.delete_x
     val devEmail = R.string.dev_email
     val deviceIsCurrentlyNotConnectedToInternetDesc =
