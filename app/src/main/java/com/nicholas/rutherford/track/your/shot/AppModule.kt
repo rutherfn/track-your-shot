@@ -304,6 +304,7 @@ class AppModule {
         viewModel {
             CreateEditPlayerViewModel(
                 application = androidApplication(),
+                deleteFirebaseUserInfo = get(),
                 createFirebaseUserInfo = get(),
                 updateFirebaseUserInfo = get(),
                 readFirebaseUserInfo = get(),
@@ -338,6 +339,7 @@ class AppModule {
                 declaredShotRepository = get(),
                 pendingPlayerRepository = get(),
                 playerRepository = get(),
+                deleteFirebaseUserInfo = get(),
                 currentPendingShot = get()
             )
         }

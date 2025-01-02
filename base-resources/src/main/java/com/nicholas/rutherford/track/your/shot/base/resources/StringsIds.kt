@@ -167,6 +167,8 @@ object StringsIds {
     val selectDate = R.string.select_date
     val settings = R.string.settings
     val settingsHelpDescription = R.string.settings_help_description
+    val shotHasBeenDeleted = R.string.shot_has_been_deleted
+    val shotHasNotBeenDeleted = R.string.shot_has_not_been_deleted
     val shotPercentage = R.string.shot_percentage
     val shotUpdated = R.string.shot_updated
     val shots = R.string.shots
@@ -227,6 +229,8 @@ object StringsIds {
     val weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain =
         R.string.we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again
     val xShot = R.string.x_shot
+    val xShotHasBeenRemovedDescription = R.string.x_shot_has_been_removed_description
+    val xShotHasNotBeenRemovedDescription = R.string.x_shot_has_not_been_removed_description
     val xShots = R.string.x_shots
     val yes = R.string.yes
     val yourPlayerCouldNotBeRetrievedDescription =
