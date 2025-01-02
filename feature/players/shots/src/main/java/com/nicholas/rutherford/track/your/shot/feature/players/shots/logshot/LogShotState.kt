@@ -10,5 +10,6 @@ data class LogShotState(
     val shotsMissed: Int = 0,
     val shotsAttempted: Int = 0,
     val shotsMadePercentValue: String = "",
-    val shotsMissedPercentValue: String = ""
+    val shotsMissedPercentValue: String = "",
+    val deleteShotButtonVisible: Boolean = false
 )

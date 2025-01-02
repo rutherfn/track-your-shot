@@ -18,6 +18,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUp
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
@@ -40,6 +41,7 @@ const val RESET_SCREEN_DELAY_IN_MILLIS = 500L
 
 class CreateEditPlayerViewModel(
     private val application: Application,
+    private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val updateFirebaseUserInfo: UpdateFirebaseUserInfo,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
@@ -66,12 +68,20 @@ class CreateEditPlayerViewModel(
 
     init {
         scope.launch { collectPendingShotsLogged() }
+        scope.launch { collectHasDeletedShotFlow() }
     }
 
     internal suspend fun collectPendingShotsLogged() {
         currentPendingShot.shotsStateFlow
             .collectLatest { shotLoggedList ->
                 processPendingShots(shotLoggedList = shotLoggedList)
+            }
+    }
+
+    internal suspend fun collectHasDeletedShotFlow() {
+        deleteFirebaseUserInfo.hasDeletedShotFlow
+            .collectLatest { hasDeletedShot ->
+                processHasDeletedShot(hasDeletedShot = hasDeletedShot)
             }
     }
 
@@ -87,6 +97,34 @@ class CreateEditPlayerViewModel(
             }
 
             navigation.alert(alert = showUpdatedAlert())
+        }
+    }
+
+    private suspend fun processHasDeletedShot(hasDeletedShot: Boolean) {
+        if (hasDeletedShot) {
+            val firstName = editedPlayer?.firstName ?: ""
+            val lastName = editedPlayer?.lastName ?: ""
+
+            playerRepository.fetchPlayerByName(
+                firstName = firstName,
+                lastName = lastName
+            )
+                ?.let { player ->
+                    createEditPlayerMutableStateFlow.value =
+                        createEditPlayerMutableStateFlow.value.copy(
+                            firstName = player.firstName,
+                            lastName = player.lastName,
+                            editedPlayerUrl = player.imageUrl ?: "",
+                            toolbarNameResId = StringsIds.editPlayer,
+                            playerPositionString = application.getString(player.position.toType()),
+                            hintLogNewShotText = hintLogNewShotText(
+                                firstName = player.firstName,
+                                lastName = player.lastName
+                            ),
+                            shots = player.shotsLoggedList
+                        )
+                    deleteFirebaseUserInfo.updateHasDeletedShotFlow(hasDeletedShot = false)
+                }
         }
     }
 

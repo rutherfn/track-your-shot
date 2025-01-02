@@ -17,6 +17,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePicker
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
+import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.parseDateValueToString
 import com.nicholas.rutherford.track.your.shot.helper.extensions.parseValueToDate
@@ -26,6 +27,7 @@ import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -40,10 +42,11 @@ class LogShotViewModel(
     private val declaredShotRepository: DeclaredShotRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
     private val playerRepository: PlayerRepository,
+    private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val currentPendingShot: CurrentPendingShot
 ) : ViewModel() {
 
-    internal val logShotMutableStateFlow = MutableStateFlow(value = LogShotState())
+    val logShotMutableStateFlow = MutableStateFlow(value = LogShotState())
     val logShotStateFlow = logShotMutableStateFlow.asStateFlow()
 
     internal var isExistingPlayer = false
@@ -123,7 +126,8 @@ class LogShotViewModel(
                             shotsMade = shot.shotsMade.toDouble(),
                             shotsMissed = shot.shotsMissed.toDouble(),
                             isShotsMade = false
-                        )
+                        ),
+                        deleteShotButtonVisible = true
                     )
                 }
             }
@@ -151,7 +155,8 @@ class LogShotViewModel(
                             shotsMade = shot.shotsMade.toDouble(),
                             shotsMissed = shot.shotsMissed.toDouble(),
                             isShotsMade = false
-                        )
+                        ),
+                        deleteShotButtonVisible = false
                     )
                 }
             }
@@ -435,7 +440,8 @@ class LogShotViewModel(
                 shotsMissed = 0,
                 shotsAttempted = 0,
                 shotsMadePercentValue = "",
-                shotsMissedPercentValue = ""
+                shotsMissedPercentValue = "",
+                deleteShotButtonVisible = false
             )
         }
 
@@ -509,4 +515,75 @@ class LogShotViewModel(
     }
 
     fun onBackClicked() = navigation.pop()
+
+    fun filterShotsById(shots: List<ShotLogged>): List<ShotLogged> = shots.filter { it.id != shotId }
+
+    suspend fun onYesDeleteShot() {
+        navigation.enableProgress(progress = Progress())
+        currentPlayer?.let { player ->
+            playerRepository.updatePlayer(
+                currentPlayer = player,
+                newPlayer = player.copy(
+                    firstName = player.firstName,
+                    lastName = player.lastName,
+                    position = player.position,
+                    firebaseKey = player.firebaseKey,
+                    imageUrl = player.imageUrl,
+                    shotsLoggedList = filterShotsById(shots = player.shotsLoggedList)
+                )
+            )
+
+            deleteFirebaseUserInfo.deleteShot(
+                playerKey = player.firebaseKey,
+                index = shotId - 1
+            ).collectLatest { hasDeleted ->
+                if (hasDeleted) {
+                    navigateToCreateOrEditPlayer()
+                    navigation.alert(alert = deleteShotConfirmAlert())
+                } else {
+                    navigation.disableProgress()
+                    navigation.alert(alert = deleteShotErrorAlert())
+                }
+            }
+        } ?: navigation.disableProgress()
+    }
+
+    fun deleteShotAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.deleteShot),
+            description = application.getString(StringsIds.areYouSureYouWantToDeleteXShot, logShotMutableStateFlow.value.shotName),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.yes),
+                onButtonClicked = { scope.launch { onYesDeleteShot() } }
+            ),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.no),
+                onButtonClicked = {}
+            )
+        )
+    }
+
+    fun deleteShotConfirmAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.shotHasBeenDeleted),
+            description = application.getString(StringsIds.xShotHasBeenRemovedDescription, logShotMutableStateFlow.value.shotName),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt),
+                onButtonClicked = { }
+            )
+        )
+    }
+
+    fun deleteShotErrorAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.shotHasNotBeenDeleted),
+            description = application.getString(StringsIds.xShotHasNotBeenRemovedDescription, logShotMutableStateFlow.value.shotName),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt),
+                onButtonClicked = { }
+            )
+        )
+    }
+
+    fun onDeleteShotClicked() = navigation.alert(alert = deleteShotAlert())
 }

@@ -10,6 +10,8 @@ object StringsIds {
     val androidPermissionsUrl = R.string.android_permissions_url
     val accountSecurityDescription = R.string.account_security_description
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
+    val areYouSureYouWantToDeleteXShot =
+        R.string.are_you_sure_you_want_to_delete_x_shot
     val areYouSureYouWantLeaveTrackYourShot =
         R.string.are_you_sure_you_want_to_leave_track_your_shot
     val areYouSureYouWantToDeletePendingAccountDescription =
@@ -47,6 +49,7 @@ object StringsIds {
     val dateShotsTaken = R.string.date_shots_taken
     val deletePendingAccount = R.string.delete_pending_account
     val deletingPendingAccount = R.string.deleting_pending_account
+    val deleteShot = R.string.delete_Shot
     val deleteX = R.string.delete_x
     val devEmail = R.string.dev_email
     val deviceIsCurrentlyNotConnectedToInternetDesc =
@@ -164,6 +167,8 @@ object StringsIds {
     val selectDate = R.string.select_date
     val settings = R.string.settings
     val settingsHelpDescription = R.string.settings_help_description
+    val shotHasBeenDeleted = R.string.shot_has_been_deleted
+    val shotHasNotBeenDeleted = R.string.shot_has_not_been_deleted
     val shotPercentage = R.string.shot_percentage
     val shotUpdated = R.string.shot_updated
     val shots = R.string.shots
@@ -224,6 +229,8 @@ object StringsIds {
     val weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain =
         R.string.we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again
     val xShot = R.string.x_shot
+    val xShotHasBeenRemovedDescription = R.string.x_shot_has_been_removed_description
+    val xShotHasNotBeenRemovedDescription = R.string.x_shot_has_not_been_removed_description
     val xShots = R.string.x_shots
     val yes = R.string.yes
     val yourPlayerCouldNotBeRetrievedDescription =

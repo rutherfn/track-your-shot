@@ -20,7 +20,9 @@ object NavigationDestinationsWithParams {
         shotId: Int,
         viewCurrentExistingShot: Boolean,
         viewCurrentPendingShot: Boolean
-    ): String = "${NavigationDestinations.LOG_SHOT_SCREEN}/$isExistingPlayer/$playerId/$shotType/$shotId/$viewCurrentExistingShot/$viewCurrentPendingShot"
+    ): String {
+        return "${NavigationDestinations.LOG_SHOT_SCREEN}/$isExistingPlayer/$playerId/$shotType/$shotId/$viewCurrentExistingShot/$viewCurrentPendingShot"
+    }
 
     fun termsConditionsWithParams(
         isAcknowledgeConditions: Boolean

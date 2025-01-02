@@ -33,6 +33,23 @@ class DeleteFirebaseUserInfoImplTest {
         deleteFirebaseUserInfoImpl = DeleteFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
     }
 
+    @Test
+    fun `hasDeletedShotFlow should be updated from the MutableStateFlow`() = runTest {
+        val hasDeletedShot = true
+
+        Assertions.assertEquals(
+            deleteFirebaseUserInfoImpl.hasDeletedShotFlow.first(),
+            false
+        )
+
+        deleteFirebaseUserInfoImpl.updateHasDeletedShotFlow(hasDeletedShot = hasDeletedShot)
+
+        Assertions.assertEquals(
+            deleteFirebaseUserInfoImpl.hasDeletedShotFlow.first(),
+            true
+        )
+    }
+
     @Nested
     inner class DeletePlayer {
 
@@ -99,6 +116,150 @@ class DeleteFirebaseUserInfoImplTest {
             val value = deleteFirebaseUserInfoImpl.deletePlayer(playerKey = firebasePlayerKey).first()
 
             Assertions.assertEquals(true, value)
+        }
+
+        @Test
+        fun `when add on complete listener is executed and returns isSuccessful returns false should set flow to false`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.PLAYERS}/$firebasePlayerKey"
+
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<OnCompleteListener<Void>>()
+            val failureListenerSlot = slot<OnFailureListener>()
+
+            mockkStatic(Tasks::class)
+            mockkStatic(FirebaseUser::class)
+
+            every { mockTaskVoidResult.isSuccessful } returns false
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path)
+                    .removeValue()
+                    .addOnCompleteListener(capture(slot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                slot.captured.onComplete(mockTaskVoidResult)
+                mockTaskVoidResult
+            }
+
+            val value = deleteFirebaseUserInfoImpl.deletePlayer(playerKey = firebasePlayerKey).first()
+
+            Assertions.assertEquals(false, value)
+        }
+    }
+
+    @Nested
+    inner class DeleteShot {
+
+        @Test
+        fun `when add on complete listener is executed and returns isSuccessful returns false should set flow to false`() = runTest {
+            val uid = "uid"
+            val index = 1
+            val path = "${Constants.USERS}/$uid/${Constants.PLAYERS}/$firebasePlayerKey/${Constants.SHOTS_LOGGED}/$index"
+
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<OnCompleteListener<Void>>()
+            val failureListenerSlot = slot<OnFailureListener>()
+
+            mockkStatic(Tasks::class)
+            mockkStatic(FirebaseUser::class)
+
+            every { mockTaskVoidResult.isSuccessful } returns false
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path)
+                    .removeValue()
+                    .addOnCompleteListener(capture(slot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                slot.captured.onComplete(mockTaskVoidResult)
+                mockTaskVoidResult
+            }
+
+            val value = deleteFirebaseUserInfoImpl.deleteShot(playerKey = firebasePlayerKey, index = index).first()
+            val deletedShotValue = deleteFirebaseUserInfoImpl.hasDeletedShotFlow.first()
+
+            Assertions.assertEquals(false, value)
+            Assertions.assertEquals(false, deletedShotValue)
+        }
+
+        @Test
+        fun `when add on complete listener is executed and returns isSuccessful returns true should set flow to true`() = runTest {
+            val uid = "uid"
+            val index = 1
+            val path = "${Constants.USERS}/$uid/${Constants.PLAYERS}/$firebasePlayerKey/${Constants.SHOTS_LOGGED}/$index"
+
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<OnCompleteListener<Void>>()
+            val failureListenerSlot = slot<OnFailureListener>()
+
+            mockkStatic(Tasks::class)
+            mockkStatic(FirebaseUser::class)
+
+            every { mockTaskVoidResult.isSuccessful } returns true
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path)
+                    .removeValue()
+                    .addOnCompleteListener(capture(slot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                slot.captured.onComplete(mockTaskVoidResult)
+                mockTaskVoidResult
+            }
+
+            val value = deleteFirebaseUserInfoImpl.deleteShot(playerKey = firebasePlayerKey, index = index).first()
+            val deletedShotValue = deleteFirebaseUserInfoImpl.hasDeletedShotFlow.first()
+
+            Assertions.assertEquals(true, value)
+            Assertions.assertEquals(true, deletedShotValue)
+        }
+
+        @Test
+        fun `when add on failure listener is executed should set flow to false`() = runTest {
+            val uid = "uid"
+            val index = 1
+            val path = "${Constants.USERS}/$uid/${Constants.PLAYERS}/$firebasePlayerKey/${Constants.SHOTS_LOGGED}/$index"
+
+            val mockException = Exception("Simulated failure")
+
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<OnCompleteListener<Void>>()
+            val failureListenerSlot = slot<OnFailureListener>()
+
+            mockkStatic(FirebaseUser::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path)
+                    .removeValue()
+                    .addOnCompleteListener(capture(slot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                failureListenerSlot.captured.onFailure(mockException)
+                mockTaskVoidResult
+            }
+
+            val value = deleteFirebaseUserInfoImpl.deleteShot(playerKey = firebasePlayerKey, index = index).first()
+            val deletedShotValue = deleteFirebaseUserInfoImpl.hasDeletedShotFlow.first()
+
+            Assertions.assertEquals(false, value)
+            Assertions.assertEquals(false, deletedShotValue)
         }
     }
 }

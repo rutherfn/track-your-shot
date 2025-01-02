@@ -14,15 +14,19 @@ import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
+import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -49,6 +53,8 @@ class LogShotViewModelTest {
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
 
+    private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
+
     private val currentPendingShot = mockk<CurrentPendingShot>(relaxed = true)
 
     @BeforeEach
@@ -60,6 +66,7 @@ class LogShotViewModelTest {
             declaredShotRepository = declaredShotRepository,
             pendingPlayerRepository = pendingPlayerRepository,
             playerRepository = playerRepository,
+            deleteFirebaseUserInfo = deleteFirebaseUserInfo,
             currentPendingShot = currentPendingShot
         )
     }
@@ -609,7 +616,7 @@ class LogShotViewModelTest {
 
     @Nested
     inner class NoChangesForShotAlert {
-        val pendingShotLogged = TestShotLogged.build()
+        private val pendingShotLogged = TestShotLogged.build()
 
         @Test
         fun `when initialShotLogged is set to null should return null`() {
@@ -916,5 +923,144 @@ class LogShotViewModelTest {
         Assertions.assertEquals(logShotViewModel.logShotMutableStateFlow.value, LogShotState())
 
         verify { navigation.pop() }
+    }
+
+    @Nested
+    inner class OnYesDeleteShot {
+
+        @Test
+        fun `when edited player is set to null should not navigate to alert`() = runTest {
+            logShotViewModel.currentPlayer = null
+
+            logShotViewModel.onYesDeleteShot()
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when edited player is not null and hasDeleted returns false should navigate to alert`() = runTest {
+            val currentPlayer = TestPlayer().create().copy(
+                shotsLoggedList = listOf(
+                    TestShotLogged.build().copy(id = 11),
+                    TestShotLogged.build().copy(id = 22)
+                )
+            )
+            val newPlayer = TestPlayer().create().copy(
+                shotsLoggedList = listOf(
+                    TestShotLogged.build().copy(id = 11)
+                )
+            )
+
+            logShotViewModel.shotId = 22
+            logShotViewModel.currentPlayer = currentPlayer
+
+            coEvery { playerRepository.updatePlayer(currentPlayer = currentPlayer, newPlayer = newPlayer) } just runs
+            coEvery { deleteFirebaseUserInfo.deleteShot(playerKey = currentPlayer.firebaseKey, index = 21) } returns flowOf(value = false)
+
+            logShotViewModel.onYesDeleteShot()
+
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when edited player is not null and hasDeleted returns true should pop and navigate to alert`() = runTest {
+            val currentPlayer = TestPlayer().create().copy(
+                shotsLoggedList = listOf(
+                    TestShotLogged.build().copy(id = 11),
+                    TestShotLogged.build().copy(id = 22)
+                )
+            )
+            val newPlayer = TestPlayer().create().copy(
+                shotsLoggedList = listOf(
+                    TestShotLogged.build().copy(id = 11)
+                )
+            )
+
+            logShotViewModel.shotId = 22
+            logShotViewModel.isExistingPlayer = true
+            logShotViewModel.currentPlayer = currentPlayer
+
+            coEvery { playerRepository.updatePlayer(currentPlayer = currentPlayer, newPlayer = newPlayer) } just runs
+            coEvery { deleteFirebaseUserInfo.deleteShot(playerKey = currentPlayer.firebaseKey, index = 21) } returns flowOf(value = true)
+
+            logShotViewModel.onYesDeleteShot()
+
+            verify { navigation.disableProgress() }
+            verify { navigation.popToEditPlayer() }
+            verify { navigation.alert(alert = any()) }
+        }
+    }
+
+    @Test
+    fun `filter shots by id should filter out shots matching the local param shotId`() {
+        val shotId = 2
+        val shotLoggedList = listOf(
+            TestShotLogged.build().copy(id = 11),
+            TestShotLogged.build().copy(id = 22),
+            TestShotLogged.build().copy(id = 2)
+        )
+
+        logShotViewModel.shotId = shotId
+
+        val result = logShotViewModel.filterShotsById(shots = shotLoggedList)
+
+        Assertions.assertEquals(result, listOf(TestShotLogged.build().copy(id = 11), TestShotLogged.build().copy(id = 22)))
+    }
+
+    @Test
+    fun `delete shot alert`() {
+        logShotViewModel.logShotMutableStateFlow.value = LogShotState(shotName = "Hook Shot")
+
+        every { application.getString(StringsIds.deleteShot) } returns "Delete Shot"
+        every { application.getString(StringsIds.yes) } returns "Yes"
+        every { application.getString(StringsIds.no) } returns "No"
+        every { application.getString(StringsIds.areYouSureYouWantToDeleteXShot, "Hook Shot") } returns "Are you sure you want to delete Hook Shot?"
+
+        val result = logShotViewModel.deleteShotAlert()
+
+        Assertions.assertEquals(result.title, "Delete Shot")
+        Assertions.assertEquals(result.description, "Are you sure you want to delete Hook Shot?")
+        Assertions.assertEquals(result.confirmButton!!.buttonText, "Yes")
+        Assertions.assertEquals(result.dismissButton!!.buttonText, "No")
+    }
+
+    @Test
+    fun `delete shot confirm alert`() {
+        logShotViewModel.logShotMutableStateFlow.value = LogShotState(shotName = "Hook Shot")
+
+        every { application.getString(StringsIds.shotHasBeenDeleted) } returns "Shot Has Been Deleted"
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+        every { application.getString(StringsIds.xShotHasBeenRemovedDescription, "Hook Shot") } returns "Hook Shot has been removed from this player\'s shot history"
+
+        val result = logShotViewModel.deleteShotConfirmAlert()
+
+        Assertions.assertEquals(result.title, "Shot Has Been Deleted")
+        Assertions.assertEquals(result.description, "Hook Shot has been removed from this player's shot history")
+        Assertions.assertEquals(result.confirmButton!!.buttonText, "Got It")
+    }
+
+    @Test
+    fun `delete shot error alert`() {
+        logShotViewModel.logShotMutableStateFlow.value = LogShotState(shotName = "Hook Shot")
+
+        every { application.getString(StringsIds.shotHasNotBeenDeleted) } returns "Shot Has Not Been Deleted"
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+        every { application.getString(StringsIds.xShotHasNotBeenRemovedDescription, "Hook Shot") } returns "Hook Shot has not been removed from this player\'s shot history"
+
+        val result = logShotViewModel.deleteShotErrorAlert()
+
+        Assertions.assertEquals(result.title, "Shot Has Not Been Deleted")
+        Assertions.assertEquals(result.description, "Hook Shot has not been removed from this player's shot history")
+        Assertions.assertEquals(result.confirmButton!!.buttonText, "Got It")
+    }
+
+    @Test
+    fun `on delete shot clicked should call delete show alert on navigation`() {
+        logShotViewModel.onDeleteShotClicked()
+
+        verify { navigation.alert(alert = any()) }
     }
 }
