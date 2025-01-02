@@ -520,32 +520,32 @@ class LogShotViewModel(
 
     suspend fun onYesDeleteShot() {
         navigation.enableProgress(progress = Progress())
-            currentPlayer?.let { player ->
-                playerRepository.updatePlayer(
-                    currentPlayer = player,
-                    newPlayer = player.copy(
-                        firstName = player.firstName,
-                        lastName = player.lastName,
-                        position = player.position,
-                        firebaseKey = player.firebaseKey,
-                        imageUrl = player.imageUrl,
-                        shotsLoggedList = filterShotsById(shots = player.shotsLoggedList)
-                    )
+        currentPlayer?.let { player ->
+            playerRepository.updatePlayer(
+                currentPlayer = player,
+                newPlayer = player.copy(
+                    firstName = player.firstName,
+                    lastName = player.lastName,
+                    position = player.position,
+                    firebaseKey = player.firebaseKey,
+                    imageUrl = player.imageUrl,
+                    shotsLoggedList = filterShotsById(shots = player.shotsLoggedList)
                 )
+            )
 
-                deleteFirebaseUserInfo.deleteShot(
-                    playerKey = player.firebaseKey,
-                    index = shotId - 1
-                ).collectLatest { hasDeleted ->
-                    if (hasDeleted) {
-                        navigateToCreateOrEditPlayer()
-                        navigation.alert(alert = deleteShotConfirmAlert())
-                    } else {
-                        navigation.disableProgress()
-                        navigation.alert(alert = deleteShotErrorAlert())
-                    }
+            deleteFirebaseUserInfo.deleteShot(
+                playerKey = player.firebaseKey,
+                index = shotId - 1
+            ).collectLatest { hasDeleted ->
+                if (hasDeleted) {
+                    navigateToCreateOrEditPlayer()
+                    navigation.alert(alert = deleteShotConfirmAlert())
+                } else {
+                    navigation.disableProgress()
+                    navigation.alert(alert = deleteShotErrorAlert())
                 }
-            } ?: navigation.disableProgress()
+            }
+        } ?: navigation.disableProgress()
     }
 
     fun deleteShotAlert(): Alert {

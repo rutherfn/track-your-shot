@@ -936,18 +936,22 @@ class LogShotViewModelTest {
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
-            verify(exactly = 0) { navigation.alert(alert = any())}
+            verify(exactly = 0) { navigation.alert(alert = any()) }
         }
 
         @Test
         fun `when edited player is not null and hasDeleted returns false should navigate to alert`() = runTest {
-            val currentPlayer = TestPlayer().create().copy(shotsLoggedList = listOf(
-                TestShotLogged.build().copy(id = 11),
-                TestShotLogged.build().copy(id = 22)
-            ))
-            val newPlayer = TestPlayer().create().copy(shotsLoggedList = listOf(
-                TestShotLogged.build().copy(id = 11)
-            ))
+            val currentPlayer = TestPlayer().create().copy(
+                shotsLoggedList = listOf(
+                    TestShotLogged.build().copy(id = 11),
+                    TestShotLogged.build().copy(id = 22)
+                )
+            )
+            val newPlayer = TestPlayer().create().copy(
+                shotsLoggedList = listOf(
+                    TestShotLogged.build().copy(id = 11)
+                )
+            )
 
             logShotViewModel.shotId = 22
             logShotViewModel.currentPlayer = currentPlayer
@@ -963,13 +967,17 @@ class LogShotViewModelTest {
 
         @Test
         fun `when edited player is not null and hasDeleted returns true should pop and navigate to alert`() = runTest {
-            val currentPlayer = TestPlayer().create().copy(shotsLoggedList = listOf(
-                TestShotLogged.build().copy(id = 11),
-                TestShotLogged.build().copy(id = 22)
-            ))
-            val newPlayer = TestPlayer().create().copy(shotsLoggedList = listOf(
-                TestShotLogged.build().copy(id = 11)
-            ))
+            val currentPlayer = TestPlayer().create().copy(
+                shotsLoggedList = listOf(
+                    TestShotLogged.build().copy(id = 11),
+                    TestShotLogged.build().copy(id = 22)
+                )
+            )
+            val newPlayer = TestPlayer().create().copy(
+                shotsLoggedList = listOf(
+                    TestShotLogged.build().copy(id = 11)
+                )
+            )
 
             logShotViewModel.shotId = 22
             logShotViewModel.isExistingPlayer = true
@@ -992,7 +1000,7 @@ class LogShotViewModelTest {
         val shotLoggedList = listOf(
             TestShotLogged.build().copy(id = 11),
             TestShotLogged.build().copy(id = 22),
-            TestShotLogged.build().copy(id = 2),
+            TestShotLogged.build().copy(id = 2)
         )
 
         logShotViewModel.shotId = shotId
