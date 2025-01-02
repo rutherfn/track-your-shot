@@ -46,7 +46,7 @@ class LogShotViewModel(
     private val currentPendingShot: CurrentPendingShot
 ) : ViewModel() {
 
-    internal val logShotMutableStateFlow = MutableStateFlow(value = LogShotState())
+    val logShotMutableStateFlow = MutableStateFlow(value = LogShotState())
     val logShotStateFlow = logShotMutableStateFlow.asStateFlow()
 
     internal var isExistingPlayer = false
@@ -108,8 +108,7 @@ class LogShotViewModel(
     }
 
     private suspend fun updateStateForViewShot() {
-        if (viewCurrentExistingShot == true) {
-            println("this is set to true $viewCurrentExistingShot")
+        if (viewCurrentExistingShot) {
             currentPlayer?.shotsLoggedList?.first { shotLogged -> shotLogged.id == shotId }?.let { shot ->
                 logShotMutableStateFlow.update { state ->
                     state.copy(
@@ -517,13 +516,10 @@ class LogShotViewModel(
 
     fun onBackClicked() = navigation.pop()
 
-    fun filterShotsById(shots: List<ShotLogged>): List<ShotLogged> {
-        return shots.filter { it.id != shotId }
-    }
+    fun filterShotsById(shots: List<ShotLogged>): List<ShotLogged> = shots.filter { it.id != shotId }
 
-    fun onYesDeleteShot() {
+    suspend fun onYesDeleteShot() {
         navigation.enableProgress(progress = Progress())
-        scope.launch {
             currentPlayer?.let { player ->
                 playerRepository.updatePlayer(
                     currentPlayer = player,
@@ -543,15 +539,13 @@ class LogShotViewModel(
                 ).collectLatest { hasDeleted ->
                     if (hasDeleted) {
                         navigateToCreateOrEditPlayer()
-                        // update a state flow that updates the create and edit player state flow
                         navigation.alert(alert = deleteShotConfirmAlert())
                     } else {
                         navigation.disableProgress()
                         navigation.alert(alert = deleteShotErrorAlert())
                     }
                 }
-            }
-        }
+            } ?: navigation.disableProgress()
     }
 
     fun deleteShotAlert(): Alert {
@@ -560,7 +554,7 @@ class LogShotViewModel(
             description = application.getString(StringsIds.areYouSureYouWantToDeleteXShot, logShotMutableStateFlow.value.shotName),
             confirmButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.yes),
-                onButtonClicked = { onYesDeleteShot() }
+                onButtonClicked = { scope.launch { onYesDeleteShot() } }
             ),
             dismissButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.no),

@@ -24,6 +24,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PLAYER_FIREBASE_KEY
@@ -59,6 +60,7 @@ class CreateEditPlayerViewModelTest {
 
     private val application = mockk<Application>(relaxed = true)
 
+    private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
     private val updateFirebaseUserInfo = mockk<UpdateFirebaseUserInfo>(relaxed = true)
     private val readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
@@ -127,6 +129,7 @@ class CreateEditPlayerViewModelTest {
 
         createEditPlayerViewModel = CreateEditPlayerViewModel(
             application = application,
+            deleteFirebaseUserInfo = deleteFirebaseUserInfo,
             createFirebaseUserInfo = createFirebaseUserInfo,
             updateFirebaseUserInfo = updateFirebaseUserInfo,
             readFirebaseUserInfo = readFirebaseUserInfo,
@@ -193,6 +196,66 @@ class CreateEditPlayerViewModelTest {
             )
 
             verify { navigation.alert(alert = alert) }
+        }
+    }
+
+    @Nested
+    inner class CollectHasDeletedShotFlow {
+        val player = TestPlayer().create()
+
+        @Test
+        fun `hasDeletedShotFlow emits a flow value of false should not update state`() = runTest {
+            coEvery { deleteFirebaseUserInfo.hasDeletedShotFlow } returns flowOf(value = false)
+
+            createEditPlayerViewModel.collectHasDeletedShotFlow()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState()
+            )
+        }
+
+        @Test
+        fun `hasDeletedShotFlow emits a flow value of true and fetch player by name returns null should not update state`() = runTest {
+            createEditPlayerViewModel.editedPlayer = player
+
+            coEvery { deleteFirebaseUserInfo.hasDeletedShotFlow } returns flowOf(value = true)
+            coEvery { playerRepository.fetchPlayerByName(firstName = player.firstName, lastName = player.lastName) } returns null
+
+            createEditPlayerViewModel.collectHasDeletedShotFlow()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState()
+            )
+        }
+
+        @Test
+        fun `hasDeletedShotFlow emits a flow value of true and fetch player by name returns player should update state`() = runTest {
+            coEvery { application.getString(StringsIds.center) } returns "Center"
+            coEvery { application.getString(StringsIds.editPlayer) } returns "Edit Player"
+
+            createEditPlayerViewModel.editedPlayer = player
+
+            coEvery { deleteFirebaseUserInfo.hasDeletedShotFlow } returns flowOf(value = true)
+            coEvery { playerRepository.fetchPlayerByName(firstName = player.firstName, lastName = player.lastName) } returns player
+
+            createEditPlayerViewModel.collectHasDeletedShotFlow()
+
+            Assertions.assertEquals(
+                createEditPlayerViewModel.createEditPlayerStateFlow.value,
+                CreateEditPlayerState(
+                    firstName = player.firstName,
+                    lastName = player.lastName,
+                    editedPlayerUrl = player.imageUrl ?: "",
+                    toolbarNameResId = StringsIds.editPlayer,
+                    playerPositionString = "Center",
+                    hintLogNewShotText = " first last",
+                    shots = player.shotsLoggedList
+                )
+            )
+
+            verify { deleteFirebaseUserInfo.updateHasDeletedShotFlow(hasDeletedShot = false) }
         }
     }
 
