@@ -132,6 +132,7 @@ dependencies {
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.uiToolingPreview)
 
+    implementation(Dependencies.Firebase.analytics)
     implementation(Dependencies.Firebase.authKtx)
     implementation(Dependencies.Firebase.bom)
     implementation(Dependencies.Firebase.databaseKtx)

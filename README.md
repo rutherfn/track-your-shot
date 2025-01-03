@@ -78,7 +78,7 @@ More info can be found here [MVVM](https://developer.android.com/codelabs/basic-
 - **Timber**: A logging utility for Android that simplifies and enhances the logging process.
 
 ## Live Google Play Store
-Coming Soon
+[Track Your Shot](https://play.google.com/store/apps/details?id=com.nicholas.rutherford.track.your.shot.release)
 
 ## Project Status
 :white_check_mark: In Progress

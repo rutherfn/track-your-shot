@@ -50,6 +50,7 @@ object Versions {
         object Espresso { const val core = "3.3.0" }
 
         object Firebase {
+            const val analytics = "22.1.2"
             const val authKtx = "21.1.0"
             const val bom = "31.0.3"
             const val ktx = "20.1.0"
