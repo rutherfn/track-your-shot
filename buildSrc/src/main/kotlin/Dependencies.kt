@@ -50,6 +50,7 @@ object Dependencies {
     }
 
     object Firebase {
+        const val analytics = "com.google.firebase:firebase-analytics:${Versions.Dependencies.Firebase.analytics}"
         const val authKtx = "com.google.firebase:firebase-auth-ktx:${Versions.Dependencies.Firebase.authKtx}"
         const val bom = "com.google.firebase:firebase-bom:${Versions.Dependencies.Firebase.bom}"
         const val databaseKtx = "com.google.firebase:firebase-database-ktx:${Versions.Dependencies.Firebase.ktx}"

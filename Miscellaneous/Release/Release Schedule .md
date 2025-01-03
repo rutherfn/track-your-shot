@@ -9,7 +9,7 @@
 
 ## Release Schedule
 
-### Version 1.0.0
+### Version 1.0.0 (Released)
 
 - **Release Date:** January
 - **Features:**
