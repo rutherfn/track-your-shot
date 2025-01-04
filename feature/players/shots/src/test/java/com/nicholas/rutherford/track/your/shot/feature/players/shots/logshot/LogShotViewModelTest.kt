@@ -405,10 +405,10 @@ class LogShotViewModelTest {
     }
 
     @Test
-    fun `update state after shots made input should update state`() {
+    fun `update shots after made state should update state`() {
         val shots = 2
 
-        logShotViewModel.updateStateAfterShotsMadeInput(shots = shots)
+        logShotViewModel.updateShotsMadeState(shots = shots)
 
         val state = logShotViewModel.logShotMutableStateFlow.value
         Assertions.assertEquals(
@@ -468,6 +468,110 @@ class LogShotViewModelTest {
     }
 
     @Nested
+    inner class OnConfirmShotsMadeClicked {
+
+        @Test
+        fun `when passed in shots value is empty should not update state or call alert`() {
+            logShotViewModel.onConfirmShotsMadeClicked(shotsValue = "")
+
+            val state = logShotViewModel.logShotMutableStateFlow.value
+            Assertions.assertEquals(
+                state,
+                LogShotState()
+            )
+
+            verify(exactly = 0) { navigation.alert(alert = any())}
+        }
+
+        @Test
+        fun `when passed in shots value is a invalid int should not update state and call alert`() {
+            logShotViewModel.onConfirmShotsMadeClicked(shotsValue = "22.111")
+
+            val state = logShotViewModel.logShotMutableStateFlow.value
+            Assertions.assertEquals(
+                state,
+                LogShotState()
+            )
+
+            verify(exactly = 1) { navigation.alert(alert = any())}
+        }
+
+        @Test
+        fun `when passed in shots value is a valid int should update state and not call alert`() {
+            logShotViewModel.onConfirmShotsMadeClicked(shotsValue = "2")
+
+            val state = logShotViewModel.logShotMutableStateFlow.value
+            Assertions.assertEquals(
+                state,
+                LogShotState(
+                    shotName = "",
+                    playerName = "",
+                    shotsLoggedDateValue = "",
+                    shotsTakenDateValue = "",
+                    shotsMade = 2,
+                    shotsAttempted = 2,
+                    shotsMadePercentValue = "",
+                    shotsMissedPercentValue = ""
+                )
+            )
+
+            verify(exactly = 0) { navigation.alert(alert = any())}
+        }
+    }
+
+    @Nested
+    inner class OnConfirmShotsMissedClicked {
+
+        @Test
+        fun `when passed in shots value is empty should not update state or call alert`() {
+            logShotViewModel.onConfirmShotsMissedClicked(shotsValue = "")
+
+            val state = logShotViewModel.logShotMutableStateFlow.value
+            Assertions.assertEquals(
+                state,
+                LogShotState()
+            )
+
+            verify(exactly = 0) { navigation.alert(alert = any())}
+        }
+
+        @Test
+        fun `when passed in shots value is a invalid int should not update state and call alert`() {
+            logShotViewModel.onConfirmShotsMissedClicked(shotsValue = "22.111")
+
+            val state = logShotViewModel.logShotMutableStateFlow.value
+            Assertions.assertEquals(
+                state,
+                LogShotState()
+            )
+
+            verify(exactly = 1) { navigation.alert(alert = any())}
+        }
+
+        @Test
+        fun `when passed in shots value is a valid int should update state and not call alert`() {
+            logShotViewModel.onConfirmShotsMissedClicked(shotsValue = "2")
+
+            val state = logShotViewModel.logShotMutableStateFlow.value
+            Assertions.assertEquals(
+                state,
+                LogShotState(
+                    shotName = "",
+                    playerName = "",
+                    shotsLoggedDateValue = "",
+                    shotsTakenDateValue = "",
+                    shotsMissed = 2,
+                    shotsAttempted = 2,
+                    shotsMadePercentValue = "",
+                    shotsMissedPercentValue = ""
+                )
+            )
+
+            verify(exactly = 0) { navigation.alert(alert = any())}
+        }
+    }
+
+    @Nested
     inner class StartingInputAmount {
 
         @Test
@@ -505,13 +609,13 @@ class LogShotViewModelTest {
     fun `invalid shot alert should return alert`() {
         val description = "description"
 
-        every { application.getString(StringsIds.empty) } returns ""
+        every { application.getString(StringsIds.error) } returns "Error"
         every { application.getString(StringsIds.gotIt) } returns "Got It"
 
         Assertions.assertEquals(
             logShotViewModel.invalidLogShotAlert(description = description),
             Alert(
-                title = "",
+                title = "Error",
                 dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
                 description = description
             )
@@ -1025,6 +1129,19 @@ class LogShotViewModelTest {
         Assertions.assertEquals(result.description, "Are you sure you want to delete Hook Shot?")
         Assertions.assertEquals(result.confirmButton!!.buttonText, "Yes")
         Assertions.assertEquals(result.dismissButton!!.buttonText, "No")
+    }
+
+    @Test
+    fun `invalid shot input alert`() {
+        every { application.getString(StringsIds.invalidShotInput) } returns "Invalid Shot Input"
+        every { application.getString(StringsIds.invalidShotInputDescription) } returns "Shots logged must be whole numbers. Please enter a whole number to log valid shots made or missed."
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+
+        val result = logShotViewModel.invalidShotInputAlert()
+
+        Assertions.assertEquals(result.title, "Invalid Shot Input")
+        Assertions.assertEquals(result.description, "Shots logged must be whole numbers. Please enter a whole number to log valid shots made or missed.")
+        Assertions.assertEquals(result.confirmButton!!.buttonText, "Got It")
     }
 
     @Test

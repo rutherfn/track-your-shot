@@ -56,7 +56,6 @@ object StringsIds {
         R.string.device_is_currently_not_connected_to_internet_desc
     val doYouWishToProceedDescription =
         R.string.do_you_wish_to_proceed_description
-
     val emailHasBeenSentToRestPasswordPleaseFollowDirectionsToResetPassword =
         R.string.email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password
     val emailHasBeenSentToVerifyAccountPleaseOpenEmailSentEmailToVerifyAccount =
@@ -99,6 +98,8 @@ object StringsIds {
     val hintLogNewShots = R.string.hint_log_new_shots
     val hintLogNewShotsForPlayer = R.string.hint_log_new_shots_for_player
     val introduction = R.string.introduction
+    val invalidShotInput = R.string.invalid_shot_input
+    val invalidShotInputDescription = R.string.invalid_shot_input_description
     val issueOccurred = R.string.issue_occurred
     val lastName = R.string.last_name
     val leavingTheAppWillResultInYouNotFinishingTheAccountCreationProcessDescription =

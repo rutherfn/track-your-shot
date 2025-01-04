@@ -252,7 +252,23 @@ class LogShotViewModel(
         }
     }
 
-    internal fun updateStateAfterShotsMadeInput(shots: Int) {
+    internal fun onConfirmShotsMadeClicked(shotsValue: String) {
+        if (shotsValue.isNotEmpty()) {
+            shotsValue.toIntOrNull()?.let { shots ->
+                updateShotsMadeState(shots = shots)
+            } ?: navigation.alert(alert = invalidShotInputAlert())
+        }
+    }
+
+    internal fun onConfirmShotsMissedClicked(shotsValue: String) {
+        if (shotsValue.isNotEmpty()) {
+            shotsValue.toIntOrNull()?.let { shots ->
+                updateShotsMissedState(shots = shots)
+            } ?: navigation.alert(alert = invalidShotInputAlert())
+        }
+    }
+
+    internal fun updateShotsMadeState(shots: Int) {
         logShotMutableStateFlow.update { state ->
             state.copy(
                 shotsMade = shots,
@@ -306,11 +322,7 @@ class LogShotViewModel(
                 dismissButtonResId = StringsIds.cancel,
                 placeholderResId = StringsIds.shotsMade,
                 startingInputAmount = startingInputAmount(amount = logShotMutableStateFlow.value.shotsMade),
-                onConfirmButtonClicked = { shots ->
-                    if (shots.isNotEmpty()) {
-                        updateStateAfterShotsMadeInput(shots = shots.toInt())
-                    }
-                }
+                onConfirmButtonClicked = { shotsValue -> onConfirmShotsMadeClicked(shotsValue = shotsValue) }
             )
         )
     }
@@ -323,23 +335,15 @@ class LogShotViewModel(
                 dismissButtonResId = StringsIds.cancel,
                 placeholderResId = StringsIds.shotsMissed,
                 startingInputAmount = startingInputAmount(amount = logShotMutableStateFlow.value.shotsMissed),
-                onConfirmButtonClicked = { shots ->
-                    if (shots.isNotEmpty()) {
-                        updateShotsMissedState(shots = shots.toInt())
-                    }
-                }
+                onConfirmButtonClicked = { shotsValue -> onConfirmShotsMissedClicked(shotsValue = shotsValue) }
             )
         )
     }
 
     fun invalidLogShotAlert(description: String): Alert {
         return Alert(
-            title = application.getString(StringsIds.empty),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(
-                    StringsIds.gotIt
-                )
-            ),
+            title = application.getString(StringsIds.error),
+            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt)),
             description = description
         )
     }
@@ -560,6 +564,14 @@ class LogShotViewModel(
                 buttonText = application.getString(StringsIds.no),
                 onButtonClicked = {}
             )
+        )
+    }
+
+    fun invalidShotInputAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.invalidShotInput),
+            description = application.getString(StringsIds.invalidShotInputDescription),
+            confirmButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
         )
     }
 
