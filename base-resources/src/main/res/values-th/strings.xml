@@ -53,7 +53,6 @@
     <string name="do_you_wish_to_proceed_description">คุณต้องการดำเนินการต่อแม้จะมีการปรับเปลี่ยนผู้เล่นที่ยังไม่ได้บันทึกหรือไม่? การเปลี่ยนแปลงใด ๆ ที่เกิดขึ้นจะไม่ได้รับการบันทึก</string>
     <string name="edit_x">แก้ไข %s</string>
     <string name="enter_first_name">กรุณากรอกชื่อ</string>
-
     <string name="enter_last_name">กรุณากรอกนามสกุล</string>
     <string name="first_name">ชื่อจริง</string>
     <string name="forgot_password">ลืมรหัสผ่าน</string>

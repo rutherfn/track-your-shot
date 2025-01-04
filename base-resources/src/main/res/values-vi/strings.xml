@@ -53,7 +53,6 @@
     <string name="do_you_wish_to_proceed_description">Bạn có muốn tiếp tục mặc dù chưa lưu các thay đổi của người chơi không? Bất kỳ thay đổi nào được thực hiện sẽ không được lưu.</string>
     <string name="edit_x">Chỉnh sửa %s</string>
     <string name="enter_first_name">Nhập Tên</string>
-
     <string name="enter_last_name">Nhập Họ</string>
     <string name="first_name">Tên đầu tiên</string>
     <string name="forgot_password">Quên mật khẩu</string>

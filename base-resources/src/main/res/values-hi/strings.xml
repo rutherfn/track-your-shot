@@ -53,359 +53,180 @@
     <string name="do_you_wish_to_proceed_description">क्या आप बिना सहेजे गए प्लेयर संशोधनों के बावजूद आगे बढ़ना चाहते हैं? किए गए कोई भी परिवर्तन सहेजे नहीं जाएंगे.</string>
     <string name="edit_x">%s संपादित करें</string>
     <string name="enter_first_name">प्रथम नाम दर्ज करें</string>
-
-
     <string name="enter_last_name">अंतिम नाम दर्ज करो</string>
-
     <string name="first_name">पहला नाम</string>
-
     <string name="forgot_password">पासवर्ड भूल गए</string>
-
     <string name="email">ईमेल</string>
-
     <string name="email_in_use">ईमेल का उपयोग</string>
-
     <string name="email_in_use_description">यह ईमेल पहले से ही ट्रैक योर शॉट पर उपयोग में है. कृपया कोई भिन्न ईमेल पता उपयोग करें.</string>
-
     <string name="email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password">पासवर्ड रीसेट करने के लिए ईमेल भेज दिया गया है. कृपया पासवर्ड रीसेट करने के लिए निर्देशों का पालन करें.</string>
-
     <string name="email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account">खाता सत्यापित करने के लिए ईमेल भेज दिया गया है. कृपया खाता सत्यापित करने के लिए भेजा गया ईमेल खोलें.</string>
-
     <string name="email_is_not_in_correct_format_please_enter_email_in_correct_format">ईमेल सही प्रारूप में नहीं है. कृपया ईमेल सही प्रारूप में दर्ज करें</string>
-
     <string name="email_is_required_please_enter_a_email_to_create_a_account">ईमेल की जरूरत है. कृपया खाता बनाने के लिए ईमेल दर्ज करें.</string>
-
     <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">ईमेल की जरूरत है. कृपया मौजूदा खाते में लॉगइन करने के लिए ईमेल दर्ज करें.</string>
-
     <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">ईमेल की जरूरत है. कृपया मौजूदा खाते का पासवर्ड रीसेट करने के लिए ईमेल दर्ज करें.</string>
-
     <string name="enabled_permissions">सक्षम अनुमतियाँ</string>
-
     <string name="email_required">ईमेल*</string>
-
     <string name="enter_shots_made">बनाए गए शॉट्स दर्ज करें</string>
-
     <string name="enter_shots_missed">छूटे हुए शॉट्स दर्ज करें</string>
-
     <string name="edit_player">प्लेयर संपादित करें</string>
-
     <string name="empty"/>
-
     <string name="empty_field">खाली क्षेत्र</string>
-
     <string name="empty_fields">खाली फ़ील्ड</string>
-
     <string name="empty_fields_description">अपना खाता बनाना जारी रखने के लिए आवश्यक जानकारी अनुपलब्ध है. कृपया आवश्यक विवरण प्रदान करें.</string>
-
     <string name="error">गलती</string>
-
     <string name="error_creating_account">खाता बनाते समय त्रुटि</string>
-
     <string name="error_deleting_pending_account">लंबित खाता हटाने में त्रुटि</string>
-
     <string name="find_shots_by_name">नाम से शॉट्स खोजें </string>
-
     <string name="general">सामान्य</string>
-
     <string name="general_information">सामान्य जानकारी</string>
-
     <string name="got_it">समझ गया</string>
-
     <string name="having_trouble_creating_your_account_please_try_again">अपना खाता बनाने में समस्या आ रही है. कृपया पुन: प्रयास करें</string>
-
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">आपके खाते में लॉग इन करने में समस्या आ रही है. कृपया पुनः प्रयास करें और सुनिश्चित करें कि क्रेडेंशियल मौजूद हैं और वैध हैं.</string>
-
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">इस खाते के लिए पासवर्ड रीसेट करने में समस्या आ रही है. कृपया पुनः प्रयास करें और सुनिश्चित करें कि क्रेडेंशियल मौजूद हैं और वैध हैं.</string>
-
     <string name="hint_add_new_player">नया प्लेयर जोड़ने के लिए दाईं ओर टूलबार में + आइकन पर टैप करें</string>
-
     <string name="hint_log_new_shots">प्लेयर के लिए शॉट्स रिकॉर्ड करने के लिए लॉग शॉट्स बटन दबाएँ.</string>
-
     <string name="hint_log_new_shots_for_player">शॉट्स रिकॉर्ड करने के लिए लॉग शॉट्स बटन दबाएँ</string>
-
     <string name="introduction">परिचय</string>
-
     <string name="invalid_shot_input">अमान्य शॉट इनपुट</string>
-
     <string name="invalid_shot_input_description">लॉग किए गए शॉट्स पूर्ण संख्या में होने चाहिए. कृपया वैध शॉट या छूटे शॉट को लॉग करने के लिए पूर्ण संख्या दर्ज करें.</string>
-
     <string name="issue_occurred">समस्या उत्पन्न हुई</string>
-
     <string name="last_name">उपनाम</string>
-
     <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">ऐप छोड़ने से आप खाता निर्माण प्रक्रिया पूरी नहीं कर पाएंगे. जब तक आप अपना ईमेल सत्यापित नहीं कर लेते, आप आगे नहीं बढ़ सकेंगे. यदि आप अपना ईमेल सत्यापित करते हैं और फिर ऐप पर वापस आते हैं, तो आप अपना खाता बनाना जारी रख सकते हैं.</string>
-
     <string name="login">लॉग इन करें</string>
-
     <string name="login_icon_description">यह लॉगिन स्क्रीन के लिए लॉगिन छवि है</string>
-
     <string name="logout">लॉग आउट</string>
-
     <string name="log_shot">लॉग शॉट</string>
-
     <string name="log_shots">लॉग शॉट्स</string>
-
     <string name="log_your_shots">अपने शॉट्स लॉग करें</string>
-
     <string name="log_your_shots_description">आप जिस प्रकार का शॉट रिकॉर्ड करना चाहते हैं, उसे चुनें तथा उस दिन के लिए सफलता और असफलता की जानकारी दर्ज करें, जिस दिन खिलाड़ी ने उन्हें लिया था.</string>
-
     <string name="menu">मेनू</string>
-
     <string name="more_info">और जानकारी</string>
-
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">कई फ़ील्ड आवश्यक हैं जिन्हें दर्ज नहीं किया गया है. कृपया सभी फ़ील्ड भरें.</string>
-
     <string name="next">अगला</string>
-
     <string name="no">नहीं</string>
-
     <string name="no_changes_made">कोई परिवर्तन नहीं किया गया</string>
-
     <string name="not_connected_to_internet">इंटरनेट से कनेक्ट नहीं है</string>
-
     <string name="no_first_name_entered">कोई प्रथम नाम दर्ज नहीं किया गया</string>
-
     <string name="no_last_name_entered">कोई अंतिम नाम दर्ज नहीं किया गया</string>
-
     <string name="no_shots_results_found">कोई शॉट परिणाम नहीं मिला</string>
-
     <string name="no_shots_results_found_description">आपकी खोज में कोई मेल खाता शॉट नहीं मिला. कृपया मौजूदा शॉट नाम के साथ खोज अपडेट करें.</string>
-
     <string name="not_now">अभी नहीं</string>
-
     <string name="no_current_players_added">कोई वर्तमान खिलाड़ी नहीं जोड़ा गया</string>
-
     <string name="no_current_shots_logged_for_player">खिलाड़ी के लिए कोई वर्तमान शॉट लॉग नहीं किया गया</string>
-
     <string name="open_email">ईमेल खोलें</string>
-
     <string name="ok">ठीक है</string>
-
     <string name="other_resources">अन्य संसाधन</string>
-
     <string name="other_resources_description">यद्यपि मोबाइल एप्लीकेशन और सेवाएं अन्य संसाधनों (जैसे वेबसाइट, मोबाइल एप्लीकेशन, आदि) से जुड़ सकती हैं, फिर भी हम प्रत्यक्ष या अप्रत्यक्ष रूप से किसी भी लिंक किए गए संसाधन के साथ कोई अनुमोदन, सहयोग, प्रायोजन, समर्थन या संबद्धता नहीं दर्शा रहे हैं, जब तक कि यहां विशेष रूप से उल्लेख न किया गया हो. हम किसी भी व्यवसाय या व्यक्ति या उनके संसाधनों की सामग्री की जांच या मूल्यांकन के लिए जिम्मेदार नहीं हैं, और हम उनकी पेशकश की गारंटी नहीं देते हैं. हम किसी भी अन्य तृतीय पक्ष के कार्यों, उत्पादों, सेवाओं और सामग्री के लिए कोई जिम्मेदारी या दायित्व नहीं लेते हैं. आपको मोबाइल एप्लीकेशन में लिंक के माध्यम से प्राप्त किसी भी संसाधन के कानूनी विवरण और उपयोग की अन्य शर्तों की सावधानीपूर्वक समीक्षा करनी चाहिए. किसी भी अन्य ऑफ-साइट संसाधन से लिंक करना आपके अपने जोखिम पर है.</string>
-
     <string name="reset_password">पासवर्ड रीसेट</string>
-
     <string name="reset_password_email_sent">पासवर्ड रीसेट करें ईमेल भेजा गया</string>
-
     <string name="resend_email">ईमेल दुबारा भेजें</string>
-
     <string name="select_a_shot">एक शॉट का चयन करें</string>
-
     <string name="selecting_a_shot">एक शॉट का चयन</string>
-
     <string name="select_date">तारीख़ चुनें</string>
-
     <string name="password">पासवर्ड</string>
-
     <string name="password_helper_text">पासवर्ड कम से कम 8 अक्षरों का होना चाहिए और इसमें शामिल होना चाहिए: एक लोअरकेस अक्षर (a–z), एक अपरकेस अक्षर (A–Z), एक संख्या (0–9), और एक विशेष वर्ण (जैसे, \@, $, !, %, *).</string>
-
     <string name="password_required">पासवर्ड*</string>
-
     <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">पासवर्ड सही प्रारूप में नहीं है. कृपया पासवर्ड सही प्रारूप में दर्ज करें</string>
-
     <string name="password_is_required_please_enter_a_password_to_create_a_account">पासवर्ड आवश्यक है. कृपया खाता बनाने के लिए पासवर्ड दर्ज करें.</string>
-
     <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">पासवर्ड आवश्यक है. कृपया मौजूदा खाते में लॉगइन करने के लिए पासवर्ड दर्ज करें.</string>
-
     <string name="pending_shots">लंबित शॉट्स</string>
-
     <string name="permissions">अनुमतियां</string>
-
     <string name="permission_has_been_declined">अनुमति अस्वीकृत कर दी गई है</string>
-
     <string name="pg">पीजी</string>
-
-
     <string name="point_guard">पॉइंट गार्ड</string>
-
     <string name="power_forward">शक्ति अग्रेषण</string>
-
     <string name="pf">पीएफ</string>
-
     <string name="player_already_has_been_added_description">निर्दिष्ट खिलाड़ी का नाम पहले ही शामिल किया जा चुका है. कृपया एक नये खिलाड़ी को ऐसे नाम से जोड़ें जो पहले नहीं जोड़ा गया हो.</string>
-
     <string name="player_creation_failed_please_try_again">प्लेयर निर्माण विफल हुआ. कृपया पुन: प्रयास करें.</string>
-
     <string name="player_image">खिलाड़ी छवि</string>
-
     <string name="player_is_invalid_please_try_again">वर्तमान खिलाड़ी अमान्य है. कृपया पुनः लॉग शॉट का प्रयास करें</string>
-
     <string name="players">खिलाड़ी</string>
-
     <string name="players_first_name_empty_description">खिलाड़ी का प्रथम नाम गायब है. कृपया आगे बढ़ने के लिए अपना प्रथम नाम बताएं.</string>
-
     <string name="players_last_name_empty_description">खिलाड़ी का अंतिम नाम गायब है. कृपया आगे बढ़ने के लिए अपना प्रथम नाम बताएं.</string>
-
     <string name="position">पद</string>
-
     <string name="proceed_with_your_account">अपने खाते के साथ आगे बढ़ें</string>
-
     <string name="read_external_storage_permission_explanation">हम बाह्य भंडारण पढ़ने की अनुमति मांगते हैं ताकि उपयोगकर्ता खिलाड़ी प्रोफ़ाइल बनाते या संपादित करते समय अपनी गैलरी से कोई छवि चुन सकें. यह अनुमति ऐप को डिवाइस के बाह्य भंडारण पर संग्रहीत छवियों तक पहुंचने की अनुमति देती है, जिससे उपयोगकर्ता छवियों को चुन सकते हैं और उन्हें अपने खिलाड़ी प्रोफाइल के साथ संबद्ध कर सकते हैं. इस अनुमति के बिना, उपयोगकर्ता इस सुविधा के लिए बाह्य संग्रहण से छवियों का चयन नहीं कर पाएंगे.</string>
-
     <string name="read_external_storage_permission">बाह्य संग्रहण अनुमति पढ़ें</string>
-
     <string name="read_media_images_permission">मीडिया छवियाँ पढ़ने की अनुमति</string>
-
     <string name="read_media_images_permission_explanation">हम मीडिया छवियों को पढ़ने की अनुमति मांगते हैं ताकि उपयोगकर्ता खिलाड़ी प्रोफ़ाइल बनाते या संपादित करते समय अपनी गैलरी से एक छवि का चयन कर सकें. यह अनुमति ऐप को डिवाइस पर संग्रहीत छवियों तक पहुंचने की अनुमति देती है, जिससे उपयोगकर्ता छवियों को चुन सकते हैं और उन्हें अपने खिलाड़ी प्रोफाइल के साथ संबद्ध कर सकते हैं. इस अनुमति के बिना, उपयोगकर्ता इस सुविधा के लिए अपनी गैलरी से छवियों का चयन नहीं कर पाएंगे.</string>
-
     <string name="read_media_images">मीडिया छवियाँ पढ़ें</string>
-
     <string name="read_external_storage_description">बाह्य भंडारण को पढ़ने की अनुमति अस्वीकृत कर दी गई है. बाह्य संग्रहण पढ़ने की अनुमति को मैन्युअल रूप से सक्षम करने और प्लेयर के लिए गैलरी से एक छवि का चयन करने के लिए, कृपया सेटिंग्स पर जाएँ.</string>
-
     <string name="read_media_images_description">मीडिया छवियों को पढ़ने की अनुमति अस्वीकृत कर दी गई है. मीडिया चित्र पढ़ने की अनुमति को मैन्युअल रूप से सक्षम करने और प्लेयर के लिए गैलरी से एक चित्र का चयन करने के लिए, कृपया सेटिंग्स पर जाएँ.</string>
-
     <string name="remove_image">छवि हटाएँ</string>
-
     <string name="settings">सेटिंग्स</string>
-
     <string name="settings_help_description">सेटिंग पेज पर, आप अपनी खाता जानकारी देख सकते हैं, नियम और शर्तों की समीक्षा कर सकते हैं, ऐप उपयोग विवरण तक पहुंच सकते हैं, और हमारे द्वारा अनुरोधित अनुमतियों के बारे में जान सकते हैं और यह भी जान सकते हैं कि हमें उनकी आवश्यकता क्यों है.</string>
-
     <string name="shot_has_been_deleted">शॉट हटा दिया गया है</string>
-
     <string name="shot_has_not_been_deleted">शॉट Hsa हटाया नहीं गया</string>
-
     <string name="shot_percentage">%s %%</string>
-
     <string name="shot_updated">शॉट अपडेट किया गया</string>
-
     <string name="shots">फुहार</string>
-
     <string name="shots_attempted">शॉट का प्रयास</string>
-
     <string name="shots_made">शॉट्स बनाए गए</string>
-
     <string name="shots_made_percentage">शॉट्स का प्रतिशत</string>
-
     <string name="shots_missed_percentage">शॉट छूटने का प्रतिशत</string>
-
     <string name="shots_missed">शॉट छूट गए</string>
-
     <string name="shots_not_recorded_description">आपने कोई भी सफल शॉट रिकॉर्ड नहीं किया है. कृपया शॉट को लॉग करने के लिए किए गए शॉट्स की संख्या दर्ज करें.</string>
-
     <string name="missed_shots_not_recorded_description">आपने कोई छूटा हुआ शॉट रिकॉर्ड नहीं किया है. कृपया शॉट लॉग करने के लिए छूटे हुए शॉट्स की संख्या दर्ज करें.</string>
-
     <string name="date_shot_was_taken_description">आपने शॉट लेने की तारीख दर्ज नहीं की है. कृपया इस शॉट को लॉग करने के लिए शॉट लिए जाने की तारीख दर्ज करें.</string>
-
     <string name="show_less">कम दिखाएं</string>
-
     <string name="show_more">अधिक दिखाएं</string>
-
     <string name="sf">एस एफ</string>
-
     <string name="sg">एसजी</string>
-
     <string name="small_forward">स्मॉल फ़ॉरवर्ड</string>
-
     <string name="shooting_guard">मृगया रक्षक</string>
-
     <string name="shot_info">शॉट जानकारी</string>
-
     <string name="shot_name_x">शॉट का नाम - %s \n</string>
-
     <string name="shots_made_x">\nबनाए गए शॉट्स - %s</string>
-
     <string name="shots_made_percentage_x">\nबनाए गए शॉट्स का प्रतिशत: %s</string>
-
     <string name="stats">आँकड़े</string>
-
     <string name="splash_icon_description">यह स्प्लैश स्क्रीन के लिए एक स्प्लैश छवि है जो ऐप ट्रिगर होने से पहले प्रदर्शित होती है</string>
-
     <string name="successfully_sent_email_verification">सत्यापन सफलतापूर्वक भेजा गया</string>
-
     <string name="take_a_picture">एक तस्वीर ले लो</string>
-
-
     <string name="terms_conditions">नियम एवं शर्तें</string>
-
     <string name="terms_conditions_description">ये नियम और शर्तें (अनुबंध) ट्रैक योर शॉट मोबाइल एप्लिकेशन (मोबाइल एप्लिकेशन या सेवा) और इसके किसी भी संबंधित उत्पाद और सेवाओं (सामूहिक रूप से, सेवाएं) के आपके उपयोग के सामान्य नियम और शर्तें निर्धारित करते हैं. यह अनुबंध आपके (उपयोगकर्ता, आप या आपके) और ट्रैक योर शॉट (ट्रैक योर शॉट, हम, हमें या हमारा) के बीच कानूनी रूप से बाध्यकारी है. यदि आप किसी व्यवसाय या अन्य कानूनी इकाई की ओर से इस अनुबंध में प्रवेश कर रहे हैं, तो आप प्रतिनिधित्व करते हैं कि आपके पास ऐसी इकाई को इस अनुबंध से बांधने का अधिकार है, ऐसी स्थिति में उपयोगकर्ता, आप या आपका शब्द ऐसी इकाई को संदर्भित करेंगे. यदि आपके पास ऐसा अधिकार नहीं है, या यदि आप इस अनुबंध की शर्तों से सहमत नहीं हैं, तो आपको इस अनुबंध को स्वीकार नहीं करना चाहिए और मोबाइल एप्लिकेशन और सेवाओं तक पहुंच और उनका उपयोग नहीं करना चाहिए. मोबाइल एप्लिकेशन और सेवाओं तक पहुंच और उनका उपयोग करके, आप स्वीकार करते हैं कि आपने इस अनुबंध की शर्तों को पढ़ लिया है, समझ लिया है और उनसे बाध्य होने के लिए सहमत हैं. आप स्वीकार करते हैं कि यह अनुबंध आपके और ट्रैक योर शॉट के बीच एक अनुबंध है, भले ही यह इलेक्ट्रॉनिक है और आपके द्वारा भौतिक रूप से हस्ताक्षरित नहीं है, और यह मोबाइल एप्लिकेशन और सेवाओं के आपके उपयोग को नियंत्रित करता है.</string>
-
     <string name="track_your_progress">अपनी प्रगति पर नज़र रखें</string>
-
     <string name="track_your_progress_description">कई दिनों में विभिन्न शॉट प्रकारों के लिए शूटिंग प्रतिशत रिकॉर्ड करें और सहेजे गए आँकड़ों को सीधे मोबाइल ऐप में देखें.</string>
-
     <string name="the_image_upload_was_unsuccessful">छवि अपलोड असफल रहा. कृपया एक बार पुनः प्रयास करें.</string>
-
     <string name="there_was_a_error_creating_your_account_please_try_again">आपका खाता बनाते समय एक त्रुटि हुई. कृपया पुन: प्रयास करें.</string>
-
     <string name="there_was_a_error_deleting_your_account_please_try_again">आपका खाता हटाते समय कोई त्रुटि हुई. कृपया पुन: प्रयास करें.</string>
-
     <string name="this_document_was_last_updated_on">इस दस्तावेज़ को अंतिम बार 9 नवंबर, 2024 को अपडेट किया गया था</string>
-
     <string name="this_email_is_already_used_for_another_account_please_enter_a_new_email">यह ईमेल पहले से ही किसी अन्य खाते के लिए उपयोग किया जा रहा है. कृपया नया ईमेल दर्ज करें.</string>
-
     <string name="this_username_is_already_used_for_another_account_please_enter_a_new_username">यह उपयोगकर्ता नाम पहले से ही किसी अन्य खाते के लिए उपयोग किया जा रहा है. कृपया नया उपयोगकर्ता नाम दर्ज करें.</string>
-
     <string name="track_your_shot">अपने शॉट को ट्रैक करें</string>
-
     <string name="try_again">पुनः प्रयास करें</string>
-
     <string name="username">उपयोगकर्ता नाम</string>
-
     <string name="username_required">उपयोगकर्ता नाम*</string>
-
     <string name="username_in_use">उपयोग में उपयोगकर्ता नाम</string>
-
     <string name="username_in_use_description">यह उपयोगकर्ता नाम ट्रैक योर शॉट पर पहले से ही उपयोग में है. कृपया कोई भिन्न उपयोगकर्ता नाम उपयोग करें.</string>
-
     <string name="username_is_not_in_correct_format_please_enter_username_in_correct_format">उपयोगकर्ता नाम सही प्रारूप में नहीं है. कृपया उपयोगकर्ता नाम सही प्रारूप में दर्ज करें</string>
-
     <string name="unable_to_create_account">खाता बनाने में असमर्थ</string>
-
     <string name="unable_to_delete_player_please_contact_support">प्लेयर को हटाने में असमर्थ. कृपया सहायता से संपर्क करें.</string>
-
     <string name="unable_to_login_to_account">खाते में लॉग इन करने में असमर्थ</string>
-
     <string name="unable_to_reset_password">पासवर्ड रीसेट करने में असमर्थ</string>
-
     <string name="unable_to_set_new_username">नया उपयोगकर्ता नाम सेट करने में असमर्थ</string>
-
     <string name="unable_to_send_email_verification">ईमेल सत्यापन भेजने में असमर्थ</string>
-
     <string name="unable_to_upload_image">छवि अपलोड करने में असमर्थ</string>
-
     <string name="unsaved_player_changes">सहेजे न गए प्लेयर परिवर्तन</string>
-
     <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">हमने आपके खाते में एक समस्या का पता लगाया है. कृपया समस्या के समाधान के लिए सहायता से संपर्क करें.</string>
-
     <string name="we_have_detected_currently_not_connected_to_internet_description">हमने पाया है कि यह वर्तमान में इंटरनेट से कनेक्ट नहीं है. कृपया सेवा से कनेक्ट करें और पुनः प्रयास करें.</string>
-
     <string name="username_is_required_please_enter_a_username_to_create_a_account">उपयोगकर्ता नाम आवश्यक है. कृपया खाता बनाने के लिए उपयोगकर्ता नाम दर्ज करें.</string>
-
     <string name="using_the_app">ऐप का उपयोग करना</string>
-
     <string name="we_were_able_to_send_email_verification_please_check_your_email_to_verify_account">हम ईमेल सत्यापन भेजने में सक्षम थे. कृपया खाता सत्यापित करने के लिए अपना ईमेल जांचें</string>
-
     <string name="we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again">हम ईमेल सत्यापन भेजने में असमर्थ रहे. कृपया पुनः प्रयास करने के लिए ईमेल सत्यापन भेजें पर क्लिक करें.</string>
-
     <string name="we_were_unable_to_set_new_username_since_the_username_is_empty_please_click_try_again_to_set_new_username">हम नया उपयोगकर्ता नाम सेट करने में असमर्थ थे क्योंकि उपयोगकर्ता नाम रिक्त था. कृपया नया उपयोगकर्ता नाम सेट करने के लिए पुनः प्रयास करें पर क्लिक करें</string>
-
     <string name="we_were_unable_to_set_new_username_since_the_username_is_the_same_as_the_current_username_please_click_try_again_to_set_new_username">हम नया उपयोगकर्ता नाम सेट करने में असमर्थ थे क्योंकि उपयोगकर्ता नाम वर्तमान उपयोगकर्ता नाम के समान ही है. कृपया नया उपयोगकर्ता नाम सेट करने के लिए पुनः प्रयास करें पर क्लिक करें</string>
-
     <string name="verify_account">खाता सत्यापित करें</string>
-
     <string name="view_more_info">अधिक जानकारी देखें</string>
-
     <string name="view_x">%s देखें</string>
-
     <string name="voice_commands">ध्वनि आदेश</string>
-
     <string name="x_position_x_player_name">%s , %s</string>
-
     <string name="x_shot">%s शॉट</string>
-
     <string name="x_shot_has_been_removed_description">%s को इस खिलाड़ी के शॉट इतिहास से हटा दिया गया है.</string>
-
     <string name="x_shot_has_not_been_removed_description">%s शॉट को इस खिलाड़ी के शॉट इतिहास से हटाया नहीं गया है. कृपया शॉट हटाने के लिए पुनः प्रयास करें.</string>
-
     <string name="x_shots">%s शॉट्स</string>
-
     <string name="x_shot_category">श्रेणी - %s</string>
-
     <string name="x_x">%s - %s</string>
-
     <string name="yes">हाँ</string>
-
     <string name="your_player_could_not_be_retrieved_description">आपका प्लेयर पुनः प्राप्त नहीं किया जा सका. कृपया पुन: प्रयास करें.</string>
 </resources>

@@ -53,8 +53,6 @@
     <string name="do_you_wish_to_proceed_description">尽管有未保存的播放器修改，您是否仍希望继续？所做的任何更改都不会被保存。</string>
     <string name="edit_x">修改%s</string>
     <string name="enter_first_name">输入名字</string>
-
-
     <string name="enter_last_name">输入姓氏</string>
     <string name="first_name">名</string>
     <string name="forgot_password">忘记密码</string>
@@ -148,6 +146,45 @@
     <string name="players_last_name_empty_description">该球员的姓氏缺失。请提供名字以继续。</string>
     <string name="position">位置</string>
     <string name="proceed_with_your_account">继续使用您的帐号</string>
+
+
+    <string name="read_external_storage_permission_explanation">我们请求读取外部存储权限，以便用户可以在创建或编辑玩家资料时从他们的图库中选择一个图像。此权限允许应用程序访问存储在设备外部存储器中的图像，从而使用户能够选择图像并将其与他们的玩家资料关联起来。如果没有此权限，用户将无法从外部存储中选择图像来使用此功能。</string>
+    <string name="read_external_storage_permission">读取外部存储权限</string>
+    <string name="read_media_images_permission">读取媒体图像许可</string>
+    <string name="read_media_images_permission_explanation">我们请求读取媒体图像的权限，以便用户可以在创建或编辑玩家资料时从他们的图库中选择图像。此权限允许应用程序访问设备上存储的图像，使用户能够选择图像并将其与他们的玩家资料关联起来。如果没有此权限，用户将无法从其图库中选择图像来使用此功能。</string>
+    <string name="read_media_images">阅读媒体图像</string>
+    <string name="read_external_storage_description">读取外部存储的权限已被拒绝。要手动启用读取外部存储权限并从图库中为播放器选择图像，请导航至设置。</string>
+    <string name="read_media_images_description">读取媒体图像的权限已被拒绝。要手动启用读取媒体图像权限并从图库中为播放器选择图像，请导航至设置。</string>
+    <string name="remove_image">移除图片</string>
+    <string name="settings">设置</string>
+    <string name="settings_help_description">在设置页面，您可以查看您的帐号信息、查看条款和条件、访问应用程序使用情况详情，并了解我们请求的权限以及我们需要这些权限的原因。</string>
+    <string name="shot_has_been_deleted">镜头已被删除</string>
+    <string name="shot_has_not_been_deleted">镜头 Hsa 未被删除</string>
+    <string name="shot_percentage">%s %%</string>
+    <string name="shot_updated">镜头更新</string>
+    <string name="shots">镜头</string>
+    <string name="shots_attempted">射门尝试</string>
+    <string name="shots_made">射门次数</string>
+    <string name="shots_made_percentage">投篮命中率</string>
+    <string name="shots_missed_percentage">射失率</string>
+    <string name="shots_missed">射失球数</string>
+    <string name="shots_not_recorded_description">您尚未记录任何成功的射击。请输入射击次数以继续记录射击。</string>
+    <string name="missed_shots_not_recorded_description">您尚未记录任何漏掉的投篮。请输入未击中的球数以继续记录击球次数。</string>
+    <string name="date_shot_was_taken_description">您尚未输入拍摄照片的日期。请输入拍摄照片的日期以继续记录照片。</string>
+    <string name="show_less">显示较少</string>
+    <string name="show_more">显示更多</string>
+    <string name="sf">科幻</string>
+    <string name="sg">新加坡</string>
+    <string name="small_forward">小前锋</string>
+    <string name="shooting_guard">得分后卫</string>
+    <string name="shot_info">射击信息</string>
+    <string name="shot_name_x">镜头名称 - %s \n</string>
+    <string name="shots_made_x">投篮命中数 - %s</string>
+    <string name="shots_made_percentage_x">投篮命中率：%s</string>
+    <string name="stats">统计资料</string>
+    <string name="splash_icon_description">这是应用程序触发前显示的启动画面的启动图像</string>
+    <string name="successfully_sent_email_verification">已成功发送验证</string>
+    <string name="take_a_picture">拍照</string>
     <string name="terms_conditions">条款和条件</string>
     <string name="terms_conditions_description">这些条款和条件（协议）规定了您使用 Track Your Shot 移动应用程序（移动应用程序或服务）及其任何相关产品和服务（统称为服务）的一般条款和条件。本协议在您（“用户”，“您”或“您的”）与 Track Your Shot（“Track Your Shot”，“我们”，“我们”或“我们的”）之间具有法律约束力。如果您代表企业或其他法律实体签订本协议，则您声明您有权约束该实体遵守本协议，在这种情况下，“用户”、“您”或“您的”应指该实体。如果您没有这样的权限，或者您不同意本协议的条款，则您不得接受本协议，并且不得访问和使用移动应用程序和服务。通过访问和使用移动应用程序和服务，您承认您已阅读、理解并同意受本协议条款的约束。您承认本协议是您与 Track Your Shot 之间的合同，即使它是电子版且未经您亲自签署，并且它管辖您对移动应用程序和服务的使用。</string>
     <string name="track_your_progress">追踪你的进度</string>

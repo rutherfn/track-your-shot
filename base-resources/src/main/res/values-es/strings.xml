@@ -76,283 +76,143 @@
     <string name="empty_fields_description">Falta información requerida para continuar con la creación de su cuenta. Por favor proporcione los detalles necesarios.</string>
     <string name="error">Error</string>
     <string name="error_creating_account">Error al crear la cuenta</string>
-
     <string name="error_deleting_pending_account">Error al eliminar la cuenta pendiente</string>
-
     <string name="find_shots_by_name">Buscar tomas por nombre </string>
-
     <string name="general">General</string>
-
     <string name="general_information">Información general</string>
-
     <string name="got_it">Entiendo</string>
-
     <string name="having_trouble_creating_your_account_please_try_again">Tienes problemas para crear tu cuenta. Por favor, inténtalo de nuevo</string>
-
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Tiene problemas para iniciar sesión en su cuenta. Inténtelo nuevamente o asegúrese de que las credenciales existan y sean válidas.</string>
-
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Tiene problemas para restablecer la contraseña de esta cuenta. Inténtelo nuevamente o asegúrese de que las credenciales existan y sean válidas.</string>
-
     <string name="hint_add_new_player">Toque el ícono + en la barra de herramientas del lado derecho para agregar un nuevo jugador</string>
-
     <string name="hint_log_new_shots">Presione el botón Registrar disparos para grabar disparos para el jugador.</string>
-
     <string name="hint_log_new_shots_for_player">Pulse el botón Registrar tomas para grabar tomas para</string>
-
     <string name="introduction">Introducción</string>
-
     <string name="invalid_shot_input">Entrada de disparo no válida</string>
-
     <string name="invalid_shot_input_description">Los disparos registrados deben ser números enteros. Ingrese un número entero para registrar los tiros válidos realizados o fallados.</string>
-
     <string name="issue_occurred">Se produjo un problema</string>
-
     <string name="last_name">Apellido</string>
-
     <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">Si abandonas la aplicación, no podrás finalizar el proceso de creación de la cuenta. No podrá continuar hasta que verifique su correo electrónico. Si verifica su correo electrónico y luego regresa a la aplicación, podrá continuar creando su cuenta.</string>
-
     <string name="login">Acceso</string>
-
     <string name="login_icon_description">Esta es una imagen de inicio de sesión para la pantalla de inicio de sesión.</string>
-
     <string name="logout">Cerrar sesión</string>
-
     <string name="log_shot">Disparo de troncos</string>
-
     <string name="log_shots">Disparos de registro</string>
-
     <string name="log_your_shots">Registra tus disparos</string>
-
     <string name="log_your_shots_description">Elige el tipo de disparo que quieres grabar e ingresa los aciertos y errores del día en que el jugador los tomó.</string>
-
     <string name="menu">Menú</string>
-
     <string name="more_info">Más información</string>
-
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Se requieren varios campos que no se ingresan. Por favor, introduzca todos los campos.</string>
-
     <string name="next">Próximo</string>
-
     <string name="no">No</string>
-
     <string name="no_changes_made">No se realizaron cambios</string>
-
     <string name="not_connected_to_internet">No conectado a internet</string>
-
     <string name="no_first_name_entered">No se ha introducido ningún nombre</string>
-
     <string name="no_last_name_entered">No se ha introducido ningún apellido</string>
-
     <string name="no_shots_results_found">No se encontraron resultados de disparos</string>
-
     <string name="no_shots_results_found_description">No se encontró ninguna fotografía que coincida con tu búsqueda. Actualice la búsqueda con el nombre de la toma existente.</string>
-
     <string name="not_now">Ahora no</string>
-
     <string name="no_current_players_added">No hay jugadores actuales añadidos</string>
-
     <string name="no_current_shots_logged_for_player">No hay tiros registrados actualmente para el jugador</string>
-
     <string name="open_email">Abrir correo electrónico</string>
-
     <string name="ok">De acuerdo</string>
-
     <string name="other_resources">Otros recursos</string>
-
     <string name="other_resources_description">Si bien la Aplicación Móvil y los Servicios pueden vincularse a otros recursos (como sitios web, aplicaciones móviles, etc.), no implicamos, directa ni indirectamente, ninguna aprobación, asociación, patrocinio, respaldo o afiliación con ningún recurso vinculado, a menos que se indique específicamente en este documento. No somos responsables de examinar ni evaluar, y no garantizamos las ofertas de ninguna empresa o individuo ni el contenido de sus recursos. No asumimos ninguna responsabilidad por las acciones, productos, servicios y contenidos de terceros. Debe revisar cuidadosamente las declaraciones legales y otras condiciones de uso de cualquier recurso al que acceda a través de un enlace en la Aplicación Móvil. El enlace a cualquier otro recurso externo se realiza bajo su propio riesgo.</string>
-
     <string name="reset_password">Restablecer contraseña</string>
-
     <string name="reset_password_email_sent">Correo electrónico enviado para restablecer contraseña</string>
-
     <string name="resend_email">Reenviar correo electrónico</string>
-
     <string name="select_a_shot">Seleccione una toma</string>
-
     <string name="selecting_a_shot">Seleccionar una toma</string>
-
     <string name="select_date">Seleccione fecha</string>
-
     <string name="password">Contraseña</string>
-
     <string name="password_helper_text">La contraseña debe tener al menos 8 caracteres e incluir: una letra minúscula (a–z), una letra mayúscula (A–Z), un número (0–9) y un carácter especial (por ejemplo, \@, $, !, %, *).</string>
-
     <string name="password_required">Contraseña*</string>
-
     <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">La contraseña no tiene el formato correcto. Por favor, introduzca la contraseña en el formato correcto</string>
-
     <string name="password_is_required_please_enter_a_password_to_create_a_account">Se requiere contraseña. Introduzca una contraseña para crear una cuenta.</string>
-
     <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">Se requiere contraseña. Ingrese una contraseña para iniciar sesión en la cuenta existente.</string>
-
     <string name="pending_shots">Disparos pendientes</string>
-
     <string name="permissions">Permisos</string>
-
     <string name="permission_has_been_declined">El permiso ha sido rechazado</string>
-
     <string name="pg">pág.</string>
-
-
     <string name="point_guard">Base</string>
-
     <string name="power_forward">Delantero de poder</string>
-
     <string name="pf">pf</string>
-
     <string name="player_already_has_been_added_description">El nombre del jugador especificado ya ha sido incluido. Por favor, agregue un nuevo jugador con un nombre que no haya sido agregado antes.</string>
-
     <string name="player_creation_failed_please_try_again">Error en la creación del jugador. Por favor, inténtalo de nuevo.</string>
-
     <string name="player_image">Imagen del jugador</string>
-
     <string name="player_is_invalid_please_try_again">El jugador actual no es válido. Intente registrar la captura nuevamente</string>
-
     <string name="players">Jugadores</string>
-
     <string name="players_first_name_empty_description">Falta el nombre del jugador. Por favor proporcione un nombre para continuar.</string>
-
     <string name="players_last_name_empty_description">Falta el apellido del jugador. Por favor proporcione un nombre para continuar.</string>
-
     <string name="position">Posición</string>
-
     <string name="proceed_with_your_account">Continúe con su cuenta</string>
-
     <string name="read_external_storage_permission_explanation">Solicitamos permiso de lectura de almacenamiento externo para que los usuarios puedan seleccionar una imagen de su galería al crear o editar un perfil de jugador. Este permiso permite a la aplicación acceder a las imágenes almacenadas en el almacenamiento externo del dispositivo, lo que permite a los usuarios elegir y asociar imágenes con sus perfiles de jugador. Sin este permiso, los usuarios no podrían seleccionar imágenes del almacenamiento externo para esta función.</string>
-
     <string name="read_external_storage_permission">Leer permiso de almacenamiento externo</string>
-
     <string name="read_media_images_permission">Leer permiso para imágenes de medios</string>
-
     <string name="read_media_images_permission_explanation">Solicitamos permiso para leer imágenes multimedia para que los usuarios puedan seleccionar una imagen de su galería al crear o editar un perfil de jugador. Este permiso permite a la aplicación acceder a las imágenes almacenadas en el dispositivo, permitiendo a los usuarios elegir y asociar imágenes con sus perfiles de jugador. Sin este permiso, los usuarios no podrían seleccionar imágenes de su galería para esta función.</string>
-
     <string name="read_media_images">Leer imágenes de los medios</string>
-
     <string name="read_external_storage_description">Se ha rechazado el permiso para leer el almacenamiento externo. Para habilitar manualmente el permiso de lectura de almacenamiento externo y seleccionar una imagen de la galería para el reproductor, navegue a la configuración.</string>
-
     <string name="read_media_images_description">Se ha rechazado el permiso para leer imágenes de medios. Para habilitar manualmente el permiso de Leer imágenes multimedia y seleccionar una imagen de la galería para el reproductor, navegue a la configuración.</string>
-
     <string name="remove_image">Eliminar imagen</string>
-
     <string name="settings">Ajustes</string>
-
     <string name="settings_help_description">En la página de configuración, puede ver la información de su cuenta, revisar los términos y condiciones, acceder a los detalles de uso de la aplicación y conocer los permisos que solicitamos y por qué los necesitamos.</string>
-
     <string name="shot_has_been_deleted">La toma ha sido eliminada</string>
-
     <string name="shot_has_not_been_deleted">La HSA no ha sido eliminada</string>
-
     <string name="shot_percentage">%s %%</string>
-
     <string name="shot_updated">Toma actualizada</string>
-
     <string name="shots">Disparos</string>
-
     <string name="shots_attempted">Disparos intentados</string>
-
     <string name="shots_made">Disparos realizados</string>
-
     <string name="shots_made_percentage">Porcentaje de tiros realizados</string>
-
     <string name="shots_missed_percentage">Porcentaje de tiros fallados</string>
-
     <string name="shots_missed">Disparos fallados</string>
-
     <string name="shots_not_recorded_description">No has registrado ninguna toma exitosa. Ingrese el número de disparos realizados para continuar con el registro del disparo.</string>
-
     <string name="missed_shots_not_recorded_description">No has registrado ningún disparo fallido. Ingrese el número de disparos fallidos para continuar con el registro del disparo.</string>
-
     <string name="date_shot_was_taken_description">No has introducido la fecha en la que se tomó la fotografía. Ingrese la fecha en la que se tomó la fotografía para continuar con el registro de la misma.</string>
-
     <string name="show_less">Mostrar menos</string>
-
     <string name="show_more">Mostrar más</string>
-
     <string name="sf">ciencia ficción</string>
-
     <string name="sg">es</string>
-
     <string name="small_forward">Delantero pequeño</string>
-
     <string name="shooting_guard">Guardia de tiro</string>
-
     <string name="shot_info">Información de la toma</string>
-
     <string name="shot_name_x">Nombre de la toma: %s \n</string>
-
     <string name="shots_made_x">\nDisparos realizados - %s</string>
-
     <string name="shots_made_percentage_x">\nPorcentaje de tiros realizados: %s</string>
-
     <string name="stats">Estadísticas</string>
-
     <string name="splash_icon_description">Esta es una imagen de presentación para la pantalla de presentación que se muestra antes de que se active la aplicación.</string>
-
     <string name="successfully_sent_email_verification">Verificación enviada exitosamente</string>
-
     <string name="take_a_picture">Tomar una fotografía</string>
-
-
     <string name="terms_conditions">Términos y condiciones</string>
-
     <string name="terms_conditions_description">Estos términos y condiciones (Acuerdo) establecen los términos y condiciones generales de su uso de la aplicación móvil Track Your Shot (Aplicación móvil o Servicio) y cualquiera de sus productos y servicios relacionados (colectivamente, Servicios). Este Acuerdo es legalmente vinculante entre usted (Usuario, usted o su) y Track Your Shot (Track Your Shot, nosotros, nos o nuestro). Si usted celebra este Acuerdo en nombre de una empresa u otra entidad legal, declara que tiene la autoridad para vincular a dicha entidad a este Acuerdo, en cuyo caso los términos Usuario, usted o su se referirán a dicha entidad. Si no tiene dicha autoridad, o si no está de acuerdo con los términos de este Acuerdo, no debe aceptar este Acuerdo y no podrá acceder ni utilizar la Aplicación Móvil y los Servicios. Al acceder y utilizar la Aplicación Móvil y los Servicios, usted reconoce que ha leído, comprendido y acepta estar sujeto a los términos de este Acuerdo. Usted reconoce que este Acuerdo es un contrato entre usted y Track Your Shot, aunque sea electrónico y no esté firmado físicamente por usted, y rige su uso de la Aplicación Móvil y los Servicios.</string>
-
     <string name="track_your_progress">Seguimiento de su progreso</string>
-
     <string name="track_your_progress_description">Registre los porcentajes de tiros para varios tipos de tiros durante varios días y vea las estadísticas guardadas directamente en la aplicación móvil.</string>
-
     <string name="the_image_upload_was_unsuccessful">La carga de la imagen no se realizó correctamente. Inténtalo una vez más.</string>
-
     <string name="there_was_a_error_creating_your_account_please_try_again">Hubo un error al crear su cuenta. Por favor, inténtalo de nuevo.</string>
-
     <string name="there_was_a_error_deleting_your_account_please_try_again">Se produjo un error al eliminar su cuenta. Por favor, inténtalo de nuevo.</string>
-
     <string name="this_document_was_last_updated_on">Este documento se actualizó por última vez el 9 de noviembre de 2024</string>
-
     <string name="this_email_is_already_used_for_another_account_please_enter_a_new_email">Este correo electrónico ya está utilizado para otra cuenta. Por favor, introduzca un nuevo correo electrónico.</string>
-
     <string name="this_username_is_already_used_for_another_account_please_enter_a_new_username">Este nombre de usuario ya está utilizado para otra cuenta. Por favor, introduzca un nuevo nombre de usuario.</string>
-
     <string name="track_your_shot">Seguimiento de tu tiro</string>
-
     <string name="try_again">Intentar otra vez</string>
-
     <string name="username">Nombre de usuario</string>
-
     <string name="username_required">Nombre de usuario*</string>
-
     <string name="username_in_use">Nombre de usuario en uso</string>
-
     <string name="username_in_use_description">Este nombre de usuario ya está en uso en Track Your Shot. Utilice un nombre de usuario diferente.</string>
-
     <string name="username_is_not_in_correct_format_please_enter_username_in_correct_format">El nombre de usuario no tiene el formato correcto. Por favor, introduzca el nombre de usuario en el formato correcto</string>
-
     <string name="unable_to_create_account">No se puede crear una cuenta</string>
-
     <string name="unable_to_delete_player_please_contact_support">No se puede eliminar el reproductor. Por favor, póngase en contacto con el soporte.</string>
-
     <string name="unable_to_login_to_account">No se puede iniciar sesión en la cuenta</string>
-
     <string name="unable_to_reset_password">No se puede restablecer la contraseña</string>
-
     <string name="unable_to_set_new_username">No se puede establecer un nuevo nombre de usuario</string>
-
     <string name="unable_to_send_email_verification">No se puede enviar el correo electrónico de verificación</string>
-
     <string name="unable_to_upload_image">No se puede cargar la imagen</string>
-
     <string name="unsaved_player_changes">Cambios de jugadores no guardados</string>
-
     <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">Hemos detectado un problema con su cuenta. Comuníquese con el soporte para resolver el problema.</string>
-
     <string name="we_have_detected_currently_not_connected_to_internet_description">Hemos detectado que actualmente no estás conectado a Internet. Conéctese al servicio y vuelva a intentarlo.</string>
-
     <string name="username_is_required_please_enter_a_username_to_create_a_account">El nombre de usuario es obligatorio. Introduzca un nombre de usuario para crear una cuenta.</string>
-
     <string name="using_the_app">Usando la aplicación</string>
-
     <string name="we_were_able_to_send_email_verification_please_check_your_email_to_verify_account">Pudimos enviar verificación por correo electrónico. Por favor revise su correo electrónico para verificar su cuenta</string>
-
     <string name="we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again">No pudimos enviar la verificación por correo electrónico. Haga clic en enviar correo electrónico de verificación para volver a intentarlo.</string>
     <string name="we_were_unable_to_set_new_username_since_the_username_is_empty_please_click_try_again_to_set_new_username">No pudimos establecer un nuevo nombre de usuario porque el nombre de usuario está vacío. Haga clic en \"Intentar nuevamente\" para establecer un nuevo nombre de usuario.</string>
     <string name="we_were_unable_to_set_new_username_since_the_username_is_the_same_as_the_current_username_please_click_try_again_to_set_new_username">No pudimos establecer un nuevo nombre de usuario porque es el mismo que el nombre de usuario actual. Haga clic en \"Intentar nuevamente\" para establecer un nuevo nombre de usuario.</string>
