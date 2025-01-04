@@ -315,6 +315,51 @@
     <string name="successfully_sent_email_verification">Pomyślnie wysłano weryfikację</string>
 
     <string name="take_a_picture">Zrób zdjęcie</string>
-
+    <string name="terms_conditions">Warunki korzystania z serwisu</string>
+    <string name="terms_conditions_description">Niniejsze warunki (Umowa) określają ogólne warunki korzystania z aplikacji mobilnej Track Your Shot (Aplikacja mobilna lub Usługa) oraz wszelkich powiązanych z nią produktów i usług (łącznie zwanych Usługami). Niniejsza Umowa jest prawnie wiążąca pomiędzy Tobą (Użytkownikiem, Tobą lub Twoim) a Track Your Shot (Track Your Shot, my, nas lub nasz). Jeżeli zawierasz tę Umowę w imieniu przedsiębiorstwa lub innego podmiotu prawnego, oświadczasz, że masz prawo związać taki podmiot niniejszą Umową. W takim przypadku określenia Użytkownik, Ty lub Twój będą odnosić się do takiego podmiotu. Jeżeli nie posiadasz takiego upoważnienia lub nie zgadzasz się z warunkami niniejszej Umowy, nie możesz zaakceptować niniejszej Umowy i nie możesz uzyskać dostępu do Aplikacji Mobilnej i Usług oraz z nich korzystać. Uzyskując dostęp do Aplikacji Mobilnej i Usług oraz korzystając z nich, potwierdzasz, że przeczytałeś, zrozumiałeś i zgadzasz się przestrzegać warunków niniejszej Umowy. Użytkownik przyjmuje do wiadomości, że niniejsza Umowa stanowi umowę między Użytkownikiem a Track Your Shot, mimo że ma formę elektroniczną i nie została przez Użytkownika fizycznie podpisana, i reguluje ona korzystanie przez Użytkownika z Aplikacji Mobilnej i Usług.</string>
+    <string name="track_your_progress">Śledź swoje postępy</string>
+    <string name="track_your_progress_description">Rejestruj procenty strzałów oddanych różnymi typami strzałów na przestrzeni wielu dni i przeglądaj zapisane statystyki bezpośrednio w aplikacji mobilnej.</string>
+    <string name="the_image_upload_was_unsuccessful">Przesyłanie obrazu nie powiodło się. Proszę spróbować jeszcze raz.</string>
+    <string name="there_was_a_error_creating_your_account_please_try_again">Wystąpił błąd podczas tworzenia konta. Spróbuj ponownie.</string>
+    <string name="there_was_a_error_deleting_your_account_please_try_again">Wystąpił błąd podczas usuwania konta. Spróbuj ponownie.</string>
+    <string name="this_document_was_last_updated_on">Ten dokument został ostatnio zaktualizowany 9 listopada 2024 r.</string>
+    <string name="this_email_is_already_used_for_another_account_please_enter_a_new_email">Ten adres e-mail jest już używany na innym koncie. Proszę wpisać nowy adres e-mail.</string>
+    <string name="this_username_is_already_used_for_another_account_please_enter_a_new_username">Ta nazwa użytkownika jest już używana na innym koncie. Proszę wprowadzić nową nazwę użytkownika.</string>
+    <string name="track_your_shot">Śledź swój strzał</string>
+    <string name="try_again">Spróbuj ponownie</string>
+    <string name="username">Nazwa użytkownika</string>
+    <string name="username_required">Nazwa użytkownika*</string>
+    <string name="username_in_use">Nazwa użytkownika w użyciu</string>
+    <string name="username_in_use_description">Ta nazwa użytkownika jest już używana w serwisie Track Your Shot. Proszę użyć innej nazwy użytkownika.</string>
+    <string name="username_is_not_in_correct_format_please_enter_username_in_correct_format">Nazwa użytkownika ma nieprawidłowy format. Proszę wpisać nazwę użytkownika w prawidłowym formacie</string>
+    <string name="unable_to_create_account">Nie można utworzyć konta</string>
+    <string name="unable_to_delete_player_please_contact_support">Nie można usunąć gracza. Skontaktuj się z pomocą techniczną.</string>
+    <string name="unable_to_login_to_account">Nie można zalogować się na konto</string>
+    <string name="unable_to_reset_password">Nie można zresetować hasła</string>
+    <string name="unable_to_set_new_username">Nie można ustawić nowej nazwy użytkownika</string>
+    <string name="unable_to_send_email_verification">Nie można wysłać e-maila weryfikacyjnego</string>
+    <string name="unable_to_upload_image">Nie można przesłać obrazu</string>
+    <string name="unsaved_player_changes">Niezapisane zmiany gracza</string>
+    <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">Wykryliśmy problem z Twoim kontem. Aby rozwiązać problem, skontaktuj się z pomocą techniczną.</string>
+    <string name="we_have_detected_currently_not_connected_to_internet_description">Wykryliśmy, że obecnie nie ma połączenia z internetem. Połącz się z usługą i spróbuj ponownie.</string>
+    <string name="username_is_required_please_enter_a_username_to_create_a_account">Nazwa użytkownika jest wymagana. Proszę podać nazwę użytkownika, aby utworzyć konto.</string>
+    <string name="using_the_app">Korzystanie z aplikacji</string>
+    <string name="we_were_able_to_send_email_verification_please_check_your_email_to_verify_account">Udało nam się wysłać e-mail z potwierdzeniem. Sprawdź swoją skrzynkę e-mail, aby zweryfikować konto</string>
+    <string name="we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again">Nie udało się wysłać wiadomości e-mail z potwierdzeniem. Kliknij przycisk Wyślij e-mail weryfikacyjny, aby spróbować ponownie.</string>
+    <string name="we_were_unable_to_set_new_username_since_the_username_is_empty_please_click_try_again_to_set_new_username">Nie udało się ustawić nowej nazwy użytkownika, ponieważ dotychczasowa nazwa użytkownika jest pusta. Kliknij przycisk „Spróbuj ponownie”, aby ustawić nową nazwę użytkownika.</string>
+    <string name="we_were_unable_to_set_new_username_since_the_username_is_the_same_as_the_current_username_please_click_try_again_to_set_new_username">Nie udało się ustawić nowej nazwy użytkownika, ponieważ obecna nazwa użytkownika jest taka sama, jak bieżąca. Kliknij przycisk „Spróbuj ponownie”, aby ustawić nową nazwę użytkownika.</string>
+    <string name="verify_account">Zweryfikuj konto</string>
+    <string name="view_more_info">Zobacz więcej informacji</string>
+    <string name="view_x">Pogląd%s</string>
+    <string name="voice_commands">Polecenia głosowe</string>
+    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_shot">%s Strzał</string>
+    <string name="x_shot_has_been_removed_description">%s został usunięty z historii strzałów tego zawodnika.</string>
+    <string name="x_shot_has_not_been_removed_description">%s Strzał nie został usunięty z historii strzałów tego zawodnika. Spróbuj ponownie usunąć ujęcie.</string>
+    <string name="x_shots">%s Strzały</string>
+    <string name="x_shot_category">Kategoria - %s</string>
+    <string name="x_x">%s - %s</string>
+    <string name="yes">Tak</string>
+    <string name="your_player_could_not_be_retrieved_description">Nie udało się odzyskać Twojego odtwarzacza. Spróbuj ponownie.</string>
 
 </resources>

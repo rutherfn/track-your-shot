@@ -316,4 +316,96 @@
 
     <string name="take_a_picture">एक तस्वीर ले लो</string>
 
+
+    <string name="terms_conditions">नियम एवं शर्तें</string>
+
+    <string name="terms_conditions_description">ये नियम और शर्तें (अनुबंध) ट्रैक योर शॉट मोबाइल एप्लिकेशन (मोबाइल एप्लिकेशन या सेवा) और इसके किसी भी संबंधित उत्पाद और सेवाओं (सामूहिक रूप से, सेवाएं) के आपके उपयोग के सामान्य नियम और शर्तें निर्धारित करते हैं. यह अनुबंध आपके (उपयोगकर्ता, आप या आपके) और ट्रैक योर शॉट (ट्रैक योर शॉट, हम, हमें या हमारा) के बीच कानूनी रूप से बाध्यकारी है. यदि आप किसी व्यवसाय या अन्य कानूनी इकाई की ओर से इस अनुबंध में प्रवेश कर रहे हैं, तो आप प्रतिनिधित्व करते हैं कि आपके पास ऐसी इकाई को इस अनुबंध से बांधने का अधिकार है, ऐसी स्थिति में उपयोगकर्ता, आप या आपका शब्द ऐसी इकाई को संदर्भित करेंगे. यदि आपके पास ऐसा अधिकार नहीं है, या यदि आप इस अनुबंध की शर्तों से सहमत नहीं हैं, तो आपको इस अनुबंध को स्वीकार नहीं करना चाहिए और मोबाइल एप्लिकेशन और सेवाओं तक पहुंच और उनका उपयोग नहीं करना चाहिए. मोबाइल एप्लिकेशन और सेवाओं तक पहुंच और उनका उपयोग करके, आप स्वीकार करते हैं कि आपने इस अनुबंध की शर्तों को पढ़ लिया है, समझ लिया है और उनसे बाध्य होने के लिए सहमत हैं. आप स्वीकार करते हैं कि यह अनुबंध आपके और ट्रैक योर शॉट के बीच एक अनुबंध है, भले ही यह इलेक्ट्रॉनिक है और आपके द्वारा भौतिक रूप से हस्ताक्षरित नहीं है, और यह मोबाइल एप्लिकेशन और सेवाओं के आपके उपयोग को नियंत्रित करता है.</string>
+
+    <string name="track_your_progress">अपनी प्रगति पर नज़र रखें</string>
+
+    <string name="track_your_progress_description">कई दिनों में विभिन्न शॉट प्रकारों के लिए शूटिंग प्रतिशत रिकॉर्ड करें और सहेजे गए आँकड़ों को सीधे मोबाइल ऐप में देखें.</string>
+
+    <string name="the_image_upload_was_unsuccessful">छवि अपलोड असफल रहा. कृपया एक बार पुनः प्रयास करें.</string>
+
+    <string name="there_was_a_error_creating_your_account_please_try_again">आपका खाता बनाते समय एक त्रुटि हुई. कृपया पुन: प्रयास करें.</string>
+
+    <string name="there_was_a_error_deleting_your_account_please_try_again">आपका खाता हटाते समय कोई त्रुटि हुई. कृपया पुन: प्रयास करें.</string>
+
+    <string name="this_document_was_last_updated_on">इस दस्तावेज़ को अंतिम बार 9 नवंबर, 2024 को अपडेट किया गया था</string>
+
+    <string name="this_email_is_already_used_for_another_account_please_enter_a_new_email">यह ईमेल पहले से ही किसी अन्य खाते के लिए उपयोग किया जा रहा है. कृपया नया ईमेल दर्ज करें.</string>
+
+    <string name="this_username_is_already_used_for_another_account_please_enter_a_new_username">यह उपयोगकर्ता नाम पहले से ही किसी अन्य खाते के लिए उपयोग किया जा रहा है. कृपया नया उपयोगकर्ता नाम दर्ज करें.</string>
+
+    <string name="track_your_shot">अपने शॉट को ट्रैक करें</string>
+
+    <string name="try_again">पुनः प्रयास करें</string>
+
+    <string name="username">उपयोगकर्ता नाम</string>
+
+    <string name="username_required">उपयोगकर्ता नाम*</string>
+
+    <string name="username_in_use">उपयोग में उपयोगकर्ता नाम</string>
+
+    <string name="username_in_use_description">यह उपयोगकर्ता नाम ट्रैक योर शॉट पर पहले से ही उपयोग में है. कृपया कोई भिन्न उपयोगकर्ता नाम उपयोग करें.</string>
+
+    <string name="username_is_not_in_correct_format_please_enter_username_in_correct_format">उपयोगकर्ता नाम सही प्रारूप में नहीं है. कृपया उपयोगकर्ता नाम सही प्रारूप में दर्ज करें</string>
+
+    <string name="unable_to_create_account">खाता बनाने में असमर्थ</string>
+
+    <string name="unable_to_delete_player_please_contact_support">प्लेयर को हटाने में असमर्थ. कृपया सहायता से संपर्क करें.</string>
+
+    <string name="unable_to_login_to_account">खाते में लॉग इन करने में असमर्थ</string>
+
+    <string name="unable_to_reset_password">पासवर्ड रीसेट करने में असमर्थ</string>
+
+    <string name="unable_to_set_new_username">नया उपयोगकर्ता नाम सेट करने में असमर्थ</string>
+
+    <string name="unable_to_send_email_verification">ईमेल सत्यापन भेजने में असमर्थ</string>
+
+    <string name="unable_to_upload_image">छवि अपलोड करने में असमर्थ</string>
+
+    <string name="unsaved_player_changes">सहेजे न गए प्लेयर परिवर्तन</string>
+
+    <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">हमने आपके खाते में एक समस्या का पता लगाया है. कृपया समस्या के समाधान के लिए सहायता से संपर्क करें.</string>
+
+    <string name="we_have_detected_currently_not_connected_to_internet_description">हमने पाया है कि यह वर्तमान में इंटरनेट से कनेक्ट नहीं है. कृपया सेवा से कनेक्ट करें और पुनः प्रयास करें.</string>
+
+    <string name="username_is_required_please_enter_a_username_to_create_a_account">उपयोगकर्ता नाम आवश्यक है. कृपया खाता बनाने के लिए उपयोगकर्ता नाम दर्ज करें.</string>
+
+    <string name="using_the_app">ऐप का उपयोग करना</string>
+
+    <string name="we_were_able_to_send_email_verification_please_check_your_email_to_verify_account">हम ईमेल सत्यापन भेजने में सक्षम थे. कृपया खाता सत्यापित करने के लिए अपना ईमेल जांचें</string>
+
+    <string name="we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again">हम ईमेल सत्यापन भेजने में असमर्थ रहे. कृपया पुनः प्रयास करने के लिए ईमेल सत्यापन भेजें पर क्लिक करें.</string>
+
+    <string name="we_were_unable_to_set_new_username_since_the_username_is_empty_please_click_try_again_to_set_new_username">हम नया उपयोगकर्ता नाम सेट करने में असमर्थ थे क्योंकि उपयोगकर्ता नाम रिक्त था. कृपया नया उपयोगकर्ता नाम सेट करने के लिए पुनः प्रयास करें पर क्लिक करें</string>
+
+    <string name="we_were_unable_to_set_new_username_since_the_username_is_the_same_as_the_current_username_please_click_try_again_to_set_new_username">हम नया उपयोगकर्ता नाम सेट करने में असमर्थ थे क्योंकि उपयोगकर्ता नाम वर्तमान उपयोगकर्ता नाम के समान ही है. कृपया नया उपयोगकर्ता नाम सेट करने के लिए पुनः प्रयास करें पर क्लिक करें</string>
+
+    <string name="verify_account">खाता सत्यापित करें</string>
+
+    <string name="view_more_info">अधिक जानकारी देखें</string>
+
+    <string name="view_x">%s देखें</string>
+
+    <string name="voice_commands">ध्वनि आदेश</string>
+
+    <string name="x_position_x_player_name">%s , %s</string>
+
+    <string name="x_shot">%s शॉट</string>
+
+    <string name="x_shot_has_been_removed_description">%s को इस खिलाड़ी के शॉट इतिहास से हटा दिया गया है.</string>
+
+    <string name="x_shot_has_not_been_removed_description">%s शॉट को इस खिलाड़ी के शॉट इतिहास से हटाया नहीं गया है. कृपया शॉट हटाने के लिए पुनः प्रयास करें.</string>
+
+    <string name="x_shots">%s शॉट्स</string>
+
+    <string name="x_shot_category">श्रेणी - %s</string>
+
+    <string name="x_x">%s - %s</string>
+
+    <string name="yes">हाँ</string>
+
+    <string name="your_player_could_not_be_retrieved_description">आपका प्लेयर पुनः प्राप्त नहीं किया जा सका. कृपया पुन: प्रयास करें.</string>
 </resources>

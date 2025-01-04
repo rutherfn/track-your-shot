@@ -315,4 +315,96 @@
 
     <string name="take_a_picture">Scatta una foto</string>
 
+
+    <string name="terms_conditions">Termini e condizioni</string>
+
+    <string name="terms_conditions_description">I presenti termini e condizioni (Contratto) stabiliscono i termini e le condizioni generali per l\'utilizzo dell\'applicazione mobile Track Your Shot (Applicazione Mobile o Servizio) e di tutti i prodotti e servizi correlati (collettivamente, Servizi). Il presente Contratto è giuridicamente vincolante tra te (Utente, tu o tuo) e Track Your Shot (Track Your Shot, noi, ci o nostro). Se si stipula il presente Contratto per conto di un\'azienda o di un\'altra entità giuridica, si dichiara di avere l\'autorità di vincolare tale entità al presente Contratto, nel qual caso i termini Utente, Tu o tuo si riferiranno a tale entità. Se non si dispone di tale autorità o se non si accettano i termini del presente Contratto, non è possibile accettare il Contratto e non è possibile accedere o utilizzare l\'Applicazione mobile e i Servizi. Accedendo e utilizzando l\'Applicazione Mobile e i Servizi, riconosci di aver letto, compreso e accettato di essere vincolato dai termini del presente Contratto. Riconosci che il presente Contratto è un contratto tra te e Track Your Shot, anche se è elettronico e non è fisicamente firmato da te, e disciplina l\'utilizzo dell\'Applicazione mobile e dei Servizi.</string>
+
+    <string name="track_your_progress">Tieni traccia dei tuoi progressi</string>
+
+    <string name="track_your_progress_description">Registra le percentuali di tiro per vari tipi di tiri nell\'arco di più giorni e visualizza le statistiche salvate direttamente nell\'app mobile.</string>
+
+    <string name="the_image_upload_was_unsuccessful">Il caricamento dell\'immagine non è riuscito. Per favore, riprova ancora una volta.</string>
+
+    <string name="there_was_a_error_creating_your_account_please_try_again">Si è verificato un errore durante la creazione del tuo account. Riprova più tardi.</string>
+
+    <string name="there_was_a_error_deleting_your_account_please_try_again">Si è verificato un errore durante l\'eliminazione del tuo account. Riprova più tardi.</string>
+
+    <string name="this_document_was_last_updated_on">Questo documento è stato aggiornato l\'ultima volta il 9 novembre 2024</string>
+
+    <string name="this_email_is_already_used_for_another_account_please_enter_a_new_email">Questo indirizzo email è già utilizzato per un altro account. Inserisci un nuovo indirizzo email.</string>
+
+    <string name="this_username_is_already_used_for_another_account_please_enter_a_new_username">Questo nome utente è già utilizzato per un altro account. Inserisci un nuovo nome utente.</string>
+
+    <string name="track_your_shot">Tieni traccia del tuo tiro</string>
+
+    <string name="try_again">Riprova</string>
+
+    <string name="username">Nome utente</string>
+
+    <string name="username_required">Nome utente*</string>
+
+    <string name="username_in_use">Nome utente in uso</string>
+
+    <string name="username_in_use_description">Questo nome utente è già in uso su Track Your Shot. Si prega di utilizzare un nome utente diverso.</string>
+
+    <string name="username_is_not_in_correct_format_please_enter_username_in_correct_format">Il nome utente non è nel formato corretto. Inserisci il nome utente nel formato corretto</string>
+
+    <string name="unable_to_create_account">Impossibile creare l\'account</string>
+
+    <string name="unable_to_delete_player_please_contact_support">Impossibile eliminare il giocatore. Contatta l\'assistenza.</string>
+
+    <string name="unable_to_login_to_account">Impossibile accedere all\'account</string>
+
+    <string name="unable_to_reset_password">Impossibile reimpostare la password</string>
+
+    <string name="unable_to_set_new_username">Impossibile impostare il nuovo nome utente</string>
+
+    <string name="unable_to_send_email_verification">Impossibile inviare la verifica e-mail</string>
+
+    <string name="unable_to_upload_image">Impossibile caricare l\'immagine</string>
+
+    <string name="unsaved_player_changes">Modifiche non salvate del giocatore</string>
+
+    <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">Abbiamo rilevato un problema con il tuo account. Contatta l\'assistenza per risolvere il problema.</string>
+
+    <string name="we_have_detected_currently_not_connected_to_internet_description">Abbiamo rilevato che al momento non sei connesso a Internet. Connettersi al servizio e riprovare.</string>
+
+    <string name="username_is_required_please_enter_a_username_to_create_a_account">Il nome utente è obbligatorio. Inserisci un nome utente per creare un account.</string>
+
+    <string name="using_the_app">Utilizzo dell\'app</string>
+
+    <string name="we_were_able_to_send_email_verification_please_check_your_email_to_verify_account">Siamo riusciti a inviare l\'email di verifica. Controlla la tua email per verificare l\'account</string>
+
+    <string name="we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again">Non siamo riusciti a inviare l\'e-mail di verifica. Fare clic su Invia verifica e-mail per riprovare.</string>
+
+    <string name="we_were_unable_to_set_new_username_since_the_username_is_empty_please_click_try_again_to_set_new_username">Non siamo riusciti a impostare un nuovo nome utente perché il nome utente è vuoto. Fare clic su Riprova per impostare un nuovo nome utente</string>
+
+    <string name="we_were_unable_to_set_new_username_since_the_username_is_the_same_as_the_current_username_please_click_try_again_to_set_new_username">Non siamo riusciti a impostare un nuovo nome utente poiché il nome utente è uguale a quello attuale. Fare clic su Riprova per impostare un nuovo nome utente</string>
+
+    <string name="verify_account">Verifica account</string>
+
+    <string name="view_more_info">Visualizza maggiori informazioni</string>
+
+    <string name="view_x">Visualizza %s</string>
+
+    <string name="voice_commands">Comandi vocali</string>
+
+    <string name="x_position_x_player_name">%s , %s</string>
+
+    <string name="x_shot">%s Tiro</string>
+
+    <string name="x_shot_has_been_removed_description">%s è stato rimosso dalla cronologia dei tiri di questo giocatore.</string>
+
+    <string name="x_shot_has_not_been_removed_description">%s Il tiro non è stato rimosso dalla cronologia dei tiri di questo giocatore. Riprova per rimuovere lo scatto.</string>
+
+    <string name="x_shots">%s scatti</string>
+
+    <string name="x_shot_category">Categoria - %s</string>
+
+    <string name="x_x">%s - %s</string>
+
+    <string name="yes">SÌ</string>
+
+    <string name="your_player_could_not_be_retrieved_description">Non è stato possibile recuperare il tuo lettore. Riprova più tardi.</string>
 </resources>

@@ -54,266 +54,180 @@
     <string name="edit_x">Chỉnh sửa %s</string>
     <string name="enter_first_name">Nhập Tên</string>
 
-
     <string name="enter_last_name">Nhập Họ</string>
-
     <string name="first_name">Tên đầu tiên</string>
-
     <string name="forgot_password">Quên mật khẩu</string>
-
     <string name="email">E-mail</string>
-
     <string name="email_in_use">Email đang sử dụng</string>
-
     <string name="email_in_use_description">Email này đã được sử dụng trên Track Your Shot. Vui lòng sử dụng địa chỉ email khác.</string>
-
     <string name="email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password">Email đã được gửi để đặt lại mật khẩu. Vui lòng làm theo hướng dẫn để đặt lại mật khẩu.</string>
-
     <string name="email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account">Email đã được gửi để xác minh tài khoản. Vui lòng mở email đã gửi để xác minh tài khoản.</string>
-
     <string name="email_is_not_in_correct_format_please_enter_email_in_correct_format">Email không đúng định dạng. Vui lòng nhập email theo đúng định dạng</string>
-
     <string name="email_is_required_please_enter_a_email_to_create_a_account">Cần phải có email. Vui lòng nhập email để tạo tài khoản.</string>
-
     <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">Cần phải có email. Vui lòng nhập email để đăng nhập vào tài khoản hiện có.</string>
-
     <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">Cần phải có email. Vui lòng nhập email để đặt lại mật khẩu cho tài khoản hiện tại.</string>
-
     <string name="enabled_permissions">Quyền được bật</string>
-
     <string name="email_required">E-mail*</string>
-
     <string name="enter_shots_made">Nhập các bức ảnh đã chụp</string>
-
     <string name="enter_shots_missed">Nhập số lần bắn trượt</string>
-
     <string name="edit_player">Chỉnh sửa người chơi</string>
-
     <string name="empty"/>
-
     <string name="empty_field">Trường trống</string>
-
     <string name="empty_fields">Các trường trống</string>
-
     <string name="empty_fields_description">Thiếu thông tin bắt buộc để tiếp tục tạo tài khoản. Vui lòng cung cấp các thông tin cần thiết.</string>
-
     <string name="error">Lỗi</string>
-
     <string name="error_creating_account">Lỗi khi tạo tài khoản</string>
-
     <string name="error_deleting_pending_account">Lỗi khi xóa tài khoản đang chờ xử lý</string>
-
     <string name="find_shots_by_name">Tìm ảnh theo tên </string>
-
     <string name="general">Tổng quan</string>
-
     <string name="general_information">Thông tin chung</string>
-
     <string name="got_it">Hiểu rồi</string>
-
     <string name="having_trouble_creating_your_account_please_try_again">Đang gặp sự cố khi tạo tài khoản. Vui lòng thử lại</string>
-
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Gặp sự cố khi đăng nhập vào tài khoản của bạn. Vui lòng thử lại hoặc đảm bảo thông tin đăng nhập tồn tại và hợp lệ.</string>
-
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Đang gặp sự cố khi đặt lại mật khẩu cho tài khoản này. Vui lòng thử lại hoặc đảm bảo thông tin đăng nhập tồn tại và hợp lệ.</string>
-
     <string name="hint_add_new_player">Nhấn vào biểu tượng + ở thanh công cụ bên phải để thêm người chơi mới</string>
-
     <string name="hint_log_new_shots">Nhấn nút Log Shots để ghi lại cú đánh cho người chơi.</string>
-
     <string name="hint_log_new_shots_for_player">Nhấn nút Log Shots để ghi lại các cảnh quay</string>
-
     <string name="introduction">Giới thiệu</string>
-
     <string name="invalid_shot_input">Đầu vào cú đánh không hợp lệ</string>
-
     <string name="invalid_shot_input_description">Số lần chụp phải là số nguyên. Vui lòng nhập số nguyên để ghi lại những cú đánh hợp lệ đã thực hiện hoặc bỏ lỡ.</string>
-
     <string name="issue_occurred">Sự cố đã xảy ra</string>
-
     <string name="last_name">Họ</string>
-
     <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">Thoát khỏi ứng dụng sẽ khiến bạn không hoàn tất quá trình tạo tài khoản. Bạn sẽ không thể tiếp tục cho đến khi xác minh email của mình. Nếu bạn xác minh email và quay lại ứng dụng, bạn có thể tiếp tục tạo tài khoản.</string>
-
     <string name="login">Đăng nhập</string>
-
     <string name="login_icon_description">Đây là hình ảnh đăng nhập cho màn hình đăng nhập</string>
-
     <string name="logout">Đăng xuất</string>
-
     <string name="log_shot">Đạn gỗ</string>
-
     <string name="log_shots">Ảnh chụp nhật ký</string>
-
     <string name="log_your_shots">Ghi lại các cú đánh của bạn</string>
-
     <string name="log_your_shots_description">Chọn loại cú đánh bạn muốn ghi lại và nhập số lần đánh thành công hoặc trượt trong ngày mà cầu thủ thực hiện cú đánh.</string>
-
     <string name="menu">Thực đơn</string>
-
     <string name="more_info">Thông tin thêm</string>
-
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Có nhiều trường bắt buộc phải nhập nhưng chưa được nhập. Vui lòng nhập tất cả các trường.</string>
-
     <string name="next">Kế tiếp</string>
-
     <string name="no">KHÔNG</string>
-
     <string name="no_changes_made">Không có thay đổi nào được thực hiện</string>
-
     <string name="not_connected_to_internet">Không kết nối internet</string>
-
     <string name="no_first_name_entered">Không nhập tên</string>
-
     <string name="no_last_name_entered">Không nhập họ</string>
-
     <string name="no_shots_results_found">Không tìm thấy kết quả nào</string>
-
     <string name="no_shots_results_found_description">Không tìm thấy ảnh nào phù hợp trong tìm kiếm của bạn. Vui lòng cập nhật tìm kiếm bằng tên ảnh hiện có.</string>
-
     <string name="not_now">Không phải bây giờ</string>
-
     <string name="no_current_players_added">Không có người chơi hiện tại nào được thêm vào</string>
-
     <string name="no_current_shots_logged_for_player">Không có cú đánh hiện tại nào được ghi lại cho người chơi</string>
-
     <string name="open_email">Mở Email</string>
-
     <string name="ok">Được rồi</string>
-
     <string name="other_resources">Tài nguyên khác</string>
-
     <string name="other_resources_description">Mặc dù Ứng dụng di động và Dịch vụ có thể liên kết đến các tài nguyên khác (như trang web, ứng dụng di động, v.v.), chúng tôi không trực tiếp hoặc gián tiếp ngụ ý bất kỳ sự chấp thuận, liên kết, tài trợ, xác nhận hoặc liên kết nào với bất kỳ tài nguyên được liên kết nào, trừ khi được nêu cụ thể tại đây. Chúng tôi không chịu trách nhiệm kiểm tra hoặc đánh giá và không bảo đảm các dịch vụ của bất kỳ doanh nghiệp, cá nhân nào hoặc nội dung tài nguyên của họ. Chúng tôi không chịu bất kỳ trách nhiệm nào đối với các hành động, sản phẩm, dịch vụ và nội dung của bất kỳ bên thứ ba nào khác. Bạn nên xem xét kỹ lưỡng các tuyên bố pháp lý và các điều kiện sử dụng khác của bất kỳ tài nguyên nào mà bạn truy cập thông qua liên kết trong Ứng dụng di động. Việc bạn liên kết đến bất kỳ tài nguyên bên ngoài nào đều phải chịu rủi ro.</string>
-
     <string name="reset_password">Đặt lại mật khẩu</string>
-
     <string name="reset_password_email_sent">Đặt lại mật khẩu Email đã gửi</string>
-
     <string name="resend_email">Gửi lại Email</string>
-
     <string name="select_a_shot">Chọn một bức ảnh</string>
-
     <string name="selecting_a_shot">Chọn một cú đánh</string>
-
     <string name="select_date">Chọn ngày</string>
-
     <string name="password">Mật khẩu</string>
-
     <string name="password_helper_text">Mật khẩu phải dài ít nhất 8 ký tự và bao gồm: một chữ cái thường (a–z), một chữ cái viết hoa (A–Z), một số (0–9) và một ký tự đặc biệt (ví dụ: \@, $, !, %, *).</string>
-
     <string name="password_required">Mật khẩu*</string>
-
     <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">Mật khẩu không đúng định dạng. Vui lòng nhập mật khẩu theo đúng định dạng</string>
-
     <string name="password_is_required_please_enter_a_password_to_create_a_account">Cần phải nhập mật khẩu. Vui lòng nhập mật khẩu để tạo tài khoản.</string>
-
     <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">Cần phải nhập mật khẩu. Vui lòng nhập mật khẩu để đăng nhập vào tài khoản hiện có.</string>
-
     <string name="pending_shots">Các cú đánh đang chờ xử lý</string>
-
     <string name="permissions">Quyền</string>
-
     <string name="permission_has_been_declined">Quyền đã bị từ chối</string>
-
     <string name="pg">trang</string>
-
-
     <string name="point_guard">Hậu vệ dẫn bóng</string>
-
     <string name="power_forward">Tiền đạo sức mạnh</string>
-
     <string name="pf">pf</string>
-
     <string name="player_already_has_been_added_description">Tên người chơi được chỉ định đã được đưa vào. Vui lòng thêm một người chơi mới có tên chưa từng được thêm trước đó.</string>
-
     <string name="player_creation_failed_please_try_again">Không tạo được người chơi. Vui lòng thử lại.</string>
-
     <string name="player_image">Hình ảnh người chơi</string>
-
     <string name="player_is_invalid_please_try_again">Người chơi hiện tại không hợp lệ. Vui lòng thử đăng nhập lại</string>
-
     <string name="players">Người chơi</string>
-
     <string name="players_first_name_empty_description">Tên của người chơi bị thiếu. Vui lòng cung cấp tên để tiếp tục.</string>
-
     <string name="players_last_name_empty_description">Họ của người chơi bị thiếu. Vui lòng cung cấp tên để tiếp tục.</string>
-
     <string name="position">Chức vụ</string>
-
     <string name="proceed_with_your_account">Tiến hành với tài khoản của bạn</string>
-
     <string name="read_external_storage_permission_explanation">Chúng tôi yêu cầu quyền đọc bộ nhớ ngoài để người dùng có thể chọn hình ảnh từ thư viện của họ khi tạo hoặc chỉnh sửa hồ sơ người chơi. Quyền này cho phép ứng dụng truy cập vào hình ảnh được lưu trữ trên bộ nhớ ngoài của thiết bị, cho phép người dùng chọn và liên kết hình ảnh với hồ sơ người chơi của họ. Nếu không có quyền này, người dùng sẽ không thể chọn hình ảnh từ bộ nhớ ngoài cho tính năng này.</string>
-
     <string name="read_external_storage_permission">Đọc Quyền Lưu trữ Ngoài</string>
-
     <string name="read_media_images_permission">Đọc hình ảnh phương tiện truyền thông cho phép</string>
-
     <string name="read_media_images_permission_explanation">Chúng tôi yêu cầu quyền đọc hình ảnh phương tiện để người dùng có thể chọn hình ảnh từ thư viện của họ khi tạo hoặc chỉnh sửa hồ sơ người chơi. Quyền này cho phép ứng dụng truy cập vào hình ảnh được lưu trữ trên thiết bị, cho phép người dùng chọn và liên kết hình ảnh với hồ sơ người chơi của họ. Nếu không có quyền này, người dùng sẽ không thể chọn hình ảnh từ thư viện của mình cho tính năng này.</string>
-
     <string name="read_media_images">Đọc hình ảnh phương tiện truyền thông</string>
-
     <string name="read_external_storage_description">Quyền đọc bộ nhớ ngoài đã bị từ chối. Để bật thủ công quyền Đọc bộ nhớ ngoài và chọn hình ảnh từ thư viện cho Trình phát, vui lòng điều hướng đến cài đặt.</string>
-
     <string name="read_media_images_description">Quyền đọc hình ảnh phương tiện truyền thông đã bị từ chối. Để bật thủ công quyền Đọc hình ảnh phương tiện và chọn hình ảnh từ thư viện cho Trình phát, vui lòng điều hướng đến cài đặt.</string>
-
     <string name="remove_image">Xóa hình ảnh</string>
-
     <string name="settings">Cài đặt</string>
-
     <string name="settings_help_description">Trên trang cài đặt, bạn có thể xem thông tin tài khoản, xem lại các điều khoản và điều kiện, truy cập thông tin chi tiết về cách sử dụng ứng dụng và tìm hiểu về các quyền mà chúng tôi yêu cầu cũng như lý do chúng tôi cần chúng.</string>
-
     <string name="shot_has_been_deleted">Đã xóa ảnh</string>
-
     <string name="shot_has_not_been_deleted">Shot Hsa Không Bị Xóa</string>
-
     <string name="shot_percentage">%s %%</string>
-
     <string name="shot_updated">Đã cập nhật</string>
-
     <string name="shots">Những cú đánh</string>
-
     <string name="shots_attempted">Số lần bắn thử</string>
-
     <string name="shots_made">Những cú đánh được thực hiện</string>
-
     <string name="shots_made_percentage">Tỷ lệ phần trăm cú sút thành công</string>
-
     <string name="shots_missed_percentage">Tỷ lệ cú sút trượt</string>
-
     <string name="shots_missed">Những cú sút trượt</string>
-
     <string name="shots_not_recorded_description">Bạn chưa ghi được cú đánh thành công nào. Vui lòng nhập số lần chụp để tiến hành ghi lại lần chụp đó.</string>
-
     <string name="missed_shots_not_recorded_description">Bạn chưa ghi lại bất kỳ cú đánh trượt nào. Vui lòng nhập số lần bắn trượt để tiếp tục ghi lại cú đánh.</string>
-
     <string name="date_shot_was_taken_description">Bạn chưa nhập ngày chụp ảnh. Vui lòng nhập ngày chụp ảnh để tiến hành ghi lại bức ảnh đó.</string>
-
     <string name="show_less">Hiển thị ít hơn</string>
-
     <string name="show_more">Hiển thị thêm</string>
-
     <string name="sf">sf</string>
-
     <string name="sg">sg</string>
-
     <string name="small_forward">Tiền đạo nhỏ</string>
-
     <string name="shooting_guard">Tiền vệ ghi bàn</string>
-
     <string name="shot_info">Thông tin về cú đánh</string>
-
     <string name="shot_name_x">Tên ảnh - %s \n</string>
-
     <string name="shots_made_x">\nSố lần chụp - %s</string>
-
     <string name="shots_made_percentage_x">\nTỷ lệ cú sút thành công: %s</string>
-
     <string name="stats">Thống kê</string>
-
     <string name="splash_icon_description">Đây là hình ảnh chào mừng cho màn hình chào mừng được hiển thị trước khi ứng dụng được kích hoạt</string>
-
     <string name="successfully_sent_email_verification">Đã gửi xác minh thành công</string>
-
     <string name="take_a_picture">Chụp ảnh</string>
-
+    <string name="terms_conditions">Điều khoản &amp; Điều kiện</string>
+    <string name="terms_conditions_description">Các điều khoản và điều kiện này (Thỏa thuận) nêu rõ các điều khoản và điều kiện chung cho việc bạn sử dụng ứng dụng di động Track Your Shot (Ứng dụng di động hoặc Dịch vụ) và bất kỳ sản phẩm và dịch vụ liên quan nào (gọi chung là Dịch vụ). Thỏa thuận này có tính ràng buộc về mặt pháp lý giữa bạn (Người dùng, bạn hoặc của bạn) và Track Your Shot (Track Your Shot, chúng tôi, chúng tôi hoặc của chúng tôi). Nếu bạn tham gia vào Thỏa thuận này thay mặt cho một doanh nghiệp hoặc một pháp nhân khác, bạn tuyên bố rằng bạn có thẩm quyền ràng buộc pháp nhân đó với Thỏa thuận này, trong trường hợp đó, các thuật ngữ Người dùng, bạn hoặc của bạn sẽ đề cập đến pháp nhân đó. Nếu bạn không có thẩm quyền đó hoặc nếu bạn không đồng ý với các điều khoản của Thỏa thuận này, bạn không được chấp nhận Thỏa thuận này và không được truy cập và sử dụng Ứng dụng di động và Dịch vụ. Bằng cách truy cập và sử dụng Ứng dụng di động và Dịch vụ, bạn xác nhận rằng bạn đã đọc, hiểu và đồng ý chịu ràng buộc bởi các điều khoản của Thỏa thuận này. Bạn thừa nhận rằng Thỏa thuận này là hợp đồng giữa bạn và Track Your Shot, mặc dù nó ở dạng điện tử và không do bạn ký trực tiếp, và nó chi phối việc bạn sử dụng Ứng dụng di động và Dịch vụ.</string>
+    <string name="track_your_progress">Theo dõi tiến trình của bạn</string>
+    <string name="track_your_progress_description">Ghi lại tỷ lệ bắn của nhiều loại cú đánh khác nhau trong nhiều ngày và xem số liệu thống kê đã lưu trực tiếp trên ứng dụng di động.</string>
+    <string name="the_image_upload_was_unsuccessful">Việc tải hình ảnh lên không thành công. Hãy thử lại một lần nữa.</string>
+    <string name="there_was_a_error_creating_your_account_please_try_again">Đã xảy ra lỗi khi tạo tài khoản của bạn. Vui lòng thử lại.</string>
+    <string name="there_was_a_error_deleting_your_account_please_try_again">Đã xảy ra lỗi khi xóa tài khoản của bạn. Vui lòng thử lại.</string>
+    <string name="this_document_was_last_updated_on">Tài liệu này được cập nhật lần cuối vào ngày 9 tháng 11 năm 2024</string>
+    <string name="this_email_is_already_used_for_another_account_please_enter_a_new_email">Email này đã được sử dụng cho một tài khoản khác. Vui lòng nhập email mới.</string>
+    <string name="this_username_is_already_used_for_another_account_please_enter_a_new_username">Tên người dùng này đã được sử dụng cho một tài khoản khác. Vui lòng nhập tên người dùng mới.</string>
+    <string name="track_your_shot">Theo dõi cú đánh của bạn</string>
+    <string name="try_again">Thử lại</string>
+    <string name="username">Tên người dùng</string>
+    <string name="username_required">Tên người dùng*</string>
+    <string name="username_in_use">Tên người dùng đang sử dụng</string>
+    <string name="username_in_use_description">Tên người dùng này đã được sử dụng trên Track Your Shot. Vui lòng sử dụng tên người dùng khác.</string>
+    <string name="username_is_not_in_correct_format_please_enter_username_in_correct_format">Tên người dùng không đúng định dạng. Vui lòng nhập tên người dùng theo đúng định dạng</string>
+    <string name="unable_to_create_account">Không thể tạo tài khoản</string>
+    <string name="unable_to_delete_player_please_contact_support">Không thể xóa người chơi. Vui lòng liên hệ bộ phận hỗ trợ.</string>
+    <string name="unable_to_login_to_account">Không thể đăng nhập vào tài khoản</string>
+    <string name="unable_to_reset_password">Không thể đặt lại mật khẩu</string>
+    <string name="unable_to_set_new_username">Không thể thiết lập tên người dùng mới</string>
+    <string name="unable_to_send_email_verification">Không thể gửi email xác minh</string>
+    <string name="unable_to_upload_image">Không thể tải hình ảnh lên</string>
+    <string name="unsaved_player_changes">Thay đổi của người chơi chưa lưu</string>
+    <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">Chúng tôi phát hiện có vấn đề với tài khoản của bạn. Vui lòng liên hệ bộ phận hỗ trợ để giải quyết vấn đề.</string>
+    <string name="we_have_detected_currently_not_connected_to_internet_description">Chúng tôi phát hiện hiện tại không kết nối được với Internet. Vui lòng kết nối với dịch vụ và thử lại.</string>
+    <string name="username_is_required_please_enter_a_username_to_create_a_account">Tên người dùng là bắt buộc. Vui lòng nhập tên người dùng để tạo tài khoản.</string>
+    <string name="using_the_app">Sử dụng ứng dụng</string>
+    <string name="we_were_able_to_send_email_verification_please_check_your_email_to_verify_account">Chúng tôi đã có thể gửi email xác minh. Vui lòng kiểm tra email của bạn để xác minh tài khoản</string>
+    <string name="we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again">Chúng tôi không thể gửi email xác minh. Vui lòng nhấp vào gửi email xác minh để thử lại.</string>
+    <string name="we_were_unable_to_set_new_username_since_the_username_is_empty_please_click_try_again_to_set_new_username">Chúng tôi không thể thiết lập tên người dùng mới vì tên người dùng đang trống. Vui lòng nhấp vào thử lại để đặt tên người dùng mới</string>
+    <string name="we_were_unable_to_set_new_username_since_the_username_is_the_same_as_the_current_username_please_click_try_again_to_set_new_username">Chúng tôi không thể đặt tên người dùng mới vì tên người dùng giống với tên người dùng hiện tại. Vui lòng nhấp vào thử lại để đặt tên người dùng mới</string>
+    <string name="verify_account">Xác minh tài khoản</string>
+    <string name="view_more_info">Xem thêm thông tin</string>
+    <string name="view_x">Xem %s</string>
+    <string name="voice_commands">Lệnh bằng giọng nói</string>
+    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_shot">%s Bắn</string>
+    <string name="x_shot_has_been_removed_description">%s đã bị xóa khỏi lịch sử cú đánh của người chơi này.</string>
+    <string name="x_shot_has_not_been_removed_description">%s Cú đánh chưa bị xóa khỏi lịch sử cú đánh của người chơi này. Vui lòng thử lại để xóa ảnh.</string>
+    <string name="x_shots">%s Ảnh chụp</string>
+    <string name="x_shot_category">Thể loại - %s</string>
+    <string name="x_x">%s - %s</string>
+    <string name="yes">Đúng</string>
+    <string name="your_player_could_not_be_retrieved_description">Không thể lấy lại trình phát của bạn. Vui lòng thử lại.</string>
 </resources>

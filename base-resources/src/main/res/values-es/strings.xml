@@ -53,52 +53,28 @@
     <string name="do_you_wish_to_proceed_description">¿Deseas continuar a pesar de tener modificaciones de jugador sin guardar? Cualquier cambio realizado no se guardará.</string>
     <string name="edit_x">Editar %s</string>
     <string name="enter_first_name">Introduzca el nombre</string>
-
-
     <string name="enter_last_name">Introduzca el apellido</string>
-
     <string name="first_name">Nombre de pila</string>
-
     <string name="forgot_password">Has olvidado tu contraseña</string>
-
     <string name="email">Correo electrónico</string>
-
     <string name="email_in_use">Correo electrónico en uso</string>
-
     <string name="email_in_use_description">Este correo electrónico ya está en uso en Track Your Shot. Utilice una dirección de correo electrónico diferente.</string>
-
     <string name="email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password">Se ha enviado un correo electrónico para restablecer la contraseña. Siga las instrucciones para restablecer la contraseña.</string>
-
     <string name="email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account">Se ha enviado un correo electrónico para verificar la cuenta. Abra el correo electrónico enviado para verificar la cuenta.</string>
-
     <string name="email_is_not_in_correct_format_please_enter_email_in_correct_format">El correo electrónico no tiene el formato correcto. Por favor ingrese el correo electrónico en el formato correcto</string>
-
     <string name="email_is_required_please_enter_a_email_to_create_a_account">Se requiere correo electrónico. Introduzca un correo electrónico para crear una cuenta.</string>
-
     <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">Se requiere correo electrónico. Ingrese un correo electrónico para iniciar sesión en una cuenta existente.</string>
-
     <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">Se requiere correo electrónico. Ingrese un correo electrónico para restablecer la contraseña de la cuenta existente.</string>
-
     <string name="enabled_permissions">Permisos habilitados</string>
-
     <string name="email_required">Correo electrónico*</string>
-
     <string name="enter_shots_made">Introduzca los tiros realizados</string>
-
     <string name="enter_shots_missed">Introducir tiros fallidos</string>
-
     <string name="edit_player">Editar jugador</string>
-
     <string name="empty"/>
-
     <string name="empty_field">Campo vacío</string>
-
     <string name="empty_fields">Campos vacíos</string>
-
     <string name="empty_fields_description">Falta información requerida para continuar con la creación de su cuenta. Por favor proporcione los detalles necesarios.</string>
-
     <string name="error">Error</string>
-
     <string name="error_creating_account">Error al crear la cuenta</string>
 
     <string name="error_deleting_pending_account">Error al eliminar la cuenta pendiente</string>
@@ -316,4 +292,81 @@
 
     <string name="take_a_picture">Tomar una fotografía</string>
 
+
+    <string name="terms_conditions">Términos y condiciones</string>
+
+    <string name="terms_conditions_description">Estos términos y condiciones (Acuerdo) establecen los términos y condiciones generales de su uso de la aplicación móvil Track Your Shot (Aplicación móvil o Servicio) y cualquiera de sus productos y servicios relacionados (colectivamente, Servicios). Este Acuerdo es legalmente vinculante entre usted (Usuario, usted o su) y Track Your Shot (Track Your Shot, nosotros, nos o nuestro). Si usted celebra este Acuerdo en nombre de una empresa u otra entidad legal, declara que tiene la autoridad para vincular a dicha entidad a este Acuerdo, en cuyo caso los términos Usuario, usted o su se referirán a dicha entidad. Si no tiene dicha autoridad, o si no está de acuerdo con los términos de este Acuerdo, no debe aceptar este Acuerdo y no podrá acceder ni utilizar la Aplicación Móvil y los Servicios. Al acceder y utilizar la Aplicación Móvil y los Servicios, usted reconoce que ha leído, comprendido y acepta estar sujeto a los términos de este Acuerdo. Usted reconoce que este Acuerdo es un contrato entre usted y Track Your Shot, aunque sea electrónico y no esté firmado físicamente por usted, y rige su uso de la Aplicación Móvil y los Servicios.</string>
+
+    <string name="track_your_progress">Seguimiento de su progreso</string>
+
+    <string name="track_your_progress_description">Registre los porcentajes de tiros para varios tipos de tiros durante varios días y vea las estadísticas guardadas directamente en la aplicación móvil.</string>
+
+    <string name="the_image_upload_was_unsuccessful">La carga de la imagen no se realizó correctamente. Inténtalo una vez más.</string>
+
+    <string name="there_was_a_error_creating_your_account_please_try_again">Hubo un error al crear su cuenta. Por favor, inténtalo de nuevo.</string>
+
+    <string name="there_was_a_error_deleting_your_account_please_try_again">Se produjo un error al eliminar su cuenta. Por favor, inténtalo de nuevo.</string>
+
+    <string name="this_document_was_last_updated_on">Este documento se actualizó por última vez el 9 de noviembre de 2024</string>
+
+    <string name="this_email_is_already_used_for_another_account_please_enter_a_new_email">Este correo electrónico ya está utilizado para otra cuenta. Por favor, introduzca un nuevo correo electrónico.</string>
+
+    <string name="this_username_is_already_used_for_another_account_please_enter_a_new_username">Este nombre de usuario ya está utilizado para otra cuenta. Por favor, introduzca un nuevo nombre de usuario.</string>
+
+    <string name="track_your_shot">Seguimiento de tu tiro</string>
+
+    <string name="try_again">Intentar otra vez</string>
+
+    <string name="username">Nombre de usuario</string>
+
+    <string name="username_required">Nombre de usuario*</string>
+
+    <string name="username_in_use">Nombre de usuario en uso</string>
+
+    <string name="username_in_use_description">Este nombre de usuario ya está en uso en Track Your Shot. Utilice un nombre de usuario diferente.</string>
+
+    <string name="username_is_not_in_correct_format_please_enter_username_in_correct_format">El nombre de usuario no tiene el formato correcto. Por favor, introduzca el nombre de usuario en el formato correcto</string>
+
+    <string name="unable_to_create_account">No se puede crear una cuenta</string>
+
+    <string name="unable_to_delete_player_please_contact_support">No se puede eliminar el reproductor. Por favor, póngase en contacto con el soporte.</string>
+
+    <string name="unable_to_login_to_account">No se puede iniciar sesión en la cuenta</string>
+
+    <string name="unable_to_reset_password">No se puede restablecer la contraseña</string>
+
+    <string name="unable_to_set_new_username">No se puede establecer un nuevo nombre de usuario</string>
+
+    <string name="unable_to_send_email_verification">No se puede enviar el correo electrónico de verificación</string>
+
+    <string name="unable_to_upload_image">No se puede cargar la imagen</string>
+
+    <string name="unsaved_player_changes">Cambios de jugadores no guardados</string>
+
+    <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">Hemos detectado un problema con su cuenta. Comuníquese con el soporte para resolver el problema.</string>
+
+    <string name="we_have_detected_currently_not_connected_to_internet_description">Hemos detectado que actualmente no estás conectado a Internet. Conéctese al servicio y vuelva a intentarlo.</string>
+
+    <string name="username_is_required_please_enter_a_username_to_create_a_account">El nombre de usuario es obligatorio. Introduzca un nombre de usuario para crear una cuenta.</string>
+
+    <string name="using_the_app">Usando la aplicación</string>
+
+    <string name="we_were_able_to_send_email_verification_please_check_your_email_to_verify_account">Pudimos enviar verificación por correo electrónico. Por favor revise su correo electrónico para verificar su cuenta</string>
+
+    <string name="we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again">No pudimos enviar la verificación por correo electrónico. Haga clic en enviar correo electrónico de verificación para volver a intentarlo.</string>
+    <string name="we_were_unable_to_set_new_username_since_the_username_is_empty_please_click_try_again_to_set_new_username">No pudimos establecer un nuevo nombre de usuario porque el nombre de usuario está vacío. Haga clic en \"Intentar nuevamente\" para establecer un nuevo nombre de usuario.</string>
+    <string name="we_were_unable_to_set_new_username_since_the_username_is_the_same_as_the_current_username_please_click_try_again_to_set_new_username">No pudimos establecer un nuevo nombre de usuario porque es el mismo que el nombre de usuario actual. Haga clic en \"Intentar nuevamente\" para establecer un nuevo nombre de usuario.</string>
+    <string name="verify_account">Verificar cuenta</string>
+    <string name="view_more_info">Ver más información</string>
+    <string name="view_x">Ver %s</string>
+    <string name="voice_commands">Comandos de voz</string>
+    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_shot">%s Disparo</string>
+    <string name="x_shot_has_been_removed_description">%s ha sido eliminado del historial de tiros de este jugador.</string>
+    <string name="x_shot_has_not_been_removed_description">%s El tiro no se ha eliminado del historial de tiros de este jugador. Intente nuevamente eliminar la toma.</string>
+    <string name="x_shots">%s disparos</string>
+    <string name="x_shot_category">Categoría - %s</string>
+    <string name="x_x">%s - %s</string>
+    <string name="yes">Sí</string>
+    <string name="your_player_could_not_be_retrieved_description">No se pudo recuperar su reproductor. Por favor, inténtalo de nuevo.</string>
 </resources>
