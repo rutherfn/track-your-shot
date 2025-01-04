@@ -89,6 +89,8 @@
     <string name="hint_log_new_shots">Press the "Log Shots" button to record shots for the player.</string>
     <string name="hint_log_new_shots_for_player">Press the "Log Shots" button to record shots for</string>
     <string name="introduction">Introduction</string>
+    <string name="invalid_shot_input">Invalid Shot Input</string>
+    <string name="invalid_shot_input_description">Shots logged must be whole numbers. Please enter a whole number to log valid shots made or missed.</string>
     <string name="issue_occurred">Issue Occurred</string>
     <string name="last_name">Last Name</string>
     <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">Leaving the app will result you in not finishing the account creation process. You will not be able to continue until you verify your email. If you verify your email and then come back to the app, you can continue to create your account.</string>
