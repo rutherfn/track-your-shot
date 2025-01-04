@@ -28,6 +28,7 @@ import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import com.nicholas.rutherford.track.your.shot.navigation.DrawerAction
 import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
+import com.nicholas.rutherford.track.your.shot.navigation.ReportingAction
 import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
 
 @Composable
@@ -104,7 +105,7 @@ fun DrawerContent(
 @Preview
 @Composable
 fun DrawerContentPreview() {
-    val actions = listOf(PlayersListAction, SettingsAction)
+    val actions = listOf(PlayersListAction, ReportingAction, SettingsAction)
 
     Column(modifier = Modifier.background(AppColors.White)) {
         DrawerContent(

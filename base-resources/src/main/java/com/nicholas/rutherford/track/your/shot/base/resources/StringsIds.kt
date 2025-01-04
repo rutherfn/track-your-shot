@@ -160,6 +160,7 @@ object StringsIds {
     val readExternalStorageDescription = R.string.read_external_storage_description
     val readMediaImagesDescription = R.string.read_media_images_description
     val removeImage = R.string.remove_image
+    val reports = R.string.reports
     val resetPassword = R.string.reset_password
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email
