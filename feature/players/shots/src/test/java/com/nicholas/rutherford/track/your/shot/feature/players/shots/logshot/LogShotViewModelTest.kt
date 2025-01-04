@@ -480,7 +480,7 @@ class LogShotViewModelTest {
                 LogShotState()
             )
 
-            verify(exactly = 0) { navigation.alert(alert = any())}
+            verify(exactly = 0) { navigation.alert(alert = any()) }
         }
 
         @Test
@@ -493,7 +493,7 @@ class LogShotViewModelTest {
                 LogShotState()
             )
 
-            verify(exactly = 1) { navigation.alert(alert = any())}
+            verify(exactly = 1) { navigation.alert(alert = any()) }
         }
 
         @Test
@@ -515,7 +515,7 @@ class LogShotViewModelTest {
                 )
             )
 
-            verify(exactly = 0) { navigation.alert(alert = any())}
+            verify(exactly = 0) { navigation.alert(alert = any()) }
         }
     }
 
@@ -532,7 +532,7 @@ class LogShotViewModelTest {
                 LogShotState()
             )
 
-            verify(exactly = 0) { navigation.alert(alert = any())}
+            verify(exactly = 0) { navigation.alert(alert = any()) }
         }
 
         @Test
@@ -545,7 +545,7 @@ class LogShotViewModelTest {
                 LogShotState()
             )
 
-            verify(exactly = 1) { navigation.alert(alert = any())}
+            verify(exactly = 1) { navigation.alert(alert = any()) }
         }
 
         @Test
@@ -567,7 +567,7 @@ class LogShotViewModelTest {
                 )
             )
 
-            verify(exactly = 0) { navigation.alert(alert = any())}
+            verify(exactly = 0) { navigation.alert(alert = any()) }
         }
     }
 
