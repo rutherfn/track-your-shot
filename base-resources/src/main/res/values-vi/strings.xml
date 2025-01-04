@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+    <string name="acceptance_of_these_terms">Chấp nhận các điều khoản này</string>
+    <string name="acceptance_of_these_terms_description">Bạn xác nhận rằng bạn đã đọc Thỏa thuận này và đồng ý với tất cả các điều khoản và điều kiện của nó. Bằng cách truy cập và sử dụng Ứng dụng di động và Dịch vụ, bạn đồng ý chịu ràng buộc bởi Thỏa thuận này. Nếu bạn không đồng ý tuân thủ các điều khoản của Thỏa thuận này, bạn không được phép truy cập hoặc sử dụng Ứng dụng di động và Dịch vụ.</string>
+    <string name="accounts">Tài khoản</string>
+    <string name="account_info">Thông tin tài khoản</string>
+    <string name="account_has_not_been_verified">Tài khoản chưa được xác minh</string>
+    <string name="account_security_description">Nếu bạn tạo tài khoản trong Ứng dụng di động, bạn có trách nhiệm duy trì tính bảo mật của tài khoản và hoàn toàn chịu trách nhiệm về mọi hoạt động diễn ra trong tài khoản đó cũng như mọi hành động khác được thực hiện liên quan đến tài khoản đó. Chúng tôi có thể theo dõi và xem xét các tài khoản mới trước khi bạn đăng nhập và bắt đầu sử dụng Dịch vụ. Cung cấp thông tin liên lạc sai dưới bất kỳ hình thức nào cũng có thể dẫn đến việc chấm dứt tài khoản của bạn. Bạn phải thông báo ngay cho chúng tôi về bất kỳ hành vi sử dụng trái phép nào đối với tài khoản của bạn hoặc bất kỳ vi phạm bảo mật nào khác. Chúng tôi sẽ không chịu trách nhiệm cho bất kỳ hành vi hoặc thiếu sót nào của bạn, bao gồm bất kỳ thiệt hại nào phát sinh do những hành vi hoặc thiếu sót đó. Chúng tôi có thể tạm ngừng, vô hiệu hóa hoặc xóa tài khoản của bạn (hoặc bất kỳ phần nào của tài khoản) nếu chúng tôi xác định rằng bạn đã vi phạm bất kỳ điều khoản nào của Thỏa thuận này hoặc hành vi hoặc nội dung của bạn có thể gây tổn hại đến danh tiếng và thiện chí của chúng tôi. Nếu chúng tôi xóa tài khoản của bạn vì những lý do nêu trên, bạn không được đăng ký lại Dịch vụ của chúng tôi. Chúng tôi có thể chặn địa chỉ email và địa chỉ giao thức Internet của bạn để ngăn chặn việc đăng ký sau này.</string>
+    <string name="add_player">Thêm Người chơi</string>
+    <string name="add_player_stats">Thêm số liệu thống kê của người chơi</string>
+    <string name="acknowledge_and_agree_to_terms">Xác nhận / Đồng ý với các điều khoản</string>
+    <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
+    <string name="are_you_certain_you_wish_to_remove_x">Bạn có chắc chắn muốn xóa %s không?</string>
+    <string name="are_you_sure_you_want_to_delete_x_shot">Bạn có chắc chắn muốn xóa %s không?</string>
+    <string name="are_you_sure_you_want_to_leave_track_your_shot">Bạn có chắc chắn muốn thoát khỏi Track Your Shot không?</string>
+    <string name="are_you_sure_you_want_to_delete_pending_account_description">Để xóa tài khoản đang chờ xử lý, bạn sẽ phải đăng ký tài khoản mới hoặc đăng nhập vào tài khoản hiện có. Bạn có chắc chắn muốn tiếp tục xóa tài khoản đang chờ xử lý của mình không?</string>
+    <string name="by_nicholas_rutherford">Bởi Nicholas Rutherford</string>
+    <string name="c">C</string>
+    <string name="camera">Máy ảnh</string>
+    <string name="camera_permission_explanation">Chúng tôi yêu cầu quyền sử dụng camera để người dùng có thể chụp ảnh bằng camera điện thoại khi tạo hoặc chỉnh sửa hồ sơ người chơi. Quyền này cho phép ứng dụng truy cập vào phần cứng camera của thiết bị, cho phép người dùng chụp và liên kết hình ảnh với hồ sơ người chơi của họ. Nếu không có quyền này, ứng dụng sẽ không thể sử dụng máy ảnh cho tính năng này.</string>
+    <string name="camera_permission">Quyền sử dụng máy ảnh</string>
+    <string name="camera_permission_has_been_denied_description">Quyền sử dụng máy ảnh đã bị từ chối. Để cấp quyền thủ công cho máy ảnh và tải ảnh lên Trình phát, vui lòng điều hướng đến Cài đặt.</string>
+    <string name="cancel">Hủy bỏ</string>
+    <string name="center">Trung tâm</string>
+    <string name="changes_and_amendments">Thay đổi và sửa đổi</string>
+    <string name="changes_and_amendments_description">Chúng tôi có quyền sửa đổi Thỏa thuận này hoặc các điều khoản liên quan đến Ứng dụng di động và Dịch vụ bất kỳ lúc nào theo quyết định của chúng tôi. Khi đó, chúng tôi sẽ gửi cho bạn email để thông báo. Chúng tôi cũng có thể thông báo cho bạn theo những cách khác tùy theo quyết định của chúng tôi, chẳng hạn như thông qua thông tin liên hệ mà bạn đã cung cấp. Phiên bản cập nhật của Thỏa thuận này sẽ có hiệu lực ngay sau khi Thỏa thuận đã sửa đổi được đăng tải, trừ khi có quy định khác. Việc bạn tiếp tục sử dụng Ứng dụng di động và Dịch vụ sau ngày có hiệu lực của Thỏa thuận đã sửa đổi (hoặc hành vi khác được chỉ định tại thời điểm đó) sẽ cấu thành sự đồng ý của bạn đối với những thay đổi đó.</string>
+    <string name="check_if_account_has_been_verified">Kiểm tra xem tài khoản đã được xác minh chưa</string>
+    <string name="choose_a_shot_to_log_info_description">Chọn một cú đánh để ghi lại thông tin. Để xem thêm thông tin chi tiết về bức ảnh, hãy nhấp vào \"Hiển thị thêm\",</string>
+    <string name="choose_image_from_gallery">Chọn hình ảnh từ thư viện</string>
+    <string name="choose_option">Chọn tùy chọn</string>
+    <string name="close">Đóng</string>
+    <string name="compare_players_stats">So sánh người chơi và số liệu thống kê</string>
+    <string name="contacting_us">Liên hệ với chúng tôi</string>
+    <string name="contacting_us_description">Nếu bạn có bất kỳ câu hỏi, thắc mắc hoặc khiếu nại nào liên quan đến Thỏa thuận này, chúng tôi khuyến khích bạn liên hệ với chúng tôi qua email bên dưới: </string>
+    <string name="continue_text">Tiếp tục</string>
+    <string name="click_me_to_create_account">Nhấp vào tôi để tạo tài khoản</string>
+    <string name="create_account">Tạo tài khoản</string>
+    <string name="create_player">Tạo Người chơi</string>
+    <string name="create_your_players_profile">Tạo hồ sơ người chơi của bạn</string>
+    <string name="create_your_player_profile_description">Bắt đầu bằng cách tạo hồ sơ người chơi, bao gồm các thông tin như tên, họ, vị trí và hình ảnh người chơi.</string>
+    <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Tài khoản hiện tại chưa được xác minh, vui lòng mở email để xác minh tài khoản.</string>
+    <string name="current_players_has_no_changes_description">Chưa có bất kỳ bản cập nhật hoặc thay đổi nào gần đây đối với trình phát hiện tại. Vui lòng điều chỉnh trình phát hiện tại để tiếp tục.</string>
+    <string name="current_shot_has_been_updated_description">Cảnh quay hiện tại đã được cập nhật. Để xem thông tin mới nhất, hãy nhấp vào ảnh để xem các cập nhật.</string>
+    <string name="current_shot_has_no_changes_description">Chưa có bất kỳ cập nhật hoặc thay đổi nào gần đây cho bức ảnh này. Vui lòng điều chỉnh cảnh quay hiện tại để tiếp tục.</string>
+    <string name="current_shots_x">Ảnh hiện tại %s</string>
+    <string name="date_shots_logged">Ngày chụp ảnh được ghi lại</string>
+    <string name="date_shots_taken">Ngày chụp ảnh</string>
+    <string name="delete_pending_account">Xóa tài khoản đang chờ xử lý</string>
+    <string name="deleting_pending_account">Xóa tài khoản đang chờ xử lý</string>
+    <string name="delete_Shot">Xóa ảnh</string>
+    <string name="delete_x">Xóa %s</string>
+    <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
+    <string name="device_is_currently_not_connected_to_internet_desc">Thiết bị hiện không được kết nối Internet. Vui lòng kết nối thiết bị với Internet để hoàn tất thao tác.</string>
+    <string name="do_you_wish_to_proceed_description">Bạn có muốn tiếp tục mặc dù chưa lưu các thay đổi của người chơi không? Bất kỳ thay đổi nào được thực hiện sẽ không được lưu.</string>
+    <string name="edit_x">Chỉnh sửa %s</string>
+    <string name="enter_first_name">Nhập Tên</string>
+
+
+    <string name="enter_last_name">Nhập Họ</string>
+
+    <string name="first_name">Tên đầu tiên</string>
+
+    <string name="forgot_password">Quên mật khẩu</string>
+
+    <string name="email">E-mail</string>
+
+    <string name="email_in_use">Email đang sử dụng</string>
+
+    <string name="email_in_use_description">Email này đã được sử dụng trên Track Your Shot. Vui lòng sử dụng địa chỉ email khác.</string>
+
+    <string name="email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password">Email đã được gửi để đặt lại mật khẩu. Vui lòng làm theo hướng dẫn để đặt lại mật khẩu.</string>
+
+    <string name="email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account">Email đã được gửi để xác minh tài khoản. Vui lòng mở email đã gửi để xác minh tài khoản.</string>
+
+    <string name="email_is_not_in_correct_format_please_enter_email_in_correct_format">Email không đúng định dạng. Vui lòng nhập email theo đúng định dạng</string>
+
+    <string name="email_is_required_please_enter_a_email_to_create_a_account">Cần phải có email. Vui lòng nhập email để tạo tài khoản.</string>
+
+    <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">Cần phải có email. Vui lòng nhập email để đăng nhập vào tài khoản hiện có.</string>
+
+    <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">Cần phải có email. Vui lòng nhập email để đặt lại mật khẩu cho tài khoản hiện tại.</string>
+
+    <string name="enabled_permissions">Quyền được bật</string>
+
+    <string name="email_required">E-mail*</string>
+
+    <string name="enter_shots_made">Nhập các bức ảnh đã chụp</string>
+
+    <string name="enter_shots_missed">Nhập số lần bắn trượt</string>
+
+    <string name="edit_player">Chỉnh sửa người chơi</string>
+
+    <string name="empty"/>
+
+    <string name="empty_field">Trường trống</string>
+
+    <string name="empty_fields">Các trường trống</string>
+
+    <string name="empty_fields_description">Thiếu thông tin bắt buộc để tiếp tục tạo tài khoản. Vui lòng cung cấp các thông tin cần thiết.</string>
+
+    <string name="error">Lỗi</string>
+
+    <string name="error_creating_account">Lỗi khi tạo tài khoản</string>
+
+    <string name="error_deleting_pending_account">Lỗi khi xóa tài khoản đang chờ xử lý</string>
+
+    <string name="find_shots_by_name">Tìm ảnh theo tên </string>
+
+    <string name="general">Tổng quan</string>
+
+    <string name="general_information">Thông tin chung</string>
+
+    <string name="got_it">Hiểu rồi</string>
+
+    <string name="having_trouble_creating_your_account_please_try_again">Đang gặp sự cố khi tạo tài khoản. Vui lòng thử lại</string>
+
+    <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Gặp sự cố khi đăng nhập vào tài khoản của bạn. Vui lòng thử lại hoặc đảm bảo thông tin đăng nhập tồn tại và hợp lệ.</string>
+
+    <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Đang gặp sự cố khi đặt lại mật khẩu cho tài khoản này. Vui lòng thử lại hoặc đảm bảo thông tin đăng nhập tồn tại và hợp lệ.</string>
+
+    <string name="hint_add_new_player">Nhấn vào biểu tượng + ở thanh công cụ bên phải để thêm người chơi mới</string>
+
+    <string name="hint_log_new_shots">Nhấn nút Log Shots để ghi lại cú đánh cho người chơi.</string>
+
+    <string name="hint_log_new_shots_for_player">Nhấn nút Log Shots để ghi lại các cảnh quay</string>
+
+    <string name="introduction">Giới thiệu</string>
+
+    <string name="invalid_shot_input">Đầu vào cú đánh không hợp lệ</string>
+
+    <string name="invalid_shot_input_description">Số lần chụp phải là số nguyên. Vui lòng nhập số nguyên để ghi lại những cú đánh hợp lệ đã thực hiện hoặc bỏ lỡ.</string>
+
+    <string name="issue_occurred">Sự cố đã xảy ra</string>
+
+    <string name="last_name">Họ</string>
+
+    <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">Thoát khỏi ứng dụng sẽ khiến bạn không hoàn tất quá trình tạo tài khoản. Bạn sẽ không thể tiếp tục cho đến khi xác minh email của mình. Nếu bạn xác minh email và quay lại ứng dụng, bạn có thể tiếp tục tạo tài khoản.</string>
+
+    <string name="login">Đăng nhập</string>
+
+    <string name="login_icon_description">Đây là hình ảnh đăng nhập cho màn hình đăng nhập</string>
+
+    <string name="logout">Đăng xuất</string>
+
+    <string name="log_shot">Đạn gỗ</string>
+
+    <string name="log_shots">Ảnh chụp nhật ký</string>
+
+    <string name="log_your_shots">Ghi lại các cú đánh của bạn</string>
+
+    <string name="log_your_shots_description">Chọn loại cú đánh bạn muốn ghi lại và nhập số lần đánh thành công hoặc trượt trong ngày mà cầu thủ thực hiện cú đánh.</string>
+
+    <string name="menu">Thực đơn</string>
+
+    <string name="more_info">Thông tin thêm</string>
+
+    <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Có nhiều trường bắt buộc phải nhập nhưng chưa được nhập. Vui lòng nhập tất cả các trường.</string>
+
+    <string name="next">Kế tiếp</string>
+
+    <string name="no">KHÔNG</string>
+
+    <string name="no_changes_made">Không có thay đổi nào được thực hiện</string>
+
+    <string name="not_connected_to_internet">Không kết nối internet</string>
+
+    <string name="no_first_name_entered">Không nhập tên</string>
+
+    <string name="no_last_name_entered">Không nhập họ</string>
+
+    <string name="no_shots_results_found">Không tìm thấy kết quả nào</string>
+
+    <string name="no_shots_results_found_description">Không tìm thấy ảnh nào phù hợp trong tìm kiếm của bạn. Vui lòng cập nhật tìm kiếm bằng tên ảnh hiện có.</string>
+
+    <string name="not_now">Không phải bây giờ</string>
+
+    <string name="no_current_players_added">Không có người chơi hiện tại nào được thêm vào</string>
+
+    <string name="no_current_shots_logged_for_player">Không có cú đánh hiện tại nào được ghi lại cho người chơi</string>
+
+    <string name="open_email">Mở Email</string>
+
+    <string name="ok">Được rồi</string>
+
+    <string name="other_resources">Tài nguyên khác</string>
+
+    <string name="other_resources_description">Mặc dù Ứng dụng di động và Dịch vụ có thể liên kết đến các tài nguyên khác (như trang web, ứng dụng di động, v.v.), chúng tôi không trực tiếp hoặc gián tiếp ngụ ý bất kỳ sự chấp thuận, liên kết, tài trợ, xác nhận hoặc liên kết nào với bất kỳ tài nguyên được liên kết nào, trừ khi được nêu cụ thể tại đây. Chúng tôi không chịu trách nhiệm kiểm tra hoặc đánh giá và không bảo đảm các dịch vụ của bất kỳ doanh nghiệp, cá nhân nào hoặc nội dung tài nguyên của họ. Chúng tôi không chịu bất kỳ trách nhiệm nào đối với các hành động, sản phẩm, dịch vụ và nội dung của bất kỳ bên thứ ba nào khác. Bạn nên xem xét kỹ lưỡng các tuyên bố pháp lý và các điều kiện sử dụng khác của bất kỳ tài nguyên nào mà bạn truy cập thông qua liên kết trong Ứng dụng di động. Việc bạn liên kết đến bất kỳ tài nguyên bên ngoài nào đều phải chịu rủi ro.</string>
+
+    <string name="reset_password">Đặt lại mật khẩu</string>
+
+    <string name="reset_password_email_sent">Đặt lại mật khẩu Email đã gửi</string>
+
+    <string name="resend_email">Gửi lại Email</string>
+
+    <string name="select_a_shot">Chọn một bức ảnh</string>
+
+    <string name="selecting_a_shot">Chọn một cú đánh</string>
+
+    <string name="select_date">Chọn ngày</string>
+
+    <string name="password">Mật khẩu</string>
+
+    <string name="password_helper_text">Mật khẩu phải dài ít nhất 8 ký tự và bao gồm: một chữ cái thường (a–z), một chữ cái viết hoa (A–Z), một số (0–9) và một ký tự đặc biệt (ví dụ: \@, $, !, %, *).</string>
+
+    <string name="password_required">Mật khẩu*</string>
+
+    <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">Mật khẩu không đúng định dạng. Vui lòng nhập mật khẩu theo đúng định dạng</string>
+
+    <string name="password_is_required_please_enter_a_password_to_create_a_account">Cần phải nhập mật khẩu. Vui lòng nhập mật khẩu để tạo tài khoản.</string>
+
+    <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">Cần phải nhập mật khẩu. Vui lòng nhập mật khẩu để đăng nhập vào tài khoản hiện có.</string>
+
+    <string name="pending_shots">Các cú đánh đang chờ xử lý</string>
+
+    <string name="permissions">Quyền</string>
+
+    <string name="permission_has_been_declined">Quyền đã bị từ chối</string>
+
+    <string name="pg">trang</string>
+
+
+</resources>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+    <string name="acceptance_of_these_terms">Accettazione di questi termini</string>
+    <string name="acceptance_of_these_terms_description">L\'utente dichiara di aver letto il presente Contratto e di accettarne tutti i termini e le condizioni. Accedendo e utilizzando l\'Applicazione Mobile e i Servizi, accetti di essere vincolato dal presente Contratto. Se non accetti di rispettare i termini del presente Contratto, non sei autorizzato ad accedere o utilizzare l\'Applicazione Mobile e i Servizi.</string>
+    <string name="accounts">Conti</string>
+    <string name="account_info">Informazioni sull\'account</string>
+    <string name="account_has_not_been_verified">L\'account non è stato verificato</string>
+    <string name="account_security_description">Se crei un account nell\'applicazione mobile, sei responsabile della sicurezza del tuo account e sei pienamente responsabile di tutte le attività che si verificano tramite l\'account e di qualsiasi altra azione intrapresa in relazione ad esso. Potremmo monitorare ed esaminare i nuovi account prima che tu possa effettuare l\'accesso e iniziare a utilizzare i Servizi. Fornire informazioni di contatto false di qualsiasi tipo può comportare la chiusura del tuo account. Dovrai segnalarci immediatamente qualsiasi utilizzo non autorizzato del tuo account o qualsiasi altra violazione della sicurezza. Non saremo responsabili per eventuali atti od omissioni da parte vostra, compresi eventuali danni di qualsiasi tipo subiti a seguito di tali atti od omissioni. Potremmo sospendere, disabilitare o eliminare il tuo account (o qualsiasi parte di esso) se stabiliamo che hai violato una qualsiasi disposizione del presente Contratto o che la tua condotta o i tuoi contenuti potrebbero danneggiare la nostra reputazione e avviamento. Se eliminiamo il tuo account per i motivi sopra indicati, non potrai più registrarti nuovamente ai nostri Servizi. Potremmo bloccare il tuo indirizzo email e il tuo indirizzo IP per impedire ulteriori registrazioni.</string>
+    <string name="add_player">Aggiungi giocatore</string>
+    <string name="add_player_stats">Aggiungi statistiche giocatore</string>
+    <string name="acknowledge_and_agree_to_terms">Riconosci / Accetta i termini</string>
+    <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
+    <string name="are_you_certain_you_wish_to_remove_x">Sei sicuro di voler rimuovere %s?</string>
+    <string name="are_you_sure_you_want_to_delete_x_shot">Vuoi davvero eliminare %s?</string>
+    <string name="are_you_sure_you_want_to_leave_track_your_shot">Sei sicuro di voler uscire da Track Your Shot?</string>
+    <string name="are_you_sure_you_want_to_delete_pending_account_description">Per eliminare il tuo account in sospeso dovrai registrare un nuovo account o accedere a uno esistente. Vuoi davvero procedere con l\'eliminazione del tuo account in sospeso?</string>
+    <string name="by_nicholas_rutherford">Di Nicholas Rutherford</string>
+    <string name="c">C</string>
+    <string name="camera">Telecamera</string>
+    <string name="camera_permission_explanation">Chiediamo l\'autorizzazione alla fotocamera in modo che gli utenti possano scattare foto con la fotocamera del loro telefono quando creano o modificano un profilo giocatore. Questa autorizzazione consente all\'app di accedere all\'hardware della fotocamera del dispositivo, consentendo agli utenti di acquisire immagini e associarle ai propri profili giocatore. Senza questa autorizzazione, l\'app non sarebbe in grado di utilizzare la fotocamera per questa funzione.</string>
+    <string name="camera_permission">Autorizzazione della fotocamera</string>
+    <string name="camera_permission_has_been_denied_description">L\'autorizzazione per l\'uso della telecamera è stata negata. Per concedere manualmente l\'autorizzazione per la fotocamera e caricare le immagini per il Player, vai su Impostazioni.</string>
+    <string name="cancel">Cancellare</string>
+    <string name="center">Centro</string>
+    <string name="changes_and_amendments">Cambiamenti e modifiche</string>
+    <string name="changes_and_amendments_description">Ci riserviamo il diritto di modificare il presente Contratto o i suoi termini relativi all\'Applicazione mobile e ai Servizi in qualsiasi momento e a nostra discrezione. Quando ciò avverrà, ti invieremo un\'e-mail per avvisarti. Potremmo inoltre fornirti comunicazioni in altri modi, a nostra discrezione, ad esempio tramite le informazioni di contatto da te fornite. Una versione aggiornata del presente Contratto entrerà in vigore immediatamente dopo la pubblicazione della versione rivista del Contratto, salvo diversamente specificato. L\'uso continuato dell\'Applicazione mobile e dei Servizi dopo la data di entrata in vigore del Contratto rivisto (o di qualsiasi altro atto specificato in quel momento) costituirà il consenso a tali modifiche.</string>
+    <string name="check_if_account_has_been_verified">Controlla se l\'account è stato verificato</string>
+    <string name="choose_a_shot_to_log_info_description">Seleziona uno scatto per registrarne le informazioni. Per visualizzare ulteriori dettagli sullo scatto, clicca su \"Mostra altro\",</string>
+    <string name="choose_image_from_gallery">Scegli l\'immagine dalla galleria</string>
+    <string name="choose_option">Scegli opzione</string>
+    <string name="close">Vicino</string>
+    <string name="compare_players_stats">Confronta giocatori e statistiche</string>
+    <string name="contacting_us">Contattarci</string>
+    <string name="contacting_us_description">In caso di domande, dubbi o reclami riguardanti il presente Contratto, ti invitiamo a contattarci all\'indirizzo e-mail indicato di seguito: </string>
+    <string name="continue_text">Continuare</string>
+    <string name="click_me_to_create_account">Clicca qui per creare un account</string>
+    <string name="create_account">Creare un account</string>
+    <string name="create_player">Crea giocatore</string>
+    <string name="create_your_players_profile">Crea il tuo profilo giocatore</string>
+    <string name="create_your_player_profile_description">Inizia creando un profilo giocatore, includendo dettagli come nome, cognome, posizione e un\'immagine del giocatore.</string>
+    <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Il conto corrente non è stato verificato. Si prega di aprire l\'e-mail per verificare il conto.</string>
+    <string name="current_players_has_no_changes_description">Non ci sono stati aggiornamenti o modifiche recenti al player attuale. Per procedere, apportare le modifiche necessarie al player esistente.</string>
+    <string name="current_shot_has_been_updated_description">Lo scatto attuale è stato aggiornato. Per vedere le ultime informazioni, clicca sullo scatto per visualizzare gli aggiornamenti.</string>
+    <string name="current_shot_has_no_changes_description">Non ci sono stati aggiornamenti o modifiche recenti a questo scatto. Per procedere, apportare le modifiche necessarie allo scatto esistente.</string>
+    <string name="current_shots_x">Scatti attuali %s</string>
+    <string name="date_shots_logged">Data scatti registrati</string>
+    <string name="date_shots_taken">Data scatti effettuati</string>
+    <string name="delete_pending_account">Elimina account in sospeso</string>
+    <string name="deleting_pending_account">Eliminazione dell\'account in sospeso</string>
+    <string name="delete_Shot">Elimina scatto</string>
+    <string name="delete_x">Elimina %s</string>
+    <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
+    <string name="device_is_currently_not_connected_to_internet_desc">Al momento il dispositivo non è connesso a Internet. Per completare l\'azione, collegare il dispositivo a Internet.</string>
+    <string name="do_you_wish_to_proceed_description">Vuoi procedere nonostante le modifiche del giocatore non salvate? Eventuali modifiche apportate non verranno salvate.</string>
+    <string name="edit_x">Modifica %s</string>
+    <string name="enter_first_name">Inserisci il nome</string>
+
+    <string name="enter_last_name">Inserisci il cognome</string>
+
+    <string name="first_name">Nome di battesimo</string>
+
+    <string name="forgot_password">Ha dimenticato la password</string>
+
+    <string name="email">E-mail</string>
+
+    <string name="email_in_use">E-mail in uso</string>
+
+    <string name="email_in_use_description">Questo indirizzo email è già in uso su Track Your Shot. Si prega di utilizzare un indirizzo email diverso.</string>
+
+    <string name="email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password">È stata inviata un\'e-mail per reimpostare la password. Seguire le istruzioni per reimpostare la password.</string>
+
+    <string name="email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account">È stata inviata un\'e-mail per verificare l\'account. Aprire l\'email inviata per verificare l\'account.</string>
+
+    <string name="email_is_not_in_correct_format_please_enter_email_in_correct_format">L\'email non è nel formato corretto. Inserisci l\'email nel formato corretto</string>
+
+    <string name="email_is_required_please_enter_a_email_to_create_a_account">L\'email è obbligatoria. Inserisci un indirizzo email per creare un account.</string>
+
+    <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">L\'email è obbligatoria. Inserisci un indirizzo email per accedere all\'account esistente.</string>
+
+    <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">L\'email è obbligatoria. Inserisci un indirizzo email per reimpostare la password dell\'account esistente.</string>
+
+    <string name="enabled_permissions">Autorizzazioni abilitate</string>
+
+    <string name="email_required">E-mail*</string>
+
+    <string name="enter_shots_made">Inserisci i tiri effettuati</string>
+
+    <string name="enter_shots_missed">Inserisci i tiri sbagliati</string>
+
+    <string name="edit_player">Modifica giocatore</string>
+
+    <string name="empty"/>
+
+    <string name="empty_field">Campo vuoto</string>
+
+    <string name="empty_fields">Campi vuoti</string>
+
+    <string name="empty_fields_description">Mancano le informazioni necessarie per continuare a creare il tuo account. Fornisci i dettagli necessari.</string>
+
+    <string name="error">Errore</string>
+
+    <string name="error_creating_account">Errore durante la creazione dell\'account</string>
+
+    <string name="error_deleting_pending_account">Errore durante l\'eliminazione dell\'account in sospeso</string>
+
+    <string name="find_shots_by_name">Trova gli scatti per nome </string>
+
+    <string name="general">Generale</string>
+
+    <string name="general_information">Informazioni generali</string>
+
+    <string name="got_it">Fatto</string>
+
+    <string name="having_trouble_creating_your_account_please_try_again">Hai riscontrato problemi durante la creazione del tuo account. Per favore riprova</string>
+
+    <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Hai problemi ad accedere al tuo account. Riprova e/o assicurati che le credenziali esistano e siano valide.</string>
+
+    <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Si è verificato un problema nel reimpostare la password per questo account. Riprova e/o assicurati che le credenziali esistano e siano valide.</string>
+
+    <string name="hint_add_new_player">Tocca l\'icona + nella barra degli strumenti a destra per aggiungere un nuovo giocatore</string>
+
+    <string name="hint_log_new_shots">Premi il pulsante Registra tiri per registrare i tiri del giocatore.</string>
+
+    <string name="hint_log_new_shots_for_player">Premere il pulsante Registra scatti per registrare gli scatti per</string>
+
+    <string name="introduction">Introduzione</string>
+
+    <string name="invalid_shot_input">Input di scatto non valido</string>
+
+    <string name="invalid_shot_input_description">I tiri registrati devono essere numeri interi. Inserisci un numero intero per registrare i tiri validi effettuati o sbagliati.</string>
+
+    <string name="issue_occurred">Si è verificato un problema</string>
+
+    <string name="last_name">Cognome</string>
+
+    <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">Se abbandoni l\'app non completerai il processo di creazione dell\'account. Non potrai continuare finché non avrai verificato la tua email. Se verifichi la tua email e poi torni all\'app, puoi continuare a creare il tuo account.</string>
+
+    <string name="login">Login</string>
+
+    <string name="login_icon_description">Questa è un\'immagine di accesso per la schermata di accesso</string>
+
+    <string name="logout">Esci</string>
+
+    <string name="log_shot">Tiro al bersaglio</string>
+
+    <string name="log_shots">Tiri di tronchi</string>
+
+    <string name="log_your_shots">Registra i tuoi scatti</string>
+
+    <string name="log_your_shots_description">Seleziona il tipo di tiro che vuoi registrare e inserisci i tiri realizzati e quelli sbagliati del giorno in cui il giocatore li ha eseguiti.</string>
+
+    <string name="menu">Menu</string>
+
+    <string name="more_info">Ulteriori informazioni</string>
+
+    <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Sono richiesti diversi campi che non vengono compilati. Si prega di compilare tutti i campi.</string>
+
+    <string name="next">Prossimo</string>
+
+    <string name="no">NO</string>
+
+    <string name="no_changes_made">Nessuna modifica apportata</string>
+
+    <string name="not_connected_to_internet">Non connesso a Internet</string>
+
+    <string name="no_first_name_entered">Nessun nome inserito</string>
+
+    <string name="no_last_name_entered">Nessun cognome inserito</string>
+
+    <string name="no_shots_results_found">Nessun risultato trovato per gli scatti</string>
+
+    <string name="no_shots_results_found_description">Non è stato trovato alcuno scatto corrispondente alla tua ricerca. Aggiorna la ricerca con il nome dello scatto esistente.</string>
+
+    <string name="not_now">Non adesso</string>
+
+    <string name="no_current_players_added">Nessun giocatore attuale aggiunto</string>
+
+    <string name="no_current_shots_logged_for_player">Nessun colpo attuale registrato per il giocatore</string>
+
+    <string name="open_email">Apri e-mail</string>
+
+    <string name="ok">OK</string>
+
+    <string name="other_resources">Altre risorse</string>
+
+    <string name="other_resources_description">Sebbene l\'Applicazione mobile e i Servizi possano collegarsi ad altre risorse (come siti web, applicazioni mobili, ecc.), non intendiamo, direttamente o indirettamente, implicare alcuna approvazione, associazione, sponsorizzazione, approvazione o affiliazione con alcuna risorsa collegata, salvo quanto specificamente indicato nel presente documento. Non siamo tenuti ad esaminare o valutare, e non garantiamo le offerte di alcuna azienda o individuo, né il contenuto delle loro risorse. Non ci assumiamo alcuna responsabilità per le azioni, i prodotti, i servizi e i contenuti di terze parti. Dovresti leggere attentamente le dichiarazioni legali e le altre condizioni d\'uso di qualsiasi risorsa a cui accedi tramite un collegamento nell\'Applicazione Mobile. Il collegamento a qualsiasi altra risorsa esterna avviene a tuo rischio e pericolo.</string>
+
+    <string name="reset_password">Reimposta password</string>
+
+    <string name="reset_password_email_sent">Reimposta password Email inviata</string>
+
+    <string name="resend_email">Invia nuovamente e-mail</string>
+
+    <string name="select_a_shot">Seleziona uno scatto</string>
+
+    <string name="selecting_a_shot">Selezione di uno scatto</string>
+
+    <string name="select_date">Seleziona Data</string>
+
+    <string name="password">Password</string>
+
+    <string name="password_helper_text">La password deve essere lunga almeno 8 caratteri e includere: una lettera minuscola (a–z), una lettera maiuscola (A–Z), un numero (0–9) e un carattere speciale (ad esempio, (ad esempio \@, $, !, %, *).</string>
+
+    <string name="password_required">Password*</string>
+
+    <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">La password non è nel formato corretto. Inserisci la password nel formato corretto</string>
+
+    <string name="password_is_required_please_enter_a_password_to_create_a_account">La password è obbligatoria. Inserisci una password per creare un account.</string>
+
+    <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">La password è obbligatoria. Inserisci una password per accedere all\'account esistente.</string>
+
+    <string name="pending_shots">Scatti in sospeso</string>
+
+    <string name="permissions">Permessi</string>
+
+    <string name="permission_has_been_declined">L\'autorizzazione è stata rifiutata</string>
+
+    <string name="pg">pagina</string>
+
+</resources>

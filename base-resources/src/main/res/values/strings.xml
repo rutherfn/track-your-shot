@@ -15,7 +15,7 @@
     <string name="are_you_sure_you_want_to_leave_track_your_shot">Are you sure you want to leave Track Your Shot?</string>
     <string name="are_you_sure_you_want_to_delete_pending_account_description">Deleting your pending account will require you to either register a new account or log in to an existing one. Are you sure you want to proceed with deleting your pending account?</string>
     <string name="by_nicholas_rutherford">By Nicholas Rutherford</string>
-    <string name="c" translatable="false">C</string>
+    <string name="c">C</string>
     <string name="camera">Camera</string>
     <string name="camera_permission_explanation">We ask for camera permission so users can take photos with their phone\'s camera when creating or editing a player profile. This permission allows the app to access the device\'s camera hardware, enabling users to capture and associate images with their player profiles. Without this permission, the app would not be able to use the camera for this feature.</string>
     <string name="camera_permission">Camera Permission</string>
@@ -49,7 +49,7 @@
     <string name="deleting_pending_account">Deleting Pending Account</string>
     <string name="delete_Shot">Delete Shot</string>
     <string name="delete_x">Delete %s</string>
-    <string name="dev_email" translatable="false">nicholasrutherforddeveloper@gmail.com</string>
+    <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
     <string name="do_you_wish_to_proceed_description">Do you wish to proceed despite having unsaved player modifications? Any changes made will not be saved.</string>
     <string name="edit_x">Edit %s</string>
@@ -71,7 +71,7 @@
     <string name="enter_shots_made">Enter Shots Made</string>
     <string name="enter_shots_missed">Enter Shots Missed</string>
     <string name="edit_player">Edit Player</string>
-    <string name="empty" translatable="false" />
+    <string name="empty" />
     <string name="empty_field">Empty Field</string>
     <string name="empty_fields">Empty Fields</string>
     <string name="empty_fields_description">Required information is missing to continue creating your account. Please provide the necessary details.</string>
@@ -134,10 +134,10 @@
     <string name="pending_shots">Pending Shots</string>
     <string name="permissions">Permissions</string>
     <string name="permission_has_been_declined">Permission has been declined</string>
-    <string name="pg" translatable="false">pg</string>
+    <string name="pg">pg</string>
     <string name="point_guard">Point Guard</string>
     <string name="power_forward">Power Forward</string>
-    <string name="pf" translatable="false">pf</string>
+    <string name="pf">pf</string>
     <string name="player_already_has_been_added_description">The specified player name has already been included. Kindly add a new player with a name that has not been added before.</string>
     <string name="player_creation_failed_please_try_again">Player creation failed. Please try again.</string>
     <string name="player_image">Player Image</string>
@@ -172,8 +172,8 @@
     <string name="date_shot_was_taken_description">You haven\'t entered the date the shot was taken. Please input the date the shot was taken to proceed with logging ths shot.</string>
     <string name="show_less">Show Less</string>
     <string name="show_more">Show More</string>
-    <string name="sf" translatable="false">sf</string>
-    <string name="sg" translatable="false">sg</string>
+    <string name="sf">sf</string>
+    <string name="sg">sg</string>
     <string name="small_forward">Small Forward</string>
     <string name="shooting_guard">Shooting Guard</string>
     <string name="shot_info">Shot Info</string>
@@ -221,7 +221,7 @@
     <string name="view_more_info">View More Info</string>
     <string name="view_x">View %s</string>
     <string name="voice_commands">Voice Commands</string>
-    <string name="x_position_x_player_name" formatted="false">%s , %s</string>
+    <string name="x_position_x_player_name">%s , %s</string>
     <string name="x_shot">%s Shot</string>
     <string name="x_shot_has_been_removed_description">%s has been removed from this player\'s shot history.</string>
     <string name="x_shot_has_not_been_removed_description">%s Shot has not been removed from this player\'s shot history. Please try again to remove shot.</string>

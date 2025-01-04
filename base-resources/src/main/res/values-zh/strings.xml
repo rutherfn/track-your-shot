@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+    <string name="acceptance_of_these_terms">接受这些条款</string>
+    <string name="acceptance_of_these_terms_description">您承认您已阅读本协议并同意其所有条款和条件。通过访问和使用移动应用程序和服务，您同意接受本协议的约束。如果您不同意遵守本协议的条款，您无权访问或使用移动应用程序和服务。</string>
+    <string name="accounts">帐号</string>
+    <string name="account_info">帐号信息</string>
+    <string name="account_has_not_been_verified">帐号尚未验证</string>
+    <string name="account_security_description">如果您在移动应用程序中创建帐号，您有责任维护帐号的安全，并对该帐号下发生的所有活动以及与之相关的任何其他操作负全部责任。在您登录并开始使用服务之前，我们可能会监控和审查新帐号。提供任何类型的虚假联系信息都可能导致您的帐号被终止。如果您的帐号出现任何未经授权的使用情况或任何其他违反安全的行为，您必须立即通知我们。对于您的任何作为或不作为，包括因此类作为或不作为而造成的任何形式的损害，我们概不负责。如果我们确定您违反了本协议的任何规定，或者您的行为或内容可能损害我们的声誉和商誉，我们可能会暂停、禁用或删除您的帐号（或其任何部分）。如果我们因上述原因删除您的帐号，您可能无法重新注册我们的服务。我们可能会阻止您的电子邮件地址和互联网协议地址，以防止进一步注册。</string>
+    <string name="add_player">添加玩家</string>
+    <string name="add_player_stats">添加玩家统计数据</string>
+    <string name="acknowledge_and_agree_to_terms">确认 / 同意条款</string>
+    <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
+    <string name="are_you_certain_you_wish_to_remove_x">您确定要移除“%s”吗？</string>
+    <string name="are_you_sure_you_want_to_delete_x_shot">您确定要删除“%s”吗？</string>
+    <string name="are_you_sure_you_want_to_leave_track_your_shot">您确定要离开 Track Your Shot 吗？</string>
+    <string name="are_you_sure_you_want_to_delete_pending_account_description">删除待处理帐号将要求您注册一个新帐号或登录到现有帐号。您确定要继续删除待处理帐号吗？</string>
+    <string name="by_nicholas_rutherford">尼古拉斯·卢瑟福</string>
+    <string name="c">C</string>
+    <string name="camera">相机</string>
+    <string name="camera_permission_explanation">我们请求相机权限，以便用户可以在创建或编辑玩家资料时使用手机相机拍照。此权限允许应用程序访问设备的摄像头硬件，使用户能够捕获图像并将其与他们的玩家资料关联起来。如果没有此权限，该应用程序将无法使用相机实现此功能。</string>
+    <string name="camera_permission">相机权限</string>
+    <string name="camera_permission_has_been_denied_description">相机权限已被拒绝。要手动授予相机权限并为播放器上传图片，请导航至“设置”。</string>
+    <string name="cancel">取消</string>
+    <string name="center">中心</string>
+    <string name="changes_and_amendments">变更和修订</string>
+    <string name="changes_and_amendments_description">我们保留随时自行决定修改本协议或与移动应用程序和服务相关的条款的权利。当我们这样做时，我们将向您发送电子邮件通知您。我们还可以自行决定通过其他方式向您发出通知，例如通过您提供的联系信息。除非另有规定，本协议的更新版本将在修订后的协议发布后立即生效。如果您在修订后的协议生效日后继续使用移动应用程序和服务（或当时规定的其他行为），则表示您同意这些更改。</string>
+    <string name="check_if_account_has_been_verified">检查帐号是否已验证</string>
+    <string name="choose_a_shot_to_log_info_description">选择一个镜头来记录其信息。要查看有关该镜头的更多详细信息，请点击“显示更多”，</string>
+    <string name="choose_image_from_gallery">从图库中选择图片</string>
+    <string name="choose_option">选择选项</string>
+    <string name="close">关闭</string>
+    <string name="compare_players_stats">比较球员和数据</string>
+    <string name="contacting_us">联系我们</string>
+    <string name="contacting_us_description">如果您对本协议有任何疑问、担忧或投诉，我们鼓励您通过以下电子邮件与我们联系： </string>
+    <string name="continue_text">继续</string>
+    <string name="click_me_to_create_account">点击我创建帐号</string>
+    <string name="create_account">创建账户</string>
+    <string name="create_player">创建玩家</string>
+    <string name="create_your_players_profile">创建你的玩家资料</string>
+    <string name="create_your_player_profile_description">首先创建球员资料，包括名字、姓氏、位置和球员形象等详细信息。</string>
+    <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">目前帐号尚未验证，请打开邮箱验证帐号。</string>
+    <string name="current_players_has_no_changes_description">当前播放器没有任何最新更新或修改。请对现有播放器进行调整以继续。</string>
+    <string name="current_shot_has_been_updated_description">当前镜头已更新。要查看最新信息，请单击镜头查看更新。</string>
+    <string name="current_shot_has_no_changes_description">此镜头最近未进行任何更新或修改。请对现有镜头进行调整以继续。</string>
+    <string name="current_shots_x">当前镜头 %s</string>
+    <string name="date_shots_logged">拍摄日期</string>
+    <string name="date_shots_taken">拍摄日期</string>
+    <string name="delete_pending_account">删除待处理帐号</string>
+    <string name="deleting_pending_account">删除待处理帐号</string>
+    <string name="delete_Shot">删除镜头</string>
+    <string name="delete_x">删除%s</string>
+    <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
+    <string name="device_is_currently_not_connected_to_internet_desc">设备目前未连接到互联网。请将设备连接到互联网以完成操作。</string>
+    <string name="do_you_wish_to_proceed_description">尽管有未保存的播放器修改，您是否仍希望继续？所做的任何更改都不会被保存。</string>
+    <string name="edit_x">修改%s</string>
+    <string name="enter_first_name">输入名字</string>
+
+
+    <string name="enter_last_name">输入姓氏</string>
+
+    <string name="first_name">名</string>
+
+    <string name="forgot_password">忘记密码</string>
+
+    <string name="email">电子邮件</string>
+
+    <string name="email_in_use">电子邮件正在使用中</string>
+
+    <string name="email_in_use_description">此电子邮箱已在 Track Your Shot 中使用。请使用不同的电子邮件地址。</string>
+
+    <string name="email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password">已发送电子邮件以重置密码。请按照指示重置密码。</string>
+
+    <string name="email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account">电子邮件已发送以验证帐号。请打开已发送的电子邮件来验证帐号。</string>
+
+    <string name="email_is_not_in_correct_format_please_enter_email_in_correct_format">电子邮件格式不正确。请以正确的格式输入电子邮件</string>
+
+    <string name="email_is_required_please_enter_a_email_to_create_a_account">需要电子邮件。请输入电子邮件来创建帐号。</string>
+
+    <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">需要电子邮件。请输入电子邮件登录现有帐号。</string>
+
+    <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">需要电子邮件。请输入电子邮件来重置现有帐号的密码。</string>
+
+    <string name="enabled_permissions">已启用权限</string>
+
+    <string name="email_required">电子邮件*</string>
+
+    <string name="enter_shots_made">输入已完成的射门数</string>
+
+    <string name="enter_shots_missed">输入未命中数</string>
+
+    <string name="edit_player">編輯播放器</string>
+
+    <string name="empty"/>
+
+    <string name="empty_field">空字段</string>
+
+    <string name="empty_fields">空字段</string>
+
+    <string name="empty_fields_description">缺少继续创建帐号所需的信息。请提供必要的详细信息。</string>
+
+    <string name="error">错误</string>
+
+    <string name="error_creating_account">创建账户错误</string>
+
+    <string name="error_deleting_pending_account">删除待处理帐号时出错</string>
+
+    <string name="find_shots_by_name">按名称查找镜头 </string>
+
+    <string name="general">一般的</string>
+
+    <string name="general_information">一般信息</string>
+
+    <string name="got_it">知道了</string>
+
+    <string name="having_trouble_creating_your_account_please_try_again">创建帐号时遇到问题。请重试</string>
+
+    <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">无法登录您的帐号。请重试或确保凭证存在且有效。</string>
+
+    <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">重置此帐号的密码时遇到问题。请重试或确保凭证存在且有效。</string>
+
+    <string name="hint_add_new_player">点击右侧工具栏中的 + 图标以添加新玩家</string>
+
+    <string name="hint_log_new_shots">按下“Log Shots”按钮来为玩家记录投篮。</string>
+
+    <string name="hint_log_new_shots_for_player">按下“记录镜头”按钮记录镜头</string>
+
+    <string name="introduction">介绍</string>
+
+    <string name="invalid_shot_input">无效镜头输入</string>
+
+    <string name="invalid_shot_input_description">记录的射击次数必须是整数。请输入一个整数来记录有效投篮或未投篮的次数。</string>
+
+    <string name="issue_occurred">发生问题</string>
+
+    <string name="last_name">姓</string>
+
+    <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">离开应用程序将导致您无法完成帐号创建过程。您必须验证电子邮件后才能继续。如果您验证了电子邮件然后返回应用程序，则可以继续创建您的帐号。</string>
+
+    <string name="login">登录</string>
+
+    <string name="login_icon_description">这是登录屏幕的登录图像</string>
+
+    <string name="logout">登出</string>
+
+    <string name="log_shot">伐木射击</string>
+
+    <string name="log_shots">伐木镜头</string>
+
+    <string name="log_your_shots">记录你的拍摄</string>
+
+    <string name="log_your_shots_description">选择您想要记录的投篮类型，并输入球员投篮当天的命中和未命中次数。</string>
+
+    <string name="menu">菜单</string>
+
+    <string name="more_info">更多信息</string>
+
+    <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">有多个必填字段未输入。请输入所有字段。</string>
+
+    <string name="next">下一个</string>
+
+    <string name="no">不</string>
+
+    <string name="no_changes_made">未做任何更改</string>
+
+    <string name="not_connected_to_internet">未连接到互联网</string>
+
+    <string name="no_first_name_entered">未输入名字</string>
+
+    <string name="no_last_name_entered">未输入姓氏</string>
+
+    <string name="no_shots_results_found">未找到任何镜头结果</string>
+
+    <string name="no_shots_results_found_description">您的搜索中未找到匹配的镜头。请使用现有的镜头名称更新搜索。</string>
+
+    <string name="not_now">现在不要</string>
+
+    <string name="no_current_players_added">未添加当前玩家</string>
+
+    <string name="no_current_shots_logged_for_player">球员当前没有记录投篮</string>
+
+    <string name="open_email">打开电子邮件</string>
+
+    <string name="ok">好的</string>
+
+    <string name="other_resources">其他资源</string>
+
+    <string name="other_resources_description">尽管移动应用程序和服务可能链接到其他资源（例如网站、移动应用程序等），但我们不会直接或间接地暗示与任何链接资源的任何批准、关联、赞助、认可或从属关系，除非本文另有明确说明。我们不负责审查或评估任何企业或个人所提供的资源或其内容，也不对其提供的内容提供保证。对于任何其他第三方的行为、产品、服务和内容，我们不承担任何责任或义务。您应该仔细查看通过移动应用程序中的链接访问的任何资源的法律声明和其他使用条件。链接到任何其他站外资源的风险由您自行承担。</string>
+
+    <string name="reset_password">重设密码</string>
+
+    <string name="reset_password_email_sent">重设密码电子邮件已发送</string>
+
+    <string name="resend_email">重新发送电子邮件</string>
+
+    <string name="select_a_shot">选择一张照片</string>
+
+    <string name="selecting_a_shot">选择镜头</string>
+
+    <string name="select_date">选择日期</string>
+
+    <string name="password">密码</string>
+
+    <string name="password_helper_text">密码长度必须至少为 8 个字符，且包含：一个小写字母（a–z）、一个大写字母（A–Z）、一个数字（0–9）和一个特殊字符（例如， \@、$、！、%、*)。</string>
+
+    <string name="password_required">密码*</string>
+
+    <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">密码格式不正确。请输入正确格式的密码</string>
+
+    <string name="password_is_required_please_enter_a_password_to_create_a_account">需要密码。请输入密码来创建帐号。</string>
+
+    <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">需要密码。请输入密码登录现有帐号。</string>
+
+    <string name="pending_shots">待拍摄</string>
+
+    <string name="permissions">权限</string>
+
+    <string name="permission_has_been_declined">权限已被拒绝</string>
+
+    <string name="pg">前列腺素</string>
+
+
+</resources>

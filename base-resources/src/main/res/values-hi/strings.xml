@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+    <string name="acceptance_of_these_terms">इन शर्तों की स्वीकृति</string>
+    <string name="acceptance_of_these_terms_description">आप स्वीकार करते हैं कि आपने इस अनुबंध को पढ़ लिया है और इसके सभी नियमों व शर्तों से सहमत हैं. मोबाइल एप्लिकेशन और सेवाओं तक पहुंच और उनका उपयोग करके, आप इस समझौते से बंधे होने के लिए सहमत होते हैं. यदि आप इस अनुबंध की शर्तों का पालन करने के लिए सहमत नहीं हैं, तो आप मोबाइल एप्लिकेशन और सेवाओं तक पहुंचने या उनका उपयोग करने के लिए अधिकृत नहीं हैं.</string>
+    <string name="accounts">हिसाब किताब</string>
+    <string name="account_info">खाते की जानकारी</string>
+    <string name="account_has_not_been_verified">खाता सत्यापित नहीं किया गया है</string>
+    <string name="account_security_description">यदि आप मोबाइल एप्लिकेशन में खाता बनाते हैं, तो आप अपने खाते की सुरक्षा बनाए रखने के लिए जिम्मेदार हैं और आप खाते के अंतर्गत होने वाली सभी गतिविधियों और इसके संबंध में की गई अन्य कार्रवाई के लिए पूरी तरह जिम्मेदार हैं. आपके द्वारा साइन इन करने और सेवाओं का उपयोग शुरू करने से पहले हम नए खातों की निगरानी और समीक्षा कर सकते हैं. किसी भी प्रकार की गलत संपर्क जानकारी प्रदान करने पर आपका खाता समाप्त किया जा सकता है. आपको अपने खाते के किसी भी अनधिकृत उपयोग या सुरक्षा के किसी अन्य उल्लंघन के बारे में हमें तुरंत सूचित करना होगा. हम आपके द्वारा किए गए किसी भी कार्य या चूक के लिए उत्तरदायी नहीं होंगे, जिसमें ऐसे कार्यों या चूक के परिणामस्वरूप हुई किसी भी प्रकार की क्षति भी शामिल है. यदि हम यह निर्धारित करते हैं कि आपने इस अनुबंध के किसी प्रावधान का उल्लंघन किया है या आपका आचरण या सामग्री हमारी प्रतिष्ठा और सद्भावना को नुकसान पहुंचाएगी, तो हम आपके खाते (या उसके किसी भाग) को निलंबित, अक्षम या हटा सकते हैं. यदि हम उपरोक्त कारणों से आपका खाता हटा देते हैं, तो आप हमारी सेवाओं के लिए पुनः पंजीकरण नहीं कर सकेंगे. हम आगे पंजीकरण को रोकने के लिए आपके ईमेल पते और इंटरनेट प्रोटोकॉल पते को ब्लॉक कर सकते हैं.</string>
+    <string name="add_player">खिलाड़ी जोड़ें</string>
+    <string name="add_player_stats">खिलाड़ी के आँकड़े जोड़ें</string>
+    <string name="acknowledge_and_agree_to_terms">शर्तों को स्वीकार करें / उनसे सहमत हों</string>
+    <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
+    <string name="are_you_certain_you_wish_to_remove_x">क्या आप वाकई %s को हटाना चाहते हैं?</string>
+    <string name="are_you_sure_you_want_to_delete_x_shot">क्या आप वाकई %s को हटाना चाहते हैं?</string>
+    <string name="are_you_sure_you_want_to_leave_track_your_shot">क्या आप वाकई ट्रैक योर शॉट छोड़ना चाहते हैं?</string>
+    <string name="are_you_sure_you_want_to_delete_pending_account_description">अपने लंबित खाते को हटाने के लिए आपको या तो नया खाता पंजीकृत करना होगा या मौजूदा खाते में लॉग इन करना होगा. क्या आप वाकई अपना लंबित खाता हटाना चाहते हैं?</string>
+    <string name="by_nicholas_rutherford">निकोलस रदरफोर्ड द्वारा</string>
+    <string name="c">C</string>
+    <string name="camera">कैमरा</string>
+    <string name="camera_permission_explanation">हम कैमरा अनुमति मांगते हैं ताकि उपयोगकर्ता खिलाड़ी प्रोफ़ाइल बनाते या संपादित करते समय अपने फ़ोन के कैमरे से फ़ोटो ले सकें. यह अनुमति ऐप को डिवाइस के कैमरा हार्डवेयर तक पहुंचने की अनुमति देती है, जिससे उपयोगकर्ता अपने खिलाड़ी प्रोफाइल के साथ छवियों को कैप्चर और संबद्ध कर सकते हैं. इस अनुमति के बिना, ऐप इस सुविधा के लिए कैमरे का उपयोग नहीं कर पाएगा.</string>
+    <string name="camera_permission">कैमरा अनुमति</string>
+    <string name="camera_permission_has_been_denied_description">कैमरे की अनुमति अस्वीकृत कर दी गई है. कैमरे के लिए मैन्युअल रूप से अनुमति देने और प्लेयर के लिए चित्र अपलोड करने के लिए कृपया सेटिंग्स पर जाएँ.</string>
+    <string name="cancel">रद्द करना</string>
+    <string name="center">केंद्र</string>
+    <string name="changes_and_amendments">परिवर्तन और संशोधन</string>
+    <string name="changes_and_amendments_description">हम अपने विवेकानुसार किसी भी समय इस अनुबंध या मोबाइल एप्लिकेशन और सेवाओं से संबंधित इसकी शर्तों को संशोधित करने का अधिकार सुरक्षित रखते हैं. जब हम ऐसा करेंगे, तो हम आपको सूचित करने के लिए एक ईमेल भेजेंगे. हम अपने विवेकानुसार अन्य तरीकों से भी आपको सूचना दे सकते हैं, जैसे कि आपके द्वारा दी गई संपर्क जानकारी के माध्यम से. इस समझौते का अद्यतन संस्करण संशोधित समझौते के पोस्ट होने के तुरंत बाद प्रभावी हो जाएगा, जब तक कि अन्यथा निर्दिष्ट न किया जाए. संशोधित अनुबंध (या उस समय निर्दिष्ट अन्य कार्य) की प्रभावी तिथि के बाद मोबाइल एप्लिकेशन और सेवाओं का आपका निरंतर उपयोग उन परिवर्तनों के लिए आपकी सहमति का प्रतीक होगा.</string>
+    <string name="check_if_account_has_been_verified">जाँचें कि खाता सत्यापित हुआ है या नहीं</string>
+    <string name="choose_a_shot_to_log_info_description">इसकी जानकारी लॉग करने के लिए एक शॉट चुनें. शॉट के बारे में अतिरिक्त विवरण देखने के लिए, \"अधिक दिखाएं\" पर क्लिक करें,</string>
+    <string name="choose_image_from_gallery">गैलरी से छवि चुनें</string>
+    <string name="choose_option">विकल्प चुनें</string>
+    <string name="close">बंद करना</string>
+    <string name="compare_players_stats">खिलाड़ियों और आंकड़ों की तुलना करें</string>
+    <string name="contacting_us">हमसे संपर्क करें</string>
+    <string name="contacting_us_description">यदि इस अनुबंध के संबंध में आपके कोई प्रश्न, चिंताएं या शिकायतें हैं, तो हम आपको नीचे दिए गए ईमेल पर हमसे संपर्क करने के लिए प्रोत्साहित करते हैं: </string>
+    <string name="continue_text">जारी रखना</string>
+    <string name="click_me_to_create_account">खाता बनाने के लिए मुझ पर क्लिक करें</string>
+    <string name="create_account">खाता बनाएं</string>
+    <string name="create_player">प्लेयर बनाएं</string>
+    <string name="create_your_players_profile">अपने खिलाड़ियों की प्रोफ़ाइल बनाएं</string>
+    <string name="create_your_player_profile_description">खिलाड़ी का प्रोफाइल बनाकर शुरुआत करें, जिसमें प्रथम नाम, अंतिम नाम, पद और खिलाड़ी की छवि जैसे विवरण शामिल हों.</string>
+    <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">वर्तमान खाता सत्यापित नहीं किया गया है कृपया खाता सत्यापित करने के लिए ईमेल खोलें.</string>
+    <string name="current_players_has_no_changes_description">वर्तमान प्लेयर में कोई भी नवीनतम अपडेट या संशोधन नहीं किया गया है. कृपया आगे बढ़ने के लिए मौजूदा प्लेयर में समायोजन करें.</string>
+    <string name="current_shot_has_been_updated_description">वर्तमान शॉट को अपडेट कर दिया गया है. नवीनतम जानकारी देखने के लिए, अपडेट देखने हेतु शॉट पर क्लिक करें.</string>
+    <string name="current_shot_has_no_changes_description">इस शॉट में हाल ही में कोई अपडेट या संशोधन नहीं किया गया है. कृपया आगे बढ़ने के लिए मौजूदा शॉट में समायोजन करें.</string>
+    <string name="current_shots_x">वर्तमान शॉट्स %s</string>
+    <string name="date_shots_logged">तारीख शॉट्स लॉग इन</string>
+    <string name="date_shots_taken">दिनांक शॉट लिया गया</string>
+    <string name="delete_pending_account">लंबित खाता हटाएं</string>
+    <string name="deleting_pending_account">लंबित खाता हटाना</string>
+    <string name="delete_Shot">शॉट हटाएँ</string>
+    <string name="delete_x">%s मिटाएं</string>
+    <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
+    <string name="device_is_currently_not_connected_to_internet_desc">डिवाइस फिलहाल इंटरनेट से कनेक्ट नहीं है. कृपया कार्रवाई पूरी करने के लिए डिवाइस को इंटरनेट से कनेक्ट करें.</string>
+    <string name="do_you_wish_to_proceed_description">क्या आप बिना सहेजे गए प्लेयर संशोधनों के बावजूद आगे बढ़ना चाहते हैं? किए गए कोई भी परिवर्तन सहेजे नहीं जाएंगे.</string>
+    <string name="edit_x">%s संपादित करें</string>
+    <string name="enter_first_name">प्रथम नाम दर्ज करें</string>
+
+
+    <string name="enter_last_name">अंतिम नाम दर्ज करो</string>
+
+    <string name="first_name">पहला नाम</string>
+
+    <string name="forgot_password">पासवर्ड भूल गए</string>
+
+    <string name="email">ईमेल</string>
+
+    <string name="email_in_use">ईमेल का उपयोग</string>
+
+    <string name="email_in_use_description">यह ईमेल पहले से ही ट्रैक योर शॉट पर उपयोग में है. कृपया कोई भिन्न ईमेल पता उपयोग करें.</string>
+
+    <string name="email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password">पासवर्ड रीसेट करने के लिए ईमेल भेज दिया गया है. कृपया पासवर्ड रीसेट करने के लिए निर्देशों का पालन करें.</string>
+
+    <string name="email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account">खाता सत्यापित करने के लिए ईमेल भेज दिया गया है. कृपया खाता सत्यापित करने के लिए भेजा गया ईमेल खोलें.</string>
+
+    <string name="email_is_not_in_correct_format_please_enter_email_in_correct_format">ईमेल सही प्रारूप में नहीं है. कृपया ईमेल सही प्रारूप में दर्ज करें</string>
+
+    <string name="email_is_required_please_enter_a_email_to_create_a_account">ईमेल की जरूरत है. कृपया खाता बनाने के लिए ईमेल दर्ज करें.</string>
+
+    <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">ईमेल की जरूरत है. कृपया मौजूदा खाते में लॉगइन करने के लिए ईमेल दर्ज करें.</string>
+
+    <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">ईमेल की जरूरत है. कृपया मौजूदा खाते का पासवर्ड रीसेट करने के लिए ईमेल दर्ज करें.</string>
+
+    <string name="enabled_permissions">सक्षम अनुमतियाँ</string>
+
+    <string name="email_required">ईमेल*</string>
+
+    <string name="enter_shots_made">बनाए गए शॉट्स दर्ज करें</string>
+
+    <string name="enter_shots_missed">छूटे हुए शॉट्स दर्ज करें</string>
+
+    <string name="edit_player">प्लेयर संपादित करें</string>
+
+    <string name="empty"/>
+
+    <string name="empty_field">खाली क्षेत्र</string>
+
+    <string name="empty_fields">खाली फ़ील्ड</string>
+
+    <string name="empty_fields_description">अपना खाता बनाना जारी रखने के लिए आवश्यक जानकारी अनुपलब्ध है. कृपया आवश्यक विवरण प्रदान करें.</string>
+
+    <string name="error">गलती</string>
+
+    <string name="error_creating_account">खाता बनाते समय त्रुटि</string>
+
+    <string name="error_deleting_pending_account">लंबित खाता हटाने में त्रुटि</string>
+
+    <string name="find_shots_by_name">नाम से शॉट्स खोजें </string>
+
+    <string name="general">सामान्य</string>
+
+    <string name="general_information">सामान्य जानकारी</string>
+
+    <string name="got_it">समझ गया</string>
+
+    <string name="having_trouble_creating_your_account_please_try_again">अपना खाता बनाने में समस्या आ रही है. कृपया पुन: प्रयास करें</string>
+
+    <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">आपके खाते में लॉग इन करने में समस्या आ रही है. कृपया पुनः प्रयास करें और सुनिश्चित करें कि क्रेडेंशियल मौजूद हैं और वैध हैं.</string>
+
+    <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">इस खाते के लिए पासवर्ड रीसेट करने में समस्या आ रही है. कृपया पुनः प्रयास करें और सुनिश्चित करें कि क्रेडेंशियल मौजूद हैं और वैध हैं.</string>
+
+    <string name="hint_add_new_player">नया प्लेयर जोड़ने के लिए दाईं ओर टूलबार में + आइकन पर टैप करें</string>
+
+    <string name="hint_log_new_shots">प्लेयर के लिए शॉट्स रिकॉर्ड करने के लिए लॉग शॉट्स बटन दबाएँ.</string>
+
+    <string name="hint_log_new_shots_for_player">शॉट्स रिकॉर्ड करने के लिए लॉग शॉट्स बटन दबाएँ</string>
+
+    <string name="introduction">परिचय</string>
+
+    <string name="invalid_shot_input">अमान्य शॉट इनपुट</string>
+
+    <string name="invalid_shot_input_description">लॉग किए गए शॉट्स पूर्ण संख्या में होने चाहिए. कृपया वैध शॉट या छूटे शॉट को लॉग करने के लिए पूर्ण संख्या दर्ज करें.</string>
+
+    <string name="issue_occurred">समस्या उत्पन्न हुई</string>
+
+    <string name="last_name">उपनाम</string>
+
+    <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">ऐप छोड़ने से आप खाता निर्माण प्रक्रिया पूरी नहीं कर पाएंगे. जब तक आप अपना ईमेल सत्यापित नहीं कर लेते, आप आगे नहीं बढ़ सकेंगे. यदि आप अपना ईमेल सत्यापित करते हैं और फिर ऐप पर वापस आते हैं, तो आप अपना खाता बनाना जारी रख सकते हैं.</string>
+
+    <string name="login">लॉग इन करें</string>
+
+    <string name="login_icon_description">यह लॉगिन स्क्रीन के लिए लॉगिन छवि है</string>
+
+    <string name="logout">लॉग आउट</string>
+
+    <string name="log_shot">लॉग शॉट</string>
+
+    <string name="log_shots">लॉग शॉट्स</string>
+
+    <string name="log_your_shots">अपने शॉट्स लॉग करें</string>
+
+    <string name="log_your_shots_description">आप जिस प्रकार का शॉट रिकॉर्ड करना चाहते हैं, उसे चुनें तथा उस दिन के लिए सफलता और असफलता की जानकारी दर्ज करें, जिस दिन खिलाड़ी ने उन्हें लिया था.</string>
+
+    <string name="menu">मेनू</string>
+
+    <string name="more_info">और जानकारी</string>
+
+    <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">कई फ़ील्ड आवश्यक हैं जिन्हें दर्ज नहीं किया गया है. कृपया सभी फ़ील्ड भरें.</string>
+
+    <string name="next">अगला</string>
+
+    <string name="no">नहीं</string>
+
+    <string name="no_changes_made">कोई परिवर्तन नहीं किया गया</string>
+
+    <string name="not_connected_to_internet">इंटरनेट से कनेक्ट नहीं है</string>
+
+    <string name="no_first_name_entered">कोई प्रथम नाम दर्ज नहीं किया गया</string>
+
+    <string name="no_last_name_entered">कोई अंतिम नाम दर्ज नहीं किया गया</string>
+
+    <string name="no_shots_results_found">कोई शॉट परिणाम नहीं मिला</string>
+
+    <string name="no_shots_results_found_description">आपकी खोज में कोई मेल खाता शॉट नहीं मिला. कृपया मौजूदा शॉट नाम के साथ खोज अपडेट करें.</string>
+
+    <string name="not_now">अभी नहीं</string>
+
+    <string name="no_current_players_added">कोई वर्तमान खिलाड़ी नहीं जोड़ा गया</string>
+
+    <string name="no_current_shots_logged_for_player">खिलाड़ी के लिए कोई वर्तमान शॉट लॉग नहीं किया गया</string>
+
+    <string name="open_email">ईमेल खोलें</string>
+
+    <string name="ok">ठीक है</string>
+
+    <string name="other_resources">अन्य संसाधन</string>
+
+    <string name="other_resources_description">यद्यपि मोबाइल एप्लीकेशन और सेवाएं अन्य संसाधनों (जैसे वेबसाइट, मोबाइल एप्लीकेशन, आदि) से जुड़ सकती हैं, फिर भी हम प्रत्यक्ष या अप्रत्यक्ष रूप से किसी भी लिंक किए गए संसाधन के साथ कोई अनुमोदन, सहयोग, प्रायोजन, समर्थन या संबद्धता नहीं दर्शा रहे हैं, जब तक कि यहां विशेष रूप से उल्लेख न किया गया हो. हम किसी भी व्यवसाय या व्यक्ति या उनके संसाधनों की सामग्री की जांच या मूल्यांकन के लिए जिम्मेदार नहीं हैं, और हम उनकी पेशकश की गारंटी नहीं देते हैं. हम किसी भी अन्य तृतीय पक्ष के कार्यों, उत्पादों, सेवाओं और सामग्री के लिए कोई जिम्मेदारी या दायित्व नहीं लेते हैं. आपको मोबाइल एप्लीकेशन में लिंक के माध्यम से प्राप्त किसी भी संसाधन के कानूनी विवरण और उपयोग की अन्य शर्तों की सावधानीपूर्वक समीक्षा करनी चाहिए. किसी भी अन्य ऑफ-साइट संसाधन से लिंक करना आपके अपने जोखिम पर है.</string>
+
+    <string name="reset_password">पासवर्ड रीसेट</string>
+
+    <string name="reset_password_email_sent">पासवर्ड रीसेट करें ईमेल भेजा गया</string>
+
+    <string name="resend_email">ईमेल दुबारा भेजें</string>
+
+    <string name="select_a_shot">एक शॉट का चयन करें</string>
+
+    <string name="selecting_a_shot">एक शॉट का चयन</string>
+
+    <string name="select_date">तारीख़ चुनें</string>
+
+    <string name="password">पासवर्ड</string>
+
+    <string name="password_helper_text">पासवर्ड कम से कम 8 अक्षरों का होना चाहिए और इसमें शामिल होना चाहिए: एक लोअरकेस अक्षर (a–z), एक अपरकेस अक्षर (A–Z), एक संख्या (0–9), और एक विशेष वर्ण (जैसे, \@, $, !, %, *).</string>
+
+    <string name="password_required">पासवर्ड*</string>
+
+    <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">पासवर्ड सही प्रारूप में नहीं है. कृपया पासवर्ड सही प्रारूप में दर्ज करें</string>
+
+    <string name="password_is_required_please_enter_a_password_to_create_a_account">पासवर्ड आवश्यक है. कृपया खाता बनाने के लिए पासवर्ड दर्ज करें.</string>
+
+    <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">पासवर्ड आवश्यक है. कृपया मौजूदा खाते में लॉगइन करने के लिए पासवर्ड दर्ज करें.</string>
+
+    <string name="pending_shots">लंबित शॉट्स</string>
+
+    <string name="permissions">अनुमतियां</string>
+
+    <string name="permission_has_been_declined">अनुमति अस्वीकृत कर दी गई है</string>
+
+    <string name="pg">पीजी</string>
+
+
+
+</resources>

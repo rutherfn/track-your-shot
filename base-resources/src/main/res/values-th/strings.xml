@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+    <string name="acceptance_of_these_terms">การยอมรับข้อกำหนดเหล่านี้</string>
+    <string name="acceptance_of_these_terms_description">คุณทราบว่าคุณได้อ่านข้อตกลงนี้แล้วและยอมรับข้อกำหนดและเงื่อนไขทั้งหมด การเข้าถึงและใช้งานแอปพลิเคชั่นมือถือและบริการถือว่าคุณตกลงที่จะผูกพันตามข้อตกลงนี้ หากคุณไม่ยินยอมที่จะปฏิบัติตามข้อกำหนดของข้อตกลงนี้ คุณจะไม่ได้รับอนุญาตให้เข้าถึงหรือใช้แอพพลิเคชั่นและบริการมือถือ</string>
+    <string name="accounts">บัญชี</string>
+    <string name="account_info">ข้อมูลบัญชี</string>
+    <string name="account_has_not_been_verified">บัญชียังไม่ได้รับการตรวจสอบ</string>
+    <string name="account_security_description">หากคุณสร้างบัญชีในแอปพลิเคชันมือถือ คุณจะต้องรับผิดชอบในการรักษาความปลอดภัยบัญชีของคุณ และคุณจะต้องรับผิดชอบโดยสมบูรณ์ต่อกิจกรรมทั้งหมดที่เกิดขึ้นภายใต้บัญชีดังกล่าว และการดำเนินการอื่นๆ ที่ดำเนินการใดๆ ที่เกี่ยวข้องกับบัญชีดังกล่าว เราอาจตรวจสอบและตรวจสอบบัญชีใหม่ก่อนที่คุณจะลงชื่อเข้าใช้และเริ่มใช้บริการ การให้ข้อมูลติดต่ออันเป็นเท็จไม่ว่าประเภทใดอาจส่งผลให้บัญชีของคุณถูกยกเลิก คุณจะต้องแจ้งให้เราทราบทันทีเกี่ยวกับการใช้งานบัญชีของคุณโดยไม่ได้รับอนุญาตหรือการละเมิดความปลอดภัยอื่น ๆ เราจะไม่รับผิดชอบต่อการกระทำหรือการละเว้นใดๆ ของคุณ รวมถึงความเสียหายใดๆ ที่เกิดขึ้นอันเป็นผลจากการกระทำหรือการละเว้นดังกล่าว เราอาจระงับ ปิดใช้งาน หรือลบบัญชีของคุณ (หรือส่วนใดส่วนหนึ่ง) หากเราพิจารณาว่าคุณละเมิดข้อกำหนดใดๆ ของข้อตกลงนี้ หรือการกระทำหรือเนื้อหาของคุณอาจก่อให้เกิดความเสียหายต่อชื่อเสียงและความน่าเชื่อถือของเรา หากเราลบบัญชีของคุณเนื่องจากเหตุผลข้างต้น คุณจะไม่สามารถลงทะเบียนใช้บริการของเราอีกครั้งได้ เราอาจบล็อกที่อยู่อีเมลและที่อยู่โปรโตคอลอินเทอร์เน็ตของคุณเพื่อป้องกันการลงทะเบียนเพิ่มเติม</string>
+    <string name="add_player">เพิ่มผู้เล่น</string>
+    <string name="add_player_stats">เพิ่มสถิติผู้เล่น</string>
+    <string name="acknowledge_and_agree_to_terms">ยอมรับ / ตกลงตามเงื่อนไข</string>
+    <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
+    <string name="are_you_certain_you_wish_to_remove_x">คุณแน่ใจหรือไม่ว่าต้องการลบ %s?</string>
+    <string name="are_you_sure_you_want_to_delete_x_shot">คุณแน่ใจหรือไม่ว่าต้องการลบ %s?</string>
+    <string name="are_you_sure_you_want_to_leave_track_your_shot">คุณแน่ใจหรือไม่ว่าต้องการออกจาก Track Your Shot?</string>
+    <string name="are_you_sure_you_want_to_delete_pending_account_description">การลบบัญชีที่รอดำเนินการจะต้องให้คุณลงทะเบียนใหม่หรือเข้าสู่ระบบบัญชีที่มีอยู่ คุณแน่ใจว่าต้องการดำเนินการลบบัญชีที่กำลังรอดำเนินการอยู่หรือไม่?</string>
+    <string name="by_nicholas_rutherford">โดยนิโคลัส รัทเทอร์ฟอร์ด</string>
+    <string name="c">C</string>
+    <string name="camera">กล้อง</string>
+    <string name="camera_permission_explanation">เราขออนุญาตกล้องเพื่อให้ผู้ใช้สามารถถ่ายภาพด้วยกล้องโทรศัพท์ของตนเมื่อสร้างหรือแก้ไขโปรไฟล์ผู้เล่น การอนุญาตนี้ช่วยให้แอปสามารถเข้าถึงฮาร์ดแวร์กล้องของอุปกรณ์ ทำให้ผู้ใช้สามารถจับภาพและเชื่อมโยงภาพกับโปรไฟล์ผู้เล่นของตนได้ หากไม่ได้รับอนุญาตนี้ แอปจะไม่สามารถใช้กล้องเพื่อฟีเจอร์นี้ได้</string>
+    <string name="camera_permission">การอนุญาติให้กล้อง</string>
+    <string name="camera_permission_has_been_denied_description">ไม่ได้รับอนุญาติให้นำกล้องเข้าไปใช้งาน หากต้องการให้สิทธิ์ใช้งานกล้องและอัพโหลดรูปภาพสำหรับเครื่องเล่นด้วยตนเอง โปรดไปที่การตั้งค่า</string>
+    <string name="cancel">ยกเลิก</string>
+    <string name="center">ศูนย์</string>
+    <string name="changes_and_amendments">การเปลี่ยนแปลงและการแก้ไข</string>
+    <string name="changes_and_amendments_description">เราสงวนสิทธิ์ในการแก้ไขข้อตกลงนี้หรือข้อกำหนดที่เกี่ยวข้องกับแอปพลิเคชันมือถือและบริการได้ตลอดเวลาตามดุลยพินิจของเรา เมื่อเราทำเราจะส่งอีเมลเพื่อแจ้งให้คุณทราบ เราอาจแจ้งให้คุณทราบโดยวิธีอื่นๆ ตามดุลยพินิจของเรา เช่น ผ่านข้อมูลการติดต่อที่คุณให้ไว้ ข้อตกลงฉบับปรับปรุงจะมีผลบังคับใช้ทันทีเมื่อมีการโพสต์ข้อตกลงที่แก้ไข เว้นแต่จะระบุไว้เป็นอย่างอื่น การใช้งานแอปพลิเคชันมือถือและบริการต่อเนื่องของคุณหลังจากวันที่ข้อตกลงแก้ไขมีผลบังคับใช้ (หรือการกระทำอื่นใดที่ระบุไว้ในขณะนั้น) ถือเป็นการยินยอมต่อการเปลี่ยนแปลงดังกล่าว</string>
+    <string name="check_if_account_has_been_verified">ตรวจสอบว่าบัญชีได้รับการตรวจสอบแล้วหรือไม่</string>
+    <string name="choose_a_shot_to_log_info_description">เลือกช็อตที่จะบันทึกข้อมูล หากต้องการดูรายละเอียดเพิ่มเติมเกี่ยวกับช็อตนี้ ให้คลิก \"แสดงเพิ่มเติม\"</string>
+    <string name="choose_image_from_gallery">เลือกภาพจากแกลเลอรี่</string>
+    <string name="choose_option">เลือกตัวเลือก</string>
+    <string name="close">ปิด</string>
+    <string name="compare_players_stats">เปรียบเทียบผู้เล่นและสถิติ</string>
+    <string name="contacting_us">ติดต่อเรา</string>
+    <string name="contacting_us_description">หากคุณมีคำถาม ข้อสงสัย หรือข้อร้องเรียนใดๆ เกี่ยวกับข้อตกลงนี้ เราขอแนะนำให้คุณติดต่อเราโดยใช้อีเมลด้านล่าง: </string>
+    <string name="continue_text">ดำเนินการต่อ</string>
+    <string name="click_me_to_create_account">คลิกฉันเพื่อสร้างบัญชี</string>
+    <string name="create_account">สร้างบัญชี</string>
+    <string name="create_player">สร้างผู้เล่น</string>
+    <string name="create_your_players_profile">สร้างโปรไฟล์ผู้เล่นของคุณ</string>
+    <string name="create_your_player_profile_description">เริ่มต้นด้วยการสร้างโปรไฟล์ผู้เล่น ซึ่งรวมถึงรายละเอียด เช่น ชื่อ นามสกุล ตำแหน่ง และรูปภาพผู้เล่น</string>
+    <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">บัญชีปัจจุบันยังไม่ได้รับการยืนยัน กรุณาเปิดอีเมล์เพื่อยืนยันบัญชี</string>
+    <string name="current_players_has_no_changes_description">ยังไม่มีการอัปเดตหรือปรับเปลี่ยนเครื่องเล่นปัจจุบันใหม่ล่าสุด กรุณาปรับเปลี่ยนเครื่องเล่นที่มีอยู่เพื่อดำเนินการต่อ</string>
+    <string name="current_shot_has_been_updated_description">ช็อตปัจจุบันได้รับการอัปเดตแล้ว หากต้องการดูข้อมูลล่าสุด โปรดคลิกที่ภาพเพื่อดูข้อมูลอัปเดต</string>
+    <string name="current_shot_has_no_changes_description">ไม่มีการอัปเดตหรือปรับเปลี่ยนภาพนี้ล่าสุด กรุณาปรับเปลี่ยนภาพที่มีอยู่เพื่อดำเนินการต่อ</string>
+    <string name="current_shots_x">ช็อตปัจจุบัน %s</string>
+    <string name="date_shots_logged">วันที่บันทึกภาพ</string>
+    <string name="date_shots_taken">วันที่ถ่ายภาพ</string>
+    <string name="delete_pending_account">ลบบัญชีที่รอดำเนินการ</string>
+    <string name="deleting_pending_account">การลบบัญชีที่รอดำเนินการ</string>
+    <string name="delete_Shot">ลบช็อต</string>
+    <string name="delete_x">ลบ %s</string>
+    <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
+    <string name="device_is_currently_not_connected_to_internet_desc">อุปกรณ์ไม่ได้เชื่อมต่อกับอินเทอร์เน็ตในปัจจุบัน กรุณาเชื่อมต่ออุปกรณ์กับอินเตอร์เน็ตเพื่อดำเนินการให้เสร็จสมบูรณ์</string>
+    <string name="do_you_wish_to_proceed_description">คุณต้องการดำเนินการต่อแม้จะมีการปรับเปลี่ยนผู้เล่นที่ยังไม่ได้บันทึกหรือไม่? การเปลี่ยนแปลงใด ๆ ที่เกิดขึ้นจะไม่ได้รับการบันทึก</string>
+    <string name="edit_x">แก้ไข %s</string>
+    <string name="enter_first_name">กรุณากรอกชื่อ</string>
+
+
+    <string name="enter_last_name">กรุณากรอกนามสกุล</string>
+
+    <string name="first_name">ชื่อจริง</string>
+
+    <string name="forgot_password">ลืมรหัสผ่าน</string>
+
+    <string name="email">อีเมล</string>
+
+    <string name="email_in_use">อีเมล์ที่ใช้งาน</string>
+
+    <string name="email_in_use_description">อีเมลนี้ถูกใช้ใน Track Your Shot แล้ว กรุณาใช้ที่อยู่อีเมลอื่น</string>
+
+    <string name="email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password">ส่งอีเมลเพื่อรีเซ็ตรหัสผ่านแล้ว กรุณาปฏิบัติตามคำแนะนำเพื่อรีเซ็ตรหัสผ่าน</string>
+
+    <string name="email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account">อีเมลได้ถูกส่งไปเพื่อยืนยันบัญชีแล้ว กรุณาเปิดอีเมล์ที่ส่งเพื่อยืนยันบัญชี</string>
+
+    <string name="email_is_not_in_correct_format_please_enter_email_in_correct_format">อีเมล์ไม่ได้อยู่ในรูปแบบที่ถูกต้อง กรุณากรอกอีเมล์ในรูปแบบที่ถูกต้อง</string>
+
+    <string name="email_is_required_please_enter_a_email_to_create_a_account">จำเป็นต้องระบุอีเมล กรุณากรอกอีเมล์เพื่อสร้างบัญชี</string>
+
+    <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">จำเป็นต้องระบุอีเมล กรุณากรอกอีเมล์เพื่อเข้าสู่ระบบบัญชีที่มีอยู่</string>
+
+    <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">จำเป็นต้องระบุอีเมล กรุณากรอกอีเมล์เพื่อรีเซ็ตรหัสผ่านสำหรับบัญชีที่มีอยู่</string>
+
+    <string name="enabled_permissions">เปิดใช้งานการอนุญาต</string>
+
+    <string name="email_required">อีเมล*</string>
+
+    <string name="enter_shots_made">เข้าสู่ช็อตที่ทำ</string>
+
+    <string name="enter_shots_missed">ป้อนช็อตที่พลาด</string>
+
+    <string name="edit_player">แก้ไขผู้เล่น</string>
+
+    <string name="empty"/>
+
+    <string name="empty_field">ทุ่งว่าง</string>
+
+    <string name="empty_fields">ทุ่งว่าง</string>
+
+    <string name="empty_fields_description">ขาดข้อมูลที่จำเป็นเพื่อดำเนินการสร้างบัญชีของคุณต่อไป กรุณาระบุรายละเอียดที่จำเป็น</string>
+
+    <string name="error">ข้อผิดพลาด</string>
+
+    <string name="error_creating_account">ข้อผิดพลาดในการสร้างบัญชี</string>
+
+    <string name="error_deleting_pending_account">เกิดข้อผิดพลาดในการลบบัญชีที่รอดำเนินการ</string>
+
+    <string name="find_shots_by_name">ค้นหาภาพตามชื่อ </string>
+
+    <string name="general">ทั่วไป</string>
+
+    <string name="general_information">ข้อมูลทั่วไป</string>
+
+    <string name="got_it">เข้าใจแล้ว</string>
+
+    <string name="having_trouble_creating_your_account_please_try_again">มีปัญหาในการสร้างบัญชีของคุณ กรุณาลองอีกครั้ง</string>
+
+    <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">มีปัญหาในการเข้าสู่ระบบบัญชีของคุณ โปรดลองอีกครั้งและ/หรือตรวจสอบให้แน่ใจว่าข้อมูลประจำตัวมีอยู่และถูกต้อง</string>
+
+    <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">มีปัญหาในการรีเซ็ตรหัสผ่านสำหรับบัญชีนี้ โปรดลองอีกครั้งและ/หรือตรวจสอบให้แน่ใจว่าข้อมูลประจำตัวมีอยู่และถูกต้อง</string>
+
+    <string name="hint_add_new_player">แตะไอคอน + ในแถบเครื่องมือทางด้านขวาเพื่อเพิ่มผู้เล่นใหม่</string>
+
+    <string name="hint_log_new_shots">กดปุ่ม Log Shots เพื่อบันทึกภาพสำหรับผู้เล่น</string>
+
+    <string name="hint_log_new_shots_for_player">กดปุ่ม Log Shots เพื่อบันทึกภาพ</string>
+
+    <string name="introduction">การแนะนำ</string>
+
+    <string name="invalid_shot_input">การป้อนช็อตไม่ถูกต้อง</string>
+
+    <string name="invalid_shot_input_description">การบันทึกภาพจะต้องเป็นตัวเลขเต็ม กรุณากรอกตัวเลขจำนวนเต็มเพื่อบันทึกช็อตที่ถูกต้องที่ถ่ายหรือพลาดไป</string>
+
+    <string name="issue_occurred">ปัญหาที่เกิดขึ้น</string>
+
+    <string name="last_name">นามสกุล</string>
+
+    <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">การออกจากแอปจะทำให้คุณไม่สามารถดำเนินการสร้างบัญชีให้เสร็จสิ้นได้ คุณจะไม่สามารถดำเนินการต่อได้จนกว่าคุณจะยืนยันอีเมลของคุณ หากคุณยืนยันอีเมลของคุณแล้วกลับมาที่แอป คุณสามารถดำเนินการสร้างบัญชีของคุณต่อได้</string>
+
+    <string name="login">เข้าสู่ระบบ</string>
+
+    <string name="login_icon_description">นี่คือภาพการเข้าสู่ระบบสำหรับหน้าจอเข้าสู่ระบบ</string>
+
+    <string name="logout">ออกจากระบบ</string>
+
+    <string name="log_shot">การยิงบันทึก</string>
+
+    <string name="log_shots">บันทึกภาพ</string>
+
+    <string name="log_your_shots">บันทึกการยิงของคุณ</string>
+
+    <string name="log_your_shots_description">เลือกประเภทของช็อตที่คุณต้องการบันทึกและป้อนจำนวนครั้งที่ทำและพลาดในวันที่ผู้เล่นทำ</string>
+
+    <string name="menu">เมนู</string>
+
+    <string name="more_info">ข้อมูลเพิ่มเติม</string>
+
+    <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">จำเป็นต้องกรอกข้อมูลหลายช่องแต่ไม่ได้กรอก กรุณากรอกข้อมูลให้ครบถ้วน</string>
+
+    <string name="next">ต่อไป</string>
+
+    <string name="no">เลขที่</string>
+
+    <string name="no_changes_made">ไม่มีการเปลี่ยนแปลงใดๆ</string>
+
+    <string name="not_connected_to_internet">ไม่ได้เชื่อมต่ออินเตอร์เน็ต</string>
+
+    <string name="no_first_name_entered">ไม่มีการป้อนชื่อจริง</string>
+
+    <string name="no_last_name_entered">ไม่มีการป้อนนามสกุล</string>
+
+    <string name="no_shots_results_found">ไม่พบผลลัพธ์ช็อต</string>
+
+    <string name="no_shots_results_found_description">ไม่พบภาพที่ตรงกันในการค้นหาของคุณ กรุณาอัปเดตการค้นหาด้วยชื่อช็อตที่มีอยู่</string>
+
+    <string name="not_now">ไม่ใช่ตอนนี้</string>
+
+    <string name="no_current_players_added">ไม่มีการเพิ่มผู้เล่นปัจจุบัน</string>
+
+    <string name="no_current_shots_logged_for_player">ไม่มีการบันทึกการยิงปัจจุบันสำหรับผู้เล่น</string>
+
+    <string name="open_email">เปิดอีเมล์</string>
+
+    <string name="ok">ตกลง</string>
+
+    <string name="other_resources">แหล่งข้อมูลอื่นๆ</string>
+
+    <string name="other_resources_description">แม้ว่าแอปพลิเคชันมือถือและบริการอาจเชื่อมโยงกับแหล่งข้อมูลอื่น (เช่น เว็บไซต์ แอปพลิเคชันมือถือ เป็นต้น) แต่เราไม่ได้หมายความถึงการอนุมัติ ความเกี่ยวข้อง การสนับสนุน การรับรอง หรือการมีส่วนเกี่ยวข้องกับแหล่งข้อมูลที่เชื่อมโยงใดๆ ทั้งทางตรงและทางอ้อม เว้นแต่จะระบุไว้โดยเฉพาะในที่นี้ เราจะไม่รับผิดชอบในการตรวจสอบหรือประเมินผล และเราไม่รับประกันข้อเสนอของธุรกิจหรือบุคคลใดๆ หรือเนื้อหาทรัพยากรของพวกเขา เราจะไม่รับผิดชอบใดๆ ต่อการกระทำ ผลิตภัณฑ์ บริการ และเนื้อหาของบุคคลที่สามใดๆ คุณควรอ่านคำชี้แจงทางกฎหมายและเงื่อนไขการใช้งานทรัพยากรอื่นๆ ที่คุณเข้าถึงผ่านลิงก์ในแอปพลิเคชันมือถืออย่างละเอียด การลิงก์ของคุณไปยังทรัพยากรนอกไซต์อื่น ๆ ถือเป็นความเสี่ยงของตัวคุณเอง</string>
+
+    <string name="reset_password">รีเซ็ตรหัสผ่าน</string>
+
+    <string name="reset_password_email_sent">รีเซ็ตรหัสผ่าน ส่งอีเมลแล้ว</string>
+
+    <string name="resend_email">ส่งอีเมลอีกครั้ง</string>
+
+    <string name="select_a_shot">เลือกช็อต</string>
+
+    <string name="selecting_a_shot">การเลือกช็อต</string>
+
+    <string name="select_date">เลือกวันที่</string>
+
+    <string name="password">รหัสผ่าน</string>
+
+    <string name="password_helper_text">รหัสผ่านต้องมีความยาวอย่างน้อย 8 อักขระ และประกอบด้วย: ตัวอักษรพิมพ์เล็กหนึ่งตัว (a–z), ตัวอักษรพิมพ์ใหญ่หนึ่งตัว (A–Z), ตัวเลขหนึ่งตัว (0–9) และอักขระพิเศษหนึ่งตัว (เช่น -</string>
+
+    <string name="password_required">รหัสผ่าน*</string>
+
+    <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">รหัสผ่านไม่ได้อยู่ในรูปแบบที่ถูกต้อง กรุณากรอกรหัสผ่านในรูปแบบที่ถูกต้อง</string>
+
+    <string name="password_is_required_please_enter_a_password_to_create_a_account">จำเป็นต้องระบุรหัสผ่าน กรุณากรอกรหัสผ่านเพื่อสร้างบัญชี</string>
+
+    <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">จำเป็นต้องระบุรหัสผ่าน กรุณากรอกรหัสผ่านเพื่อเข้าสู่ระบบบัญชีที่มีอยู่</string>
+
+    <string name="pending_shots">ภาพที่รออยู่</string>
+
+    <string name="permissions">การอนุญาต</string>
+
+    <string name="permission_has_been_declined">อนุญาติถูกปฏิเสธ</string>
+
+    <string name="pg">หน้า</string>
+
+
+</resources>

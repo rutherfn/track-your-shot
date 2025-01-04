@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+    <string name="acceptance_of_these_terms">本規約の承諾</string>
+    <string name="acceptance_of_these_terms_description">お客様は、本契約書を読み、そのすべての条件に同意したことを認めます。モバイル アプリケーションおよびサービスにアクセスし、使用することにより、お客様は本契約に拘束されることに同意するものとします。本契約の条件に従うことに同意しない場合は、モバイル アプリケーションおよびサービスにアクセスしたり使用したりすることはできません。</string>
+    <string name="accounts">アカウント</string>
+    <string name="account_info">アカウント情報</string>
+    <string name="account_has_not_been_verified">アカウントは確認されていません</string>
+    <string name="account_security_description">モバイル アプリケーションでアカウントを作成する場合、アカウントのセキュリティを維持する責任はお客様にあり、アカウントで発生するすべてのアクティビティおよびそれに関連して実行されるその他のアクションに対して全責任を負います。お客様がサインインしてサービスの使用を開始する前に、当社は新しいアカウントを監視および確認する場合があります。いかなる種類の虚偽の連絡先情報を提供すると、アカウントが終了される可能性があります。アカウントの不正使用やその他のセキュリティ侵害があった場合は、直ちに当社に通知する必要があります。当社は、お客様のいかなる行為または不作為、ならびにかかる行為または不作為の結果として生じたいかなる種類の損害についても責任を負いません。当社は、お客様が本契約のいずれかの条項に違反した、またはお客様の行為やコンテンツが当社の評判や信用を損なうおそれがあると判断した場合、お客様のアカウント（またはその一部）を停止、無効化、または削除することがあります。上記の理由により当社がお客様のアカウントを削除した場合、お客様は当社のサービスに再登録することはできません。今後の登録を防止するために、お客様の電子メール アドレスとインターネット プロトコル アドレスをブロックする場合があります。</string>
+    <string name="add_player">プレイヤーを追加</string>
+    <string name="add_player_stats">プレイヤー統計情報を追加</string>
+    <string name="acknowledge_and_agree_to_terms">利用規約を承認 / 同意する</string>
+    <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
+    <string name="are_you_certain_you_wish_to_remove_x">%s を削除してもよろしいですか?</string>
+    <string name="are_you_sure_you_want_to_delete_x_shot">%s を削除してもよろしいですか?</string>
+    <string name="are_you_sure_you_want_to_leave_track_your_shot">本当に Track Your Shot を終了してもよろしいですか?</string>
+    <string name="are_you_sure_you_want_to_delete_pending_account_description">保留中のアカウントを削除するには、新しいアカウントを登録するか、既存のアカウントにログインする必要があります。保留中のアカウントの削除を続行してもよろしいですか?</string>
+    <string name="by_nicholas_rutherford">ニコラス・ラザフォード</string>
+    <string name="c">C</string>
+    <string name="camera">カメラ</string>
+    <string name="camera_permission_explanation">プレイヤー プロフィールを作成または編集するときに、ユーザーが携帯電話のカメラで写真を撮影できるように、カメラの許可を求めます。この権限により、アプリはデバイスのカメラ ハードウェアにアクセスできるようになり、ユーザーは画像をキャプチャしてプレーヤー プロファイルに関連付けることができます。この権限がないと、アプリはこの機能のためにカメラを使用できません。</string>
+    <string name="camera_permission">カメラの許可</string>
+    <string name="camera_permission_has_been_denied_description">カメラの許可が拒否されました。カメラの許可を手動で付与し、プレーヤーに写真をアップロードするには、[設定] に移動してください。</string>
+    <string name="cancel">キャンセル</string>
+    <string name="center">中心</string>
+    <string name="changes_and_amendments">変更と修正</string>
+    <string name="changes_and_amendments_description">当社は、当社の裁量によりいつでも本契約またはモバイル アプリケーションおよびサービスに関連するその条件を変更する権利を留保します。その場合は、メールでお知らせいたします。当社は、お客様が提供した連絡先情報を通じてなど、当社の裁量により他の方法でお客様に通知する場合もあります。本契約の更新版は、別途指定がない限り、改訂された契約が掲載された時点で直ちに有効になります。改訂された契約の発効日（またはその時点で指定されたその他の行為）以降もモバイル アプリケーションおよびサービスを継続して使用した場合、お客様はそれらの変更に同意したものとみなされます。</string>
+    <string name="check_if_account_has_been_verified">アカウントが認証されているか確認する</string>
+    <string name="choose_a_shot_to_log_info_description">情報を記録したいショットを選択します。ショットの詳細を表示するには、「詳細を表示」をクリックします。</string>
+    <string name="choose_image_from_gallery">ギャラリーから画像を選択</string>
+    <string name="choose_option">オプションを選択</string>
+    <string name="close">近い</string>
+    <string name="compare_players_stats">選手と統計を比較する</string>
+    <string name="contacting_us">お問い合わせ</string>
+    <string name="contacting_us_description">本契約に関してご質問、ご懸念、苦情がございましたら、下記のメールアドレスまでご連絡ください。 </string>
+    <string name="continue_text">続く</string>
+    <string name="click_me_to_create_account">クリックしてアカウントを作成</string>
+    <string name="create_account">アカウントを作成する</string>
+    <string name="create_player">プレーヤーを作成</string>
+    <string name="create_your_players_profile">プレイヤープロフィールを作成する</string>
+    <string name="create_your_player_profile_description">まず、名、姓、ポジション、選手画像などの詳細を含む選手プロフィールを作成します。</string>
+    <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">現在のアカウントは確認されていません。メールを開いてアカウントを確認してください。</string>
+    <string name="current_players_has_no_changes_description">現在のプレーヤーには最近更新や変更はありません。続行するには、既存のプレーヤーを調整してください。</string>
+    <string name="current_shot_has_been_updated_description">現在のショットが更新されました。最新情報をご覧になるには、ショットをクリックして更新内容をご覧ください。</string>
+    <string name="current_shot_has_no_changes_description">このショットには最近更新や変更はありません。続行するには、既存のショットを調整してください。</string>
+    <string name="current_shots_x">現在のショット%s</string>
+    <string name="date_shots_logged">撮影日記録</string>
+    <string name="date_shots_taken">撮影日</string>
+    <string name="delete_pending_account">保留中のアカウントを削除する</string>
+    <string name="deleting_pending_account">保留中のアカウントを削除しています</string>
+    <string name="delete_Shot">ショットを削除</string>
+    <string name="delete_x">%s を削除</string>
+    <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
+    <string name="device_is_currently_not_connected_to_internet_desc">デバイスは現在インターネットに接続されていません。アクションを完了するには、デバイスをインターネットに接続してください。</string>
+    <string name="do_you_wish_to_proceed_description">プレーヤーの変更が保存されていないにもかかわらず続行しますか? 変更内容は保存されません。</string>
+    <string name="edit_x">%s を編集</string>
+    <string name="enter_first_name">名を入力してください</string>
+
+
+    <string name="enter_last_name">姓を入力してください</string>
+
+    <string name="first_name">ファーストネーム</string>
+
+    <string name="forgot_password">パスワードをお忘れですか</string>
+
+    <string name="email">メール</string>
+
+    <string name="email_in_use">使用中のメールアドレス</string>
+
+    <string name="email_in_use_description">このメールは Track Your Shot ですでに使用されています。別のメールアドレスを使用してください。</string>
+
+    <string name="email_has_been_sent_to_reset_password_please_follow_directions_to_reset_password">パスワードをリセットするためのメールが送信されました。指示に従ってパスワードをリセットしてください。</string>
+
+    <string name="email_has_been_sent_to_verify_account_please_open_sent_email_to_verify_account">アカウントを確認するためのメールが送信されました。アカウントを確認するには、送信されたメールを開いてください。</string>
+
+    <string name="email_is_not_in_correct_format_please_enter_email_in_correct_format">電子メールの形式が正しくありません。正しい形式でメールアドレスを入力してください</string>
+
+    <string name="email_is_required_please_enter_a_email_to_create_a_account">メールアドレスは必須です。アカウントを作成するにはメールアドレスを入力してください。</string>
+
+    <string name="email_is_required_please_enter_a_email_to_login_to_existing_account">メールアドレスは必須です。既存のアカウントにログインするにはメールアドレスを入力してください。</string>
+
+    <string name="email_is_required_please_enter_a_email_to_reset_password_for_existing_account">メールアドレスは必須です。既存のアカウントのパスワードをリセットするには、メールアドレスを入力してください。</string>
+
+    <string name="enabled_permissions">有効な権限</string>
+
+    <string name="email_required">メールアドレス*</string>
+
+    <string name="enter_shots_made">ショットを入力</string>
+
+    <string name="enter_shots_missed">ミスしたショットを入力</string>
+
+    <string name="edit_player">プレイヤーを編集</string>
+
+    <string name="empty"/>
+
+    <string name="empty_field">空のフィールド</string>
+
+    <string name="empty_fields">空白フィールド</string>
+
+    <string name="empty_fields_description">アカウントの作成を続行するために必要な情報が不足しています。必要な詳細情報をご提供ください。</string>
+
+    <string name="error">エラー</string>
+
+    <string name="error_creating_account">アカウント作成エラー</string>
+
+    <string name="error_deleting_pending_account">保留中のアカウントの削除中にエラーが発生しました</string>
+
+    <string name="find_shots_by_name">名前でショットを探す </string>
+
+    <string name="general">一般的な</string>
+
+    <string name="general_information">一般情報</string>
+
+    <string name="got_it">わかった</string>
+
+    <string name="having_trouble_creating_your_account_please_try_again">アカウントの作成中に問題が発生しました。もう一度お試しください</string>
+
+    <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">アカウントにログインできません。もう一度お試しください。または、資格情報が存在し、有効であることを確認してください。</string>
+
+    <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">このアカウントのパスワードをリセットする際に問題が発生しました。もう一度お試しください。または、資格情報が存在し、有効であることを確認してください。</string>
+
+    <string name="hint_add_new_player">右側のツールバーの+アイコンをタップして新しいプレーヤーを追加します</string>
+
+    <string name="hint_log_new_shots">プレーヤーのショットを記録するには、[ショットの記録] ボタンを押します。</string>
+
+    <string name="hint_log_new_shots_for_player">ショットを記録するには、ログショットボタンを押します。</string>
+
+    <string name="introduction">導入</string>
+
+    <string name="invalid_shot_input">無効なショット入力</string>
+
+    <string name="invalid_shot_input_description">記録されるショットは整数でなければなりません。有効なショットまたはミスしたショットを記録するには、整数を入力してください。</string>
+
+    <string name="issue_occurred">問題が発生しました</string>
+
+    <string name="last_name">苗字</string>
+
+    <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">アプリを終了すると、アカウント作成プロセスが完了しません。メールアドレスを確認するまで続行できません。メールを確認してからアプリに戻ると、アカウントの作成を続行できます。</string>
+
+    <string name="login">ログイン</string>
+
+    <string name="login_icon_description">これはログイン画面のログイン画像です</string>
+
+    <string name="logout">ログアウト</string>
+
+    <string name="log_shot">ログショット</string>
+
+    <string name="log_shots">ログショット</string>
+
+    <string name="log_your_shots">ショットを記録する</string>
+
+    <string name="log_your_shots_description">記録したいショットの種類を選択し、プレーヤーがそのショットを打った日の成功と失敗を入力します。</string>
+
+    <string name="menu">メニュー</string>
+
+    <string name="more_info">詳細情報</string>
+
+    <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">入力されていない必須フィールドが複数あります。すべてのフィールドに入力してください。</string>
+
+    <string name="next">次</string>
+
+    <string name="no">いいえ</string>
+
+    <string name="no_changes_made">変更なし</string>
+
+    <string name="not_connected_to_internet">インターネットに接続されていません</string>
+
+    <string name="no_first_name_entered">名が入力されていません</string>
+
+    <string name="no_last_name_entered">姓が入力されていません</string>
+
+    <string name="no_shots_results_found">ショットの結果が見つかりません</string>
+
+    <string name="no_shots_results_found_description">検索に一致するショットは見つかりませんでした。既存のショット名で検索を更新してください。</string>
+
+    <string name="not_now">今じゃない</string>
+
+    <string name="no_current_players_added">現在プレーヤーが追加されていません</string>
+
+    <string name="no_current_shots_logged_for_player">プレイヤーの現在のショットは記録されていません</string>
+
+    <string name="open_email">メールを開く</string>
+
+    <string name="ok">わかりました</string>
+
+    <string name="other_resources">その他のリソース</string>
+
+    <string name="other_resources_description">モバイル アプリケーションおよびサービスは他のリソース (Web サイト、モバイル アプリケーションなど) にリンクする場合がありますが、ここに明記されていない限り、当社は直接的または間接的に、リンクされたリソースに対する承認、関連、後援、支持、または提携を暗示するものではありません。当社は、いかなる企業または個人の提供物、あるいはそれらのリソースの内容について調査または評価する責任を負わず、また保証もいたしません。当社は、第三者の行為、製品、サービス、コンテンツについて一切の責任を負いません。モバイル アプリケーション内のリンクを通じてアクセスするリソースの法的声明およびその他の使用条件を注意深く確認する必要があります。他のオフサイト リソースへのリンクは、ご自身の責任で行ってください。</string>
+
+    <string name="reset_password">パスワードをリセット</string>
+
+    <string name="reset_password_email_sent">パスワードリセットメールが送信されました</string>
+
+    <string name="resend_email">メールを再送信</string>
+
+    <string name="select_a_shot">ショットを選択</string>
+
+    <string name="selecting_a_shot">ショットの選択</string>
+
+    <string name="select_date">日付を選択</string>
+
+    <string name="password">パスワード</string>
+
+    <string name="password_helper_text">パスワードは 8 文字以上で、小文字（a ～ z）、大文字（A ～ Z）、数字（0 ～ 9）、特殊文字（例： \@、$、!、%、*)。</string>
+
+    <string name="password_required">パスワード*</string>
+
+    <string name="password_is_not_in_correct_format_please_enter_password_in_correct_format">パスワードの形式が正しくありません。正しい形式でパスワードを入力してください</string>
+
+    <string name="password_is_required_please_enter_a_password_to_create_a_account">パスワードが必要です。アカウントを作成するにはパスワードを入力してください。</string>
+
+    <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">パスワードが必要です。既存のアカウントにログインするにはパスワードを入力してください。</string>
+
+    <string name="pending_shots">保留中のショット</string>
+
+    <string name="permissions">権限</string>
+
+    <string name="permission_has_been_declined">許可が拒否されました</string>
+
+    <string name="pg">ページ</string>
+
+
+</resources>
