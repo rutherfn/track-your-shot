@@ -150,6 +150,7 @@ fun NavigationComponent(
     val onboardingEducationViewModel = viewModels.onboardingEducationViewModel
     val enabledPermissionsViewModel = viewModels.enabledPermissionsViewModel
     val accountInfoViewModel = viewModels.accountInfoViewModel
+    val reportListViewModel = viewModels.reportListViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -446,6 +447,9 @@ fun NavigationComponent(
                         state = settingsViewModel.settingsStateFlow.collectAsState().value
                     )
                 )
+            }
+            composable(route = NavigationDestinations.REPORTS_LIST_SCREEN) {
+                screenContents.reportListContent(reportListViewModel = reportListViewModel).invoke()
             }
             composable(
                 route = NavigationDestinations.PERMISSION_EDUCATION_SCREEN

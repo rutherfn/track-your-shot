@@ -49,6 +49,9 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListNavigation
+import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewModel
@@ -264,6 +267,9 @@ class AppModule {
         single<AccountInfoNavigation> {
             AccountInfoNavigationImpl(navigator = get())
         }
+        single<ReportListNavigation> {
+            ReportListNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(accountManager = get())
         }
@@ -409,6 +415,12 @@ class AppModule {
         }
         viewModel {
             AccountInfoViewModel(navigation = get())
+        }
+        viewModel {
+            ReportListViewModel(
+                application = androidApplication(),
+                navigation = get()
+            )
         }
     }
 

@@ -6,6 +6,9 @@ import androidx.navigation.NavBackStackEntry
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerViewModel
+import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListParams
+import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListScreen
+import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListViewModel
 
 class ScreenContents {
 
@@ -56,5 +59,16 @@ class ScreenContents {
                 }
             )
         )
+    }
+
+    fun reportListContent(
+        reportListViewModel: ReportListViewModel
+    ): @Composable () -> Unit = {
+        ReportListScreen(params = ReportListParams(
+            onToolbarMenuClicked = { reportListViewModel.onToolbarMenuClicked() },
+            onHelpClicked = { reportListViewModel.onHelpClicked() },
+            onReportItemClicked = { index -> reportListViewModel.onReportItemClicked(index = index) },
+            state = reportListViewModel.reportListStateFlow.collectAsState().value
+        ))
     }
 }

@@ -38,6 +38,7 @@ object StringsIds {
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val createAccount = R.string.create_account
     val createPlayer = R.string.create_player
+    val createPlayerReport = R.string.create_player_report
     val createYourPlayersProfile = R.string.create_your_players_profile
     val createYourPlayerProfileDescription = R.string.create_your_player_profile_description
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount =
@@ -161,6 +162,7 @@ object StringsIds {
     val readMediaImagesDescription = R.string.read_media_images_description
     val removeImage = R.string.remove_image
     val reports = R.string.reports
+    val reportsHelpDescription = R.string.reports_help_description
     val resetPassword = R.string.reset_password
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email
@@ -220,6 +222,7 @@ object StringsIds {
         R.string.username_is_required_please_enter_a_username_to_create_a_account
     val usingTheApp = R.string.using_the_app
     val verifyAccount = R.string.verify_account
+    val viewCreatedReportTimes = R.string.view_created_report_times
     val viewMoreInfo = R.string.view_more_info
     val voiceCommands = R.string.voice_commands
     val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue =

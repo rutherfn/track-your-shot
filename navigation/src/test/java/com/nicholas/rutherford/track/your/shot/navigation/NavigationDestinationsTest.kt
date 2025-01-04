@@ -19,6 +19,7 @@ class NavigationDestinationsTest {
     internal val splashScreen = "splashScreen"
     internal val comparePlayersScreen = "comparePlayersScreen"
     internal val settingsScreen = "settingsScreen"
+    internal val reportsListScreen = "reportsListScreen"
     internal val statsScreen = "statsScreen"
     internal val voiceCommandsScreen = "voiceCommandsScreen"
     internal val selectShotScreen = "selectShotScreen"
@@ -43,6 +44,9 @@ class NavigationDestinationsTest {
 
         @Test fun `settings screen should result in settings screen`() {
             Assertions.assertEquals(navigationDestinations.SETTINGS_SCREEN, settingsScreen)
+        }
+        @Test fun `reports list should result in reports list screen`() {
+            Assertions.assertEquals(navigationDestinations.REPORTS_LIST_SCREEN, reportsListScreen)
         }
 
         @Test fun `compare players screen should result in compare players screen`() {

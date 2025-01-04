@@ -284,6 +284,38 @@ class NavigationActionsTest {
         }
 
         @Nested
+        inner class ReportList {
+
+            @Test
+            fun createPlayerReport() {
+                Assertions.assertEquals(
+                    Actions.ReportList.createPlayerReport().destination,
+                    NavigationDestinations.CREATE_PLAYER_REPORT_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.ReportList.createPlayerReport().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                        .build()
+                )
+            }
+
+            @Test
+            fun viewReportTimes() {
+                Assertions.assertEquals(
+                    Actions.ReportList.viewReportTimes().destination,
+                    NavigationDestinations.VIEW_REPORT_TIMES_SCREEN
+                )
+                Assertions.assertEquals(
+                    Actions.ReportList.viewReportTimes().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                        .build()
+                )
+            }
+        }
+
+        @Nested
         inner class Settings {
 
             @Test

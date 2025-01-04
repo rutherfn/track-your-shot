@@ -177,6 +177,23 @@ object NavigationActions {
         }
     }
 
+    object ReportList {
+
+        fun createPlayerReport() = object : NavigationAction {
+            override val destination = NavigationDestinations.CREATE_PLAYER_REPORT_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                .build()
+        }
+
+        fun viewReportTimes() = object : NavigationAction {
+            override val destination = NavigationDestinations.VIEW_REPORT_TIMES_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                .build()
+        }
+    }
+
     object Settings {
 
         fun accountInfo(username: String, email: String) = object : NavigationAction {

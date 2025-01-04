@@ -8,6 +8,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsViewModel
@@ -32,5 +33,6 @@ data class ViewModels(
     val termsConditionsViewModel: TermsConditionsViewModel,
     val onboardingEducationViewModel: OnboardingEducationViewModel,
     val enabledPermissionsViewModel: EnabledPermissionsViewModel,
-    val accountInfoViewModel: AccountInfoViewModel
+    val accountInfoViewModel: AccountInfoViewModel,
+    val reportListViewModel: ReportListViewModel
 )
