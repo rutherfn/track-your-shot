@@ -218,5 +218,102 @@
     <string name="pg">पीजी</string>
 
 
+    <string name="point_guard">पॉइंट गार्ड</string>
+
+    <string name="power_forward">शक्ति अग्रेषण</string>
+
+    <string name="pf">पीएफ</string>
+
+    <string name="player_already_has_been_added_description">निर्दिष्ट खिलाड़ी का नाम पहले ही शामिल किया जा चुका है. कृपया एक नये खिलाड़ी को ऐसे नाम से जोड़ें जो पहले नहीं जोड़ा गया हो.</string>
+
+    <string name="player_creation_failed_please_try_again">प्लेयर निर्माण विफल हुआ. कृपया पुन: प्रयास करें.</string>
+
+    <string name="player_image">खिलाड़ी छवि</string>
+
+    <string name="player_is_invalid_please_try_again">वर्तमान खिलाड़ी अमान्य है. कृपया पुनः लॉग शॉट का प्रयास करें</string>
+
+    <string name="players">खिलाड़ी</string>
+
+    <string name="players_first_name_empty_description">खिलाड़ी का प्रथम नाम गायब है. कृपया आगे बढ़ने के लिए अपना प्रथम नाम बताएं.</string>
+
+    <string name="players_last_name_empty_description">खिलाड़ी का अंतिम नाम गायब है. कृपया आगे बढ़ने के लिए अपना प्रथम नाम बताएं.</string>
+
+    <string name="position">पद</string>
+
+    <string name="proceed_with_your_account">अपने खाते के साथ आगे बढ़ें</string>
+
+    <string name="read_external_storage_permission_explanation">हम बाह्य भंडारण पढ़ने की अनुमति मांगते हैं ताकि उपयोगकर्ता खिलाड़ी प्रोफ़ाइल बनाते या संपादित करते समय अपनी गैलरी से कोई छवि चुन सकें. यह अनुमति ऐप को डिवाइस के बाह्य भंडारण पर संग्रहीत छवियों तक पहुंचने की अनुमति देती है, जिससे उपयोगकर्ता छवियों को चुन सकते हैं और उन्हें अपने खिलाड़ी प्रोफाइल के साथ संबद्ध कर सकते हैं. इस अनुमति के बिना, उपयोगकर्ता इस सुविधा के लिए बाह्य संग्रहण से छवियों का चयन नहीं कर पाएंगे.</string>
+
+    <string name="read_external_storage_permission">बाह्य संग्रहण अनुमति पढ़ें</string>
+
+    <string name="read_media_images_permission">मीडिया छवियाँ पढ़ने की अनुमति</string>
+
+    <string name="read_media_images_permission_explanation">हम मीडिया छवियों को पढ़ने की अनुमति मांगते हैं ताकि उपयोगकर्ता खिलाड़ी प्रोफ़ाइल बनाते या संपादित करते समय अपनी गैलरी से एक छवि का चयन कर सकें. यह अनुमति ऐप को डिवाइस पर संग्रहीत छवियों तक पहुंचने की अनुमति देती है, जिससे उपयोगकर्ता छवियों को चुन सकते हैं और उन्हें अपने खिलाड़ी प्रोफाइल के साथ संबद्ध कर सकते हैं. इस अनुमति के बिना, उपयोगकर्ता इस सुविधा के लिए अपनी गैलरी से छवियों का चयन नहीं कर पाएंगे.</string>
+
+    <string name="read_media_images">मीडिया छवियाँ पढ़ें</string>
+
+    <string name="read_external_storage_description">बाह्य भंडारण को पढ़ने की अनुमति अस्वीकृत कर दी गई है. बाह्य संग्रहण पढ़ने की अनुमति को मैन्युअल रूप से सक्षम करने और प्लेयर के लिए गैलरी से एक छवि का चयन करने के लिए, कृपया सेटिंग्स पर जाएँ.</string>
+
+    <string name="read_media_images_description">मीडिया छवियों को पढ़ने की अनुमति अस्वीकृत कर दी गई है. मीडिया चित्र पढ़ने की अनुमति को मैन्युअल रूप से सक्षम करने और प्लेयर के लिए गैलरी से एक चित्र का चयन करने के लिए, कृपया सेटिंग्स पर जाएँ.</string>
+
+    <string name="remove_image">छवि हटाएँ</string>
+
+    <string name="settings">सेटिंग्स</string>
+
+    <string name="settings_help_description">सेटिंग पेज पर, आप अपनी खाता जानकारी देख सकते हैं, नियम और शर्तों की समीक्षा कर सकते हैं, ऐप उपयोग विवरण तक पहुंच सकते हैं, और हमारे द्वारा अनुरोधित अनुमतियों के बारे में जान सकते हैं और यह भी जान सकते हैं कि हमें उनकी आवश्यकता क्यों है.</string>
+
+    <string name="shot_has_been_deleted">शॉट हटा दिया गया है</string>
+
+    <string name="shot_has_not_been_deleted">शॉट Hsa हटाया नहीं गया</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">शॉट अपडेट किया गया</string>
+
+    <string name="shots">फुहार</string>
+
+    <string name="shots_attempted">शॉट का प्रयास</string>
+
+    <string name="shots_made">शॉट्स बनाए गए</string>
+
+    <string name="shots_made_percentage">शॉट्स का प्रतिशत</string>
+
+    <string name="shots_missed_percentage">शॉट छूटने का प्रतिशत</string>
+
+    <string name="shots_missed">शॉट छूट गए</string>
+
+    <string name="shots_not_recorded_description">आपने कोई भी सफल शॉट रिकॉर्ड नहीं किया है. कृपया शॉट को लॉग करने के लिए किए गए शॉट्स की संख्या दर्ज करें.</string>
+
+    <string name="missed_shots_not_recorded_description">आपने कोई छूटा हुआ शॉट रिकॉर्ड नहीं किया है. कृपया शॉट लॉग करने के लिए छूटे हुए शॉट्स की संख्या दर्ज करें.</string>
+
+    <string name="date_shot_was_taken_description">आपने शॉट लेने की तारीख दर्ज नहीं की है. कृपया इस शॉट को लॉग करने के लिए शॉट लिए जाने की तारीख दर्ज करें.</string>
+
+    <string name="show_less">कम दिखाएं</string>
+
+    <string name="show_more">अधिक दिखाएं</string>
+
+    <string name="sf">एस एफ</string>
+
+    <string name="sg">एसजी</string>
+
+    <string name="small_forward">स्मॉल फ़ॉरवर्ड</string>
+
+    <string name="shooting_guard">मृगया रक्षक</string>
+
+    <string name="shot_info">शॉट जानकारी</string>
+
+    <string name="shot_name_x">शॉट का नाम - %s \n</string>
+
+    <string name="shots_made_x">\nबनाए गए शॉट्स - %s</string>
+
+    <string name="shots_made_percentage_x">\nबनाए गए शॉट्स का प्रतिशत: %s</string>
+
+    <string name="stats">आँकड़े</string>
+
+    <string name="splash_icon_description">यह स्प्लैश स्क्रीन के लिए एक स्प्लैश छवि है जो ऐप ट्रिगर होने से पहले प्रदर्शित होती है</string>
+
+    <string name="successfully_sent_email_verification">सत्यापन सफलतापूर्वक भेजा गया</string>
+
+    <string name="take_a_picture">एक तस्वीर ले लो</string>
 
 </resources>

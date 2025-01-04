@@ -217,4 +217,103 @@
 
     <string name="pg">sayfa</string>
 
+
+    <string name="point_guard">Oyun kurucu</string>
+
+    <string name="power_forward">Güç Forveti</string>
+
+    <string name="pf">pf</string>
+
+    <string name="player_already_has_been_added_description">Belirtilen oyuncu adı zaten eklenmiş. Lütfen daha önce eklenmemiş bir isimle yeni bir oyuncu ekleyin.</string>
+
+    <string name="player_creation_failed_please_try_again">Oyuncu oluşturma başarısız oldu. Lütfen tekrar deneyin.</string>
+
+    <string name="player_image">Oyuncu Görüntüsü</string>
+
+    <string name="player_is_invalid_please_try_again">Mevcut oyuncu geçersiz. Lütfen tekrar kayıt yapmayı deneyin</string>
+
+    <string name="players">Oyuncular</string>
+
+    <string name="players_first_name_empty_description">Oyuncunun adı eksik. Devam etmek için lütfen adınızı girin.</string>
+
+    <string name="players_last_name_empty_description">Oyuncunun soyadı eksik. Devam etmek için lütfen adınızı girin.</string>
+
+    <string name="position">Konum</string>
+
+    <string name="proceed_with_your_account">Hesabınızla Devam Edin</string>
+
+    <string name="read_external_storage_permission_explanation">Kullanıcıların oyuncu profili oluştururken veya düzenlerken galerilerinden bir resim seçebilmeleri için harici depolama izni istiyoruz. Bu izin, uygulamanın cihazın harici depolama alanında depolanan resimlere erişmesine olanak tanır ve kullanıcıların resimleri seçip oyuncu profilleriyle ilişkilendirmelerine olanak tanır. Bu izin olmadan kullanıcılar bu özellik için harici depolama alanından resim seçemezler.</string>
+
+    <string name="read_external_storage_permission">Harici Depolama İznini Oku</string>
+
+    <string name="read_media_images_permission">Medya Görüntüleri İznini Oku</string>
+
+    <string name="read_media_images_permission_explanation">Kullanıcıların bir oyuncu profili oluştururken veya düzenlerken galerilerinden bir resim seçebilmeleri için medya resimlerini okuma izni istiyoruz. Bu izin, uygulamanın cihazda depolanan görüntülere erişmesine olanak tanır ve kullanıcıların görüntüleri seçmesine ve oyuncu profilleriyle ilişkilendirmesine olanak tanır. Bu izin olmadan kullanıcılar galerilerinden bu özellik için resim seçemezler.</string>
+
+    <string name="read_media_images">Medya Görüntülerini Oku</string>
+
+    <string name="read_external_storage_description">Harici depolamayı okuma izni reddedildi. Harici Depolamayı Oku iznini manuel olarak etkinleştirmek ve Oynatıcı için galeriden bir resim seçmek için lütfen ayarlara gidin.</string>
+
+    <string name="read_media_images_description">Medya görsellerini okuma izni verilmedi. Oynatıcı için Medya Görüntülerini Oku iznini manuel olarak etkinleştirmek ve galeriden bir görüntü seçmek için lütfen ayarlara gidin.</string>
+
+    <string name="remove_image">Resmi Kaldır</string>
+
+    <string name="settings">Ayarlar</string>
+
+    <string name="settings_help_description">Ayarlar sayfasında hesap bilgilerinizi görüntüleyebilir, hüküm ve koşulları inceleyebilir, uygulama kullanım ayrıntılarına erişebilir ve talep ettiğimiz izinler ve bunlara neden ihtiyaç duyduğumuz hakkında bilgi edinebilirsiniz.</string>
+
+    <string name="shot_has_been_deleted">Atış Silindi</string>
+
+    <string name="shot_has_not_been_deleted">Vurulan Hsa Silinmedi</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">Atış Güncellendi</string>
+
+    <string name="shots">Atışlar</string>
+
+    <string name="shots_attempted">Atış Denemeleri</string>
+
+    <string name="shots_made">Atışlar Yapıldı</string>
+
+    <string name="shots_made_percentage">Atılan Şut Yüzdesi</string>
+
+    <string name="shots_missed_percentage">Kaçırılan Şut Yüzdesi</string>
+
+    <string name="shots_missed">Kaçırılan Atışlar</string>
+
+    <string name="shots_not_recorded_description">Başarılı atış kaydı yapmadınız. Atışı kaydetmeye devam etmek için lütfen atılan atış sayısını girin.</string>
+
+    <string name="missed_shots_not_recorded_description">Kaçırdığınız şutu kaydetmediniz. Atışı kaydetmeye devam etmek için lütfen kaçırılan atış sayısını girin.</string>
+
+    <string name="date_shot_was_taken_description">Atışın yapıldığı tarihi girmediniz. Lütfen çekimin kaydedilmesine devam etmek için çekimin yapıldığı tarihi girin.</string>
+
+    <string name="show_less">Daha Az Göster</string>
+
+    <string name="show_more">Daha Fazlasını Göster</string>
+
+    <string name="sf">sf</string>
+
+    <string name="sg">sg</string>
+
+    <string name="small_forward">Küçük Forvet</string>
+
+    <string name="shooting_guard">Şutör Gard</string>
+
+    <string name="shot_info">Atış Bilgileri</string>
+
+    <string name="shot_name_x">Atış Adı - %s \n</string>
+
+    <string name="shots_made_x">\nAtılan Şutlar - %s</string>
+
+    <string name="shots_made_percentage_x">\nAtılan Şut Yüzdesi: %s</string>
+
+    <string name="stats">İstatistikler</string>
+
+    <string name="splash_icon_description">Bu, uygulama tetiklenmeden önce görüntülenen açılış ekranı için bir açılış resmidir</string>
+
+    <string name="successfully_sent_email_verification">Doğrulama başarıyla gönderildi</string>
+
+    <string name="take_a_picture">Bir Resim Çekin</string>
+
 </resources>

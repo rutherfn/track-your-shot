@@ -218,4 +218,102 @@
     <string name="pg">ページ</string>
 
 
+    <string name="point_guard">ポイントガード</string>
+
+    <string name="power_forward">パワーフォワード</string>
+
+    <string name="pf">PF</string>
+
+    <string name="player_already_has_been_added_description">指定されたプレーヤー名はすでに含まれています。これまで追加されていない名前で新しいプレーヤーを追加してください。</string>
+
+    <string name="player_creation_failed_please_try_again">プレーヤーの作成に失敗しました。もう一度お試しください。</string>
+
+    <string name="player_image">プレイヤー画像</string>
+
+    <string name="player_is_invalid_please_try_again">現在のプレーヤーは無効です。もう一度ショットのログをお試しください</string>
+
+    <string name="players">プレイヤー</string>
+
+    <string name="players_first_name_empty_description">プレーヤーの名が欠落しています。続行するには、名前を入力してください。</string>
+
+    <string name="players_last_name_empty_description">プレーヤーの姓がありません。続行するには、名前を入力してください。</string>
+
+    <string name="position">位置</string>
+
+    <string name="proceed_with_your_account">アカウントを続行する</string>
+
+    <string name="read_external_storage_permission_explanation">プレーヤー プロファイルを作成または編集するときにユーザーがギャラリーから画像を選択できるように、外部ストレージの読み取り権限を要求します。この権限により、アプリはデバイスの外部ストレージに保存されている画像にアクセスできるようになり、ユーザーは画像を選択してプレーヤー プロファイルに関連付けることができます。この権限がないと、ユーザーはこの機能のために外部ストレージから画像を選択できません。</string>
+
+    <string name="read_external_storage_permission">外部ストレージの読み取り権限</string>
+
+    <string name="read_media_images_permission">メディア画像の読み取り権限</string>
+
+    <string name="read_media_images_permission_explanation">プレーヤー プロファイルを作成または編集するときにユーザーがギャラリーから画像を選択できるように、メディア画像の読み取り権限を要求します。この権限により、アプリはデバイスに保存されている画像にアクセスできるようになり、ユーザーは画像を選択してプレーヤー プロファイルに関連付けることができます。この権限がなければ、ユーザーはこの機能のためにギャラリーから画像を選択できません。</string>
+
+    <string name="read_media_images">メディア画像を読む</string>
+
+    <string name="read_external_storage_description">外部ストレージの読み取り権限が拒否されました。外部ストレージの読み取り権限を手動で有効にして、プレーヤーのギャラリーから画像を選択するには、設定に移動してください。</string>
+
+    <string name="read_media_images_description">メディア画像の読み取り権限が拒否されました。メディア画像の読み取り権限を手動で有効にして、プレーヤーのギャラリーから画像を選択するには、設定に移動してください。</string>
+
+    <string name="remove_image">画像を削除</string>
+
+    <string name="settings">設定</string>
+
+    <string name="settings_help_description">設定ページでは、アカウント情報を表示したり、利用規約を確認したり、アプリの使用状況の詳細にアクセスしたり、要求される権限とその必要性について知ることができます。</string>
+
+    <string name="shot_has_been_deleted">ショットは削除されました</string>
+
+    <string name="shot_has_not_been_deleted">ショットは削除されていません</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">ショットが更新されました</string>
+
+    <string name="shots">ショット</string>
+
+    <string name="shots_attempted">試みられたショット</string>
+
+    <string name="shots_made">ショット数</string>
+
+    <string name="shots_made_percentage">シュート成功率</string>
+
+    <string name="shots_missed_percentage">シュートミス率</string>
+
+    <string name="shots_missed">ミスショット</string>
+
+    <string name="shots_not_recorded_description">成功したショットを記録していません。ショットの記録を続行するには、撮影したショットの数を入力してください。</string>
+
+    <string name="missed_shots_not_recorded_description">ミスショットは記録されていません。ショットの記録を続行するには、ミスしたショットの数を入力してください。</string>
+
+    <string name="date_shot_was_taken_description">撮影日が入力されていません。ショットの記録を続行するには、ショットが撮影された日付を入力してください。</string>
+
+    <string name="show_less">表示を減らす</string>
+
+    <string name="show_more">もっと見る</string>
+
+    <string name="sf">sf</string>
+
+    <string name="sg">シンガポール</string>
+
+    <string name="small_forward">スモールフォワード</string>
+
+    <string name="shooting_guard">シューティングガード</string>
+
+    <string name="shot_info">ショット情報</string>
+
+    <string name="shot_name_x">ショット名 -%s \n</string>
+
+    <string name="shots_made_x">撮影したショット -%s</string>
+
+    <string name="shots_made_percentage_x">シュート成功率: %s</string>
+
+    <string name="stats">統計</string>
+
+    <string name="splash_icon_description">これは、アプリが起動される前に表示されるスプラッシュ画面のスプラッシュ画像です。</string>
+
+    <string name="successfully_sent_email_verification">確認を送信しました</string>
+
+    <string name="take_a_picture">写真を撮る</string>
+
 </resources>

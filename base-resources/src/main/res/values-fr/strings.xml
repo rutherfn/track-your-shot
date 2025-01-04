@@ -217,5 +217,101 @@
 
     <string name="pg">pg</string>
 
+    <string name="point_guard">Meneur de jeu</string>
 
+    <string name="power_forward">Ailier fort</string>
+
+    <string name="pf">pf</string>
+
+    <string name="player_already_has_been_added_description">Le nom du joueur spécifié a déjà été inclus. Veuillez ajouter un nouveau joueur avec un nom qui n\'a pas été ajouté auparavant.</string>
+
+    <string name="player_creation_failed_please_try_again">La création du joueur a échoué. Veuillez réessayer.</string>
+
+    <string name="player_image">Image du joueur</string>
+
+    <string name="player_is_invalid_please_try_again">Le joueur actuel n\'est pas valide. Veuillez réessayer d\'enregistrer la photo.</string>
+
+    <string name="players">Joueurs</string>
+
+    <string name="players_first_name_empty_description">Le prénom du joueur est manquant. Veuillez fournir un prénom pour continuer.</string>
+
+    <string name="players_last_name_empty_description">Le nom de famille du joueur est manquant. Veuillez fournir un prénom pour continuer.</string>
+
+    <string name="position">Position</string>
+
+    <string name="proceed_with_your_account">Continuer avec votre compte</string>
+
+    <string name="read_external_storage_permission_explanation">Nous demandons l\'autorisation de lecture du stockage externe afin que les utilisateurs puissent sélectionner une image dans leur galerie lors de la création ou de la modification d\'un profil de joueur. Cette autorisation permet à l\'application d\'accéder aux images stockées sur le stockage externe de l\'appareil, permettant aux utilisateurs de choisir et d\'associer des images à leurs profils de joueur. Sans cette autorisation, les utilisateurs ne pourraient pas sélectionner d’images à partir d’un stockage externe pour cette fonctionnalité.</string>
+
+    <string name="read_external_storage_permission">Lire l\'autorisation de stockage externe</string>
+
+    <string name="read_media_images_permission">Autorisation de lecture des images multimédias</string>
+
+    <string name="read_media_images_permission_explanation">Nous demandons l\'autorisation de lire les images multimédias afin que les utilisateurs puissent sélectionner une image dans leur galerie lors de la création ou de la modification d\'un profil de joueur. Cette autorisation permet à l\'application d\'accéder aux images stockées sur l\'appareil, permettant aux utilisateurs de choisir et d\'associer des images à leurs profils de joueur. Sans cette autorisation, les utilisateurs ne pourraient pas sélectionner d’images de leur galerie pour cette fonctionnalité.</string>
+
+    <string name="read_media_images">Lire les images des médias</string>
+
+    <string name="read_external_storage_description">L\'autorisation de lire le stockage externe a été refusée. Pour activer manuellement l\'autorisation de lecture du stockage externe et sélectionner une image dans la galerie pour le lecteur, accédez aux paramètres.</string>
+
+    <string name="read_media_images_description">L\'autorisation de lire les images des médias a été refusée. Pour activer manuellement l\'autorisation Lire les images multimédias et sélectionner une image dans la galerie pour le lecteur, accédez aux paramètres.</string>
+
+    <string name="remove_image">Supprimer l\'image</string>
+
+    <string name="settings">Paramètres</string>
+
+    <string name="settings_help_description">Sur la page des paramètres, vous pouvez consulter les informations de votre compte, consulter les conditions générales, accéder aux détails d\'utilisation des applications et en savoir plus sur les autorisations que nous demandons et pourquoi nous en avons besoin.</string>
+
+    <string name="shot_has_been_deleted">La photo a été supprimée</string>
+
+    <string name="shot_has_not_been_deleted">Shot HSA n\'a pas été supprimé</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">Mise à jour de la photo</string>
+
+    <string name="shots">Coups</string>
+
+    <string name="shots_attempted">Tirs tentés</string>
+
+    <string name="shots_made">Coups de feu réalisés</string>
+
+    <string name="shots_made_percentage">Pourcentage de tirs réussis</string>
+
+    <string name="shots_missed_percentage">Pourcentage de tirs manqués</string>
+
+    <string name="shots_missed">Tirs manqués</string>
+
+    <string name="shots_not_recorded_description">Vous n\'avez enregistré aucune prise de vue réussie. Veuillez saisir le nombre de prises de vue effectuées pour procéder à l\'enregistrement de la prise de vue.</string>
+
+    <string name="missed_shots_not_recorded_description">Vous n\'avez enregistré aucun tir manqué. Veuillez saisir le nombre de tirs manqués pour procéder à l\'enregistrement du tir.</string>
+
+    <string name="date_shot_was_taken_description">Vous n\'avez pas indiqué la date à laquelle la photo a été prise. Veuillez saisir la date à laquelle la photo a été prise pour procéder à l\'enregistrement de cette photo.</string>
+
+    <string name="show_less">Afficher moins</string>
+
+    <string name="show_more">Afficher plus</string>
+
+    <string name="sf">sf</string>
+
+    <string name="sg">sg</string>
+
+    <string name="small_forward">Petit attaquant</string>
+
+    <string name="shooting_guard">Arrière de tir</string>
+
+    <string name="shot_info">Informations sur le tir</string>
+
+    <string name="shot_name_x">Nom de la prise de vue - %s \n</string>
+
+    <string name="shots_made_x">\nTirs effectués - %s</string>
+
+    <string name="shots_made_percentage_x">\nPourcentage de tirs réussis: %s</string>
+
+    <string name="stats">Statistiques</string>
+
+    <string name="splash_icon_description">Il s\'agit d\'une image de démarrage pour l\'écran de démarrage qui s\'affiche avant le déclenchement de l\'application</string>
+
+    <string name="successfully_sent_email_verification">Vérification envoyée avec succès</string>
+
+    <string name="take_a_picture">Prendre une photo</string>
 </resources>

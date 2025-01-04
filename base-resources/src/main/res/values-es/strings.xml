@@ -218,4 +218,102 @@
     <string name="pg">pág.</string>
 
 
+    <string name="point_guard">Base</string>
+
+    <string name="power_forward">Delantero de poder</string>
+
+    <string name="pf">pf</string>
+
+    <string name="player_already_has_been_added_description">El nombre del jugador especificado ya ha sido incluido. Por favor, agregue un nuevo jugador con un nombre que no haya sido agregado antes.</string>
+
+    <string name="player_creation_failed_please_try_again">Error en la creación del jugador. Por favor, inténtalo de nuevo.</string>
+
+    <string name="player_image">Imagen del jugador</string>
+
+    <string name="player_is_invalid_please_try_again">El jugador actual no es válido. Intente registrar la captura nuevamente</string>
+
+    <string name="players">Jugadores</string>
+
+    <string name="players_first_name_empty_description">Falta el nombre del jugador. Por favor proporcione un nombre para continuar.</string>
+
+    <string name="players_last_name_empty_description">Falta el apellido del jugador. Por favor proporcione un nombre para continuar.</string>
+
+    <string name="position">Posición</string>
+
+    <string name="proceed_with_your_account">Continúe con su cuenta</string>
+
+    <string name="read_external_storage_permission_explanation">Solicitamos permiso de lectura de almacenamiento externo para que los usuarios puedan seleccionar una imagen de su galería al crear o editar un perfil de jugador. Este permiso permite a la aplicación acceder a las imágenes almacenadas en el almacenamiento externo del dispositivo, lo que permite a los usuarios elegir y asociar imágenes con sus perfiles de jugador. Sin este permiso, los usuarios no podrían seleccionar imágenes del almacenamiento externo para esta función.</string>
+
+    <string name="read_external_storage_permission">Leer permiso de almacenamiento externo</string>
+
+    <string name="read_media_images_permission">Leer permiso para imágenes de medios</string>
+
+    <string name="read_media_images_permission_explanation">Solicitamos permiso para leer imágenes multimedia para que los usuarios puedan seleccionar una imagen de su galería al crear o editar un perfil de jugador. Este permiso permite a la aplicación acceder a las imágenes almacenadas en el dispositivo, permitiendo a los usuarios elegir y asociar imágenes con sus perfiles de jugador. Sin este permiso, los usuarios no podrían seleccionar imágenes de su galería para esta función.</string>
+
+    <string name="read_media_images">Leer imágenes de los medios</string>
+
+    <string name="read_external_storage_description">Se ha rechazado el permiso para leer el almacenamiento externo. Para habilitar manualmente el permiso de lectura de almacenamiento externo y seleccionar una imagen de la galería para el reproductor, navegue a la configuración.</string>
+
+    <string name="read_media_images_description">Se ha rechazado el permiso para leer imágenes de medios. Para habilitar manualmente el permiso de Leer imágenes multimedia y seleccionar una imagen de la galería para el reproductor, navegue a la configuración.</string>
+
+    <string name="remove_image">Eliminar imagen</string>
+
+    <string name="settings">Ajustes</string>
+
+    <string name="settings_help_description">En la página de configuración, puede ver la información de su cuenta, revisar los términos y condiciones, acceder a los detalles de uso de la aplicación y conocer los permisos que solicitamos y por qué los necesitamos.</string>
+
+    <string name="shot_has_been_deleted">La toma ha sido eliminada</string>
+
+    <string name="shot_has_not_been_deleted">La HSA no ha sido eliminada</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">Toma actualizada</string>
+
+    <string name="shots">Disparos</string>
+
+    <string name="shots_attempted">Disparos intentados</string>
+
+    <string name="shots_made">Disparos realizados</string>
+
+    <string name="shots_made_percentage">Porcentaje de tiros realizados</string>
+
+    <string name="shots_missed_percentage">Porcentaje de tiros fallados</string>
+
+    <string name="shots_missed">Disparos fallados</string>
+
+    <string name="shots_not_recorded_description">No has registrado ninguna toma exitosa. Ingrese el número de disparos realizados para continuar con el registro del disparo.</string>
+
+    <string name="missed_shots_not_recorded_description">No has registrado ningún disparo fallido. Ingrese el número de disparos fallidos para continuar con el registro del disparo.</string>
+
+    <string name="date_shot_was_taken_description">No has introducido la fecha en la que se tomó la fotografía. Ingrese la fecha en la que se tomó la fotografía para continuar con el registro de la misma.</string>
+
+    <string name="show_less">Mostrar menos</string>
+
+    <string name="show_more">Mostrar más</string>
+
+    <string name="sf">ciencia ficción</string>
+
+    <string name="sg">es</string>
+
+    <string name="small_forward">Delantero pequeño</string>
+
+    <string name="shooting_guard">Guardia de tiro</string>
+
+    <string name="shot_info">Información de la toma</string>
+
+    <string name="shot_name_x">Nombre de la toma: %s \n</string>
+
+    <string name="shots_made_x">\nDisparos realizados - %s</string>
+
+    <string name="shots_made_percentage_x">\nPorcentaje de tiros realizados: %s</string>
+
+    <string name="stats">Estadísticas</string>
+
+    <string name="splash_icon_description">Esta es una imagen de presentación para la pantalla de presentación que se muestra antes de que se active la aplicación.</string>
+
+    <string name="successfully_sent_email_verification">Verificación enviada exitosamente</string>
+
+    <string name="take_a_picture">Tomar una fotografía</string>
+
 </resources>

@@ -217,4 +217,102 @@
 
     <string name="pg">hal.</string>
 
+
+    <string name="point_guard">Penjaga Titik</string>
+
+    <string name="power_forward">Kekuatan Maju</string>
+
+    <string name="pf">pf</string>
+
+    <string name="player_already_has_been_added_description">Nama pemain yang ditentukan telah disertakan. Mohon tambahkan pemain baru dengan nama yang belum pernah ditambahkan sebelumnya.</string>
+
+    <string name="player_creation_failed_please_try_again">Pembuatan pemain gagal. Silakan coba lagi.</string>
+
+    <string name="player_image">Gambar Pemain</string>
+
+    <string name="player_is_invalid_please_try_again">Pemain saat ini tidak valid. Silakan coba log shot lagi</string>
+
+    <string name="players">Pemain</string>
+
+    <string name="players_first_name_empty_description">Nama depan pemain tidak ada. Mohon berikan nama depan untuk melanjutkan.</string>
+
+    <string name="players_last_name_empty_description">Nama belakang pemain tidak ada. Mohon berikan nama depan untuk melanjutkan.</string>
+
+    <string name="position">Posisi</string>
+
+    <string name="proceed_with_your_account">Lanjutkan Dengan Akun Anda</string>
+
+    <string name="read_external_storage_permission_explanation">Kami meminta izin membaca penyimpanan eksternal sehingga pengguna dapat memilih gambar dari galeri mereka saat membuat atau mengedit profil pemain. Izin ini memungkinkan aplikasi untuk mengakses gambar yang disimpan pada penyimpanan eksternal perangkat, sehingga pengguna dapat memilih dan mengaitkan gambar dengan profil pemain mereka. Tanpa izin ini, pengguna tidak akan dapat memilih gambar dari penyimpanan eksternal untuk fitur ini.</string>
+
+    <string name="read_external_storage_permission">Baca Izin Penyimpanan Eksternal</string>
+
+    <string name="read_media_images_permission">Izin Membaca Gambar Media</string>
+
+    <string name="read_media_images_permission_explanation">Kami meminta izin untuk membaca gambar media sehingga pengguna dapat memilih gambar dari galeri mereka saat membuat atau mengedit profil pemain. Izin ini memungkinkan aplikasi untuk mengakses gambar yang disimpan pada perangkat, sehingga pengguna dapat memilih dan mengaitkan gambar dengan profil pemain mereka. Tanpa izin ini, pengguna tidak akan dapat memilih gambar dari galeri mereka untuk fitur ini.</string>
+
+    <string name="read_media_images">Baca Gambar Media</string>
+
+    <string name="read_external_storage_description">Izin untuk membaca penyimpanan eksternal telah ditolak. Untuk mengaktifkan izin Baca Penyimpanan Eksternal secara manual dan memilih gambar dari galeri untuk Pemutar, silakan navigasikan ke pengaturan.</string>
+
+    <string name="read_media_images_description">Izin untuk membaca gambar media telah ditolak. Untuk mengaktifkan izin Baca Gambar Media secara manual dan memilih gambar dari galeri untuk Pemutar, silakan buka pengaturan.</string>
+
+    <string name="remove_image">Hapus Gambar</string>
+
+    <string name="settings">Pengaturan</string>
+
+    <string name="settings_help_description">Di halaman pengaturan, Anda dapat melihat informasi akun, meninjau syarat dan ketentuan, mengakses detail penggunaan aplikasi, dan mempelajari tentang izin yang kami minta dan mengapa kami membutuhkannya.</string>
+
+    <string name="shot_has_been_deleted">Jepretan Telah Dihapus</string>
+
+    <string name="shot_has_not_been_deleted">Tembakan Hsa Belum Dihapus</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">Ditembak Diperbarui</string>
+
+    <string name="shots">Tembakan</string>
+
+    <string name="shots_attempted">Tembakan Dicobai</string>
+
+    <string name="shots_made">Tembakan Dilakukan</string>
+
+    <string name="shots_made_percentage">Persentase Tembakan yang Dilakukan</string>
+
+    <string name="shots_missed_percentage">Persentase Tembakan yang Gagal</string>
+
+    <string name="shots_missed">Tembakan meleset</string>
+
+    <string name="shots_not_recorded_description">Anda belum merekam tembakan yang berhasil. Silakan masukkan jumlah tembakan yang dilakukan untuk melanjutkan pencatatan tembakan.</string>
+
+    <string name="missed_shots_not_recorded_description">Anda tidak merekam satu pun tembakan yang meleset. Silakan masukkan jumlah tembakan yang meleset untuk melanjutkan pencatatan tembakan.</string>
+
+    <string name="date_shot_was_taken_description">Anda belum memasukkan tanggal pengambilan gambar. Silakan masukkan tanggal pengambilan gambar untuk melanjutkan pencatatan gambar tersebut.</string>
+
+    <string name="show_less">Tampilkan Lebih Sedikit</string>
+
+    <string name="show_more">Tampilkan lebih banyak</string>
+
+    <string name="sf">bahasa inggris</string>
+
+    <string name="sg">bahasa inggris</string>
+
+    <string name="small_forward">Pemain Depan Kecil</string>
+
+    <string name="shooting_guard">Penjaga Tembak</string>
+
+    <string name="shot_info">Info Tembakan</string>
+
+    <string name="shot_name_x">Nama Tembakan -%s \n</string>
+
+    <string name="shots_made_x">\nTembakan Dilakukan -%s</string>
+
+    <string name="shots_made_percentage_x">\nPersentase Tembakan yang Dilakukan: %s</string>
+
+    <string name="stats">Statistik</string>
+
+    <string name="splash_icon_description">Ini adalah gambar splash untuk layar splash yang ditampilkan sebelum aplikasi dipicu</string>
+
+    <string name="successfully_sent_email_verification">Berhasil mengirim verifikasi</string>
+
+    <string name="take_a_picture">Ambil Gambar</string>
 </resources>

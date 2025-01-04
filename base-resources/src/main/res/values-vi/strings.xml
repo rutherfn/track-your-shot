@@ -218,4 +218,102 @@
     <string name="pg">trang</string>
 
 
+    <string name="point_guard">Hậu vệ dẫn bóng</string>
+
+    <string name="power_forward">Tiền đạo sức mạnh</string>
+
+    <string name="pf">pf</string>
+
+    <string name="player_already_has_been_added_description">Tên người chơi được chỉ định đã được đưa vào. Vui lòng thêm một người chơi mới có tên chưa từng được thêm trước đó.</string>
+
+    <string name="player_creation_failed_please_try_again">Không tạo được người chơi. Vui lòng thử lại.</string>
+
+    <string name="player_image">Hình ảnh người chơi</string>
+
+    <string name="player_is_invalid_please_try_again">Người chơi hiện tại không hợp lệ. Vui lòng thử đăng nhập lại</string>
+
+    <string name="players">Người chơi</string>
+
+    <string name="players_first_name_empty_description">Tên của người chơi bị thiếu. Vui lòng cung cấp tên để tiếp tục.</string>
+
+    <string name="players_last_name_empty_description">Họ của người chơi bị thiếu. Vui lòng cung cấp tên để tiếp tục.</string>
+
+    <string name="position">Chức vụ</string>
+
+    <string name="proceed_with_your_account">Tiến hành với tài khoản của bạn</string>
+
+    <string name="read_external_storage_permission_explanation">Chúng tôi yêu cầu quyền đọc bộ nhớ ngoài để người dùng có thể chọn hình ảnh từ thư viện của họ khi tạo hoặc chỉnh sửa hồ sơ người chơi. Quyền này cho phép ứng dụng truy cập vào hình ảnh được lưu trữ trên bộ nhớ ngoài của thiết bị, cho phép người dùng chọn và liên kết hình ảnh với hồ sơ người chơi của họ. Nếu không có quyền này, người dùng sẽ không thể chọn hình ảnh từ bộ nhớ ngoài cho tính năng này.</string>
+
+    <string name="read_external_storage_permission">Đọc Quyền Lưu trữ Ngoài</string>
+
+    <string name="read_media_images_permission">Đọc hình ảnh phương tiện truyền thông cho phép</string>
+
+    <string name="read_media_images_permission_explanation">Chúng tôi yêu cầu quyền đọc hình ảnh phương tiện để người dùng có thể chọn hình ảnh từ thư viện của họ khi tạo hoặc chỉnh sửa hồ sơ người chơi. Quyền này cho phép ứng dụng truy cập vào hình ảnh được lưu trữ trên thiết bị, cho phép người dùng chọn và liên kết hình ảnh với hồ sơ người chơi của họ. Nếu không có quyền này, người dùng sẽ không thể chọn hình ảnh từ thư viện của mình cho tính năng này.</string>
+
+    <string name="read_media_images">Đọc hình ảnh phương tiện truyền thông</string>
+
+    <string name="read_external_storage_description">Quyền đọc bộ nhớ ngoài đã bị từ chối. Để bật thủ công quyền Đọc bộ nhớ ngoài và chọn hình ảnh từ thư viện cho Trình phát, vui lòng điều hướng đến cài đặt.</string>
+
+    <string name="read_media_images_description">Quyền đọc hình ảnh phương tiện truyền thông đã bị từ chối. Để bật thủ công quyền Đọc hình ảnh phương tiện và chọn hình ảnh từ thư viện cho Trình phát, vui lòng điều hướng đến cài đặt.</string>
+
+    <string name="remove_image">Xóa hình ảnh</string>
+
+    <string name="settings">Cài đặt</string>
+
+    <string name="settings_help_description">Trên trang cài đặt, bạn có thể xem thông tin tài khoản, xem lại các điều khoản và điều kiện, truy cập thông tin chi tiết về cách sử dụng ứng dụng và tìm hiểu về các quyền mà chúng tôi yêu cầu cũng như lý do chúng tôi cần chúng.</string>
+
+    <string name="shot_has_been_deleted">Đã xóa ảnh</string>
+
+    <string name="shot_has_not_been_deleted">Shot Hsa Không Bị Xóa</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">Đã cập nhật</string>
+
+    <string name="shots">Những cú đánh</string>
+
+    <string name="shots_attempted">Số lần bắn thử</string>
+
+    <string name="shots_made">Những cú đánh được thực hiện</string>
+
+    <string name="shots_made_percentage">Tỷ lệ phần trăm cú sút thành công</string>
+
+    <string name="shots_missed_percentage">Tỷ lệ cú sút trượt</string>
+
+    <string name="shots_missed">Những cú sút trượt</string>
+
+    <string name="shots_not_recorded_description">Bạn chưa ghi được cú đánh thành công nào. Vui lòng nhập số lần chụp để tiến hành ghi lại lần chụp đó.</string>
+
+    <string name="missed_shots_not_recorded_description">Bạn chưa ghi lại bất kỳ cú đánh trượt nào. Vui lòng nhập số lần bắn trượt để tiếp tục ghi lại cú đánh.</string>
+
+    <string name="date_shot_was_taken_description">Bạn chưa nhập ngày chụp ảnh. Vui lòng nhập ngày chụp ảnh để tiến hành ghi lại bức ảnh đó.</string>
+
+    <string name="show_less">Hiển thị ít hơn</string>
+
+    <string name="show_more">Hiển thị thêm</string>
+
+    <string name="sf">sf</string>
+
+    <string name="sg">sg</string>
+
+    <string name="small_forward">Tiền đạo nhỏ</string>
+
+    <string name="shooting_guard">Tiền vệ ghi bàn</string>
+
+    <string name="shot_info">Thông tin về cú đánh</string>
+
+    <string name="shot_name_x">Tên ảnh - %s \n</string>
+
+    <string name="shots_made_x">\nSố lần chụp - %s</string>
+
+    <string name="shots_made_percentage_x">\nTỷ lệ cú sút thành công: %s</string>
+
+    <string name="stats">Thống kê</string>
+
+    <string name="splash_icon_description">Đây là hình ảnh chào mừng cho màn hình chào mừng được hiển thị trước khi ứng dụng được kích hoạt</string>
+
+    <string name="successfully_sent_email_verification">Đã gửi xác minh thành công</string>
+
+    <string name="take_a_picture">Chụp ảnh</string>
+
 </resources>

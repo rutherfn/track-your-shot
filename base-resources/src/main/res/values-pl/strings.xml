@@ -218,4 +218,103 @@
     <string name="pg">strona</string>
 
 
+    <string name="point_guard">Rozgrywający</string>
+
+    <string name="power_forward">Silny napastnik</string>
+
+    <string name="pf">pf</string>
+
+    <string name="player_already_has_been_added_description">Podana nazwa gracza została już uwzględniona. Proszę dodać nowego gracza, którego nazwa nie została jeszcze dodana.</string>
+
+    <string name="player_creation_failed_please_try_again">Tworzenie gracza nie powiodło się. Spróbuj ponownie.</string>
+
+    <string name="player_image">Obraz gracza</string>
+
+    <string name="player_is_invalid_please_try_again">Aktualny gracz jest nieprawidłowy. Proszę spróbować zalogować strzał ponownie</string>
+
+    <string name="players">Gracze</string>
+
+    <string name="players_first_name_empty_description">Brakuje imienia gracza. Proszę podać imię, aby kontynuować.</string>
+
+    <string name="players_last_name_empty_description">Brakuje nazwiska gracza. Proszę podać imię, aby kontynuować.</string>
+
+    <string name="position">Pozycja</string>
+
+    <string name="proceed_with_your_account">Kontynuuj z kontem</string>
+
+    <string name="read_external_storage_permission_explanation">Prosimy o pozwolenie na odczyt danych z zewnętrznej pamięci masowej, aby użytkownicy mogli wybrać obraz ze swojej galerii podczas tworzenia lub edytowania profilu gracza. Dzięki temu uprawnieniu aplikacja może uzyskiwać dostęp do obrazów zapisanych w zewnętrznej pamięci urządzenia, dzięki czemu użytkownicy mogą wybierać obrazy i kojarzyć je ze swoimi profilami graczy. Bez tego uprawnienia użytkownicy nie mogliby wybierać obrazów z pamięci zewnętrznej na potrzeby tej funkcji.</string>
+
+    <string name="read_external_storage_permission">Odczyt uprawnień do pamięci zewnętrznej</string>
+
+    <string name="read_media_images_permission">Przeczytaj uprawnienia do obrazów multimedialnych</string>
+
+    <string name="read_media_images_permission_explanation">Prosimy o pozwolenie na odczyt obrazów multimedialnych, aby użytkownicy mogli wybrać obraz ze swojej galerii podczas tworzenia lub edytowania profilu gracza. Dzięki temu uprawnieniu aplikacja może uzyskać dostęp do obrazów zapisanych na urządzeniu, co pozwala użytkownikom wybierać obrazy i kojarzyć je ze swoimi profilami graczy. Bez tego uprawnienia użytkownicy nie mogliby wybierać obrazów ze swojej galerii na potrzeby tej funkcji.</string>
+
+    <string name="read_media_images">Przeczytaj obrazy medialne</string>
+
+    <string name="read_external_storage_description">Zgoda na odczyt pamięci zewnętrznej została odrzucona. Aby ręcznie włączyć uprawnienie Odczyt pamięci zewnętrznej i wybrać obraz z galerii dla odtwarzacza, przejdź do ustawień.</string>
+
+    <string name="read_media_images_description">Odmówiono zgody na odczytanie zdjęć. Aby ręcznie włączyć uprawnienie Odczyt obrazów multimedialnych i wybrać obraz z galerii dla odtwarzacza, przejdź do ustawień.</string>
+
+    <string name="remove_image">Usuń obraz</string>
+
+    <string name="settings">Ustawienia</string>
+
+    <string name="settings_help_description">Na stronie ustawień możesz wyświetlić informacje o swoim koncie, zapoznać się z regulaminem, uzyskać dostęp do szczegółów korzystania z aplikacji oraz dowiedzieć się, o jakie uprawnienia prosimy i dlaczego ich potrzebujemy.</string>
+
+    <string name="shot_has_been_deleted">Ujęcie zostało usunięte</string>
+
+    <string name="shot_has_not_been_deleted">Strzał Hsa nie został usunięty</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">Ujęcie zaktualizowane</string>
+
+    <string name="shots">Strzały</string>
+
+    <string name="shots_attempted">Próby strzałów</string>
+
+    <string name="shots_made">Wykonane strzały</string>
+
+    <string name="shots_made_percentage">Procent trafionych strzałów</string>
+
+    <string name="shots_missed_percentage">Procent niecelnych strzałów</string>
+
+    <string name="shots_missed">Niecelne strzały</string>
+
+    <string name="shots_not_recorded_description">Nie nagrałeś żadnych udanych strzałów. Proszę wprowadzić liczbę wykonanych zdjęć, aby kontynuować rejestrowanie zdjęcia.</string>
+
+    <string name="missed_shots_not_recorded_description">Nie zanotowałeś żadnych niecelnych strzałów. Proszę wprowadzić liczbę chybionych strzałów, aby kontynuować rejestrowanie strzału.</string>
+
+    <string name="date_shot_was_taken_description">Nie podałeś daty wykonania zdjęcia. Proszę wprowadzić datę wykonania zdjęcia, aby kontynuować rejestrowanie zdjęcia.</string>
+
+    <string name="show_less">Pokaż mniej</string>
+
+    <string name="show_more">Pokaż więcej</string>
+
+    <string name="sf">sf</string>
+
+    <string name="sg">sg</string>
+
+    <string name="small_forward">Mały napastnik</string>
+
+    <string name="shooting_guard">Rzucający obrońca</string>
+
+    <string name="shot_info">Informacje o strzale</string>
+
+    <string name="shot_name_x">Nazwa ujęcia - %s \n</string>
+
+    <string name="shots_made_x">\nWykonane strzały - %s</string>
+
+    <string name="shots_made_percentage_x">\nProcent trafionych strzałów: %s</string>
+
+    <string name="stats">Statystyki</string>
+
+    <string name="splash_icon_description">To jest obraz powitalny ekranu powitalnego, który jest wyświetlany przed uruchomieniem aplikacji.</string>
+
+    <string name="successfully_sent_email_verification">Pomyślnie wysłano weryfikację</string>
+
+    <string name="take_a_picture">Zrób zdjęcie</string>
+
+
 </resources>

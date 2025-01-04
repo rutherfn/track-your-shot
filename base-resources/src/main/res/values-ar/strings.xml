@@ -204,4 +204,102 @@
 
     <string name="pg">ص.ج</string>
 
+    <string name="point_guard">حارس النقطة</string>
+
+    <string name="power_forward">قوة للأمام</string>
+
+    <string name="pf">ف ف</string>
+
+    <string name="player_already_has_been_added_description">لقد تم تضمين اسم اللاعب المحدد بالفعل. يرجى إضافة لاعب جديد باسم لم يتم إضافته من قبل.</string>
+
+    <string name="player_creation_failed_please_try_again">فشل إنشاء اللاعب. من فضلك حاول مرة أخرى.</string>
+
+    <string name="player_image">صورة اللاعب</string>
+
+    <string name="player_is_invalid_please_try_again">اللاعب الحالي غير صالح. يرجى محاولة تسجيل اللقطة مرة أخرى</string>
+
+    <string name="players">اللاعبين</string>
+
+    <string name="players_first_name_empty_description">الاسم الأول للاعب مفقود. يرجى تقديم اسمك الأول للمتابعة.</string>
+
+    <string name="players_last_name_empty_description">اسم اللاعب الأخير مفقود. يرجى تقديم اسمك الأول للمتابعة.</string>
+
+    <string name="position">موضع</string>
+
+    <string name="proceed_with_your_account">متابعة حسابك</string>
+
+    <string name="read_external_storage_permission_explanation">نطلب إذن قراءة التخزين الخارجي حتى يتمكن المستخدمون من تحديد صورة من معرض الصور الخاص بهم عند إنشاء ملف تعريف لاعب أو تحريره. يتيح هذا الإذن للتطبيق الوصول إلى الصور المخزنة على وحدة التخزين الخارجية للجهاز، مما يتيح للمستخدمين اختيار الصور وربطها بملفات تعريف اللاعب الخاصة بهم. بدون هذا الإذن، لن يتمكن المستخدمون من تحديد الصور من وحدة التخزين الخارجية لهذه الميزة.</string>
+
+    <string name="read_external_storage_permission">قراءة أذونات التخزين الخارجية</string>
+
+    <string name="read_media_images_permission">اقرأ إذن صور الوسائط</string>
+
+    <string name="read_media_images_permission_explanation">نطلب إذن قراءة صور الوسائط حتى يتمكن المستخدمون من تحديد صورة من معرضهم عند إنشاء ملف تعريف لاعب أو تحريره. يتيح هذا الإذن للتطبيق الوصول إلى الصور المخزنة على الجهاز، مما يتيح للمستخدمين اختيار الصور وربطها بملفات تعريف اللاعب الخاصة بهم. بدون هذا الإذن، لن يتمكن المستخدمون من تحديد الصور من معرضهم لهذه الميزة.</string>
+
+    <string name="read_media_images">قراءة صور الوسائط</string>
+
+    <string name="read_external_storage_description">تم رفض الإذن بقراءة التخزين الخارجي. لتفعيل إذن قراءة وحدة التخزين الخارجية يدويًا وتحديد صورة من المعرض لمشغل الوسائط، يرجى الانتقال إلى الإعدادات.</string>
+
+    <string name="read_media_images_description">تم رفض الإذن بقراءة صور الوسائط. لتفعيل إذن قراءة صور الوسائط يدويًا وتحديد صورة من المعرض لمشغل الوسائط، يرجى الانتقال إلى الإعدادات.</string>
+
+    <string name="remove_image">إزالة الصورة</string>
+
+    <string name="settings">إعدادات</string>
+
+    <string name="settings_help_description">في صفحة الإعدادات، يمكنك عرض معلومات حسابك، ومراجعة الشروط والأحكام، والوصول إلى تفاصيل استخدام التطبيق، ومعرفة الأذونات التي نطلبها ولماذا نحتاج إليها.</string>
+
+    <string name="shot_has_been_deleted">لقد تم حذف اللقطة</string>
+
+    <string name="shot_has_not_been_deleted">لم يتم حذف اللقطة</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">تم تحديث اللقطة</string>
+
+    <string name="shots">اللقطات</string>
+
+    <string name="shots_attempted">محاولة إطلاق النار</string>
+
+    <string name="shots_made">اللقطات التي تم إجراؤها</string>
+
+    <string name="shots_made_percentage">نسبة التسديدات الناجحة</string>
+
+    <string name="shots_missed_percentage">نسبة التسديدات الضائعة</string>
+
+    <string name="shots_missed">تسديدات ضائعة</string>
+
+    <string name="shots_not_recorded_description">لم تسجل أي طلقات ناجحة. يرجى إدخال عدد اللقطات الملتقطة للمتابعة في تسجيل اللقطة.</string>
+
+    <string name="missed_shots_not_recorded_description">لم تسجل أي طلقات ضائعة. يرجى إدخال عدد اللقطات المفقودة للمتابعة في تسجيل اللقطة.</string>
+
+    <string name="date_shot_was_taken_description">لم تقم بإدخال تاريخ التقاط الصورة. يرجى إدخال تاريخ التقاط الصورة للمتابعة في تسجيل هذه اللقطة.</string>
+
+    <string name="show_less">إظهار أقل</string>
+
+    <string name="show_more">عرض المزيد</string>
+
+    <string name="sf">س ف</string>
+
+    <string name="sg">س ج</string>
+
+    <string name="small_forward">مهاجم صغير</string>
+
+    <string name="shooting_guard">حارس الرماية</string>
+
+    <string name="shot_info">معلومات عن اللقطة</string>
+
+    <string name="shot_name_x">اسم اللقطة -%s \n</string>
+
+    <string name="shots_made_x">\nاللقطات التي تم إجراؤها -%s</string>
+
+    <string name="shots_made_percentage_x">\nنسبة التسديدات الناجحة: %s</string>
+
+    <string name="stats">الإحصائيات</string>
+
+    <string name="splash_icon_description">هذه صورة البداية لشاشة البداية التي يتم عرضها قبل تشغيل التطبيق</string>
+
+    <string name="successfully_sent_email_verification">تم إرسال التحقق بنجاح</string>
+
+    <string name="take_a_picture">التقط صورة</string>
+
 </resources>

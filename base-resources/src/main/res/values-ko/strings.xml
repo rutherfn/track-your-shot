@@ -218,5 +218,102 @@
     <string name="pg">페이지</string>
 
 
+    <string name="point_guard">포인트 가드</string>
+
+    <string name="power_forward">파워 포워드</string>
+
+    <string name="pf">피에프</string>
+
+    <string name="player_already_has_been_added_description">지정된 플레이어 이름이 이미 포함되었습니다. 지금까지 추가된 적이 없는 이름으로 새로운 플레이어를 추가해 주세요.</string>
+
+    <string name="player_creation_failed_please_try_again">플레이어 생성에 실패했습니다. 다시 시도해 주세요.</string>
+
+    <string name="player_image">플레이어 이미지</string>
+
+    <string name="player_is_invalid_please_try_again">현재 플레이어가 잘못되었습니다. 다시 한번 샷을 기록해보세요</string>
+
+    <string name="players">플레이어</string>
+
+    <string name="players_first_name_empty_description">플레이어의 이름이 없습니다. 계속하려면 이름을 입력하세요.</string>
+
+    <string name="players_last_name_empty_description">플레이어의 성이 없습니다. 계속하려면 이름을 입력하세요.</string>
+
+    <string name="position">위치</string>
+
+    <string name="proceed_with_your_account">계정으로 진행하세요</string>
+
+    <string name="read_external_storage_permission_explanation">사용자가 플레이어 프로필을 만들거나 편집할 때 갤러리에서 이미지를 선택할 수 있도록 외부 저장소 읽기 권한을 요청합니다. 이 권한을 통해 앱은 장치의 외부 저장소에 저장된 이미지에 액세스할 수 있으며, 사용자는 이미지를 선택하여 플레이어 프로필에 연결할 수 있습니다. 이 권한이 없으면 사용자는 이 기능을 위해 외부 저장소에서 이미지를 선택할 수 없습니다.</string>
+
+    <string name="read_external_storage_permission">외부 저장소 권한 읽기</string>
+
+    <string name="read_media_images_permission">미디어 이미지 읽기 권한</string>
+
+    <string name="read_media_images_permission_explanation">사용자가 플레이어 프로필을 만들거나 편집할 때 갤러리에서 이미지를 선택할 수 있도록 미디어 이미지 읽기 권한을 요청합니다. 이 권한을 통해 앱은 장치에 저장된 이미지에 액세스하여 사용자가 이미지를 선택하여 플레이어 프로필에 연결할 수 있습니다. 이 권한이 없으면 사용자는 이 기능을 위해 갤러리에서 이미지를 선택할 수 없습니다.</string>
+
+    <string name="read_media_images">미디어 이미지 읽기</string>
+
+    <string name="read_external_storage_description">외부 저장소를 읽는 권한이 거부되었습니다. 플레이어의 외부 저장소 읽기 권한을 수동으로 활성화하고 갤러리에서 이미지를 선택하려면 설정으로 이동하세요.</string>
+
+    <string name="read_media_images_description">미디어 이미지를 읽는 권한이 거부되었습니다. 플레이어의 미디어 이미지 읽기 권한을 수동으로 활성화하고 갤러리에서 이미지를 선택하려면 설정으로 이동하세요.</string>
+
+    <string name="remove_image">이미지 제거</string>
+
+    <string name="settings">설정</string>
+
+    <string name="settings_help_description">설정 페이지에서 계정 정보를 보고, 이용 약관을 검토하고, 앱 사용 세부 정보에 접근하고, 당사에서 요청하는 권한과 그 이유에 대해 알아볼 수 있습니다.</string>
+
+    <string name="shot_has_been_deleted">샷이 삭제되었습니다</string>
+
+    <string name="shot_has_not_been_deleted">샷 Hsa 삭제되지 않음</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">샷 업데이트됨</string>
+
+    <string name="shots">샷</string>
+
+    <string name="shots_attempted">시도된 샷</string>
+
+    <string name="shots_made">만든 샷</string>
+
+    <string name="shots_made_percentage">슛 성공률</string>
+
+    <string name="shots_missed_percentage">슛 놓친 비율</string>
+
+    <string name="shots_missed">놓친 샷</string>
+
+    <string name="shots_not_recorded_description">성공적인 샷을 기록하지 못했습니다. 촬영 기록을 계속하려면 촬영한 샷의 수를 입력하세요.</string>
+
+    <string name="missed_shots_not_recorded_description">놓친 샷이 기록되지 않았습니다. 촬영을 계속하려면 놓친 촬영 횟수를 입력하세요.</string>
+
+    <string name="date_shot_was_taken_description">사진을 찍은 날짜를 입력하지 않았습니다. 촬영한 날짜를 입력하여 해당 촬영 기록을 진행하세요.</string>
+
+    <string name="show_less">더 적게 표시</string>
+
+    <string name="show_more">더 보기</string>
+
+    <string name="sf">에스에프</string>
+
+    <string name="sg">에스지(SG)</string>
+
+    <string name="small_forward">스몰 포워드</string>
+
+    <string name="shooting_guard">슈팅 가드</string>
+
+    <string name="shot_info">샷 정보</string>
+
+    <string name="shot_name_x">샷 이름 -%s \n</string>
+
+    <string name="shots_made_x">\n만든 샷 -%s</string>
+
+    <string name="shots_made_percentage_x">\n슛 성공률: %s</string>
+
+    <string name="stats">통계</string>
+
+    <string name="splash_icon_description">이는 앱이 트리거되기 전에 표시되는 시작 화면의 시작 이미지입니다.</string>
+
+    <string name="successfully_sent_email_verification">검증이 성공적으로 전송되었습니다</string>
+
+    <string name="take_a_picture">사진을 찍다</string>
 
 </resources>

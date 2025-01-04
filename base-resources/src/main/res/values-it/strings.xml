@@ -216,4 +216,103 @@
 
     <string name="pg">pagina</string>
 
+
+    <string name="point_guard">Guardia di sicurezza</string>
+
+    <string name="power_forward">Attacco potente</string>
+
+    <string name="pf">per favore</string>
+
+    <string name="player_already_has_been_added_description">Il nome del giocatore specificato è già stato incluso. Si prega di aggiungere un nuovo giocatore con un nome che non sia mai stato aggiunto prima.</string>
+
+    <string name="player_creation_failed_please_try_again">Creazione del giocatore non riuscita. Riprova più tardi.</string>
+
+    <string name="player_image">Immagine del giocatore</string>
+
+    <string name="player_is_invalid_please_try_again">Il lettore attuale non è valido. Si prega di provare a registrare di nuovo lo scatto</string>
+
+    <string name="players">Giocatori</string>
+
+    <string name="players_first_name_empty_description">Manca il nome del giocatore. Per procedere, si prega di fornire un nome.</string>
+
+    <string name="players_last_name_empty_description">Manca il cognome del giocatore. Per procedere, si prega di fornire un nome.</string>
+
+    <string name="position">Posizione</string>
+
+    <string name="proceed_with_your_account">Procedi con il tuo account</string>
+
+    <string name="read_external_storage_permission_explanation">Chiediamo l\'autorizzazione alla lettura dell\'archivio esterno in modo che gli utenti possano selezionare un\'immagine dalla loro galleria quando creano o modificano un profilo giocatore. Questa autorizzazione consente all\'app di accedere alle immagini archiviate nella memoria esterna del dispositivo, consentendo agli utenti di scegliere e associare le immagini ai propri profili giocatore. Senza questa autorizzazione, gli utenti non sarebbero in grado di selezionare immagini da un archivio esterno per questa funzionalità.</string>
+
+    <string name="read_external_storage_permission">Leggi autorizzazione di archiviazione esterna</string>
+
+    <string name="read_media_images_permission">Leggi l\'autorizzazione per le immagini multimediali</string>
+
+    <string name="read_media_images_permission_explanation">Chiediamo l\'autorizzazione alla lettura delle immagini multimediali in modo che gli utenti possano selezionare un\'immagine dalla loro galleria quando creano o modificano un profilo giocatore. Questa autorizzazione consente all\'app di accedere alle immagini memorizzate sul dispositivo, consentendo agli utenti di scegliere e associare le immagini ai propri profili giocatore. Senza questa autorizzazione, gli utenti non sarebbero in grado di selezionare le immagini dalla propria galleria per questa funzione.</string>
+
+    <string name="read_media_images">Leggi le immagini dei media</string>
+
+    <string name="read_external_storage_description">L\'autorizzazione alla lettura dell\'archiviazione esterna è stata rifiutata. Per abilitare manualmente l\'autorizzazione Leggi archivio esterno e selezionare un\'immagine dalla galleria per il lettore, vai alle impostazioni.</string>
+
+    <string name="read_media_images_description">L\'autorizzazione a leggere le immagini multimediali è stata negata. Per abilitare manualmente l\'autorizzazione Leggi immagini multimediali e selezionare un\'immagine dalla galleria per il lettore, accedere alle impostazioni.</string>
+
+    <string name="remove_image">Rimuovi immagine</string>
+
+    <string name="settings">Impostazioni</string>
+
+    <string name="settings_help_description">Nella pagina delle impostazioni puoi visualizzare le informazioni del tuo account, rivedere i termini e le condizioni, accedere ai dettagli sull\'utilizzo delle app e scoprire quali autorizzazioni richiediamo e perché ne abbiamo bisogno.</string>
+
+    <string name="shot_has_been_deleted">Lo scatto è stato eliminato</string>
+
+    <string name="shot_has_not_been_deleted">Shot Hsa non è stato eliminato</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">Scatto aggiornato</string>
+
+    <string name="shots">Scatti</string>
+
+    <string name="shots_attempted">Tiri tentati</string>
+
+    <string name="shots_made">Scatti realizzati</string>
+
+    <string name="shots_made_percentage">Percentuale di tiri effettuati</string>
+
+    <string name="shots_missed_percentage">Percentuale di tiri sbagliati</string>
+
+    <string name="shots_missed">Tiri mancati</string>
+
+    <string name="shots_not_recorded_description">Non hai registrato alcun tiro riuscito. Inserisci il numero di tiri effettuati per procedere con la registrazione del tiro.</string>
+
+    <string name="missed_shots_not_recorded_description">Non hai registrato alcun tiro sbagliato. Inserisci il numero di tiri sbagliati per procedere con la registrazione del tiro.</string>
+
+    <string name="date_shot_was_taken_description">Non hai inserito la data in cui è stata scattata la foto. Inserisci la data in cui è stato effettuato lo scatto per procedere con la registrazione dello stesso.</string>
+
+    <string name="show_less">Mostra meno</string>
+
+    <string name="show_more">Mostra altro</string>
+
+    <string name="sf">sf</string>
+
+    <string name="sg">sg</string>
+
+    <string name="small_forward">Piccolo attaccante</string>
+
+    <string name="shooting_guard">Guardia tiratrice</string>
+
+    <string name="shot_info">Informazioni sullo scatto</string>
+
+    <string name="shot_name_x">Nome dello scatto - %s \n</string>
+
+    <string name="shots_made_x">\nTiri effettuati - %s</string>
+
+    <string name="shots_made_percentage_x">\nPercentuale di tiri effettuati: %s</string>
+
+    <string name="stats">Statistiche</string>
+
+    <string name="splash_icon_description">Questa è un\'immagine iniziale per la schermata iniziale che viene visualizzata prima che l\'app venga attivata</string>
+
+    <string name="successfully_sent_email_verification">Verifica inviata con successo</string>
+
+    <string name="take_a_picture">Scatta una foto</string>
+
 </resources>

@@ -216,4 +216,104 @@
     <string name="permission_has_been_declined">Die Erlaubnis wurde abgelehnt</string>
 
     <string name="pg">Seite</string>
+
+
+    <string name="point_guard">Punktschütze</string>
+
+    <string name="power_forward">Kraft nach vorn</string>
+
+    <string name="pf">pf</string>
+
+    <string name="player_already_has_been_added_description">Der angegebene Spielername ist bereits enthalten. Fügen Sie bitte einen neuen Spieler mit einem Namen hinzu, der zuvor noch nicht hinzugefügt wurde.</string>
+
+    <string name="player_creation_failed_please_try_again">Die Spielererstellung ist fehlgeschlagen. Bitte versuchen Sie es erneut.</string>
+
+    <string name="player_image">Spielerbild</string>
+
+    <string name="player_is_invalid_please_try_again">Der aktuelle Player ist ungültig. Bitte versuchen Sie, den Schuss erneut zu protokollieren</string>
+
+    <string name="players">Spieler</string>
+
+    <string name="players_first_name_empty_description">Der Vorname des Spielers fehlt. Bitte geben Sie einen Vornamen ein, um fortzufahren.</string>
+
+    <string name="players_last_name_empty_description">Der Nachname des Spielers fehlt. Bitte geben Sie einen Vornamen ein, um fortzufahren.</string>
+
+    <string name="position">Position</string>
+
+    <string name="proceed_with_your_account">Fahren Sie mit Ihrem Konto fort</string>
+
+    <string name="read_external_storage_permission_explanation">Wir bitten um die Berechtigung zum Lesen externer Speicher, damit Benutzer beim Erstellen oder Bearbeiten eines Spielerprofils ein Bild aus ihrer Galerie auswählen können. Mit dieser Berechtigung kann die App auf Bilder zugreifen, die im externen Speicher des Geräts gespeichert sind. So können Benutzer Bilder auswählen und ihren Spielerprofilen zuordnen. Ohne diese Berechtigung könnten Benutzer für diese Funktion keine Bilder aus dem externen Speicher auswählen.</string>
+
+    <string name="read_external_storage_permission">Berechtigung zum Lesen externer Speicher</string>
+
+    <string name="read_media_images_permission">Berechtigung zum Lesen von Medienbildern</string>
+
+    <string name="read_media_images_permission_explanation">Wir bitten um die Berechtigung zum Lesen von Medienbildern, damit Benutzer beim Erstellen oder Bearbeiten eines Spielerprofils ein Bild aus ihrer Galerie auswählen können. Mit dieser Berechtigung kann die App auf die auf dem Gerät gespeicherten Bilder zugreifen, sodass Benutzer Bilder auswählen und ihren Spielerprofilen zuordnen können. Ohne diese Berechtigung könnten Benutzer für diese Funktion keine Bilder aus ihrer Galerie auswählen.</string>
+
+    <string name="read_media_images">Medienbilder lesen</string>
+
+    <string name="read_external_storage_description">Die Berechtigung zum Lesen des externen Speichers wurde abgelehnt. Um die Berechtigung „Externen Speicher lesen“ manuell zu aktivieren und ein Bild aus der Galerie für den Player auszuwählen, navigieren Sie bitte zu den Einstellungen.</string>
+
+    <string name="read_media_images_description">Die Berechtigung zum Lesen von Medienbildern wurde abgelehnt. Um die Berechtigung „Medienbilder lesen“ manuell zu aktivieren und ein Bild aus der Galerie für den Player auszuwählen, navigieren Sie bitte zu den Einstellungen.</string>
+
+    <string name="remove_image">Bild entfernen</string>
+
+    <string name="settings">Einstellungen</string>
+
+    <string name="settings_help_description">Auf der Einstellungsseite können Sie Ihre Kontoinformationen anzeigen, die Allgemeinen Geschäftsbedingungen überprüfen, auf Details zur App-Nutzung zugreifen und sich über die von uns angeforderten Berechtigungen und den Grund dafür informieren, warum wir diese benötigen.</string>
+
+    <string name="shot_has_been_deleted">Aufnahme wurde gelöscht</string>
+
+    <string name="shot_has_not_been_deleted">Shot Hsa wurde nicht gelöscht</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">Schuss aktualisiert</string>
+
+    <string name="shots">Schüsse</string>
+
+    <string name="shots_attempted">Schussversuche</string>
+
+    <string name="shots_made">Gemachte Schüsse</string>
+
+    <string name="shots_made_percentage">Prozentsatz der erzielten Schüsse</string>
+
+    <string name="shots_missed_percentage">Prozentsatz verfehlter Schüsse</string>
+
+    <string name="shots_missed">Fehlschüsse</string>
+
+    <string name="shots_not_recorded_description">Sie haben keine erfolgreichen Aufnahmen aufgezeichnet. Bitte geben Sie die Anzahl der abgegebenen Schüsse ein, um mit der Protokollierung des Schusses fortzufahren.</string>
+
+    <string name="missed_shots_not_recorded_description">Es wurden keine Fehlschüsse aufgezeichnet. Bitte geben Sie die Anzahl der Fehlschüsse ein, um mit der Protokollierung des Schusses fortzufahren.</string>
+
+    <string name="date_shot_was_taken_description">Sie haben das Aufnahmedatum nicht eingegeben. Bitte geben Sie das Datum der Aufnahme ein, um mit der Protokollierung dieser Aufnahme fortzufahren.</string>
+
+    <string name="show_less">Weniger zeigen</string>
+
+    <string name="show_more">Mehr anzeigen</string>
+
+    <string name="sf">sf</string>
+
+    <string name="sg">sg</string>
+
+    <string name="small_forward">Kleiner Stürmer</string>
+
+    <string name="shooting_guard">Schützengarde</string>
+
+    <string name="shot_info">Schussinfo</string>
+
+    <string name="shot_name_x">Name der Aufnahme: %s \n</string>
+
+    <string name="shots_made_x">\nGemachte Schüsse – %s</string>
+
+    <string name="shots_made_percentage_x">\nProzentsatz der getroffenen Schüsse: %s</string>
+
+    <string name="stats">Statistiken</string>
+
+    <string name="splash_icon_description">Dies ist ein Begrüßungsbild für den Begrüßungsbildschirm, der angezeigt wird, bevor die App ausgelöst wird</string>
+
+    <string name="successfully_sent_email_verification">Bestätigung erfolgreich gesendet</string>
+
+    <string name="take_a_picture">Machen Sie ein Foto</string>
+
 </resources>

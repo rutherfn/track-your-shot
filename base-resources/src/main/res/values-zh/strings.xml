@@ -218,4 +218,102 @@
     <string name="pg">前列腺素</string>
 
 
+    <string name="point_guard">控球后卫</string>
+
+    <string name="power_forward">大前锋</string>
+
+    <string name="pf">普法</string>
+
+    <string name="player_already_has_been_added_description">指定的玩家名称已经包含在内。请添加一位之前未添加过名字的新玩家。</string>
+
+    <string name="player_creation_failed_please_try_again">玩家创建失败。请重试。</string>
+
+    <string name="player_image">球员形象</string>
+
+    <string name="player_is_invalid_please_try_again">当前玩家无效。请尝试再次记录拍摄</string>
+
+    <string name="players">玩家</string>
+
+    <string name="players_first_name_empty_description">缺少该球员的名字。请提供名字以继续。</string>
+
+    <string name="players_last_name_empty_description">该球员的姓氏缺失。请提供名字以继续。</string>
+
+    <string name="position">位置</string>
+
+    <string name="proceed_with_your_account">继续使用您的帐号</string>
+
+    <string name="read_external_storage_permission_explanation">我们请求读取外部存储权限，以便用户可以在创建或编辑玩家资料时从他们的图库中选择一个图像。此权限允许应用程序访问存储在设备外部存储器中的图像，从而使用户能够选择图像并将其与他们的玩家资料关联起来。如果没有此权限，用户将无法从外部存储中选择图像来使用此功能。</string>
+
+    <string name="read_external_storage_permission">读取外部存储权限</string>
+
+    <string name="read_media_images_permission">读取媒体图像许可</string>
+
+    <string name="read_media_images_permission_explanation">我们请求读取媒体图像的权限，以便用户可以在创建或编辑玩家资料时从他们的图库中选择图像。此权限允许应用程序访问设备上存储的图像，使用户能够选择图像并将其与他们的玩家资料关联起来。如果没有此权限，用户将无法从其图库中选择图像来使用此功能。</string>
+
+    <string name="read_media_images">阅读媒体图像</string>
+
+    <string name="read_external_storage_description">读取外部存储的权限已被拒绝。要手动启用读取外部存储权限并从图库中为播放器选择图像，请导航至设置。</string>
+
+    <string name="read_media_images_description">读取媒体图像的权限已被拒绝。要手动启用读取媒体图像权限并从图库中为播放器选择图像，请导航至设置。</string>
+
+    <string name="remove_image">移除图片</string>
+
+    <string name="settings">设置</string>
+
+    <string name="settings_help_description">在设置页面，您可以查看您的帐号信息、查看条款和条件、访问应用程序使用情况详情，并了解我们请求的权限以及我们需要这些权限的原因。</string>
+
+    <string name="shot_has_been_deleted">镜头已被删除</string>
+
+    <string name="shot_has_not_been_deleted">镜头 Hsa 未被删除</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">镜头更新</string>
+
+    <string name="shots">镜头</string>
+
+    <string name="shots_attempted">射门尝试</string>
+
+    <string name="shots_made">射门次数</string>
+
+    <string name="shots_made_percentage">投篮命中率</string>
+
+    <string name="shots_missed_percentage">射失率</string>
+
+    <string name="shots_missed">射失球数</string>
+
+    <string name="shots_not_recorded_description">您尚未记录任何成功的射击。请输入射击次数以继续记录射击。</string>
+
+    <string name="missed_shots_not_recorded_description">您尚未记录任何漏掉的投篮。请输入未击中的球数以继续记录击球次数。</string>
+
+    <string name="date_shot_was_taken_description">您尚未输入拍摄照片的日期。请输入拍摄照片的日期以继续记录照片。</string>
+
+    <string name="show_less">显示较少</string>
+
+    <string name="show_more">显示更多</string>
+
+    <string name="sf">科幻</string>
+
+    <string name="sg">新加坡</string>
+
+    <string name="small_forward">小前锋</string>
+
+    <string name="shooting_guard">得分后卫</string>
+
+    <string name="shot_info">射击信息</string>
+
+    <string name="shot_name_x">镜头名称 - %s \n</string>
+
+    <string name="shots_made_x">投篮命中数 - %s</string>
+
+    <string name="shots_made_percentage_x">投篮命中率：%s</string>
+
+    <string name="stats">统计资料</string>
+
+    <string name="splash_icon_description">这是应用程序触发前显示的启动画面的启动图像</string>
+
+    <string name="successfully_sent_email_verification">已成功发送验证</string>
+
+    <string name="take_a_picture">拍照</string>
+
 </resources>

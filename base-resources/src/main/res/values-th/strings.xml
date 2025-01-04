@@ -218,4 +218,103 @@
     <string name="pg">หน้า</string>
 
 
+    <string name="point_guard">พอยต์การ์ด</string>
+
+    <string name="power_forward">เพาเวอร์ฟอร์เวิร์ด</string>
+
+    <string name="pf">พีเอฟ</string>
+
+    <string name="player_already_has_been_added_description">ชื่อผู้เล่นที่ระบุไว้ได้ถูกรวมไว้แล้ว กรุณาเพิ่มผู้เล่นใหม่โดยใช้ชื่อที่ยังไม่เคยเพิ่มมาก่อน</string>
+
+    <string name="player_creation_failed_please_try_again">การสร้างผู้เล่นล้มเหลว กรุณาลองอีกครั้ง.</string>
+
+    <string name="player_image">รูปภาพผู้เล่น</string>
+
+    <string name="player_is_invalid_please_try_again">ผู้เล่นปัจจุบันไม่ถูกต้อง กรุณาลองบันทึกภาพอีกครั้ง</string>
+
+    <string name="players">ผู้เล่น</string>
+
+    <string name="players_first_name_empty_description">ชื่อของผู้เล่นหายไป กรุณาระบุชื่อเพื่อดำเนินการต่อ</string>
+
+    <string name="players_last_name_empty_description">นามสกุลของผู้เล่นหายไป กรุณาระบุชื่อเพื่อดำเนินการต่อ</string>
+
+    <string name="position">ตำแหน่ง</string>
+
+    <string name="proceed_with_your_account">ดำเนินการต่อด้วยบัญชีของคุณ</string>
+
+    <string name="read_external_storage_permission_explanation">เราขออนุญาตการอ่านที่จัดเก็บข้อมูลภายนอกเพื่อให้ผู้ใช้สามารถเลือกภาพจากแกลเลอรีของตนเมื่อสร้างหรือแก้ไขโปรไฟล์ผู้เล่น การอนุญาตนี้ช่วยให้แอปสามารถเข้าถึงรูปภาพที่จัดเก็บไว้ในหน่วยจัดเก็บข้อมูลภายนอกของอุปกรณ์ ช่วยให้ผู้ใช้สามารถเลือกและเชื่อมโยงรูปภาพกับโปรไฟล์ผู้เล่นของตนได้ หากไม่ได้รับอนุญาตนี้ ผู้ใช้จะไม่สามารถเลือกภาพจากที่จัดเก็บข้อมูลภายนอกสำหรับฟีเจอร์นี้ได้</string>
+
+    <string name="read_external_storage_permission">อ่านการอนุญาตการจัดเก็บข้อมูลภายนอก</string>
+
+    <string name="read_media_images_permission">อ่านสื่อภาพขออนุญาต</string>
+
+    <string name="read_media_images_permission_explanation">เราขออนุญาตอ่านภาพสื่อเพื่อให้ผู้ใช้สามารถเลือกภาพจากแกลเลอรีของตนเมื่อสร้างหรือแก้ไขโปรไฟล์ผู้เล่น การอนุญาตนี้ช่วยให้แอปสามารถเข้าถึงรูปภาพที่จัดเก็บไว้บนอุปกรณ์ ช่วยให้ผู้ใช้สามารถเลือกและเชื่อมโยงรูปภาพกับโปรไฟล์ผู้เล่นของตนได้ หากไม่ได้รับอนุญาตนี้ ผู้ใช้จะไม่สามารถเลือกภาพจากแกลเลอรีของตนสำหรับฟีเจอร์นี้ได้</string>
+
+    <string name="read_media_images">อ่านภาพสื่อ</string>
+
+    <string name="read_external_storage_description">ปฏิเสธสิทธิ์ในการอ่านที่จัดเก็บข้อมูลภายนอก หากต้องการเปิดใช้งานสิทธิ์การอ่านที่จัดเก็บข้อมูลภายนอกด้วยตนเองและเลือกภาพจากแกลเลอรีสำหรับเครื่องเล่น โปรดไปที่การตั้งค่า</string>
+
+    <string name="read_media_images_description">ปฏิเสธสิทธิ์ในการอ่านภาพสื่อ หากต้องการเปิดใช้งานการอนุญาตอ่านรูปภาพสื่อด้วยตนเองและเลือกภาพจากแกลเลอรีสำหรับเครื่องเล่น โปรดไปที่การตั้งค่า</string>
+
+    <string name="remove_image">ลบรูปภาพ</string>
+
+    <string name="settings">การตั้งค่า</string>
+
+    <string name="settings_help_description">ในหน้าการตั้งค่า คุณสามารถดูข้อมูลบัญชี ตรวจสอบข้อกำหนดและเงื่อนไข เข้าถึงรายละเอียดการใช้งานแอป และเรียนรู้เกี่ยวกับสิทธิ์ที่เราขอและเหตุใดเราจึงต้องการสิทธิ์เหล่านั้น</string>
+
+    <string name="shot_has_been_deleted">ภาพถูกลบไปแล้ว</string>
+
+    <string name="shot_has_not_been_deleted">ช็อต Hsa ไม่ถูกลบ</string>
+
+    <string name="shot_percentage">%s %%</string>
+
+    <string name="shot_updated">อัปเดตช็อตแล้ว</string>
+
+    <string name="shots">ช็อต</string>
+
+    <string name="shots_attempted">จำนวนครั้งที่พยายามยิง</string>
+
+    <string name="shots_made">ช็อตที่ทำ</string>
+
+    <string name="shots_made_percentage">เปอร์เซ็นต์การยิงที่ทำได้</string>
+
+    <string name="shots_missed_percentage">เปอร์เซ็นต์การยิงพลาด</string>
+
+    <string name="shots_missed">ช็อตที่พลาด</string>
+
+    <string name="shots_not_recorded_description">คุณไม่ได้บันทึกช็อตที่ประสบความสำเร็จใดๆ กรุณากรอกจำนวนช็อตที่ถ่าย เพื่อดำเนินการบันทึกช็อตต่อไป</string>
+
+    <string name="missed_shots_not_recorded_description">คุณไม่ได้บันทึกช็อตที่พลาดไป กรุณากรอกจำนวนช็อตที่พลาดเพื่อดำเนินการบันทึกช็อตต่อไป</string>
+
+    <string name="date_shot_was_taken_description">คุณไม่ได้ป้อนวันที่ที่ถ่ายภาพ กรุณากรอกวันที่ที่ถ่ายภาพ เพื่อดำเนินการบันทึกภาพต่อไป</string>
+
+    <string name="show_less">แสดงน้อยลง</string>
+
+    <string name="show_more">แสดงเพิ่มเติม</string>
+
+    <string name="sf">เอส เอฟ</string>
+
+    <string name="sg">เอสจี</string>
+
+    <string name="small_forward">สมอลฟอร์เวิร์ด</string>
+
+    <string name="shooting_guard">การ์ดยิงปืน</string>
+
+    <string name="shot_info">ข้อมูลช็อต</string>
+
+    <string name="shot_name_x">ชื่อช็อต - %s \n</string>
+
+    <string name="shots_made_x">\nช็อตที่ถ่าย - %s</string>
+
+    <string name="shots_made_percentage_x">\nเปอร์เซ็นต์การยิงที่ทำได้: %s</string>
+
+    <string name="stats">สถิติ</string>
+
+    <string name="splash_icon_description">นี่คือภาพสแปลชสำหรับหน้าจอสแปลชที่จะแสดงขึ้นก่อนที่แอปจะถูกเรียกใช้</string>
+
+    <string name="successfully_sent_email_verification">ส่งการยืนยันเรียบร้อยแล้ว</string>
+
+    <string name="take_a_picture">ถ่ายรูป</string>
+
+
 </resources>
