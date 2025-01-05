@@ -151,6 +151,7 @@ fun NavigationComponent(
     val enabledPermissionsViewModel = viewModels.enabledPermissionsViewModel
     val accountInfoViewModel = viewModels.accountInfoViewModel
     val reportListViewModel = viewModels.reportListViewModel
+    val createReportViewModel = viewModels.createReportViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -450,6 +451,19 @@ fun NavigationComponent(
             }
             composable(route = NavigationDestinations.REPORTS_LIST_SCREEN) {
                 screenContents.reportListContent(reportListViewModel = reportListViewModel).invoke()
+            }
+            composable(
+                route = NavigationDestinations.CREATE_REPORT_SCREEN_WITH_PARAMS,
+                arguments = NavArguments.createReport
+            ) { entry ->
+                entry.arguments?.let { bundle ->
+                    val shouldRefreshData = bundle.getBoolean(NamedArguments.SHOULD_REFRESH_DATA)
+                    screenContents.createReportContent(
+                        createReportViewModel = createReportViewModel,
+                        shouldRefreshData = shouldRefreshData
+                    )
+                        .invoke()
+                }
             }
             composable(
                 route = NavigationDestinations.PERMISSION_EDUCATION_SCREEN

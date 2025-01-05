@@ -111,6 +111,7 @@ dependencies {
     api(project(path = ":helper:account"))
     api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:network"))
+    api(project(path = ":helper:notifications"))
 
     debugImplementation(Dependencies.Compose.uiTestManifest)
     debugImplementation(Dependencies.Compose.uiTooling)

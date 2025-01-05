@@ -62,6 +62,7 @@ class LogShotViewModel(
     internal var viewCurrentPendingShot = false
 
     internal var initialShotLogged: ShotLogged? = null
+
     fun updateIsExistingPlayerAndId(
         isExistingPlayerArgument: Boolean,
         playerIdArgument: Int,

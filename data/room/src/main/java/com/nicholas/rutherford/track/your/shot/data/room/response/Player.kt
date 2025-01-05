@@ -12,9 +12,13 @@ data class Player(
     val shotsLoggedList: List<ShotLogged>
 )
 
-fun Player.fullName(): String {
-    return "$firstName $lastName"
-}
+fun List<Player>.buildPlayersWithShots(): List<Player> = this.filter { it.shotsLoggedList.isNotEmpty() }
+
+fun List<Player>.sortedPlayers(): List<Player> = this.sortedWith(compareBy({ it.firstName }, { it.lastName }))
+
+fun List<Player>.getAllShots(): List<ShotLogged> = this.flatMap { it.shotsLoggedList }
+
+fun Player.fullName() = "$firstName $lastName"
 
 fun Player.toPlayerEntity(): PlayerEntity {
     return PlayerEntity(

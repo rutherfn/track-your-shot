@@ -289,11 +289,11 @@ class NavigationActionsTest {
             @Test
             fun createPlayerReport() {
                 Assertions.assertEquals(
-                    Actions.ReportList.createPlayerReport().destination,
-                    NavigationDestinations.CREATE_PLAYER_REPORT_SCREEN
+                    Actions.ReportList.createReport().destination,
+                    "createReportScreen/true"
                 )
                 Assertions.assertEquals(
-                    Actions.ReportList.createPlayerReport().navOptions,
+                    Actions.ReportList.createReport().navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                         .build()

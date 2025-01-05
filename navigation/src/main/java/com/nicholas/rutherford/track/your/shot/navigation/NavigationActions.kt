@@ -179,8 +179,8 @@ object NavigationActions {
 
     object ReportList {
 
-        fun createPlayerReport() = object : NavigationAction {
-            override val destination = NavigationDestinations.CREATE_PLAYER_REPORT_SCREEN
+        fun createReport() = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.createReportWithParams(shouldRefreshData = true)
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                 .build()

@@ -5,6 +5,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 interface ReportListNavigation {
     fun alert(alert: Alert)
     fun openNavigationDrawer()
-    fun navigateToCreatePlayerReport()
+    fun navigateToCreateReport()
     fun navigateToViewCreatedReportTimes()
 }

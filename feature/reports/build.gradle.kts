@@ -71,17 +71,24 @@ android {
 dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":compose:components"))
+    api(project(path = ":helper:notifications"))
     api(project(path = ":navigation"))
     api(project(path = ":shared-preference"))
 
     debugImplementation(Dependencies.Compose.uiToolingPreview)
 
+    implementation(Dependencies.Android.ktx)
+
+    implementation(Dependencies.Accompanist.permissions)
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.materialDesignIconsCore)
     implementation(Dependencies.Compose.materialDesignIconsExtended)
     implementation(Dependencies.Compose.uiToolingPreview)
     implementation(Dependencies.Compose.viewModel)
+
+    testImplementation(project(path = ":data-test:firebase"))
+    testImplementation(project(path = ":data-test:room"))
 
     testImplementation(Dependencies.Coroutine.test)
 

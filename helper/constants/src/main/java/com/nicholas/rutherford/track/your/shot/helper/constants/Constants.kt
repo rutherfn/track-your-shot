@@ -9,7 +9,7 @@ object Constants {
         const val SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST = "shouldUpdateLoggedInPlayerList"
         const val SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST = "shouldUpdateLoggedInDeclaredShotList"
     }
-    const val CREATE_PLAYER_REPORT_INDEX = 0
+    const val CREATE_REPORT_INDEX = 0
     const val APP_DATABASE_NAME = "app_database.db"
     const val ACTIVE_USER_ID = 1
     const val ACCOUNT_INFO = "accountInfo"
@@ -28,6 +28,8 @@ object Constants {
     const val IMAGE_URL = "imageUrl"
     const val LAST_NAME = "lastName"
     const val LAST_UPDATED = "lastUpdated"
+    const val NOTIFICATION_CHANNEL_ID = "track_your_shot_notification"
+    const val NOTIFICATION_NAME = "track_your_shot"
     const val PENDING_PLAYERS_EXPECTED_SIZE = 1
     const val PLAYERS = "players"
     const val POP_DEFAULT_ACTION = "pop"

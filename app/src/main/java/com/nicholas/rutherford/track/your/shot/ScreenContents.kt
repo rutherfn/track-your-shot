@@ -6,6 +6,9 @@ import androidx.navigation.NavBackStackEntry
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerViewModel
+import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.CreateReportParams
+import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.CreateReportScreen
+import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.CreateReportViewModel
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListParams
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListScreen
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListViewModel
@@ -52,23 +55,39 @@ class ScreenContents {
                     createEditPlayerViewModel.onSelectedCreateEditImageOption(option)
                 },
                 onViewShotClicked = { shotType, shotId ->
-                    createEditPlayerViewModel.onViewShotClicked(shotType = shotType, shotId = shotId)
+                    createEditPlayerViewModel.onViewShotClicked(
+                        shotType = shotType,
+                        shotId = shotId
+                    )
                 },
                 onViewPendingShotClicked = { shotType, shotId ->
-                    createEditPlayerViewModel.onViewPendingShotClicked(shotType = shotType, shotId = shotId)
+                    createEditPlayerViewModel.onViewPendingShotClicked(
+                        shotType = shotType,
+                        shotId = shotId
+                    )
                 }
             )
         )
     }
 
-    fun reportListContent(
-        reportListViewModel: ReportListViewModel
-    ): @Composable () -> Unit = {
-        ReportListScreen(params = ReportListParams(
-            onToolbarMenuClicked = { reportListViewModel.onToolbarMenuClicked() },
-            onHelpClicked = { reportListViewModel.onHelpClicked() },
-            onReportItemClicked = { index -> reportListViewModel.onReportItemClicked(index = index) },
-            state = reportListViewModel.reportListStateFlow.collectAsState().value
+    fun reportListContent(reportListViewModel: ReportListViewModel): @Composable () -> Unit = {
+        ReportListScreen(
+            params = ReportListParams(
+                onToolbarMenuClicked = { reportListViewModel.onToolbarMenuClicked() },
+                onHelpClicked = { reportListViewModel.onHelpClicked() },
+                onReportItemClicked = { index -> reportListViewModel.onReportItemClicked(index = index) },
+                state = reportListViewModel.reportListStateFlow.collectAsState().value
+            )
+        )
+    }
+
+    fun createReportContent(createReportViewModel: CreateReportViewModel, shouldRefreshData: Boolean): @Composable () -> Unit = {
+        CreateReportScreen(params = CreateReportParams(
+            onToolbarMenuClicked = { createReportViewModel.onToolbarMenuClicked() },
+            updatePlayersState = { createReportViewModel.updatePlayersState() },
+            showCreatePlayerReportNotification = { createReportViewModel.showCreatePlayerReportNotification() },
+            state = createReportViewModel.createReportStateFlow.collectAsState().value,
+            shouldRefreshData = shouldRefreshData
         ))
     }
 }

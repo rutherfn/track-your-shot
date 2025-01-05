@@ -1,6 +1,7 @@
-package com.nicholas.rutherford.track.your.shot.feature.reports.reportlist
+package com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.reportlist
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
@@ -40,15 +41,15 @@ class ReportListNavigationImplTest {
     }
 
     @Test
-    fun `navigate to create player report`() {
+    fun `navigate to create report`() {
         val argumentCapture: CapturingSlot<NavigationAction> = slot()
 
-        reportListNavigationImpl.navigateToCreatePlayerReport()
+        reportListNavigationImpl.navigateToCreateReport()
 
         verify { navigator.navigate(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationActions.ReportList.createPlayerReport()
+        val expectedAction = NavigationActions.ReportList.createReport()
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }

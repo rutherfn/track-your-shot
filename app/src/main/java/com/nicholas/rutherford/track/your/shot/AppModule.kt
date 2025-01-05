@@ -49,6 +49,9 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.CreateReportNavigation
+import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.CreateReportNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.CreateReportViewModel
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListViewModel
@@ -92,6 +95,8 @@ import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.helper.network.NetworkImpl
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import com.nicholas.rutherford.track.your.shot.navigation.NavigatorImpl
+import com.nicholas.rutherford.track.your.shot.notifications.Notifications
+import com.nicholas.rutherford.track.your.shot.notifications.NotificationsImpl
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferencesImpl
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
@@ -222,6 +227,9 @@ class AppModule {
         single<PlayersAdditionUpdates> {
             PlayersAdditionUpdatesImpl()
         }
+        single<Notifications> {
+            NotificationsImpl(application = androidApplication())
+        }
         single<SplashNavigation> {
             SplashNavigationImpl(navigator = get())
         }
@@ -269,6 +277,9 @@ class AppModule {
         }
         single<ReportListNavigation> {
             ReportListNavigationImpl(navigator = get())
+        }
+        single<CreateReportNavigation> {
+            CreateReportNavigationImpl(navigator = get())
         }
         viewModel {
             MainActivityViewModel(accountManager = get())
@@ -419,7 +430,18 @@ class AppModule {
         viewModel {
             ReportListViewModel(
                 application = androidApplication(),
-                navigation = get()
+                navigation = get(),
+                playerRepository = get(),
+                scope = defaultCoroutineScope
+            )
+        }
+        viewModel {
+            CreateReportViewModel(
+                application = androidApplication(),
+                navigation = get(),
+                playerRepository = get(),
+                scope = defaultCoroutineScope,
+                notifications = get()
             )
         }
     }

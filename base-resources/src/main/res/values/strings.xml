@@ -82,6 +82,7 @@
     <string name="find_shots_by_name">Find shots by name </string>
     <string name="general">General</string>
     <string name="general_information">General Information</string>
+    <string name="generate_report">Generate Report</string>
     <string name="got_it">Got It</string>
     <string name="having_trouble_creating_your_account_please_try_again">Having trouble creating your account. Please try again</string>
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Having trouble logging into your account. Please try again and or ensure credentials exist and are valid.</string>
@@ -111,10 +112,14 @@
     <string name="not_connected_to_internet">Not connected to internet</string>
     <string name="no_first_name_entered">No First Name Entered</string>
     <string name="no_last_name_entered">No Last Name Entered</string>
+    <string name="no_shots_created">No Shots Created</string>
+    <string name="no_shots_created_descriipton">None of the players have any shots logged yet. Please log at least one shot for a player to generate a report.</string>
     <string name="no_shots_results_found">No Shots Results Found</string>
     <string name="no_shots_results_found_description">No matching shot was found in your search. Please update search with existing shot name.</string>
     <string name="not_now">Not Now</string>
     <string name="no_current_players_added">No Current Players Added</string>
+    <string name="no_players_created">No Players Created</string>
+    <string name="no_players_created_description">No players have been created for your account yet. Please create at least one player and record at least one shot to generate a report of shots taken by the player.</string>
     <string name="no_current_shots_logged_for_player">No Current Shots Logged For Player</string>
     <string name="open_email">Open Email</string>
     <string name="ok">Ok</string>
@@ -173,6 +178,7 @@
     <string name="shots_not_recorded_description">You haven\'t recorded any successful shots. Please input the number of shots made to proceed with logging the shot.</string>
     <string name="missed_shots_not_recorded_description">You haven\'t recorded any missed shots. Please input the number of shots missed to proceed with logging the shot.</string>
     <string name="date_shot_was_taken_description">You haven\'t entered the date the shot was taken. Please input the date the shot was taken to proceed with logging ths shot.</string>
+    <string name="selected_player">Selected Player</string>
     <string name="show_less">Show Less</string>
     <string name="show_more">Show More</string>
     <string name="sf">sf</string>
@@ -225,6 +231,8 @@
     <string name="view_more_info">View More Info</string>
     <string name="view_x">View %s</string>
     <string name="voice_commands">Voice Commands</string>
+    <string name="x_shot_report_created">%s shot report created</string>
+    <string name="x_shot_report_created_description">Shot report for %s has been generated. Tap to view the file.</string>
     <string name="x_position_x_player_name">%s , %s</string>
     <string name="x_shot">%s Shot</string>
     <string name="x_shot_has_been_removed_description">%s has been removed from this player\'s shot history.</string>

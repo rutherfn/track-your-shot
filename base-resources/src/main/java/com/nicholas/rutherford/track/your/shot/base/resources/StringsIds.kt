@@ -88,6 +88,7 @@ object StringsIds {
     val errorDeletingPendingAccount = R.string.error_deleting_pending_account
     val findShotsByName = R.string.find_shots_by_name
     val general = R.string.general
+    val generateReport = R.string.generate_report
     val gotIt = R.string.got_it
     val havingTroubleCreatingYourAccountPleaseTryAgain =
         R.string.having_trouble_creating_your_account_please_try_again
@@ -118,9 +119,13 @@ object StringsIds {
     val no = R.string.no
     val noChangesMade = R.string.no_changes_made
     val noCurrentPlayersAdded = R.string.no_current_players_added
+    val noPlayersCreated = R.string.no_players_created
+    val noPlayersCreatedDescription = R.string.no_players_created_description
     val noCurrentShotsLoggedForPlayer = R.string.no_current_shots_logged_for_player
     val noFirstNameEntered = R.string.no_first_name_entered
     val noLastNameEntered = R.string.no_last_name_entered
+    val noShotsCreated = R.string.no_shots_created
+    val noShotsCreatedDescription = R.string.no_shots_created_descriipton
     val noShotsResultsFound = R.string.no_shots_results_found
     val noShotsResultsFoundDescription = R.string.no_shots_results_found_description
     val notConnectedToInternet = R.string.not_connected_to_internet
@@ -236,6 +241,8 @@ object StringsIds {
     val xShot = R.string.x_shot
     val xShotHasBeenRemovedDescription = R.string.x_shot_has_been_removed_description
     val xShotHasNotBeenRemovedDescription = R.string.x_shot_has_not_been_removed_description
+    val xShotReportCreated = R.string.x_shot_report_created
+    val xShotReportCreatedDescription = R.string.x_shot_report_created_description
     val xShots = R.string.x_shots
     val yes = R.string.yes
     val yourPlayerCouldNotBeRetrievedDescription =
