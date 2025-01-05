@@ -60,6 +60,7 @@ helper/compose-content-test-rule/build
 helper/constants/build
 helper/extensions/build
 helper/network/build
+helper/notifications/build
 helper/ui/build
 
 navigation/build
