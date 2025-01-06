@@ -16,6 +16,7 @@ object StringsIds {
         R.string.are_you_sure_you_want_to_leave_track_your_shot
     val areYouSureYouWantToDeletePendingAccountDescription =
         R.string.are_you_sure_you_want_to_delete_pending_account_description
+    val attemptedShotsX = R.string.attempted_shots_x
     val c = R.string.c
     val camera = R.string.camera
     val cancel = R.string.cancel
@@ -35,6 +36,9 @@ object StringsIds {
     val contactingUs = R.string.contacting_us
     val contactingUsDescription = R.string.contacting_us_description
     val continueText = R.string.continue_text
+    val couldNotCreateReport = R.string.could_not_create_report
+    val couldNotGenerateTheReport = R.string.could_not_generate_the_report
+    val couldNotSaveReport = R.string.could_not_save_report
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val createAccount = R.string.create_account
     val createPlayer = R.string.create_player
@@ -115,6 +119,7 @@ object StringsIds {
     val moreInfo = R.string.more_info
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
+    val nameX = R.string.name_x
     val next = R.string.next
     val no = R.string.no
     val noChangesMade = R.string.no_changes_made
@@ -146,7 +151,9 @@ object StringsIds {
     val permissions = R.string.permissions
     val permissionHasBeenDeclined = R.string.permission_has_been_declined
     val pg = R.string.pg
+    val playerReport = R.string.player_report
     val pointGuard = R.string.point_guard
+    val positionX = R.string.position_x
     val position = R.string.position
     val pf = R.string.pf
     val powerForward = R.string.power_forward
@@ -176,16 +183,22 @@ object StringsIds {
     val selectDate = R.string.select_date
     val settings = R.string.settings
     val settingsHelpDescription = R.string.settings_help_description
+    val shotsMadeAccuracyX = R.string.shots_made_accuracy_x
+    val shotsMissedAccuracyX = R.string.shots_missed_accuracy_x
     val shotHasBeenDeleted = R.string.shot_has_been_deleted
     val shotHasNotBeenDeleted = R.string.shot_has_not_been_deleted
     val shotPercentage = R.string.shot_percentage
     val shotUpdated = R.string.shot_updated
+    val shotX = R.string.shot_x
     val shots = R.string.shots
     val shotsAttempted = R.string.shots_attempted
     val shotsMade = R.string.shots_made
+    val shotsMadeX = R.string.shots_made_x
+    val shotsMadeXSecondary = R.string.shots_made_x_secondary
     val shotsMadePercentage = R.string.shots_made_percentage
     val shotsMissedPercentage = R.string.shots_missed_percentage
     val shotsMissed = R.string.shots_missed
+    val shotsMissedX = R.string.shots_missed_x
     val shotsNotRecordedDescription = R.string.shots_not_recorded_description
     val missedShotsNotRecordedDescription = R.string.missed_shots_not_recorded_description
     val dateShotWasTakenDescription = R.string.date_shot_was_taken_description
@@ -243,6 +256,7 @@ object StringsIds {
     val xShotHasNotBeenRemovedDescription = R.string.x_shot_has_not_been_removed_description
     val xShotReportCreated = R.string.x_shot_report_created
     val xShotReportCreatedDescription = R.string.x_shot_report_created_description
+    val xPlayerShotReport = R.string.x_player_shot_report
     val xShots = R.string.x_shots
     val yes = R.string.yes
     val yourPlayerCouldNotBeRetrievedDescription =

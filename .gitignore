@@ -59,6 +59,7 @@ helper/account/build
 helper/compose-content-test-rule/build
 helper/constants/build
 helper/extensions/build
+helper/file-generator/build
 helper/network/build
 helper/notifications/build
 helper/ui/build

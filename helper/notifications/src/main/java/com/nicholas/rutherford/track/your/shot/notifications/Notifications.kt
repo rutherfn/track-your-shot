@@ -1,5 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.notifications
 
+import android.net.Uri
+
 interface Notifications {
-    fun buildPlayerReportNotification(title: String, description: String)
+    fun buildPlayerReportNotification(uri: Uri, title: String, description: String)
 }

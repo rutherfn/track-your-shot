@@ -1,11 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.reports.createreport
 
 import android.Manifest
-import android.content.ContentValues
-import android.graphics.Paint
-import android.graphics.pdf.PdfDocument
-import android.os.Environment
-import android.provider.MediaStore
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -26,7 +22,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,7 +32,6 @@ import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
-import java.io.ByteArrayOutputStream
 
 @Composable
 fun CreateReportScreen(params: CreateReportParams) {
@@ -62,36 +56,16 @@ fun CreateReportScreen(params: CreateReportParams) {
 
 @Composable
 fun CreateReportContent(params: CreateReportParams) {
-    val pdfFileName = "example.pdf"
-    val mimeType = "application/pdf"
-    val contentValues = ContentValues().apply {
-        put(MediaStore.MediaColumns.DISPLAY_NAME, pdfFileName)
-        put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
-        put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS) // Saves in Documents folder
-    }
-    val context = LocalContext.current
-
-    val postNotificationPermissionLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission()) { isPermissionGranted ->
-        if (isPermissionGranted) {
-            params.showCreatePlayerReportNotification.invoke()
+    val permissionsLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissionsResult ->
+        val allPermissionsGranted = permissionsResult.values.all { it }
+        if (allPermissionsGranted) {
+            params.attemptToGeneratePlayerReport.invoke()
         } else {
+            // add something here come back to this
         }
     }
-//    val permissions = arrayOf(
-//        Manifest.permission.READ_EXTERNAL_STORAGE
-//    )
-//    val permissionsLauncher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.RequestPermission()
-//    ) { permissionsResult ->
-// //        val allPermissionsGranted = permissionsResult.values.all { it }
-// //        if (allPermissionsGranted) {
-// //            println("have said permissions ")
-// //        } else {
-// //            println("we dont have permission yet")
-// //        }
-//    }
-    val resolver = context.contentResolver
-    val uri = resolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -118,24 +92,18 @@ fun CreateReportContent(params: CreateReportParams) {
             ) {
                 Button(
                     onClick = {
-                        postNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-//                        println("get here test")
-//                        if (uri != null) {
-//                            resolver.openOutputStream(uri)?.use { outputStream ->
-//                                println("get here test2121")
-//                                showPdfSavedNotification(context, pdfFileName)
-//                                // Generate the PDF content
-//                                val pdfContent = generatePdfContent()
-//                                outputStream.write(pdfContent)
-//                                //      Toast.makeText(context, "PDF saved successfully!", Toast.LENGTH_SHORT).show()
-//                            } ?: run {
-//                                println("tt")
-//                                //    Toast.makeText(context, "Failed to save PDF", Toast.LENGTH_SHORT).show()
-//                            }
-//                        } else {
-//                            println("tt11")
-//                            //     Toast.makeText(context, "Failed to create PDF file", Toast.LENGTH_SHORT).show()
-//                        }
+                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+                            permissionsLauncher.launch(
+                                arrayOf(
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE
+                                )
+                            )
+                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            permissionsLauncher.launch(arrayOf(Manifest.permission.POST_NOTIFICATIONS))
+                        } else {
+                            params.attemptToGeneratePlayerReport.invoke()
+                        }
                     },
                     shape = RoundedCornerShape(size = 50.dp),
                     modifier = Modifier
@@ -153,26 +121,4 @@ fun CreateReportContent(params: CreateReportParams) {
             }
         }
     }
-}
-
-private fun generatePdfContent(): ByteArray {
-    // Example content for a PDF
-    val document = PdfDocument()
-    val pageInfo = PdfDocument.PageInfo.Builder(300, 400, 1).create()
-    val page = document.startPage(pageInfo)
-
-    val canvas = page.canvas
-    val paint = Paint().apply {
-        textSize = 16f
-    }
-    canvas.drawText("Hello, this is a PDF!", 50f, 50f, paint)
-
-    document.finishPage(page)
-
-    // Write the PDF document to a byte array
-    val outputStream = ByteArrayOutputStream()
-    document.writeTo(outputStream)
-    document.close()
-
-    return outputStream.toByteArray()
 }

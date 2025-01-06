@@ -91,6 +91,8 @@ import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.Existi
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManagerImpl
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
+import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGeneratorImpl
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.helper.network.NetworkImpl
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
@@ -229,6 +231,9 @@ class AppModule {
         }
         single<Notifications> {
             NotificationsImpl(application = androidApplication())
+        }
+        single<PdfGenerator> {
+            PdfGeneratorImpl(application = androidApplication())
         }
         single<SplashNavigation> {
             SplashNavigationImpl(navigator = get())
@@ -441,7 +446,8 @@ class AppModule {
                 navigation = get(),
                 playerRepository = get(),
                 scope = defaultCoroutineScope,
-                notifications = get()
+                notifications = get(),
+                pdfGenerator = get()
             )
         }
     }

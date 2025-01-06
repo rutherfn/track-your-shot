@@ -2,20 +2,11 @@ plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
-    id(BuildIds.kover)
 }
 
 android {
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
-
-    buildFeatures {
-        compose = ComposeData.Enabled.value
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
-    }
 
     compileOptions {
         sourceCompatibility = types.BuildTypes.CompileOptions.sourceCompatibility
@@ -64,40 +55,10 @@ android {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
-
-    tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
 dependencies {
     api(project(path = ":base-resources"))
-    api(project(path = ":compose:components"))
-    api(project(path = ":helper:file-generator"))
-    api(project(path = ":helper:notifications"))
-    api(project(path = ":navigation"))
-    api(project(path = ":shared-preference"))
-
-    debugImplementation(Dependencies.Compose.uiToolingPreview)
-
-    implementation(Dependencies.Android.ktx)
-
-    implementation(Dependencies.Accompanist.permissions)
-    implementation(Dependencies.Compose.activity)
-    implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.materialDesignIconsCore)
-    implementation(Dependencies.Compose.materialDesignIconsExtended)
-    implementation(Dependencies.Compose.uiToolingPreview)
-    implementation(Dependencies.Compose.viewModel)
-
-    testImplementation(project(path = ":data-test:firebase"))
-    testImplementation(project(path = ":data-test:room"))
-
-    testImplementation(Dependencies.Coroutine.test)
-
-    testImplementation(Dependencies.Junit.Jupiter.api)
-    testImplementation(Dependencies.Junit.Jupiter.params)
-    testImplementation(Dependencies.Junit.junit)
-
-    testImplementation(Dependencies.Mockk.core)
-
-    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+    api(project(path = ":data:room"))
+    api(project(path = ":helper:constants"))
 }

@@ -30,6 +30,10 @@ object Constants {
     const val LAST_UPDATED = "lastUpdated"
     const val NOTIFICATION_CHANNEL_ID = "track_your_shot_notification"
     const val NOTIFICATION_NAME = "track_your_shot"
+    const val PDF_MIME_TYPE = "application/pdf"
+    const val PDF_SUCCESSFUL_GENERATE_CODE = 1
+    const val PDF_CANNOT_SAVE_PDF_CODE = 2
+    const val PDF_CANNOT_CREATE_PDF_CODE = 3
     const val PENDING_PLAYERS_EXPECTED_SIZE = 1
     const val PLAYERS = "players"
     const val POP_DEFAULT_ACTION = "pop"

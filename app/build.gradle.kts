@@ -110,6 +110,7 @@ dependencies {
     api(project(path = ":feature:splash"))
     api(project(path = ":helper:account"))
     api(project(path = ":helper:compose-content-test-rule"))
+    api(project(path = ":helper:file-generator"))
     api(project(path = ":helper:network"))
     api(project(path = ":helper:notifications"))
 

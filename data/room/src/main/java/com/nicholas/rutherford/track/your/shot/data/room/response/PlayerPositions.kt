@@ -26,6 +26,16 @@ sealed class PlayerPositions(val value: Int) {
         }
     }
 
+    fun PlayerPositions.toPlayerPositionValue(application: Application): String {
+        return when (this) {
+            PointGuard -> application.getString(StringsIds.pointGuard)
+            ShootingGuard -> application.getString(StringsIds.shootingGuard)
+            SmallForward -> application.getString(StringsIds.smallForward)
+            PowerForward -> application.getString(StringsIds.powerForward)
+            else -> application.getString(StringsIds.center)
+        }
+    }
+
     fun String.toPlayerPosition(application: Application): PlayerPositions {
         return when (this) {
             application.getString(StringsIds.pointGuard) -> {

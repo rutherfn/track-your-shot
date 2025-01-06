@@ -7,6 +7,10 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerReposi
 import com.nicholas.rutherford.track.your.shot.data.room.response.buildPlayersWithShots
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.room.response.sortedPlayers
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
 import com.nicholas.rutherford.track.your.shot.notifications.Notifications
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +23,8 @@ class CreateReportViewModel(
     private val navigation: CreateReportNavigation,
     private val playerRepository: PlayerRepository,
     private val scope: CoroutineScope,
-    private val notifications: Notifications
+    private val notifications: Notifications,
+    private val pdfGenerator: PdfGenerator
 ) : ViewModel() {
 
     internal val createReportMutableStateFlow = MutableStateFlow(value = CreateReportState())
@@ -40,20 +45,56 @@ class CreateReportViewModel(
         }
     }
 
-    fun showCreatePlayerReportNotification() {
-        createReportMutableStateFlow.value.selectedPlayer?.let { playerState ->
-            val playerFullName = playerState.fullName()
+    fun cannotCreatePdfAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.couldNotCreateReport),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            ),
+            description = application.getString(StringsIds.couldNotGenerateTheReport)
+        )
+    }
 
-            notifications.buildPlayerReportNotification(
-                title = application.getString(
-                    StringsIds.xShotReportCreated,
-                    playerFullName
-                ),
-                description = application.getString(
-                    StringsIds.xShotReportCreatedDescription,
-                    playerFullName
-                )
+    fun cannotSavePdfAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.couldNotSaveReport),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            ),
+            description = application.getString(StringsIds.couldNotGenerateTheReport)
+        )
+    }
+
+    fun createPdfErrorAlert(statusCode: Int): Alert {
+        return if (statusCode == Constants.PDF_CANNOT_CREATE_PDF_CODE) {
+            cannotCreatePdfAlert()
+        } else {
+            cannotSavePdfAlert()
+        }
+    }
+
+    fun attemptToGeneratePlayerReport() {
+        createReportMutableStateFlow.value.selectedPlayer?.let { player ->
+            val fullName = player.fullName()
+
+            val pdf = pdfGenerator.generatePlayerPdf(
+                fileName = application.getString(StringsIds.xPlayerShotReport, "${player.firstName}${player.lastName}"),
+                player = player
             )
+
+            pdf.first?.let { uri ->
+                notifications.buildPlayerReportNotification(
+                    uri = uri,
+                    title = application.getString(
+                        StringsIds.xShotReportCreated,
+                        fullName
+                    ),
+                    description = application.getString(
+                        StringsIds.xShotReportCreatedDescription,
+                        fullName
+                    )
+                )
+            } ?: navigation.alert(alert = createPdfErrorAlert(statusCode = pdf.second))
         }
     }
 }

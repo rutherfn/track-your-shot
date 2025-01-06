@@ -85,7 +85,7 @@ class ScreenContents {
         CreateReportScreen(params = CreateReportParams(
             onToolbarMenuClicked = { createReportViewModel.onToolbarMenuClicked() },
             updatePlayersState = { createReportViewModel.updatePlayersState() },
-            showCreatePlayerReportNotification = { createReportViewModel.showCreatePlayerReportNotification() },
+            attemptToGeneratePlayerReport = { createReportViewModel.attemptToGeneratePlayerReport() },
             state = createReportViewModel.createReportStateFlow.collectAsState().value,
             shouldRefreshData = shouldRefreshData
         ))
