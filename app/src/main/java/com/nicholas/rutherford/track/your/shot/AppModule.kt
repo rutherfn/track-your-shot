@@ -134,6 +134,9 @@ class AppModule {
             get<AppDatabase>().declaredShotDao()
         }
         single {
+            get<AppDatabase>().individualPlayerReportDao()
+        }
+        single {
             get<AppDatabase>().userDao()
         }
         single {
