@@ -447,7 +447,8 @@ class AppModule {
                 playerRepository = get(),
                 scope = defaultCoroutineScope,
                 notifications = get(),
-                pdfGenerator = get()
+                pdfGenerator = get(),
+                createFirebaseUserInfo = get()
             )
         }
     }

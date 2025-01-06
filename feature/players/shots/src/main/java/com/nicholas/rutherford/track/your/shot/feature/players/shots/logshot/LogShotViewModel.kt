@@ -170,8 +170,8 @@ class LogShotViewModel(
             shotsAttempted = logShotMutableStateFlow.value.shotsAttempted,
             shotsMade = logShotMutableStateFlow.value.shotsMade,
             shotsMissed = logShotMutableStateFlow.value.shotsMissed,
-            shotsMadePercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMadePercentValue),
-            shotsMissedPercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMissedPercentValue),
+            shotsMadePercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMadePercentValue.trim().replace(" ", "")),
+            shotsMissedPercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMissedPercentValue.trim().replace(" ", "")),
             shotsAttemptedMillisecondsValue = convertValueToDate(value = logShotMutableStateFlow.value.shotsTakenDateValue)?.time
                 ?: 0L,
             shotsLoggedMillisecondsValue = convertValueToDate(value = logShotMutableStateFlow.value.shotsLoggedDateValue)?.time
@@ -394,8 +394,8 @@ class LogShotViewModel(
                             shotsAttempted = state.shotsAttempted,
                             shotsMade = state.shotsMade,
                             shotsMissed = state.shotsMissed,
-                            shotsMadePercentValue = convertPercentageToDouble(percentage = state.shotsMadePercentValue),
-                            shotsMissedPercentValue = convertPercentageToDouble(percentage = state.shotsMissedPercentValue),
+                            shotsMadePercentValue = convertPercentageToDouble(percentage = state.shotsMadePercentValue.trim().replace(" ", "")),
+                            shotsMissedPercentValue = convertPercentageToDouble(percentage = state.shotsMissedPercentValue.trim().replace(" ", "")),
                             shotsAttemptedMillisecondsValue = convertValueToDate(value = state.shotsTakenDateValue)?.time
                                 ?: 0L,
                             shotsLoggedMillisecondsValue = convertValueToDate(value = state.shotsLoggedDateValue)?.time

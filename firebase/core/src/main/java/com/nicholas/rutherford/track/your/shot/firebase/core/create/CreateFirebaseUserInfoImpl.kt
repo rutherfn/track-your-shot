@@ -120,4 +120,27 @@ class CreateFirebaseUserInfoImpl(
             awaitClose()
         }
     }
+
+    override fun attemptToCreatePdfFirebaseStorageResponseFlow(uri: Uri): Flow<String?> {
+        return callbackFlow {
+            val storageReference = firebaseStorage.getReference("${Constants.PDFS}/${System.currentTimeMillis()}")
+
+            storageReference.putFile(uri)
+                .continueWithTask { storageReference.downloadUrl }
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        trySend(element = task.result.toString())
+                    } else {
+                        Timber.w(message = "Warning(attemptToCreatePdfFirebaseStorageResponseFlow) -> Creating pdf url for player failed to successfully upload to server")
+                        trySend(element = null)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(attemptToCreatePdfFirebaseStorageResponseFlow) -> Creating pdf url for player failed to create in Firebase Storage with following stack trace - ${exception.stackTrace}")
+                    trySend(element = null)
+                }
+
+            awaitClose()
+        }
+    }
 }

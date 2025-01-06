@@ -110,6 +110,7 @@ class CreateEditPlayerViewModel(
                 lastName = lastName
             )
                 ?.let { player ->
+                    editedPlayer = player
                     createEditPlayerMutableStateFlow.value =
                         createEditPlayerMutableStateFlow.value.copy(
                             firstName = player.firstName,
@@ -508,7 +509,7 @@ class CreateEditPlayerViewModel(
 
     internal fun currentShotLoggedList(currentShotLoggedList: List<ShotLogged>): List<ShotLogged> {
         return if (pendingShotLoggedList.isNotEmpty()) {
-            currentShotLoggedList + pendingShotLoggedList.map { pendingShot -> pendingShot.shotLogged }
+            currentShotLoggedList + pendingShotLoggedList.map { pendingShot -> pendingShot.shotLogged.copy(isPending = false) }
         } else {
             currentShotLoggedList
         }
@@ -621,6 +622,8 @@ class CreateEditPlayerViewModel(
                 imageUrl = imageUrl ?: "",
                 shotsLoggedList = currentShotLoggedList(currentShotLoggedList = state.shots)
             )
+
+            println("current shot logged list ${currentShotLoggedList(state.shots)}")
 
             createOrEditPlayerInRoom(player = player)
 

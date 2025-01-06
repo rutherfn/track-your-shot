@@ -115,7 +115,6 @@ class SelectShotViewModel(
         } else {
             navigation.popFromEditPlayer()
         }
-        fetchDeclaredShotsAndUpdateState(shouldDelay = true)
     }
 
     internal fun moreInfoAlert(): Alert {

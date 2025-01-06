@@ -30,6 +30,7 @@ object Constants {
     const val LAST_UPDATED = "lastUpdated"
     const val NOTIFICATION_CHANNEL_ID = "track_your_shot_notification"
     const val NOTIFICATION_NAME = "track_your_shot"
+    const val PDFS = "pdfs"
     const val PDF_MIME_TYPE = "application/pdf"
     const val PDF_SUCCESSFUL_GENERATE_CODE = 1
     const val PDF_CANNOT_SAVE_PDF_CODE = 2

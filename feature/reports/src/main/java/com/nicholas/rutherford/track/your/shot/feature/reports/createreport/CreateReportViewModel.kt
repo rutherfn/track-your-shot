@@ -9,12 +9,15 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.room.response.sortedPlayers
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
 import com.nicholas.rutherford.track.your.shot.notifications.Notifications
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,7 +27,8 @@ class CreateReportViewModel(
     private val playerRepository: PlayerRepository,
     private val scope: CoroutineScope,
     private val notifications: Notifications,
-    private val pdfGenerator: PdfGenerator
+    private val pdfGenerator: PdfGenerator,
+    private val createFirebaseUserInfo: CreateFirebaseUserInfo
 ) : ViewModel() {
 
     internal val createReportMutableStateFlow = MutableStateFlow(value = CreateReportState())
@@ -65,6 +69,16 @@ class CreateReportViewModel(
         )
     }
 
+    fun reportGeneratedForPlayer(playerName: String): Alert {
+        return Alert(
+            title = application.getString(StringsIds.playerReportCreatedForX, playerName),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            ),
+            description = application.getString(StringsIds.playerReportCreatedDescription)
+        )
+    }
+
     fun createPdfErrorAlert(statusCode: Int): Alert {
         return if (statusCode == Constants.PDF_CANNOT_CREATE_PDF_CODE) {
             cannotCreatePdfAlert()
@@ -74,6 +88,7 @@ class CreateReportViewModel(
     }
 
     fun attemptToGeneratePlayerReport() {
+        navigation.enableProgress(progress = Progress())
         createReportMutableStateFlow.value.selectedPlayer?.let { player ->
             val fullName = player.fullName()
 
@@ -94,7 +109,20 @@ class CreateReportViewModel(
                         fullName
                     )
                 )
-            } ?: navigation.alert(alert = createPdfErrorAlert(statusCode = pdf.second))
+                scope.launch {
+                    createFirebaseUserInfo.attemptToCreatePdfFirebaseStorageResponseFlow(uri = uri)
+                        .collectLatest {
+                            println("here is the url $it")
+                        }
+                }
+                navigation.disableProgress()
+
+                navigation.alert(alert = reportGeneratedForPlayer(playerName = fullName))
+                navigation.pop()
+            } ?: run {
+                navigation.disableProgress()
+                navigation.alert(alert = createPdfErrorAlert(statusCode = pdf.second))
+            }
         }
     }
 }

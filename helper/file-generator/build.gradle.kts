@@ -61,4 +61,5 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":data:room"))
     api(project(path = ":helper:constants"))
+    api(project(path = ":helper:extensions"))
 }

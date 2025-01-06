@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.helper.file.generator
 
 import android.app.Application
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.graphics.Color
 import android.graphics.Paint
@@ -13,11 +14,12 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.SmallForward.toPlayerPositionValue
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.extensions.parseDateValueToString
 import java.io.ByteArrayOutputStream
 
 class PdfGeneratorImpl(private val application: Application) : PdfGenerator {
 
-    val resolver = application.contentResolver
+    private val resolver: ContentResolver = application.contentResolver
 
     private fun pdfOutputStreamByteArray(player: Player): ByteArray {
         val document = PdfDocument()
@@ -49,7 +51,7 @@ class PdfGeneratorImpl(private val application: Application) : PdfGenerator {
 
         var yPosition = 50f
 
-        canvas.drawText(application.getString(StringsIds.generateReport), 50f, yPosition, titlePaint)
+        canvas.drawText(application.getString(StringsIds.playerReport), 50f, yPosition, titlePaint)
         yPosition += 40f
         canvas.drawText(application.getString(StringsIds.nameX, player.fullName()), 50f, yPosition, headerPaint)
         yPosition += 30f
@@ -70,8 +72,10 @@ class PdfGeneratorImpl(private val application: Application) : PdfGenerator {
             yPosition += 20f
             canvas.drawText(application.getString(StringsIds.shotsMadeAccuracyX, shot.shotsMadePercentValue.toString()), 70f, yPosition, textPaint)
             yPosition += 20f
-            canvas.drawText(application.getString(StringsIds.shotsMissedAccuracyX, shot.shotsMissedPercentValue.toString()), 70f, yPosition, textPaint)
-            yPosition += 30f
+            canvas.drawText(application.getString(StringsIds.shotsAttemptedDateX, parseDateValueToString(shot.shotsAttemptedMillisecondsValue)), 70f, yPosition, textPaint)
+            yPosition += 20f
+            canvas.drawText(application.getString(StringsIds.shotsLoggedDateX, parseDateValueToString(shot.shotsLoggedMillisecondsValue)), 70f, yPosition, textPaint)
+            yPosition += 20f
             canvas.drawLine(50f, yPosition, 550f, yPosition, dividerPaint)
 
             if (yPosition > pageInfo.pageHeight - 50f) {
@@ -91,6 +95,7 @@ class PdfGeneratorImpl(private val application: Application) : PdfGenerator {
 
         return outputStream.toByteArray()
     }
+
 
     override fun generatePlayerPdf(fileName: String, player: Player): Pair<Uri?, Int> {
         val contentValues = ContentValues().apply {

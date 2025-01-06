@@ -156,6 +156,8 @@
     <string name="player_image">Player Image</string>
     <string name="player_is_invalid_please_try_again">Current player is invalid. Please try to log shot again</string>
     <string name="player_report">Player Report</string>
+    <string name="player_report_created_description">A player report has been generated and saved to your device\'s download folder. You can view the report now or access it later in the app for future use.</string>
+    <string name="player_report_created_for_x">Player Report Created For %s</string>
     <string name="players">Players</string>
     <string name="players_first_name_empty_description">The player\'s first name is missing. Kindly provide a first name to proceed.</string>
     <string name="players_last_name_empty_description">The player\'s last name is missing. Kindly provide a first name to proceed.</string>
@@ -173,6 +175,8 @@
     <string name="reports_help_description">On the reports page, you can create and view reports for player shots recorded within the app.</string>
     <string name="settings">Settings</string>
     <string name="settings_help_description">On the settings page, you can view your account information, review terms and conditions, access app usage details, and learn about the permissions we request and why we need them.</string>
+    <string name="shots_attempted_date_x">Shots Attempted Date: %s</string>
+    <string name="shots_logged_date_x">Shots Logged Date: %s</string>
     <string name="shots_made_accuracy_x">Shots Made Accuracy: %s %%</string>
     <string name="shots_missed_accuracy_x">Shots Missed Accuracy: %s %%</string>
     <string name="shot_has_been_deleted">Shot Has Been Deleted</string>
