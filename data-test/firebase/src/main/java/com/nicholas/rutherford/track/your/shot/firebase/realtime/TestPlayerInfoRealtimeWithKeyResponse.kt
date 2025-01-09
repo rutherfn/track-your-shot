@@ -1,6 +1,5 @@
 package com.nicholas.rutherford.track.your.shot.firebase.realtime
 
-const val PLAYER_FIREBASE_KEY = "-j0P5J2LcXmXF"
 class TestPlayerInfoRealtimeWithKeyResponse {
 
     fun create(): PlayerInfoRealtimeWithKeyResponse {
@@ -10,3 +9,5 @@ class TestPlayerInfoRealtimeWithKeyResponse {
         )
     }
 }
+
+const val PLAYER_FIREBASE_KEY = "-j0P5J2LcXmXF"

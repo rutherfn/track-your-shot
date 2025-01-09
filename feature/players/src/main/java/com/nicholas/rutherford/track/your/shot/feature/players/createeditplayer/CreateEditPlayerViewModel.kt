@@ -623,8 +623,6 @@ class CreateEditPlayerViewModel(
                 shotsLoggedList = currentShotLoggedList(currentShotLoggedList = state.shots)
             )
 
-            println("current shot logged list ${currentShotLoggedList(state.shots)}")
-
             createOrEditPlayerInRoom(player = player)
 
             currentPendingShot.clearShotList()

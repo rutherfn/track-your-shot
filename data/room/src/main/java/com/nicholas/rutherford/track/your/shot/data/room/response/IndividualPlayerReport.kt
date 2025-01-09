@@ -5,6 +5,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.IndividualPlay
 data class IndividualPlayerReport(
     val loggedDateValue: Long,
     val playerName: String,
+    val firebaseKey: String,
     val pdfUrl: String
 )
 
@@ -13,6 +14,7 @@ fun IndividualPlayerReport.toIndividualPlayerReportEntity(): IndividualPlayerRep
         id = 0,
         loggedDateValue = loggedDateValue,
         playerName = playerName,
+        firebaseKey = firebaseKey,
         pdfUrl = pdfUrl
     )
 }

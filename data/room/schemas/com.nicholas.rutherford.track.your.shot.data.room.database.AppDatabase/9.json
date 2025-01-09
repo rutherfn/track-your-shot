@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "47e75dca585882fb8c60ce150094a7d0",
+    "identityHash": "cd426b85479e9b3caea66963f402fbd3",
     "entities": [
       {
         "tableName": "activeUsers",
@@ -88,7 +88,7 @@
       },
       {
         "tableName": "individualPlayerReport",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `loggedDateValue` INTEGER NOT NULL, `playerName` TEXT NOT NULL, `pdfUrl` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `loggedDateValue` INTEGER NOT NULL, `playerName` TEXT NOT NULL, `firebaseKey` TEXT NOT NULL, `pdfUrl` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -105,6 +105,12 @@
           {
             "fieldPath": "playerName",
             "columnName": "playerName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firebaseKey",
+            "columnName": "firebaseKey",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -272,7 +278,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '47e75dca585882fb8c60ce150094a7d0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cd426b85479e9b3caea66963f402fbd3')"
     ]
   }
 }

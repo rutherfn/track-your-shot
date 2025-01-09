@@ -183,7 +183,7 @@
     <string name="shot_has_not_been_deleted">Shot Hsa Not Been Deleted</string>
     <string name="shot_percentage">%s %%</string>
     <string name="shot_updated">Shot Updated</string>
-    <string name="shot_x">Shot: %s</string>
+    <string name="shot_x">Shot %s</string>
     <string name="shots">Shots</string>
     <string name="shots_attempted">Shots Attempted</string>
     <string name="shots_made">Shots Made</string>

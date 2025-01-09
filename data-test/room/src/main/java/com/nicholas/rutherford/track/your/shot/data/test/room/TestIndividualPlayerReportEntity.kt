@@ -9,6 +9,7 @@ object TestIndividualPlayerReportEntity {
             id = INDIVIDUAL_PLAYER_REPORT_ID,
             loggedDateValue = LOGGED_DATE_VALUE,
             playerName = PLAYER_NAME,
+            firebaseKey = INDIVIDUAL_FIREBASE_KEY,
             pdfUrl = PDF_URL
         )
     }
@@ -16,5 +17,6 @@ object TestIndividualPlayerReportEntity {
     const val INDIVIDUAL_PLAYER_REPORT_ID = 1
     const val LOGGED_DATE_VALUE = 11L
     const val PLAYER_NAME = "player name"
+    const val INDIVIDUAL_FIREBASE_KEY = "firebase-key"
     const val PDF_URL = "url"
 }

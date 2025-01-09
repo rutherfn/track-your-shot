@@ -13,6 +13,8 @@ data class IndividualPlayerReportEntity(
     val loggedDateValue: Long,
     @ColumnInfo("playerName")
     val playerName: String,
+    @ColumnInfo(name = "firebaseKey")
+    val firebaseKey: String,
     @ColumnInfo("pdfUrl")
     val pdfUrl: String
 )
@@ -21,6 +23,7 @@ fun IndividualPlayerReportEntity.toIndividualPlayerReport(): IndividualPlayerRep
     return IndividualPlayerReport(
         loggedDateValue = loggedDateValue,
         playerName = playerName,
+        firebaseKey = firebaseKey,
         pdfUrl = pdfUrl
     )
 }

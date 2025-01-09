@@ -13,4 +13,7 @@ interface IndividualPlayerReportDao {
 
     @Query("SELECT * FROM individualPlayerReport")
     suspend fun getAllPlayerReports(): List<IndividualPlayerReportEntity>
+
+    @Query("DELETE FROM individualPlayerReport")
+    suspend fun deleteAll()
 }

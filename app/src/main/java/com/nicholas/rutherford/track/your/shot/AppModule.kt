@@ -15,6 +15,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRe
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepositoryImpl
+import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
@@ -152,6 +154,11 @@ class AppModule {
             DeclaredShotRepositoryImpl(
                 declaredShotDao = get(),
                 declaredShotsJson = get()
+            )
+        }
+        single<IndividualPlayerReportRepository> {
+            IndividualPlayerReportRepositoryImpl(
+                individualPlayerReportDao = get()
             )
         }
         single<CurrentPendingShot> { CurrentPendingShotImpl() }
@@ -451,7 +458,9 @@ class AppModule {
                 scope = defaultCoroutineScope,
                 notifications = get(),
                 pdfGenerator = get(),
-                createFirebaseUserInfo = get()
+                createFirebaseUserInfo = get(),
+                readFirebaseUserInfo = get(),
+                individualPlayerReportRepository = get()
             )
         }
     }

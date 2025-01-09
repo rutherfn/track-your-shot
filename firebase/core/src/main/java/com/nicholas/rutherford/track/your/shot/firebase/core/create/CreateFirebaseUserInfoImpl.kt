@@ -6,6 +6,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.CreateAccountFirebaseRealtimeDatabaseResult
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import kotlinx.coroutines.channels.awaitClose
@@ -95,6 +96,36 @@ class CreateFirebaseUserInfoImpl(
                 }
                 .addOnFailureListener { exception ->
                     Timber.e(message = "Error(attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow) -> Creating player failed to create in Firebase Realtime Database with following stack trace - ${exception.stackTrace}")
+                    trySend(element = Pair(false, null))
+                }
+            awaitClose()
+        }
+    }
+
+    override fun attemptToCreateIndividualPlayerReportFirebaseRealtimeDatabaseResponseFlow(
+        individualPlayerReportRealtimeResponse: IndividualPlayerReportRealtimeResponse
+    ): Flow<Pair<Boolean, String?>> {
+        return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val reference = firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.PLAYERS_INDIVIDUAL_REPORTS}")
+
+            val values = hashMapOf<String, Any>()
+
+            values[Constants.LOGGED_DATE_VALUE] = individualPlayerReportRealtimeResponse.loggedDateValue
+            values[Constants.PLAYER_NAME] = individualPlayerReportRealtimeResponse.playerName
+            values[Constants.PDF_URL] = individualPlayerReportRealtimeResponse.pdfUrl
+
+            reference.push().setValue(values)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        trySend(element = Pair(true, reference.key))
+                    } else {
+                        Timber.w(message = "Warning(attemptToCreateIndividualPlayerReportFirebaseRealtimeDatabaseResponseFlow) -> Creating player report failed to create in Firebase Realtime Database,")
+                        trySend(element = Pair(false, null))
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(attemptToCreateIndividualPlayerReportFirebaseRealtimeDatabaseResponseFlow) -> Creating player report failed to create in Firebase Realtime Database with following stack trace - ${exception.stackTrace}")
                     trySend(element = Pair(false, null))
                 }
             awaitClose()

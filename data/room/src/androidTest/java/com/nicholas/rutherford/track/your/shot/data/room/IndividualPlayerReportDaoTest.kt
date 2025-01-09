@@ -51,4 +51,16 @@ class IndividualPlayerReportDaoTest {
 
         assertThat(listOf(individualPlayerReportEntity, individualPlayerReportEntity.copy(id = 2)), equalTo(individualPlayerReportDao.getAllPlayerReports()))
     }
+
+    @Test
+    fun deleteAll() = runBlocking {
+        individualPlayerReportDao.insert(individualPlayerReportEntity = individualPlayerReportEntity)
+        individualPlayerReportDao.insert(individualPlayerReportEntity = individualPlayerReportEntity.copy(id = 2))
+
+        assertThat(listOf(individualPlayerReportEntity, individualPlayerReportEntity.copy(id = 2)), equalTo(individualPlayerReportDao.getAllPlayerReports()))
+
+        individualPlayerReportDao.deleteAll()
+
+        assertThat(emptyList(), equalTo(individualPlayerReportDao.getAllPlayerReports()))
+    }
 }
