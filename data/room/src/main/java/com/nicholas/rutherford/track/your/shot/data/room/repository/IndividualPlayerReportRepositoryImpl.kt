@@ -12,4 +12,6 @@ class IndividualPlayerReportRepositoryImpl(private val individualPlayerReportDao
     override suspend fun fetchAllReports(): List<IndividualPlayerReport> = individualPlayerReportDao.getAllPlayerReports().map { it.toIndividualPlayerReport() }
 
     override suspend fun deleteAllReports() = individualPlayerReportDao.deleteAll()
+
+    override suspend fun fetchReportCount(): Int = individualPlayerReportDao.getPlayerReportsCount()
 }

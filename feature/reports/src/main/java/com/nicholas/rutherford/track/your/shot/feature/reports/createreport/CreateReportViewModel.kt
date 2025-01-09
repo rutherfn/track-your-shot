@@ -103,6 +103,7 @@ class CreateReportViewModel(
 
                     individualPlayerReportRepository.createReport(
                         report = IndividualPlayerReport(
+                            id = individualPlayerReportRepository.fetchReportCount() + 1,
                             loggedDateValue = reportInfo.playerReport.loggedDateValue,
                             playerName = reportInfo.playerReport.playerName,
                             firebaseKey = reportInfo.reportFirebaseKey,

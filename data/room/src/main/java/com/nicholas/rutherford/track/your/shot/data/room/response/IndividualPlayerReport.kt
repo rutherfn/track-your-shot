@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.data.room.response
 import com.nicholas.rutherford.track.your.shot.data.room.entities.IndividualPlayerReportEntity
 
 data class IndividualPlayerReport(
+    val id: Int,
     val loggedDateValue: Long,
     val playerName: String,
     val firebaseKey: String,
@@ -11,7 +12,7 @@ data class IndividualPlayerReport(
 
 fun IndividualPlayerReport.toIndividualPlayerReportEntity(): IndividualPlayerReportEntity {
     return IndividualPlayerReportEntity(
-        id = 0,
+        id = id,
         loggedDateValue = loggedDateValue,
         playerName = playerName,
         firebaseKey = firebaseKey,

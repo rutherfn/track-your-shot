@@ -462,9 +462,9 @@ class CreateEditPlayerViewModel(
             )
         ).collectLatest { result ->
             result.second?.let { key ->
-                if (key.isNotEmpty()) {
-                    handleFirebaseResponseForSavingPlayer(
-                        isSuccessful = result.first,
+                val isSuccessful = result.first
+                if (isSuccessful && key.isNotEmpty()) {
+                    handleSavingPlayer(
                         key = key,
                         state = state,
                         imageUrl = imageUrl
@@ -542,9 +542,8 @@ class CreateEditPlayerViewModel(
                             )
                         )
                     ).collectLatest { isSuccessful ->
-                        handleFirebaseResponseForSavingPlayer(
-                            isSuccessful = isSuccessful,
-                            key = key,
+                        handleSavingPlayer(
+                            key = playerKey,
                             state = state,
                             imageUrl = imageUrl
                         )
@@ -560,57 +559,11 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    suspend fun handleFirebaseResponseForSavingPlayer(
-        isSuccessful: Boolean,
+    suspend fun handleSavingPlayer(
         key: String,
         state: CreateEditPlayerState,
         imageUrl: String?
     ) {
-        if (isSuccessful) {
-            readFirebaseUserInfo.getPlayerInfoList(key)
-                .collectLatest { playerInfoRealtimeWithKeyResponseList ->
-                    updatePlayerInstance(
-                        playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
-                        state = state,
-                        imageUrl = imageUrl
-                    )
-                }
-        } else {
-            navigation.disableProgress()
-            navigation.alert(alert = weWereNotAbleToCreateThePlayerAlert())
-        }
-    }
-
-    suspend fun updatePlayerInstance(
-        playerInfoRealtimeWithKeyResponseList: List<PlayerInfoRealtimeWithKeyResponse>,
-        state: CreateEditPlayerState,
-        imageUrl: String?
-    ) {
-        if (playerInfoRealtimeWithKeyResponseList.isNotEmpty()) {
-            handleSavingPlayer(
-                playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
-                state = state,
-                imageUrl = imageUrl
-            )
-        } else {
-            navigation.disableProgress()
-            navigation.alert(alert = yourPlayerCouldNotBeRetrievedAlert())
-        }
-    }
-
-    suspend fun handleSavingPlayer(
-        playerInfoRealtimeWithKeyResponseList: List<PlayerInfoRealtimeWithKeyResponse>,
-        state: CreateEditPlayerState,
-        imageUrl: String?
-    ) {
-        var recentlySavedPlayer: PlayerInfoRealtimeWithKeyResponse? = null
-        playerInfoRealtimeWithKeyResponseList.map { player ->
-            if (player.playerInfo.firstName == state.firstName && player.playerInfo.lastName == state.lastName) {
-                recentlySavedPlayer = player
-            }
-        }
-        recentlySavedPlayer?.let { response ->
-            val playerKey = response.playerFirebaseKey
             val positionString = state.playerPositionString.ifEmpty {
                 application.getString(StringsIds.pointGuard)
             }
@@ -618,12 +571,15 @@ class CreateEditPlayerViewModel(
                 firstName = state.firstName,
                 lastName = state.lastName,
                 position = positionString.toPlayerPosition(application = application),
-                firebaseKey = playerKey,
+                firebaseKey = key,
                 imageUrl = imageUrl ?: "",
                 shotsLoggedList = currentShotLoggedList(currentShotLoggedList = state.shots)
             )
 
             createOrEditPlayerInRoom(player = player)
+
+            val allPlayers = playerRepository.fetchAllPlayers()
+            println("here are all the players $allPlayers")
 
             currentPendingShot.clearShotList()
 
@@ -631,10 +587,6 @@ class CreateEditPlayerViewModel(
             navigation.pop()
 
             resetState()
-        } ?: run {
-            navigation.disableProgress()
-            navigation.alert(alert = yourPlayerCouldNotBeRetrievedAlert())
-        }
     }
 
     suspend fun createOrEditPlayerInRoom(player: Player) {

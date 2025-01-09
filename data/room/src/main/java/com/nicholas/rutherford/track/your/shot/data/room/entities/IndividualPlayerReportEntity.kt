@@ -21,6 +21,7 @@ data class IndividualPlayerReportEntity(
 
 fun IndividualPlayerReportEntity.toIndividualPlayerReport(): IndividualPlayerReport {
     return IndividualPlayerReport(
+        id = id,
         loggedDateValue = loggedDateValue,
         playerName = playerName,
         firebaseKey = firebaseKey,

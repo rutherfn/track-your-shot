@@ -63,4 +63,13 @@ class IndividualPlayerReportDaoTest {
 
         assertThat(emptyList(), equalTo(individualPlayerReportDao.getAllPlayerReports()))
     }
+
+    @Test
+    fun getPlayerReportsCount() = runBlocking {
+        individualPlayerReportDao.insert(individualPlayerReportEntity = individualPlayerReportEntity)
+        individualPlayerReportDao.insert(individualPlayerReportEntity = individualPlayerReportEntity.copy(id = 2))
+
+        assertThat(listOf(individualPlayerReportEntity, individualPlayerReportEntity.copy(id = 2)), equalTo(individualPlayerReportDao.getAllPlayerReports()))
+        assertThat(2, equalTo(individualPlayerReportDao.getPlayerReportsCount()))
+    }
 }

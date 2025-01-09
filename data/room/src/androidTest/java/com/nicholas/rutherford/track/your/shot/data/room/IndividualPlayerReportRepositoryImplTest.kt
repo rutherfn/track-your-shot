@@ -52,20 +52,28 @@ class IndividualPlayerReportRepositoryImplTest {
     @Test
     fun fetchAllReports() = runBlocking {
         individualPlayerReportRepositoryImpl.createReport(report = individualPlayerReport)
-        individualPlayerReportRepositoryImpl.createReport(report = individualPlayerReport.copy(playerName = "playerTest"))
+        individualPlayerReportRepositoryImpl.createReport(report = individualPlayerReport.copy(id = 2, playerName = "playerTest"))
 
-        assertThat(individualPlayerReportRepositoryImpl.fetchAllReports(), equalTo(listOf(individualPlayerReport, individualPlayerReport.copy(playerName = "playerTest"))))
+        assertThat(individualPlayerReportRepositoryImpl.fetchAllReports(), equalTo(listOf(individualPlayerReport, individualPlayerReport.copy(id = 2, playerName = "playerTest"))))
     }
 
     @Test
     fun deleteAllReports() = runBlocking {
         individualPlayerReportRepositoryImpl.createReport(report = individualPlayerReport)
-        individualPlayerReportRepositoryImpl.createReport(report = individualPlayerReport.copy(playerName = "playerTest"))
+        individualPlayerReportRepositoryImpl.createReport(report = individualPlayerReport.copy(id = 2, playerName = "playerTest"))
 
-        assertThat(individualPlayerReportRepositoryImpl.fetchAllReports(), equalTo(listOf(individualPlayerReport, individualPlayerReport.copy(playerName = "playerTest"))))
+        assertThat(individualPlayerReportRepositoryImpl.fetchAllReports(), equalTo(listOf(individualPlayerReport, individualPlayerReport.copy(id = 2, playerName = "playerTest"))))
 
         individualPlayerReportRepositoryImpl.deleteAllReports()
 
         assertThat(individualPlayerReportRepositoryImpl.fetchAllReports(), equalTo(emptyList()))
+    }
+
+    @Test fun fetchReportCount() = runBlocking {
+        individualPlayerReportRepositoryImpl.createReport(report = individualPlayerReport)
+        individualPlayerReportRepositoryImpl.createReport(report = individualPlayerReport.copy(id = 2, playerName = "playerTest"))
+
+        assertThat(individualPlayerReportRepositoryImpl.fetchAllReports(), equalTo(listOf(individualPlayerReport, individualPlayerReport.copy(id = 2, playerName = "playerTest"))))
+        assertThat(individualPlayerReportRepositoryImpl.fetchReportCount(), equalTo(2))
     }
 }

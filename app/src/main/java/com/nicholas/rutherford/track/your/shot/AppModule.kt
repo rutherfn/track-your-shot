@@ -231,6 +231,7 @@ class AppModule {
                 playerRepository = get(),
                 pendingPlayerRepository = get(),
                 userRepository = get(),
+                individualPlayerReportRepository = get(),
                 readFirebaseUserInfo = get(),
                 existingUserFirebase = get(),
                 createSharedPreferences = get()

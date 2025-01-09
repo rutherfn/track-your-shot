@@ -6,4 +6,5 @@ interface IndividualPlayerReportRepository {
     suspend fun createReport(report: IndividualPlayerReport)
     suspend fun fetchAllReports(): List<IndividualPlayerReport>
     suspend fun deleteAllReports()
+    suspend fun fetchReportCount(): Int
 }

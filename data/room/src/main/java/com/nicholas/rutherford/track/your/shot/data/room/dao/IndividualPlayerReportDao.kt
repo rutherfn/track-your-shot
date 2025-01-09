@@ -16,4 +16,7 @@ interface IndividualPlayerReportDao {
 
     @Query("DELETE FROM individualPlayerReport")
     suspend fun deleteAll()
+
+    @Query("SELECT COUNT(*) FROM individualPlayerReport")
+    suspend fun getPlayerReportsCount(): Int
 }

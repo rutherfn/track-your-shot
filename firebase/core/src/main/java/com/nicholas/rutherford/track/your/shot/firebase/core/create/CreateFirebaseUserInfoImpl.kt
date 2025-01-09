@@ -81,6 +81,7 @@ class CreateFirebaseUserInfoImpl(
             val reference = firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.PLAYERS}")
 
             val values = hashMapOf<String, Any>()
+            val key = reference.push().key ?: ""
 
             values[Constants.FIRST_NAME] = playerInfoRealtimeResponse.firstName
             values[Constants.LAST_NAME] = playerInfoRealtimeResponse.lastName
@@ -88,10 +89,10 @@ class CreateFirebaseUserInfoImpl(
             values[Constants.IMAGE_URL] = playerInfoRealtimeResponse.imageUrl
             values[Constants.SHOTS_LOGGED] = playerInfoRealtimeResponse.shotsLogged
 
-            reference.push().setValue(values)
+            reference.child(key).setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        trySend(element = Pair(true, reference.key))
+                        trySend(element = Pair(true, key))
                     }
                 }
                 .addOnFailureListener { exception ->

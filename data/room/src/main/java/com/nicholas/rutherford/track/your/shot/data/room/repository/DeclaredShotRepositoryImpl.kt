@@ -8,6 +8,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.toDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.toDeclaredShotEntity
 
+// todo -> Unit tests this since now where grabbing natively in the app.
 class DeclaredShotRepositoryImpl(
     private val declaredShotDao: DeclaredShotDao,
     private val declaredShotsJson: DeclaredShotsJson
