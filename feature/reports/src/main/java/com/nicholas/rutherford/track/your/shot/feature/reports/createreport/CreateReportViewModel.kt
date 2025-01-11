@@ -159,7 +159,7 @@ class CreateReportViewModel(
     }
 
     fun attemptToGeneratePlayerReport() {
-        navigation.enableProgress(progress = Progress(title = application.getString(StringsIds.generatingReport)))
+        navigation.enableProgress(progress = Progress())
         createReportMutableStateFlow.value.selectedPlayer?.let { player ->
             val fullName = player.fullName()
 
@@ -183,10 +183,6 @@ class CreateReportViewModel(
                 scope.launch {
                     attemptToUploadAndSaveReport(uri = uri, fullName = fullName)
                 }
-                navigation.disableProgress()
-
-                navigation.alert(alert = reportGeneratedForPlayer(playerName = fullName))
-                navigation.pop()
             } ?: run {
                 navigation.disableProgress()
                 navigation.alert(alert = createPdfErrorAlert(statusCode = pdf.second))

@@ -89,7 +89,6 @@
     <string name="general">General</string>
     <string name="general_information">General Information</string>
     <string name="generate_report">Generate Report</string>
-    <string name="generating_report">Generating Report</string>
     <string name="got_it">Got It</string>
     <string name="having_trouble_creating_your_account_please_try_again">Having trouble creating your account. Please try again</string>
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Having trouble logging into your account. Please try again and or ensure credentials exist and are valid.</string>

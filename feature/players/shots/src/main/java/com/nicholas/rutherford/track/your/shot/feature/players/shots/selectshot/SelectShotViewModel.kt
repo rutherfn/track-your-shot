@@ -60,7 +60,6 @@ class SelectShotViewModel(
             if (shouldDelay) {
                 delay(UPDATING_DECLARED_SHOT_LIST_DELAY)
             }
-            println("here are all the declared shots ${declaredShotRepository.fetchAllDeclaredShots()}")
             currentDeclaredShotArrayList.addAll(declaredShotRepository.fetchAllDeclaredShots())
             selectShotMutableStateFlow.update { state ->
                 state.copy(declaredShotList = currentDeclaredShotArrayList)

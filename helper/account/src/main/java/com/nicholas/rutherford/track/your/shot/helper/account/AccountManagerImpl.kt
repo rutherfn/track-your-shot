@@ -105,6 +105,11 @@ class AccountManagerImpl(
         }
     }
 
+    override fun updateLoggedInDeclaredShotFlow(declaredShots: List<DeclaredShot>) {
+        println("here are all the declared shots $declaredShots")
+        _loggedInDeclaredShotListStateFlow.value = declaredShots
+    }
+
     internal suspend fun clearOutDatabase() {
         activeUserRepository.deleteActiveUser()
         playerRepository.deleteAllPlayers()

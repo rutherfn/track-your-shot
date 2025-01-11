@@ -15,4 +15,5 @@ interface AccountManager {
     fun checkIfWeNeedToLogoutOnLaunch()
     fun login(email: String, password: String)
     fun deleteAllPendingShotsAndPlayers()
+    fun updateLoggedInDeclaredShotFlow(declaredShots: List<DeclaredShot>)
 }
