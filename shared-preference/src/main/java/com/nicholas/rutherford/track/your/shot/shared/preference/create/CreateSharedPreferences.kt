@@ -5,4 +5,5 @@ interface CreateSharedPreferences {
     fun createShouldUpdateLoggedInPlayerListPreference(value: Boolean)
     fun createShouldUpdateLoggedInDeclaredShotListPreference(value: Boolean)
     fun createShouldShowTermsAndConditionsPreference(value: Boolean)
+    fun createHasAuthenticatedAccount(value: Boolean)
 }

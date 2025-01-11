@@ -4,7 +4,6 @@ import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
-import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
@@ -42,7 +41,6 @@ class AccountManagerImpl(
     private val playerRepository: PlayerRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
     private val userRepository: UserRepository,
-    private val individualPlayerReportRepository: IndividualPlayerReportRepository,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val existingUserFirebase: ExistingUserFirebase,
     private val createSharedPreferences: CreateSharedPreferences
@@ -112,7 +110,6 @@ class AccountManagerImpl(
         playerRepository.deleteAllPlayers()
         pendingPlayerRepository.deleteAllPendingPlayers()
         userRepository.deleteAllUsers()
-        individualPlayerReportRepository.deleteAllReports()
     }
 
     override fun deleteAllPendingShotsAndPlayers() {

@@ -14,7 +14,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
@@ -35,7 +34,6 @@ class CreateReportViewModel(
     private val notifications: Notifications,
     private val pdfGenerator: PdfGenerator,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
-    private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val individualPlayerReportRepository: IndividualPlayerReportRepository
 ) : ViewModel() {
 
@@ -87,6 +85,16 @@ class CreateReportViewModel(
         )
     }
 
+    fun cannotUploadPdfAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.couldNotUploadReport),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            ),
+            description = application.getString(StringsIds.couldNotuploadReportDescription)
+        )
+    }
+
     fun createPdfErrorAlert(statusCode: Int): Alert {
         return if (statusCode == Constants.PDF_CANNOT_CREATE_PDF_CODE) {
             cannotCreatePdfAlert()
@@ -95,34 +103,29 @@ class CreateReportViewModel(
         }
     }
 
-    suspend fun fetchAndStoreReport(reportKey: String) {
-        readFirebaseUserInfo.getPlayerReportList(reportKey = reportKey)
-            .collectLatest { playerReports ->
-                if (playerReports.isNotEmpty() && playerReports.size == 1) {
-                    val reportInfo = playerReports.first()
+    suspend fun storeReport(
+        currentDateTime: Long,
+        playerName: String,
+        reportKey: String,
+        pdfUrl: String
+    ) {
+        individualPlayerReportRepository.createReport(
+            report = IndividualPlayerReport(
+                id = individualPlayerReportRepository.fetchReportCount() + 1,
+                loggedDateValue = currentDateTime,
+                playerName = playerName,
+                firebaseKey = reportKey,
+                pdfUrl = pdfUrl
+            )
+        )
+        navigation.disableProgress()
 
-                    individualPlayerReportRepository.createReport(
-                        report = IndividualPlayerReport(
-                            id = individualPlayerReportRepository.fetchReportCount() + 1,
-                            loggedDateValue = reportInfo.playerReport.loggedDateValue,
-                            playerName = reportInfo.playerReport.playerName,
-                            firebaseKey = reportInfo.reportFirebaseKey,
-                            pdfUrl = reportInfo.playerReport.pdfUrl
-                        )
-                    )
-                    navigation.disableProgress()
-
-                    navigation.alert(alert = reportGeneratedForPlayer(playerName = reportInfo.playerReport.playerName))
-                    navigation.pop()
-                } else {
-                    navigation.disableProgress()
-                    // show a alert
-                }
-            }
+        navigation.alert(alert = reportGeneratedForPlayer(playerName = playerName))
+        navigation.pop()
     }
 
     fun attemptToUploadAndSaveReport(uri: Uri, fullName: String) {
-        val currentDate = Date().time
+        val currentDateTime = Date().time
 
         scope.launch {
             createFirebaseUserInfo.attemptToCreatePdfFirebaseStorageResponseFlow(uri = uri)
@@ -130,28 +133,33 @@ class CreateReportViewModel(
                     it?.let { pdfUrl ->
                         createFirebaseUserInfo.attemptToCreateIndividualPlayerReportFirebaseRealtimeDatabaseResponseFlow(
                             individualPlayerReportRealtimeResponse = IndividualPlayerReportRealtimeResponse(
-                                loggedDateValue = currentDate,
+                                loggedDateValue = currentDateTime,
                                 playerName = fullName,
                                 pdfUrl = pdfUrl
                             )
                         ).collectLatest { result ->
                             if (result.first && !result.second.isNullOrEmpty()) {
-                                fetchAndStoreReport(reportKey = result.second ?: "")
+                                storeReport(
+                                    currentDateTime = currentDateTime,
+                                    playerName = fullName,
+                                    reportKey = result.second ?: "",
+                                    pdfUrl = pdfUrl
+                                )
                             } else {
                                 navigation.disableProgress()
-                                // show a alert
+                                cannotUploadPdfAlert()
                             }
                         }
                     } ?: run {
                         navigation.disableProgress()
-                        // show a alert saying we can't upload the report
+                        cannotUploadPdfAlert()
                     }
                 }
         }
     }
 
     fun attemptToGeneratePlayerReport() {
-        navigation.enableProgress(progress = Progress())
+        navigation.enableProgress(progress = Progress(title = application.getString(StringsIds.generatingReport)))
         createReportMutableStateFlow.value.selectedPlayer?.let { player ->
             val fullName = player.fullName()
 

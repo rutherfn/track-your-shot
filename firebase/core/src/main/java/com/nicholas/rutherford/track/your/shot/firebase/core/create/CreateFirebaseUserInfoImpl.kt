@@ -111,12 +111,13 @@ class CreateFirebaseUserInfoImpl(
             val reference = firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.PLAYERS_INDIVIDUAL_REPORTS}")
 
             val values = hashMapOf<String, Any>()
+            val key = reference.push().key ?: ""
 
             values[Constants.LOGGED_DATE_VALUE] = individualPlayerReportRealtimeResponse.loggedDateValue
             values[Constants.PLAYER_NAME] = individualPlayerReportRealtimeResponse.playerName
             values[Constants.PDF_URL] = individualPlayerReportRealtimeResponse.pdfUrl
 
-            reference.push().setValue(values)
+            reference.child(key).setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         trySend(element = Pair(true, reference.key))

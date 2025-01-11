@@ -231,7 +231,6 @@ class AppModule {
                 playerRepository = get(),
                 pendingPlayerRepository = get(),
                 userRepository = get(),
-                individualPlayerReportRepository = get(),
                 readFirebaseUserInfo = get(),
                 existingUserFirebase = get(),
                 createSharedPreferences = get()
@@ -307,7 +306,8 @@ class AppModule {
                 activeUserRepository = get(),
                 accountManager = get(),
                 readSharedPreferences = get(),
-                createSharedPreferences = get()
+                createSharedPreferences = get(),
+                scope = defaultCoroutineScope
             )
         }
         viewModel {
@@ -460,7 +460,6 @@ class AppModule {
                 notifications = get(),
                 pdfGenerator = get(),
                 createFirebaseUserInfo = get(),
-                readFirebaseUserInfo = get(),
                 individualPlayerReportRepository = get()
             )
         }

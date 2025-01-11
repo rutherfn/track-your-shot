@@ -37,6 +37,8 @@
     <string name="could_not_create_report">Could Not Create Report</string>
     <string name="could_not_generate_the_report">Unable to generate the report. Please try again or reach out to support for assistance.</string>
     <string name="could_not_save_report">Could Not Save Report</string>
+    <string name="could_not_upload_report">Could Not Upload Report</string>
+    <string name="could_not_upload_report_description">Unable to upload the report for future use. Please try again or reach out to support for assistance.</string>
     <string name="click_me_to_create_account">Click me to create account</string>
     <string name="create_account">Create Account</string>
     <string name="create_player">Create Player</string>
@@ -87,6 +89,7 @@
     <string name="general">General</string>
     <string name="general_information">General Information</string>
     <string name="generate_report">Generate Report</string>
+    <string name="generating_report">Generating Report</string>
     <string name="got_it">Got It</string>
     <string name="having_trouble_creating_your_account_please_try_again">Having trouble creating your account. Please try again</string>
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Having trouble logging into your account. Please try again and or ensure credentials exist and are valid.</string>

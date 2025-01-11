@@ -12,4 +12,6 @@ class ReadSharedPreferencesImpl(private val sharedPreferences: SharedPreferences
     override fun shouldUpdateLoggedInDeclaredShotListState(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST, false)
 
     override fun shouldShowTermsAndConditions(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.SHOULD_SHOW_TERM_AND_CONDITIONS, false)
+
+    override fun hasAccountBeenAuthenticated(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.HAS_AUTHENTICATED_ACCOUNT, false)
 }

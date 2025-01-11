@@ -24,4 +24,9 @@ class CreateSharedPreferencesImpl(private val editor: SharedPreferences.Editor) 
         editor.putBoolean(Constants.Preferences.SHOULD_SHOW_TERM_AND_CONDITIONS, value)
         editor.apply()
     }
+
+    override fun createHasAuthenticatedAccount(value: Boolean) {
+        editor.putBoolean(Constants.Preferences.HAS_AUTHENTICATED_ACCOUNT, value)
+        editor.apply()
+    }
 }

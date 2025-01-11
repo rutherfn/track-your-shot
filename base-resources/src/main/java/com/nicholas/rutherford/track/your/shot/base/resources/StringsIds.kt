@@ -39,6 +39,8 @@ object StringsIds {
     val couldNotCreateReport = R.string.could_not_create_report
     val couldNotGenerateTheReport = R.string.could_not_generate_the_report
     val couldNotSaveReport = R.string.could_not_save_report
+    val couldNotUploadReport = R.string.could_not_upload_report
+    val couldNotuploadReportDescription = R.string.could_not_upload_report_description
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val createAccount = R.string.create_account
     val createPlayer = R.string.create_player
@@ -93,6 +95,7 @@ object StringsIds {
     val findShotsByName = R.string.find_shots_by_name
     val general = R.string.general
     val generateReport = R.string.generate_report
+    val generatingReport = R.string.generating_report
     val gotIt = R.string.got_it
     val havingTroubleCreatingYourAccountPleaseTryAgain =
         R.string.having_trouble_creating_your_account_please_try_again

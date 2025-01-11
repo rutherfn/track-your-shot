@@ -1,12 +1,12 @@
 package com.nicholas.rutherford.track.your.shot.feature.splash
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
@@ -20,7 +20,8 @@ class SplashViewModel(
     private val activeUserRepository: ActiveUserRepository,
     private val accountManager: AccountManager,
     private val readSharedPreferences: ReadSharedPreferences,
-    private val createSharedPreferences: CreateSharedPreferences
+    private val createSharedPreferences: CreateSharedPreferences,
+    private val scope: CoroutineScope
 ) : ViewModel() {
 
     internal fun checkIfAppHasBeenLaunchedBefore() {
@@ -33,7 +34,7 @@ class SplashViewModel(
     fun navigateToPlayersListLoginOrAuthentication() {
         checkIfAppHasBeenLaunchedBefore()
 
-        viewModelScope.launch {
+        scope.launch {
             combine(
                 readFirebaseUserInfo.isEmailVerifiedFlow(),
                 readFirebaseUserInfo.isLoggedInFlow()
