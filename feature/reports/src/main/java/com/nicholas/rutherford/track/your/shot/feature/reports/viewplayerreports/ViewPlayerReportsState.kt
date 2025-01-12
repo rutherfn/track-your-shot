@@ -2,6 +2,6 @@ package com.nicholas.rutherford.track.your.shot.feature.reports.viewplayerreport
 
 import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
 
-data class ViewPlayerReportsState (
+data class ViewPlayerReportsState(
     val reports: List<IndividualPlayerReport> = emptyList()
 )

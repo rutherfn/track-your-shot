@@ -45,6 +45,13 @@ class IndividualPlayerReportDaoTest {
     }
 
     @Test
+    fun insertAll() = runBlocking {
+        individualPlayerReportDao.insertAll(individualPlayerReports = listOf(individualPlayerReportEntity, individualPlayerReportEntity.copy(id = 2)))
+
+        assertThat(listOf(individualPlayerReportEntity, individualPlayerReportEntity.copy(id = 2)), equalTo(individualPlayerReportDao.getAllPlayerReports()))
+    }
+
+    @Test
     fun getAllPlayerReports() = runBlocking {
         individualPlayerReportDao.insert(individualPlayerReportEntity = individualPlayerReportEntity)
         individualPlayerReportDao.insert(individualPlayerReportEntity = individualPlayerReportEntity.copy(id = 2))
@@ -62,6 +69,18 @@ class IndividualPlayerReportDaoTest {
         individualPlayerReportDao.deleteAll()
 
         assertThat(emptyList(), equalTo(individualPlayerReportDao.getAllPlayerReports()))
+    }
+
+    @Test
+    fun deleteReportByFirebaseKey() = runBlocking {
+        individualPlayerReportDao.insert(individualPlayerReportEntity = individualPlayerReportEntity.copy(firebaseKey = "firebaseKey1"))
+        individualPlayerReportDao.insert(individualPlayerReportEntity = individualPlayerReportEntity.copy(id = 2, firebaseKey = "firebaseKey2"))
+
+        assertThat(listOf(individualPlayerReportEntity.copy(firebaseKey = "firebaseKey1"), individualPlayerReportEntity.copy(id = 2, firebaseKey = "firebaseKey2")), equalTo(individualPlayerReportDao.getAllPlayerReports()))
+
+        individualPlayerReportDao.deleteReportByFirebaseKey(firebaseKey = "firebaseKey2")
+
+        assertThat(listOf(individualPlayerReportEntity.copy(firebaseKey = "firebaseKey1")), equalTo(individualPlayerReportDao.getAllPlayerReports()))
     }
 
     @Test

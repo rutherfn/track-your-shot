@@ -11,11 +11,17 @@ interface IndividualPlayerReportDao {
     @Insert
     suspend fun insert(individualPlayerReportEntity: IndividualPlayerReportEntity)
 
+    @Insert
+    suspend fun insertAll(individualPlayerReports: List<IndividualPlayerReportEntity>)
+
     @Query("SELECT * FROM individualPlayerReport")
     suspend fun getAllPlayerReports(): List<IndividualPlayerReportEntity>
 
     @Query("DELETE FROM individualPlayerReport")
     suspend fun deleteAll()
+
+    @Query("DELETE FROM individualPlayerReport WHERE firebaseKey = :firebaseKey")
+    suspend fun deleteReportByFirebaseKey(firebaseKey: String)
 
     @Query("SELECT COUNT(*) FROM individualPlayerReport")
     suspend fun getPlayerReportsCount(): Int

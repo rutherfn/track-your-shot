@@ -12,6 +12,9 @@ import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.Crea
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListParams
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListScreen
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.reports.viewplayerreports.ViewPlayerReportsParams
+import com.nicholas.rutherford.track.your.shot.feature.reports.viewplayerreports.ViewPlayerReportsScreen
+import com.nicholas.rutherford.track.your.shot.feature.reports.viewplayerreports.ViewPlayerReportsViewModel
 
 class ScreenContents {
 
@@ -91,5 +94,14 @@ class ScreenContents {
                 shouldRefreshData = shouldRefreshData
             )
         )
+    }
+
+    fun viewPlayerReportsContent(viewPlayerReportsViewModel: ViewPlayerReportsViewModel): @Composable () -> Unit = {
+        ViewPlayerReportsScreen(params = ViewPlayerReportsParams(
+            onToolbarMenuClicked = { viewPlayerReportsViewModel.onToolbarMenuClicked() },
+            state = viewPlayerReportsViewModel.viewPlayerReportsStateFlow.collectAsState().value,
+            onDeletePlayerReportClicked = { individualPlayerReport -> viewPlayerReportsViewModel.onDeletePlayerReportClicked(individualPlayerReport = individualPlayerReport) },
+            onDownloadPlayerReportClicked = { individualPlayerReport -> viewPlayerReportsViewModel.onDownloadPlayerReportClicked(individualPlayerReport = individualPlayerReport) }
+        ))
     }
 }

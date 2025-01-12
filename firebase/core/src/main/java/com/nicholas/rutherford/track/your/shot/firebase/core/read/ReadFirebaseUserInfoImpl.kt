@@ -167,7 +167,7 @@ class ReadFirebaseUserInfoImpl(
         }
     }
 
-    override fun getPlayerReportList(reportKey: String): Flow<List<IndividualPlayerReportWithKeyRealtimeResponse>> {
+    override fun getReportList(): Flow<List<IndividualPlayerReportWithKeyRealtimeResponse>> {
         return callbackFlow {
             val uid = firebaseAuth.currentUser?.uid ?: ""
             val path = "${Constants.USERS}/$uid/${Constants.PLAYERS_INDIVIDUAL_REPORTS}"
@@ -199,6 +199,8 @@ class ReadFirebaseUserInfoImpl(
                                     }
                                 }
                             }
+
+                            trySend(element = individualPlayerReportRealtimeWithKeyResponseArrayList)
                         } else {
                             Timber.w("Warning(getPlayerReportList) -> No player reports directory exist for this account")
                             trySend(element = emptyList())

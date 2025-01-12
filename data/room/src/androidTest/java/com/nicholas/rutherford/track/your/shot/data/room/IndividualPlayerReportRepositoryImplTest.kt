@@ -50,6 +50,13 @@ class IndividualPlayerReportRepositoryImplTest {
     }
 
     @Test
+    fun createReports() = runBlocking {
+        individualPlayerReportRepositoryImpl.createReports(individualPlayerReports = listOf(individualPlayerReport, individualPlayerReport.copy(id = 2)))
+
+        assertThat(individualPlayerReportRepositoryImpl.fetchAllReports(), equalTo(listOf(individualPlayerReport, individualPlayerReport.copy(id = 2))))
+    }
+
+    @Test
     fun fetchAllReports() = runBlocking {
         individualPlayerReportRepositoryImpl.createReport(report = individualPlayerReport)
         individualPlayerReportRepositoryImpl.createReport(report = individualPlayerReport.copy(id = 2, playerName = "playerTest"))
@@ -67,6 +74,18 @@ class IndividualPlayerReportRepositoryImplTest {
         individualPlayerReportRepositoryImpl.deleteAllReports()
 
         assertThat(individualPlayerReportRepositoryImpl.fetchAllReports(), equalTo(emptyList()))
+    }
+
+    @Test
+    fun deleteReportByFirebaseKey() = runBlocking {
+        individualPlayerReportRepositoryImpl.createReport(report = individualPlayerReport.copy(firebaseKey = "firebasekey1"))
+        individualPlayerReportRepositoryImpl.createReport(report = individualPlayerReport.copy(id = 2, firebaseKey = "firebasekey2"))
+
+        assertThat(individualPlayerReportRepositoryImpl.fetchAllReports(), equalTo(listOf(individualPlayerReport.copy(firebaseKey = "firebasekey1"), individualPlayerReport.copy(id = 2, firebaseKey = "firebasekey2"))))
+
+        individualPlayerReportRepositoryImpl.deleteReportByFirebaseKey(firebaseKey = "firebasekey2")
+
+        assertThat(individualPlayerReportRepositoryImpl.fetchAllReports(), equalTo(listOf(individualPlayerReport.copy(firebaseKey = "firebasekey1"))))
     }
 
     @Test fun fetchReportCount() = runBlocking {

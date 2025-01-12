@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.feature.reports.reportlist
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.getAllShots
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
@@ -18,6 +19,7 @@ class ReportListViewModel(
     private val application: Application,
     private val navigation: ReportListNavigation,
     private val playerRepository: PlayerRepository,
+    private val individualPlayerReportRepository: IndividualPlayerReportRepository,
     private val scope: CoroutineScope
 ) : ViewModel() {
 
@@ -83,12 +85,22 @@ class ReportListViewModel(
         }
     }
 
+    private suspend fun onViewPlayerReportsClicked() {
+        val reports = individualPlayerReportRepository.fetchAllReports()
+
+        if (reports.isEmpty()) {
+            // show a alert
+        } else {
+            navigation.navigateToViewPlayerReports()
+        }
+    }
+
     fun onReportItemClicked(index: Int) {
         when (index) {
             Constants.CREATE_REPORT_INDEX -> {
                 scope.launch { onCreatePlayerReportClicked() }
             }
-            else -> navigation.navigateToViewPlayerReports()
+            else -> { scope.launch {   onViewPlayerReportsClicked() } }
         }
     }
 }

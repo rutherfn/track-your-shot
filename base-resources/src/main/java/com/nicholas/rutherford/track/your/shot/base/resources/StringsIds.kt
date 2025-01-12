@@ -37,6 +37,8 @@ object StringsIds {
     val contactingUsDescription = R.string.contacting_us_description
     val continueText = R.string.continue_text
     val couldNotCreateReport = R.string.could_not_create_report
+    val couldNotDeleteReport = R.string.could_not_delete_report
+    val couldNotDeleteReportDescription = R.string.could_not_delete_report_description
     val couldNotGenerateTheReport = R.string.could_not_generate_the_report
     val couldNotSaveReport = R.string.could_not_save_report
     val couldNotUploadReport = R.string.could_not_upload_report
@@ -56,6 +58,8 @@ object StringsIds {
     val dateShotsTaken = R.string.date_shots_taken
     val deletePendingAccount = R.string.delete_pending_account
     val deletingPendingAccount = R.string.deleting_pending_account
+    val deleteReport = R.string.delete_report
+    val deleteReportDescription = R.string.delete_report_description
     val deleteShot = R.string.delete_Shot
     val deleteX = R.string.delete_x
     val devEmail = R.string.dev_email
@@ -247,6 +251,7 @@ object StringsIds {
     val usingTheApp = R.string.using_the_app
     val verifyAccount = R.string.verify_account
     val viewPlayerReports = R.string.view_player_reports
+    val viewReports = R.string.view_reports
     val viewMoreInfo = R.string.view_more_info
     val voiceCommands = R.string.voice_commands
     val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue =

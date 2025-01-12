@@ -1,8 +1,10 @@
 package com.nicholas.rutherford.track.your.shot.helper.file.generator
 
 import android.app.Application
+import android.app.DownloadManager
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
@@ -94,6 +96,14 @@ class PdfGeneratorImpl(private val application: Application) : PdfGenerator {
         document.close()
 
         return outputStream.toByteArray()
+    }
+
+    override fun downloadPdf(url: String) {
+        var download = application.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        var pdfUri = Uri.parse(url)
+        val pdfDownload = DownloadManager.Request(pdfUri)
+        pdfDownload.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        download.enqueue(pdfDownload)
     }
 
     override fun generatePlayerPdf(fileName: String, player: Player): Pair<Uri?, Int> {

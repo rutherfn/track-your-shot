@@ -37,7 +37,8 @@ open class MainActivity : ComponentActivity() {
                     enabledPermissionsViewModel = getViewModel(),
                     accountInfoViewModel = getViewModel(),
                     reportListViewModel = getViewModel(),
-                    createReportViewModel = getViewModel()
+                    createReportViewModel = getViewModel(),
+                    viewPlayerReportsViewModel = getViewModel()
                 )
             )
         }

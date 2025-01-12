@@ -4,7 +4,9 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlay
 
 interface IndividualPlayerReportRepository {
     suspend fun createReport(report: IndividualPlayerReport)
+    suspend fun createReports(individualPlayerReports: List<IndividualPlayerReport>)
     suspend fun fetchAllReports(): List<IndividualPlayerReport>
     suspend fun deleteAllReports()
+    suspend fun deleteReportByFirebaseKey(firebaseKey: String)
     suspend fun fetchReportCount(): Int
 }

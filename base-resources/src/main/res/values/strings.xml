@@ -35,6 +35,8 @@
     <string name="contacting_us_description">If you have any questions, concerns, or complaints regarding this Agreement, we encourage you to contact us with the email below: </string>
     <string name="continue_text">Continue</string>
     <string name="could_not_create_report">Could Not Create Report</string>
+    <string name="could_not_delete_report">Could Not Delete Report</string>
+    <string name="could_not_delete_report_description">Unable to delete the report due to an error. Please try again or reach out to support for assistance.</string>
     <string name="could_not_generate_the_report">Unable to generate the report. Please try again or reach out to support for assistance.</string>
     <string name="could_not_save_report">Could Not Save Report</string>
     <string name="could_not_upload_report">Could Not Upload Report</string>
@@ -54,11 +56,14 @@
     <string name="date_shots_taken">Date Shots Taken</string>
     <string name="delete_pending_account">Delete Pending Account</string>
     <string name="deleting_pending_account">Deleting Pending Account</string>
+    <string name="delete_report">Delete Report</string>
+    <string name="delete_report_description">Deleting this report will permanently prevent it from being downloaded in the future. Are you sure you want to proceed?</string>
     <string name="delete_Shot">Delete Shot</string>
     <string name="delete_x">Delete %s</string>
     <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
     <string name="do_you_wish_to_proceed_description">Do you wish to proceed despite having unsaved player modifications? Any changes made will not be saved.</string>
+    <string name="download_report">Download Report</string>
     <string name="edit_x">Edit %s</string>
     <string name="enter_first_name">Enter First Name</string>
     <string name="enter_last_name">Enter Last Name</string>
@@ -247,6 +252,7 @@
     <string name="we_were_unable_to_set_new_username_since_the_username_is_the_same_as_the_current_username_please_click_try_again_to_set_new_username">We were unable to set new username since the username is the same as the current username. Please click try again to set new username</string>
     <string name="verify_account">Verify Account</string>
     <string name="view_player_reports">View Player Reports</string>
+    <string name="view_reports">View Reports</string>
     <string name="view_more_info">View More Info</string>
     <string name="view_x">View %s</string>
     <string name="voice_commands">Voice Commands</string>

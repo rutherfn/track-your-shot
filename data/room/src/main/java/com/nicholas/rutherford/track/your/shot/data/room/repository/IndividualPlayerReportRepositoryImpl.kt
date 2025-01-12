@@ -9,9 +9,13 @@ class IndividualPlayerReportRepositoryImpl(private val individualPlayerReportDao
 
     override suspend fun createReport(report: IndividualPlayerReport) = individualPlayerReportDao.insert(individualPlayerReportEntity = report.toIndividualPlayerReportEntity())
 
+    override suspend fun createReports(individualPlayerReports: List<IndividualPlayerReport>) = individualPlayerReportDao.insertAll(individualPlayerReports = individualPlayerReports.map { it.toIndividualPlayerReportEntity() })
+
     override suspend fun fetchAllReports(): List<IndividualPlayerReport> = individualPlayerReportDao.getAllPlayerReports().map { it.toIndividualPlayerReport() }
 
     override suspend fun deleteAllReports() = individualPlayerReportDao.deleteAll()
+
+    override suspend fun deleteReportByFirebaseKey(firebaseKey: String) = individualPlayerReportDao.deleteReportByFirebaseKey(firebaseKey = firebaseKey)
 
     override suspend fun fetchReportCount(): Int = individualPlayerReportDao.getPlayerReportsCount()
 }

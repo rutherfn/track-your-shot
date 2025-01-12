@@ -4,6 +4,7 @@ import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
@@ -40,6 +41,7 @@ class AccountManagerImpl(
     private val activeUserRepository: ActiveUserRepository,
     private val declaredShotRepository: DeclaredShotRepository,
     private val playerRepository: PlayerRepository,
+    private val individualPlayerReportRepository: IndividualPlayerReportRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
     private val userRepository: UserRepository,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
@@ -110,7 +112,6 @@ class AccountManagerImpl(
     }
 
     override fun updateLoggedInDeclaredShotFlow(declaredShots: List<DeclaredShot>) {
-        println("here are all the declared shots $declaredShots")
         _loggedInDeclaredShotListStateFlow.value = declaredShots
     }
 
@@ -119,6 +120,7 @@ class AccountManagerImpl(
         playerRepository.deleteAllPlayers()
         pendingPlayerRepository.deleteAllPendingPlayers()
         userRepository.deleteAllUsers()
+        individualPlayerReportRepository.deleteAllReports()
     }
 
     override fun deleteAllPendingShotsAndPlayers() {
@@ -215,14 +217,36 @@ class AccountManagerImpl(
                     _loggedInPlayerListStateFlow.value = playerList
                     playerRepository.createListOfPlayers(playerList = playerList)
                     hasNoPlayersMutableSharedFlow.tryEmit(value = false)
-                    hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
-
-                    disableProcessAndNavigateToPlayersList()
+                    collectReportList()
                 } else {
                     hasNoPlayersMutableSharedFlow.tryEmit(value = true)
-                    hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
-                    disableProcessAndNavigateToPlayersList()
+                    collectReportList()
                 }
+            }
+    }
+
+    internal suspend fun collectReportList() {
+        readFirebaseUserInfo.getReportList()
+            .collectLatest { individualPlayerReportWithKeyRealtimeResponse ->
+                if (individualPlayerReportWithKeyRealtimeResponse.isNotEmpty()) {
+                    val individualPlayerReportList =
+                        individualPlayerReportWithKeyRealtimeResponse.mapIndexed { index,  report ->
+                            IndividualPlayerReport(
+                                id = index + 1,
+                                loggedDateValue = report.playerReport.loggedDateValue,
+                                playerName = report.playerReport.playerName,
+                                firebaseKey = report.reportFirebaseKey,
+                                pdfUrl = report.playerReport.pdfUrl
+                            )
+                        }
+                    _loggedInIndividualPlayerReportListStateFlow.value = individualPlayerReportList
+                    individualPlayerReportRepository.createReports(individualPlayerReports = individualPlayerReportList)
+                    hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
+                } else {
+                    hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
+                }
+
+                disableProcessAndNavigateToPlayersList()
             }
     }
 

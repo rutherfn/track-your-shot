@@ -152,6 +152,7 @@ fun NavigationComponent(
     val accountInfoViewModel = viewModels.accountInfoViewModel
     val reportListViewModel = viewModels.reportListViewModel
     val createReportViewModel = viewModels.createReportViewModel
+    val viewPlayerReportsViewModel = viewModels.viewPlayerReportsViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -456,7 +457,6 @@ fun NavigationComponent(
                 route = NavigationDestinations.CREATE_REPORT_SCREEN_WITH_PARAMS,
                 arguments = NavArguments.createReport
             ) { entry ->
-                println("test get here ")
                 entry.arguments?.let { bundle ->
                     val shouldRefreshData = bundle.getBoolean(NamedArguments.SHOULD_REFRESH_DATA)
                     screenContents.createReportContent(
@@ -464,6 +464,9 @@ fun NavigationComponent(
                         shouldRefreshData = shouldRefreshData
                     ).invoke()
                 }
+            }
+            composable(route = NavigationDestinations.VIEW_PLAYERS_REPORTS_SCREEN) {
+                screenContents.viewPlayerReportsContent(viewPlayerReportsViewModel = viewPlayerReportsViewModel).invoke()
             }
             composable(
                 route = NavigationDestinations.PERMISSION_EDUCATION_SCREEN
