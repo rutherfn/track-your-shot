@@ -89,6 +89,7 @@ class ScreenContents {
             params = CreateReportParams(
                 onToolbarMenuClicked = { createReportViewModel.onToolbarMenuClicked() },
                 updatePlayersState = { createReportViewModel.updatePlayersState() },
+                onPlayerChanged = { playerName -> createReportViewModel.onPlayerChanged(playerName = playerName) },
                 attemptToGeneratePlayerReport = { createReportViewModel.attemptToGeneratePlayerReport() },
                 state = createReportViewModel.createReportStateFlow.collectAsState().value,
                 shouldRefreshData = shouldRefreshData
@@ -102,7 +103,8 @@ class ScreenContents {
                 onToolbarMenuClicked = { viewPlayerReportsViewModel.onToolbarMenuClicked() },
                 state = viewPlayerReportsViewModel.viewPlayerReportsStateFlow.collectAsState().value,
                 onDeletePlayerReportClicked = { individualPlayerReport -> viewPlayerReportsViewModel.onDeletePlayerReportClicked(individualPlayerReport = individualPlayerReport) },
-                onDownloadPlayerReportClicked = { individualPlayerReport -> viewPlayerReportsViewModel.onDownloadPlayerReportClicked(individualPlayerReport = individualPlayerReport) }
+                onDownloadPlayerReportClicked = { individualPlayerReport -> viewPlayerReportsViewModel.onDownloadPlayerReportClicked(individualPlayerReport = individualPlayerReport) },
+                buildDateTimeStamp = { value -> viewPlayerReportsViewModel.buildDateTimeStamp(value) }
             )
         )
     }

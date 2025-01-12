@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.buildPlayersWithShots
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.room.response.sortedPlayers
@@ -134,6 +135,23 @@ class CreateReportViewModel(
         navigation.alert(alert = reportGeneratedForPlayer(playerName = playerName))
         resetState()
         navigation.pop()
+    }
+
+    fun onPlayerChanged(playerName: String) {
+        scope.launch {
+            createReportMutableStateFlow.update { state -> state.copy(selectedPlayer = buildSelectedPlayer(value = playerName)) }
+        }
+    }
+
+    suspend fun buildSelectedPlayer(value: String): Player? {
+        var selectedPlayer: Player? = null
+        playerRepository.fetchAllPlayers().buildPlayersWithShots().sortedPlayers().forEach { player ->
+            if (player.fullName() == value) {
+                selectedPlayer = player
+            }
+        }
+
+        return selectedPlayer
     }
 
     fun attemptToUploadAndSaveReport(uri: Uri, fullName: String) {

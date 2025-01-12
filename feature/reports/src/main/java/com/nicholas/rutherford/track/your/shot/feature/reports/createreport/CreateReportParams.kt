@@ -4,6 +4,7 @@ data class CreateReportParams(
     val onToolbarMenuClicked: () -> Unit,
     val updatePlayersState: () -> Unit,
     val attemptToGeneratePlayerReport: () -> Unit,
+    val onPlayerChanged: (playerName: String) -> Unit,
     val state: CreateReportState,
     val shouldRefreshData: Boolean
 )

@@ -49,6 +49,7 @@ fun PlayerChooser(params: CreateReportParams) {
                     onClick = {
                         selectedOption = option
                         isDropdownExpanded = false
+                        params.onPlayerChanged.invoke(option)
                     }
                 ) {
                     Text(

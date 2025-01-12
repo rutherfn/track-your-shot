@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
@@ -35,6 +37,7 @@ import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
+import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
@@ -46,7 +49,8 @@ fun ViewPlayerReportsScreen(params: ViewPlayerReportsParams) {
                     PlayerReport(
                         report = report,
                         onDeletePlayerReportClicked = params.onDeletePlayerReportClicked,
-                        onDownloadPlayerReportClicked = params.onDownloadPlayerReportClicked
+                        onDownloadPlayerReportClicked = params.onDownloadPlayerReportClicked,
+                        buildDateTimeStamp = params.buildDateTimeStamp
                     )
                 }
             }
@@ -65,7 +69,8 @@ fun ViewPlayerReportsScreen(params: ViewPlayerReportsParams) {
 fun PlayerReport(
     report: IndividualPlayerReport,
     onDeletePlayerReportClicked: (individualPlayerReport: IndividualPlayerReport) -> Unit,
-    onDownloadPlayerReportClicked: (individualPlayerReport: IndividualPlayerReport) -> Unit
+    onDownloadPlayerReportClicked: (individualPlayerReport: IndividualPlayerReport) -> Unit,
+    buildDateTimeStamp: (value: Long) -> String
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -84,11 +89,25 @@ fun PlayerReport(
                     .clickable { expanded = true },
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = report.playerName,
-                    style = TextStyles.bodyBold,
-                    textAlign = TextAlign.Start
-                )
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(id = StringsIds.xReport, report.playerName),
+                        modifier = Modifier.fillMaxWidth(),
+                        style = TextStyles.bodyBold,
+                        textAlign = TextAlign.Start,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(modifier = Modifier.height(Padding.four))
+                    Text(
+                        text = stringResource(id = StringsIds.xCreated, buildDateTimeStamp(report.loggedDateValue)),
+                        modifier = Modifier.fillMaxWidth(),
+                        style = TextStyles.bodySmall,
+                        textAlign = TextAlign.Start,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
 
                 Spacer(modifier = Modifier.weight(1f))
 

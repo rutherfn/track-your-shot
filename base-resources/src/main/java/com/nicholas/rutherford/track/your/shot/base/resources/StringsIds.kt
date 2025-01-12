@@ -262,6 +262,8 @@ object StringsIds {
         R.string.we_were_able_to_send_email_verification_please_check_your_email_to_verify_account
     val weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain =
         R.string.we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again
+    val xCreated = R.string.x_created
+    val xReport = R.string.x_report
     val xShot = R.string.x_shot
     val xShotHasBeenRemovedDescription = R.string.x_shot_has_been_removed_description
     val xShotHasNotBeenRemovedDescription = R.string.x_shot_has_not_been_removed_description

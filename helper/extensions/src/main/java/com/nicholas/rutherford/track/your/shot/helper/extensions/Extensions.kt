@@ -71,6 +71,11 @@ fun PlayerPositions.toType(): Int {
     }
 }
 
+fun Date.toTimestampString(): String {
+    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+    return formatter.format(this)
+}
+
 fun String.toLocalDate(): LocalDate? {
     return try {
         val formatter = DateTimeFormatter.ofPattern("MMM d, y", Locale.ENGLISH)

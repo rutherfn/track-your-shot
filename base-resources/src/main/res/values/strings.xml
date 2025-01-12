@@ -256,6 +256,8 @@
     <string name="view_more_info">View More Info</string>
     <string name="view_x">View %s</string>
     <string name="voice_commands">Voice Commands</string>
+    <string name="x_report">%s Report</string>
+    <string name="x_created">%s Created</string>
     <string name="x_shot_report_created">%s shot report created</string>
     <string name="x_shot_report_created_description">Shot report for %s has been generated. Tap to view the file.</string>
     <string name="x_player_shot_report">%sshotreport.pdf</string>

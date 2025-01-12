@@ -11,6 +11,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
+import com.nicholas.rutherford.track.your.shot.helper.extensions.toTimestampString
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class ViewPlayerReportsViewModel(
     private val dataAdditionUpdates: DataAdditionUpdates,
@@ -39,7 +41,7 @@ class ViewPlayerReportsViewModel(
         collectNewReportHasBeenAddedSharedFlow()
     }
 
-    fun onToolbarMenuClicked() = popAndResetState()
+    fun onToolbarMenuClicked() = navigation.pop()
 
     fun collectLoggedInIndividualPlayerReportListStateFlow() {
         scope.launch {
@@ -69,11 +71,6 @@ class ViewPlayerReportsViewModel(
         }
     }
 
-    fun popAndResetState() {
-        navigation.pop()
-        viewPlayerReportsMutableStateFlow.update { state -> state.copy(reports = emptyList()) }
-    }
-
     fun updateViewPlayerReportsState(shouldCheckForPop: Boolean = false) {
         scope.launch {
             val reports = individualPlayerReportRepository.fetchAllReports()
@@ -81,7 +78,7 @@ class ViewPlayerReportsViewModel(
             viewPlayerReportsMutableStateFlow.update { state -> state.copy(reports = reports) }
 
             if (shouldCheckForPop && reports.isEmpty()) {
-                popAndResetState()
+                navigation.pop()
             }
         }
     }
@@ -126,6 +123,8 @@ class ViewPlayerReportsViewModel(
             description = application.getString(StringsIds.couldNotDeleteReportDescription)
         )
     }
+
+    fun buildDateTimeStamp(value: Long): String = Date(value).toTimestampString()
 
     fun onDeletePlayerReportClicked(individualPlayerReport: IndividualPlayerReport) = navigation.alert(alert = deleteReportAlert(individualPlayerReport = individualPlayerReport))
 
