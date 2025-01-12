@@ -100,7 +100,7 @@ class ReportListViewModel(
             Constants.CREATE_REPORT_INDEX -> {
                 scope.launch { onCreatePlayerReportClicked() }
             }
-            else -> { scope.launch {   onViewPlayerReportsClicked() } }
+            else -> { scope.launch { onViewPlayerReportsClicked() } }
         }
     }
 }

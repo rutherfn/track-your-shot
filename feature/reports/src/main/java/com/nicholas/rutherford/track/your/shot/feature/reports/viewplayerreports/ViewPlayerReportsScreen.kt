@@ -34,7 +34,6 @@ import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
-import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
@@ -44,7 +43,11 @@ fun ViewPlayerReportsScreen(params: ViewPlayerReportsParams) {
         ui = {
             LazyColumn {
                 items(params.state.reports) { report ->
-
+                    PlayerReport(
+                        report = report,
+                        onDeletePlayerReportClicked = params.onDeletePlayerReportClicked,
+                        onDownloadPlayerReportClicked = params.onDownloadPlayerReportClicked
+                    )
                 }
             }
         },
