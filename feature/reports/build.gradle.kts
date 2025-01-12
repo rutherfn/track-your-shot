@@ -72,6 +72,7 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":compose:components"))
     api(project(path = ":firebase:core"))
+    api(project(path = ":helper:account"))
     api(project(path = ":helper:file-generator"))
     api(project(path = ":helper:notifications"))
     api(project(path = ":navigation"))

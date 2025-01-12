@@ -303,7 +303,7 @@ class AccountManagerImplTest {
             coEvery { readFirebaseUserInfo.getAccountInfoKeyFlow() } returns flowOf(value = key)
             coEvery { activeUserRepository.fetchActiveUser() } returns null
             coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotList
-            coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(emptyList())
+            coEvery { readFirebaseUserInfo.getPlayerInfoList() } returns flowOf(emptyList())
 
             accountManagerImpl.updateActiveUserFromLoggedInUser(email = activeUserEntity.email, username = activeUserEntity.username)
 
@@ -335,7 +335,7 @@ class AccountManagerImplTest {
             coEvery { readFirebaseUserInfo.getAccountInfoKeyFlow() } returns flowOf(value = key)
             coEvery { activeUserRepository.fetchActiveUser() } returns null
             coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotList
-            coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(playerInfoRealtimeWithKeyResponseList)
+            coEvery { readFirebaseUserInfo.getPlayerInfoList() } returns flowOf(playerInfoRealtimeWithKeyResponseList)
 
             accountManagerImpl.updateActiveUserFromLoggedInUser(email = activeUserEntity.email, username = activeUserEntity.username)
 
@@ -365,13 +365,11 @@ class AccountManagerImplTest {
 
     @Nested
     inner class CollectPlayerInfoList {
-        private val key = "key"
-
         @Test
         fun `when getPlayerInfoList returns empty list should call disableProcessAndNavigateToPlayersList and not createListOfPlayers`() = runTest {
-            coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(emptyList())
+            coEvery { readFirebaseUserInfo.getPlayerInfoList() } returns flowOf(emptyList())
 
-            accountManagerImpl.collectPlayerInfoList(firebaseAccountInfoKey = key)
+            accountManagerImpl.collectPlayerInfoList()
 
             coVerify(exactly = 0) { playerRepository.createListOfPlayers(playerList = any()) }
             verify { navigator.progress(progressAction = null) }
@@ -410,9 +408,9 @@ class AccountManagerImplTest {
                 )
             }
 
-            coEvery { readFirebaseUserInfo.getPlayerInfoList(accountKey = key) } returns flowOf(playerInfoRealtimeWithKeyResponseList)
+            coEvery { readFirebaseUserInfo.getPlayerInfoList() } returns flowOf(playerInfoRealtimeWithKeyResponseList)
 
-            accountManagerImpl.collectPlayerInfoList(firebaseAccountInfoKey = key)
+            accountManagerImpl.collectPlayerInfoList()
 
             Assertions.assertEquals(
                 accountManagerImpl.loggedInPlayerListStateFlow.value,

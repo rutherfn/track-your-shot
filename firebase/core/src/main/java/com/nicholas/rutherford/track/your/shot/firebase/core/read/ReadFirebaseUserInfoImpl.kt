@@ -125,7 +125,7 @@ class ReadFirebaseUserInfoImpl(
         }
     }
 
-    override fun getPlayerInfoList(accountKey: String): Flow<List<PlayerInfoRealtimeWithKeyResponse>> {
+    override fun getPlayerInfoList(): Flow<List<PlayerInfoRealtimeWithKeyResponse>> {
         return callbackFlow {
             val uid = firebaseAuth.currentUser?.uid ?: ""
             val path = "${Constants.USERS}/$uid/${Constants.PLAYERS}"

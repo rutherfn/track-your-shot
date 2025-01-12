@@ -9,6 +9,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerReposi
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
+import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
@@ -51,6 +52,9 @@ class AccountManagerImpl(
 
     private val _loggedInDeclaredShotListStateFlow: MutableStateFlow<List<DeclaredShot>> = MutableStateFlow(value = emptyList())
     override val loggedInDeclaredShotListStateFlow: StateFlow<List<DeclaredShot>> = _loggedInDeclaredShotListStateFlow.asStateFlow()
+
+    private val _loggedInIndividualPlayerReportListStateFlow: MutableStateFlow<List<IndividualPlayerReport>> = MutableStateFlow(value = emptyList())
+    override val loggedInIndividualPlayerReportListStateFlow: StateFlow<List<IndividualPlayerReport>> = _loggedInIndividualPlayerReportListStateFlow.asStateFlow()
 
     private val hasLoggedInSuccessfulMutableSharedFlow = MutableSharedFlow<Boolean>(extraBufferCapacity = Channel.UNLIMITED)
     override val hasLoggedInSuccessfulFlow: Flow<Boolean> = hasLoggedInSuccessfulMutableSharedFlow
@@ -172,13 +176,13 @@ class AccountManagerImpl(
 
                 _loggedInDeclaredShotListStateFlow.value = declaredShotRepository.fetchAllDeclaredShots()
 
-                collectPlayerInfoList(firebaseAccountInfoKey = firebaseAccountInfoKey)
+                collectPlayerInfoList()
             } ?: disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
         }
     }
 
-    internal suspend fun collectPlayerInfoList(firebaseAccountInfoKey: String) {
-        readFirebaseUserInfo.getPlayerInfoList(accountKey = firebaseAccountInfoKey)
+    internal suspend fun collectPlayerInfoList() {
+        readFirebaseUserInfo.getPlayerInfoList()
             .collectLatest { playerInfoRealtimeWithKeyResponseList ->
                 if (playerInfoRealtimeWithKeyResponseList.isNotEmpty()) {
                     val playerList =
