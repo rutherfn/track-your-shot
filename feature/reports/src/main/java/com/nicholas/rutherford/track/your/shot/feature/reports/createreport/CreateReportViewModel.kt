@@ -16,6 +16,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.extensions.DateExt
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
 import com.nicholas.rutherford.track.your.shot.notifications.Notifications
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +25,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Date
 
 class CreateReportViewModel(
     private val application: Application,
@@ -34,13 +34,21 @@ class CreateReportViewModel(
     private val notifications: Notifications,
     private val pdfGenerator: PdfGenerator,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
-    private val individualPlayerReportRepository: IndividualPlayerReportRepository
+    private val individualPlayerReportRepository: IndividualPlayerReportRepository,
+    private val dateExt: DateExt
 ) : ViewModel() {
 
-    internal val createReportMutableStateFlow = MutableStateFlow(value = CreateReportState())
+    val createReportMutableStateFlow = MutableStateFlow(value = CreateReportState())
     val createReportStateFlow = createReportMutableStateFlow.asStateFlow()
 
-    fun onToolbarMenuClicked() = navigation.pop()
+    fun resetState() {
+        createReportMutableStateFlow.value = CreateReportState()
+    }
+
+    fun onToolbarMenuClicked() {
+        resetState()
+        navigation.pop()
+    }
 
     fun updatePlayersState() {
         scope.launch {
@@ -91,7 +99,7 @@ class CreateReportViewModel(
             dismissButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.gotIt)
             ),
-            description = application.getString(StringsIds.couldNotuploadReportDescription)
+            description = application.getString(StringsIds.couldNotUploadReportDescription)
         )
     }
 
@@ -121,11 +129,12 @@ class CreateReportViewModel(
         navigation.disableProgress()
 
         navigation.alert(alert = reportGeneratedForPlayer(playerName = playerName))
+        resetState()
         navigation.pop()
     }
 
     fun attemptToUploadAndSaveReport(uri: Uri, fullName: String) {
-        val currentDateTime = Date().time
+        val currentDateTime = dateExt.now
 
         scope.launch {
             createFirebaseUserInfo.attemptToCreatePdfFirebaseStorageResponseFlow(uri = uri)
@@ -147,12 +156,12 @@ class CreateReportViewModel(
                                 )
                             } else {
                                 navigation.disableProgress()
-                                cannotUploadPdfAlert()
+                                navigation.alert(alert = cannotUploadPdfAlert())
                             }
                         }
                     } ?: run {
                         navigation.disableProgress()
-                        cannotUploadPdfAlert()
+                        navigation.alert(alert = cannotUploadPdfAlert())
                     }
                 }
         }
@@ -187,6 +196,9 @@ class CreateReportViewModel(
                 navigation.disableProgress()
                 navigation.alert(alert = createPdfErrorAlert(statusCode = pdf.second))
             }
+        } ?: run {
+            navigation.disableProgress()
+            navigation.alert(alert = createPdfErrorAlert(statusCode = Constants.PDF_CANNOT_CREATE_PDF_CODE))
         }
     }
 }

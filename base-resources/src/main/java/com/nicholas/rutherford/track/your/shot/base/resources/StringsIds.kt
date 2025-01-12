@@ -40,7 +40,7 @@ object StringsIds {
     val couldNotGenerateTheReport = R.string.could_not_generate_the_report
     val couldNotSaveReport = R.string.could_not_save_report
     val couldNotUploadReport = R.string.could_not_upload_report
-    val couldNotuploadReportDescription = R.string.could_not_upload_report_description
+    val couldNotUploadReportDescription = R.string.could_not_upload_report_description
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val createAccount = R.string.create_account
     val createPlayer = R.string.create_player

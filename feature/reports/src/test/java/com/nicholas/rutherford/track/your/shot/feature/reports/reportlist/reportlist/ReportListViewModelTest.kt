@@ -28,7 +28,7 @@ class ReportListViewModelTest {
     private var navigation = mockk<ReportListNavigation>(relaxed = true)
     private val application = mockk<Application>(relaxed = true)
 
-    private val playerRepsitory = mockk<PlayerRepository>(relaxed = true)
+    private val playerRepository = mockk<PlayerRepository>(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -43,7 +43,7 @@ class ReportListViewModelTest {
         reportListViewModel = ReportListViewModel(
             navigation = navigation,
             application = application,
-            playerRepository = playerRepsitory,
+            playerRepository = playerRepository,
             scope = scope
         )
     }
@@ -134,7 +134,7 @@ class ReportListViewModelTest {
 
         @Test
         fun `when index is create report index and fetch all players returns back players with shots should call navigate to create player report`() = runTest {
-            coEvery { playerRepsitory.fetchAllPlayers() } returns listOf(TestPlayer().create())
+            coEvery { playerRepository.fetchAllPlayers() } returns listOf(TestPlayer().create())
 
             reportListViewModel.onReportItemClicked(index = 0)
 
@@ -145,7 +145,7 @@ class ReportListViewModelTest {
 
         @Test
         fun `when index is create report index and fetch all players returns back not players should call alert`() = runTest {
-            coEvery { playerRepsitory.fetchAllPlayers() } returns emptyList()
+            coEvery { playerRepository.fetchAllPlayers() } returns emptyList()
 
             reportListViewModel.onReportItemClicked(index = 0)
 
@@ -156,7 +156,7 @@ class ReportListViewModelTest {
 
         @Test
         fun `when index is create report index and fetch all players returns back players but no shots should call alert`() = runTest {
-            coEvery { playerRepsitory.fetchAllPlayers() } returns listOf(TestPlayer().create().copy(shotsLoggedList = emptyList()))
+            coEvery { playerRepository.fetchAllPlayers() } returns listOf(TestPlayer().create().copy(shotsLoggedList = emptyList()))
 
             reportListViewModel.onReportItemClicked(index = 0)
 

@@ -93,6 +93,8 @@ import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.Existi
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManagerImpl
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.extensions.DateExt
+import com.nicholas.rutherford.track.your.shot.helper.extensions.DateExtImpl
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGeneratorImpl
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
@@ -245,6 +247,9 @@ class AppModule {
         single<PdfGenerator> {
             PdfGeneratorImpl(application = androidApplication())
         }
+        single<DateExt> {
+            DateExtImpl()
+        }
         single<SplashNavigation> {
             SplashNavigationImpl(navigator = get())
         }
@@ -340,7 +345,6 @@ class AppModule {
                 deleteFirebaseUserInfo = get(),
                 createFirebaseUserInfo = get(),
                 updateFirebaseUserInfo = get(),
-                readFirebaseUserInfo = get(),
                 playerRepository = get(),
                 pendingPlayerRepository = get(),
                 activeUserRepository = get(),
@@ -462,7 +466,8 @@ class AppModule {
                 notifications = get(),
                 pdfGenerator = get(),
                 createFirebaseUserInfo = get(),
-                individualPlayerReportRepository = get()
+                individualPlayerReportRepository = get(),
+                dateExt = get()
             )
         }
     }

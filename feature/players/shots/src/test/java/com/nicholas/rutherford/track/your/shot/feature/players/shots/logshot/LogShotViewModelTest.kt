@@ -1000,7 +1000,7 @@ class LogShotViewModelTest {
     }
 
     @Nested
-    inner class ConvertValueToDate {
+    inner class ConvertValueToDateExt {
 
         @Test
         fun `when value is empty should return null`() {

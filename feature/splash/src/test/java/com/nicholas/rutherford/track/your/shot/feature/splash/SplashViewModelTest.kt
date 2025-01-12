@@ -11,16 +11,17 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -38,7 +39,10 @@ class SplashViewModelTest {
     internal val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
     internal val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
 
-    internal val delayTime = 4001L // needs 1 extra millisecond to account for function below call
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val testDispatcher = UnconfinedTestDispatcher()
+
+    private val scope = CoroutineScope(SupervisorJob() + testDispatcher)
 
     internal val activeUser = TestActiveUser().create()
 
@@ -54,7 +58,8 @@ class SplashViewModelTest {
             activeUserRepository = activeUserRepository,
             accountManager = accountManager,
             readSharedPreferences = readSharedPreferences,
-            createSharedPreferences = createSharedPreferences
+            createSharedPreferences = createSharedPreferences,
+            scope = scope
         )
     }
 
@@ -62,11 +67,6 @@ class SplashViewModelTest {
     @AfterEach
     fun afterEach() {
         Dispatchers.resetMain()
-    }
-
-    @Test
-    fun constants() {
-        Assertions.assertEquals(SPLASH_DELAY_IN_MILLIS, 4000L)
     }
 
     @Nested
@@ -117,12 +117,11 @@ class SplashViewModelTest {
                         activeUserRepository = activeUserRepository,
                         accountManager = accountManager,
                         readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences
+                        createSharedPreferences = createSharedPreferences,
+                        scope = scope
                     )
 
                     viewModel.navigateToPlayersListLoginOrAuthentication()
-
-                    delay(delayTime)
 
                     coVerify {
                         navigation.navigateToAuthentication(
@@ -150,12 +149,11 @@ class SplashViewModelTest {
                         activeUserRepository = activeUserRepository,
                         accountManager = accountManager,
                         readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences
+                        createSharedPreferences = createSharedPreferences,
+                        scope = scope
                     )
 
                     viewModel.navigateToPlayersListLoginOrAuthentication()
-
-                    delay(delayTime)
 
                     coVerify {
                         navigation.navigateToAuthentication(
@@ -178,12 +176,11 @@ class SplashViewModelTest {
                         activeUserRepository = activeUserRepository,
                         accountManager = accountManager,
                         readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences
+                        createSharedPreferences = createSharedPreferences,
+                        scope = scope
                     )
 
                     viewModel.navigateToPlayersListLoginOrAuthentication()
-
-                    delay(delayTime)
 
                     coVerify(exactly = 0) {
                         navigation.navigateToAuthentication(
@@ -210,12 +207,11 @@ class SplashViewModelTest {
                         activeUserRepository = activeUserRepository,
                         accountManager = accountManager,
                         readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences
+                        createSharedPreferences = createSharedPreferences,
+                        scope = scope
                     )
 
                     viewModel.navigateToPlayersListLoginOrAuthentication()
-
-                    delay(delayTime)
 
                     coVerify(exactly = 0) {
                         navigation.navigateToAuthentication(
@@ -231,7 +227,7 @@ class SplashViewModelTest {
 
             @OptIn(ExperimentalCoroutinesApi::class)
             @Test
-            fun `should delay for 4 seconds and verifies that it calls navigateToLogin when isLoggedIn is set to false`() =
+            fun `verifies that it calls navigateToLogin when isLoggedIn is set to false`() =
                 runTest {
                     every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(false)
                     every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(true)
@@ -247,19 +243,18 @@ class SplashViewModelTest {
                         activeUserRepository = activeUserRepository,
                         accountManager = accountManager,
                         readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences
+                        createSharedPreferences = createSharedPreferences,
+                        scope = scope
                     )
 
                     viewModel.navigateToPlayersListLoginOrAuthentication()
-
-                    delay(delayTime)
 
                     coVerify { navigation.navigateToLogin() }
                 }
 
             @OptIn(ExperimentalCoroutinesApi::class)
             @Test
-            fun `should delay for 4 seconds and verifies it calls navigateToPlayersList when isLoggedIn is set to true`() =
+            fun `verifies it calls navigateToPlayersList when isLoggedIn is set to true`() =
                 runTest {
                     every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(true)
                     every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(true)
@@ -275,12 +270,11 @@ class SplashViewModelTest {
                         activeUserRepository = activeUserRepository,
                         accountManager = accountManager,
                         readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences
+                        createSharedPreferences = createSharedPreferences,
+                        scope = scope
                     )
 
                     viewModel.navigateToPlayersListLoginOrAuthentication()
-
-                    delay(delayTime)
 
                     coVerify { navigation.navigateToPlayersList() }
                 }

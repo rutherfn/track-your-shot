@@ -75,7 +75,7 @@ class ReadFirebaseUserInfoImplTest {
     }
 
     @Nested
-    inner class GetLastUpdatedDateFlow {
+    inner class GetLastUpdatedDateExtFlow {
 
         @Test
         fun `when onCancelled is called should return null`() = runTest {

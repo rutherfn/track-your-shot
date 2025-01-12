@@ -107,7 +107,7 @@ class PdfGeneratorImpl(private val application: Application) : PdfGenerator {
 
             resolver.openOutputStream(uri)?.use { outputStream ->
                 outputStream.write(pdfOutputStreamByteArray(player = player))
-                return Pair(uri, Constants.PDF_SUCCESSFUL_GENERATE_CODE)
+                return Pair(null, Constants.PDF_SUCCESSFUL_GENERATE_CODE)
             } ?: return Pair(null, Constants.PDF_CANNOT_SAVE_PDF_CODE)
         } ?: run {
             return Pair(null, Constants.PDF_CANNOT_CREATE_PDF_CODE)

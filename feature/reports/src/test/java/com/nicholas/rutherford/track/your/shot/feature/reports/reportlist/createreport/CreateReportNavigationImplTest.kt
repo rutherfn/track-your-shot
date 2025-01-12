@@ -1,5 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.createreport
 
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.CreateReportNavigationImpl
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
@@ -23,6 +25,15 @@ class CreateReportNavigationImplTest {
     }
 
     @Test
+    fun `alert action`() {
+        val alert = Alert(title = "title")
+
+        createReportNavigationImpl.alert(alert = alert)
+
+        verify { navigator.alert(alertAction = alert) }
+    }
+
+    @Test
     fun `pop action`() {
         val argumentCapture: CapturingSlot<String> = slot()
 
@@ -34,5 +45,21 @@ class CreateReportNavigationImplTest {
         val expectedAction = Constants.POP_DEFAULT_ACTION
 
         Assertions.assertEquals(expectedAction, capturedArgument)
+    }
+
+    @Test
+    fun `disable progress`() {
+        createReportNavigationImpl.disableProgress()
+
+        verify { navigator.progress(progressAction = null) }
+    }
+
+    @Test
+    fun `enable progress`() {
+        val progress = Progress()
+
+        createReportNavigationImpl.enableProgress(progress = progress)
+
+        verify { navigator.progress(progressAction = progress) }
     }
 }

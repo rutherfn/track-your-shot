@@ -19,7 +19,6 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
@@ -44,7 +43,6 @@ class CreateEditPlayerViewModel(
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val updateFirebaseUserInfo: UpdateFirebaseUserInfo,
-    private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val playerRepository: PlayerRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
     private val activeUserRepository: ActiveUserRepository,
@@ -542,11 +540,13 @@ class CreateEditPlayerViewModel(
                             )
                         )
                     ).collectLatest { isSuccessful ->
-                        handleSavingPlayer(
-                            key = playerKey,
-                            state = state,
-                            imageUrl = imageUrl
-                        )
+                        if (isSuccessful) {
+                            handleSavingPlayer(
+                                key = playerKey,
+                                state = state,
+                                imageUrl = imageUrl
+                            )
+                        }
                     }
                 } else {
                     navigation.disableProgress()
@@ -577,9 +577,6 @@ class CreateEditPlayerViewModel(
             )
 
             createOrEditPlayerInRoom(player = player)
-
-            val allPlayers = playerRepository.fetchAllPlayers()
-            println("here are all the players $allPlayers")
 
             currentPendingShot.clearShotList()
 
