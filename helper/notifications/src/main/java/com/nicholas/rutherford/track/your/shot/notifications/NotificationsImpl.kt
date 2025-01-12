@@ -28,14 +28,13 @@ class NotificationsImpl(private val application: Application) : Notifications {
             flags = Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_GRANT_READ_URI_PERMISSION
         }
 
-        // Wrap the Intent in a PendingIntent
         val pendingIntent = PendingIntent.getActivity(
             application,
             0,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        val notification = NotificationCompat.Builder(application,Constants.NOTIFICATION_CHANNEL_ID)
+        val notification = NotificationCompat.Builder(application, Constants.NOTIFICATION_CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(description)
             .setSmallIcon(R.drawable.ic_sports_basketball)

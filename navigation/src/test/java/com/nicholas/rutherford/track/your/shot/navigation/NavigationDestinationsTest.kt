@@ -45,6 +45,7 @@ class NavigationDestinationsTest {
         @Test fun `settings screen should result in settings screen`() {
             Assertions.assertEquals(navigationDestinations.SETTINGS_SCREEN, settingsScreen)
         }
+
         @Test fun `reports list should result in reports list screen`() {
             Assertions.assertEquals(navigationDestinations.REPORTS_LIST_SCREEN, reportsListScreen)
         }

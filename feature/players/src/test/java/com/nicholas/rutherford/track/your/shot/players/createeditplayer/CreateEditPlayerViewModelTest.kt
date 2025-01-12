@@ -27,10 +27,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFireba
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PLAYER_FIREBASE_KEY
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import io.mockk.coEvery

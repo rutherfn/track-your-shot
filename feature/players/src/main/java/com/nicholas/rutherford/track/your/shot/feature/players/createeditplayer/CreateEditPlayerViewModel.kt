@@ -564,26 +564,26 @@ class CreateEditPlayerViewModel(
         state: CreateEditPlayerState,
         imageUrl: String?
     ) {
-            val positionString = state.playerPositionString.ifEmpty {
-                application.getString(StringsIds.pointGuard)
-            }
-            val player = Player(
-                firstName = state.firstName,
-                lastName = state.lastName,
-                position = positionString.toPlayerPosition(application = application),
-                firebaseKey = key,
-                imageUrl = imageUrl ?: "",
-                shotsLoggedList = currentShotLoggedList(currentShotLoggedList = state.shots)
-            )
+        val positionString = state.playerPositionString.ifEmpty {
+            application.getString(StringsIds.pointGuard)
+        }
+        val player = Player(
+            firstName = state.firstName,
+            lastName = state.lastName,
+            position = positionString.toPlayerPosition(application = application),
+            firebaseKey = key,
+            imageUrl = imageUrl ?: "",
+            shotsLoggedList = currentShotLoggedList(currentShotLoggedList = state.shots)
+        )
 
-            createOrEditPlayerInRoom(player = player)
+        createOrEditPlayerInRoom(player = player)
 
-            currentPendingShot.clearShotList()
+        currentPendingShot.clearShotList()
 
-            navigation.disableProgress()
-            navigation.pop()
+        navigation.disableProgress()
+        navigation.pop()
 
-            resetState()
+        resetState()
     }
 
     suspend fun createOrEditPlayerInRoom(player: Player) {

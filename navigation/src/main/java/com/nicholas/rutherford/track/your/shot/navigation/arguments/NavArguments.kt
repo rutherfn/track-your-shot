@@ -32,6 +32,6 @@ object NavArguments {
         navArgument(NamedArguments.IS_ACKNOWLEDGE_CONDITIONS) { type = NavType.BoolType }
     )
     val createReport = listOf(
-        navArgument(NamedArguments.SHOULD_REFRESH_DATA) { type = NavType.BoolType}
+        navArgument(NamedArguments.SHOULD_REFRESH_DATA) { type = NavType.BoolType }
     )
 }

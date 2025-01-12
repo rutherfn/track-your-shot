@@ -96,7 +96,6 @@ class PdfGeneratorImpl(private val application: Application) : PdfGenerator {
         return outputStream.toByteArray()
     }
 
-
     override fun generatePlayerPdf(fileName: String, player: Player): Pair<Uri?, Int> {
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
@@ -104,10 +103,9 @@ class PdfGeneratorImpl(private val application: Application) : PdfGenerator {
             put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
         }
         resolver.insert(MediaStore.Files.getContentUri("external"), contentValues)?.let { uri ->
-
             resolver.openOutputStream(uri)?.use { outputStream ->
                 outputStream.write(pdfOutputStreamByteArray(player = player))
-                return Pair(null, Constants.PDF_SUCCESSFUL_GENERATE_CODE)
+                return Pair(uri, Constants.PDF_SUCCESSFUL_GENERATE_CODE)
             } ?: return Pair(null, Constants.PDF_CANNOT_SAVE_PDF_CODE)
         } ?: run {
             return Pair(null, Constants.PDF_CANNOT_CREATE_PDF_CODE)

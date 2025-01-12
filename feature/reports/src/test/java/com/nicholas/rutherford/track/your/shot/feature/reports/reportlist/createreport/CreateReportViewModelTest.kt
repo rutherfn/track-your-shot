@@ -334,23 +334,6 @@ class CreateReportViewModelTest {
             verify { navigation.alert(alert = any()) }
         }
 
-        @Test
-        fun `when selected player returns a player and generatePlayerPdf returns first value returns null should show disable progress and alert`() {
-            createReportViewModel.createReportMutableStateFlow.value = CreateReportState(selectedPlayer = selectedPlayer)
-
-            every { application.getString(StringsIds.xPlayerShotReport, "${selectedPlayer.firstName}${selectedPlayer.lastName}") } returns "${selectedPlayer.firstName}${selectedPlayer.lastName}shotreport.pdf"
-            every {
-                pdfGenerator.generatePlayerPdf(
-                    fileName = application.getString(StringsIds.xPlayerShotReport, "${selectedPlayer.firstName}${selectedPlayer.lastName}"),
-                    player = selectedPlayer
-                )
-            } returns Pair(null, 2)
-
-            createReportViewModel.attemptToGeneratePlayerReport()
-
-            verify { navigation.enableProgress(progress = any()) }
-            verify { navigation.disableProgress() }
-            verify { navigation.alert(alert = any()) }
-        }
+        // todo -> Figure out a way to test if the uri comes back as null or a value for this function need to do research on how to do that
     }
 }

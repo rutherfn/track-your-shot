@@ -82,12 +82,14 @@ class ScreenContents {
     }
 
     fun createReportContent(createReportViewModel: CreateReportViewModel, shouldRefreshData: Boolean): @Composable () -> Unit = {
-        CreateReportScreen(params = CreateReportParams(
-            onToolbarMenuClicked = { createReportViewModel.onToolbarMenuClicked() },
-            updatePlayersState = { createReportViewModel.updatePlayersState() },
-            attemptToGeneratePlayerReport = { createReportViewModel.attemptToGeneratePlayerReport() },
-            state = createReportViewModel.createReportStateFlow.collectAsState().value,
-            shouldRefreshData = shouldRefreshData
-        ))
+        CreateReportScreen(
+            params = CreateReportParams(
+                onToolbarMenuClicked = { createReportViewModel.onToolbarMenuClicked() },
+                updatePlayersState = { createReportViewModel.updatePlayersState() },
+                attemptToGeneratePlayerReport = { createReportViewModel.attemptToGeneratePlayerReport() },
+                state = createReportViewModel.createReportStateFlow.collectAsState().value,
+                shouldRefreshData = shouldRefreshData
+            )
+        )
     }
 }
