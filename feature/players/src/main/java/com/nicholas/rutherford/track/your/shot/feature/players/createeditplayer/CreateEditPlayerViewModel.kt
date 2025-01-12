@@ -14,7 +14,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
@@ -24,6 +23,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealt
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.shouldAskForReadMediaImages
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
@@ -48,7 +48,7 @@ class CreateEditPlayerViewModel(
     private val activeUserRepository: ActiveUserRepository,
     private val scope: CoroutineScope,
     private val navigation: CreateEditPlayerNavigation,
-    private val playersAdditionUpdates: PlayersAdditionUpdates,
+    private val dataAdditionUpdates: DataAdditionUpdates,
     private val currentPendingShot: CurrentPendingShot,
     private val network: Network
 ) : ViewModel() {
@@ -438,7 +438,7 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    suspend fun determineToUpdateOrCreateUserInFirebase(
+    private suspend fun determineToUpdateOrCreateUserInFirebase(
         state: CreateEditPlayerState,
         imageUrl: String?
     ) {
@@ -449,7 +449,7 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    suspend fun createUserInFirebase(state: CreateEditPlayerState, imageUrl: String?) {
+    private suspend fun createUserInFirebase(state: CreateEditPlayerState, imageUrl: String?) {
         createFirebaseUserInfo.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
             playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
                 firstName = state.firstName,
@@ -597,7 +597,7 @@ class CreateEditPlayerViewModel(
                 )
             }
         }
-        playersAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = true)
+        dataAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = true)
     }
 
     fun onFirstNameValueChanged(newFirstName: String) {

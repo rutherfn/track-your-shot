@@ -22,7 +22,7 @@ object NavigationDestinations {
     const val REPORTS_LIST_SCREEN = "reportsListScreen"
     const val CREATE_REPORT_SCREEN = "createReportScreen"
     const val CREATE_REPORT_SCREEN_WITH_PARAMS = "createReportScreen/{shouldRefreshData}"
-    const val VIEW_REPORT_TIMES_SCREEN = "viewReportTimesScreen"
+    const val VIEW_PLAYERS_REPORTS_SCREEN = "viewPlayersReportsScreen"
     const val LOGIN_SCREEN = "loginScreen"
     const val SPLASH_SCREEN = "splashScreen"
     const val COMPARE_PLAYERS_SCREEN = "comparePlayersScreen"

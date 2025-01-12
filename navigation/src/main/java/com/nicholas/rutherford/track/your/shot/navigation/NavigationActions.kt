@@ -186,8 +186,8 @@ object NavigationActions {
                 .build()
         }
 
-        fun viewReportTimes() = object : NavigationAction {
-            override val destination = NavigationDestinations.VIEW_REPORT_TIMES_SCREEN
+        fun viewPlayersReports() = object : NavigationAction {
+            override val destination = NavigationDestinations.VIEW_PLAYERS_REPORTS_SCREEN
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                 .build()

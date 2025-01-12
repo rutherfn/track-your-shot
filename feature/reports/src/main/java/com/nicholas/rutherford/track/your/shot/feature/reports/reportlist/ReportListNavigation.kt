@@ -6,5 +6,5 @@ interface ReportListNavigation {
     fun alert(alert: Alert)
     fun openNavigationDrawer()
     fun navigateToCreateReport()
-    fun navigateToViewCreatedReportTimes()
+    fun navigateToViewPlayerReports()
 }

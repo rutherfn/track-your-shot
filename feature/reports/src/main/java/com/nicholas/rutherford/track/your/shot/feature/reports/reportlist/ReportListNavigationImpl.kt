@@ -11,5 +11,5 @@ class ReportListNavigationImpl(private val navigator: Navigator) : ReportListNav
 
     override fun navigateToCreateReport() = navigator.navigate(navigationAction = NavigationActions.ReportList.createReport())
 
-    override fun navigateToViewCreatedReportTimes() = navigator.navigate(navigationAction = NavigationActions.ReportList.viewReportTimes())
+    override fun navigateToViewPlayerReports() = navigator.navigate(navigationAction = NavigationActions.ReportList.viewPlayersReports())
 }

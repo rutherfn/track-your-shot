@@ -37,7 +37,7 @@ class ReportListViewModel(
     fun reportList(): List<String> {
         return listOf(
             application.getString(StringsIds.createPlayerReport),
-            application.getString(StringsIds.viewCreatedReportTimes)
+            application.getString(StringsIds.viewPlayerReports)
         )
     }
 
@@ -88,7 +88,7 @@ class ReportListViewModel(
             Constants.CREATE_REPORT_INDEX -> {
                 scope.launch { onCreatePlayerReportClicked() }
             }
-            else -> navigation.navigateToViewCreatedReportTimes()
+            else -> navigation.navigateToViewPlayerReports()
         }
     }
 }

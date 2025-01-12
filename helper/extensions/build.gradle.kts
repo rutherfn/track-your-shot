@@ -64,6 +64,7 @@ dependencies {
     implementation(Dependencies.Android.annotationJvm)
     implementation(Dependencies.Android.core)
 
+    testImplementation(Dependencies.Coroutine.test)
     testImplementation(Dependencies.Junit.Jupiter.api)
     testImplementation(Dependencies.Junit.Jupiter.params)
     testImplementation(Dependencies.Junit.junit)

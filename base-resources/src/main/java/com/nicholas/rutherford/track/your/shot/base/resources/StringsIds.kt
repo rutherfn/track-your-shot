@@ -246,7 +246,7 @@ object StringsIds {
         R.string.username_is_required_please_enter_a_username_to_create_a_account
     val usingTheApp = R.string.using_the_app
     val verifyAccount = R.string.verify_account
-    val viewCreatedReportTimes = R.string.view_created_report_times
+    val viewPlayerReports = R.string.view_player_reports
     val viewMoreInfo = R.string.view_more_info
     val voiceCommands = R.string.voice_commands
     val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue =

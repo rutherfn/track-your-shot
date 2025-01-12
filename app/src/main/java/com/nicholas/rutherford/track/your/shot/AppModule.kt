@@ -35,8 +35,6 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdatesImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerViewModel
@@ -93,8 +91,10 @@ import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.Existi
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManagerImpl
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.helper.extensions.DateExt
-import com.nicholas.rutherford.track.your.shot.helper.extensions.DateExtImpl
+import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
+import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdatesImpl
+import com.nicholas.rutherford.track.your.shot.helper.extensions.date.DateExt
+import com.nicholas.rutherford.track.your.shot.helper.extensions.date.DateExtImpl
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGeneratorImpl
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
@@ -238,8 +238,8 @@ class AppModule {
                 createSharedPreferences = get()
             )
         }
-        single<PlayersAdditionUpdates> {
-            PlayersAdditionUpdatesImpl()
+        single<DataAdditionUpdates> {
+            DataAdditionUpdatesImpl()
         }
         single<Notifications> {
             NotificationsImpl(application = androidApplication())
@@ -332,7 +332,7 @@ class AppModule {
                 network = get(),
                 accountManager = get(),
                 deleteFirebaseUserInfo = get(),
-                playersAdditionUpdates = get(),
+                dataAdditionUpdates = get(),
                 playerRepository = get(),
                 pendingPlayerRepository = get(),
                 createSharedPreferences = get(),
@@ -350,7 +350,7 @@ class AppModule {
                 activeUserRepository = get(),
                 scope = defaultCoroutineScope,
                 navigation = get(),
-                playersAdditionUpdates = get(),
+                dataAdditionUpdates = get(),
                 currentPendingShot = get(),
                 network = get()
             )

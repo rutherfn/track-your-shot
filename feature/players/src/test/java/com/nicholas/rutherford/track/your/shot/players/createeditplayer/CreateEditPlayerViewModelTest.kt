@@ -16,7 +16,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditImageOption
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerState
@@ -29,6 +28,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFireba
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PLAYER_FIREBASE_KEY
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestShotLoggedRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -71,7 +71,7 @@ class CreateEditPlayerViewModelTest {
 
     private val navigation = mockk<CreateEditPlayerNavigation>(relaxed = true)
 
-    private val playersAdditionUpdates = mockk<PlayersAdditionUpdates>(relaxed = true)
+    private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
 
     private val currentPendingShot = mockk<CurrentPendingShot>(relaxed = true)
 
@@ -131,7 +131,7 @@ class CreateEditPlayerViewModelTest {
             activeUserRepository = activeUserRepository,
             scope = scope,
             navigation = navigation,
-            playersAdditionUpdates = playersAdditionUpdates,
+            dataAdditionUpdates = dataAdditionUpdates,
             currentPendingShot = currentPendingShot,
             network = network
         )
@@ -1372,7 +1372,7 @@ class CreateEditPlayerViewModelTest {
         )
 
         coVerify { playerRepository.createPlayer(player = player) }
-        coVerify { playersAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = true) }
+        coVerify { dataAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = true) }
 
         verify { navigation.disableProgress() }
         verify { navigation.pop() }

@@ -456,13 +456,13 @@ fun NavigationComponent(
                 route = NavigationDestinations.CREATE_REPORT_SCREEN_WITH_PARAMS,
                 arguments = NavArguments.createReport
             ) { entry ->
+                println("test get here ")
                 entry.arguments?.let { bundle ->
                     val shouldRefreshData = bundle.getBoolean(NamedArguments.SHOULD_REFRESH_DATA)
                     screenContents.createReportContent(
                         createReportViewModel = createReportViewModel,
                         shouldRefreshData = shouldRefreshData
-                    )
-                        .invoke()
+                    ).invoke()
                 }
             }
             composable(

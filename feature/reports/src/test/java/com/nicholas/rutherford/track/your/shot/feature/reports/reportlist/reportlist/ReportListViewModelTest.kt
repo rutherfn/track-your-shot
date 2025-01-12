@@ -38,7 +38,7 @@ class ReportListViewModelTest {
     @BeforeEach
     fun beforeEach() {
         every { application.getString(StringsIds.createPlayerReport) } returns "Create Player Report"
-        every { application.getString(StringsIds.viewCreatedReportTimes) } returns "View Create Report Times"
+        every { application.getString(StringsIds.viewPlayerReports) } returns "View Players Reports"
 
         reportListViewModel = ReportListViewModel(
             navigation = navigation,
@@ -57,7 +57,7 @@ class ReportListViewModelTest {
             ReportListState(
                 reportInfoList = listOf(
                     "Create Player Report",
-                    "View Create Report Times"
+                    "View Players Reports"
                 )
             )
         )
@@ -71,7 +71,7 @@ class ReportListViewModelTest {
             result,
             listOf(
                 "Create Player Report",
-                "View Create Report Times"
+                "View Players Reports"
             )
         )
     }
@@ -139,7 +139,7 @@ class ReportListViewModelTest {
             reportListViewModel.onReportItemClicked(index = 0)
 
             verify { navigation.navigateToCreateReport() }
-            verify(exactly = 0) { navigation.navigateToViewCreatedReportTimes() }
+            verify(exactly = 0) { navigation.navigateToViewPlayerReports() }
             verify(exactly = 0) { navigation.alert(alert = any()) }
         }
 
@@ -151,7 +151,7 @@ class ReportListViewModelTest {
 
             verify { navigation.alert(alert = any()) }
             verify(exactly = 0) { navigation.navigateToCreateReport() }
-            verify(exactly = 0) { navigation.navigateToViewCreatedReportTimes() }
+            verify(exactly = 0) { navigation.navigateToViewPlayerReports() }
         }
 
         @Test
@@ -162,14 +162,14 @@ class ReportListViewModelTest {
 
             verify { navigation.alert(alert = any()) }
             verify(exactly = 0) { navigation.navigateToCreateReport() }
-            verify(exactly = 0) { navigation.navigateToViewCreatedReportTimes() }
+            verify(exactly = 0) { navigation.navigateToViewPlayerReports() }
         }
 
         @Test
-        fun `when index is not create report index should call navigate to view created report times`() {
+        fun `when index is not create report index should call navigate to view players reports`() {
             reportListViewModel.onReportItemClicked(index = 2)
 
-            verify { navigation.navigateToViewCreatedReportTimes() }
+            verify { navigation.navigateToViewPlayerReports() }
             verify(exactly = 0) { navigation.navigateToCreateReport() }
             verify(exactly = 0) { navigation.alert(alert = any()) }
         }

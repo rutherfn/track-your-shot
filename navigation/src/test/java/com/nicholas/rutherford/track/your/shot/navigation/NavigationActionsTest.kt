@@ -301,13 +301,13 @@ class NavigationActionsTest {
             }
 
             @Test
-            fun viewReportTimes() {
+            fun viewPlayerReports() {
                 Assertions.assertEquals(
-                    Actions.ReportList.viewReportTimes().destination,
-                    NavigationDestinations.VIEW_REPORT_TIMES_SCREEN
+                    Actions.ReportList.viewPlayersReports().destination,
+                    NavigationDestinations.VIEW_PLAYERS_REPORTS_SCREEN
                 )
                 Assertions.assertEquals(
-                    Actions.ReportList.viewReportTimes().navOptions,
+                    Actions.ReportList.viewPlayersReports().navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                         .build()

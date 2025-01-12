@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.helper.extensions
+package com.nicholas.rutherford.track.your.shot.helper.extensions.date
 
 import java.util.Date
 
