@@ -97,11 +97,13 @@ class ScreenContents {
     }
 
     fun viewPlayerReportsContent(viewPlayerReportsViewModel: ViewPlayerReportsViewModel): @Composable () -> Unit = {
-        ViewPlayerReportsScreen(params = ViewPlayerReportsParams(
-            onToolbarMenuClicked = { viewPlayerReportsViewModel.onToolbarMenuClicked() },
-            state = viewPlayerReportsViewModel.viewPlayerReportsStateFlow.collectAsState().value,
-            onDeletePlayerReportClicked = { individualPlayerReport -> viewPlayerReportsViewModel.onDeletePlayerReportClicked(individualPlayerReport = individualPlayerReport) },
-            onDownloadPlayerReportClicked = { individualPlayerReport -> viewPlayerReportsViewModel.onDownloadPlayerReportClicked(individualPlayerReport = individualPlayerReport) }
-        ))
+        ViewPlayerReportsScreen(
+            params = ViewPlayerReportsParams(
+                onToolbarMenuClicked = { viewPlayerReportsViewModel.onToolbarMenuClicked() },
+                state = viewPlayerReportsViewModel.viewPlayerReportsStateFlow.collectAsState().value,
+                onDeletePlayerReportClicked = { individualPlayerReport -> viewPlayerReportsViewModel.onDeletePlayerReportClicked(individualPlayerReport = individualPlayerReport) },
+                onDownloadPlayerReportClicked = { individualPlayerReport -> viewPlayerReportsViewModel.onDownloadPlayerReportClicked(individualPlayerReport = individualPlayerReport) }
+            )
+        )
     }
 }

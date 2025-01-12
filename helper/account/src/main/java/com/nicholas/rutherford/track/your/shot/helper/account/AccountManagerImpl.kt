@@ -230,7 +230,7 @@ class AccountManagerImpl(
             .collectLatest { individualPlayerReportWithKeyRealtimeResponse ->
                 if (individualPlayerReportWithKeyRealtimeResponse.isNotEmpty()) {
                     val individualPlayerReportList =
-                        individualPlayerReportWithKeyRealtimeResponse.mapIndexed { index,  report ->
+                        individualPlayerReportWithKeyRealtimeResponse.mapIndexed { index, report ->
                             IndividualPlayerReport(
                                 id = index + 1,
                                 loggedDateValue = report.playerReport.loggedDateValue,
