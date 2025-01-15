@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 
 class EnabledPermissionsViewModelTest {
 
-    lateinit var enabledPermissionsViewModel: EnabledPermissionsViewModel
+    private lateinit var enabledPermissionsViewModel: EnabledPermissionsViewModel
 
     private var navigation = mockk<EnabledPermissionsNavigation>(relaxed = true)
     private val application = mockk<Application>(relaxed = true)
@@ -81,25 +81,8 @@ class EnabledPermissionsViewModelTest {
     }
 
     @Test
-    fun `media or external storage not granted alert when should ask for permission is not enabled`() {
-        val alert = enabledPermissionsViewModel.mediaOrExternalStorageNotGrantedAlert(shouldAskForPermission = false)
-
-        Assertions.assertEquals(alert.title, "Permission has been declined")
-        Assertions.assertEquals(alert.confirmButton!!.buttonText, "Settings")
-        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Not Now")
-        Assertions.assertEquals(alert.description, "Permission to read external storage has been declined. To manually enable the \"Read External Storage\" permission and select an image from the gallery for the Player, please navigate to settings.")
-    }
-
-    @Test
     fun `permission not granted for camera alert should call alert for camera alert`() {
         enabledPermissionsViewModel.permissionNotGrantedForCameraAlert()
-
-        verify { navigation.alert(alert = any()) }
-    }
-
-    @Test
-    fun `permission not granted for read media or external storage alert should call alert`() {
-        enabledPermissionsViewModel.permissionNotGrantedForReadMediaOrExternalStorageAlert()
 
         verify { navigation.alert(alert = any()) }
     }

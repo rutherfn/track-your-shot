@@ -324,8 +324,6 @@ class CreateReportViewModelTest {
 
     @Nested
     inner class AttemptToGeneratePlayerReport {
-        val selectedPlayer = TestPlayer().create()
-
         @Test
         fun `when selected player of state returns null should show disable progress and alert`() {
             createReportViewModel.createReportMutableStateFlow.value = CreateReportState(selectedPlayer = null)

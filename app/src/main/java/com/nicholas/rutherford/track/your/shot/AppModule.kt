@@ -55,9 +55,6 @@ import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.Crea
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListViewModel
-import com.nicholas.rutherford.track.your.shot.feature.reports.viewplayerreports.ViewPlayerReportsNavigation
-import com.nicholas.rutherford.track.your.shot.feature.reports.viewplayerreports.ViewPlayerReportsNavigationImpl
-import com.nicholas.rutherford.track.your.shot.feature.reports.viewplayerreports.ViewPlayerReportsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewModel
@@ -305,9 +302,6 @@ class AppModule {
         single<CreateReportNavigation> {
             CreateReportNavigationImpl(navigator = get())
         }
-        single<ViewPlayerReportsNavigation> {
-            ViewPlayerReportsNavigationImpl(navigator = get())
-        }
         viewModel {
             MainActivityViewModel(accountManager = get())
         }
@@ -429,7 +423,6 @@ class AppModule {
         viewModel {
             PermissionEducationViewModel(
                 navigation = get(),
-                buildType = get(),
                 application = androidApplication()
             )
         }
@@ -462,6 +455,9 @@ class AppModule {
                 navigation = get(),
                 playerRepository = get(),
                 individualPlayerReportRepository = get(),
+                dataAdditionUpdates = get(),
+                deleteFirebaseUserInfo = get(),
+                pdfGenerator = get(),
                 scope = defaultCoroutineScope
             )
         }
@@ -477,18 +473,6 @@ class AppModule {
                 individualPlayerReportRepository = get(),
                 dateExt = get(),
                 dataAdditionUpdates = get()
-            )
-        }
-        viewModel {
-            ViewPlayerReportsViewModel(
-                dataAdditionUpdates = get(),
-                individualPlayerReportRepository = get(),
-                navigation = get(),
-                accountManager = get(),
-                application = androidApplication(),
-                deleteFirebaseUserInfo = get(),
-                pdfGenerator = get(),
-                scope = defaultCoroutineScope
             )
         }
     }

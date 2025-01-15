@@ -53,18 +53,4 @@ class ReportListNavigationImplTest {
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }
-
-    @Test
-    fun `navigate to view players reports`() {
-        val argumentCapture: CapturingSlot<NavigationAction> = slot()
-
-        reportListNavigationImpl.navigateToViewPlayerReports()
-
-        verify { navigator.navigate(capture(argumentCapture)) }
-
-        val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationActions.ReportList.viewPlayersReports()
-
-        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
-    }
 }

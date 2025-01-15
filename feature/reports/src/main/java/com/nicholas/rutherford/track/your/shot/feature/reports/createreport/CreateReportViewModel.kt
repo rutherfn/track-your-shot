@@ -2,8 +2,8 @@ package com.nicholas.rutherford.track.your.shot.feature.reports.createreport
 
 import android.app.Application
 import android.net.Uri
-import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
@@ -39,17 +39,21 @@ class CreateReportViewModel(
     private val individualPlayerReportRepository: IndividualPlayerReportRepository,
     private val dataAdditionUpdates: DataAdditionUpdates,
     private val dateExt: DateExt
-) : ViewModel() {
+) : BaseViewModel() {
 
     val createReportMutableStateFlow = MutableStateFlow(value = CreateReportState())
     val createReportStateFlow = createReportMutableStateFlow.asStateFlow()
+
+    override fun onNavigatedTo() {
+        super.onNavigatedTo()
+        updatePlayersState()
+    }
 
     fun resetState() {
         createReportMutableStateFlow.value = CreateReportState()
     }
 
     fun onToolbarMenuClicked() {
-        resetState()
         navigation.pop()
     }
 
@@ -143,7 +147,7 @@ class CreateReportViewModel(
         }
     }
 
-    suspend fun buildSelectedPlayer(value: String): Player? {
+    private suspend fun buildSelectedPlayer(value: String): Player? {
         var selectedPlayer: Player? = null
         playerRepository.fetchAllPlayers().buildPlayersWithShots().sortedPlayers().forEach { player ->
             if (player.fullName() == value) {

@@ -55,9 +55,6 @@ class AccountManagerImpl(
     private val _loggedInDeclaredShotListStateFlow: MutableStateFlow<List<DeclaredShot>> = MutableStateFlow(value = emptyList())
     override val loggedInDeclaredShotListStateFlow: StateFlow<List<DeclaredShot>> = _loggedInDeclaredShotListStateFlow.asStateFlow()
 
-    private val _loggedInIndividualPlayerReportListStateFlow: MutableStateFlow<List<IndividualPlayerReport>> = MutableStateFlow(value = emptyList())
-    override val loggedInIndividualPlayerReportListStateFlow: StateFlow<List<IndividualPlayerReport>> = _loggedInIndividualPlayerReportListStateFlow.asStateFlow()
-
     private val hasLoggedInSuccessfulMutableSharedFlow = MutableSharedFlow<Boolean>(extraBufferCapacity = Channel.UNLIMITED)
     override val hasLoggedInSuccessfulFlow: Flow<Boolean> = hasLoggedInSuccessfulMutableSharedFlow
 
@@ -239,7 +236,6 @@ class AccountManagerImpl(
                                 pdfUrl = report.playerReport.pdfUrl
                             )
                         }
-                    _loggedInIndividualPlayerReportListStateFlow.value = individualPlayerReportList
                     individualPlayerReportRepository.createReports(individualPlayerReports = individualPlayerReportList)
                     hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
                 } else {

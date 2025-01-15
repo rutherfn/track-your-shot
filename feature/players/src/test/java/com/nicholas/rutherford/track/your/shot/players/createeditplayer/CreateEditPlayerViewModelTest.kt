@@ -834,13 +834,6 @@ class CreateEditPlayerViewModelTest {
         verify { navigation.alert(alert = any()) }
     }
 
-    @Test
-    fun `permission not granted for read media or external storage alert`() {
-        createEditPlayerViewModel.permissionNotGrantedForReadMediaOrExternalStorageAlert()
-
-        verify { navigation.alert(alert = any()) }
-    }
-
     @Nested
     inner class OnCreatePlayerClicked {
 

@@ -25,7 +25,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealt
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
-import com.nicholas.rutherford.track.your.shot.helper.extensions.shouldAskForReadMediaImages
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.CoroutineScope
@@ -328,10 +327,6 @@ class CreateEditPlayerViewModel(
 
     fun permissionNotGrantedForCameraAlert() {
         navigation.alert(alert = cameraPermissionNotGrantedAlert())
-    }
-
-    fun permissionNotGrantedForReadMediaOrExternalStorageAlert() {
-        navigation.alert(alert = mediaOrExternalStorageNotGrantedAlert(shouldAskForPermission = shouldAskForReadMediaImages()))
     }
 
     fun onCreatePlayerClicked(uri: Uri?) {

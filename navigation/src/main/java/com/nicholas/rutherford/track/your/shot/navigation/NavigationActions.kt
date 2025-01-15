@@ -180,14 +180,7 @@ object NavigationActions {
     object ReportList {
 
         fun createReport() = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.createReportWithParams(shouldRefreshData = true)
-            override val navOptions = NavOptions.Builder()
-                .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
-                .build()
-        }
-
-        fun viewPlayersReports() = object : NavigationAction {
-            override val destination = NavigationDestinations.VIEW_PLAYERS_REPORTS_SCREEN
+            override val destination = NavigationDestinations.CREATE_REPORT_SCREEN
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                 .build()

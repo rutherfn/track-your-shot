@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.update
 
 class PermissionEducationViewModel(
     private val navigation: PermissionEducationNavigation,
-    private val buildType: BuildType,
     private val application: Application
 ) : ViewModel() {
 
@@ -29,27 +28,7 @@ class PermissionEducationViewModel(
     fun onMoreInfoClicked() = navigation.navigateToUrl(url = application.getString(StringsIds.androidPermissionsUrl))
 
     private fun educationInfoList(): List<EducationInfo> {
-        val isTiramisuOrAbove = isTiramisuOrAbove(sdk = buildType.sdk)
-
-        val readPermissionTitle = if (isTiramisuOrAbove) {
-            StringsIds.readMediaImagesPermission
-        } else {
-            StringsIds.readExternalStoragePermission
-        }
-        val readPermissionExplanation = if (isTiramisuOrAbove) {
-            StringsIds.readMediaImagesPermissionExplanation
-        } else {
-            StringsIds.readExternalStoragePermissionExplanation
-        }
-
         return listOf(
-            EducationInfo(
-                title = application.getString(readPermissionTitle),
-                description = application.getString(readPermissionExplanation),
-                drawableResId = DrawablesIds.gallery,
-                buttonText = application.getString(StringsIds.next),
-                moreInfoVisible = true
-            ),
             EducationInfo(
                 title = application.getString(StringsIds.cameraPermission),
                 description = application.getString(StringsIds.cameraPermissionExplanation),

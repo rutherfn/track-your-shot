@@ -30,8 +30,6 @@ import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.SwitchCard
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.extensions.hasCameraPermissionEnabled
-import com.nicholas.rutherford.track.your.shot.helper.extensions.hasReadImagePermissionEnabled
-import com.nicholas.rutherford.track.your.shot.helper.extensions.readMediaImagesOrExternalStoragePermission
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 
 @Composable
@@ -50,7 +48,6 @@ fun EnabledPermissionsScreen(params: EnabledPermissionsParams) {
 fun EnabledPermissionsContent(params: EnabledPermissionsParams) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val context = LocalContext.current
-    var hasMediaImagesOrExternalStorage by remember { mutableStateOf(hasReadImagePermissionEnabled(context = context)) }
     var hasCameraPermission by remember { mutableStateOf(hasCameraPermissionEnabled(context = context)) }
 
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
@@ -59,17 +56,9 @@ fun EnabledPermissionsContent(params: EnabledPermissionsParams) {
             hasCameraPermission = isGranted
         }
     )
-    val readStorageOrMediaImagesPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted ->
-            hasMediaImagesOrExternalStorage = isGranted
-        }
-    )
-
     DisposableEffect(lifecycle) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                hasMediaImagesOrExternalStorage = hasReadImagePermissionEnabled(context = context)
                 hasCameraPermission = hasCameraPermissionEnabled(context = context)
             }
         }
@@ -92,20 +81,6 @@ fun EnabledPermissionsContent(params: EnabledPermissionsParams) {
         horizontalAlignment = Alignment.Start
     ) {
         Spacer(modifier = Modifier.height(Padding.sixteen))
-
-        SwitchCard(
-            state = hasMediaImagesOrExternalStorage,
-            title = stringResource(id = StringsIds.readMediaImagesPermission),
-            onSwitchChanged = { switch ->
-                if (switch) {
-                    readStorageOrMediaImagesPermissionLauncher.launch(readMediaImagesOrExternalStoragePermission())
-                } else {
-                    params.onSwitchChangedToTurnOffPermission.invoke()
-                }
-            }
-        )
-
-        Spacer(modifier = Modifier.height(Padding.eight))
 
         SwitchCard(
             state = hasCameraPermission,

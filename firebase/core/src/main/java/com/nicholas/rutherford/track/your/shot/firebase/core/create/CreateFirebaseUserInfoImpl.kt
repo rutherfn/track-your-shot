@@ -120,7 +120,7 @@ class CreateFirebaseUserInfoImpl(
             reference.child(key).setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        trySend(element = Pair(true, reference.key))
+                        trySend(element = Pair(true, key))
                     } else {
                         Timber.w(message = "Warning(attemptToCreateIndividualPlayerReportFirebaseRealtimeDatabaseResponseFlow) -> Creating player report failed to create in Firebase Realtime Database,")
                         trySend(element = Pair(false, null))

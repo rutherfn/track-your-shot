@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 interface AccountManager {
     val loggedInPlayerListStateFlow: StateFlow<List<Player>>
     val loggedInDeclaredShotListStateFlow: StateFlow<List<DeclaredShot>>
-    val loggedInIndividualPlayerReportListStateFlow: StateFlow<List<IndividualPlayerReport>>
     val hasLoggedInSuccessfulFlow: Flow<Boolean>
     val hasNoPlayersFlow: Flow<Boolean>
 

@@ -18,7 +18,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,11 +34,6 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun CreateReportScreen(params: CreateReportParams) {
-    LaunchedEffect(params.shouldRefreshData) {
-        if (params.shouldRefreshData) {
-            params.updatePlayersState.invoke()
-        }
-    }
     Content(
         ui = {
             CreateReportContent(params = params)

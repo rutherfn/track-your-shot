@@ -299,20 +299,6 @@ class NavigationActionsTest {
                         .build()
                 )
             }
-
-            @Test
-            fun viewPlayerReports() {
-                Assertions.assertEquals(
-                    Actions.ReportList.viewPlayersReports().destination,
-                    NavigationDestinations.VIEW_PLAYERS_REPORTS_SCREEN
-                )
-                Assertions.assertEquals(
-                    Actions.ReportList.viewPlayersReports().navOptions,
-                    NavOptions.Builder()
-                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
-                        .build()
-                )
-            }
         }
 
         @Nested

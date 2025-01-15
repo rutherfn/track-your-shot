@@ -16,6 +16,7 @@ object StringsIds {
         R.string.are_you_sure_you_want_to_leave_track_your_shot
     val areYouSureYouWantToDeletePendingAccountDescription =
         R.string.are_you_sure_you_want_to_delete_pending_account_description
+    val atLeastOnePlayerDescription = R.string.at_least_one_player_description
     val attemptedShotsX = R.string.attempted_shots_x
     val c = R.string.c
     val camera = R.string.camera
@@ -107,6 +108,7 @@ object StringsIds {
     val havingTroubleResettingPasswordForThisAccountPleaseTryAgainAndOrEnsureCredentialsExistAndAreValid =
         R.string.having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid
     val hintAddNewPlayer = R.string.hint_add_new_player
+    val hintAddNewReport = R.string.hint_add_new_report
     val hintLogNewShots = R.string.hint_log_new_shots
     val hintLogNewShotsForPlayer = R.string.hint_log_new_shots_for_player
     val introduction = R.string.introduction
@@ -132,6 +134,7 @@ object StringsIds {
     val noCurrentPlayersAdded = R.string.no_current_players_added
     val noPlayersCreated = R.string.no_players_created
     val noPlayersCreatedDescription = R.string.no_players_created_description
+    val noReportsGenerated = R.string.no_reports_generated
     val noCurrentShotsLoggedForPlayer = R.string.no_current_shots_logged_for_player
     val noFirstNameEntered = R.string.no_first_name_entered
     val noLastNameEntered = R.string.no_last_name_entered
@@ -182,7 +185,6 @@ object StringsIds {
     val readMediaImagesDescription = R.string.read_media_images_description
     val removeImage = R.string.remove_image
     val reports = R.string.reports
-    val reportsHelpDescription = R.string.reports_help_description
     val resetPassword = R.string.reset_password
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email
@@ -250,7 +252,6 @@ object StringsIds {
         R.string.username_is_required_please_enter_a_username_to_create_a_account
     val usingTheApp = R.string.using_the_app
     val verifyAccount = R.string.verify_account
-    val viewPlayerReports = R.string.view_player_reports
     val viewReports = R.string.view_reports
     val viewMoreInfo = R.string.view_more_info
     val voiceCommands = R.string.voice_commands

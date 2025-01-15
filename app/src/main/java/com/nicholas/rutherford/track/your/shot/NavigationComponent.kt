@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.AlertDialog
 import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.CustomDatePickerDialog
 import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.ProgressDialog
@@ -152,7 +153,6 @@ fun NavigationComponent(
     val accountInfoViewModel = viewModels.accountInfoViewModel
     val reportListViewModel = viewModels.reportListViewModel
     val createReportViewModel = viewModels.createReportViewModel
-    val viewPlayerReportsViewModel = viewModels.viewPlayerReportsViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -215,9 +215,19 @@ fun NavigationComponent(
             }
         }
     }
+
+    fun findViewModelByDestination(destination: String): BaseViewModel? {
+        return when {
+            destination.contains(NavigationDestinations.REPORTS_LIST_SCREEN) -> reportListViewModel
+            destination.contains(NavigationDestinations.CREATE_REPORT_SCREEN) -> createReportViewModel
+            else -> null
+        }
+    }
+
     LaunchedEffect(navigatorState) {
         navigatorState?.let {
             navHostController.navigate(it.destination, it.navOptions)
+            findViewModelByDestination(destination = it.destination)?.onNavigatedTo()
         }
     }
 
@@ -289,7 +299,11 @@ fun NavigationComponent(
                     if (route.isEmpty()) {
                         mainActivityViewModel.logout(titleId = titleId)
                     } else {
-                        navHostController.navigate(route, navOptions)
+                        val currentRoute = navHostController.currentDestination?.route ?: ""
+                        if (route != currentRoute) {
+                            navHostController.navigate(route, navOptions)
+                            findViewModelByDestination(destination = route)?.onNavigatedTo()
+                        }
                     }
                 }
             )
@@ -454,19 +468,9 @@ fun NavigationComponent(
                 screenContents.reportListContent(reportListViewModel = reportListViewModel).invoke()
             }
             composable(
-                route = NavigationDestinations.CREATE_REPORT_SCREEN_WITH_PARAMS,
-                arguments = NavArguments.createReport
-            ) { entry ->
-                entry.arguments?.let { bundle ->
-                    val shouldRefreshData = bundle.getBoolean(NamedArguments.SHOULD_REFRESH_DATA)
-                    screenContents.createReportContent(
-                        createReportViewModel = createReportViewModel,
-                        shouldRefreshData = shouldRefreshData
-                    ).invoke()
-                }
-            }
-            composable(route = NavigationDestinations.VIEW_PLAYERS_REPORTS_SCREEN) {
-                screenContents.viewPlayerReportsContent(viewPlayerReportsViewModel = viewPlayerReportsViewModel).invoke()
+                route = NavigationDestinations.CREATE_REPORT_SCREEN
+            ) {
+                screenContents.createReportContent(createReportViewModel = createReportViewModel).invoke()
             }
             composable(
                 route = NavigationDestinations.PERMISSION_EDUCATION_SCREEN
@@ -486,8 +490,7 @@ fun NavigationComponent(
                     params = EnabledPermissionsParams(
                         onToolbarMenuClicked = { enabledPermissionsViewModel.onToolbarMenuClicked() },
                         onSwitchChangedToTurnOffPermission = { enabledPermissionsViewModel.onSwitchChangedToTurnOffPermission() },
-                        permissionNotGrantedForCameraAlert = { enabledPermissionsViewModel.permissionNotGrantedForCameraAlert() },
-                        permissionNotGrantedForReadMediaOrExternalStorageAlert = { enabledPermissionsViewModel.permissionNotGrantedForReadMediaOrExternalStorageAlert() }
+                        permissionNotGrantedForCameraAlert = { enabledPermissionsViewModel.permissionNotGrantedForCameraAlert() }
                     )
                 )
             }

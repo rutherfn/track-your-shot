@@ -13,10 +13,6 @@ object NavigationDestinationsWithParams {
         return "${NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN}/$firstName/$lastName"
     }
 
-    fun createReportWithParams(shouldRefreshData: Boolean): String {
-        return "${NavigationDestinations.CREATE_REPORT_SCREEN}/$shouldRefreshData"
-    }
-
     fun logShotWithParams(
         isExistingPlayer: Boolean,
         playerId: Int,

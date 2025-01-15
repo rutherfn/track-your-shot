@@ -126,32 +126,7 @@ fun hasCameraPermissionEnabled(context: Context) = ContextCompat.checkSelfPermis
     Manifest.permission.CAMERA
 ) == PackageManager.PERMISSION_GRANTED
 
-fun hasReadImagePermissionEnabled(context: Context): Boolean {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.READ_MEDIA_IMAGES
-        ) == PackageManager.PERMISSION_GRANTED
-    } else {
-        ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-}
-
 fun isTiramisuOrAbove(sdk: Int): Boolean = sdk >= Build.VERSION_CODES.TIRAMISU
-
-@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.TIRAMISU)
-fun shouldAskForReadMediaImages() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-
-fun readMediaImagesOrExternalStoragePermission(): String {
-    return if (shouldAskForReadMediaImages()) {
-        Manifest.permission.READ_MEDIA_IMAGES
-    } else {
-        Manifest.permission.READ_EXTERNAL_STORAGE
-    }
-}
 
 fun parseValueToDate(value: String): Date? =
     SimpleDateFormat(DATE_PATTERN, Locale.ENGLISH).parse(value)

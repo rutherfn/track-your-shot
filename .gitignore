@@ -25,6 +25,7 @@ app-center/build
 build-type/build
 
 # Ignore module build gradles files
+base/vm/build
 base-resources/build
 
 buildSrc/.gradle
