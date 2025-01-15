@@ -36,5 +36,5 @@ data class ViewModels(
     val enabledPermissionsViewModel: EnabledPermissionsViewModel,
     val accountInfoViewModel: AccountInfoViewModel,
     val reportListViewModel: ReportListViewModel,
-    val createReportViewModel: CreateReportViewModel,
+    val createReportViewModel: CreateReportViewModel
 )
