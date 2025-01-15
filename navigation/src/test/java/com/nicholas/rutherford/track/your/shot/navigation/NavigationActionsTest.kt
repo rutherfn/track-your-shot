@@ -290,7 +290,7 @@ class NavigationActionsTest {
             fun createPlayerReport() {
                 Assertions.assertEquals(
                     Actions.ReportList.createReport().destination,
-                    "createReportScreen/true"
+                    "createReportScreen"
                 )
                 Assertions.assertEquals(
                     Actions.ReportList.createReport().navOptions,
