@@ -229,6 +229,44 @@
     <string name="x_x">%s - %s</string>
     <string name="yes">Sim</string>
     <string name="your_player_could_not_be_retrieved_description">Não foi possível recuperar seu player. Por favor, tente novamente.</string>
-
-
+    <string name="at_least_one_player_description">Pelo menos um jogador com pelo menos um tiro registrado é necessário para gerar um relatório. Certifique-se de que isso esteja concluído para prosseguir.</string>
+    <string name="attempted_shots_x">Tentativas de Tiro: %s</string>
+    <string name="could_not_create_report">Não foi possível criar o relatório</string>
+    <string name="could_not_delete_report">Não foi possível excluir o relatório</string>
+    <string name="could_not_delete_report_description">Não foi possível excluir o relatório devido a um erro. Tente novamente ou entre em contato com o suporte para obter assistência.</string>
+    <string name="could_not_generate_the_report">Não foi possível gerar o relatório. Tente novamente ou entre em contato com o suporte para obter assistência.</string>
+    <string name="could_not_save_report">Não foi possível salvar o relatório</string>
+    <string name="could_not_upload_report">Não foi possível carregar o relatório</string>
+    <string name="could_not_upload_report_description">Não é possível carregar o relatório para uso futuro. Tente novamente ou entre em contato com o suporte para obter assistência.</string>
+    <string name="create_player_report">Criar Relatório de Jogador</string>
+    <string name="delete_report">Excluir Relatório</string>
+    <string name="delete_report_description">Excluir este relatório impedirá permanentemente que ele seja baixado no futuro. Tem certeza de que deseja prosseguir?</string>
+    <string name="download_report">Baixar relatório</string>
+    <string name="generate_report">Gerar Relatório</string>
+    <string name="hint_add_new_report">Toque no ícone + na barra de ferramentas do lado direito para adicionar um novo relatório para um jogador</string>
+    <string name="made_shots_x">Fotos feitas: %s</string>
+    <string name="name_x">Nome: %s</string>
+    <string name="no_shots_created">Nenhum tiro criado</string>
+    <string name="no_shots_created_descriipton">Nenhum dos jogadores registrou nenhum chute ainda. Registre pelo menos um tiro para que um jogador gere um relatório.</string>
+    <string name="no_players_created">Nenhum jogador criado</string>
+    <string name="no_players_created_description">Nenhum jogador foi criado para sua conta ainda. Crie pelo menos um jogador e registre pelo menos uma tacada para gerar um relatório de tacadas feitas pelo jogador.</string>
+    <string name="no_reports_generated">Nenhum relatório gerado</string>
+    <string name="reports">Relatórios</string>
+    <string name="player_report">Relatório do Jogador</string>
+    <string name="player_report_created_description">Um relatório do jogador foi gerado e salvo na pasta de downloads do seu dispositivo. Você pode visualizar o relatório agora ou acessá-lo mais tarde no aplicativo para uso futuro.</string>
+    <string name="player_report_created_for_x">Relatório do jogador criado para %s</string>
+    <string name="shots_attempted_date_x">Data da tentativa de disparo: %s</string>
+    <string name="shots_logged_date_x">Data de registro dos disparos: %s</string>
+    <string name="shots_made_accuracy_x">Precisão dos tiros efetuados: %s %%</string>
+    <string name="shots_missed_accuracy_x">Precisão de chutes perdidos: %s %%</string>
+    <string name="shot_x">Tiro %s</string>
+    <string name="shots_made_x_secondary">Arremessos efetuados: %s</string>
+    <string name="shots_missed_x">Tiros perdidos: %s</string>
+    <string name="selected_player">Jogador selecionado</string>
+    <string name="view_reports">Ver relatórios</string>
+    <string name="x_report">%s Relatório</string>
+    <string name="x_created">%s Criado</string>
+    <string name="x_shot_report_created">%s relatório de tiro criado</string>
+    <string name="x_shot_report_created_description">O relatório de tiro para %s foi gerado. Toque para visualizar o arquivo.</string>
+    <string name="x_player_shot_report">%srelatório de tiro.pdf</string>
 </resources>
