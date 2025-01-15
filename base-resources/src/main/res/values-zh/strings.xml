@@ -271,4 +271,5 @@
     <string name="x_shot_report_created">已创建 %s 个镜头报告</string>
     <string name="x_shot_report_created_description">已生成“%s”的射击报告。点按即可查看文件。</string>
     <string name="x_player_shot_report">%s射击报告.pdf</string>
+    <string name="position_x">Position: %s</string>
 </resources>

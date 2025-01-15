@@ -269,4 +269,5 @@
     <string name="x_shot_report_created">%s report di tiro creato</string>
     <string name="x_shot_report_created_description">È stato generato il report di tiro per %s. Tocca per visualizzare il file.</string>
     <string name="x_player_shot_report">%sreport di scatto.pdf</string>
+    <string name="position_x">Position: %s</string>
 </resources>

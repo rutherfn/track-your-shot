@@ -269,4 +269,5 @@
     <string name="x_shot_report_created">%s샷 리포트 생성됨</string>
     <string name="x_shot_report_created_description">샷 리포트%s 생성되었습니다. 파일을 보려면 탭하세요.</string>
     <string name="x_player_shot_report">%s샷리포트.pdf</string>
+    <string name="position_x">Position: %s</string>
 </resources>

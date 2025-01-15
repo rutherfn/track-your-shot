@@ -269,4 +269,5 @@
     <string name="x_shot_report_created">%s शॉट रिपोर्ट बनाई गई</string>
     <string name="x_shot_report_created_description">%s के लिए शॉट रिपोर्ट तैयार कर ली गई है. फ़ाइल देखने के लिए टैप करें.</string>
     <string name="x_player_shot_report">%sशॉटरिपोर्ट.पीडीएफ</string>
+    <string name="position_x">Position: %s</string>
 </resources>

@@ -44,7 +44,7 @@ fun PlayerChooser(params: CreateReportParams) {
             expanded = isDropdownExpanded,
             onDismissRequest = { isDropdownExpanded = false }
         ) {
-            options.forEachIndexed { index, option ->
+            options.forEach { option ->
                 DropdownMenuItem(
                     onClick = {
                         selectedOption = option

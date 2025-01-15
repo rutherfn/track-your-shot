@@ -269,4 +269,5 @@
     <string name="x_shot_report_created">%s rapport de prise de vue créé</string>
     <string name="x_shot_report_created_description">Un rapport de prise de vue pour %s a été généré. Appuyez pour afficher le fichier.</string>
     <string name="x_player_shot_report">%sreportage.pdf</string>
+    <string name="position_x">Position: %s</string>
 </resources>

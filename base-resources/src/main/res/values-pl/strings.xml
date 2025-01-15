@@ -269,4 +269,5 @@
     <string name="x_shot_report_created">Utworzono %s raport o zdjęciach</string>
     <string name="x_shot_report_created_description">Wygenerowano raport ze strzałów dla %s. Kliknij, aby wyświetlić plik.</string>
     <string name="x_player_shot_report">%sraportzdjęcia.pdf</string>
+    <string name="position_x">Position: %s</string>
 </resources>

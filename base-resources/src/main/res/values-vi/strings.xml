@@ -269,4 +269,5 @@
     <string name="x_shot_report_created">Đã tạo báo cáo về %s lần chụp</string>
     <string name="x_shot_report_created_description">Báo cáo cảnh quay cho %s đã được tạo. Nhấn để xem tệp.</string>
     <string name="x_player_shot_report">%sbáo cáo bắn súng.pdf</string>
+    <string name="position_x">Position: %s</string>
 </resources>

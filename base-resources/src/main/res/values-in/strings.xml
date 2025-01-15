@@ -269,4 +269,5 @@
     <string name="x_shot_report_created">%slaporan bidikan dibuat</string>
     <string name="x_shot_report_created_description">Laporan tembakan untuk%s telah dibuat. Ketuk untuk melihat berkas.</string>
     <string name="x_player_shot_report">%slaporan tembakan.pdf</string>
+    <string name="position_x">Position: %s</string>
 </resources>

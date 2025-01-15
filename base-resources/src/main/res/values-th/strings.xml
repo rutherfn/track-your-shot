@@ -269,4 +269,5 @@
     <string name="x_shot_report_created">สร้างรายงานการยิงแล้ว %s ครั้ง</string>
     <string name="x_shot_report_created_description">สร้างรายงานภาพสำหรับ %s แล้ว แตะเพื่อดูไฟล์</string>
     <string name="x_player_shot_report">%sรายงานช็อต.pdf</string>
+    <string name="position_x">Position: %s</string>
 </resources>

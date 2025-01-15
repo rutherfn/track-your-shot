@@ -269,4 +269,5 @@
     <string name="x_shot_report_created">%s Aufnahmebericht erstellt</string>
     <string name="x_shot_report_created_description">Impfbericht für %s wurde erstellt. Tippen Sie hier, um die Datei anzuzeigen.</string>
     <string name="x_player_shot_report">%sAufnahmebericht.pdf</string>
+    <string name="position_x">Position: %s</string>
 </resources>

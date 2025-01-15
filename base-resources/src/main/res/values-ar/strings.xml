@@ -269,4 +269,5 @@
     <string name="x_shot_report_created">تم إنشاء تقرير لقطة %s</string>
     <string name="x_shot_report_created_description">تم إنشاء تقرير اللقطات لـ %s. انقر لعرض الملف.</string>
     <string name="x_player_shot_report">%sتقرير مصور.pdf</string>
+    <string name="position_x">Position: %s</string>
 </resources>

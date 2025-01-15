@@ -269,4 +269,5 @@
     <string name="x_shot_report_created">%s ショット レポートが作成されました</string>
     <string name="x_shot_report_created_description">%s のショット レポートが生成されました。タップしてファイルを表示します。</string>
     <string name="x_player_shot_report">%sショットレポート.pdf</string>
+    <string name="position_x">Position: %s</string>
 </resources>
