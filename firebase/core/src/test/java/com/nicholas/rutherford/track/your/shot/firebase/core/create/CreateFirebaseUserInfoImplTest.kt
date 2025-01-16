@@ -240,6 +240,8 @@ class CreateFirebaseUserInfoImplTest {
 
             val values = hashMapOf<String, Any>()
 
+            val reference = firebaseDatabase.getReference(path)
+
             values[Constants.FIRST_NAME] = playerInfoRealtimeResponse.firstName
             values[Constants.LAST_NAME] = playerInfoRealtimeResponse.lastName
             values[Constants.POSITION_VALUE] = playerInfoRealtimeResponse.positionValue
@@ -252,8 +254,13 @@ class CreateFirebaseUserInfoImplTest {
             every { mockFirebaseUser.uid } returns uid
             every { firebaseAuth.currentUser } returns mockFirebaseUser
 
+            val key = "mockKey"
+            every { reference.push().key } returns key
+
+            every { mockTaskVoidResult.isSuccessful } returns false
+
             every {
-                firebaseDatabase.getReference(path).push().setValue(values)
+                reference.child(key).setValue(values)
                     .addOnCompleteListener(capture(completeListenerSlot))
                     .addOnFailureListener(capture(failureListenerSlot))
             } answers {
@@ -261,7 +268,7 @@ class CreateFirebaseUserInfoImplTest {
                 mockTaskVoidResult
             }
 
-            val value = createFirebaseUserInfoImpl.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(playerInfoRealtimeResponse = playerInfoRealtimeResponse).first()
+            val value = createFirebaseUserInfoImpl.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(playerInfoRealtimeResponse).first()
 
             Assertions.assertEquals(Pair(false, null), value)
         }
@@ -294,10 +301,10 @@ class CreateFirebaseUserInfoImplTest {
 
             every { mockTaskVoidResult.isSuccessful } returns true
 
-            every { reference.key } returns key
+            every { reference.push().key } returns key
 
             every {
-                reference.push().setValue(values)
+                reference.child(key).setValue(values)
                     .addOnCompleteListener(capture(completeListenerSlot))
                     .addOnFailureListener(capture(failureListenerSlot))
             } answers {
@@ -340,10 +347,10 @@ class CreateFirebaseUserInfoImplTest {
 
             every { mockTaskVoidResult.isSuccessful } returns true
 
-            every { reference.key } returns key
+            every { reference.push().key } returns key
 
             every {
-                reference.push().setValue(values)
+                reference.child(key).setValue(values)
                     .addOnCompleteListener(capture(completeListenerSlot))
                     .addOnFailureListener(capture(failureListenerSlot))
             } answers {
@@ -382,10 +389,10 @@ class CreateFirebaseUserInfoImplTest {
 
             every { mockTaskVoidResult.isSuccessful } returns false
 
-            every { reference.key } returns key
+            every { reference.push().key } returns key
 
             every {
-                reference.push().setValue(values)
+                reference.child(key).setValue(values)
                     .addOnCompleteListener(capture(completeListenerSlot))
                     .addOnFailureListener(capture(failureListenerSlot))
             } answers {
@@ -412,6 +419,8 @@ class CreateFirebaseUserInfoImplTest {
 
             val values = hashMapOf<String, Any>()
 
+            val reference = firebaseDatabase.getReference(path)
+
             values[Constants.LOGGED_DATE_VALUE] = individualPlayerReportRealtimeResponse.loggedDateValue
             values[Constants.PLAYER_NAME] = individualPlayerReportRealtimeResponse.playerName
             values[Constants.PDF_URL] = individualPlayerReportRealtimeResponse.pdfUrl
@@ -422,8 +431,11 @@ class CreateFirebaseUserInfoImplTest {
             every { mockFirebaseUser.uid } returns uid
             every { firebaseAuth.currentUser } returns mockFirebaseUser
 
+            val key = "mockKey"
+            every { reference.push().key } returns key
+
             every {
-                firebaseDatabase.getReference(path).push().setValue(values)
+                reference.child(key).setValue(values)
                     .addOnCompleteListener(capture(completeListenerSlot))
                     .addOnFailureListener(capture(failureListenerSlot))
             } answers {
@@ -431,7 +443,8 @@ class CreateFirebaseUserInfoImplTest {
                 mockTaskVoidResult
             }
 
-            val value = createFirebaseUserInfoImpl.attemptToCreateIndividualPlayerReportFirebaseRealtimeDatabaseResponseFlow(individualPlayerReportRealtimeResponse = individualPlayerReportRealtimeResponse).first()
+            val value = createFirebaseUserInfoImpl.attemptToCreateIndividualPlayerReportFirebaseRealtimeDatabaseResponseFlow(individualPlayerReportRealtimeResponse)
+                .first()
 
             Assertions.assertEquals(Pair(false, null), value)
         }
