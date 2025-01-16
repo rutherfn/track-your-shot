@@ -6,6 +6,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.toActiveUser
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toPlayer
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
@@ -54,6 +55,7 @@ class AccountManagerImplTest {
     private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
 
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
+    private val individualPlayerReportRepository = mockk<IndividualPlayerReportRepository>(relaxed = true)
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
 
     private val userRepository = mockk<UserRepository>(relaxed = true)
@@ -75,6 +77,7 @@ class AccountManagerImplTest {
             activeUserRepository = activeUserRepository,
             declaredShotRepository = declaredShotRepository,
             playerRepository = playerRepository,
+            individualPlayerReportRepository = individualPlayerReportRepository,
             pendingPlayerRepository = pendingPlayerRepository,
             userRepository = userRepository,
             readFirebaseUserInfo = readFirebaseUserInfo,
@@ -358,26 +361,22 @@ class AccountManagerImplTest {
             coVerify { declaredShotRepository.createDeclaredShots() }
             coVerify(exactly = 0) { activeUserRepository.deleteActiveUser() }
             coVerify { playerRepository.createListOfPlayers(playerList = any()) }
-            verify { navigator.progress(progressAction = null) }
-            verify { navigator.navigate(navigationAction = any()) }
         }
     }
 
     @Nested
     inner class CollectPlayerInfoList {
         @Test
-        fun `when getPlayerInfoList returns empty list should call disableProcessAndNavigateToPlayersList and not createListOfPlayers`() = runTest {
+        fun `when getPlayerInfoList returns empty list should not createListOfPlayers`() = runTest {
             coEvery { readFirebaseUserInfo.getPlayerInfoList() } returns flowOf(emptyList())
 
             accountManagerImpl.collectPlayerInfoList()
 
             coVerify(exactly = 0) { playerRepository.createListOfPlayers(playerList = any()) }
-            verify { navigator.progress(progressAction = null) }
-            verify { navigator.navigate(navigationAction = any()) }
         }
 
         @Test
-        fun `when getPlayerInfoList returns list of info should call disableProcessAndNavigateToPlayersList and createListOfPlayers`() = runTest {
+        fun `when getPlayerInfoList returns list of info should call createListOfPlayers`() = runTest {
             val playerArrayList: ArrayList<Player> = arrayListOf()
             val playerInfoRealtimeWithKeyResponseList = listOf(TestPlayerInfoRealtimeWithKeyResponse().create())
 
@@ -418,9 +417,6 @@ class AccountManagerImplTest {
             )
 
             coVerify { playerRepository.createListOfPlayers(playerList = any()) }
-//            verify { accountAuthManagerImpl.updateLoggedInPreferences() }
-            verify { navigator.progress(progressAction = null) }
-            verify { navigator.navigate(navigationAction = any()) }
         }
     }
 

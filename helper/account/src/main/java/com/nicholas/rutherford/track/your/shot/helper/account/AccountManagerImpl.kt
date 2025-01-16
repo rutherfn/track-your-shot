@@ -222,6 +222,7 @@ class AccountManagerImpl(
             }
     }
 
+    // todo -> Nick come back and test this
     internal suspend fun collectReportList() {
         readFirebaseUserInfo.getReportList()
             .collectLatest { individualPlayerReportWithKeyRealtimeResponse ->
