@@ -12,15 +12,5 @@ const val TIMEOUT_MS = 1500
 
 class NetworkImpl(private val scope: CoroutineScope) : Network {
 
-    override suspend fun isDeviceConnectedToInternet(): Boolean = scope.async {
-        try {
-            val sock = Socket()
-            return@async runCatching {
-                sock.connect(InetSocketAddress(HOST_NAME, PORT), TIMEOUT_MS)
-                sock.close()
-            }.isSuccess
-        } catch (e: IOException) {
-            return@async false
-        }
-    }.await()
+    override suspend fun isDeviceConnectedToInternet(): Boolean = true
 }
