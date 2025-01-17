@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import java.util.Locale
 
 /**
  * Default [AlertDialog] with given params to build alerts used in [Content]
@@ -35,7 +36,7 @@ fun AlertDialog(
             confirmButton?.let { button ->
                 TextButton(
                     onClick = { button.onButtonClicked?.invoke() },
-                    content = { Text(text = button.buttonText) },
+                    content = { Text(text = button.buttonText.uppercase(Locale.ROOT)) },
                     colors = ButtonDefaults.textButtonColors(contentColor = AppColors.Orange)
                 )
             }
@@ -44,7 +45,7 @@ fun AlertDialog(
             dismissButton?.let { button ->
                 TextButton(
                     onClick = { button.onButtonClicked?.invoke() },
-                    content = { Text(text = button.buttonText) },
+                    content = { Text(text = button.buttonText.uppercase(Locale.ROOT)) },
                     colors = ButtonDefaults.textButtonColors(contentColor = AppColors.OrangeVariant)
                 )
             }

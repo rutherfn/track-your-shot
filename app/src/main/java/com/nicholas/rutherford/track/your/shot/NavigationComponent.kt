@@ -416,8 +416,10 @@ fun NavigationComponent(
                                     viewCurrentPendingShotArgument = bundle.getBoolean(NamedArguments.VIEW_CURRENT_PENDING_SHOT)
                                 )
                             },
-                            onShotsMadeClicked = { logShotViewModel.onShotsMadeClicked() },
-                            onShotsMissedClicked = { logShotViewModel.onShotsMissedClicked() },
+                            onShotsMadeUpwardClicked = { value -> logShotViewModel.onShotsMadeUpwardOrDownwardClicked(shots = value) },
+                            onShotsMadeDownwardClicked = { value -> logShotViewModel.onShotsMadeUpwardOrDownwardClicked(shots = value) },
+                            onShotsMissedUpwardClicked = { value -> logShotViewModel.onShotsMissedUpwardOrDownwardClicked(shots = value) },
+                            onShotsMissedDownwardClicked = { value -> logShotViewModel.onShotsMissedUpwardOrDownwardClicked(shots = value) },
                             onSaveClicked = { logShotViewModel.onSaveClicked() },
                             onDeleteShotClicked = { logShotViewModel.onDeleteShotClicked() }
                         )
