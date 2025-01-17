@@ -1,18 +1,15 @@
 package com.nicholas.rutherford.track.your.shot.feature.splash
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-
-const val SPLASH_DELAY_IN_MILLIS = 4000L
 
 class SplashViewModel(
     private val navigation: SplashNavigation,
@@ -20,7 +17,8 @@ class SplashViewModel(
     private val activeUserRepository: ActiveUserRepository,
     private val accountManager: AccountManager,
     private val readSharedPreferences: ReadSharedPreferences,
-    private val createSharedPreferences: CreateSharedPreferences
+    private val createSharedPreferences: CreateSharedPreferences,
+    private val scope: CoroutineScope
 ) : ViewModel() {
 
     internal fun checkIfAppHasBeenLaunchedBefore() {
@@ -33,7 +31,7 @@ class SplashViewModel(
     fun navigateToPlayersListLoginOrAuthentication() {
         checkIfAppHasBeenLaunchedBefore()
 
-        viewModelScope.launch {
+        scope.launch {
             combine(
                 readFirebaseUserInfo.isEmailVerifiedFlow(),
                 readFirebaseUserInfo.isLoggedInFlow()
@@ -42,33 +40,20 @@ class SplashViewModel(
 
                 if (isLoggedIn) {
                     if (isEmailVerified && activeUser != null && activeUser.accountHasBeenCreated) {
-                        delayAndNavigateToPlayersListOrLogin(isLoggedIn = true, email = activeUser.email)
+                        navigateToLoginOrPlayersList(isLoggedIn = true, email = activeUser.email)
                     } else {
                         activeUser?.let { user ->
-                            delayAndNavigateToAuthentication(
+                            navigation.navigateToAuthentication(
                                 username = user.username,
                                 email = user.email
                             )
                         }
                     }
                 } else {
-                    delayAndNavigateToPlayersListOrLogin(isLoggedIn = false, email = activeUser?.email)
+                    navigateToLoginOrPlayersList(isLoggedIn = false, email = activeUser?.email)
                 }
             }.collectLatest { }
         }
-    }
-
-    private suspend fun delayAndNavigateToPlayersListOrLogin(isLoggedIn: Boolean, email: String?) {
-        delay(timeMillis = SPLASH_DELAY_IN_MILLIS)
-        navigateToLoginOrPlayersList(isLoggedIn = isLoggedIn, email = email)
-    }
-
-    private suspend fun delayAndNavigateToAuthentication(username: String, email: String) {
-        delay(timeMillis = SPLASH_DELAY_IN_MILLIS)
-        navigation.navigateToAuthentication(
-            username = username,
-            email = email
-        )
     }
 
     private fun navigateToLoginOrPlayersList(isLoggedIn: Boolean, email: String?) {

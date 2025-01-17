@@ -25,7 +25,7 @@ fun PermissionEducationScreen(permissionEducationParams: PermissionEducationPara
                         educationInfo = page,
                         pagerState = pagerState,
                         nextPage = (pagerState.currentPage + 1).coerceAtMost(maximumValue = permissionEducationParams.state.educationInfoList.size - 1),
-                        onButtonClicked = if (pagerState.currentPage == 1) {
+                        onButtonClicked = if (pagerState.currentPage == 0) {
                             permissionEducationParams.onGotItButtonClicked
                         } else {
                             null

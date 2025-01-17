@@ -10,7 +10,6 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.room.response.isTheSame
-import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
@@ -62,6 +61,7 @@ class LogShotViewModel(
     internal var viewCurrentPendingShot = false
 
     internal var initialShotLogged: ShotLogged? = null
+
     fun updateIsExistingPlayerAndId(
         isExistingPlayerArgument: Boolean,
         playerIdArgument: Int,
@@ -169,8 +169,8 @@ class LogShotViewModel(
             shotsAttempted = logShotMutableStateFlow.value.shotsAttempted,
             shotsMade = logShotMutableStateFlow.value.shotsMade,
             shotsMissed = logShotMutableStateFlow.value.shotsMissed,
-            shotsMadePercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMadePercentValue),
-            shotsMissedPercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMissedPercentValue),
+            shotsMadePercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMadePercentValue.trim().replace(" ", "")),
+            shotsMissedPercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMissedPercentValue.trim().replace(" ", "")),
             shotsAttemptedMillisecondsValue = convertValueToDate(value = logShotMutableStateFlow.value.shotsTakenDateValue)?.time
                 ?: 0L,
             shotsLoggedMillisecondsValue = convertValueToDate(value = logShotMutableStateFlow.value.shotsLoggedDateValue)?.time
@@ -252,23 +252,7 @@ class LogShotViewModel(
         }
     }
 
-    internal fun onConfirmShotsMadeClicked(shotsValue: String) {
-        if (shotsValue.isNotEmpty()) {
-            shotsValue.toIntOrNull()?.let { shots ->
-                updateShotsMadeState(shots = shots)
-            } ?: navigation.alert(alert = invalidShotInputAlert())
-        }
-    }
-
-    internal fun onConfirmShotsMissedClicked(shotsValue: String) {
-        if (shotsValue.isNotEmpty()) {
-            shotsValue.toIntOrNull()?.let { shots ->
-                updateShotsMissedState(shots = shots)
-            } ?: navigation.alert(alert = invalidShotInputAlert())
-        }
-    }
-
-    internal fun updateShotsMadeState(shots: Int) {
+    fun onShotsMadeUpwardOrDownwardClicked(shots: Int) {
         logShotMutableStateFlow.update { state ->
             state.copy(
                 shotsMade = shots,
@@ -287,7 +271,7 @@ class LogShotViewModel(
         }
     }
 
-    private fun updateShotsMissedState(shots: Int) {
+    fun onShotsMissedUpwardOrDownwardClicked(shots: Int) {
         logShotMutableStateFlow.update { state ->
             state.copy(
                 shotsMissed = shots,
@@ -312,32 +296,6 @@ class LogShotViewModel(
         } else {
             null
         }
-    }
-
-    fun onShotsMadeClicked() {
-        navigation.inputInfo(
-            inputInfo = InputInfo(
-                titleResId = StringsIds.enterShotsMade,
-                confirmButtonResId = StringsIds.ok,
-                dismissButtonResId = StringsIds.cancel,
-                placeholderResId = StringsIds.shotsMade,
-                startingInputAmount = startingInputAmount(amount = logShotMutableStateFlow.value.shotsMade),
-                onConfirmButtonClicked = { shotsValue -> onConfirmShotsMadeClicked(shotsValue = shotsValue) }
-            )
-        )
-    }
-
-    fun onShotsMissedClicked() {
-        navigation.inputInfo(
-            inputInfo = InputInfo(
-                titleResId = StringsIds.enterShotsMissed,
-                confirmButtonResId = StringsIds.ok,
-                dismissButtonResId = StringsIds.cancel,
-                placeholderResId = StringsIds.shotsMissed,
-                startingInputAmount = startingInputAmount(amount = logShotMutableStateFlow.value.shotsMissed),
-                onConfirmButtonClicked = { shotsValue -> onConfirmShotsMissedClicked(shotsValue = shotsValue) }
-            )
-        )
     }
 
     fun invalidLogShotAlert(description: String): Alert {
@@ -393,8 +351,8 @@ class LogShotViewModel(
                             shotsAttempted = state.shotsAttempted,
                             shotsMade = state.shotsMade,
                             shotsMissed = state.shotsMissed,
-                            shotsMadePercentValue = convertPercentageToDouble(percentage = state.shotsMadePercentValue),
-                            shotsMissedPercentValue = convertPercentageToDouble(percentage = state.shotsMissedPercentValue),
+                            shotsMadePercentValue = convertPercentageToDouble(percentage = state.shotsMadePercentValue.trim().replace(" ", "")),
+                            shotsMissedPercentValue = convertPercentageToDouble(percentage = state.shotsMissedPercentValue.trim().replace(" ", "")),
                             shotsAttemptedMillisecondsValue = convertValueToDate(value = state.shotsTakenDateValue)?.time
                                 ?: 0L,
                             shotsLoggedMillisecondsValue = convertValueToDate(value = state.shotsLoggedDateValue)?.time
@@ -564,14 +522,6 @@ class LogShotViewModel(
                 buttonText = application.getString(StringsIds.no),
                 onButtonClicked = {}
             )
-        )
-    }
-
-    fun invalidShotInputAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.invalidShotInput),
-            description = application.getString(StringsIds.invalidShotInputDescription),
-            confirmButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt))
         )
     }
 

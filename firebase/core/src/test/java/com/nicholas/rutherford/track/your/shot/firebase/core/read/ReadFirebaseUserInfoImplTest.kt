@@ -75,7 +75,7 @@ class ReadFirebaseUserInfoImplTest {
     }
 
     @Nested
-    inner class GetLastUpdatedDateFlow {
+    inner class GetLastUpdatedDateExtFlow {
 
         @Test
         fun `when onCancelled is called should return null`() = runTest {
@@ -367,7 +367,7 @@ class ReadFirebaseUserInfoImplTest {
                 slot.captured.onCancelled(mockDatabaseError)
             }
 
-            Assertions.assertEquals(playerInfoRealtimeWithKeyResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
+            Assertions.assertEquals(playerInfoRealtimeWithKeyResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList().first())
         }
 
         @Test
@@ -393,7 +393,7 @@ class ReadFirebaseUserInfoImplTest {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
 
-            Assertions.assertEquals(playerInfoRealtimeWithKeyResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
+            Assertions.assertEquals(playerInfoRealtimeWithKeyResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList().first())
         }
 
         @Test
@@ -420,7 +420,7 @@ class ReadFirebaseUserInfoImplTest {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
 
-            Assertions.assertEquals(playerInfoRealtimeWithKeyResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
+            Assertions.assertEquals(playerInfoRealtimeWithKeyResponseEmptyList, readFirebaseUserInfoImpl.getPlayerInfoList().first())
         }
 
         @Test
@@ -459,7 +459,7 @@ class ReadFirebaseUserInfoImplTest {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
 
-            Assertions.assertEquals(playerInfoRealtimeWithKeyResponseList, readFirebaseUserInfoImpl.getPlayerInfoList(accountKey = firebaseAccountKey).first())
+            Assertions.assertEquals(playerInfoRealtimeWithKeyResponseList, readFirebaseUserInfoImpl.getPlayerInfoList().first())
         }
     }
 

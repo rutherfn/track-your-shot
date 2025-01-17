@@ -284,6 +284,24 @@ class NavigationActionsTest {
         }
 
         @Nested
+        inner class ReportList {
+
+            @Test
+            fun createPlayerReport() {
+                Assertions.assertEquals(
+                    Actions.ReportList.createReport().destination,
+                    "createReportScreen"
+                )
+                Assertions.assertEquals(
+                    Actions.ReportList.createReport().navOptions,
+                    NavOptions.Builder()
+                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                        .build()
+                )
+            }
+        }
+
+        @Nested
         inner class Settings {
 
             @Test

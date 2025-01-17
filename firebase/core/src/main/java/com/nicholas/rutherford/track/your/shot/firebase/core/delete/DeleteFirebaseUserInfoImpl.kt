@@ -15,7 +15,7 @@ class DeleteFirebaseUserInfoImpl(
     private val firebaseDatabase: FirebaseDatabase
 ) : DeleteFirebaseUserInfo {
 
-    internal val hasDeletedShotMutableStateFlow: MutableStateFlow<Boolean> = MutableStateFlow(value = false)
+    private val hasDeletedShotMutableStateFlow: MutableStateFlow<Boolean> = MutableStateFlow(value = false)
     override val hasDeletedShotFlow: Flow<Boolean> = hasDeletedShotMutableStateFlow.asStateFlow()
 
     override fun updateHasDeletedShotFlow(hasDeletedShot: Boolean) {
@@ -65,6 +65,29 @@ class DeleteFirebaseUserInfoImpl(
                 .addOnFailureListener { exception ->
                     hasDeletedShotMutableStateFlow.value = false
                     Timber.e(message = "Error(deletePlayer) -> Was not able to delete current player shot from given account. With following stack trace $exception")
+                    trySend(element = false)
+                }
+            awaitClose()
+        }
+    }
+
+    override fun deleteReport(reportKey: String): Flow<Boolean> {
+        return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val path = "${Constants.USERS}/$uid/${Constants.PLAYERS_INDIVIDUAL_REPORTS}/$reportKey"
+
+            firebaseDatabase.getReference(path)
+                .removeValue()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        trySend(element = true)
+                    } else {
+                        Timber.w(message = "Error(deleteReport) -> Was not able to delete current report from given account.")
+                        trySend(element = false)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(deleteReport) -> Was not able to delete current report from given account. With following stack trace $exception")
                     trySend(element = false)
                 }
             awaitClose()

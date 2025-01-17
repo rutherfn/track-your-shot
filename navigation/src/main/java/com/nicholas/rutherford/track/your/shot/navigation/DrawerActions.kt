@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SportsBasketball
+import androidx.compose.material.icons.filled.Summarize
 import androidx.navigation.NavOptions
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 
@@ -16,6 +17,16 @@ data object PlayersListAction : DrawerAction(
     route = NavigationDestinations.PLAYERS_LIST_SCREEN,
     navOptions = NavOptions.Builder()
         .setPopUpTo(0, true)
+        .build()
+)
+
+data object ReportingAction : DrawerAction(
+    titleId = StringsIds.reports,
+    imageVector = Icons.Filled.Summarize,
+    route = NavigationDestinations.REPORTS_LIST_SCREEN,
+    navOptions = NavOptions.Builder()
+        .setPopUpTo(0, true)
+        .setLaunchSingleTop(true)
         .build()
 )
 

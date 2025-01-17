@@ -6,4 +6,5 @@ interface ReadSharedPreferences {
     fun shouldUpdateLoggedInPlayerListState(): Boolean
     fun shouldUpdateLoggedInDeclaredShotListState(): Boolean
     fun shouldShowTermsAndConditions(): Boolean
+    fun hasAccountBeenAuthenticated(): Boolean
 }

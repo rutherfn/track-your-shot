@@ -5,10 +5,12 @@ object Constants {
         const val TRACK_MY_SHOT_PREFERENCES = "TRACK_MY_SHOT_PREFERENCES"
 
         const val APP_HAS_LAUNCHED = "appHasLaunched"
+        const val HAS_AUTHENTICATED_ACCOUNT = "hasAuthenticatedAccount"
         const val SHOULD_SHOW_TERM_AND_CONDITIONS = "shouldShowTermsAndConditions"
         const val SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST = "shouldUpdateLoggedInPlayerList"
         const val SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST = "shouldUpdateLoggedInDeclaredShotList"
     }
+    const val CREATE_REPORT_INDEX = 0
     const val APP_DATABASE_NAME = "app_database.db"
     const val ACTIVE_USER_ID = 1
     const val ACCOUNT_INFO = "accountInfo"
@@ -27,8 +29,19 @@ object Constants {
     const val IMAGE_URL = "imageUrl"
     const val LAST_NAME = "lastName"
     const val LAST_UPDATED = "lastUpdated"
+    const val LOGGED_DATE_VALUE = "loggedDateValue"
+    const val NOTIFICATION_CHANNEL_ID = "track_your_shot_notification"
+    const val NOTIFICATION_NAME = "track_your_shot"
+    const val PDFS = "pdfs"
+    const val PDF_MIME_TYPE = "application/pdf"
+    const val PDF_SUCCESSFUL_GENERATE_CODE = 1
+    const val PDF_URL = "pdfUrl"
+    const val PDF_CANNOT_SAVE_PDF_CODE = 2
+    const val PDF_CANNOT_CREATE_PDF_CODE = 3
     const val PENDING_PLAYERS_EXPECTED_SIZE = 1
+    const val PLAYER_NAME = "playerName"
     const val PLAYERS = "players"
+    const val PLAYERS_INDIVIDUAL_REPORTS = "playersIndividualReports"
     const val POP_DEFAULT_ACTION = "pop"
     const val POSITION_VALUE = "positionValue"
     const val POSITION_NA = 5

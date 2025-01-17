@@ -14,19 +14,17 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
-import com.nicholas.rutherford.track.your.shot.helper.extensions.shouldAskForReadMediaImages
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.CoroutineScope
@@ -44,13 +42,12 @@ class CreateEditPlayerViewModel(
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val updateFirebaseUserInfo: UpdateFirebaseUserInfo,
-    private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val playerRepository: PlayerRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
     private val activeUserRepository: ActiveUserRepository,
     private val scope: CoroutineScope,
     private val navigation: CreateEditPlayerNavigation,
-    private val playersAdditionUpdates: PlayersAdditionUpdates,
+    private val dataAdditionUpdates: DataAdditionUpdates,
     private val currentPendingShot: CurrentPendingShot,
     private val network: Network
 ) : ViewModel() {
@@ -110,6 +107,7 @@ class CreateEditPlayerViewModel(
                 lastName = lastName
             )
                 ?.let { player ->
+                    editedPlayer = player
                     createEditPlayerMutableStateFlow.value =
                         createEditPlayerMutableStateFlow.value.copy(
                             firstName = player.firstName,
@@ -331,10 +329,6 @@ class CreateEditPlayerViewModel(
         navigation.alert(alert = cameraPermissionNotGrantedAlert())
     }
 
-    fun permissionNotGrantedForReadMediaOrExternalStorageAlert() {
-        navigation.alert(alert = mediaOrExternalStorageNotGrantedAlert(shouldAskForPermission = shouldAskForReadMediaImages()))
-    }
-
     fun onCreatePlayerClicked(uri: Uri?) {
         scope.launch {
             if (network.isDeviceConnectedToInternet()) {
@@ -439,7 +433,7 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    suspend fun determineToUpdateOrCreateUserInFirebase(
+    private suspend fun determineToUpdateOrCreateUserInFirebase(
         state: CreateEditPlayerState,
         imageUrl: String?
     ) {
@@ -450,7 +444,7 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    suspend fun createUserInFirebase(state: CreateEditPlayerState, imageUrl: String?) {
+    private suspend fun createUserInFirebase(state: CreateEditPlayerState, imageUrl: String?) {
         createFirebaseUserInfo.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
             playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
                 firstName = state.firstName,
@@ -461,9 +455,9 @@ class CreateEditPlayerViewModel(
             )
         ).collectLatest { result ->
             result.second?.let { key ->
-                if (key.isNotEmpty()) {
-                    handleFirebaseResponseForSavingPlayer(
-                        isSuccessful = result.first,
+                val isSuccessful = result.first
+                if (isSuccessful && key.isNotEmpty()) {
+                    handleSavingPlayer(
                         key = key,
                         state = state,
                         imageUrl = imageUrl
@@ -508,7 +502,7 @@ class CreateEditPlayerViewModel(
 
     internal fun currentShotLoggedList(currentShotLoggedList: List<ShotLogged>): List<ShotLogged> {
         return if (pendingShotLoggedList.isNotEmpty()) {
-            currentShotLoggedList + pendingShotLoggedList.map { pendingShot -> pendingShot.shotLogged }
+            currentShotLoggedList + pendingShotLoggedList.map { pendingShot -> pendingShot.shotLogged.copy(isPending = false) }
         } else {
             currentShotLoggedList
         }
@@ -541,12 +535,13 @@ class CreateEditPlayerViewModel(
                             )
                         )
                     ).collectLatest { isSuccessful ->
-                        handleFirebaseResponseForSavingPlayer(
-                            isSuccessful = isSuccessful,
-                            key = key,
-                            state = state,
-                            imageUrl = imageUrl
-                        )
+                        if (isSuccessful) {
+                            handleSavingPlayer(
+                                key = playerKey,
+                                state = state,
+                                imageUrl = imageUrl
+                            )
+                        }
                     }
                 } else {
                     navigation.disableProgress()
@@ -559,81 +554,31 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    suspend fun handleFirebaseResponseForSavingPlayer(
-        isSuccessful: Boolean,
+    suspend fun handleSavingPlayer(
         key: String,
         state: CreateEditPlayerState,
         imageUrl: String?
     ) {
-        if (isSuccessful) {
-            readFirebaseUserInfo.getPlayerInfoList(key)
-                .collectLatest { playerInfoRealtimeWithKeyResponseList ->
-                    updatePlayerInstance(
-                        playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
-                        state = state,
-                        imageUrl = imageUrl
-                    )
-                }
-        } else {
-            navigation.disableProgress()
-            navigation.alert(alert = weWereNotAbleToCreateThePlayerAlert())
+        val positionString = state.playerPositionString.ifEmpty {
+            application.getString(StringsIds.pointGuard)
         }
-    }
+        val player = Player(
+            firstName = state.firstName,
+            lastName = state.lastName,
+            position = positionString.toPlayerPosition(application = application),
+            firebaseKey = key,
+            imageUrl = imageUrl ?: "",
+            shotsLoggedList = currentShotLoggedList(currentShotLoggedList = state.shots)
+        )
 
-    suspend fun updatePlayerInstance(
-        playerInfoRealtimeWithKeyResponseList: List<PlayerInfoRealtimeWithKeyResponse>,
-        state: CreateEditPlayerState,
-        imageUrl: String?
-    ) {
-        if (playerInfoRealtimeWithKeyResponseList.isNotEmpty()) {
-            handleSavingPlayer(
-                playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
-                state = state,
-                imageUrl = imageUrl
-            )
-        } else {
-            navigation.disableProgress()
-            navigation.alert(alert = yourPlayerCouldNotBeRetrievedAlert())
-        }
-    }
+        createOrEditPlayerInRoom(player = player)
 
-    suspend fun handleSavingPlayer(
-        playerInfoRealtimeWithKeyResponseList: List<PlayerInfoRealtimeWithKeyResponse>,
-        state: CreateEditPlayerState,
-        imageUrl: String?
-    ) {
-        var recentlySavedPlayer: PlayerInfoRealtimeWithKeyResponse? = null
-        playerInfoRealtimeWithKeyResponseList.map { player ->
-            if (player.playerInfo.firstName == state.firstName && player.playerInfo.lastName == state.lastName) {
-                recentlySavedPlayer = player
-            }
-        }
-        recentlySavedPlayer?.let { response ->
-            val playerKey = response.playerFirebaseKey
-            val positionString = state.playerPositionString.ifEmpty {
-                application.getString(StringsIds.pointGuard)
-            }
-            val player = Player(
-                firstName = state.firstName,
-                lastName = state.lastName,
-                position = positionString.toPlayerPosition(application = application),
-                firebaseKey = playerKey,
-                imageUrl = imageUrl ?: "",
-                shotsLoggedList = currentShotLoggedList(currentShotLoggedList = state.shots)
-            )
+        currentPendingShot.clearShotList()
 
-            createOrEditPlayerInRoom(player = player)
+        navigation.disableProgress()
+        navigation.pop()
 
-            currentPendingShot.clearShotList()
-
-            navigation.disableProgress()
-            navigation.pop()
-
-            resetState()
-        } ?: run {
-            navigation.disableProgress()
-            navigation.alert(alert = yourPlayerCouldNotBeRetrievedAlert())
-        }
+        resetState()
     }
 
     suspend fun createOrEditPlayerInRoom(player: Player) {
@@ -647,7 +592,7 @@ class CreateEditPlayerViewModel(
                 )
             }
         }
-        playersAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = true)
+        dataAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = true)
     }
 
     fun onFirstNameValueChanged(newFirstName: String) {

@@ -16,7 +16,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditImageOption
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerState
@@ -25,15 +24,11 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PLAYER_FIREBASE_KEY
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestShotLoggedRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -63,7 +58,6 @@ class CreateEditPlayerViewModelTest {
     private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
     private val updateFirebaseUserInfo = mockk<UpdateFirebaseUserInfo>(relaxed = true)
-    private val readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
 
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
@@ -77,7 +71,7 @@ class CreateEditPlayerViewModelTest {
 
     private val navigation = mockk<CreateEditPlayerNavigation>(relaxed = true)
 
-    private val playersAdditionUpdates = mockk<PlayersAdditionUpdates>(relaxed = true)
+    private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
 
     private val currentPendingShot = mockk<CurrentPendingShot>(relaxed = true)
 
@@ -132,13 +126,12 @@ class CreateEditPlayerViewModelTest {
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
             createFirebaseUserInfo = createFirebaseUserInfo,
             updateFirebaseUserInfo = updateFirebaseUserInfo,
-            readFirebaseUserInfo = readFirebaseUserInfo,
             playerRepository = playerRepository,
             pendingPlayerRepository = pendingPlayerRepository,
             activeUserRepository = activeUserRepository,
             scope = scope,
             navigation = navigation,
-            playersAdditionUpdates = playersAdditionUpdates,
+            dataAdditionUpdates = dataAdditionUpdates,
             currentPendingShot = currentPendingShot,
             network = network
         )
@@ -201,7 +194,7 @@ class CreateEditPlayerViewModelTest {
 
     @Nested
     inner class CollectHasDeletedShotFlow {
-        val player = TestPlayer().create()
+        private val player = TestPlayer().create()
 
         @Test
         fun `hasDeletedShotFlow emits a flow value of false should not update state`() = runTest {
@@ -841,13 +834,6 @@ class CreateEditPlayerViewModelTest {
         verify { navigation.alert(alert = any()) }
     }
 
-    @Test
-    fun `permission not granted for read media or external storage alert`() {
-        createEditPlayerViewModel.permissionNotGrantedForReadMediaOrExternalStorageAlert()
-
-        verify { navigation.alert(alert = any()) }
-    }
-
     @Nested
     inner class OnCreatePlayerClicked {
 
@@ -1192,33 +1178,6 @@ class CreateEditPlayerViewModelTest {
     inner class CheckImageUri {
 
         @Test
-        fun `when uri passed in is set to null should call determineToUpdateOrCreateUserInFirebase`() = runTest {
-            val key = "key1"
-
-            coEvery {
-                createFirebaseUserInfo.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
-                    playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
-                        firstName = defaultState.firstName,
-                        lastName = defaultState.lastName,
-                        positionValue = defaultState.playerPositionString.toPlayerPosition(application = application).value,
-                        imageUrl = ""
-                    )
-                )
-            } returns flowOf(value = Pair(false, key))
-
-            createEditPlayerViewModel.checkImageUri(state = defaultState, uri = null)
-
-            coVerify {
-                createEditPlayerViewModel.handleFirebaseResponseForSavingPlayer(
-                    isSuccessful = false,
-                    key = key,
-                    state = defaultState,
-                    imageUrl = ""
-                )
-            }
-        }
-
-        @Test
         fun `when uri passed in is not null and create image firebase storage returns a null imageUrl should call alert`() = runTest {
             val uriString = "uriString"
 
@@ -1271,37 +1230,6 @@ class CreateEditPlayerViewModelTest {
 
             verify { navigation.disableProgress() }
             verify { navigation.alert(alert = any()) }
-        }
-    }
-
-    @Nested
-    inner class CreateUserInFirebase {
-
-        @Test
-        fun `when key is not empty and attempt to create firebase response flow returns a boolean should call alert`() = runTest {
-            val key = "key1"
-
-            coEvery {
-                createFirebaseUserInfo.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
-                    playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
-                        firstName = defaultState.firstName,
-                        lastName = defaultState.lastName,
-                        positionValue = defaultState.playerPositionString.toPlayerPosition(application = application).value,
-                        imageUrl = ""
-                    )
-                )
-            } returns flowOf(value = Pair(false, key))
-
-            createEditPlayerViewModel.createUserInFirebase(state = defaultState, imageUrl = "")
-
-            coVerify {
-                createEditPlayerViewModel.handleFirebaseResponseForSavingPlayer(
-                    isSuccessful = false,
-                    key = key,
-                    state = defaultState,
-                    imageUrl = ""
-                )
-            }
         }
     }
 
@@ -1416,135 +1344,31 @@ class CreateEditPlayerViewModelTest {
         }
     }
 
-    @Nested
-    inner class HandleFirebaseResponseForSavingPlayer {
-        private val key = "key1"
+    @Test
+    fun `handleSavingPlayer should reset the state`() = runTest {
+        val key = PLAYER_FIREBASE_KEY
+        val state = defaultState
 
-        @Test
-        fun `when isSuccessful is set to true should call updatePlayerInstance`() = runTest {
-            val playerInfoRealtimeWithKeyResponseList: List<PlayerInfoRealtimeWithKeyResponse> = emptyList()
+        createEditPlayerViewModel.handleSavingPlayer(
+            key = key,
+            state = defaultState,
+            imageUrl = null
+        )
 
-            coEvery { readFirebaseUserInfo.getPlayerInfoList(key) } returns flowOf(value = playerInfoRealtimeWithKeyResponseList)
+        val player = Player(
+            firstName = state.firstName,
+            lastName = state.lastName,
+            position = state.playerPositionString.toPlayerPosition(application = application),
+            firebaseKey = key,
+            imageUrl = "",
+            shotsLoggedList = emptyList()
+        )
 
-            createEditPlayerViewModel.handleFirebaseResponseForSavingPlayer(
-                isSuccessful = true,
-                key = key,
-                state = defaultState,
-                imageUrl = ""
-            )
+        coVerify { playerRepository.createPlayer(player = player) }
+        coVerify { dataAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = true) }
 
-            coVerify {
-                createEditPlayerViewModel.updatePlayerInstance(
-                    playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
-                    state = defaultState,
-                    imageUrl = ""
-                )
-            }
-        }
-
-        @Test
-        fun `when isSuccessful is set to false should call alert`() = runTest {
-            createEditPlayerViewModel.handleFirebaseResponseForSavingPlayer(
-                isSuccessful = false,
-                key = key,
-                state = defaultState,
-                imageUrl = ""
-            )
-
-            verify { navigation.disableProgress() }
-            verify { navigation.alert(alert = any()) }
-        }
-    }
-
-    @Nested
-    inner class UpdatePlayerInstance {
-
-        @Test
-        fun `when passed in list is empty should call alert`() = runTest {
-            val playerInfoRealtimeWithKeyResponseList: List<PlayerInfoRealtimeWithKeyResponse> = emptyList()
-
-            createEditPlayerViewModel.updatePlayerInstance(
-                playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
-                state = defaultState,
-                imageUrl = null
-            )
-
-            verify { navigation.disableProgress() }
-            verify { navigation.alert(alert = any()) }
-        }
-
-        @Test
-        fun `when passed in list is not empty should call handle saving player`() = runTest {
-            val playerInfoRealtimeWithKeyResponseList: List<PlayerInfoRealtimeWithKeyResponse> = listOf(TestPlayerInfoRealtimeWithKeyResponse().create())
-
-            createEditPlayerViewModel.updatePlayerInstance(
-                playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
-                state = defaultState,
-                imageUrl = null
-            )
-
-            coVerify {
-                createEditPlayerViewModel.handleSavingPlayer(
-                    playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
-                    state = defaultState,
-                    imageUrl = null
-                )
-            }
-        }
-    }
-
-    @Nested
-    inner class HandleSavingPlayer {
-
-        @Test
-        fun `when recentlySavedPlayer is null should show alert`() = runTest {
-            val playerInfoRealtimeWithKeyResponseList: List<PlayerInfoRealtimeWithKeyResponse> = listOf(
-                TestPlayerInfoRealtimeWithKeyResponse().create().copy(
-                    playerInfo = TestPlayerInfoRealtimeResponse().create().copy(firstName = "firstName1", lastName = "lastName1")
-                )
-            )
-
-            createEditPlayerViewModel.handleSavingPlayer(
-                playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
-                state = defaultState,
-                imageUrl = null
-            )
-
-            verify { navigation.disableProgress() }
-            verify { navigation.alert(alert = any()) }
-        }
-
-        @Test
-        fun `when recentlySavedPlayer is not null should pop and create player instance`() = runTest {
-            val playerInfoRealtimeWithKeyResponseList: List<PlayerInfoRealtimeWithKeyResponse> = listOf(
-                TestPlayerInfoRealtimeWithKeyResponse().create().copy(
-                    playerInfo = TestPlayerInfoRealtimeResponse().create().copy(firstName = defaultState.firstName, lastName = defaultState.lastName)
-                )
-            )
-            val key = PLAYER_FIREBASE_KEY
-            val state = defaultState
-
-            createEditPlayerViewModel.handleSavingPlayer(
-                playerInfoRealtimeWithKeyResponseList = playerInfoRealtimeWithKeyResponseList,
-                state = defaultState,
-                imageUrl = null
-            )
-
-            val player = Player(
-                firstName = state.firstName,
-                lastName = state.lastName,
-                position = state.playerPositionString.toPlayerPosition(application = application),
-                firebaseKey = key,
-                imageUrl = "",
-                shotsLoggedList = emptyList()
-            )
-
-            coVerify { playerRepository.createPlayer(player = player) }
-            coVerify { playersAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = true) }
-
-            verify { navigation.disableProgress() }
-            verify { navigation.pop() }
-        }
+        verify { navigation.disableProgress() }
+        verify { navigation.pop() }
     }
 
     @Nested

@@ -19,6 +19,8 @@ object NavigationDestinations {
     const val SELECT_SHOT_SCREEN = "selectShotScreen"
     const val SELECT_SHOT_SCREEN_WITH_PARAMS = "selectShotScreen/{isExistingPlayer}/{playerId}"
     const val PLAYERS_LIST_SCREEN = "playersListScreen"
+    const val REPORTS_LIST_SCREEN = "reportsListScreen"
+    const val CREATE_REPORT_SCREEN = "createReportScreen"
     const val LOGIN_SCREEN = "loginScreen"
     const val SPLASH_SCREEN = "splashScreen"
     const val COMPARE_PLAYERS_SCREEN = "comparePlayersScreen"

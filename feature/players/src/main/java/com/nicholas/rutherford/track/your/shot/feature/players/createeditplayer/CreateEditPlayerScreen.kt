@@ -6,6 +6,7 @@ import android.Manifest
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.compose.foundation.clickable
@@ -45,11 +46,8 @@ import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.PositionChooser
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.ShotsContent
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.UploadPlayerImageContent
-import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.getImageUri
 import com.nicholas.rutherford.track.your.shot.helper.extensions.hasCameraPermissionEnabled
-import com.nicholas.rutherford.track.your.shot.helper.extensions.hasReadImagePermissionEnabled
-import com.nicholas.rutherford.track.your.shot.helper.extensions.readMediaImagesOrExternalStoragePermission
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import kotlinx.coroutines.launch
@@ -62,7 +60,6 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
     var hasUploadedImage by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var shouldAskForCameraPermission by remember { mutableStateOf(value = false) }
-    var shouldAskGalleryPermission by remember { mutableStateOf(value = false) }
     val context = LocalContext.current
 
     BackHandler(true) {
@@ -79,13 +76,6 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
                 sheetState = bottomState,
                 sheetContent = {
                     createEditPlayerParams.state.sheet?.let { sheet ->
-                        val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-                            contract = ActivityResultContracts.GetContent(),
-                            onResult = { uri ->
-                                hasUploadedImage = uri != null || imageUri != null
-                                imageUri = uri ?: imageUri
-                            }
-                        )
                         val cameraLauncher = rememberLauncherForActivityResult(
                             contract = ActivityResultContracts.TakePicturePreview()
                         ) { bitmap ->
@@ -103,25 +93,17 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
                                 }
                             }
                         )
-                        val readStorageOrMediaImagesPermissionLauncher = rememberLauncherForActivityResult(
-                            contract = ActivityResultContracts.RequestPermission(),
-                            onResult = { isGranted ->
-                                if (isGranted) {
-                                    singlePhotoPickerLauncher.launch(Constants.IMAGE)
-                                } else {
-                                    createEditPlayerParams.permissionNotGrantedForReadMediaOrExternalStorageAlert.invoke()
-                                }
+                        val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+                            contract = ActivityResultContracts.PickVisualMedia(),
+                            onResult = { uri ->
+                                hasUploadedImage = uri != null || imageUri != null
+                                imageUri = uri ?: imageUri
                             }
                         )
 
                         if (shouldAskForCameraPermission) {
                             cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                             shouldAskForCameraPermission = false
-                        }
-
-                        if (shouldAskGalleryPermission) {
-                            readStorageOrMediaImagesPermissionLauncher.launch(readMediaImagesOrExternalStoragePermission())
-                            shouldAskGalleryPermission = false
                         }
 
                         Text(
@@ -144,11 +126,9 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
                                                 )
                                             ) {
                                                 CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY -> {
-                                                    if (hasReadImagePermissionEnabled(context = context)) {
-                                                        singlePhotoPickerLauncher.launch(Constants.IMAGE)
-                                                    } else {
-                                                        shouldAskGalleryPermission = true
-                                                    }
+                                                    singlePhotoPickerLauncher.launch(
+                                                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                                    )
                                                 }
 
                                                 CreateEditImageOption.TAKE_A_PICTURE -> {

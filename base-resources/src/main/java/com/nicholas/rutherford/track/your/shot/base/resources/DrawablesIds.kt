@@ -8,6 +8,7 @@ object DrawablesIds {
     val gallery = R.drawable.ic_gallery
     val placeholder = R.drawable.ic_placeholder
     val splash = R.drawable.ic_splash_icon
+    val sportsBasketball = R.drawable.ic_sports_basketball
     val statisticBasketball = R.drawable.ic_statistic_basketball
     val launcherRound = R.mipmap.ic_launcher_round
     val launcherRoundStage = R.mipmap.ic_launcher_round_stage

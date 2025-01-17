@@ -17,7 +17,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.runtime.Composable
@@ -38,6 +37,7 @@ import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
+import com.nicholas.rutherford.track.your.shot.compose.components.NumericRowStepper
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
@@ -81,8 +81,10 @@ fun LogShotContent(logShotParams: LogShotParams) {
         ShotInfoContent(
             state = logShotParams.state,
             onDateShotsTakenClicked = logShotParams.onDateShotsTakenClicked,
-            onShotsMadeClicked = logShotParams.onShotsMadeClicked,
-            onShotsMissedClicked = logShotParams.onShotsMissedClicked
+            onShotsMadeUpwardClicked = logShotParams.onShotsMadeUpwardClicked,
+            onShotsMadeDownwardClicked = logShotParams.onShotsMadeDownwardClicked,
+            onShotsMissedUpwardClicked = logShotParams.onShotsMissedUpwardClicked,
+            onShotsMissedDownwardClicked = logShotParams.onShotsMissedDownwardClicked
         )
         PlayerInfoContent(state = logShotParams.state)
 
@@ -122,8 +124,10 @@ fun LogShotContent(logShotParams: LogShotParams) {
 private fun ShotInfoContent(
     state: LogShotState,
     onDateShotsTakenClicked: () -> Unit,
-    onShotsMadeClicked: () -> Unit,
-    onShotsMissedClicked: () -> Unit
+    onShotsMadeUpwardClicked: (value: Int) -> Unit,
+    onShotsMadeDownwardClicked: (value: Int) -> Unit,
+    onShotsMissedUpwardClicked: (value: Int) -> Unit,
+    onShotsMissedDownwardClicked: (value: Int) -> Unit
 ) {
     var isPlayerShotInfoExpanded by remember { mutableStateOf(value = false) }
     var playerShotInfoImageVector by remember { mutableStateOf(value = Icons.Filled.ExpandMore) }
@@ -170,24 +174,22 @@ private fun ShotInfoContent(
                     shouldShowDivider = true
                 )
 
-                BaseRow(
+                NumericRowStepper(
                     title = stringResource(id = StringsIds.shotsMade),
-                    onClicked = { onShotsMadeClicked.invoke() },
+                    onDownwardClicked = { value -> onShotsMadeDownwardClicked.invoke(value) },
+                    onUpwardClicked = { value -> onShotsMadeUpwardClicked.invoke(value) },
                     titleStyle = TextStyles.small.copy(fontSize = 16.sp),
-                    iconTint = Color.Blue,
-                    subText = state.shotsMade.toString(),
-                    imageVector = Icons.Filled.ChevronRight,
-                    shouldShowDivider = true
+                    shouldShowDivider = true,
+                    defaultValue = state.shotsMade
                 )
 
-                BaseRow(
+                NumericRowStepper(
                     title = stringResource(id = StringsIds.shotsMissed),
-                    onClicked = { onShotsMissedClicked.invoke() },
+                    onDownwardClicked = { value -> onShotsMissedDownwardClicked.invoke(value) },
+                    onUpwardClicked = { value -> onShotsMissedUpwardClicked.invoke(value) },
                     titleStyle = TextStyles.small.copy(fontSize = 16.sp),
-                    iconTint = Color.Blue,
-                    subText = state.shotsMissed.toString(),
-                    imageVector = Icons.Filled.ChevronRight,
-                    shouldShowDivider = true
+                    shouldShowDivider = true,
+                    defaultValue = state.shotsMissed
                 )
 
                 BaseRow(

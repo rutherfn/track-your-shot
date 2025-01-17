@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SportsBasketball
+import androidx.compose.material.icons.filled.Summarize
 import androidx.navigation.NavOptions
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import org.junit.jupiter.api.Assertions
@@ -32,6 +33,29 @@ class DrawerActionsTest {
             PlayersListAction.navOptions,
             NavOptions.Builder()
                 .setPopUpTo(0, true)
+                .build()
+        )
+    }
+
+    @Test
+    fun reportingAction() {
+        Assertions.assertEquals(
+            ReportingAction.titleId,
+            StringsIds.reports
+        )
+        Assertions.assertEquals(
+            ReportingAction.imageVector,
+            Icons.Filled.Summarize
+        )
+        Assertions.assertEquals(
+            ReportingAction.route,
+            NavigationDestinations.REPORTS_LIST_SCREEN
+        )
+        Assertions.assertEquals(
+            ReportingAction.navOptions,
+            NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .setLaunchSingleTop(true)
                 .build()
         )
     }

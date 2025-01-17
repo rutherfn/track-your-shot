@@ -12,4 +12,5 @@ object NamedArguments {
     const val SHOT_ID = "shotId"
     const val VIEW_CURRENT_EXISTING_SHOT = "viewCurrentExistingShot"
     const val VIEW_CURRENT_PENDING_SHOT = "viewCurrentPendingShot"
+    const val SHOULD_REFRESH_DATA = "shouldRefreshData"
 }

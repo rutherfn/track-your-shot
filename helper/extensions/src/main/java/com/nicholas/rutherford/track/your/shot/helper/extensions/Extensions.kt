@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.core.content.ContextCompat
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
@@ -71,6 +70,11 @@ fun PlayerPositions.toType(): Int {
     }
 }
 
+fun Date.toTimestampString(): String {
+    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+    return formatter.format(this)
+}
+
 fun String.toLocalDate(): LocalDate? {
     return try {
         val formatter = DateTimeFormatter.ofPattern("MMM d, y", Locale.ENGLISH)
@@ -121,32 +125,7 @@ fun hasCameraPermissionEnabled(context: Context) = ContextCompat.checkSelfPermis
     Manifest.permission.CAMERA
 ) == PackageManager.PERMISSION_GRANTED
 
-fun hasReadImagePermissionEnabled(context: Context): Boolean {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.READ_MEDIA_IMAGES
-        ) == PackageManager.PERMISSION_GRANTED
-    } else {
-        ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-}
-
 fun isTiramisuOrAbove(sdk: Int): Boolean = sdk >= Build.VERSION_CODES.TIRAMISU
-
-@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.TIRAMISU)
-fun shouldAskForReadMediaImages() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-
-fun readMediaImagesOrExternalStoragePermission(): String {
-    return if (shouldAskForReadMediaImages()) {
-        Manifest.permission.READ_MEDIA_IMAGES
-    } else {
-        Manifest.permission.READ_EXTERNAL_STORAGE
-    }
-}
 
 fun parseValueToDate(value: String): Date? =
     SimpleDateFormat(DATE_PATTERN, Locale.ENGLISH).parse(value)

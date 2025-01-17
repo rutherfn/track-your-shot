@@ -10,9 +10,9 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
+import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
@@ -33,7 +33,7 @@ class PlayersListViewModel(
     private val network: Network,
     private val accountManager: AccountManager,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
-    private val playersAdditionUpdates: PlayersAdditionUpdates,
+    private val dataAdditionUpdates: DataAdditionUpdates,
     private val playerRepository: PlayerRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
     private val createSharedPreferences: CreateSharedPreferences,
@@ -70,7 +70,7 @@ class PlayersListViewModel(
 
     internal fun collectPlayerAdditionUpdates() {
         scope.launch {
-            playersAdditionUpdates.newPlayerHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
+            dataAdditionUpdates.newPlayerHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
                 handlePlayerAdded(hasBeenAdded = hasBeenAdded)
             }
         }

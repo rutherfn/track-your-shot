@@ -3,6 +3,5 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissi
 data class EnabledPermissionsParams(
     val onToolbarMenuClicked: () -> Unit,
     val onSwitchChangedToTurnOffPermission: () -> Unit,
-    val permissionNotGrantedForCameraAlert: () -> Unit,
-    val permissionNotGrantedForReadMediaOrExternalStorageAlert: () -> Unit
+    val permissionNotGrantedForCameraAlert: () -> Unit
 )

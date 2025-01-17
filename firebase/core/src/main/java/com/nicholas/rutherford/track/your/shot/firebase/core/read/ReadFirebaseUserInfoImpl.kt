@@ -6,6 +6,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
@@ -123,7 +125,7 @@ class ReadFirebaseUserInfoImpl(
         }
     }
 
-    override fun getPlayerInfoList(accountKey: String): Flow<List<PlayerInfoRealtimeWithKeyResponse>> {
+    override fun getPlayerInfoList(): Flow<List<PlayerInfoRealtimeWithKeyResponse>> {
         return callbackFlow {
             val uid = firebaseAuth.currentUser?.uid ?: ""
             val path = "${Constants.USERS}/$uid/${Constants.PLAYERS}"
@@ -161,6 +163,56 @@ class ReadFirebaseUserInfoImpl(
                         trySend(element = emptyList())
                     }
                 })
+            awaitClose()
+        }
+    }
+
+    override fun getReportList(): Flow<List<IndividualPlayerReportWithKeyRealtimeResponse>> {
+        return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val path = "${Constants.USERS}/$uid/${Constants.PLAYERS_INDIVIDUAL_REPORTS}"
+
+            val individualPlayerReportRealtimeWithKeyResponseArrayList: ArrayList<IndividualPlayerReportWithKeyRealtimeResponse> =
+                arrayListOf()
+
+            firebaseDatabase.getReference(path)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            if (snapshot.childrenCount == Constants.FIREBASE_CHILDREN_COUNT_ZERO) {
+                                Timber.w("Warning(getPlayerReportList) -> No player reports currently exist for this account")
+                                trySend(element = emptyList())
+                            } else {
+                                for (reportSnapshot in snapshot.children) {
+                                    val key = reportSnapshot.key
+                                    val info = reportSnapshot.getValue(
+                                        IndividualPlayerReportRealtimeResponse::class.java
+                                    )
+
+                                    safeLet(key, info) { reportFirebaseKey, playerReport ->
+                                        individualPlayerReportRealtimeWithKeyResponseArrayList.add(
+                                            IndividualPlayerReportWithKeyRealtimeResponse(
+                                                reportFirebaseKey = reportFirebaseKey,
+                                                playerReport = playerReport
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+
+                            trySend(element = individualPlayerReportRealtimeWithKeyResponseArrayList)
+                        } else {
+                            Timber.w("Warning(getPlayerReportList) -> No player reports directory exist for this account")
+                            trySend(element = emptyList())
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Timber.e(message = "Error(getPlayerReportList) -> Database error when attempting to get user player report list with the following stack trace ${error.message}")
+                        trySend(element = emptyList())
+                    }
+                })
+
             awaitClose()
         }
     }

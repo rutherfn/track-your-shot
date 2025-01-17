@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.AlertDialog
 import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.CustomDatePickerDialog
 import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.ProgressDialog
@@ -60,6 +61,7 @@ import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
+import com.nicholas.rutherford.track.your.shot.navigation.ReportingAction
 import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArguments
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
@@ -149,6 +151,8 @@ fun NavigationComponent(
     val onboardingEducationViewModel = viewModels.onboardingEducationViewModel
     val enabledPermissionsViewModel = viewModels.enabledPermissionsViewModel
     val accountInfoViewModel = viewModels.accountInfoViewModel
+    val reportListViewModel = viewModels.reportListViewModel
+    val createReportViewModel = viewModels.createReportViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -211,9 +215,19 @@ fun NavigationComponent(
             }
         }
     }
+
+    fun findViewModelByDestination(destination: String): BaseViewModel? {
+        return when {
+            destination.contains(NavigationDestinations.REPORTS_LIST_SCREEN) -> reportListViewModel
+            destination.contains(NavigationDestinations.CREATE_REPORT_SCREEN) -> createReportViewModel
+            else -> null
+        }
+    }
+
     LaunchedEffect(navigatorState) {
         navigatorState?.let {
             navHostController.navigate(it.destination, it.navOptions)
+            findViewModelByDestination(destination = it.destination)?.onNavigatedTo()
         }
     }
 
@@ -274,6 +288,7 @@ fun NavigationComponent(
             DrawerContent(
                 actions = listOf(
                     PlayersListAction,
+                    ReportingAction,
                     SettingsAction,
                     LogoutAction
                 ),
@@ -284,7 +299,11 @@ fun NavigationComponent(
                     if (route.isEmpty()) {
                         mainActivityViewModel.logout(titleId = titleId)
                     } else {
-                        navHostController.navigate(route, navOptions)
+                        val currentRoute = navHostController.currentDestination?.route ?: ""
+                        if (route != currentRoute) {
+                            navHostController.navigate(route, navOptions)
+                            findViewModelByDestination(destination = route)?.onNavigatedTo()
+                        }
                     }
                 }
             )
@@ -397,8 +416,10 @@ fun NavigationComponent(
                                     viewCurrentPendingShotArgument = bundle.getBoolean(NamedArguments.VIEW_CURRENT_PENDING_SHOT)
                                 )
                             },
-                            onShotsMadeClicked = { logShotViewModel.onShotsMadeClicked() },
-                            onShotsMissedClicked = { logShotViewModel.onShotsMissedClicked() },
+                            onShotsMadeUpwardClicked = { value -> logShotViewModel.onShotsMadeUpwardOrDownwardClicked(shots = value) },
+                            onShotsMadeDownwardClicked = { value -> logShotViewModel.onShotsMadeUpwardOrDownwardClicked(shots = value) },
+                            onShotsMissedUpwardClicked = { value -> logShotViewModel.onShotsMissedUpwardOrDownwardClicked(shots = value) },
+                            onShotsMissedDownwardClicked = { value -> logShotViewModel.onShotsMissedUpwardOrDownwardClicked(shots = value) },
                             onSaveClicked = { logShotViewModel.onSaveClicked() },
                             onDeleteShotClicked = { logShotViewModel.onDeleteShotClicked() }
                         )
@@ -445,6 +466,14 @@ fun NavigationComponent(
                     )
                 )
             }
+            composable(route = NavigationDestinations.REPORTS_LIST_SCREEN) {
+                screenContents.reportListContent(reportListViewModel = reportListViewModel).invoke()
+            }
+            composable(
+                route = NavigationDestinations.CREATE_REPORT_SCREEN
+            ) {
+                screenContents.createReportContent(createReportViewModel = createReportViewModel).invoke()
+            }
             composable(
                 route = NavigationDestinations.PERMISSION_EDUCATION_SCREEN
             ) {
@@ -463,8 +492,7 @@ fun NavigationComponent(
                     params = EnabledPermissionsParams(
                         onToolbarMenuClicked = { enabledPermissionsViewModel.onToolbarMenuClicked() },
                         onSwitchChangedToTurnOffPermission = { enabledPermissionsViewModel.onSwitchChangedToTurnOffPermission() },
-                        permissionNotGrantedForCameraAlert = { enabledPermissionsViewModel.permissionNotGrantedForCameraAlert() },
-                        permissionNotGrantedForReadMediaOrExternalStorageAlert = { enabledPermissionsViewModel.permissionNotGrantedForReadMediaOrExternalStorageAlert() }
+                        permissionNotGrantedForCameraAlert = { enabledPermissionsViewModel.permissionNotGrantedForCameraAlert() }
                     )
                 )
             }

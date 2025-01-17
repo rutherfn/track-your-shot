@@ -15,6 +15,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRe
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepositoryImpl
+import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
@@ -33,8 +35,6 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdatesImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerViewModel
@@ -49,6 +49,12 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.CreateReportNavigation
+import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.CreateReportNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.CreateReportViewModel
+import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListNavigation
+import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewModel
@@ -85,10 +91,18 @@ import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.Existi
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManagerImpl
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
+import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdatesImpl
+import com.nicholas.rutherford.track.your.shot.helper.extensions.date.DateExt
+import com.nicholas.rutherford.track.your.shot.helper.extensions.date.DateExtImpl
+import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
+import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGeneratorImpl
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.helper.network.NetworkImpl
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import com.nicholas.rutherford.track.your.shot.navigation.NavigatorImpl
+import com.nicholas.rutherford.track.your.shot.notifications.Notifications
+import com.nicholas.rutherford.track.your.shot.notifications.NotificationsImpl
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferencesImpl
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
@@ -124,6 +138,9 @@ class AppModule {
             get<AppDatabase>().declaredShotDao()
         }
         single {
+            get<AppDatabase>().individualPlayerReportDao()
+        }
+        single {
             get<AppDatabase>().userDao()
         }
         single {
@@ -139,6 +156,11 @@ class AppModule {
             DeclaredShotRepositoryImpl(
                 declaredShotDao = get(),
                 declaredShotsJson = get()
+            )
+        }
+        single<IndividualPlayerReportRepository> {
+            IndividualPlayerReportRepositoryImpl(
+                individualPlayerReportDao = get()
             )
         }
         single<CurrentPendingShot> { CurrentPendingShotImpl() }
@@ -209,6 +231,7 @@ class AppModule {
                 activeUserRepository = get(),
                 declaredShotRepository = get(),
                 playerRepository = get(),
+                individualPlayerReportRepository = get(),
                 pendingPlayerRepository = get(),
                 userRepository = get(),
                 readFirebaseUserInfo = get(),
@@ -216,8 +239,17 @@ class AppModule {
                 createSharedPreferences = get()
             )
         }
-        single<PlayersAdditionUpdates> {
-            PlayersAdditionUpdatesImpl()
+        single<DataAdditionUpdates> {
+            DataAdditionUpdatesImpl()
+        }
+        single<Notifications> {
+            NotificationsImpl(application = androidApplication())
+        }
+        single<PdfGenerator> {
+            PdfGeneratorImpl(application = androidApplication())
+        }
+        single<DateExt> {
+            DateExtImpl()
         }
         single<SplashNavigation> {
             SplashNavigationImpl(navigator = get())
@@ -264,6 +296,12 @@ class AppModule {
         single<AccountInfoNavigation> {
             AccountInfoNavigationImpl(navigator = get())
         }
+        single<ReportListNavigation> {
+            ReportListNavigationImpl(navigator = get())
+        }
+        single<CreateReportNavigation> {
+            CreateReportNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(accountManager = get())
         }
@@ -274,7 +312,8 @@ class AppModule {
                 activeUserRepository = get(),
                 accountManager = get(),
                 readSharedPreferences = get(),
-                createSharedPreferences = get()
+                createSharedPreferences = get(),
+                scope = defaultCoroutineScope
             )
         }
         viewModel {
@@ -294,7 +333,7 @@ class AppModule {
                 network = get(),
                 accountManager = get(),
                 deleteFirebaseUserInfo = get(),
-                playersAdditionUpdates = get(),
+                dataAdditionUpdates = get(),
                 playerRepository = get(),
                 pendingPlayerRepository = get(),
                 createSharedPreferences = get(),
@@ -307,13 +346,12 @@ class AppModule {
                 deleteFirebaseUserInfo = get(),
                 createFirebaseUserInfo = get(),
                 updateFirebaseUserInfo = get(),
-                readFirebaseUserInfo = get(),
                 playerRepository = get(),
                 pendingPlayerRepository = get(),
                 activeUserRepository = get(),
                 scope = defaultCoroutineScope,
                 navigation = get(),
-                playersAdditionUpdates = get(),
+                dataAdditionUpdates = get(),
                 currentPendingShot = get(),
                 network = get()
             )
@@ -369,6 +407,8 @@ class AppModule {
                 createFirebaseUserInfo = get(),
                 activeUserRepository = get(),
                 createSharedPreferences = get(),
+                declaredShotRepository = get(),
+                accountManager = get(),
                 scope = defaultCoroutineScope
             )
         }
@@ -383,7 +423,6 @@ class AppModule {
         viewModel {
             PermissionEducationViewModel(
                 navigation = get(),
-                buildType = get(),
                 application = androidApplication()
             )
         }
@@ -409,6 +448,32 @@ class AppModule {
         }
         viewModel {
             AccountInfoViewModel(navigation = get())
+        }
+        viewModel {
+            ReportListViewModel(
+                application = androidApplication(),
+                navigation = get(),
+                playerRepository = get(),
+                individualPlayerReportRepository = get(),
+                dataAdditionUpdates = get(),
+                deleteFirebaseUserInfo = get(),
+                pdfGenerator = get(),
+                scope = defaultCoroutineScope
+            )
+        }
+        viewModel {
+            CreateReportViewModel(
+                application = androidApplication(),
+                navigation = get(),
+                playerRepository = get(),
+                scope = defaultCoroutineScope,
+                notifications = get(),
+                pdfGenerator = get(),
+                createFirebaseUserInfo = get(),
+                individualPlayerReportRepository = get(),
+                dateExt = get(),
+                dataAdditionUpdates = get()
+            )
         }
     }
 

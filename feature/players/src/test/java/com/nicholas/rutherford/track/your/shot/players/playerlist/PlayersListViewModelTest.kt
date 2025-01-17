@@ -9,12 +9,12 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPosition
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
-import com.nicholas.rutherford.track.your.shot.feature.players.PlayersAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListState
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
+import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
@@ -56,7 +56,7 @@ class PlayersListViewModelTest {
 
     private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
 
-    private val playersAdditionUpdates = mockk<PlayersAdditionUpdates>(relaxed = true)
+    private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
 
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
@@ -77,7 +77,7 @@ class PlayersListViewModelTest {
             network = network,
             accountManager = accountManager,
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-            playersAdditionUpdates = playersAdditionUpdates,
+            dataAdditionUpdates = dataAdditionUpdates,
             playerRepository = playerRepository,
             pendingPlayerRepository = pendingPlayerRepository,
             createSharedPreferences = createSharedPreferences,
@@ -115,7 +115,7 @@ class PlayersListViewModelTest {
             newPlayerHasBeenAddedSharedFlow.emit(value = false)
 
             coEvery { playerRepository.fetchAllPlayers() } returns playerList
-            every { playersAdditionUpdates.newPlayerHasBeenAddedSharedFlow } returns newPlayerHasBeenAddedSharedFlow
+            every { dataAdditionUpdates.newPlayerHasBeenAddedSharedFlow } returns newPlayerHasBeenAddedSharedFlow
 
             playersListViewModel.collectPlayerAdditionUpdates()
 
@@ -137,7 +137,7 @@ class PlayersListViewModelTest {
             newPlayerHasBeenAddedSharedFlow.emit(value = true)
 
             coEvery { playerRepository.fetchAllPlayers() } returns playerList
-            every { playersAdditionUpdates.newPlayerHasBeenAddedSharedFlow } returns newPlayerHasBeenAddedSharedFlow
+            every { dataAdditionUpdates.newPlayerHasBeenAddedSharedFlow } returns newPlayerHasBeenAddedSharedFlow
 
             playersListViewModel.collectPlayerAdditionUpdates()
 
@@ -169,7 +169,7 @@ class PlayersListViewModelTest {
                 network = network,
                 accountManager = accountManager,
                 deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-                playersAdditionUpdates = playersAdditionUpdates,
+                dataAdditionUpdates = dataAdditionUpdates,
                 playerRepository = playerRepository,
                 pendingPlayerRepository = pendingPlayerRepository,
                 createSharedPreferences = createSharedPreferences,
@@ -207,7 +207,7 @@ class PlayersListViewModelTest {
                 network = network,
                 accountManager = accountManager,
                 deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-                playersAdditionUpdates = playersAdditionUpdates,
+                dataAdditionUpdates = dataAdditionUpdates,
                 playerRepository = playerRepository,
                 createSharedPreferences = createSharedPreferences,
                 pendingPlayerRepository = pendingPlayerRepository,
@@ -246,7 +246,7 @@ class PlayersListViewModelTest {
                 network = network,
                 accountManager = accountManager,
                 deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-                playersAdditionUpdates = playersAdditionUpdates,
+                dataAdditionUpdates = dataAdditionUpdates,
                 playerRepository = playerRepository,
                 createSharedPreferences = createSharedPreferences,
                 pendingPlayerRepository = pendingPlayerRepository,

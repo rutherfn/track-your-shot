@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
@@ -11,6 +12,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
@@ -26,6 +28,8 @@ class AuthenticationViewModel(
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val activeUserRepository: ActiveUserRepository,
     private val createSharedPreferences: CreateSharedPreferences,
+    private val declaredShotRepository: DeclaredShotRepository,
+    private val accountManager: AccountManager,
     private val scope: CoroutineScope
 ) : ViewModel() {
 
@@ -103,6 +107,9 @@ class AuthenticationViewModel(
                                 )
                             )
                             createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true)
+                            createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
+                            declaredShotRepository.createDeclaredShots()
+                            accountManager.updateLoggedInDeclaredShotFlow(declaredShots = declaredShotRepository.fetchAllDeclaredShots())
                             navigation.disableProgress()
                             navigation.navigateToTermsAndConditions()
                         } else {
