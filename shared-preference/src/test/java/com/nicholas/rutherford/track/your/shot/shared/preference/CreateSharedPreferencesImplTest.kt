@@ -110,4 +110,40 @@ class CreateSharedPreferencesImplTest {
             }
             verify { editor.apply() }
         }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `createHasAccountAuthenticatedAccount should call editor putBoolean and apply`() =
+        runTest {
+            val defaultValue = true
+
+            coEvery { sharedPreferences.edit() } returns editor
+
+            init()
+
+            createSharedPreferencesImpl.createHasAuthenticatedAccount(value = defaultValue)
+
+            verify {
+                editor.putBoolean(Constants.Preferences.HAS_AUTHENTICATED_ACCOUNT, defaultValue)
+            }
+            verify { editor.apply() }
+        }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `createIsLoggedIn should call editor putBoolean and apply`() =
+        runTest {
+            val defaultValue = true
+
+            coEvery { sharedPreferences.edit() } returns editor
+
+            init()
+
+            createSharedPreferencesImpl.createIsLoggedIn(value = defaultValue)
+
+            verify {
+                editor.putBoolean(Constants.Preferences.IS_LOGGED_IN, defaultValue)
+            }
+            verify { editor.apply() }
+        }
 }

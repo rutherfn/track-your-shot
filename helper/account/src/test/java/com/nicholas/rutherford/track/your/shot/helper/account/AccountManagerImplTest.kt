@@ -94,6 +94,9 @@ class AccountManagerImplTest {
         coVerifyOrder {
             navigator.progress(progressAction = any())
             existingUserFirebase.logout()
+            createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
+            createSharedPreferences.createHasAuthenticatedAccount(value = false)
+            createSharedPreferences.createIsLoggedIn(value = false)
             accountManagerImpl.clearOutDatabase()
         }
 

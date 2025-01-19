@@ -109,6 +109,7 @@ class SplashViewModelTest {
 
                     every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(true)
                     every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(false)
+                    every { readSharedPreferences.hasAccountBeenAuthenticated() } returns false
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
@@ -141,6 +142,7 @@ class SplashViewModelTest {
 
                     every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(true)
                     every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(true)
+                    every { readSharedPreferences.hasAccountBeenAuthenticated() } returns false
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
@@ -167,7 +169,13 @@ class SplashViewModelTest {
             @Test
             fun `when isLoggedIn is set to false should not navigateToAuthentication`() =
                 runTest {
+                    coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
+                        accountHasBeenCreated = false
+                    )
                     every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(false)
+                    every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(false)
+                    every { readSharedPreferences.hasAccountBeenAuthenticated() } returns false
+                    every { readSharedPreferences.shouldShowTermsAndConditions() } returns false
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
@@ -188,6 +196,7 @@ class SplashViewModelTest {
                             email = any()
                         )
                     }
+                    verify { navigation.navigateToLogin() }
                 }
 
             @OptIn(ExperimentalCoroutinesApi::class)
@@ -199,6 +208,7 @@ class SplashViewModelTest {
                     coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
                         accountHasBeenCreated = true
                     )
+                    every { readSharedPreferences.hasAccountBeenAuthenticated() } returns false
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
@@ -219,6 +229,74 @@ class SplashViewModelTest {
                             email = any()
                         )
                     }
+                    verify { viewModel.navigateToLoginOrPlayersList(isLoggedIn = true, email = activeUser.email) }
+                }
+
+            @OptIn(ExperimentalCoroutinesApi::class)
+            @Test
+            fun `when isLoggedIn preference is set to true, isEmailVerified set to true and accountHasBeenCreated is set to true should not call navigateToAuthentication`() =
+                runTest {
+                    every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(false)
+                    every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(true)
+                    coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
+                        accountHasBeenCreated = true
+                    )
+                    every { readSharedPreferences.isLoggedIn() } returns true
+                    every { readSharedPreferences.hasAccountBeenAuthenticated() } returns false
+
+                    Dispatchers.setMain(dispatcher)
+                    viewModel = SplashViewModel(
+                        navigation = navigation,
+                        readFirebaseUserInfo = readFirebaseUserInfo,
+                        activeUserRepository = activeUserRepository,
+                        accountManager = accountManager,
+                        readSharedPreferences = readSharedPreferences,
+                        createSharedPreferences = createSharedPreferences,
+                        scope = scope
+                    )
+
+                    viewModel.navigateToPlayersListLoginOrAuthentication()
+
+                    coVerify(exactly = 0) {
+                        navigation.navigateToAuthentication(
+                            username = any(),
+                            email = any()
+                        )
+                    }
+                    verify { viewModel.navigateToLoginOrPlayersList(isLoggedIn = true, email = activeUser.email) }
+                }
+
+            @OptIn(ExperimentalCoroutinesApi::class)
+            @Test
+            fun `when has been authenticated is set to true, isEmailVerified set to true and accountHasBeenCreated is set to true should not call navigateToAuthentication`() =
+                runTest {
+                    every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(false)
+                    every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(true)
+                    coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
+                        accountHasBeenCreated = true
+                    )
+                    every { readSharedPreferences.hasAccountBeenAuthenticated() } returns true
+
+                    Dispatchers.setMain(dispatcher)
+                    viewModel = SplashViewModel(
+                        navigation = navigation,
+                        readFirebaseUserInfo = readFirebaseUserInfo,
+                        activeUserRepository = activeUserRepository,
+                        accountManager = accountManager,
+                        readSharedPreferences = readSharedPreferences,
+                        createSharedPreferences = createSharedPreferences,
+                        scope = scope
+                    )
+
+                    viewModel.navigateToPlayersListLoginOrAuthentication()
+
+                    coVerify(exactly = 0) {
+                        navigation.navigateToAuthentication(
+                            username = any(),
+                            email = any()
+                        )
+                    }
+                    verify { navigation.navigateToLogin() }
                 }
         }
 

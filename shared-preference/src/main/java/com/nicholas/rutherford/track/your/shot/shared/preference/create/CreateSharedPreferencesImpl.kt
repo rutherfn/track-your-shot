@@ -29,4 +29,9 @@ class CreateSharedPreferencesImpl(private val editor: SharedPreferences.Editor) 
         editor.putBoolean(Constants.Preferences.HAS_AUTHENTICATED_ACCOUNT, value)
         editor.apply()
     }
+
+    override fun createIsLoggedIn(value: Boolean) {
+        editor.putBoolean(Constants.Preferences.IS_LOGGED_IN, value)
+        editor.apply()
+    }
 }

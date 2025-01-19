@@ -11,6 +11,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFireba
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,6 +35,7 @@ class CreateAccountViewModel(
     private val application: Application,
     private val network: Network,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
+    private val createSharedPreferences: CreateSharedPreferences,
     private val authenticationFirebase: AuthenticationFirebase,
     private val scope: CoroutineScope
 ) : ViewModel() {
@@ -200,6 +202,7 @@ class CreateAccountViewModel(
                     authenticationFirebase.attemptToSendEmailVerificationForCurrentUser()
                         .collectLatest { authenticatedUserViaEmailFirebaseResponse ->
                             if (authenticatedUserViaEmailFirebaseResponse.isSuccessful) {
+                                createSharedPreferences.createIsLoggedIn(value = true)
                                 navigateToAuthentication(email = email, username = username)
                                 clearState()
                             } else {

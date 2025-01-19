@@ -131,6 +131,56 @@ class ReadSharedPreferencesImplTest {
     }
 
     @Nested
+    inner class IsLoggedIn {
+
+        @BeforeEach
+        fun beforeEach() {
+            mockkStatic(SharedPreferences::class)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return true when getBoolean returns back true`() =
+            runTest {
+                coEvery {
+                    sharedPreferences.getBoolean(
+                        Constants.Preferences.IS_LOGGED_IN,
+                        false
+                    )
+                } returns true
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.isLoggedIn(), true)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return true when getBoolean returns back false`() =
+            runTest {
+                coEvery {
+                    sharedPreferences.getBoolean(
+                        Constants.Preferences.IS_LOGGED_IN,
+                        false
+                    )
+                } returns false
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.isLoggedIn(), false)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return false when getBoolean returns back no value`() =
+            runTest {
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.isLoggedIn(), false)
+            }
+    }
+
+    @Nested
     inner class ShouldShowTermsAndConditions {
 
         @BeforeEach

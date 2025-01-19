@@ -11,6 +11,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFireba
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.*
 import kotlinx.coroutines.CoroutineScope
@@ -339,6 +340,21 @@ class AuthenticationViewModelTest {
             viewModel.onResume()
 
             verify { navigation.enableProgress(progress = any()) }
+            coVerify {
+                activeUserRepository.updateActiveUser(
+                    activeUser = ActiveUser(
+                        id = Constants.ACTIVE_USER_ID,
+                        accountHasBeenCreated = true,
+                        email = email,
+                        username = username,
+                        firebaseAccountInfoKey = firebaseAccountInfoKey
+                    )
+                )
+            }
+            verify { createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true) }
+            verify { createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true) }
+            verify { createSharedPreferences.createHasAuthenticatedAccount(value = true) }
+            coVerify { declaredShotRepository.createDeclaredShots() }
             verify { navigation.disableProgress() }
             verify { navigation.navigateToTermsAndConditions() }
         }
