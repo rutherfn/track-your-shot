@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.compose.components.dialogs
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -52,7 +53,8 @@ fun AlertDialog(
         },
         title = { Text(text = title) },
         text = { description?.let { text -> Text(text = text) } },
-        modifier = Modifier.padding(32.dp)
+        modifier = Modifier.padding(32.dp),
+        shape = RoundedCornerShape(25.dp)
     )
 }
 
