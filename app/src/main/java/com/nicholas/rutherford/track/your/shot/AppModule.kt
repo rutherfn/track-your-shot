@@ -212,7 +212,7 @@ class AppModule {
             DeleteFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
         single<Network> {
-            NetworkImpl(scope = defaultCoroutineScope)
+            NetworkImpl()
         }
         single<BuildType> {
             BuildTypeImpl(
@@ -394,6 +394,7 @@ class AppModule {
                 application = androidApplication(),
                 network = get(),
                 createFirebaseUserInfo = get(),
+                createSharedPreferences = get(),
                 authenticationFirebase = get(),
                 scope = defaultCoroutineScope
             )

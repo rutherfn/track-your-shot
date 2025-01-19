@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.TestCreateAccountFirebas
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -36,6 +37,7 @@ class CreateAccountViewModelTest {
     private val network = mockk<Network>(relaxed = true)
 
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
+    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
     private val authenticationFirebase = mockk<AuthenticationFirebase>(relaxed = true)
 
     private val state = CreateAccountState(username = null, email = null, password = null)
@@ -57,6 +59,7 @@ class CreateAccountViewModelTest {
             application = application,
             network = network,
             createFirebaseUserInfo = createFirebaseUserInfo,
+            createSharedPreferences = createSharedPreferences,
             authenticationFirebase = authenticationFirebase,
             scope = scope
         )
@@ -905,6 +908,7 @@ class CreateAccountViewModelTest {
                 )
 
                 verify { navigation.disableProgress() }
+                verify { createSharedPreferences.createIsLoggedIn(value = true) }
                 verify { navigation.navigateToAuthentication(email = testEmail, username = testUsername) }
             }
     }
