@@ -67,6 +67,7 @@ class AccountManagerImpl(
 
             existingUserFirebase.logout()
             createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
+            createSharedPreferences.createHasAuthenticatedAccount(value = false)
             clearOutDatabase()
 
             delay(Constants.DELAY_IN_MILLISECONDS_TO_SHOW_PROGRESS_MASK_ON_LOG_OUT)
@@ -243,6 +244,7 @@ class AccountManagerImpl(
                     hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
                 }
 
+                createSharedPreferences.createHasAuthenticatedAccount(value = false)
                 disableProcessAndNavigateToPlayersList()
             }
     }
