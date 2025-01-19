@@ -35,11 +35,21 @@ class SplashViewModel(
             combine(
                 readFirebaseUserInfo.isEmailVerifiedFlow(),
                 readFirebaseUserInfo.isLoggedInFlow()
-            ) { isEmailVerified, isLoggedIn ->
+            ) { emailVerifiedValue, loggedInValue ->
                 val activeUser = activeUserRepository.fetchActiveUser()
+                val isVerified = if (emailVerifiedValue) {
+                    emailVerifiedValue
+                } else {
+                    readSharedPreferences.hasAccountBeenAuthenticated()
+                }
+                val isLoggedIn = if (loggedInValue) {
+                    loggedInValue
+                } else {
+                    readSharedPreferences.isLoggedIn()
+                }
 
                 if (isLoggedIn) {
-                    if (isEmailVerified && activeUser != null && activeUser.accountHasBeenCreated) {
+                    if (isVerified && activeUser != null && activeUser.accountHasBeenCreated) {
                         navigateToLoginOrPlayersList(isLoggedIn = true, email = activeUser.email)
                     } else {
                         activeUser?.let { user ->
@@ -56,7 +66,7 @@ class SplashViewModel(
         }
     }
 
-    private fun navigateToLoginOrPlayersList(isLoggedIn: Boolean, email: String?) {
+    internal fun navigateToLoginOrPlayersList(isLoggedIn: Boolean, email: String?) {
         if (readSharedPreferences.shouldShowTermsAndConditions()) {
             navigation.navigateToTermsAndConditions()
         } else if (isLoggedIn) {

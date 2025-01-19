@@ -14,4 +14,6 @@ class ReadSharedPreferencesImpl(private val sharedPreferences: SharedPreferences
     override fun shouldShowTermsAndConditions(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.SHOULD_SHOW_TERM_AND_CONDITIONS, false)
 
     override fun hasAccountBeenAuthenticated(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.HAS_AUTHENTICATED_ACCOUNT, false)
+
+    override fun isLoggedIn(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.IS_LOGGED_IN, false)
 }
