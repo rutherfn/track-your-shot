@@ -108,6 +108,7 @@ class AuthenticationViewModel(
                             )
                             createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true)
                             createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
+                            createSharedPreferences.createHasAuthenticatedAccount(value = true)
                             declaredShotRepository.createDeclaredShots()
                             accountManager.updateLoggedInDeclaredShotFlow(declaredShots = declaredShotRepository.fetchAllDeclaredShots())
                             navigation.disableProgress()
