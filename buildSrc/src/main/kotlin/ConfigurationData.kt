@@ -7,6 +7,6 @@ object ConfigurationData {
     const val minSdk = 26
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     const val targetSdk = 34
-    const val versionCode = 25
+    const val versionCode = 27
     const val versionName = "1.1"
 }
