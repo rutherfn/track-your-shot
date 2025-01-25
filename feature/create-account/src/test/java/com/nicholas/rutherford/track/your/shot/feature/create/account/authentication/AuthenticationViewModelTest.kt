@@ -10,10 +10,13 @@ import com.nicholas.rutherford.track.your.shot.firebase.TestAuthenticateUserViaE
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -48,7 +51,6 @@ class AuthenticationViewModelTest {
     internal val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
 
     internal val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
-    internal val accountManager = mockk<AccountManager>(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -76,7 +78,6 @@ class AuthenticationViewModelTest {
             activeUserRepository = activeUserRepository,
             createSharedPreferences = createSharedPreferences,
             declaredShotRepository = declaredShotRepository,
-            accountManager = accountManager,
             scope = scope
         )
     }
@@ -183,7 +184,6 @@ class AuthenticationViewModelTest {
                 activeUserRepository = activeUserRepository,
                 createSharedPreferences = createSharedPreferences,
                 declaredShotRepository = declaredShotRepository,
-                accountManager = accountManager,
                 scope = scope
             )
 
@@ -213,7 +213,6 @@ class AuthenticationViewModelTest {
                 activeUserRepository = activeUserRepository,
                 createSharedPreferences = createSharedPreferences,
                 declaredShotRepository = declaredShotRepository,
-                accountManager = accountManager,
                 scope = scope
             )
 
@@ -300,7 +299,6 @@ class AuthenticationViewModelTest {
                 activeUserRepository = activeUserRepository,
                 createSharedPreferences = createSharedPreferences,
                 declaredShotRepository = declaredShotRepository,
-                accountManager = accountManager,
                 scope = scope
             )
 
@@ -330,7 +328,6 @@ class AuthenticationViewModelTest {
                 activeUserRepository = activeUserRepository,
                 createSharedPreferences = createSharedPreferences,
                 declaredShotRepository = declaredShotRepository,
-                accountManager = accountManager,
                 scope = scope
             )
 

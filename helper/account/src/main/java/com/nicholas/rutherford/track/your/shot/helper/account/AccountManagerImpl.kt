@@ -9,7 +9,6 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlaye
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
-import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
@@ -28,9 +27,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -49,17 +45,8 @@ class AccountManagerImpl(
     private val createSharedPreferences: CreateSharedPreferences
 ) : AccountManager {
 
-    private val _loggedInPlayerListStateFlow: MutableStateFlow<List<Player>> = MutableStateFlow(value = emptyList())
-    override val loggedInPlayerListStateFlow: StateFlow<List<Player>> = _loggedInPlayerListStateFlow.asStateFlow()
-
-    private val _loggedInDeclaredShotListStateFlow: MutableStateFlow<List<DeclaredShot>> = MutableStateFlow(value = emptyList())
-    override val loggedInDeclaredShotListStateFlow: StateFlow<List<DeclaredShot>> = _loggedInDeclaredShotListStateFlow.asStateFlow()
-
     private val hasLoggedInSuccessfulMutableSharedFlow = MutableSharedFlow<Boolean>(extraBufferCapacity = Channel.UNLIMITED)
     override val hasLoggedInSuccessfulFlow: Flow<Boolean> = hasLoggedInSuccessfulMutableSharedFlow
-
-    private val hasNoPlayersMutableSharedFlow = MutableSharedFlow<Boolean>(extraBufferCapacity = Channel.UNLIMITED)
-    override val hasNoPlayersFlow: Flow<Boolean> = hasNoPlayersMutableSharedFlow
 
     override fun logout() {
         scope.launch {
@@ -108,10 +95,6 @@ class AccountManagerImpl(
                 clearOutDatabase()
             }
         }
-    }
-
-    override fun updateLoggedInDeclaredShotFlow(declaredShots: List<DeclaredShot>) {
-        _loggedInDeclaredShotListStateFlow.value = declaredShots
     }
 
     internal suspend fun clearOutDatabase() {
@@ -175,8 +158,6 @@ class AccountManagerImpl(
                 createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
                 declaredShotRepository.createDeclaredShots()
 
-                _loggedInDeclaredShotListStateFlow.value = declaredShotRepository.fetchAllDeclaredShots()
-
                 collectPlayerInfoList()
             } ?: disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
         }
@@ -213,12 +194,9 @@ class AccountManagerImpl(
                         }
 
                     createSharedPreferences.createShouldUpdateLoggedInPlayerListPreference(value = true)
-                    _loggedInPlayerListStateFlow.value = playerList
                     playerRepository.createListOfPlayers(playerList = playerList)
-                    hasNoPlayersMutableSharedFlow.tryEmit(value = false)
                     collectReportList()
                 } else {
-                    hasNoPlayersMutableSharedFlow.tryEmit(value = true)
                     collectReportList()
                 }
             }

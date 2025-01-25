@@ -220,6 +220,8 @@ fun NavigationComponent(
         return when {
             destination.contains(NavigationDestinations.REPORTS_LIST_SCREEN) -> reportListViewModel
             destination.contains(NavigationDestinations.CREATE_REPORT_SCREEN) -> createReportViewModel
+            destination.contains(NavigationDestinations.PLAYERS_LIST_SCREEN) -> playersListViewModel
+            destination.contains(NavigationDestinations.SELECT_SHOT_SCREEN) -> selectShotViewModel
             else -> null
         }
     }

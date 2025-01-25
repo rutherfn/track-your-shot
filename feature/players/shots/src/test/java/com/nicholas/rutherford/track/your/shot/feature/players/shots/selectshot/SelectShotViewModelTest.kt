@@ -10,9 +10,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
-import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -20,7 +17,6 @@ import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -44,13 +40,8 @@ class SelectShotViewModelTest {
 
     private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
 
-    private val accountManager = mockk<AccountManager>(relaxed = true)
-
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
-
-    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
-    private val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
 
     @BeforeEach
     fun beforeEach() {
@@ -59,11 +50,8 @@ class SelectShotViewModelTest {
             scope = scope,
             navigation = navigation,
             declaredShotRepository = declaredShotRepository,
-            accountManager = accountManager,
             playerRepository = playerRepository,
-            pendingPlayerRepository = pendingPlayerRepository,
-            createSharedPreferences = createSharedPreferences,
-            readSharedPreferences = readSharedPreferences
+            pendingPlayerRepository = pendingPlayerRepository
         )
     }
 
@@ -97,138 +85,6 @@ class SelectShotViewModelTest {
             selectShotViewModel.currentDeclaredShotArrayList.toList(),
             shotDeclaredList
         )
-    }
-
-    @Nested
-    inner class CollectLoggedInDeclaredShotsStateFlow {
-
-        @Test
-        fun `when loggedInDeclaredShotListStateFloe returns a empty list should not update state`() {
-            val declaredShotList: List<DeclaredShot> = emptyList()
-
-            every { readSharedPreferences.shouldUpdateLoggedInDeclaredShotListState() } returns true
-            every { accountManager.loggedInDeclaredShotListStateFlow } returns MutableStateFlow(declaredShotList)
-
-            selectShotViewModel = SelectShotViewModel(
-                application = application,
-                scope = scope,
-                navigation = navigation,
-                declaredShotRepository = declaredShotRepository,
-                accountManager = accountManager,
-                playerRepository = playerRepository,
-                pendingPlayerRepository = pendingPlayerRepository,
-                createSharedPreferences = createSharedPreferences,
-                readSharedPreferences = readSharedPreferences
-            )
-
-            Assertions.assertEquals(
-                selectShotViewModel.selectShotMutableStateFlow.value,
-                SelectShotState(declaredShotList = declaredShotList)
-            )
-            Assertions.assertEquals(
-                selectShotViewModel.currentDeclaredShotArrayList.toList(),
-                declaredShotList
-            )
-        }
-
-        @Test
-        fun `when shouldUpdateLoggedInDeclaredShotListState returns false should not update state`() {
-            val emptyDeclaredShotList: List<DeclaredShot> = emptyList()
-            val declaredShotList: List<DeclaredShot> = listOf(TestDeclaredShot.build())
-
-            every { readSharedPreferences.shouldUpdateLoggedInDeclaredShotListState() } returns false
-            every { accountManager.loggedInDeclaredShotListStateFlow } returns MutableStateFlow(declaredShotList)
-
-            selectShotViewModel = SelectShotViewModel(
-                application = application,
-                scope = scope,
-                navigation = navigation,
-                declaredShotRepository = declaredShotRepository,
-                accountManager = accountManager,
-                playerRepository = playerRepository,
-                pendingPlayerRepository = pendingPlayerRepository,
-                createSharedPreferences = createSharedPreferences,
-                readSharedPreferences = readSharedPreferences
-            )
-
-            Assertions.assertEquals(
-                selectShotViewModel.selectShotMutableStateFlow.value,
-                SelectShotState(declaredShotList = emptyDeclaredShotList)
-            )
-            Assertions.assertEquals(
-                selectShotViewModel.currentDeclaredShotArrayList.toList(),
-                emptyDeclaredShotList
-            )
-        }
-
-        @Test
-        fun `when all conditions are met should update state and set preference value back to false`() {
-            val declaredShotList: List<DeclaredShot> = listOf(TestDeclaredShot.build())
-
-            every { readSharedPreferences.shouldUpdateLoggedInDeclaredShotListState() } returns true
-            every { accountManager.loggedInDeclaredShotListStateFlow } returns MutableStateFlow(declaredShotList)
-
-            selectShotViewModel = SelectShotViewModel(
-                application = application,
-                scope = scope,
-                navigation = navigation,
-                declaredShotRepository = declaredShotRepository,
-                accountManager = accountManager,
-                playerRepository = playerRepository,
-                pendingPlayerRepository = pendingPlayerRepository,
-                createSharedPreferences = createSharedPreferences,
-                readSharedPreferences = readSharedPreferences
-            )
-
-            Assertions.assertEquals(
-                selectShotViewModel.selectShotMutableStateFlow.value,
-                SelectShotState(declaredShotList = declaredShotList)
-            )
-            Assertions.assertEquals(
-                selectShotViewModel.currentDeclaredShotArrayList.toList(),
-                declaredShotList
-            )
-
-            verify(exactly = 1) { createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = false) }
-        }
-    }
-
-    @Nested
-    inner class ShouldUpdateStateFromLoggedIn {
-
-        @Test
-        fun `should return false if declaredShotList is empty`() {
-            val result = selectShotViewModel.shouldUpdateStateFromLoggedIn(
-                declaredShotList = emptyList(),
-                shouldUpdateLoggedInDeclaredShotListState = false
-            )
-
-            Assertions.assertEquals(result, false)
-        }
-
-        @Test
-        fun `should return false if shouldUpdateLoggedInDeclaredShotListState is set to false`() {
-            val declaredShotList: List<DeclaredShot> = listOf(TestDeclaredShot.build())
-
-            val result = selectShotViewModel.shouldUpdateStateFromLoggedIn(
-                declaredShotList = declaredShotList,
-                shouldUpdateLoggedInDeclaredShotListState = false
-            )
-
-            Assertions.assertEquals(result, false)
-        }
-
-        @Test
-        fun `should return true when all conditions are met`() {
-            val declaredShotList: List<DeclaredShot> = listOf(TestDeclaredShot.build())
-
-            val result = selectShotViewModel.shouldUpdateStateFromLoggedIn(
-                declaredShotList = declaredShotList,
-                shouldUpdateLoggedInDeclaredShotListState = true
-            )
-
-            Assertions.assertEquals(result, true)
-        }
     }
 
     @Test
