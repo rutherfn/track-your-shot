@@ -1,8 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
@@ -10,16 +10,12 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
-import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -30,12 +26,9 @@ class SelectShotViewModel(
     private val scope: CoroutineScope,
     private val navigation: SelectShotNavigation,
     private val declaredShotRepository: DeclaredShotRepository,
-    private val accountManager: AccountManager,
     private val playerRepository: PlayerRepository,
-    private val pendingPlayerRepository: PendingPlayerRepository,
-    private val createSharedPreferences: CreateSharedPreferences,
-    private val readSharedPreferences: ReadSharedPreferences
-) : ViewModel() {
+    private val pendingPlayerRepository: PendingPlayerRepository
+) : BaseViewModel() {
 
     internal var currentDeclaredShotArrayList: ArrayList<DeclaredShot> = arrayListOf()
 
@@ -45,9 +38,9 @@ class SelectShotViewModel(
     internal var isExistingPlayer: Boolean? = null
     internal var playerId: Int? = null
 
-    init {
+    override fun onNavigatedTo() {
+        super.onNavigatedTo()
         fetchDeclaredShotsAndUpdateState()
-        collectLoggedInDeclaredShotsStateFlow()
     }
 
     fun updateIsExistingPlayerAndPlayerId(isExistingPlayerArgument: Boolean?, playerIdArgument: Int?) {
@@ -57,6 +50,7 @@ class SelectShotViewModel(
 
     internal fun fetchDeclaredShotsAndUpdateState(shouldDelay: Boolean = false) {
         scope.launch {
+            currentDeclaredShotArrayList.clear()
             if (shouldDelay) {
                 delay(UPDATING_DECLARED_SHOT_LIST_DELAY)
             }
@@ -65,28 +59,6 @@ class SelectShotViewModel(
                 state.copy(declaredShotList = currentDeclaredShotArrayList)
             }
         }
-    }
-
-    private fun collectLoggedInDeclaredShotsStateFlow() {
-        scope.launch {
-            accountManager.loggedInDeclaredShotListStateFlow.collectLatest { declaredShotList ->
-                if (shouldUpdateStateFromLoggedIn(
-                        declaredShotList = declaredShotList,
-                        shouldUpdateLoggedInDeclaredShotListState = readSharedPreferences.shouldUpdateLoggedInDeclaredShotListState()
-                    )
-                ) {
-                    currentDeclaredShotArrayList.addAll(declaredShotList)
-                    selectShotMutableStateFlow.update { state ->
-                        state.copy(declaredShotList = currentDeclaredShotArrayList)
-                    }
-                    createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = false)
-                }
-            }
-        }
-    }
-
-    internal fun shouldUpdateStateFromLoggedIn(declaredShotList: List<DeclaredShot>, shouldUpdateLoggedInDeclaredShotListState: Boolean): Boolean {
-        return declaredShotList.isNotEmpty() && shouldUpdateLoggedInDeclaredShotListState
     }
 
     fun onSearchValueChanged(newSearchQuery: String) {

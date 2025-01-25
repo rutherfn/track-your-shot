@@ -331,13 +331,10 @@ class AppModule {
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 network = get(),
-                accountManager = get(),
                 deleteFirebaseUserInfo = get(),
                 dataAdditionUpdates = get(),
                 playerRepository = get(),
-                pendingPlayerRepository = get(),
-                createSharedPreferences = get(),
-                readSharedPreferences = get()
+                pendingPlayerRepository = get()
             )
         }
         viewModel {
@@ -362,11 +359,8 @@ class AppModule {
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 declaredShotRepository = get(),
-                accountManager = get(),
                 playerRepository = get(),
-                pendingPlayerRepository = get(),
-                createSharedPreferences = get(),
-                readSharedPreferences = get()
+                pendingPlayerRepository = get()
             )
         }
         viewModel {
@@ -409,7 +403,6 @@ class AppModule {
                 activeUserRepository = get(),
                 createSharedPreferences = get(),
                 declaredShotRepository = get(),
-                accountManager = get(),
                 scope = defaultCoroutineScope
             )
         }

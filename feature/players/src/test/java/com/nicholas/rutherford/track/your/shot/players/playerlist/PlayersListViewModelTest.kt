@@ -13,11 +13,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.Player
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListState
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
-import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -27,7 +24,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -52,17 +48,12 @@ class PlayersListViewModelTest {
 
     private val network = mockk<Network>(relaxed = true)
 
-    private val accountManager = mockk<AccountManager>(relaxed = true)
-
     private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
 
     private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
 
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
-
-    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
-    private val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
 
     val player = TestPlayer().create()
 
@@ -75,13 +66,10 @@ class PlayersListViewModelTest {
             scope = scope,
             navigation = navigation,
             network = network,
-            accountManager = accountManager,
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
             dataAdditionUpdates = dataAdditionUpdates,
             playerRepository = playerRepository,
-            pendingPlayerRepository = pendingPlayerRepository,
-            createSharedPreferences = createSharedPreferences,
-            readSharedPreferences = readSharedPreferences
+            pendingPlayerRepository = pendingPlayerRepository
         )
     }
 
@@ -140,118 +128,6 @@ class PlayersListViewModelTest {
             every { dataAdditionUpdates.newPlayerHasBeenAddedSharedFlow } returns newPlayerHasBeenAddedSharedFlow
 
             playersListViewModel.collectPlayerAdditionUpdates()
-
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = playerList)
-            )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                playerList
-            )
-        }
-    }
-
-    @Nested
-    inner class CollectLoggedInPlayerListStateFlow {
-
-        @Test
-        fun `when loggedInPlayerListStateFlow emits a empty list should not update state or list`() = runTest {
-            val playerList: List<Player> = emptyList()
-
-            every { accountManager.loggedInPlayerListStateFlow } returns MutableStateFlow(playerList)
-            every { readSharedPreferences.shouldUpdateLoggedInPlayerListState() } returns true
-
-            playersListViewModel = PlayersListViewModel(
-                application = application,
-                scope = scope,
-                navigation = navigation,
-                network = network,
-                accountManager = accountManager,
-                deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-                dataAdditionUpdates = dataAdditionUpdates,
-                playerRepository = playerRepository,
-                pendingPlayerRepository = pendingPlayerRepository,
-                createSharedPreferences = createSharedPreferences,
-                readSharedPreferences = readSharedPreferences
-            )
-
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = playerList)
-            )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                playerList
-            )
-        }
-
-        @Test
-        fun `when loggedInPlayerListStateFlow emits a list and shouldUpdateLoggedInPlayerListState is set to false should not update state and list`() = runTest {
-            val player = Player(
-                firstName = "first1",
-                lastName = "last1",
-                position = PlayerPositions.Center,
-                firebaseKey = "key",
-                imageUrl = "url",
-                shotsLoggedList = emptyList()
-            )
-
-            every { accountManager.loggedInPlayerListStateFlow } returns MutableStateFlow(listOf(player))
-            every { readSharedPreferences.shouldUpdateLoggedInPlayerListState() } returns false
-
-            playersListViewModel = PlayersListViewModel(
-                application = application,
-                scope = scope,
-                navigation = navigation,
-                network = network,
-                accountManager = accountManager,
-                deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-                dataAdditionUpdates = dataAdditionUpdates,
-                playerRepository = playerRepository,
-                createSharedPreferences = createSharedPreferences,
-                pendingPlayerRepository = pendingPlayerRepository,
-                readSharedPreferences = readSharedPreferences
-            )
-
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = emptyPlayerList)
-            )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                emptyPlayerList
-            )
-        }
-
-        @Test
-        fun `when loggedInPlayerListStateFlow emits a list and shouldUpdateLoggedInPlayerListState is set to true should update update state and list`() = runTest {
-            val player = Player(
-                firstName = "first1",
-                lastName = "last1",
-                position = PlayerPositions.Center,
-                firebaseKey = "key",
-                imageUrl = "url",
-                shotsLoggedList = emptyList()
-            )
-            val playerList = listOf(player)
-
-            every { accountManager.loggedInPlayerListStateFlow } returns MutableStateFlow(playerList)
-            every { readSharedPreferences.shouldUpdateLoggedInPlayerListState() } returns true
-
-            playersListViewModel = PlayersListViewModel(
-                application = application,
-                scope = scope,
-                navigation = navigation,
-                network = network,
-                accountManager = accountManager,
-                deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-                dataAdditionUpdates = dataAdditionUpdates,
-                playerRepository = playerRepository,
-                createSharedPreferences = createSharedPreferences,
-                pendingPlayerRepository = pendingPlayerRepository,
-                readSharedPreferences = readSharedPreferences
-            )
 
             Assertions.assertEquals(
                 playersListViewModel.playerListMutableStateFlow.value,

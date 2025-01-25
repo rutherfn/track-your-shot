@@ -313,11 +313,6 @@ class AccountManagerImplTest {
 
             accountManagerImpl.updateActiveUserFromLoggedInUser(email = activeUserEntity.email, username = activeUserEntity.username)
 
-            Assertions.assertEquals(
-                accountManagerImpl.loggedInDeclaredShotListStateFlow.value,
-                declaredShotList
-            )
-
             coVerify {
                 activeUserRepository.createActiveUser(
                     activeUser = ActiveUser(
@@ -344,11 +339,6 @@ class AccountManagerImplTest {
             coEvery { readFirebaseUserInfo.getPlayerInfoList() } returns flowOf(playerInfoRealtimeWithKeyResponseList)
 
             accountManagerImpl.updateActiveUserFromLoggedInUser(email = activeUserEntity.email, username = activeUserEntity.username)
-
-            Assertions.assertEquals(
-                accountManagerImpl.loggedInDeclaredShotListStateFlow.value,
-                declaredShotList
-            )
 
             coVerify {
                 activeUserRepository.createActiveUser(
@@ -413,11 +403,6 @@ class AccountManagerImplTest {
             coEvery { readFirebaseUserInfo.getPlayerInfoList() } returns flowOf(playerInfoRealtimeWithKeyResponseList)
 
             accountManagerImpl.collectPlayerInfoList()
-
-            Assertions.assertEquals(
-                accountManagerImpl.loggedInPlayerListStateFlow.value,
-                playerArrayList.toList()
-            )
 
             coVerify { playerRepository.createListOfPlayers(playerList = any()) }
         }

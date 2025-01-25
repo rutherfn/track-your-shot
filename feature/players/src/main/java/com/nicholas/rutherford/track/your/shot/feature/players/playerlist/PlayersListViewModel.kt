@@ -1,8 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.playerlist
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
@@ -11,17 +11,13 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
-import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 const val DELETE_PLAYER_DELAY_IN_MILLIS = 2000L
@@ -31,30 +27,31 @@ class PlayersListViewModel(
     private val scope: CoroutineScope,
     private val navigation: PlayersListNavigation,
     private val network: Network,
-    private val accountManager: AccountManager,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val dataAdditionUpdates: DataAdditionUpdates,
     private val playerRepository: PlayerRepository,
-    private val pendingPlayerRepository: PendingPlayerRepository,
-    private val createSharedPreferences: CreateSharedPreferences,
-    private val readSharedPreferences: ReadSharedPreferences
-) : ViewModel() {
+    private val pendingPlayerRepository: PendingPlayerRepository
+) : BaseViewModel() {
 
     internal var currentPlayerArrayList: ArrayList<Player> = arrayListOf()
 
     internal val playerListMutableStateFlow = MutableStateFlow(value = PlayersListState())
     val playerListStateFlow = playerListMutableStateFlow.asStateFlow()
 
+    override fun onNavigatedTo() {
+        super.onNavigatedTo()
+        updatePlayerListState()
+    }
+
     init {
         updatePlayerListState()
         collectPlayerAdditionUpdates()
-        collectLoggedInPlayerListStateFlow()
         deleteAllNonEmptyPendingPlayers()
-        collectHasNoPlayersFlow()
     }
 
     fun updatePlayerListState() {
         scope.launch {
+            currentPlayerArrayList.clear()
             playerRepository.fetchAllPlayers().forEach { player ->
                 currentPlayerArrayList.add(player)
             }
@@ -72,27 +69,6 @@ class PlayersListViewModel(
         scope.launch {
             dataAdditionUpdates.newPlayerHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
                 handlePlayerAdded(hasBeenAdded = hasBeenAdded)
-            }
-        }
-    }
-
-    private fun collectLoggedInPlayerListStateFlow() {
-        scope.launch {
-            accountManager.loggedInPlayerListStateFlow.collectLatest { loggedInPlayerList ->
-                if (shouldUpdateFromUserLoggedIn(loggedInPlayerList = loggedInPlayerList, shouldUpdateLoggedInPlayerListState = readSharedPreferences.shouldUpdateLoggedInPlayerListState())) {
-                    handleLoggedInPlayerList(playerList = loggedInPlayerList)
-                    createSharedPreferences.createShouldUpdateLoggedInPlayerListPreference(value = false)
-                }
-            }
-        }
-    }
-
-    private fun collectHasNoPlayersFlow() {
-        scope.launch {
-            accountManager.hasNoPlayersFlow.collectLatest { hasNoPlayers ->
-                if (hasNoPlayers) {
-                    playerListMutableStateFlow.update { it.copy(playerList = emptyList()) }
-                }
             }
         }
     }
