@@ -75,6 +75,7 @@ object StringsIds {
     val firstName = R.string.first_name
     val forgotPassword = R.string.forgot_password
     val editPlayer = R.string.edit_player
+    val editX = R.string.edit_x
     val empty = R.string.empty
     val emptyField = R.string.empty_field
     val emptyFields = R.string.empty_fields

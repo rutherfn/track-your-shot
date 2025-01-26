@@ -9,6 +9,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPosition
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.DELETE_PLAYER_DELAY_IN_MILLIS
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.EDIT_PLAYER_OPTION_INDEX
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListState
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
@@ -25,6 +27,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -71,6 +74,12 @@ class PlayersListViewModelTest {
             playerRepository = playerRepository,
             pendingPlayerRepository = pendingPlayerRepository
         )
+    }
+
+    @Test
+    fun `constants for player list`() {
+        Assertions.assertEquals(DELETE_PLAYER_DELAY_IN_MILLIS, 2000L)
+        Assertions.assertEquals(EDIT_PLAYER_OPTION_INDEX, 0)
     }
 
     @Test
@@ -393,6 +402,34 @@ class PlayersListViewModelTest {
 
             coVerify { playerRepository.deletePlayerByName(player.firstName, player.lastName) }
             verify { navigation.disableProgress() }
+        }
+    }
+
+    @Test
+    fun `on player clicked should update state`() {
+        val player = TestPlayer().create()
+
+        playersListViewModel.onPlayerClicked(player = player)
+
+        val result = playersListViewModel.playerListMutableStateFlow.value
+
+        Assertions.assertEquals(result, PlayersListState(selectedPlayer = player))
+    }
+
+    @Nested
+    inner class OnSheetItemClicked {
+
+        @Test
+        fun `when index passed in is set to 0 should call on edit player clicked`() {
+            val index = 0
+            val player = TestPlayer().create()
+
+            playersListViewModel.playerListMutableStateFlow.update { it.copy(selectedPlayer = player) }
+
+            playersListViewModel.onSheetItemClicked(index = index)
+
+            verify(exactly = 1) { playersListViewModel.onEditPlayerClicked(player = player) }
+            verify(exactly = 0) { playersListViewModel.onDeletePlayerClicked(player = player) }
         }
     }
 

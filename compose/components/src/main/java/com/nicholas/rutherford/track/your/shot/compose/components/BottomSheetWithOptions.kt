@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
@@ -35,7 +35,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 fun BottomSheetWithOptions(
     sheetState: ModalBottomSheetState = rememberModalBottomSheetState(Hidden),
     sheetInfo: Sheet? = null,
-    onSheetItemClicked: (String) -> Unit = {},
+    onSheetItemClicked: (String, Int) -> Unit = { _, _ -> },
     onCancelItemClicked: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
@@ -56,7 +56,7 @@ fun BottomSheetWithOptions(
 @Composable
 private fun SheetContent(
     sheet: Sheet?,
-    onSheetItemClicked: (String) -> Unit,
+    onSheetItemClicked: (String, Int) -> Unit = { _, _ -> },
     onCancelItemClicked: () -> Unit
 ) {
     sheet?.let {
@@ -66,12 +66,12 @@ private fun SheetContent(
             style = TextStyles.smallBold
         )
         LazyColumn {
-            items(it.values) { value ->
+            itemsIndexed(it.values) { index, value ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 12.dp, horizontal = 20.dp)
-                        .clickable { onSheetItemClicked(value) }
+                        .clickable { onSheetItemClicked(value, index) }
                 ) {
                     Text(
                         text = value,

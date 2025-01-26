@@ -350,8 +350,8 @@ fun NavigationComponent(
                         onToolbarMenuClicked = { playersListViewModel.onToolbarMenuClicked() },
                         updatePlayerListState = { playersListViewModel.updatePlayerListState() },
                         onAddPlayerClicked = { playersListViewModel.onAddPlayerClicked() },
-                        onEditPlayerClicked = { player -> playersListViewModel.onEditPlayerClicked(player = player) },
-                        onDeletePlayerClicked = { player -> playersListViewModel.onDeletePlayerClicked(player = player) }
+                        onPlayerClicked = { player -> playersListViewModel.onPlayerClicked(player = player) },
+                        onSheetItemClicked = { index -> playersListViewModel.onSheetItemClicked(index = index) }
                     )
                 )
             }

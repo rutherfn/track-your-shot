@@ -1,8 +1,11 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 
 import android.Manifest
+import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -98,30 +101,21 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
             BottomSheetWithOptions(
                 sheetState = bottomState,
                 sheetInfo = createEditPlayerParams.state.sheet,
-                onSheetItemClicked = { value ->
+                onSheetItemClicked = { value, _ ->
                     scope.launch { bottomState.hide() }
-
-                    when (createEditPlayerParams.onSelectedCreateEditImageOption(value)) {
-                        CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY -> {
-                            singlePhotoPickerLauncher.launch(
-                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                            )
-                        }
-
-                        CreateEditImageOption.TAKE_A_PICTURE -> {
-                            if (hasCameraPermissionEnabled(context = context)) {
-                                cameraLauncher.launch()
-                            } else {
-                                shouldAskForCameraPermission = true
-                            }
-                        }
-
-                        else -> {
+                    handleBottomSheetSelection(
+                        value = value,
+                        context = context,
+                        cameraLauncher = cameraLauncher,
+                        singlePhotoPickerLauncher = singlePhotoPickerLauncher,
+                        createEditPlayerParams = createEditPlayerParams,
+                        shouldAskForCameraPermission = { shouldAskForCameraPermission = it },
+                        resetImageState = {
                             imageUri = null
                             hasUploadedImage = false
-                            createEditPlayerParams.onClearImageState.invoke()
+                            createEditPlayerParams.onClearImageState()
                         }
-                    }
+                    )
                 },
                 onCancelItemClicked = { scope.launch { bottomState.hide() } },
                 content = {
@@ -149,6 +143,30 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
             }
         )
     )
+}
+
+private fun handleBottomSheetSelection(
+    value: String,
+    context: Context,
+    cameraLauncher: ManagedActivityResultLauncher<Void?, Bitmap?>,
+    singlePhotoPickerLauncher: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>,
+    createEditPlayerParams: CreateEditPlayerParams,
+    shouldAskForCameraPermission: (Boolean) -> Unit,
+    resetImageState: () -> Unit
+) {
+    when (createEditPlayerParams.onSelectedCreateEditImageOption(value)) {
+        CreateEditImageOption.CHOOSE_IMAGE_FROM_GALLERY -> {
+            singlePhotoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+        CreateEditImageOption.TAKE_A_PICTURE -> {
+            if (hasCameraPermissionEnabled(context)) {
+                cameraLauncher.launch()
+            } else {
+                shouldAskForCameraPermission(true)
+            }
+        }
+        else -> resetImageState()
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
