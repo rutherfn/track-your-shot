@@ -7,6 +7,6 @@ data class PlayersListScreenParams(
     val onToolbarMenuClicked: () -> Unit,
     val updatePlayerListState: () -> Unit,
     val onAddPlayerClicked: () -> Unit,
-    val onEditPlayerClicked: (player: Player) -> Unit,
-    val onDeletePlayerClicked: (player: Player) -> Unit
+    val onPlayerClicked: (player: Player) -> Unit,
+    val onSheetItemClicked: (index: Int) -> Unit
 )

@@ -18,9 +18,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 const val DELETE_PLAYER_DELAY_IN_MILLIS = 2000L
+const val EDIT_PLAYER_OPTION_INDEX = 0
 
 class PlayersListViewModel(
     private val application: Application,
@@ -139,9 +141,23 @@ class PlayersListViewModel(
         }
     }
 
-    fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)
+    fun onPlayerClicked(player: Player) {
+        playerListMutableStateFlow.update { it.copy(selectedPlayer = player) }
+    }
 
-    fun onDeletePlayerClicked(player: Player) = navigation.alert(alert = deletePlayerAlert(player = player))
+    fun onSheetItemClicked(index: Int) {
+        val player = playerListMutableStateFlow.value.selectedPlayer
+
+        if (index == EDIT_PLAYER_OPTION_INDEX) {
+            onEditPlayerClicked(player = player)
+        } else {
+            onDeletePlayerClicked(player = player)
+        }
+    }
+
+    internal fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)
+
+    internal fun onDeletePlayerClicked(player: Player) = navigation.alert(alert = deletePlayerAlert(player = player))
 
     private fun deletePlayerAlert(player: Player): Alert {
         return Alert(

@@ -18,18 +18,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue.Hidden
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,13 +39,17 @@ import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.compose.components.BottomSheetWithOptions
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
+import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPositionAbvId
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
@@ -59,15 +58,7 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
     Content(
         ui = {
             if (!isPlayerListEmpty) {
-                LazyColumn {
-                    items(playerListScreenParams.state.playerList) { player ->
-                        PlayerItem(
-                            player = player,
-                            onEditPlayerClicked = playerListScreenParams.onEditPlayerClicked,
-                            onDeletePlayerClicked = playerListScreenParams.onDeletePlayerClicked
-                        )
-                    }
-                }
+                PlayerList(playerListScreenParams = playerListScreenParams)
             } else {
                 AddNewPlayerEmptyState()
             }
@@ -85,11 +76,48 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PlayerItem(
+private fun PlayerList(playerListScreenParams: PlayersListScreenParams) {
+    val sheetState = rememberModalBottomSheetState(Hidden)
+    val scope = rememberCoroutineScope()
+
+    BottomSheetWithOptions(
+        sheetState = sheetState,
+        sheetInfo = Sheet(
+            title = stringResource(id = StringsIds.chooseOption),
+            values = listOf(
+                stringResource(id = R.string.edit_x, playerListScreenParams.state.selectedPlayer.fullName()),
+                stringResource(id = R.string.delete_x, playerListScreenParams.state.selectedPlayer.fullName())
+            )
+        ),
+        onSheetItemClicked = { _, index ->
+            scope.launch { sheetState.hide() }
+            playerListScreenParams.onSheetItemClicked.invoke(index)
+        },
+        onCancelItemClicked = { scope.launch { sheetState.hide() } },
+        content = {
+            LazyColumn {
+                items(playerListScreenParams.state.playerList) { player ->
+                    PlayerItem(
+                        player = player,
+                        onPlayerClicked = playerListScreenParams.onPlayerClicked,
+                        sheetState = sheetState,
+                        scope = scope
+                    )
+                }
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun PlayerItem(
     player: Player,
-    onEditPlayerClicked: (player: Player) -> Unit,
-    onDeletePlayerClicked: (player: Player) -> Unit
+    onPlayerClicked: (player: Player) -> Unit,
+    sheetState: ModalBottomSheetState = rememberModalBottomSheetState(Hidden),
+    scope: CoroutineScope
 ) {
     val imagePainter = if (!player.imageUrl.isNullOrEmpty()) {
         rememberAsyncImagePainter(model = player.imageUrl)
@@ -97,21 +125,22 @@ fun PlayerItem(
         painterResource(id = DrawablesIds.launcherRound)
     }
 
-    var expanded by remember { mutableStateOf(false) }
-
     Card(
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp)
+            .clickable {
+                scope.launch { sheetState.show() }
+                onPlayerClicked.invoke(player)
+            },
         elevation = 2.dp
     ) {
         Column {
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(8.dp)
-                    .clickable { expanded = true },
+                    .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
@@ -138,42 +167,6 @@ fun PlayerItem(
                         textAlign = TextAlign.Start
                     )
                 }
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                Box {
-                    IconButton(
-                        onClick = { expanded = true }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.MoreVert,
-                            contentDescription = ""
-                        )
-                    }
-
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
-                    ) {
-                        DropdownMenuItem(onClick = {
-                            expanded = false
-                            onEditPlayerClicked.invoke(player)
-                        }) {
-                            Text(
-                                text = stringResource(id = R.string.edit_x, player.fullName())
-                            )
-                        }
-
-                        DropdownMenuItem(onClick = {
-                            expanded = false
-                            onDeletePlayerClicked.invoke(player)
-                        }) {
-                            Text(
-                                text = stringResource(id = R.string.delete_x, player.fullName())
-                            )
-                        }
-                    }
-                }
             }
 
             Divider()
@@ -182,7 +175,7 @@ fun PlayerItem(
 }
 
 @Composable
-fun AddNewPlayerEmptyState() {
+private fun AddNewPlayerEmptyState() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -219,7 +212,7 @@ fun AddNewPlayerEmptyState() {
 
 @Composable
 @Preview
-fun PlayersListScreenWithItemsPreview() {
+private fun PlayersListScreenWithItemsPreview() {
     PlayersListScreen(
         playerListScreenParams = PlayersListScreenParams(
             state = PlayersListState(
@@ -237,8 +230,8 @@ fun PlayersListScreenWithItemsPreview() {
             onToolbarMenuClicked = {},
             updatePlayerListState = {},
             onAddPlayerClicked = {},
-            onEditPlayerClicked = {},
-            onDeletePlayerClicked = {}
+            onPlayerClicked = {},
+            onSheetItemClicked = {}
         )
     )
 }
@@ -252,8 +245,8 @@ fun PlayerListScreenEmptyStatePreview() {
             onToolbarMenuClicked = {},
             updatePlayerListState = {},
             onAddPlayerClicked = {},
-            onEditPlayerClicked = {},
-            onDeletePlayerClicked = {}
+            onPlayerClicked = {},
+            onSheetItemClicked = {}
         )
     )
 }
