@@ -20,11 +20,15 @@ import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -85,8 +89,22 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
     )
 }
 
+//@OptIn(ExperimentalMaterialApi::class)
+//@Composable
+//private fun PlayerList(
+//    player: Player,
+//    onEditPlayerClicked: (player: Player) -> Unit,
+//    onDeletePlayerClicked: (player: Player) -> Unit
+//) {
+//    val bottomState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+//
+//    ModalBottomSheetLayout(
+//        sheetState = bottomState
+//    )
+//}
+
 @Composable
-fun PlayerItem(
+private fun PlayerItem(
     player: Player,
     onEditPlayerClicked: (player: Player) -> Unit,
     onDeletePlayerClicked: (player: Player) -> Unit
@@ -182,7 +200,7 @@ fun PlayerItem(
 }
 
 @Composable
-fun AddNewPlayerEmptyState() {
+private fun AddNewPlayerEmptyState() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -219,7 +237,7 @@ fun AddNewPlayerEmptyState() {
 
 @Composable
 @Preview
-fun PlayersListScreenWithItemsPreview() {
+private fun PlayersListScreenWithItemsPreview() {
     PlayersListScreen(
         playerListScreenParams = PlayersListScreenParams(
             state = PlayersListState(
