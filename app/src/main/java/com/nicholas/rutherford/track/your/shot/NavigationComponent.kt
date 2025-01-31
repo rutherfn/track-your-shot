@@ -55,6 +55,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsScreen
+import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreen
+import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
@@ -154,6 +156,7 @@ fun NavigationComponent(
     val accountInfoViewModel = viewModels.accountInfoViewModel
     val reportListViewModel = viewModels.reportListViewModel
     val createReportViewModel = viewModels.createReportViewModel
+    val shotsListViewModel = viewModels.shotsListViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -223,6 +226,7 @@ fun NavigationComponent(
             destination.contains(NavigationDestinations.CREATE_REPORT_SCREEN) -> createReportViewModel
             destination.contains(NavigationDestinations.PLAYERS_LIST_SCREEN) -> playersListViewModel
             destination.contains(NavigationDestinations.SELECT_SHOT_SCREEN) -> selectShotViewModel
+            destination.contains(NavigationDestinations.SHOTS_LIST_SCREEN) -> shotsListViewModel
             else -> null
         }
     }
@@ -354,6 +358,14 @@ fun NavigationComponent(
                         onAddPlayerClicked = { playersListViewModel.onAddPlayerClicked() },
                         onPlayerClicked = { player -> playersListViewModel.onPlayerClicked(player = player) },
                         onSheetItemClicked = { index -> playersListViewModel.onSheetItemClicked(index = index) }
+                    )
+                )
+            }
+            composable(route = NavigationDestinations.SHOTS_LIST_SCREEN) {
+                ShotsListScreen(
+                    params = ShotsListScreenParams(
+                        state = shotsListViewModel.shotListStateFlow.collectAsState().value,
+                        onToolbarMenuClicked = {}
                     )
                 )
             }

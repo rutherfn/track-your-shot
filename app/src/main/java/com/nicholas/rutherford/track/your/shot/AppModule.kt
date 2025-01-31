@@ -73,6 +73,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
@@ -467,6 +468,12 @@ class AppModule {
                 individualPlayerReportRepository = get(),
                 dateExt = get(),
                 dataAdditionUpdates = get()
+            )
+        }
+        viewModel {
+            ShotsListViewModel(
+                scope = defaultCoroutineScope,
+                playerRepository = get(),
             )
         }
     }

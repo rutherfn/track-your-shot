@@ -49,6 +49,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPositionAbvId
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -82,6 +83,7 @@ private fun PlayerList(playerListScreenParams: PlayersListScreenParams) {
     val sheetState = rememberModalBottomSheetState(Hidden)
     val scope = rememberCoroutineScope()
 
+
     BottomSheetWithOptions(
         sheetState = sheetState,
         sheetInfo = Sheet(
@@ -92,8 +94,10 @@ private fun PlayerList(playerListScreenParams: PlayersListScreenParams) {
             )
         ),
         onSheetItemClicked = { _, index ->
-            scope.launch { sheetState.hide() }
-            playerListScreenParams.onSheetItemClicked.invoke(index)
+            scope.launch {
+                sheetState.hide()
+                playerListScreenParams.onSheetItemClicked.invoke(index)
+            }
         },
         onCancelItemClicked = { scope.launch { sheetState.hide() } },
         content = {

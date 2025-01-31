@@ -142,7 +142,7 @@ class DrawerActionsTest {
             NavigationDestinations.SHOTS_LIST_SCREEN
         )
         Assertions.assertEquals(
-            ShotsAction.navOptions,
+            VoiceCommandsAction.navOptions,
             NavOptions.Builder()
                 .setPopUpTo(0, true)
                 .build()
