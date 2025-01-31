@@ -63,6 +63,7 @@ import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
 import com.nicholas.rutherford.track.your.shot.navigation.ReportingAction
 import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
+import com.nicholas.rutherford.track.your.shot.navigation.ShotsAction
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArguments
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
 import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
@@ -292,6 +293,7 @@ fun NavigationComponent(
                     PlayersListAction,
                     ReportingAction,
                     SettingsAction,
+                    ShotsAction,
                     LogoutAction
                 ),
                 onDestinationClicked = { route, navOptions, titleId ->

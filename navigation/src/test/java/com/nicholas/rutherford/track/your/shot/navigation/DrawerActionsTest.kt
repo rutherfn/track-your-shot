@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.Analytics
 import androidx.compose.material.icons.filled.Compare
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SportsBasketball
 import androidx.compose.material.icons.filled.Summarize
@@ -23,7 +24,7 @@ class DrawerActionsTest {
         )
         Assertions.assertEquals(
             PlayersListAction.imageVector,
-            Icons.Filled.SportsBasketball
+            Icons.Filled.Person
         )
         Assertions.assertEquals(
             PlayersListAction.route,
@@ -120,6 +121,28 @@ class DrawerActionsTest {
         )
         Assertions.assertEquals(
             VoiceCommandsAction.navOptions,
+            NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .build()
+        )
+    }
+
+    @Test
+    fun shotsAction() {
+        Assertions.assertEquals(
+            ShotsAction.titleId,
+            StringsIds.shots
+        )
+        Assertions.assertEquals(
+            ShotsAction.imageVector,
+            Icons.Filled.SportsBasketball
+        )
+        Assertions.assertEquals(
+            ShotsAction.route,
+            NavigationDestinations.SHOTS_LIST_SCREEN
+        )
+        Assertions.assertEquals(
+            ShotsAction.navOptions,
             NavOptions.Builder()
                 .setPopUpTo(0, true)
                 .build()
