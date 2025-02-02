@@ -365,7 +365,8 @@ fun NavigationComponent(
                 ShotsListScreen(
                     params = ShotsListScreenParams(
                         state = shotsListViewModel.shotListStateFlow.collectAsState().value,
-                        onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked() }
+                        onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked() },
+                        onShotItemClicked = { shotLoggedWithPlayer -> shotsListViewModel.onShotItemClicked(shotLoggedWithPlayer) }
                     )
                 )
             }

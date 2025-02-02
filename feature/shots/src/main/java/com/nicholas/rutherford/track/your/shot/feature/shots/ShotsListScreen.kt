@@ -102,14 +102,15 @@ private fun AddShotEmptyState() {
 private fun ShotsList(params: ShotsListScreenParams) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(params.state.shotList) { shot ->
-            ShotItem(shot = shot)
+            ShotItem(shot = shot, onShotItemClicked = params.onShotItemClicked)
         }
     }
 }
 
 @Composable
 private fun ShotItem(
-    shot: ShotLoggedWithPlayer
+    shot: ShotLoggedWithPlayer,
+    onShotItemClicked: (ShotLoggedWithPlayer) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -117,6 +118,7 @@ private fun ShotItem(
             .fillMaxWidth()
             .padding(16.dp)
             .clickable {
+                onShotItemClicked.invoke(shot)
             },
         elevation = 2.dp
     ) {

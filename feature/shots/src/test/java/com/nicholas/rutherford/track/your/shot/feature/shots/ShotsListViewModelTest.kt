@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.feature.shots
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verify
@@ -62,18 +63,20 @@ class ShotsListViewModelTest {
         @Test
         fun `when fetch all players returns info should update current array list and state`() = runTest {
             val player = TestPlayer().create()
+            val playerId = 1
 
             coEvery { playerRepository.fetchAllPlayers() } returns listOf(player)
+            coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
 
             viewModel.onNavigatedTo()
 
             Assertions.assertEquals(
                 viewModel.shotListMutableStateFlow.value,
-                ShotsListState(shotList = listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerName = player.fullName())))
+                ShotsListState(shotList = listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName())))
             )
             Assertions.assertEquals(
                 viewModel.currentShotArrayList.toList(),
-                listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerName = player.fullName()))
+                listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName()))
             )
         }
     }
@@ -83,6 +86,39 @@ class ShotsListViewModelTest {
         viewModel.onToolbarMenuClicked()
 
         verify { navigation.openNavigationDrawer() }
+
+        Assertions.assertEquals(
+            viewModel.shotListMutableStateFlow.value,
+            ShotsListState(shotList = emptyList())
+        )
+        Assertions.assertEquals(
+            viewModel.currentShotArrayList.toList(),
+            emptyShotList
+        )
+    }
+
+    @Test
+    fun `on shot item clicked`() {
+        val player = TestPlayer().create()
+        val playerId = 1
+        val shotLoggedWithPlayer = ShotLoggedWithPlayer(
+            shotLogged = TestShotLogged.build(),
+            playerId = playerId,
+            playerName = player.fullName()
+        )
+
+        viewModel.onShotItemClicked(shotLoggedWithPlayer = shotLoggedWithPlayer)
+
+        verify {
+            navigation.navigateToLogShot(
+                isExistingPlayer = true,
+                playerId = shotLoggedWithPlayer.playerId,
+                shotType = shotLoggedWithPlayer.shotLogged.shotType,
+                shotId = shotLoggedWithPlayer.shotLogged.id,
+                viewCurrentExistingShot = true,
+                viewCurrentPendingShot = false
+            )
+        }
 
         Assertions.assertEquals(
             viewModel.shotListMutableStateFlow.value,

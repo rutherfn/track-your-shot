@@ -31,7 +31,11 @@ class ShotsListViewModel(
 
             playerRepository.fetchAllPlayers().flatMap { player ->
                 player.shotsLoggedList.map { shotLogged ->
-                    ShotLoggedWithPlayer(shotLogged, player.fullName())
+                    ShotLoggedWithPlayer(
+                        shotLogged = shotLogged,
+                        playerId = playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) ?: 0,
+                        playerName = player.fullName()
+                    )
                 }
             }.let { updatedShotList ->
                 currentShotArrayList.addAll(updatedShotList)
@@ -41,4 +45,15 @@ class ShotsListViewModel(
     }
 
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
+
+    fun onShotItemClicked(shotLoggedWithPlayer: ShotLoggedWithPlayer) {
+        navigation.navigateToLogShot(
+            isExistingPlayer = true,
+            playerId = shotLoggedWithPlayer.playerId,
+            shotType = shotLoggedWithPlayer.shotLogged.shotType,
+            shotId = shotLoggedWithPlayer.shotLogged.id,
+            viewCurrentExistingShot = true,
+            viewCurrentPendingShot = false
+        )
+    }
 }
