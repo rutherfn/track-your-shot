@@ -295,9 +295,9 @@ fun NavigationComponent(
             DrawerContent(
                 actions = listOf(
                     PlayersListAction,
+                    ShotsAction,
                     ReportingAction,
                     SettingsAction,
-                    ShotsAction,
                     LogoutAction
                 ),
                 onDestinationClicked = { route, navOptions, titleId ->
@@ -365,7 +365,7 @@ fun NavigationComponent(
                 ShotsListScreen(
                     params = ShotsListScreenParams(
                         state = shotsListViewModel.shotListStateFlow.collectAsState().value,
-                        onToolbarMenuClicked = {}
+                        onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked() }
                     )
                 )
             }

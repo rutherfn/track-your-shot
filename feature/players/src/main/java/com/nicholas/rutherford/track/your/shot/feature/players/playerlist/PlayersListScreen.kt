@@ -49,7 +49,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPositionAbvId
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -83,7 +82,6 @@ private fun PlayerList(playerListScreenParams: PlayersListScreenParams) {
     val sheetState = rememberModalBottomSheetState(Hidden)
     val scope = rememberCoroutineScope()
 
-
     BottomSheetWithOptions(
         sheetState = sheetState,
         sheetInfo = Sheet(
@@ -101,7 +99,7 @@ private fun PlayerList(playerListScreenParams: PlayersListScreenParams) {
         },
         onCancelItemClicked = { scope.launch { sheetState.hide() } },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(playerListScreenParams.state.playerList) { player ->
                     PlayerItem(
                         player = player,
@@ -161,12 +159,7 @@ private fun PlayerItem(
 
                 player.position.value.toPlayerPositionAbvId()?.let { positionId ->
                     Text(
-                        text = stringResource(
-                            id =
-                            R.string.x_position_x_player_name,
-                            stringResource(id = positionId),
-                            player.fullName()
-                        ),
+                        text = stringResource(id = R.string.x_position_x_player_name, stringResource(id = positionId), player.fullName()),
                         style = TextStyles.bodyBold,
                         textAlign = TextAlign.Start
                     )

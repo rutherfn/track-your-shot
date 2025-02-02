@@ -73,6 +73,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListNavigation
+import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
@@ -303,6 +305,9 @@ class AppModule {
         single<CreateReportNavigation> {
             CreateReportNavigationImpl(navigator = get())
         }
+        single<ShotsListNavigation> {
+            ShotsListNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(accountManager = get())
         }
@@ -473,7 +478,8 @@ class AppModule {
         viewModel {
             ShotsListViewModel(
                 scope = defaultCoroutineScope,
-                playerRepository = get(),
+                navigation = get(),
+                playerRepository = get()
             )
         }
     }

@@ -31,25 +31,29 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
  *
  * @param appBar builds out the actual content for displaying [TopAppBar]
  * @param imageVector [ImageVector] used for both app bars for displaying [Icon] left of title
- * @param secondaryImageVector [ImageVector] used for [ComplexTopAppBar] for displaying [Icon] right of title
+ * @param secondaryImageVector [ImageVector] used for [ComplexTopAppBar] and [SimpleTopAppBar] for displaying [Icon] right of title
+ * @param secondaryImageEnabled [Boolean] that determines if the secondary image will be enabled or not
  */
 @Composable
 fun ConditionalTopAppBar(
     appBar: AppBar,
     imageVector: ImageVector?,
-    secondaryImageVector: ImageVector?
+    secondaryImageVector: ImageVector?,
+    secondaryImageEnabled: Boolean?
 ) {
     if (appBar.shouldShowMiddleContentAppBar) {
         ComplexTopAppBar(
             appBar = appBar,
             imageVector = imageVector,
-            secondaryImageVector = secondaryImageVector
+            secondaryImageVector = secondaryImageVector,
+            secondaryImageEnabled = secondaryImageEnabled
         )
     } else {
         SimpleTopAppBar(
             appBar = appBar,
             imageVector = imageVector,
-            secondaryImageVector = secondaryImageVector
+            secondaryImageVector = secondaryImageVector,
+            secondaryImageEnabled = secondaryImageEnabled
         )
     }
 }
@@ -58,7 +62,8 @@ fun ConditionalTopAppBar(
 private fun SimpleTopAppBar(
     appBar: AppBar,
     imageVector: ImageVector?,
-    secondaryImageVector: ImageVector?
+    secondaryImageVector: ImageVector?,
+    secondaryImageEnabled: Boolean?
 ) {
     TopAppBar(
         title = {
@@ -71,6 +76,7 @@ private fun SimpleTopAppBar(
         navigationIcon = {
             IconButton(
                 onClick = { appBar.onIconButtonClicked?.invoke() },
+                enabled = secondaryImageEnabled ?: true,
                 modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
             ) {
                 Icon(
@@ -102,7 +108,8 @@ private fun SimpleTopAppBar(
 private fun ComplexTopAppBar(
     appBar: AppBar,
     imageVector: ImageVector?,
-    secondaryImageVector: ImageVector?
+    secondaryImageVector: ImageVector?,
+    secondaryImageEnabled: Boolean?
 ) {
     TopAppBar(
         content = {
@@ -128,7 +135,10 @@ private fun ComplexTopAppBar(
                     style = TextStyles.toolbar
                 )
 
-                IconButton(onClick = { appBar.onSecondaryIconButtonClicked?.invoke() }) {
+                IconButton(
+                    enabled = secondaryImageEnabled ?: true,
+                    onClick = { appBar.onSecondaryIconButtonClicked?.invoke() }
+                ) {
                     Icon(
                         imageVector = secondaryImageVector ?: Icons.Filled.Add,
                         contentDescription = appBar.secondaryIconContentDescription
@@ -152,7 +162,8 @@ fun ConditionalTopAppBarForSimplePreview() {
             shouldShowMiddleContentAppBar = false
         ),
         imageVector = null,
-        secondaryImageVector = null
+        secondaryImageVector = null,
+        secondaryImageEnabled = true
     )
 }
 
@@ -165,6 +176,7 @@ fun ConditionalTopAppBarForComplexPreview() {
             shouldShowMiddleContentAppBar = true
         ),
         imageVector = null,
-        secondaryImageVector = Icons.Filled.AddCircle
+        secondaryImageVector = Icons.Filled.AddCircle,
+        secondaryImageEnabled = true
     )
 }
