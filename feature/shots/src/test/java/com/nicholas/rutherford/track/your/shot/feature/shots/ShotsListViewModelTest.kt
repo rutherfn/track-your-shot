@@ -116,7 +116,8 @@ class ShotsListViewModelTest {
                 shotType = shotLoggedWithPlayer.shotLogged.shotType,
                 shotId = shotLoggedWithPlayer.shotLogged.id,
                 viewCurrentExistingShot = true,
-                viewCurrentPendingShot = false
+                viewCurrentPendingShot = false,
+                fromShotList = true
             )
         }
 

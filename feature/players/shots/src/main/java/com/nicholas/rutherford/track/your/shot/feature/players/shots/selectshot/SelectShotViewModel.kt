@@ -130,7 +130,8 @@ class SelectShotViewModel(
                     shotType = shotType,
                     shotId = loggedShotId(isExistingPlayer = isExisting, playerId = id),
                     viewCurrentExistingShot = false,
-                    viewCurrentPendingShot = false
+                    viewCurrentPendingShot = false,
+                    fromShotList = false
                 )
             }
         }

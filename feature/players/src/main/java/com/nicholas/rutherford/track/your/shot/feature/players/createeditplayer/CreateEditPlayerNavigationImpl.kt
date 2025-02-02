@@ -26,7 +26,8 @@ class CreateEditPlayerNavigationImpl(private val navigator: Navigator) : CreateE
         shotType: Int,
         shotId: Int,
         viewCurrentExistingShot: Boolean,
-        viewCurrentPendingShot: Boolean
+        viewCurrentPendingShot: Boolean,
+        fromShotList: Boolean
     ) = navigator.navigate(
         navigationAction = NavigationActions.CreateEditPlayer.logShot(
             isExistingPlayer = isExistingPlayer,
@@ -34,7 +35,8 @@ class CreateEditPlayerNavigationImpl(private val navigator: Navigator) : CreateE
             playerId = playerId,
             shotId = shotId,
             viewCurrentExistingShot = viewCurrentExistingShot,
-            viewCurrentPendingShot = viewCurrentPendingShot
+            viewCurrentPendingShot = viewCurrentPendingShot,
+            fromShotList = fromShotList
         )
     )
     override fun disableProgress() = navigator.progress(progressAction = null)

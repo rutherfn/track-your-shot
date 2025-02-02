@@ -430,7 +430,8 @@ fun NavigationComponent(
                                     shotTypeArgument = bundle.getInt(NamedArguments.SHOT_TYPE),
                                     shotIdArgument = bundle.getInt(NamedArguments.SHOT_ID),
                                     viewCurrentExistingShotArgument = bundle.getBoolean(NamedArguments.VIEW_CURRENT_EXISTING_SHOT),
-                                    viewCurrentPendingShotArgument = bundle.getBoolean(NamedArguments.VIEW_CURRENT_PENDING_SHOT)
+                                    viewCurrentPendingShotArgument = bundle.getBoolean(NamedArguments.VIEW_CURRENT_PENDING_SHOT),
+                                    fromShotListArgument = bundle.getBoolean(NamedArguments.FROM_SHOT_LIST)
                                 )
                             },
                             onShotsMadeUpwardClicked = { value -> logShotViewModel.onShotsMadeUpwardOrDownwardClicked(shots = value) },

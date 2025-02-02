@@ -253,13 +253,14 @@ class NavigationActionsTest {
                 val shotId = 2
                 val viewCurrentExistingShot = false
                 val viewCurrentPendingShot = false
+                val fromShotList = false
 
                 Assertions.assertEquals(
-                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotType = shotType, shotId = shotId, viewCurrentExistingShot = viewCurrentExistingShot, viewCurrentPendingShot = viewCurrentPendingShot).destination,
-                    NavigationDestinationsWithParams.logShotWithParams(isExistingPlayer = isExistingPlayer, playerId = playerId, shotType = shotType, shotId = shotId, viewCurrentExistingShot = viewCurrentExistingShot, viewCurrentPendingShot = viewCurrentPendingShot)
+                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotType = shotType, shotId = shotId, viewCurrentExistingShot = viewCurrentExistingShot, viewCurrentPendingShot = viewCurrentPendingShot, fromShotList = fromShotList).destination,
+                    NavigationDestinationsWithParams.logShotWithParams(isExistingPlayer = isExistingPlayer, playerId = playerId, shotType = shotType, shotId = shotId, viewCurrentExistingShot = viewCurrentExistingShot, viewCurrentPendingShot = viewCurrentPendingShot, fromShotList = fromShotList)
                 )
                 Assertions.assertEquals(
-                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotType = shotType, shotId = shotId, viewCurrentExistingShot = viewCurrentExistingShot, viewCurrentPendingShot = viewCurrentExistingShot).navOptions,
+                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotType = shotType, shotId = shotId, viewCurrentExistingShot = viewCurrentExistingShot, viewCurrentPendingShot = viewCurrentExistingShot, fromShotList = fromShotList).navOptions,
                     NavOptions.Builder().build()
                 )
             }

@@ -124,7 +124,8 @@ object NavigationActions {
             shotType: Int,
             shotId: Int,
             viewCurrentExistingShot: Boolean,
-            viewCurrentPendingShot: Boolean
+            viewCurrentPendingShot: Boolean,
+            fromShotList: Boolean
         ) = object : NavigationAction {
             override val destination = NavigationDestinationsWithParams.logShotWithParams(
                 isExistingPlayer = isExistingPlayer,
@@ -132,7 +133,8 @@ object NavigationActions {
                 shotType = shotType,
                 shotId = shotId,
                 viewCurrentExistingShot = viewCurrentExistingShot,
-                viewCurrentPendingShot = viewCurrentPendingShot
+                viewCurrentPendingShot = viewCurrentPendingShot,
+                fromShotList = fromShotList
             )
             override val navOptions = NavOptions.Builder().build()
         }
@@ -154,7 +156,8 @@ object NavigationActions {
             shotType: Int,
             shotId: Int,
             viewCurrentExistingShot: Boolean,
-            viewCurrentPendingShot: Boolean
+            viewCurrentPendingShot: Boolean,
+            fromShotList: Boolean
         ) = object : NavigationAction {
             override val destination = NavigationDestinationsWithParams.logShotWithParams(
                 isExistingPlayer = isExistingPlayer,
@@ -162,7 +165,8 @@ object NavigationActions {
                 shotType = shotType,
                 shotId = shotId,
                 viewCurrentExistingShot = viewCurrentExistingShot,
-                viewCurrentPendingShot = viewCurrentPendingShot
+                viewCurrentPendingShot = viewCurrentPendingShot,
+                fromShotList = fromShotList
             )
             override val navOptions = NavOptions.Builder().build()
         }
@@ -175,7 +179,8 @@ object NavigationActions {
             shotType: Int,
             shotId: Int,
             viewCurrentExistingShot: Boolean,
-            viewCurrentPendingShot: Boolean
+            viewCurrentPendingShot: Boolean,
+            fromShotList: Boolean
         ) = object : NavigationAction {
             override val destination = NavigationDestinationsWithParams.logShotWithParams(
                 isExistingPlayer = isExistingPlayer,
@@ -183,7 +188,8 @@ object NavigationActions {
                 shotType = shotType,
                 shotId = shotId,
                 viewCurrentExistingShot = viewCurrentExistingShot,
-                viewCurrentPendingShot = viewCurrentPendingShot
+                viewCurrentPendingShot = viewCurrentPendingShot,
+                fromShotList = fromShotList
             )
             override val navOptions = NavOptions.Builder().build()
         }

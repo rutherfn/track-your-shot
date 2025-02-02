@@ -10,7 +10,8 @@ class ShotsListNavigationImpl(private val navigator: Navigator) : ShotsListNavig
         shotType: Int,
         shotId: Int,
         viewCurrentExistingShot: Boolean,
-        viewCurrentPendingShot: Boolean
+        viewCurrentPendingShot: Boolean,
+        fromShotList: Boolean
     ) = navigator.navigate(
         navigationAction = NavigationActions.ShotsList.logShot(
             isExistingPlayer = isExistingPlayer,
@@ -18,7 +19,8 @@ class ShotsListNavigationImpl(private val navigator: Navigator) : ShotsListNavig
             playerId = playerId,
             shotId = shotId,
             viewCurrentExistingShot = viewCurrentExistingShot,
-            viewCurrentPendingShot = viewCurrentPendingShot
+            viewCurrentPendingShot = viewCurrentPendingShot,
+            fromShotList = fromShotList
         )
     )
     override fun openNavigationDrawer() = navigator.showNavigationDrawer(navigationDrawerAction = true)

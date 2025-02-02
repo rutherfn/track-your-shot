@@ -1828,7 +1828,8 @@ class CreateEditPlayerViewModelTest {
                 shotType = player.shotsLoggedList.first().shotType,
                 shotId = player.shotsLoggedList.first().id,
                 viewCurrentExistingShot = false,
-                viewCurrentPendingShot = true
+                viewCurrentPendingShot = true,
+                fromShotList = false
             )
         }
     }
@@ -1849,7 +1850,8 @@ class CreateEditPlayerViewModelTest {
                 shotType = player.shotsLoggedList.first().shotType,
                 shotId = player.shotsLoggedList.first().id,
                 viewCurrentExistingShot = true,
-                viewCurrentPendingShot = false
+                viewCurrentPendingShot = false,
+                fromShotList = false
             )
         }
     }

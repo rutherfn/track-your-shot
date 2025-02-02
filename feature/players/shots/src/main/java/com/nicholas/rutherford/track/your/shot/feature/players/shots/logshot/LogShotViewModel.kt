@@ -60,6 +60,8 @@ class LogShotViewModel(
     internal var viewCurrentExistingShot = false
     internal var viewCurrentPendingShot = false
 
+    internal var fromShotList = false
+
     internal var initialShotLogged: ShotLogged? = null
 
     fun updateIsExistingPlayerAndId(
@@ -68,7 +70,8 @@ class LogShotViewModel(
         shotTypeArgument: Int,
         shotIdArgument: Int,
         viewCurrentExistingShotArgument: Boolean,
-        viewCurrentPendingShotArgument: Boolean
+        viewCurrentPendingShotArgument: Boolean,
+        fromShotListArgument: Boolean
     ) {
         resetState()
 
@@ -78,6 +81,9 @@ class LogShotViewModel(
         this.shotId = shotIdArgument
         this.viewCurrentExistingShot = viewCurrentExistingShotArgument
         this.viewCurrentPendingShot = viewCurrentPendingShotArgument
+        this.fromShotList = fromShotListArgument
+
+        println("here is from shot list $fromShotListArgument")
 
         scope.launch {
             val declaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = shotType)
