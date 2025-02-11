@@ -4,12 +4,15 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerReposi
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
+import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -28,6 +31,8 @@ class ShotsListViewModelTest {
 
     private val navigation = mockk<ShotsListNavigation>(relaxed = true)
 
+    private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
+
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
 
     private val emptyShotList: List<ShotLoggedWithPlayer> = listOf()
@@ -37,8 +42,61 @@ class ShotsListViewModelTest {
         viewModel = ShotsListViewModel(
             scope = scope,
             navigation = navigation,
+            dataAdditionUpdates = dataAdditionUpdates,
             playerRepository = playerRepository
         )
+    }
+
+    @Nested
+    inner class CollectShotHasBeenUpdatedSharedFlow {
+
+        @Test
+        fun `when shotHasBeenUpdatedSharedFlow returns back a flow of true should update state`() = runTest {
+            val player = TestPlayer().create()
+            val playerId = 1
+
+            val shotHasBeenUpdatedSharedFlow = MutableSharedFlow<Boolean>(replay = Int.MAX_VALUE)
+            shotHasBeenUpdatedSharedFlow.emit(value = true)
+
+            coEvery { playerRepository.fetchAllPlayers() } returns listOf(player)
+            coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
+            every { dataAdditionUpdates.shotHasBeenUpdatedSharedFlow } returns shotHasBeenUpdatedSharedFlow
+
+            viewModel.collectShotHasBeenUpdatedSharedFlow()
+
+            Assertions.assertEquals(
+                viewModel.shotListMutableStateFlow.value,
+                ShotsListState(shotList = listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName())))
+            )
+            Assertions.assertEquals(
+                viewModel.currentShotArrayList.toList(),
+                listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName()))
+            )
+        }
+
+        @Test
+        fun `when shotHasBeenUpdatedSharedFlow returns back a flow of false should not update state`() = runTest {
+            val player = TestPlayer().create()
+            val playerId = 1
+
+            val shotHasBeenUpdatedSharedFlow = MutableSharedFlow<Boolean>(replay = Int.MAX_VALUE)
+            shotHasBeenUpdatedSharedFlow.emit(value = false)
+
+            coEvery { playerRepository.fetchAllPlayers() } returns listOf(player)
+            coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
+            every { dataAdditionUpdates.shotHasBeenUpdatedSharedFlow } returns shotHasBeenUpdatedSharedFlow
+
+            viewModel.collectShotHasBeenUpdatedSharedFlow()
+
+            Assertions.assertEquals(
+                viewModel.shotListMutableStateFlow.value,
+                ShotsListState(shotList = emptyList())
+            )
+            Assertions.assertEquals(
+                viewModel.currentShotArrayList.toList(),
+                emptyShotList
+            )
+        }
     }
 
     @Nested

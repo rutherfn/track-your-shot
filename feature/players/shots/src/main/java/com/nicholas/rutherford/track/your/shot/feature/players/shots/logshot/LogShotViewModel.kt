@@ -326,8 +326,6 @@ class LogShotViewModel(
         }
     }
 
-
-
     private fun resetState() =
         logShotMutableStateFlow.update { state ->
             state.copy(
@@ -394,7 +392,7 @@ class LogShotViewModel(
             navigation.disableProgress()
             navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
         }
-        }
+    }
 
     internal fun currentShotLoggedRealtimeResponseList(currentShotList: List<ShotLogged>): List<ShotLoggedRealtimeResponse> {
         if (currentShotList.isNotEmpty()) {
@@ -458,7 +456,7 @@ class LogShotViewModel(
             navigation.popToShotList()
             navigation.alert(alert = showUpdatedAlert())
         } else {
-           navigation.disableProgress()
+            navigation.disableProgress()
             navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
         }
     }
@@ -467,7 +465,7 @@ class LogShotViewModel(
         currentPlayer?.let { player ->
             updateUserInFirebase(
                 player = player,
-                shotLogged  = logShotViewModelExt.filterShotsById(shots = player.shotsLoggedList) + listOf(pendingShot.shotLogged)
+                shotLogged = logShotViewModelExt.filterShotsById(shots = player.shotsLoggedList) + listOf(pendingShot.shotLogged)
             )
         } ?: run {
             navigation.disableProgress()
@@ -486,7 +484,6 @@ class LogShotViewModel(
         navigateToCreateOrEditPlayer()
     }
 
-
     suspend fun handleHasDeleteShotFirebaseResponse(hasDeleted: Boolean) {
         val shotName = logShotMutableStateFlow.value.shotName
 
@@ -504,7 +501,6 @@ class LogShotViewModel(
             navigation.alert(logShotViewModelExt.deleteShotErrorAlert(shotName))
         }
     }
-
 
     fun navigateToCreateOrEditPlayer() {
         navigation.disableProgress()

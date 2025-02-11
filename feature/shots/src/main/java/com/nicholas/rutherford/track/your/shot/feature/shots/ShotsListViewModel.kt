@@ -24,39 +24,39 @@ class ShotsListViewModel(
     val shotListStateFlow = shotListMutableStateFlow.asStateFlow()
 
     init {
-        scope.launch { collectShotHasBeenUpdatedSharedFlow() }
+        collectShotHasBeenUpdatedSharedFlow()
     }
 
     override fun onNavigatedTo() {
         super.onNavigatedTo()
-        updateShotListState()
+        scope.launch { updateShotListState() }
     }
 
-    private suspend fun collectShotHasBeenUpdatedSharedFlow() {
-        dataAdditionUpdates.shotHasBeenUpdatedSharedFlow.collectLatest { hasBeenUpdated ->
-            if (hasBeenUpdated) {
-                updateShotListState()
-            }
-        }
-    }
-
-    private fun updateShotListState() {
+    internal fun collectShotHasBeenUpdatedSharedFlow() {
         scope.launch {
-            currentShotArrayList.clear()
-
-            playerRepository.fetchAllPlayers().flatMap { player ->
-                player.shotsLoggedList.map { shotLogged ->
-                    ShotLoggedWithPlayer(
-                        shotLogged = shotLogged,
-                        playerId = playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) ?: 0,
-                        playerName = player.fullName()
-                    )
+            dataAdditionUpdates.shotHasBeenUpdatedSharedFlow.collectLatest { hasBeenUpdated ->
+                if (hasBeenUpdated) {
+                    updateShotListState()
                 }
-            }.let { updatedShotList ->
-                currentShotArrayList.addAll(updatedShotList)
             }
-            shotListMutableStateFlow.update { it.copy(shotList = currentShotArrayList.toList()) }
         }
+    }
+
+    private suspend fun updateShotListState() {
+        currentShotArrayList.clear()
+
+        playerRepository.fetchAllPlayers().flatMap { player ->
+            player.shotsLoggedList.map { shotLogged ->
+                ShotLoggedWithPlayer(
+                    shotLogged = shotLogged,
+                    playerId = playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) ?: 0,
+                    playerName = player.fullName()
+                )
+            }
+        }.let { updatedShotList ->
+            currentShotArrayList.addAll(updatedShotList)
+        }
+        shotListMutableStateFlow.update { it.copy(shotList = currentShotArrayList.toList()) }
     }
 
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
