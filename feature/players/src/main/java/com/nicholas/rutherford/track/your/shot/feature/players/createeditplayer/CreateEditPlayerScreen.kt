@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.nicholas.rutherford.track.your.shot.base.resources.R
+import com.nicholas.rutherford.track.your.shot.compose.components.BottomSheetWithOptions
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.CoreTextField
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
@@ -97,44 +98,37 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
 
     Content(
         ui = {
-            CreateEditPlayerUi(
-                createEditPlayerParams = createEditPlayerParams,
-                hasUploadedImage = hasUploadedImage,
-                scope = scope,
-                bottomState = bottomState,
-                imageUri = imageUri
+            BottomSheetWithOptions(
+                sheetState = bottomState,
+                sheetInfo = createEditPlayerParams.state.sheet,
+                onSheetItemClicked = { value, _ ->
+                    scope.launch { bottomState.hide() }
+                    handleBottomSheetSelection(
+                        value = value,
+                        context = context,
+                        cameraLauncher = cameraLauncher,
+                        singlePhotoPickerLauncher = singlePhotoPickerLauncher,
+                        createEditPlayerParams = createEditPlayerParams,
+                        shouldAskForCameraPermission = { shouldAskForCameraPermission = it },
+                        resetImageState = {
+                            imageUri = null
+                            hasUploadedImage = false
+                            createEditPlayerParams.onClearImageState()
+                        }
+                    )
+                },
+                onCancelItemClicked = { scope.launch { bottomState.hide() } },
+                content = {
+                    CreateEditPlayerUi(
+                        createEditPlayerParams = createEditPlayerParams,
+                        hasUploadedImage = hasUploadedImage,
+                        scope = scope,
+                        bottomState = bottomState,
+                        imageUri = imageUri
+                    )
+                }
+
             )
-//            BottomSheetWithOptions(
-//                sheetState = bottomState,
-//                sheetInfo = createEditPlayerParams.state.sheet,
-//                onSheetItemClicked = { value, _ ->
-//                    scope.launch { bottomState.hide() }
-//                    handleBottomSheetSelection(
-//                        value = value,
-//                        context = context,
-//                        cameraLauncher = cameraLauncher,
-//                        singlePhotoPickerLauncher = singlePhotoPickerLauncher,
-//                        createEditPlayerParams = createEditPlayerParams,
-//                        shouldAskForCameraPermission = { shouldAskForCameraPermission = it },
-//                        resetImageState = {
-//                            imageUri = null
-//                            hasUploadedImage = false
-//                            createEditPlayerParams.onClearImageState()
-//                        }
-//                    )
-//                },
-//                onCancelItemClicked = { scope.launch { bottomState.hide() } },
-//                content = {
-//                    CreateEditPlayerUi(
-//                        createEditPlayerParams = createEditPlayerParams,
-//                        hasUploadedImage = hasUploadedImage,
-//                        scope = scope,
-//                        bottomState = bottomState,
-//                        imageUri = imageUri
-//                    )
-//                }
-//
-//            )
         },
         appBar = AppBar(
             toolbarTitle = stringResource(id = createEditPlayerParams.state.toolbarNameResId),
