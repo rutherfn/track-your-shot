@@ -9,17 +9,15 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerReposi
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
-import com.nicholas.rutherford.track.your.shot.data.room.response.isTheSame
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
-import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.extension.LogShotInfo
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.extension.LogShotViewModelExt
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.parseDateValueToString
-import com.nicholas.rutherford.track.your.shot.helper.extensions.parseValueToDate
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
@@ -31,8 +29,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.util.Date
-import java.util.Locale
 
 class LogShotViewModel(
     private val application: Application,
@@ -42,25 +38,17 @@ class LogShotViewModel(
     private val pendingPlayerRepository: PendingPlayerRepository,
     private val playerRepository: PlayerRepository,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
-    private val currentPendingShot: CurrentPendingShot
+    private val currentPendingShot: CurrentPendingShot,
+    private val logShotViewModelExt: LogShotViewModelExt
 ) : ViewModel() {
 
     val logShotMutableStateFlow = MutableStateFlow(value = LogShotState())
     val logShotStateFlow = logShotMutableStateFlow.asStateFlow()
 
-    internal var isExistingPlayer = false
-    private var playerId = 0
-    internal var shotType = 0
-    internal var shotId = 0
-
     internal var currentPlayer: Player? = null
     internal var currentDeclaredShot: DeclaredShot? = null
 
     private var currentPlayerShotSize = 0
-    internal var viewCurrentExistingShot = false
-    internal var viewCurrentPendingShot = false
-
-    internal var fromShotList = false
 
     internal var initialShotLogged: ShotLogged? = null
 
@@ -74,24 +62,25 @@ class LogShotViewModel(
         fromShotListArgument: Boolean
     ) {
         resetState()
-
-        this.isExistingPlayer = isExistingPlayerArgument
-        this.playerId = playerIdArgument
-        this.shotType = shotTypeArgument
-        this.shotId = shotIdArgument
-        this.viewCurrentExistingShot = viewCurrentExistingShotArgument
-        this.viewCurrentPendingShot = viewCurrentPendingShotArgument
-        this.fromShotList = fromShotListArgument
-
-        println("here is from shot list $fromShotListArgument")
+        logShotViewModelExt.setInitialInfo(
+            logShotInfo = LogShotInfo(
+                isExistingPlayer = isExistingPlayerArgument,
+                playerId = playerIdArgument,
+                shotType = shotTypeArgument,
+                shotId = shotIdArgument,
+                viewCurrentExistingShot = viewCurrentExistingShotArgument,
+                viewCurrentPendingShot = viewCurrentPendingShotArgument,
+                fromShotList = fromShotListArgument
+            )
+        )
 
         scope.launch {
-            val declaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = shotType)
+            val declaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = logShotViewModelExt.logShotInfo.shotType)
 
-            val player = if (isExistingPlayer) {
-                playerRepository.fetchPlayerById(id = playerId)
+            val player = if (logShotViewModelExt.logShotInfo.isExistingPlayer) {
+                playerRepository.fetchPlayerById(id = logShotViewModelExt.logShotInfo.playerId)
             } else {
-                pendingPlayerRepository.fetchPlayerById(id = playerId)
+                pendingPlayerRepository.fetchPlayerById(id = logShotViewModelExt.logShotInfo.playerId)
             }
 
             currentPlayer = player
@@ -114,8 +103,8 @@ class LogShotViewModel(
     }
 
     private suspend fun updateStateForViewShot() {
-        if (viewCurrentExistingShot) {
-            currentPlayer?.shotsLoggedList?.first { shotLogged -> shotLogged.id == shotId }?.let { shot ->
+        if (logShotViewModelExt.logShotInfo.viewCurrentExistingShot) {
+            currentPlayer?.shotsLoggedList?.first { shotLogged -> shotLogged.id == logShotViewModelExt.logShotInfo.shotId }?.let { shot ->
                 logShotMutableStateFlow.update { state ->
                     state.copy(
                         shotsLoggedDateValue = parseDateValueToString(shot.shotsLoggedMillisecondsValue),
@@ -123,12 +112,12 @@ class LogShotViewModel(
                         shotsMade = shot.shotsMade,
                         shotsMissed = shot.shotsMissed,
                         shotsAttempted = shot.shotsAttempted,
-                        shotsMadePercentValue = percentageFormat(
+                        shotsMadePercentValue = logShotViewModelExt.percentageFormat(
                             shotsMade = shot.shotsMade.toDouble(),
                             shotsMissed = shot.shotsMissed.toDouble(),
                             isShotsMade = true
                         ),
-                        shotsMissedPercentValue = percentageFormat(
+                        shotsMissedPercentValue = logShotViewModelExt.percentageFormat(
                             shotsMade = shot.shotsMade.toDouble(),
                             shotsMissed = shot.shotsMissed.toDouble(),
                             isShotsMade = false
@@ -139,7 +128,7 @@ class LogShotViewModel(
             }
         }
 
-        if (viewCurrentPendingShot) {
+        if (logShotViewModelExt.logShotInfo.viewCurrentPendingShot) {
             val pendingShotList = currentPendingShot.shotsStateFlow.first()
 
             if (pendingShotList.isNotEmpty()) {
@@ -152,12 +141,12 @@ class LogShotViewModel(
                         shotsMade = shot.shotsMade,
                         shotsMissed = shot.shotsMissed,
                         shotsAttempted = shot.shotsAttempted,
-                        shotsMadePercentValue = percentageFormat(
+                        shotsMadePercentValue = logShotViewModelExt.percentageFormat(
                             shotsMade = shot.shotsMade.toDouble(),
                             shotsMissed = shot.shotsMissed.toDouble(),
                             isShotsMade = true
                         ),
-                        shotsMissedPercentValue = percentageFormat(
+                        shotsMissedPercentValue = logShotViewModelExt.percentageFormat(
                             shotsMade = shot.shotsMade.toDouble(),
                             shotsMissed = shot.shotsMissed.toDouble(),
                             isShotsMade = false
@@ -175,11 +164,11 @@ class LogShotViewModel(
             shotsAttempted = logShotMutableStateFlow.value.shotsAttempted,
             shotsMade = logShotMutableStateFlow.value.shotsMade,
             shotsMissed = logShotMutableStateFlow.value.shotsMissed,
-            shotsMadePercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMadePercentValue.trim().replace(" ", "")),
-            shotsMissedPercentValue = convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMissedPercentValue.trim().replace(" ", "")),
-            shotsAttemptedMillisecondsValue = convertValueToDate(value = logShotMutableStateFlow.value.shotsTakenDateValue)?.time
+            shotsMadePercentValue = logShotViewModelExt.convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMadePercentValue.trim().replace(" ", "")),
+            shotsMissedPercentValue = logShotViewModelExt.convertPercentageToDouble(percentage = logShotMutableStateFlow.value.shotsMissedPercentValue.trim().replace(" ", "")),
+            shotsAttemptedMillisecondsValue = logShotViewModelExt.convertValueToDate(value = logShotMutableStateFlow.value.shotsTakenDateValue)?.time
                 ?: 0L,
-            shotsLoggedMillisecondsValue = convertValueToDate(value = logShotMutableStateFlow.value.shotsLoggedDateValue)?.time
+            shotsLoggedMillisecondsValue = logShotViewModelExt.convertValueToDate(value = logShotMutableStateFlow.value.shotsLoggedDateValue)?.time
                 ?: 0L,
             isPending = true // does not matter since were ignoring this field
         )
@@ -199,76 +188,17 @@ class LogShotViewModel(
         navigation.datePicker(datePickerInfo = datePickerInfo)
     }
 
-    internal fun shotsAttempted(shotsMade: Int, shotsMissed: Int): Int {
-        return if (shotsMade != 0 || shotsMissed != 0) {
-            shotsMade + shotsMissed
-        } else {
-            0
-        }
-    }
-
-    internal fun shotsPercentValue(
-        shotsMade: Double,
-        shotsMissed: Double,
-        isShotsMade: Boolean
-    ): Double {
-        val totalShots = if (isShotsMade) {
-            shotsMade + shotsMissed
-        } else {
-            shotsMissed + shotsMade
-        }
-        val percentValue =
-            if (shotsMade != Constants.SHOT_ZERO_VALUE && shotsMissed != Constants.SHOT_ZERO_VALUE) {
-                if (isShotsMade) {
-                    shotsMade / totalShots * 100
-                } else {
-                    shotsMissed / totalShots * 100
-                }
-            } else {
-                Constants.SHOT_ZERO_VALUE
-            }
-
-        return percentValue
-    }
-
-    internal fun percentageFormat(
-        shotsMade: Double,
-        shotsMissed: Double,
-        isShotsMade: Boolean
-    ): String {
-        val percentage = shotsPercentValue(
-            shotsMade = shotsMade,
-            shotsMissed = shotsMissed,
-            isShotsMade = isShotsMade
-        )
-
-        return if (percentage == Constants.SHOT_ZERO_VALUE) {
-            application.getString(StringsIds.empty)
-        } else {
-            val locale = Locale("en", "US")
-            val percentageRoundedValue = String.format(locale, "%.1f", percentage)
-            if (percentageRoundedValue.endsWith(".0")) {
-                application.getString(
-                    StringsIds.shotPercentage,
-                    percentageRoundedValue.substring(0, percentageRoundedValue.length - 2)
-                )
-            } else {
-                application.getString(StringsIds.shotPercentage, percentageRoundedValue)
-            }
-        }
-    }
-
     fun onShotsMadeUpwardOrDownwardClicked(shots: Int) {
         logShotMutableStateFlow.update { state ->
             state.copy(
                 shotsMade = shots,
-                shotsAttempted = shotsAttempted(shotsMade = shots, shotsMissed = state.shotsMissed),
-                shotsMadePercentValue = percentageFormat(
+                shotsAttempted = logShotViewModelExt.shotsAttempted(shotsMade = shots, shotsMissed = state.shotsMissed),
+                shotsMadePercentValue = logShotViewModelExt.percentageFormat(
                     shotsMade = shots.toDouble(),
                     shotsMissed = state.shotsMissed.toDouble(),
                     isShotsMade = true
                 ),
-                shotsMissedPercentValue = percentageFormat(
+                shotsMissedPercentValue = logShotViewModelExt.percentageFormat(
                     shotsMade = shots.toDouble(),
                     shotsMissed = state.shotsMissed.toDouble(),
                     isShotsMade = false
@@ -281,13 +211,13 @@ class LogShotViewModel(
         logShotMutableStateFlow.update { state ->
             state.copy(
                 shotsMissed = shots,
-                shotsAttempted = shotsAttempted(shotsMade = state.shotsMade, shotsMissed = shots),
-                shotsMadePercentValue = percentageFormat(
+                shotsAttempted = logShotViewModelExt.shotsAttempted(shotsMade = state.shotsMade, shotsMissed = shots),
+                shotsMadePercentValue = logShotViewModelExt.percentageFormat(
                     shotsMade = state.shotsMade.toDouble(),
                     shotsMissed = shots.toDouble(),
                     isShotsMade = true
                 ),
-                shotsMissedPercentValue = percentageFormat(
+                shotsMissedPercentValue = logShotViewModelExt.percentageFormat(
                     shotsMade = state.shotsMade.toDouble(),
                     shotsMissed = shots.toDouble(),
                     isShotsMade = false
@@ -296,43 +226,49 @@ class LogShotViewModel(
         }
     }
 
-    internal fun startingInputAmount(amount: Int): Int? {
-        return if (amount > 0) {
-            amount
-        } else {
-            null
-        }
-    }
-
-    fun invalidLogShotAlert(description: String): Alert {
-        return Alert(
-            title = application.getString(StringsIds.error),
-            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt)),
-            description = description
-        )
-    }
-
-    internal fun shotEntryInvalidAlert(shotsMade: Int, shotsMissed: Int, shotsAttemptedMillisecondsValue: Long): Alert? {
-        val description: String? = if (shotsMade == 0) {
-            application.getString(StringsIds.shotsNotRecordedDescription)
-        } else if (shotsMissed == 0) {
-            application.getString(StringsIds.missedShotsNotRecordedDescription)
-        } else if (shotsAttemptedMillisecondsValue == 0L) {
-            application.getString(StringsIds.dateShotWasTakenDescription)
-        } else {
-            null
-        }
-
-        description?.let {
-            return invalidLogShotAlert(description = it)
-        } ?: run {
-            return null
-        }
-    }
-
     internal fun disableProgressAndShowAlert(alert: Alert) {
         navigation.disableProgress()
         navigation.alert(alert = alert)
+    }
+
+    private fun buildPendingShotOnSave(player: Player, state: LogShotState): PendingShot =
+        PendingShot(
+            player = player,
+            shotLogged = ShotLogged(
+                id = 0,
+                shotName = state.shotName,
+                shotType = currentDeclaredShot?.id ?: 0,
+                shotsAttempted = state.shotsAttempted,
+                shotsMade = state.shotsMade,
+                shotsMissed = state.shotsMissed,
+                shotsMadePercentValue = logShotViewModelExt.convertPercentageToDouble(
+                    percentage = state.shotsMadePercentValue.trim().replace(" ", "")
+                ),
+                shotsMissedPercentValue = logShotViewModelExt.convertPercentageToDouble(
+                    percentage = state.shotsMissedPercentValue.trim().replace(" ", "")
+                ),
+                shotsAttemptedMillisecondsValue = logShotViewModelExt.convertValueToDate(value = state.shotsTakenDateValue)?.time
+                    ?: 0L,
+                shotsLoggedMillisecondsValue = logShotViewModelExt.convertValueToDate(value = state.shotsLoggedDateValue)?.time
+                    ?: 0L,
+                isPending = true
+            ),
+            isPendingPlayer = logShotViewModelExt.logShotInfo.isExistingPlayer
+        )
+
+    private fun handleExistingShotSaveClicked(pendingShot: PendingShot) {
+        logShotViewModelExt.noChangesForShotAlert(initialShotLogged = initialShotLogged, pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
+            disableProgressAndShowAlert(alert = alert)
+        } ?: createPendingShot(
+            isACurrentPlayerShot = true,
+            pendingShot = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = logShotViewModelExt.logShotInfo.shotId))
+        )
+    }
+
+    private fun handlePendingShotSaveClicked(pendingShot: PendingShot) {
+        logShotViewModelExt.noChangesForShotAlert(initialShotLogged = initialShotLogged, pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
+            disableProgressAndShowAlert(alert = alert)
+        } ?: updatePendingShot(pendingShot = pendingShot)
     }
 
     fun onSaveClicked() {
@@ -341,53 +277,26 @@ class LogShotViewModel(
                 navigation.enableProgress(Progress())
                 val state = logShotMutableStateFlow.value
 
-                shotEntryInvalidAlert(
+                logShotViewModelExt.shotEntryInvalidAlert(
                     shotsMade = state.shotsMade,
                     shotsMissed = state.shotsMissed,
-                    shotsAttemptedMillisecondsValue = convertValueToDate(value = state.shotsTakenDateValue)?.time ?: 0
+                    shotsAttemptedMillisecondsValue = logShotViewModelExt.convertValueToDate(value = state.shotsTakenDateValue)?.time ?: 0
                 )?.let { alert ->
                     disableProgressAndShowAlert(alert = alert)
                 } ?: run {
-                    val pendingShot = PendingShot(
-                        player = player,
-                        shotLogged = ShotLogged(
-                            id = 0,
-                            shotName = state.shotName,
-                            shotType = currentDeclaredShot?.id ?: 0,
-                            shotsAttempted = state.shotsAttempted,
-                            shotsMade = state.shotsMade,
-                            shotsMissed = state.shotsMissed,
-                            shotsMadePercentValue = convertPercentageToDouble(percentage = state.shotsMadePercentValue.trim().replace(" ", "")),
-                            shotsMissedPercentValue = convertPercentageToDouble(percentage = state.shotsMissedPercentValue.trim().replace(" ", "")),
-                            shotsAttemptedMillisecondsValue = convertValueToDate(value = state.shotsTakenDateValue)?.time
-                                ?: 0L,
-                            shotsLoggedMillisecondsValue = convertValueToDate(value = state.shotsLoggedDateValue)?.time
-                                ?: 0L,
-                            isPending = true
-                        ),
-                        isPendingPlayer = isExistingPlayer
-                    )
-
-                    if (viewCurrentExistingShot) {
-                        noChangesForShotAlert(pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
-                            disableProgressAndShowAlert(alert = alert)
-                        } ?: createPendingShot(
-                            isACurrentPlayerShot = true,
-                            pendingShot = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = shotId))
-                        )
-                    } else if (viewCurrentPendingShot) {
-                        noChangesForShotAlert(pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
-                            disableProgressAndShowAlert(alert = alert)
-                        } ?: updatePendingShot(pendingShot = pendingShot)
+                    if (logShotViewModelExt.logShotInfo.viewCurrentExistingShot) {
+                        handleExistingShotSaveClicked(pendingShot = buildPendingShotOnSave(player = player, state = state))
+                    } else if (logShotViewModelExt.logShotInfo.viewCurrentPendingShot) {
+                        handlePendingShotSaveClicked(pendingShot = buildPendingShotOnSave(player = player, state = state))
                     } else {
                         createPendingShot(
                             isACurrentPlayerShot = false,
-                            pendingShot = pendingShot
+                            pendingShot = buildPendingShotOnSave(player = player, state = state)
                         )
                     }
                 }
             } ?: navigation.alert(
-                alert = invalidLogShotAlert(
+                alert = logShotViewModelExt.invalidLogShotAlert(
                     description = application.getString(
                         StringsIds.playerIsInvalidPleaseTryAgain
                     )
@@ -413,22 +322,6 @@ class LogShotViewModel(
             )
         }
 
-    internal fun noChangesForShotAlert(pendingShotLogged: ShotLogged): Alert? {
-        initialShotLogged?.let { currentShot ->
-            if (currentShot.isTheSame(pendingShotLogged)) {
-                return Alert(
-                    title = application.getString(StringsIds.noChangesMade),
-                    dismissButton = AlertConfirmAndDismissButton(
-                        buttonText = application.getString(StringsIds.gotIt)
-                    ),
-                    description = application.getString(StringsIds.currentShotHasNoChangesDescription)
-                )
-            } else {
-                return null
-            }
-        } ?: return null
-    }
-
     private fun updatePendingShot(pendingShot: PendingShot) {
         val firstShotLogged = currentPendingShot.fetchPendingShots().first()
         currentPendingShot.deleteShot(shotLogged = firstShotLogged)
@@ -445,46 +338,31 @@ class LogShotViewModel(
         navigateToCreateOrEditPlayer()
     }
 
-    fun convertPercentageToDouble(percentage: String): Double {
-        if (!percentage.contains("%")) {
-            return 0.0
-        }
-
-        val valueWithoutPercentSign = percentage.replace("%", "")
-
-        val valueWithDecimal = if (!valueWithoutPercentSign.contains(".")) {
-            "$valueWithoutPercentSign.0"
+    fun handleHasDeleteShotFirebaseResponse(hasDeleted: Boolean) {
+        if (hasDeleted) {
+            if (logShotViewModelExt.logShotInfo.fromShotList) {
+                navigation.disableProgress()
+                navigation.popToShotList()
+            } else {
+                navigateToCreateOrEditPlayer()
+            }
+            navigation.alert(alert = logShotViewModelExt.deleteShotConfirmAlert(shotName = logShotMutableStateFlow.value.shotName))
         } else {
-            valueWithoutPercentSign
-        }
-
-        return try {
-            valueWithDecimal.toDouble()
-        } catch (e: NumberFormatException) {
-            0.0
+            navigation.disableProgress()
+            navigation.alert(alert = logShotViewModelExt.deleteShotErrorAlert(shotName = logShotMutableStateFlow.value.shotName))
         }
     }
 
     fun navigateToCreateOrEditPlayer() {
         navigation.disableProgress()
-        if (isExistingPlayer) {
+        if (logShotViewModelExt.logShotInfo.isExistingPlayer) {
             navigation.popToEditPlayer()
         } else {
             navigation.popToCreatePlayer()
         }
     }
 
-    fun convertValueToDate(value: String): Date? {
-        return if (value.isEmpty()) {
-            null
-        } else {
-            parseValueToDate(value = value)
-        }
-    }
-
     fun onBackClicked() = navigation.pop()
-
-    fun filterShotsById(shots: List<ShotLogged>): List<ShotLogged> = shots.filter { it.id != shotId }
 
     suspend fun onYesDeleteShot() {
         navigation.enableProgress(progress = Progress())
@@ -497,61 +375,18 @@ class LogShotViewModel(
                     position = player.position,
                     firebaseKey = player.firebaseKey,
                     imageUrl = player.imageUrl,
-                    shotsLoggedList = filterShotsById(shots = player.shotsLoggedList)
+                    shotsLoggedList = logShotViewModelExt.filterShotsById(shots = player.shotsLoggedList)
                 )
             )
 
             deleteFirebaseUserInfo.deleteShot(
                 playerKey = player.firebaseKey,
-                index = shotId - 1
+                index = logShotViewModelExt.logShotInfo.shotId - 1
             ).collectLatest { hasDeleted ->
-                if (hasDeleted) {
-                    navigateToCreateOrEditPlayer()
-                    navigation.alert(alert = deleteShotConfirmAlert())
-                } else {
-                    navigation.disableProgress()
-                    navigation.alert(alert = deleteShotErrorAlert())
-                }
+                handleHasDeleteShotFirebaseResponse(hasDeleted = hasDeleted)
             }
         } ?: navigation.disableProgress()
     }
 
-    fun deleteShotAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.deleteShot),
-            description = application.getString(StringsIds.areYouSureYouWantToDeleteXShot, logShotMutableStateFlow.value.shotName),
-            confirmButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.yes),
-                onButtonClicked = { scope.launch { onYesDeleteShot() } }
-            ),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.no),
-                onButtonClicked = {}
-            )
-        )
-    }
-
-    fun deleteShotConfirmAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.shotHasBeenDeleted),
-            description = application.getString(StringsIds.xShotHasBeenRemovedDescription, logShotMutableStateFlow.value.shotName),
-            confirmButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.gotIt),
-                onButtonClicked = { }
-            )
-        )
-    }
-
-    fun deleteShotErrorAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.shotHasNotBeenDeleted),
-            description = application.getString(StringsIds.xShotHasNotBeenRemovedDescription, logShotMutableStateFlow.value.shotName),
-            confirmButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.gotIt),
-                onButtonClicked = { }
-            )
-        )
-    }
-
-    fun onDeleteShotClicked() = navigation.alert(alert = deleteShotAlert())
+    fun onDeleteShotClicked() = navigation.alert(alert = logShotViewModelExt.deleteShotAlert(onYesDeleteShot = { onYesDeleteShot() }, shotName = logShotMutableStateFlow.value.shotName))
 }

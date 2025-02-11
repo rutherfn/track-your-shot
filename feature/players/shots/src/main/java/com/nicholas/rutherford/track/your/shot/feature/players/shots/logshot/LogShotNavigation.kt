@@ -8,6 +8,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 interface LogShotNavigation {
     fun alert(alert: Alert)
     fun pop()
+    fun popToShotList()
     fun popToCreatePlayer()
     fun popToEditPlayer()
     fun datePicker(datePickerInfo: DatePickerInfo)

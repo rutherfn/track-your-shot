@@ -44,6 +44,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.Player
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.extension.LogShotViewModelExtImpl
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.extension.LogShotViewModelExt
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShotImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigation
@@ -254,6 +256,12 @@ class AppModule {
         single<DateExt> {
             DateExtImpl()
         }
+        single<LogShotViewModelExt> {
+            LogShotViewModelExtImpl(
+                application = androidApplication(),
+                scope = defaultCoroutineScope
+            )
+        }
         single<SplashNavigation> {
             SplashNavigationImpl(navigator = get())
         }
@@ -378,7 +386,8 @@ class AppModule {
                 pendingPlayerRepository = get(),
                 playerRepository = get(),
                 deleteFirebaseUserInfo = get(),
-                currentPendingShot = get()
+                currentPendingShot = get(),
+                logShotViewModelExt = get()
             )
         }
         viewModel {
