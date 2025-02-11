@@ -21,4 +21,6 @@ interface LogShotViewModelExt {
     fun deleteShotErrorAlert(shotName: String): Alert
     fun noChangesForShotAlert(initialShotLogged: ShotLogged?, pendingShotLogged: ShotLogged): Alert?
     fun shotEntryInvalidAlert(shotsMade: Int, shotsMissed: Int, shotsAttemptedMillisecondsValue: Long): Alert?
+    fun weHaveDetectedAProblemWithYourAccountAlert(): Alert
+    fun showUpdatedAlert(): Alert
 }

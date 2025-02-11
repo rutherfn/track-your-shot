@@ -58,4 +58,26 @@ class DataAdditionUpdatesImplTest {
             Assertions.assertEquals(expectedValue, result)
         }
     }
+
+    @Nested
+    inner class ShotHasBeenUpdatedSharedFlow {
+        @Test
+        fun `should initially be set to null if not updated`() = runTest {
+            val result = dataAdditionUpdatesImpl.shotHasBeenUpdatedMutableSharedFlow.replayCache.firstOrNull()
+
+            Assertions.assertEquals(null, result)
+        }
+
+        @Test
+        fun `should be updated if updateNewReportAddedFlow is called`() = runTest {
+            val dataAdditionUpdatesImpl = DataAdditionUpdatesImpl()
+            val expectedValue = true
+
+            dataAdditionUpdatesImpl.updateShotHasBeenUpdatedSharedFlow(expectedValue)
+
+            val result = dataAdditionUpdatesImpl.shotHasBeenUpdatedMutableSharedFlow.replayCache.firstOrNull()
+
+            Assertions.assertEquals(expectedValue, result)
+        }
+    }
 }

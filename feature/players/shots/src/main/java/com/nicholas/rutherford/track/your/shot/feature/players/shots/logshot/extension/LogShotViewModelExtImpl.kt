@@ -197,4 +197,26 @@ class LogShotViewModelExtImpl(
             return null
         }
     }
+
+    override fun weHaveDetectedAProblemWithYourAccountAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.issueOccurred),
+            description = application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            )
+        )
+    }
+
+    override fun showUpdatedAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.shotUpdated),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(
+                    StringsIds.gotIt
+                )
+            ),
+            description = application.getString(StringsIds.currentShotHasBeenUpdatedDescription)
+        )
+    }
 }

@@ -443,4 +443,35 @@ class LogShotViewModelExtImplTest {
             )
         }
     }
+
+    @Test
+    fun `we have detected a problem with your account alert should return alert info`() {
+        every { application.getString(StringsIds.issueOccurred) } returns "Issue Occurred"
+        every { application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue) } returns "We have detected a problem with your account. Please contact support to resolve issue."
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+
+        val alert = logShotViewModelExtImpl.weHaveDetectedAProblemWithYourAccountAlert()
+
+        Assertions.assertEquals(alert.title, "Issue Occurred")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Got It")
+        Assertions.assertEquals(alert.description, "We have detected a problem with your account. Please contact support to resolve issue.")
+    }
+
+    @Test
+    fun `show updated alert should return alert`() {
+        every { application.getString(StringsIds.shotUpdated) } returns "Shot Updated"
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+        every { application.getString(StringsIds.currentShotHasBeenUpdatedDescription) } returns "The current shot has been updated. To see the latest information, click on the shot to view the updates"
+
+        val alert = Alert(
+            title = "Shot Updated",
+            dismissButton = AlertConfirmAndDismissButton(buttonText = "Got It"),
+            description = "The current shot has been updated. To see the latest information, click on the shot to view the updates"
+        )
+
+        Assertions.assertEquals(
+            logShotViewModelExtImpl.showUpdatedAlert(),
+            alert
+        )
+    }
 }

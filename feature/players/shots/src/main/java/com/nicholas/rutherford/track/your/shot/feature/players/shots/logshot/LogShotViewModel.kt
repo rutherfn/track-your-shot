@@ -11,7 +11,6 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
-import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.extension.LogShotInfo
@@ -86,8 +85,11 @@ class LogShotViewModel(
         )
 
         scope.launch {
-            val declaredShot = declaredShotRepository.fetchDeclaredShotFromId(logShotViewModelExt.logShotInfo.shotType)
-            val player = getPlayer(logShotViewModelExt.logShotInfo.isExistingPlayer, logShotViewModelExt.logShotInfo.playerId)
+            val declaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = logShotViewModelExt.logShotInfo.shotType)
+            val player = getPlayer(
+                isExisting = logShotViewModelExt.logShotInfo.isExistingPlayer,
+                playerId = logShotViewModelExt.logShotInfo.playerId
+            )
 
             currentPlayer = player
             currentPlayerShotSize = player?.shotsLoggedList?.size ?: 0
@@ -303,18 +305,18 @@ class LogShotViewModel(
             navigation.enableProgress(Progress())
 
             val state = logShotMutableStateFlow.value
-            val shotDateMillis = logShotViewModelExt.convertValueToDate(state.shotsTakenDateValue)?.time ?: 0
+            val shotDateMillis = logShotViewModelExt.convertValueToDate(value = state.shotsTakenDateValue)?.time ?: 0
 
             logShotViewModelExt.shotEntryInvalidAlert(
                 shotsMade = state.shotsMade,
                 shotsMissed = state.shotsMissed,
                 shotsAttemptedMillisecondsValue = shotDateMillis
             )?.let { alert ->
-                disableProgressAndShowAlert(alert)
+                disableProgressAndShowAlert(alert = alert)
                 return@launch
             }
 
-            val pendingShot = buildPendingShotOnSave(player, state)
+            val pendingShot = buildPendingShotOnSave(player = player, state = state)
             val shotInfo = logShotViewModelExt.logShotInfo
 
             when {
@@ -350,16 +352,6 @@ class LogShotViewModel(
         navigateToCreateOrEditPlayer()
     }
 
-    internal fun weHaveDetectedAProblemWithYourAccountAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.issueOccurred),
-            description = application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.gotIt)
-            )
-        )
-    }
-
     private suspend fun updateUserInFirebase(player: Player, shotLogged: List<ShotLogged>) {
         val key = activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey ?: ""
         val playerKey =
@@ -390,7 +382,7 @@ class LogShotViewModel(
             }
         } else {
             navigation.disableProgress()
-            navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
+            navigation.alert(alert = logShotViewModelExt.weHaveDetectedAProblemWithYourAccountAlert())
         }
     }
 
@@ -421,18 +413,6 @@ class LogShotViewModel(
         }
     }
 
-    internal fun showUpdatedAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.shotUpdated),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(
-                    StringsIds.gotIt
-                )
-            ),
-            description = application.getString(StringsIds.currentShotHasBeenUpdatedDescription)
-        )
-    }
-
     private suspend fun handleUpdatedShot(
         isSuccessful: Boolean,
         player: Player,
@@ -454,10 +434,10 @@ class LogShotViewModel(
 
             navigation.disableProgress()
             navigation.popToShotList()
-            navigation.alert(alert = showUpdatedAlert())
+            navigation.alert(alert = logShotViewModelExt.showUpdatedAlert())
         } else {
             navigation.disableProgress()
-            navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
+            navigation.alert(alert = logShotViewModelExt.weHaveDetectedAProblemWithYourAccountAlert())
         }
     }
 
@@ -469,7 +449,7 @@ class LogShotViewModel(
             )
         } ?: run {
             navigation.disableProgress()
-            navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
+            navigation.alert(alert = logShotViewModelExt.weHaveDetectedAProblemWithYourAccountAlert())
         }
     }
 
