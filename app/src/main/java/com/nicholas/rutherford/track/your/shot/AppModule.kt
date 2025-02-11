@@ -44,8 +44,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.Player
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotViewModel
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.extension.LogShotViewModelExtImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.extension.LogShotViewModelExt
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.extension.LogShotViewModelExtImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShotImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigation
@@ -384,7 +384,10 @@ class AppModule {
                 navigation = get(),
                 declaredShotRepository = get(),
                 pendingPlayerRepository = get(),
+                dataAdditionUpdates = get(),
                 playerRepository = get(),
+                activeUserRepository = get(),
+                updateFirebaseUserInfo = get(),
                 deleteFirebaseUserInfo = get(),
                 currentPendingShot = get(),
                 logShotViewModelExt = get()
@@ -488,6 +491,7 @@ class AppModule {
             ShotsListViewModel(
                 scope = defaultCoroutineScope,
                 navigation = get(),
+                dataAdditionUpdates = get(),
                 playerRepository = get()
             )
         }

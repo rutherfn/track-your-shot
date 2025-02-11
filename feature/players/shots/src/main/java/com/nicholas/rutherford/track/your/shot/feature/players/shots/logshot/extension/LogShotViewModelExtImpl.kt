@@ -16,7 +16,7 @@ import java.util.Locale
 class LogShotViewModelExtImpl(
     private val application: Application,
     private val scope: CoroutineScope
-): LogShotViewModelExt {
+) : LogShotViewModelExt {
     override var logShotInfo = LogShotInfo()
 
     internal fun shotsPercentValue(

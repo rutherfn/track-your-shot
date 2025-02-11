@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
@@ -10,6 +11,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.extension.LogShotInfo
@@ -17,6 +19,11 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.ext
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.parseDateValueToString
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
@@ -36,7 +43,10 @@ class LogShotViewModel(
     private val navigation: LogShotNavigation,
     private val declaredShotRepository: DeclaredShotRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
+    private val dataAdditionUpdates: DataAdditionUpdates,
     private val playerRepository: PlayerRepository,
+    private val activeUserRepository: ActiveUserRepository,
+    private val updateFirebaseUserInfo: UpdateFirebaseUserInfo,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val currentPendingShot: CurrentPendingShot,
     private val logShotViewModelExt: LogShotViewModelExt
@@ -271,6 +281,12 @@ class LogShotViewModel(
         } ?: updatePendingShot(pendingShot = pendingShot)
     }
 
+    private suspend fun handleFromShotListSaveClicked(pendingShot: PendingShot) {
+        logShotViewModelExt.noChangesForShotAlert(initialShotLogged = initialShotLogged, pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
+            disableProgressAndShowAlert(alert = alert)
+        } ?: updateCurrentShot(pendingShot = pendingShot)
+    }
+
     fun onSaveClicked() {
         scope.launch {
             currentPlayer?.let { player ->
@@ -284,10 +300,12 @@ class LogShotViewModel(
                 )?.let { alert ->
                     disableProgressAndShowAlert(alert = alert)
                 } ?: run {
-                    if (logShotViewModelExt.logShotInfo.viewCurrentExistingShot) {
-                        handleExistingShotSaveClicked(pendingShot = buildPendingShotOnSave(player = player, state = state))
+                    if (logShotViewModelExt.logShotInfo.viewCurrentExistingShot && logShotViewModelExt.logShotInfo.fromShotList) {
+                        handleFromShotListSaveClicked(pendingShot = buildPendingShotOnSave(player = player, state = state))
                     } else if (logShotViewModelExt.logShotInfo.viewCurrentPendingShot) {
                         handlePendingShotSaveClicked(pendingShot = buildPendingShotOnSave(player = player, state = state))
+                    } else if (logShotViewModelExt.logShotInfo.viewCurrentExistingShot) {
+                        handleExistingShotSaveClicked(pendingShot = buildPendingShotOnSave(player = player, state = state))
                     } else {
                         createPendingShot(
                             isACurrentPlayerShot = false,
@@ -327,6 +345,129 @@ class LogShotViewModel(
         currentPendingShot.deleteShot(shotLogged = firstShotLogged)
         currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = firstShotLogged.shotLogged.id)))
         navigateToCreateOrEditPlayer()
+    }
+
+    internal fun weHaveDetectedAProblemWithYourAccountAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.issueOccurred),
+            description = application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            )
+        )
+    }
+
+    private suspend fun updateUserInFirebase(player: Player, shotLogged: List<ShotLogged>) {
+        val key = activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey ?: ""
+        val playerKey =
+            safeLet(player.firstName, player.lastName) { firstName, lastName ->
+                playerRepository.fetchPlayerByName(
+                    firstName = firstName,
+                    lastName = lastName
+                )?.firebaseKey ?: ""
+            } ?: run { "" }
+        if (key.isNotEmpty() && playerKey.isNotEmpty()) {
+            updateFirebaseUserInfo.updatePlayer(
+                playerInfoRealtimeWithKeyResponse = PlayerInfoRealtimeWithKeyResponse(
+                    playerFirebaseKey = playerKey,
+                    playerInfo = PlayerInfoRealtimeResponse(
+                        firstName = player.firstName,
+                        lastName = player.lastName,
+                        positionValue = player.position.value,
+                        imageUrl = player.imageUrl ?: "",
+                        shotsLogged = currentShotLoggedRealtimeResponseList(currentShotList = shotLogged)
+                    )
+                )
+            ).collectLatest { isSuccessful ->
+                handleUpdatedShot(
+                    isSuccessful = isSuccessful,
+                    player = player,
+                    shotLogged = shotLogged
+                )
+            }
+        } else {
+            navigation.disableProgress()
+            navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
+        }
+        }
+
+    internal fun currentShotLoggedRealtimeResponseList(currentShotList: List<ShotLogged>): List<ShotLoggedRealtimeResponse> {
+        if (currentShotList.isNotEmpty()) {
+            val shotLoggedRealtimeResponseArrayList: ArrayList<ShotLoggedRealtimeResponse> = arrayListOf()
+
+            currentShotList.forEach { shotLogged ->
+                shotLoggedRealtimeResponseArrayList.add(
+                    ShotLoggedRealtimeResponse(
+                        id = shotLogged.id,
+                        shotName = shotLogged.shotName,
+                        shotType = shotLogged.shotType,
+                        shotsAttempted = shotLogged.shotsAttempted,
+                        shotsMade = shotLogged.shotsMade,
+                        shotsMissed = shotLogged.shotsMissed,
+                        shotsMadePercentValue = shotLogged.shotsMadePercentValue,
+                        shotsMissedPercentValue = shotLogged.shotsMissedPercentValue,
+                        shotsAttemptedMillisecondsValue = shotLogged.shotsAttemptedMillisecondsValue,
+                        shotsLoggedMillisecondsValue = shotLogged.shotsLoggedMillisecondsValue,
+                        isPending = false
+                    )
+                )
+            }
+            return shotLoggedRealtimeResponseArrayList
+        } else {
+            return arrayListOf()
+        }
+    }
+
+    internal fun showUpdatedAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.shotUpdated),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(
+                    StringsIds.gotIt
+                )
+            ),
+            description = application.getString(StringsIds.currentShotHasBeenUpdatedDescription)
+        )
+    }
+
+    private suspend fun handleUpdatedShot(
+        isSuccessful: Boolean,
+        player: Player,
+        shotLogged: List<ShotLogged>
+    ) {
+        if (isSuccessful) {
+            playerRepository.updatePlayer(
+                currentPlayer = player,
+                newPlayer = player.copy(
+                    firstName = player.firstName,
+                    lastName = player.lastName,
+                    position = player.position,
+                    firebaseKey = player.firebaseKey,
+                    imageUrl = player.imageUrl,
+                    shotsLoggedList = shotLogged
+                )
+            )
+            dataAdditionUpdates.updateShotHasBeenUpdatedSharedFlow(hasShotBeenUpdated = true)
+
+            navigation.disableProgress()
+            navigation.popToShotList()
+            navigation.alert(alert = showUpdatedAlert())
+        } else {
+           navigation.disableProgress()
+            navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
+        }
+    }
+
+    private suspend fun updateCurrentShot(pendingShot: PendingShot) {
+        currentPlayer?.let { player ->
+            updateUserInFirebase(
+                player = player,
+                shotLogged  = logShotViewModelExt.filterShotsById(shots = player.shotsLoggedList) + listOf(pendingShot.shotLogged)
+            )
+        } ?: run {
+            navigation.disableProgress()
+            navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
+        }
     }
 
     internal fun createPendingShot(isACurrentPlayerShot: Boolean, pendingShot: PendingShot) {

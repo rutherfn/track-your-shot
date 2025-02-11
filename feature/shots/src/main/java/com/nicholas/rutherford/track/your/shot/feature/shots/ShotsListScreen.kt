@@ -131,7 +131,7 @@ private fun ShotItem(
                 overflow = TextOverflow.Ellipsis
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
             Text(
                 text = stringResource(id = StringsIds.shotTakenByX, shot.playerName),
@@ -144,7 +144,7 @@ private fun ShotItem(
             Spacer(modifier = Modifier.width(4.dp))
 
             Text(
-                text = stringResource(id = StringsIds.shotTakenOnX, Date(shot.shotLogged.shotsLoggedMillisecondsValue).toTimestampString()),
+                text = stringResource(id = StringsIds.shotTakenOnX, Date(shot.shotLogged.shotsAttemptedMillisecondsValue).toTimestampString()),
                 style = TextStyles.bodySmall,
                 textAlign = TextAlign.Start,
                 maxLines = 1,
