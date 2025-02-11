@@ -34,7 +34,6 @@ class ShotsListViewModel(
 
     private suspend fun collectShotHasBeenUpdatedSharedFlow() {
         dataAdditionUpdates.shotHasBeenUpdatedSharedFlow.collectLatest { hasBeenUpdated ->
-            println("here is has been updated $hasBeenUpdated")
             if (hasBeenUpdated) {
                 updateShotListState()
             }

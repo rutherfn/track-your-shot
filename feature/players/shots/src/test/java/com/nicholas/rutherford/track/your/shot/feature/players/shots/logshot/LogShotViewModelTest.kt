@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot
 
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
@@ -17,6 +18,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.ext
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -59,6 +62,10 @@ class LogShotViewModelTest {
     private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
+    private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
+
+    private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
+    private val updateFirebaseUserInfo = mockk<UpdateFirebaseUserInfo>(relaxed = true)
 
     private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
 
@@ -74,7 +81,10 @@ class LogShotViewModelTest {
             navigation = navigation,
             declaredShotRepository = declaredShotRepository,
             pendingPlayerRepository = pendingPlayerRepository,
+            dataAdditionUpdates = dataAdditionUpdates,
             playerRepository = playerRepository,
+            activeUserRepository = activeUserRepository,
+            updateFirebaseUserInfo = updateFirebaseUserInfo,
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
             currentPendingShot = currentPendingShot,
             logShotViewModelExt = logShotViewModelExt
@@ -618,7 +628,7 @@ class LogShotViewModelTest {
     inner class HandleHasDeleteShotFirebaseResponse {
 
         @Test
-        fun `when hasDeleted is set to false should show alert`() {
+        fun `when hasDeleted is set to false should show alert`() = runTest {
             val hasDeleted = false
 
             logShotViewModel.handleHasDeleteShotFirebaseResponse(hasDeleted = hasDeleted)
@@ -628,7 +638,7 @@ class LogShotViewModelTest {
         }
 
         @Test
-        fun `when hasDeleted is set to true and fromShotList is set to false should pop to create player`() {
+        fun `when hasDeleted is set to true and fromShotList is set to false should pop to create player`() = runTest {
             val hasDeleted = true
 
             every { logShotViewModelExt.logShotInfo } returns LogShotInfo(fromShotList = false, isExistingPlayer = false)
@@ -641,7 +651,7 @@ class LogShotViewModelTest {
         }
 
         @Test
-        fun `when hasDeleted is set to true and fromShotList is set to true should pop and show alert`() {
+        fun `when hasDeleted is set to true and fromShotList is set to true should pop and show alert`() = runTest {
             val hasDeleted = true
 
             every { logShotViewModelExt.logShotInfo } returns LogShotInfo(fromShotList = true)
