@@ -12,6 +12,7 @@ interface SelectShotNavigation {
         shotType: Int,
         shotId: Int,
         viewCurrentExistingShot: Boolean,
-        viewCurrentPendingShot: Boolean
+        viewCurrentPendingShot: Boolean,
+        fromShotList: Boolean
     )
 }

@@ -13,6 +13,8 @@ class LogShotNavigationImpl(private val navigator: Navigator) : LogShotNavigatio
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
     override fun pop() = navigator.pop(popRouteAction = Constants.POP_DEFAULT_ACTION)
 
+    override fun popToShotList() = navigator.pop(popRouteAction = NavigationDestinations.SHOTS_LIST_SCREEN)
+
     override fun popToCreatePlayer() = navigator.pop(popRouteAction = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN)
 
     override fun popToEditPlayer() = navigator.pop(popRouteAction = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS)

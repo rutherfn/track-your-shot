@@ -55,6 +55,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsScreen
+import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreen
+import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
@@ -63,6 +65,7 @@ import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
 import com.nicholas.rutherford.track.your.shot.navigation.ReportingAction
 import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
+import com.nicholas.rutherford.track.your.shot.navigation.ShotsAction
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArguments
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
 import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
@@ -153,6 +156,7 @@ fun NavigationComponent(
     val accountInfoViewModel = viewModels.accountInfoViewModel
     val reportListViewModel = viewModels.reportListViewModel
     val createReportViewModel = viewModels.createReportViewModel
+    val shotsListViewModel = viewModels.shotsListViewModel
 
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
@@ -222,6 +226,7 @@ fun NavigationComponent(
             destination.contains(NavigationDestinations.CREATE_REPORT_SCREEN) -> createReportViewModel
             destination.contains(NavigationDestinations.PLAYERS_LIST_SCREEN) -> playersListViewModel
             destination.contains(NavigationDestinations.SELECT_SHOT_SCREEN) -> selectShotViewModel
+            destination.contains(NavigationDestinations.SHOTS_LIST_SCREEN) -> shotsListViewModel
             else -> null
         }
     }
@@ -290,6 +295,7 @@ fun NavigationComponent(
             DrawerContent(
                 actions = listOf(
                     PlayersListAction,
+                    ShotsAction,
                     ReportingAction,
                     SettingsAction,
                     LogoutAction
@@ -355,6 +361,15 @@ fun NavigationComponent(
                     )
                 )
             }
+            composable(route = NavigationDestinations.SHOTS_LIST_SCREEN) {
+                ShotsListScreen(
+                    params = ShotsListScreenParams(
+                        state = shotsListViewModel.shotListStateFlow.collectAsState().value,
+                        onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked() },
+                        onShotItemClicked = { shotLoggedWithPlayer -> shotsListViewModel.onShotItemClicked(shotLoggedWithPlayer) }
+                    )
+                )
+            }
             composable(
                 route = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS,
                 arguments = NavArguments.createEditPlayer
@@ -415,7 +430,8 @@ fun NavigationComponent(
                                     shotTypeArgument = bundle.getInt(NamedArguments.SHOT_TYPE),
                                     shotIdArgument = bundle.getInt(NamedArguments.SHOT_ID),
                                     viewCurrentExistingShotArgument = bundle.getBoolean(NamedArguments.VIEW_CURRENT_EXISTING_SHOT),
-                                    viewCurrentPendingShotArgument = bundle.getBoolean(NamedArguments.VIEW_CURRENT_PENDING_SHOT)
+                                    viewCurrentPendingShotArgument = bundle.getBoolean(NamedArguments.VIEW_CURRENT_PENDING_SHOT),
+                                    fromShotListArgument = bundle.getBoolean(NamedArguments.FROM_SHOT_LIST)
                                 )
                             },
                             onShotsMadeUpwardClicked = { value -> logShotViewModel.onShotsMadeUpwardOrDownwardClicked(shots = value) },

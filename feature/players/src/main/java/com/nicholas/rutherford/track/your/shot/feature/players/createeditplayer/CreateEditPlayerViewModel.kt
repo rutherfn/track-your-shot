@@ -910,7 +910,8 @@ class CreateEditPlayerViewModel(
                 shotType = shotType,
                 shotId = shotId,
                 viewCurrentExistingShot = false,
-                viewCurrentPendingShot = true
+                viewCurrentPendingShot = true,
+                fromShotList = false
             )
         }
     }
@@ -923,7 +924,8 @@ class CreateEditPlayerViewModel(
                 shotType = shotType,
                 shotId = shotId,
                 viewCurrentExistingShot = true,
-                viewCurrentPendingShot = false
+                viewCurrentPendingShot = false,
+                fromShotList = false
             )
         }
     }

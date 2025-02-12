@@ -95,6 +95,7 @@ class CreateEditPlayerNavigationImplTest {
         val shotId = 2
         val viewCurrentExistingShot = false
         val viewCurrentPendingShot = false
+        val fromShotList = false
         val argumentCapture: CapturingSlot<NavigationAction> = slot()
 
         createEditPlayerNavigationImpl.navigateToLogShot(
@@ -103,7 +104,8 @@ class CreateEditPlayerNavigationImplTest {
             shotType = shotType,
             shotId = shotId,
             viewCurrentExistingShot = viewCurrentExistingShot,
-            viewCurrentPendingShot = viewCurrentPendingShot
+            viewCurrentPendingShot = viewCurrentPendingShot,
+            fromShotList = fromShotList
         )
 
         verify { navigator.navigate(capture(argumentCapture)) }
@@ -115,7 +117,8 @@ class CreateEditPlayerNavigationImplTest {
             shotType = shotType,
             shotId = shotId,
             viewCurrentExistingShot = viewCurrentExistingShot,
-            viewCurrentPendingShot = viewCurrentPendingShot
+            viewCurrentPendingShot = viewCurrentPendingShot,
+            fromShotList = fromShotList
         )
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)

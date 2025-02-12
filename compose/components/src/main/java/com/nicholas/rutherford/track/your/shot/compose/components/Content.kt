@@ -29,6 +29,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
  * @param [imageVector] optional param that will set a [ImageVector] to the [appBar] if not null
  * If the [imageVector] is null then go ahead and set a preset image vector
  * @param [secondaryImageVector] optional param that will set a [ImageVector] to the right inside of the [appBar] if not null
+ * @param [secondaryImageEnabled] optional param that will set if [secondaryImageVector] [Icon] will be enabled or nbot
  * @param invokeFunctionOnInit optional param that will invoke a function on the [Content] function invoke state
  */
 @Composable
@@ -37,6 +38,7 @@ fun Content(
     appBar: AppBar? = null,
     imageVector: ImageVector? = null,
     secondaryImageVector: ImageVector? = null,
+    secondaryImageEnabled: Boolean? = null,
     invokeFunctionOnInit: (() -> Unit?)? = null
 ) {
     TrackMyShotTheme {
@@ -47,7 +49,8 @@ fun Content(
                 ConditionalTopAppBar(
                     appBar = appBar,
                     imageVector = imageVector,
-                    secondaryImageVector = secondaryImageVector
+                    secondaryImageVector = secondaryImageVector,
+                    secondaryImageEnabled = secondaryImageEnabled
                 )
             }
 

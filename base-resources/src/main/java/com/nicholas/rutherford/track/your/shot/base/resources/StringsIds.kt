@@ -109,6 +109,7 @@ object StringsIds {
     val havingTroubleResettingPasswordForThisAccountPleaseTryAgainAndOrEnsureCredentialsExistAndAreValid =
         R.string.having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid
     val hintAddNewPlayer = R.string.hint_add_new_player
+    val hintAddNewShot = R.string.hint_add_new_Shot
     val hintAddNewReport = R.string.hint_add_new_report
     val hintLogNewShots = R.string.hint_log_new_shots
     val hintLogNewShotsForPlayer = R.string.hint_log_new_shots_for_player
@@ -133,6 +134,7 @@ object StringsIds {
     val no = R.string.no
     val noChangesMade = R.string.no_changes_made
     val noCurrentPlayersAdded = R.string.no_current_players_added
+    val noCurrentShotsAdded = R.string.no_current_shots_added
     val noPlayersCreated = R.string.no_players_created
     val noPlayersCreatedDescription = R.string.no_players_created_description
     val noReportsGenerated = R.string.no_reports_generated
@@ -201,6 +203,8 @@ object StringsIds {
     val shotHasBeenDeleted = R.string.shot_has_been_deleted
     val shotHasNotBeenDeleted = R.string.shot_has_not_been_deleted
     val shotPercentage = R.string.shot_percentage
+    val shotTakenByX = R.string.shot_taken_by_x
+    val shotTakenOnX = R.string.shot_taken_on_x
     val shotUpdated = R.string.shot_updated
     val shotX = R.string.shot_x
     val shots = R.string.shots

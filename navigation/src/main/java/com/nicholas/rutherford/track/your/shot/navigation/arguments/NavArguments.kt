@@ -26,7 +26,8 @@ object NavArguments {
         navArgument(NamedArguments.SHOT_TYPE) { type = NavType.IntType },
         navArgument(NamedArguments.SHOT_ID) { type = NavType.IntType },
         navArgument(NamedArguments.VIEW_CURRENT_EXISTING_SHOT) { type = NavType.BoolType },
-        navArgument(NamedArguments.VIEW_CURRENT_PENDING_SHOT) { type = NavType.BoolType }
+        navArgument(NamedArguments.VIEW_CURRENT_PENDING_SHOT) { type = NavType.BoolType },
+        navArgument(NamedArguments.FROM_SHOT_LIST) { type = NavType.BoolType }
     )
     val termsConditions = listOf(
         navArgument(NamedArguments.IS_ACKNOWLEDGE_CONDITIONS) { type = NavType.BoolType }

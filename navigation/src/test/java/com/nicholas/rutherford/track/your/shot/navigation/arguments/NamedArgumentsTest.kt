@@ -22,5 +22,7 @@ class NamedArgumentsTest {
 
         Assertions.assertEquals(NamedArguments.VIEW_CURRENT_EXISTING_SHOT, "viewCurrentExistingShot")
         Assertions.assertEquals(NamedArguments.VIEW_CURRENT_PENDING_SHOT, "viewCurrentPendingShot")
+
+        Assertions.assertEquals(NamedArguments.FROM_SHOT_LIST, "fromShotList")
     }
 }

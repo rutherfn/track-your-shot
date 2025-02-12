@@ -13,7 +13,8 @@ interface CreateEditPlayerNavigation {
         shotType: Int,
         shotId: Int,
         viewCurrentExistingShot: Boolean,
-        viewCurrentPendingShot: Boolean
+        viewCurrentPendingShot: Boolean,
+        fromShotList: Boolean
     )
     fun disableProgress()
     fun enableProgress(progress: Progress)

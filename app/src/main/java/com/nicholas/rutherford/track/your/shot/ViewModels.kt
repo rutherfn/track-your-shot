@@ -16,6 +16,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissio
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 
 data class ViewModels(
@@ -36,5 +37,6 @@ data class ViewModels(
     val enabledPermissionsViewModel: EnabledPermissionsViewModel,
     val accountInfoViewModel: AccountInfoViewModel,
     val reportListViewModel: ReportListViewModel,
-    val createReportViewModel: CreateReportViewModel
+    val createReportViewModel: CreateReportViewModel,
+    val shotsListViewModel: ShotsListViewModel
 )

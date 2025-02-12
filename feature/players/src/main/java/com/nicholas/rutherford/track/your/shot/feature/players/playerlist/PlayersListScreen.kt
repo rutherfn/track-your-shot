@@ -92,12 +92,14 @@ private fun PlayerList(playerListScreenParams: PlayersListScreenParams) {
             )
         ),
         onSheetItemClicked = { _, index ->
-            scope.launch { sheetState.hide() }
-            playerListScreenParams.onSheetItemClicked.invoke(index)
+            scope.launch {
+                sheetState.hide()
+                playerListScreenParams.onSheetItemClicked.invoke(index)
+            }
         },
         onCancelItemClicked = { scope.launch { sheetState.hide() } },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(playerListScreenParams.state.playerList) { player ->
                     PlayerItem(
                         player = player,
@@ -157,12 +159,7 @@ private fun PlayerItem(
 
                 player.position.value.toPlayerPositionAbvId()?.let { positionId ->
                     Text(
-                        text = stringResource(
-                            id =
-                            R.string.x_position_x_player_name,
-                            stringResource(id = positionId),
-                            player.fullName()
-                        ),
+                        text = stringResource(id = R.string.x_position_x_player_name, stringResource(id = positionId), player.fullName()),
                         style = TextStyles.bodyBold,
                         textAlign = TextAlign.Start
                     )

@@ -44,6 +44,8 @@ import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.Player
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.extension.LogShotViewModelExt
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.extension.LogShotViewModelExtImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShotImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotNavigation
@@ -73,6 +75,9 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListNavigation
+import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
@@ -251,6 +256,12 @@ class AppModule {
         single<DateExt> {
             DateExtImpl()
         }
+        single<LogShotViewModelExt> {
+            LogShotViewModelExtImpl(
+                application = androidApplication(),
+                scope = defaultCoroutineScope
+            )
+        }
         single<SplashNavigation> {
             SplashNavigationImpl(navigator = get())
         }
@@ -301,6 +312,9 @@ class AppModule {
         }
         single<CreateReportNavigation> {
             CreateReportNavigationImpl(navigator = get())
+        }
+        single<ShotsListNavigation> {
+            ShotsListNavigationImpl(navigator = get())
         }
         viewModel {
             MainActivityViewModel(accountManager = get())
@@ -370,9 +384,13 @@ class AppModule {
                 navigation = get(),
                 declaredShotRepository = get(),
                 pendingPlayerRepository = get(),
+                dataAdditionUpdates = get(),
                 playerRepository = get(),
+                activeUserRepository = get(),
+                updateFirebaseUserInfo = get(),
                 deleteFirebaseUserInfo = get(),
-                currentPendingShot = get()
+                currentPendingShot = get(),
+                logShotViewModelExt = get()
             )
         }
         viewModel {
@@ -467,6 +485,14 @@ class AppModule {
                 individualPlayerReportRepository = get(),
                 dateExt = get(),
                 dataAdditionUpdates = get()
+            )
+        }
+        viewModel {
+            ShotsListViewModel(
+                scope = defaultCoroutineScope,
+                navigation = get(),
+                dataAdditionUpdates = get(),
+                playerRepository = get()
             )
         }
     }

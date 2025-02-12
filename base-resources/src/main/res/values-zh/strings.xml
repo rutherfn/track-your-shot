@@ -272,4 +272,8 @@
     <string name="x_shot_report_created_description">已生成“%s”的射击报告。点按即可查看文件。</string>
     <string name="x_player_shot_report">%s射击报告.pdf</string>
     <string name="position_x">Position: %s</string>
+    <string name="hint_add_new_Shot">Go to the Players screen in Create Shots to view this.</string>
+    <string name="no_current_shots_added">No Current Shots Added</string>
+    <string name="shot_taken_by_x">Shot Taken By %s</string>
+    <string name="shot_taken_on_x">Shot Taken On %s</string>
 </resources>

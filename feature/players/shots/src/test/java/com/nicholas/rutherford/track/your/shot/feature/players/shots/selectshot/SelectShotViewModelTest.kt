@@ -290,7 +290,8 @@ class SelectShotViewModelTest {
                     shotType = any(),
                     shotId = any(),
                     viewCurrentExistingShot = any(),
-                    viewCurrentPendingShot = any()
+                    viewCurrentPendingShot = any(),
+                    fromShotList = any()
                 )
             }
         }
@@ -309,7 +310,8 @@ class SelectShotViewModelTest {
                     shotType = any(),
                     shotId = any(),
                     viewCurrentExistingShot = any(),
-                    viewCurrentPendingShot = any()
+                    viewCurrentPendingShot = any(),
+                    fromShotList = any()
                 )
             }
         }
@@ -333,7 +335,8 @@ class SelectShotViewModelTest {
                     shotType = 2,
                     shotId = player.shotsLoggedList.size,
                     viewCurrentExistingShot = false,
-                    viewCurrentPendingShot = false
+                    viewCurrentPendingShot = false,
+                    fromShotList = any()
                 )
             }
         }
