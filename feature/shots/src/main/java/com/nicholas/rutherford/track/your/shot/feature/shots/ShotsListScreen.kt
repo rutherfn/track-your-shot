@@ -131,11 +131,10 @@ private fun ShotItem(
                 overflow = TextOverflow.Ellipsis
             )
 
-            Spacer(modifier = Modifier.width(16.dp))
-
             Text(
                 text = stringResource(id = StringsIds.shotTakenByX, shot.playerName),
                 style = TextStyles.bodySmall,
+                modifier = Modifier.padding(top = 8.dp),
                 textAlign = TextAlign.Start,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis

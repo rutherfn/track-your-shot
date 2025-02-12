@@ -100,7 +100,7 @@
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Having trouble logging into your account. Please try again and or ensure credentials exist and are valid.</string>
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Having trouble resetting password for this account. Please try again and or ensure credentials exist and are valid.</string>
     <string name="hint_add_new_player">Tap the "+" icon in the right-side toolbar to add a new player</string>
-    <string name="hint_add_new_Shot">Navigate to the players screen in order to create a new player with a shot</string>
+    <string name="hint_add_new_Shot">Go to the Players screen in Create Shots to view this.</string>
     <string name="hint_add_new_report">Tap the "+" icon in the right-side toolbar to add a new report for a player</string>
     <string name="hint_log_new_shots">Press the "Log Shots" button to record shots for the player.</string>
     <string name="hint_log_new_shots_for_player">Press the "Log Shots" button to record shots for</string>
