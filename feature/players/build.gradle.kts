@@ -76,7 +76,6 @@ dependencies {
     api(project(path = ":helper:account"))
     api(project(path = ":helper:constants"))
     api(project(path = ":helper:extensions"))
-    api(project(path = ":helper:network"))
     api(project(path = ":navigation"))
 
     debugImplementation(Dependencies.Compose.uiToolingPreview)

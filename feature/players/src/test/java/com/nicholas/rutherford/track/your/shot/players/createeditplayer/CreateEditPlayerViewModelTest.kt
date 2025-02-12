@@ -75,8 +75,6 @@ class CreateEditPlayerViewModelTest {
 
     private val currentPendingShot = mockk<CurrentPendingShot>(relaxed = true)
 
-    private val network = mockk<Network>(relaxed = true)
-
     private val uri = mockk<Uri>(relaxed = true)
 
     private val defaultState = CreateEditPlayerState(
@@ -132,8 +130,7 @@ class CreateEditPlayerViewModelTest {
             scope = scope,
             navigation = navigation,
             dataAdditionUpdates = dataAdditionUpdates,
-            currentPendingShot = currentPendingShot,
-            network = network
+            currentPendingShot = currentPendingShot
         )
     }
 
@@ -842,9 +839,8 @@ class CreateEditPlayerViewModelTest {
             val uriString = "uriString"
 
             every { uri.toString() } returns uriString
-            coEvery { network.isDeviceConnectedToInternet() } returns false
 
-            createEditPlayerViewModel.onCreatePlayerClicked(uri = uri)
+            createEditPlayerViewModel.onCreatePlayerClicked(isConnectedToInternet = false, uri = uri)
 
             verify { navigation.alert(alert = any()) }
         }
@@ -854,11 +850,10 @@ class CreateEditPlayerViewModelTest {
             val uriString = "uriString"
 
             every { uri.toString() } returns uriString
-            coEvery { network.isDeviceConnectedToInternet() } returns true
 
             createEditPlayerViewModel.createEditPlayerMutableStateFlow.value = defaultState
 
-            createEditPlayerViewModel.onCreatePlayerClicked(uri = uri)
+            createEditPlayerViewModel.onCreatePlayerClicked(isConnectedToInternet = true, uri = uri)
 
             verify { navigation.enableProgress(progress = any()) }
             verify { createEditPlayerViewModel.validatePlayer(state = defaultState, uri = uri) }
@@ -1704,24 +1699,10 @@ class CreateEditPlayerViewModelTest {
     inner class ExistingOrPendingPlayerId {
 
         @Test
-        fun `when isDeviceConnectedToInternet returns false should show alert and return null`() = runTest {
-            coEvery { network.isDeviceConnectedToInternet() } returns false
-
-            val result = createEditPlayerViewModel.existingOrPendingPlayerId()
-            val emptyPendingPlayers: List<Player> = emptyList()
-
-            verify(exactly = 1) { navigation.alert(alert = any()) }
-
-            Assertions.assertEquals(createEditPlayerViewModel.pendingPlayers, emptyPendingPlayers)
-            Assertions.assertEquals(result, null)
-        }
-
-        @Test
-        fun `when isDeviceConnectedToInternet returns true and editedPlayer is not set to null should return fetchPlayerIdByName`() = runTest {
+        fun `when editedPlayer is not set to null should return fetchPlayerIdByName`() = runTest {
             val player = TestPlayer().create()
             val playerId = 1
 
-            coEvery { network.isDeviceConnectedToInternet() } returns true
             coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
 
             createEditPlayerViewModel.editedPlayer = player
@@ -1736,12 +1717,11 @@ class CreateEditPlayerViewModelTest {
         }
 
         @Test
-        fun `when isDeviceConnectedToInternet returns true and editedPlayer is set to null should create pending player and return back id by pending player name`() = runTest {
+        fun `when editedPlayer is set to null should create pending player and return back id by pending player name`() = runTest {
             val player = TestPlayer().create()
             val playerId = 1
             val pendingPlayer = TestPlayer().create().copy(firstName = "pendingFirst", lastName = "pendingLast")
 
-            coEvery { network.isDeviceConnectedToInternet() } returns true
             coEvery { pendingPlayerRepository.fetchAllPendingPlayers() } returns listOf(pendingPlayer)
             coEvery { pendingPlayerRepository.deleteAllPendingPlayers() } just runs
             coEvery { pendingPlayerRepository.createPendingPlayer(player = player) } just runs
@@ -1784,24 +1764,10 @@ class CreateEditPlayerViewModelTest {
         }
 
         @Test
-        fun `when has log shots access returns true and existingOrPendingPlayerId returns null should not call navigateToSelectShot`() {
-            val player = TestPlayer().create()
-
-            createEditPlayerViewModel.editedPlayer = player
-
-            coEvery { network.isDeviceConnectedToInternet() } returns false
-
-            createEditPlayerViewModel.onLogShotsClicked()
-
-            verify(exactly = 0) { navigation.navigateToSelectShot(isExistingPlayer = any(), playerId = any()) }
-        }
-
-        @Test
         fun `when has log shots access returns true and existingOrPendingPlayerId returns id should call navigateToSelectShot`() {
             val player = TestPlayer().create()
             val playerId = 1
 
-            coEvery { network.isDeviceConnectedToInternet() } returns true
             coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
 
             createEditPlayerViewModel.editedPlayer = player

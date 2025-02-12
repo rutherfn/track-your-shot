@@ -83,7 +83,6 @@ dependencies {
     api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:constants"))
     api(project(path = ":helper:extensions"))
-    api(project(path = ":helper:network"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
     api(project(path = ":shared-preference"))

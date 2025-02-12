@@ -154,6 +154,8 @@ fun NavigationComponent(
     val reportListViewModel = viewModels.reportListViewModel
     val createReportViewModel = viewModels.createReportViewModel
 
+    val isConnectedToInternet = mainActivityViewModel.isConnected.collectAsState().value
+
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
             alert = newAlert
@@ -351,7 +353,7 @@ fun NavigationComponent(
                         updatePlayerListState = { playersListViewModel.updatePlayerListState() },
                         onAddPlayerClicked = { playersListViewModel.onAddPlayerClicked() },
                         onPlayerClicked = { player -> playersListViewModel.onPlayerClicked(player = player) },
-                        onSheetItemClicked = { index -> playersListViewModel.onSheetItemClicked(index = index) }
+                        onSheetItemClicked = { index -> playersListViewModel.onSheetItemClicked(isConnectedToInternet = isConnectedToInternet, index = index) }
                     )
                 )
             }
@@ -362,6 +364,7 @@ fun NavigationComponent(
                 val firstNameArgument = entry.arguments?.getString(NamedArguments.FIRST_NAME)
                 val lastNameArgument = entry.arguments?.getString(NamedArguments.LAST_NAME)
                 screenContents.createEditPlayerContent(
+                    isConnectedToInternet = isConnectedToInternet,
                     firstNameArgument = firstNameArgument,
                     lastNameArgument = lastNameArgument,
                     createEditPlayerViewModel = createEditPlayerViewModel
@@ -369,6 +372,7 @@ fun NavigationComponent(
             }
             composable(route = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN) { entry ->
                 screenContents.createEditPlayerContent(
+                    isConnectedToInternet = isConnectedToInternet,
                     firstNameArgument = null,
                     lastNameArgument = null,
                     createEditPlayerViewModel = createEditPlayerViewModel
@@ -544,7 +548,7 @@ fun NavigationComponent(
                                 newPassword = newPassword
                             )
                         },
-                        onCreateAccountButtonClicked = { createAccountViewModel.onCreateAccountButtonClicked() },
+                        onCreateAccountButtonClicked = { createAccountViewModel.onCreateAccountButtonClicked(isConnectedToInternet = isConnectedToInternet) },
                         onBackButtonClicked = { createAccountViewModel.onBackButtonClicked() }
                     )
                 )

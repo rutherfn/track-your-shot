@@ -1,5 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.helper.network
 
+import kotlinx.coroutines.flow.Flow
+
 interface Network {
-    suspend fun isDeviceConnectedToInternet(): Boolean
+    val isConnected: Flow<Boolean>
 }

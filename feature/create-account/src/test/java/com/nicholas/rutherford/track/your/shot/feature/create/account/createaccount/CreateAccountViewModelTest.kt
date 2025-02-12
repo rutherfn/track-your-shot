@@ -6,7 +6,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.TestAuthenticateUserViaE
 import com.nicholas.rutherford.track.your.shot.firebase.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
-import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -34,8 +33,6 @@ class CreateAccountViewModelTest {
     private var navigation = mockk<CreateAccountNavigation>(relaxed = true)
     private val application = mockk<Application>(relaxed = true)
 
-    private val network = mockk<Network>(relaxed = true)
-
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
     private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
     private val authenticationFirebase = mockk<AuthenticationFirebase>(relaxed = true)
@@ -57,7 +54,6 @@ class CreateAccountViewModelTest {
         viewModel = CreateAccountViewModel(
             navigation = navigation,
             application = application,
-            network = network,
             createFirebaseUserInfo = createFirebaseUserInfo,
             createSharedPreferences = createSharedPreferences,
             authenticationFirebase = authenticationFirebase,
@@ -505,9 +501,8 @@ class CreateAccountViewModelTest {
         fun `when validateFieldsWithOptionalAlert is not null should call disableProgress and alert`() = runTest {
             Dispatchers.setMain(dispatcher)
 
-            coEvery { network.isDeviceConnectedToInternet() } returns false
-
             viewModel.attemptToShowErrorAlertOrCreateFirebaseAuth(
+                isConnectedToInternet = false,
                 createAccountState = CreateAccountState(
                     username = null,
                     email = null,
@@ -532,14 +527,13 @@ class CreateAccountViewModelTest {
         fun `when validateFieldsWithOptionalAlert is not null and username is null should not call any functions`() = runTest {
             Dispatchers.setMain(dispatcher)
 
-            coEvery { network.isDeviceConnectedToInternet() } returns true
-
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = false
             viewModel.isPasswordEmptyOrNull = false
 
             viewModel.attemptToShowErrorAlertOrCreateFirebaseAuth(
+                isConnectedToInternet = true,
                 createAccountState = CreateAccountState(
                     username = null,
                     email = testEmail,
@@ -564,14 +558,13 @@ class CreateAccountViewModelTest {
         fun `when validateFieldsWithOptionalAlert is not null and email is null should not call any functions`() = runTest {
             Dispatchers.setMain(dispatcher)
 
-            coEvery { network.isDeviceConnectedToInternet() } returns true
-
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = false
             viewModel.isPasswordEmptyOrNull = false
 
             viewModel.attemptToShowErrorAlertOrCreateFirebaseAuth(
+                isConnectedToInternet = true,
                 createAccountState = CreateAccountState(
                     username = testUsername,
                     email = null,
@@ -596,14 +589,13 @@ class CreateAccountViewModelTest {
         fun `when validateFieldsWithOptionalAlert is not null and password is null should not call any functions`() = runTest {
             Dispatchers.setMain(dispatcher)
 
-            coEvery { network.isDeviceConnectedToInternet() } returns true
-
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = false
             viewModel.isPasswordEmptyOrNull = false
 
             viewModel.attemptToShowErrorAlertOrCreateFirebaseAuth(
+                isConnectedToInternet = true,
                 createAccountState = CreateAccountState(
                     username = testUsername,
                     email = testEmail,
@@ -627,15 +619,10 @@ class CreateAccountViewModelTest {
     @Nested
     inner class ValidateFieldsWithOptionalAlert {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isDeviceConnectedToInternet is set to true should return back not connected to internet alert`() = runTest {
-            Dispatchers.setMain(dispatcher)
-
-            coEvery { network.isDeviceConnectedToInternet() } returns false
-
+        fun `when isDeviceConnectedToInternet is set to true should return back not connected to internet alert`() {
             Assertions.assertEquals(
-                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.validateFieldsWithOptionalAlert(isConnectedToInternet = false),
                 viewModel.defaultAlert.copy(
                     title = application.getString(StringsIds.notConnectedToInternet),
                     description = application.getString(StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
@@ -643,13 +630,8 @@ class CreateAccountViewModelTest {
             )
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isTwoOrMoreFieldsEmptyOrNull is set to true should return back multiple fields are required alert`() = runTest {
-            Dispatchers.setMain(dispatcher)
-
-            coEvery { network.isDeviceConnectedToInternet() } returns true
-
+        fun `when isTwoOrMoreFieldsEmptyOrNull is set to true should return back multiple fields are required alert`() {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isEmailEmptyOrNull = false
@@ -659,7 +641,7 @@ class CreateAccountViewModelTest {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = true
 
             Assertions.assertEquals(
-                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.validateFieldsWithOptionalAlert(isConnectedToInternet = true),
                 viewModel.defaultAlert.copy(
                     title = application.getString(StringsIds.emptyFields),
                     description = application.getString(StringsIds.multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields)
@@ -667,13 +649,8 @@ class CreateAccountViewModelTest {
             )
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isUsernameEmptyOrNull is set to true should return back username is not in correct format alert`() = runTest {
-            Dispatchers.setMain(dispatcher)
-
-            coEvery { network.isDeviceConnectedToInternet() } returns true
-
+        fun `when isUsernameEmptyOrNull is set to true should return back username is not in correct format alert`() {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isUsernameInNotCorrectFormat = false
@@ -683,7 +660,7 @@ class CreateAccountViewModelTest {
             viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
-                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.validateFieldsWithOptionalAlert(isConnectedToInternet = true),
                 viewModel.defaultAlert.copy(
                     title = application.getString(StringsIds.emptyFields),
                     description = application.getString(StringsIds.usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat)
@@ -691,13 +668,8 @@ class CreateAccountViewModelTest {
             )
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isUsernameEmptyOrNull is set to true should return back username is required please enter a username alert`() = runTest {
-            Dispatchers.setMain(dispatcher)
-
-            coEvery { network.isDeviceConnectedToInternet() } returns true
-
+        fun `when isUsernameEmptyOrNull is set to true should return back username is required please enter a username alert`() {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = true
             viewModel.isUsernameInNotCorrectFormat = false
@@ -707,7 +679,7 @@ class CreateAccountViewModelTest {
             viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
-                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.validateFieldsWithOptionalAlert(isConnectedToInternet = true),
                 viewModel.defaultAlert.copy(
                     title = application.getString(StringsIds.emptyFields),
                     description = application.getString(StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
@@ -715,13 +687,8 @@ class CreateAccountViewModelTest {
             )
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isEmailEmptyOrNull is set to true should return back email is required alert`() = runTest {
-            Dispatchers.setMain(dispatcher)
-
-            coEvery { network.isDeviceConnectedToInternet() } returns true
-
+        fun `when isEmailEmptyOrNull is set to true should return back email is required alert`() {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isUsernameInNotCorrectFormat = false
@@ -731,7 +698,7 @@ class CreateAccountViewModelTest {
             viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
-                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.validateFieldsWithOptionalAlert(isConnectedToInternet = true),
                 viewModel.defaultAlert.copy(
                     title = application.getString(StringsIds.emptyFields),
                     description = application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount)
@@ -739,13 +706,8 @@ class CreateAccountViewModelTest {
             )
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isEmailInNotCorrectFormat is set to true should return back email is not in correct format alert`() = runTest {
-            Dispatchers.setMain(dispatcher)
-
-            coEvery { network.isDeviceConnectedToInternet() } returns true
-
+        fun `when isEmailInNotCorrectFormat is set to true should return back email is not in correct format alert`() {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isUsernameInNotCorrectFormat = false
@@ -755,7 +717,7 @@ class CreateAccountViewModelTest {
             viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
-                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.validateFieldsWithOptionalAlert(isConnectedToInternet = true),
                 viewModel.defaultAlert.copy(
                     title = application.getString(StringsIds.emptyFields),
                     description = application.getString(
@@ -765,13 +727,8 @@ class CreateAccountViewModelTest {
             )
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isPasswordEmptyOrNull is set to true should return back password is required alert`() = runTest {
-            Dispatchers.setMain(dispatcher)
-
-            coEvery { network.isDeviceConnectedToInternet() } returns true
-
+        fun `when isPasswordEmptyOrNull is set to true should return back password is required alert`() {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isUsernameInNotCorrectFormat = false
@@ -781,7 +738,7 @@ class CreateAccountViewModelTest {
             viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
-                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.validateFieldsWithOptionalAlert(isConnectedToInternet = true),
                 viewModel.defaultAlert.copy(
                     title = application.getString(StringsIds.emptyFields),
                     description = application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount)
@@ -789,13 +746,8 @@ class CreateAccountViewModelTest {
             )
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isPasswordInNotCorrectFormat is set to true should return back password is not in correct format alert`() = runTest {
-            Dispatchers.setMain(dispatcher)
-
-            coEvery { network.isDeviceConnectedToInternet() } returns true
-
+        fun `when isPasswordInNotCorrectFormat is set to true should return back password is not in correct format alert`() {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isUsernameInNotCorrectFormat = false
@@ -805,7 +757,7 @@ class CreateAccountViewModelTest {
             viewModel.isPasswordInNotCorrectFormat = true
 
             Assertions.assertEquals(
-                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.validateFieldsWithOptionalAlert(isConnectedToInternet = true),
                 viewModel.defaultAlert.copy(
                     title = application.getString(StringsIds.emptyFields),
                     description = application.getString(
@@ -815,13 +767,8 @@ class CreateAccountViewModelTest {
             )
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when all validation fields are set to false should return back null`() = runTest {
-            Dispatchers.setMain(dispatcher)
-
-            coEvery { network.isDeviceConnectedToInternet() } returns true
-
+        fun `when all validation fields are set to false should return back null`() {
             viewModel.isTwoOrMoreFieldsEmptyOrNull = false
             viewModel.isUsernameEmptyOrNull = false
             viewModel.isUsernameInNotCorrectFormat = false
@@ -831,7 +778,7 @@ class CreateAccountViewModelTest {
             viewModel.isPasswordInNotCorrectFormat = false
 
             Assertions.assertEquals(
-                viewModel.validateFieldsWithOptionalAlert(),
+                viewModel.validateFieldsWithOptionalAlert(isConnectedToInternet = true),
                 null
             )
         }
@@ -915,7 +862,7 @@ class CreateAccountViewModelTest {
 
     @Test
     fun `onCreateAccountButton clicked verify functions are called`() {
-        viewModel.onCreateAccountButtonClicked()
+        viewModel.onCreateAccountButtonClicked(isConnectedToInternet = true)
 
         verify { navigation.enableProgress(any()) }
     }

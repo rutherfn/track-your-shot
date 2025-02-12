@@ -26,7 +26,6 @@ import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
-import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,8 +47,7 @@ class CreateEditPlayerViewModel(
     private val scope: CoroutineScope,
     private val navigation: CreateEditPlayerNavigation,
     private val dataAdditionUpdates: DataAdditionUpdates,
-    private val currentPendingShot: CurrentPendingShot,
-    private val network: Network
+    private val currentPendingShot: CurrentPendingShot
 ) : ViewModel() {
 
     internal val createEditPlayerMutableStateFlow =
@@ -329,17 +327,17 @@ class CreateEditPlayerViewModel(
         navigation.alert(alert = cameraPermissionNotGrantedAlert())
     }
 
-    fun onCreatePlayerClicked(uri: Uri?) {
+    fun onCreatePlayerClicked(isConnectedToInternet: Boolean, uri: Uri?) {
         scope.launch {
-            if (network.isDeviceConnectedToInternet()) {
-                val state = createEditPlayerMutableStateFlow.value
+                if (isConnectedToInternet) {
+                    val state = createEditPlayerMutableStateFlow.value
 
-                navigation.enableProgress(progress = Progress())
+                    navigation.enableProgress(progress = Progress())
 
-                validatePlayer(state = state, uri = uri)
-            } else {
-                navigation.alert(alert = notConnectedToInternetAlert())
-            }
+                    validatePlayer(state = state, uri = uri)
+                } else {
+                    navigation.alert(alert = notConnectedToInternetAlert())
+                }
         }
     }
 
@@ -838,17 +836,10 @@ class CreateEditPlayerViewModel(
 
     /**
      * Retrieves the ID of an existing player or a pending player.
-     * If the device is not connected to the internet, shows an alert and returns null.
      * If an edited player exists, fetches the ID from the repository.
      * Otherwise, creates a pending player and returns its ID.
      */
     internal suspend fun existingOrPendingPlayerId(): Int? {
-        // Check if the device is connected to the internet
-        if (!network.isDeviceConnectedToInternet()) {
-            // Show alert for not connected to the internet
-            navigation.alert(alert = notConnectedToInternetAlert())
-            return null
-        } else {
             // Check if an edited player exists
             editedPlayer?.let { player ->
                 // Fetch ID of the existing player and return it
@@ -886,7 +877,6 @@ class CreateEditPlayerViewModel(
                     lastName = lastName
                 )
             }
-        }
     }
 
     fun onLogShotsClicked() {
