@@ -259,6 +259,7 @@ object StringsIds {
     val verifyAccount = R.string.verify_account
     val viewReports = R.string.view_reports
     val viewMoreInfo = R.string.view_more_info
+    val viewXShots = R.string.view_x_shots
     val voiceCommands = R.string.voice_commands
     val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue =
         R.string.we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue

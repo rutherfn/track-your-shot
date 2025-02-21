@@ -260,6 +260,7 @@
     <string name="view_reports">View Reports</string>
     <string name="view_more_info">View More Info</string>
     <string name="view_x">View %s</string>
+    <string name="view_x_shots">View %s Shots</string>
     <string name="voice_commands">Voice Commands</string>
     <string name="x_report">%s Report</string>
     <string name="x_created">%s Created</string>

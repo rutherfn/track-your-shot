@@ -56,9 +56,30 @@ class PlayersListViewModel(
                 currentPlayerArrayList.add(player)
             }
             playerListMutableStateFlow.value =
-                PlayersListState(playerList = currentPlayerArrayList.toList())
+                PlayersListState(
+                    playerList = currentPlayerArrayList.toList()
+                )
         }
     }
+
+    internal fun buildSheetOptions(selectedPlayer: Player): List<String> {
+        val selectedPlayerFullName = selectedPlayer.fullName()
+        val baseSheetOptions = buildBaseSheetOptions(selectedPlayerFullName = selectedPlayerFullName)
+
+        return if (selectedPlayer.shotsLoggedList.isEmpty()) {
+            baseSheetOptions
+        } else {
+            buildAddViewShotsOption(selectedPlayerFullName = selectedPlayerFullName)
+        }
+    }
+
+    private fun buildBaseSheetOptions(selectedPlayerFullName: String): List<String> = listOf(
+            application.getString(StringsIds.editX, selectedPlayerFullName),
+            application.getString(StringsIds.deleteX, selectedPlayerFullName)
+        )
+
+    private fun buildAddViewShotsOption(selectedPlayerFullName: String): List<String> =
+        listOf(application.getString(StringsIds.viewXShots, selectedPlayerFullName)) + buildBaseSheetOptions(selectedPlayerFullName = selectedPlayerFullName)
 
     private fun clearAndUpdatePlayerListState() {
         currentPlayerArrayList.clear()
@@ -140,7 +161,10 @@ class PlayersListViewModel(
     }
 
     fun onPlayerClicked(player: Player) {
-        playerListMutableStateFlow.update { it.copy(selectedPlayer = player) }
+        playerListMutableStateFlow.update { it.copy(
+            selectedPlayer = player,
+            sheetOptions = buildSheetOptions(selectedPlayer = player)
+        ) }
     }
 
     fun onSheetItemClicked(isConnectedToInternet: Boolean, index: Int) {
