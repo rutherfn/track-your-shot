@@ -16,7 +16,6 @@ import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.Player
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
-import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -49,8 +48,6 @@ class PlayersListViewModelTest {
 
     private val navigation = mockk<PlayersListNavigation>(relaxed = true)
 
-    private val network = mockk<Network>(relaxed = true)
-
     private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
 
     private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
@@ -68,7 +65,6 @@ class PlayersListViewModelTest {
             application = application,
             scope = scope,
             navigation = navigation,
-            network = network,
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
             dataAdditionUpdates = dataAdditionUpdates,
             playerRepository = playerRepository,
@@ -273,9 +269,7 @@ class PlayersListViewModelTest {
 
     @Test
     fun `on yes delete player clicked should call expected function`() = runTest {
-        coEvery { network.isDeviceConnectedToInternet() } returns false
-
-        playersListViewModel.onYesDeletePlayerClicked(player = player)
+        playersListViewModel.onYesDeletePlayerClicked(isConnectedToInternet = false, player = player)
 
         Assertions.assertEquals(
             playersListViewModel.playerListMutableStateFlow.value,
@@ -286,7 +280,7 @@ class PlayersListViewModelTest {
             emptyPlayerList
         )
         coVerify { playersListViewModel.enableProgressAndDelay() }
-        coVerify { playersListViewModel.deletePlayer(player = player) }
+        coVerify { playersListViewModel.deletePlayer(isConnectedToInternet = false, player = player) }
         verify { navigation.disableProgress() }
         verify { navigation.alert(alert = any()) }
     }
@@ -332,9 +326,8 @@ class PlayersListViewModelTest {
                 description = weHaveDetectedCurrentlyNotConnectedToInternetDescription,
                 dismissButton = AlertConfirmAndDismissButton(buttonText = gotIt)
             )
-            coEvery { network.isDeviceConnectedToInternet() } returns false
 
-            playersListViewModel.deletePlayer(player = player)
+            playersListViewModel.deletePlayer(isConnectedToInternet = false, player = player)
 
             Assertions.assertEquals(
                 playersListViewModel.playerListMutableStateFlow.value,
@@ -355,10 +348,9 @@ class PlayersListViewModelTest {
                 description = unableToDeletePlayerPleaseContactSupport,
                 dismissButton = AlertConfirmAndDismissButton(buttonText = gotIt)
             )
-            coEvery { network.isDeviceConnectedToInternet() } returns true
             coEvery { deleteFirebaseUserInfo.deletePlayer(player.firebaseKey) } returns flowOf(false)
 
-            playersListViewModel.deletePlayer(player = player)
+            playersListViewModel.deletePlayer(isConnectedToInternet = true, player = player)
 
             Assertions.assertEquals(
                 playersListViewModel.playerListMutableStateFlow.value,
@@ -386,10 +378,9 @@ class PlayersListViewModelTest {
                 listOf(player)
             )
 
-            coEvery { network.isDeviceConnectedToInternet() } returns true
             coEvery { deleteFirebaseUserInfo.deletePlayer(player.firebaseKey) } returns flowOf(true)
 
-            playersListViewModel.deletePlayer(player = player)
+            playersListViewModel.deletePlayer(isConnectedToInternet = true, player = player)
 
             Assertions.assertEquals(
                 playersListViewModel.playerListMutableStateFlow.value,
@@ -426,10 +417,10 @@ class PlayersListViewModelTest {
 
             playersListViewModel.playerListMutableStateFlow.update { it.copy(selectedPlayer = player) }
 
-            playersListViewModel.onSheetItemClicked(index = index)
+            playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
 
             verify(exactly = 1) { playersListViewModel.onEditPlayerClicked(player = player) }
-            verify(exactly = 0) { playersListViewModel.onDeletePlayerClicked(player = player) }
+            verify(exactly = 0) { playersListViewModel.onDeletePlayerClicked(isConnectedToInternet = true, player = player) }
         }
     }
 
@@ -442,7 +433,7 @@ class PlayersListViewModelTest {
 
     @Test
     fun `on delete player clicked`() {
-        playersListViewModel.onDeletePlayerClicked(player = player)
+        playersListViewModel.onDeletePlayerClicked(isConnectedToInternet = true, player = player)
 
         verify { navigation.alert(alert = any()) }
     }

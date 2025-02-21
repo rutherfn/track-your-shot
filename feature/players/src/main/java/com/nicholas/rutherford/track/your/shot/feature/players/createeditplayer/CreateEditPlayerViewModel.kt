@@ -26,7 +26,6 @@ import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
-import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,8 +47,7 @@ class CreateEditPlayerViewModel(
     private val scope: CoroutineScope,
     private val navigation: CreateEditPlayerNavigation,
     private val dataAdditionUpdates: DataAdditionUpdates,
-    private val currentPendingShot: CurrentPendingShot,
-    private val network: Network
+    private val currentPendingShot: CurrentPendingShot
 ) : ViewModel() {
 
     internal val createEditPlayerMutableStateFlow =
@@ -329,9 +327,9 @@ class CreateEditPlayerViewModel(
         navigation.alert(alert = cameraPermissionNotGrantedAlert())
     }
 
-    fun onCreatePlayerClicked(uri: Uri?) {
+    fun onCreatePlayerClicked(isConnectedToInternet: Boolean, uri: Uri?) {
         scope.launch {
-            if (network.isDeviceConnectedToInternet()) {
+            if (isConnectedToInternet) {
                 val state = createEditPlayerMutableStateFlow.value
 
                 navigation.enableProgress(progress = Progress())
@@ -838,54 +836,46 @@ class CreateEditPlayerViewModel(
 
     /**
      * Retrieves the ID of an existing player or a pending player.
-     * If the device is not connected to the internet, shows an alert and returns null.
      * If an edited player exists, fetches the ID from the repository.
      * Otherwise, creates a pending player and returns its ID.
      */
     internal suspend fun existingOrPendingPlayerId(): Int? {
-        // Check if the device is connected to the internet
-        if (!network.isDeviceConnectedToInternet()) {
-            // Show alert for not connected to the internet
-            navigation.alert(alert = notConnectedToInternetAlert())
-            return null
-        } else {
-            // Check if an edited player exists
-            editedPlayer?.let { player ->
-                // Fetch ID of the existing player and return it
-                return playerRepository.fetchPlayerIdByName(
-                    firstName = player.firstName,
-                    lastName = player.lastName
-                )
-            } ?: run {
-                // Delete any pending players if they exist
-                pendingPlayerRepository.fetchAllPendingPlayers().takeIf { it.isNotEmpty() }?.let {
-                    pendingPlayers = emptyList()
-                    pendingPlayerRepository.deleteAllPendingPlayers()
-                }
-
-                // Create a new pending player
-                val firstName = createEditPlayerMutableStateFlow.value.firstName
-                val lastName = createEditPlayerMutableStateFlow.value.lastName
-                val pendingPlayer = Player(
-                    firstName = firstName,
-                    lastName = lastName,
-                    position = createEditPlayerMutableStateFlow.value.playerPositionString.toPlayerPosition(
-                        application = application
-                    ),
-                    firebaseKey = "",
-                    imageUrl = "",
-                    shotsLoggedList = emptyList()
-                )
-                pendingPlayerRepository.createPendingPlayer(player = pendingPlayer)
-
-                pendingPlayers = listOf(pendingPlayer)
-
-                // Fetch ID of the pending player and return it
-                return pendingPlayerRepository.fetchPendingPlayerIdByName(
-                    firstName = firstName,
-                    lastName = lastName
-                )
+        // Check if an edited player exists
+        editedPlayer?.let { player ->
+            // Fetch ID of the existing player and return it
+            return playerRepository.fetchPlayerIdByName(
+                firstName = player.firstName,
+                lastName = player.lastName
+            )
+        } ?: run {
+            // Delete any pending players if they exist
+            pendingPlayerRepository.fetchAllPendingPlayers().takeIf { it.isNotEmpty() }?.let {
+                pendingPlayers = emptyList()
+                pendingPlayerRepository.deleteAllPendingPlayers()
             }
+
+            // Create a new pending player
+            val firstName = createEditPlayerMutableStateFlow.value.firstName
+            val lastName = createEditPlayerMutableStateFlow.value.lastName
+            val pendingPlayer = Player(
+                firstName = firstName,
+                lastName = lastName,
+                position = createEditPlayerMutableStateFlow.value.playerPositionString.toPlayerPosition(
+                    application = application
+                ),
+                firebaseKey = "",
+                imageUrl = "",
+                shotsLoggedList = emptyList()
+            )
+            pendingPlayerRepository.createPendingPlayer(player = pendingPlayer)
+
+            pendingPlayers = listOf(pendingPlayer)
+
+            // Fetch ID of the pending player and return it
+            return pendingPlayerRepository.fetchPendingPlayerIdByName(
+                firstName = firstName,
+                lastName = lastName
+            )
         }
     }
 

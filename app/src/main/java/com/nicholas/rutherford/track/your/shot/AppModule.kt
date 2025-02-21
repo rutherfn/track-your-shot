@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot
 
 import android.app.Application
+import android.net.ConnectivityManager
 import android.os.Build
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
@@ -217,7 +218,7 @@ class AppModule {
             DeleteFirebaseUserInfoImpl(firebaseAuth = get(), firebaseDatabase = get())
         }
         single<Network> {
-            NetworkImpl()
+            NetworkImpl(connectivityManager = androidApplication().getSystemService(ConnectivityManager::class.java))
         }
         single<BuildType> {
             BuildTypeImpl(
@@ -317,7 +318,7 @@ class AppModule {
             ShotsListNavigationImpl(navigator = get())
         }
         viewModel {
-            MainActivityViewModel(accountManager = get())
+            MainActivityViewModel(accountManager = get(), scope = defaultCoroutineScope, network = get())
         }
         viewModel {
             SplashViewModel(
@@ -344,7 +345,6 @@ class AppModule {
                 application = androidApplication(),
                 scope = defaultCoroutineScope,
                 navigation = get(),
-                network = get(),
                 deleteFirebaseUserInfo = get(),
                 dataAdditionUpdates = get(),
                 playerRepository = get(),
@@ -363,8 +363,7 @@ class AppModule {
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 dataAdditionUpdates = get(),
-                currentPendingShot = get(),
-                network = get()
+                currentPendingShot = get()
             )
         }
         viewModel {
@@ -404,7 +403,6 @@ class AppModule {
             CreateAccountViewModel(
                 navigation = get(),
                 application = androidApplication(),
-                network = get(),
                 createFirebaseUserInfo = get(),
                 createSharedPreferences = get(),
                 authenticationFirebase = get(),

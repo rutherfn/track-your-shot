@@ -10,7 +10,6 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
-import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -33,7 +32,6 @@ const val USERNAME_PATTERN = "^(?=[a-zA-Z\\d._]{8,20}\$)(?!.*[_.]{2})[^_.].*[^_.
 class CreateAccountViewModel(
     private val navigation: CreateAccountNavigation,
     private val application: Application,
-    private val network: Network,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val createSharedPreferences: CreateSharedPreferences,
     private val authenticationFirebase: AuthenticationFirebase,
@@ -70,7 +68,7 @@ class CreateAccountViewModel(
         navigation.pop()
     }
 
-    fun onCreateAccountButtonClicked() {
+    fun onCreateAccountButtonClicked(isConnectedToInternet: Boolean) {
         val createAccountState = createAccountMutableStateFlow.value
 
         // Enable progress and prepare for field validation
@@ -93,12 +91,15 @@ class CreateAccountViewModel(
 
         // Attempt to show error alert or create Firebase Auth
         scope.launch {
-            attemptToShowErrorAlertOrCreateFirebaseAuth(createAccountState = createAccountState)
+            attemptToShowErrorAlertOrCreateFirebaseAuth(
+                isConnectedToInternet = isConnectedToInternet,
+                createAccountState = createAccountState
+            )
         }
     }
 
-    internal suspend fun attemptToShowErrorAlertOrCreateFirebaseAuth(createAccountState: CreateAccountState) {
-        validateFieldsWithOptionalAlert()?.let { alert ->
+    internal suspend fun attemptToShowErrorAlertOrCreateFirebaseAuth(isConnectedToInternet: Boolean, createAccountState: CreateAccountState) {
+        validateFieldsWithOptionalAlert(isConnectedToInternet = isConnectedToInternet)?.let { alert ->
             navigation.disableProgress()
             navigation.alert(alert = alert)
         } ?: run {
@@ -172,11 +173,11 @@ class CreateAccountViewModel(
         isTwoOrMoreFieldsEmptyOrNull = counter >= 2
     }
 
-    internal suspend fun validateFieldsWithOptionalAlert(): Alert? {
+    internal fun validateFieldsWithOptionalAlert(isConnectedToInternet: Boolean): Alert? {
         val alertTitle = application.getString(StringsIds.error)
 
         return when {
-            !network.isDeviceConnectedToInternet() -> createAlert(application.getString(StringsIds.notConnectedToInternet), StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
+            !isConnectedToInternet -> createAlert(application.getString(StringsIds.notConnectedToInternet), StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc)
             isTwoOrMoreFieldsEmptyOrNull -> createAlert(application.getString(StringsIds.emptyFields), StringsIds.emptyFieldsDescription)
             isUsernameEmptyOrNull -> createAlert(alertTitle, StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount)
             isUsernameInNotCorrectFormat -> createAlert(alertTitle, StringsIds.usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat)

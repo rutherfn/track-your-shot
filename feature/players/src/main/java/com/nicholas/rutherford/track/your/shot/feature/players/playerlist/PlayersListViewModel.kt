@@ -12,7 +12,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAnd
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
-import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +27,6 @@ class PlayersListViewModel(
     private val application: Application,
     private val scope: CoroutineScope,
     private val navigation: PlayersListNavigation,
-    private val network: Network,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val dataAdditionUpdates: DataAdditionUpdates,
     private val playerRepository: PlayerRepository,
@@ -109,9 +107,9 @@ class PlayersListViewModel(
         )
     }
 
-    suspend fun onYesDeletePlayerClicked(player: Player) {
+    suspend fun onYesDeletePlayerClicked(isConnectedToInternet: Boolean, player: Player) {
         enableProgressAndDelay()
-        deletePlayer(player = player)
+        deletePlayer(isConnectedToInternet = isConnectedToInternet, player = player)
     }
 
     internal suspend fun enableProgressAndDelay() {
@@ -119,8 +117,8 @@ class PlayersListViewModel(
         delay(DELETE_PLAYER_DELAY_IN_MILLIS)
     }
 
-    internal suspend fun deletePlayer(player: Player) {
-        if (network.isDeviceConnectedToInternet()) {
+    internal suspend fun deletePlayer(isConnectedToInternet: Boolean, player: Player) {
+        if (isConnectedToInternet) {
             deleteFirebaseUserInfo.deletePlayer(playerKey = player.firebaseKey).collectLatest { isSuccessful ->
                 if (isSuccessful) {
                     playerRepository.deletePlayerByName(
@@ -145,26 +143,26 @@ class PlayersListViewModel(
         playerListMutableStateFlow.update { it.copy(selectedPlayer = player) }
     }
 
-    fun onSheetItemClicked(index: Int) {
+    fun onSheetItemClicked(isConnectedToInternet: Boolean, index: Int) {
         val player = playerListMutableStateFlow.value.selectedPlayer
 
         if (index == EDIT_PLAYER_OPTION_INDEX) {
             onEditPlayerClicked(player = player)
         } else {
-            onDeletePlayerClicked(player = player)
+            onDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = player)
         }
     }
 
     internal fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)
 
-    internal fun onDeletePlayerClicked(player: Player) = navigation.alert(alert = deletePlayerAlert(player = player))
+    internal fun onDeletePlayerClicked(isConnectedToInternet: Boolean, player: Player) = navigation.alert(alert = deletePlayerAlert(isConnectedToInternet = isConnectedToInternet, player = player))
 
-    private fun deletePlayerAlert(player: Player): Alert {
+    private fun deletePlayerAlert(isConnectedToInternet: Boolean, player: Player): Alert {
         return Alert(
             title = application.getString(StringsIds.deleteX, player.fullName()),
             confirmButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.yes),
-                onButtonClicked = { scope.launch { onYesDeletePlayerClicked(player = player) } }
+                onButtonClicked = { scope.launch { onYesDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = player) } }
             ),
             dismissButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.no)

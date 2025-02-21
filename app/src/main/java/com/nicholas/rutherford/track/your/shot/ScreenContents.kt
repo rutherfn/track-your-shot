@@ -16,6 +16,7 @@ import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.Report
 class ScreenContents {
 
     fun createEditPlayerContent(
+        isConnectedToInternet: Boolean,
         firstNameArgument: String?,
         lastNameArgument: String?,
         createEditPlayerViewModel: CreateEditPlayerViewModel
@@ -48,7 +49,7 @@ class ScreenContents {
                     )
                 },
                 onImageUploadClicked = { uri -> createEditPlayerViewModel.onImageUploadClicked(uri) },
-                onCreatePlayerClicked = { uri -> createEditPlayerViewModel.onCreatePlayerClicked(uri) },
+                onCreatePlayerClicked = { uri -> createEditPlayerViewModel.onCreatePlayerClicked(isConnectedToInternet, uri) },
                 permissionNotGrantedForCameraAlert = { createEditPlayerViewModel.permissionNotGrantedForCameraAlert() },
                 onSelectedCreateEditImageOption = { option ->
                     createEditPlayerViewModel.onSelectedCreateEditImageOption(option)
