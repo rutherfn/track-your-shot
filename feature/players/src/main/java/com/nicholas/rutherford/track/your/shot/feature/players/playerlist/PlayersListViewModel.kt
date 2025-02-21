@@ -33,6 +33,7 @@ class PlayersListViewModel(
     private val pendingPlayerRepository: PendingPlayerRepository
 ) : BaseViewModel() {
 
+    internal var selectedPlayer: Player? = null
     internal var currentPlayerArrayList: ArrayList<Player> = arrayListOf()
 
     internal val playerListMutableStateFlow = MutableStateFlow(value = PlayersListState())
@@ -161,6 +162,7 @@ class PlayersListViewModel(
     }
 
     fun onPlayerClicked(player: Player) {
+        selectedPlayer = player
         playerListMutableStateFlow.update {
             it.copy(
                 selectedPlayer = player,

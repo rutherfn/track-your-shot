@@ -6,6 +6,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlaye
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
+import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
@@ -94,6 +95,42 @@ class PlayersListViewModelTest {
             playersListViewModel.currentPlayerArrayList.toList(),
             playerList
         )
+    }
+
+    @Nested
+    inner class BuildSheetOptions {
+
+        @Test
+        fun `when shot logged list is empty should return base sheet options`() {
+            val player = TestPlayer().create().copy(shotsLoggedList = emptyList())
+
+            val editPlayerOption = "Edit ${player.fullName()}"
+            val deletePlayerOption = "Delete ${player.fullName()}"
+
+            every { application.getString(StringsIds.editX, player.fullName()) } returns editPlayerOption
+            every { application.getString(StringsIds.deleteX, player.fullName()) } returns deletePlayerOption
+
+            val result = playersListViewModel.buildSheetOptions(selectedPlayer = player)
+
+            Assertions.assertEquals(result, listOf(editPlayerOption, deletePlayerOption))
+        }
+
+        @Test
+        fun `when shot logged list is not empty should return view shot and base sheet options`() {
+            val player = TestPlayer().create()
+
+            val editPlayerOption = "Edit ${player.fullName()}"
+            val deletePlayerOption = "Delete ${player.fullName()}"
+            val viewShotsOption = "View ${player.fullName()} Shots"
+
+            every { application.getString(StringsIds.editX, player.fullName()) } returns editPlayerOption
+            every { application.getString(StringsIds.deleteX, player.fullName()) } returns deletePlayerOption
+            every { application.getString(StringsIds.viewXShots, player.fullName()) } returns viewShotsOption
+
+            val result = playersListViewModel.buildSheetOptions(selectedPlayer = player)
+
+            Assertions.assertEquals(result, listOf(viewShotsOption, editPlayerOption, deletePlayerOption))
+        }
     }
 
     @Nested
@@ -400,11 +437,20 @@ class PlayersListViewModelTest {
     fun `on player clicked should update state`() {
         val player = TestPlayer().create()
 
+        val editPlayerOption = "Edit ${player.fullName()}"
+        val deletePlayerOption = "Delete ${player.fullName()}"
+        val viewShotsOption = "View ${player.fullName()} Shots"
+
+        every { application.getString(StringsIds.editX, player.fullName()) } returns editPlayerOption
+        every { application.getString(StringsIds.deleteX, player.fullName()) } returns deletePlayerOption
+        every { application.getString(StringsIds.viewXShots, player.fullName()) } returns viewShotsOption
+
         playersListViewModel.onPlayerClicked(player = player)
 
         val result = playersListViewModel.playerListMutableStateFlow.value
 
-        Assertions.assertEquals(result, PlayersListState(selectedPlayer = player))
+        Assertions.assertEquals(playersListViewModel.selectedPlayer, player)
+        Assertions.assertEquals(result, PlayersListState(selectedPlayer = player, sheetOptions = listOf(viewShotsOption, editPlayerOption, deletePlayerOption)))
     }
 
     @Nested
