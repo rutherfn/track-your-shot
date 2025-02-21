@@ -29,7 +29,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.realtime.PLAYER_FIREBASE
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
-import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

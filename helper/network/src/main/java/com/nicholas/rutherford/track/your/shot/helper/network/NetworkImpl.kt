@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import android.net.Network as RealNetwork
 
-//todo - Nick unit test this class
+// todo - Nick unit test this class
 class NetworkImpl(private val connectivityManager: ConnectivityManager) : Network {
 
     override val isConnected: Flow<Boolean>
