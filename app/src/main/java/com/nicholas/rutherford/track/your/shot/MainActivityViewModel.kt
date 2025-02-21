@@ -8,6 +8,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 
+const val IS_CONNECTED_TIMEOUT_MILLIS = 5000L
+
 class MainActivityViewModel(
     private val accountManager: AccountManager,
     scope: CoroutineScope,
@@ -18,7 +20,7 @@ class MainActivityViewModel(
         .isConnected
         .stateIn(
             scope,
-            SharingStarted.WhileSubscribed(5000L),
+            SharingStarted.WhileSubscribed(IS_CONNECTED_TIMEOUT_MILLIS),
             false
         )
 
