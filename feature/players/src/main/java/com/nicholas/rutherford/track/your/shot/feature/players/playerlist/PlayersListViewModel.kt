@@ -74,9 +74,9 @@ class PlayersListViewModel(
     }
 
     private fun buildBaseSheetOptions(selectedPlayerFullName: String): List<String> = listOf(
-            application.getString(StringsIds.editX, selectedPlayerFullName),
-            application.getString(StringsIds.deleteX, selectedPlayerFullName)
-        )
+        application.getString(StringsIds.editX, selectedPlayerFullName),
+        application.getString(StringsIds.deleteX, selectedPlayerFullName)
+    )
 
     private fun buildAddViewShotsOption(selectedPlayerFullName: String): List<String> =
         listOf(application.getString(StringsIds.viewXShots, selectedPlayerFullName)) + buildBaseSheetOptions(selectedPlayerFullName = selectedPlayerFullName)
@@ -161,10 +161,12 @@ class PlayersListViewModel(
     }
 
     fun onPlayerClicked(player: Player) {
-        playerListMutableStateFlow.update { it.copy(
-            selectedPlayer = player,
-            sheetOptions = buildSheetOptions(selectedPlayer = player)
-        ) }
+        playerListMutableStateFlow.update {
+            it.copy(
+                selectedPlayer = player,
+                sheetOptions = buildSheetOptions(selectedPlayer = player)
+            )
+        }
     }
 
     fun onSheetItemClicked(isConnectedToInternet: Boolean, index: Int) {
