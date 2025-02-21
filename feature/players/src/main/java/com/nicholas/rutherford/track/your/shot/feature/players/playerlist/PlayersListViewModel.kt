@@ -6,6 +6,7 @@ import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
@@ -21,7 +22,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 const val DELETE_PLAYER_DELAY_IN_MILLIS = 2000L
-const val EDIT_PLAYER_OPTION_INDEX = 0
 
 class PlayersListViewModel(
     private val application: Application,
@@ -33,7 +33,14 @@ class PlayersListViewModel(
     private val pendingPlayerRepository: PendingPlayerRepository
 ) : BaseViewModel() {
 
-    internal var selectedPlayer: Player? = null
+    internal var selectedPlayer: Player = Player(
+        firstName = "",
+        lastName = "",
+        position = PlayerPositions.None,
+        firebaseKey = "",
+        imageUrl = "",
+        shotsLoggedList = emptyList()
+    )
     internal var currentPlayerArrayList: ArrayList<Player> = arrayListOf()
 
     internal val playerListMutableStateFlow = MutableStateFlow(value = PlayersListState())
@@ -172,12 +179,33 @@ class PlayersListViewModel(
     }
 
     fun onSheetItemClicked(isConnectedToInternet: Boolean, index: Int) {
-        val player = playerListMutableStateFlow.value.selectedPlayer
-
-        if (index == EDIT_PLAYER_OPTION_INDEX) {
-            onEditPlayerClicked(player = player)
+        if (selectedPlayer.shotsLoggedList.isEmpty()) {
+            handleSheetItemClickForEmptyPlayerList(isConnectedToInternet = isConnectedToInternet, index = index)
         } else {
-            onDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = player)
+            handleSheetItemClickForPlayerList(isConnectedToInternet = isConnectedToInternet, index = index)
+        }
+    }
+
+    private fun handleSheetItemClickForEmptyPlayerList(isConnectedToInternet: Boolean, index: Int) {
+        val editPlayerOptionIndex = 0
+
+        if (index == editPlayerOptionIndex) {
+            onEditPlayerClicked(player = selectedPlayer)
+        } else {
+            onDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = selectedPlayer)
+        }
+    }
+
+    private fun handleSheetItemClickForPlayerList(isConnectedToInternet: Boolean, index: Int) {
+        val viewPlayerShotOptionIndex = 0
+        val editPlayerOptionIndex = 1
+
+        if (index == viewPlayerShotOptionIndex) {
+            // todo navigation here
+        } else if (index == editPlayerOptionIndex) {
+            onEditPlayerClicked(player = selectedPlayer)
+        } else {
+            onDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = selectedPlayer)
         }
     }
 
