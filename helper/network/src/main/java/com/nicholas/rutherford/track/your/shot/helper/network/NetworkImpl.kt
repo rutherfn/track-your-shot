@@ -6,7 +6,9 @@ import android.net.NetworkCapabilities
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import android.net.Network as RealNetwork
 
+//todo - Nick unit test this class
 class NetworkImpl(private val connectivityManager: ConnectivityManager) : Network {
 
     override val isConnected: Flow<Boolean>
@@ -28,12 +30,12 @@ class NetworkImpl(private val connectivityManager: ConnectivityManager) : Networ
                     trySend(element = false)
                 }
 
-                override fun onLost(network: android.net.Network) {
+                override fun onLost(network: RealNetwork) {
                     super.onLost(network)
                     trySend(element = false)
                 }
 
-                override fun onAvailable(network: android.net.Network) {
+                override fun onAvailable(network: RealNetwork) {
                     super.onAvailable(network)
                     trySend(element = true)
                 }
