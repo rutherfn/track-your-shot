@@ -10,6 +10,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.DELETE_PLAYER_DELAY_IN_MILLIS
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListState
@@ -481,7 +482,14 @@ class PlayersListViewModelTest {
 
 //        @Test
 //        fun `when shot list is not empty and index passed in is set to 0 should call shot list`() {
+//            val index = 0
+//            val player = TestPlayer().create().copy(shotsLoggedList = listOf(TestShotLogged.build()))
 //
+//            playersListViewModel.selectedPlayer = player
+//
+//            playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
+//
+//            verify { navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName) }
 //        }
 
         @Test

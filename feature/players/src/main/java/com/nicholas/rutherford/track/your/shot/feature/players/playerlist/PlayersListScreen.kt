@@ -71,7 +71,8 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             },
             onSecondaryIconButtonClicked = {
                 playerListScreenParams.onAddPlayerClicked.invoke()
-            }
+            },
+            shouldIncludeSpaceAfterDeclaration = false
         )
     )
 }

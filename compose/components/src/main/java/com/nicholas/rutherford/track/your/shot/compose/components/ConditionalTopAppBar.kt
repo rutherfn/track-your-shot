@@ -114,9 +114,7 @@ private fun ComplexTopAppBar(
     TopAppBar(
         content = {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {

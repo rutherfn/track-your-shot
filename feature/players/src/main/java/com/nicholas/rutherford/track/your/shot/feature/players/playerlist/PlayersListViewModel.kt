@@ -201,6 +201,7 @@ class PlayersListViewModel(
         val editPlayerOptionIndex = 1
 
         if (index == viewPlayerShotOptionIndex) {
+
             // todo navigation here
         } else if (index == editPlayerOptionIndex) {
             onEditPlayerClicked(player = selectedPlayer)
