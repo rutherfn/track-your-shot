@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot
 import android.app.Application
 import android.net.ConnectivityManager
 import android.os.Build
+import androidx.lifecycle.SavedStateHandle
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -348,7 +349,8 @@ class AppModule {
                 deleteFirebaseUserInfo = get(),
                 dataAdditionUpdates = get(),
                 playerRepository = get(),
-                pendingPlayerRepository = get()
+                pendingPlayerRepository = get(),
+                createSharedPreferences = get()
             )
         }
         viewModel {
@@ -490,7 +492,9 @@ class AppModule {
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 dataAdditionUpdates = get(),
-                playerRepository = get()
+                playerRepository = get(),
+                createSharedPreferences = get(),
+                readSharedPreferences = get()
             )
         }
     }

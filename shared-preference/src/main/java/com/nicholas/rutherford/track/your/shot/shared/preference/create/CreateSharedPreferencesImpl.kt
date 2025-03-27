@@ -34,4 +34,9 @@ class CreateSharedPreferencesImpl(private val editor: SharedPreferences.Editor) 
         editor.putBoolean(Constants.Preferences.IS_LOGGED_IN, value)
         editor.apply()
     }
+
+    override fun createPlayerFilterName(value: String) {
+        editor.putString(Constants.Preferences.PLAYER_FILTER_NAME, value)
+        editor.apply()
+    }
 }

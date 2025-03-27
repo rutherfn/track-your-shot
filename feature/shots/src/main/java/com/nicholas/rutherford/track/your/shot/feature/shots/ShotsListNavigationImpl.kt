@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.shots
 
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
 class ShotsListNavigationImpl(private val navigator: Navigator) : ShotsListNavigation {
@@ -24,4 +26,5 @@ class ShotsListNavigationImpl(private val navigator: Navigator) : ShotsListNavig
         )
     )
     override fun openNavigationDrawer() = navigator.showNavigationDrawer(navigationDrawerAction = true)
+    override fun popToPlayerList() = navigator.pop(popRouteAction = NavigationDestinations.PLAYERS_LIST_SCREEN)
 }

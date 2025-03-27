@@ -22,5 +22,8 @@ class PlayersListNavigationImpl(private val navigator: Navigator) : PlayersListN
             navigator.navigate(navigationAction = NavigationActions.PlayersList.createEditPlayer())
         }
     }
+
+    override fun navigateToShotList(playerName: String) =
+        navigator.navigate(navigationAction = NavigationActions.PlayersList.shotList(playerName = playerName))
     override fun openNavigationDrawer() = navigator.showNavigationDrawer(navigationDrawerAction = true)
 }

@@ -13,6 +13,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAnd
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +31,8 @@ class PlayersListViewModel(
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val dataAdditionUpdates: DataAdditionUpdates,
     private val playerRepository: PlayerRepository,
-    private val pendingPlayerRepository: PendingPlayerRepository
+    private val pendingPlayerRepository: PendingPlayerRepository,
+    private val createSharedPreferences: CreateSharedPreferences
 ) : BaseViewModel() {
 
     internal var selectedPlayer: Player = Player(
@@ -201,13 +203,17 @@ class PlayersListViewModel(
         val editPlayerOptionIndex = 1
 
         if (index == viewPlayerShotOptionIndex) {
-
-            // todo navigation here
+            onShotListClicked(playerName = selectedPlayer.fullName())
         } else if (index == editPlayerOptionIndex) {
             onEditPlayerClicked(player = selectedPlayer)
         } else {
             onDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = selectedPlayer)
         }
+    }
+
+    internal fun onShotListClicked(playerName: String) {
+        createSharedPreferences.createPlayerFilterName(value = playerName)
+        navigation.navigateToShotList(playerName = playerName)
     }
 
     internal fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)

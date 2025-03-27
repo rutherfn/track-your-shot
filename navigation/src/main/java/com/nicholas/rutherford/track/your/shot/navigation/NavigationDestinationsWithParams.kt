@@ -1,6 +1,10 @@
 package com.nicholas.rutherford.track.your.shot.navigation
 
 object NavigationDestinationsWithParams {
+
+    fun shotsListScreenWithParams(playerName: String): String {
+        return "${NavigationDestinations.SHOTS_LIST_SCREEN}/$playerName"
+    }
     fun accountInfoWithParams(username: String, email: String): String {
         return "${NavigationDestinations.ACCOUNT_INFO_SCREEN}/$username/$email"
     }

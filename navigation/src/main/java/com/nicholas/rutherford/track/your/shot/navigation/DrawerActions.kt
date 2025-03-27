@@ -61,7 +61,7 @@ data object VoiceCommandsAction : DrawerAction(
 data object ShotsAction : DrawerAction(
     titleId = StringsIds.shots,
     imageVector = Icons.Filled.SportsBasketball,
-    route = NavigationDestinations.SHOTS_LIST_SCREEN,
+    route = NavigationDestinationsWithParams.shotsListScreenWithParams(playerName = "null"),
     navOptions = NavOptions.Builder()
         .setPopUpTo(0, true)
         .build()
