@@ -222,6 +222,22 @@ class NavigationActionsTest {
                     NavOptions.Builder().build()
                 )
             }
+
+            @Test
+            fun shotList() {
+                val shouldShowAllPlayerShots = true
+
+                val result = Actions.PlayersList.shotList(shouldShowAllPlayersShots = shouldShowAllPlayerShots)
+
+                Assertions.assertEquals(
+                    result.destination,
+                    NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots = shouldShowAllPlayerShots)
+                )
+                Assertions.assertEquals(
+                    result.navOptions,
+                    NavOptions.Builder().build()
+                )
+            }
         }
 
         @Nested
