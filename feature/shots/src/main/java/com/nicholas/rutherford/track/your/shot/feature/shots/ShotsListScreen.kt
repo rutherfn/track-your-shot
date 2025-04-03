@@ -41,7 +41,7 @@ fun ShotsListScreen(params: ShotsListScreenParams) {
     val toolbarTitle = if (params.shouldShowAllPlayerShots) {
         stringResource(id = R.string.shots)
     } else {
-        "Player Shots"
+        stringResource(id = R.string.player_shots)
     }
 
     Content(
@@ -53,14 +53,14 @@ fun ShotsListScreen(params: ShotsListScreenParams) {
             }
         },
         appBar = AppBar(
-                toolbarTitle = toolbarTitle,
-                shouldShowMiddleContentAppBar = params.shouldShowAllPlayerShots,
-                onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
-                onSecondaryIconButtonClicked = {
+            toolbarTitle = toolbarTitle,
+            shouldShowMiddleContentAppBar = params.shouldShowAllPlayerShots,
+            onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
+            onSecondaryIconButtonClicked = {
 //                    if (params.shouldShowAllPlayerShots) {
 //                        // todo user should be taken where they can filter there shots screen
 //                    }
-                }
+            }
         ),
         secondaryImageVector = Icons.Filled.FilterAlt,
         secondaryImageEnabled = !isShotListEmpty

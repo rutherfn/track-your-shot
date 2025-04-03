@@ -3,7 +3,6 @@ package com.nicholas.rutherford.track.your.shot
 import android.app.Application
 import android.net.ConnectivityManager
 import android.os.Build
-import androidx.lifecycle.SavedStateHandle
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase

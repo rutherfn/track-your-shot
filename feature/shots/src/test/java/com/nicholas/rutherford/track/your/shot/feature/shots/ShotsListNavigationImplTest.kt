@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.feature.shots
 
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot
 import io.mockk.mockk
@@ -64,5 +65,12 @@ class ShotsListNavigationImplTest {
         )
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
+    }
+
+    @Test
+    fun `pop to player list`() {
+        navigationImpl.popToPlayerList()
+
+        verify { navigator.pop(popRouteAction = NavigationDestinations.PLAYERS_LIST_SCREEN) }
     }
 }

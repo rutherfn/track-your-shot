@@ -17,6 +17,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.Player
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -52,6 +53,8 @@ class PlayersListViewModelTest {
 
     private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
 
+    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
+
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
 
@@ -68,7 +71,8 @@ class PlayersListViewModelTest {
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
             dataAdditionUpdates = dataAdditionUpdates,
             playerRepository = playerRepository,
-            pendingPlayerRepository = pendingPlayerRepository
+            pendingPlayerRepository = pendingPlayerRepository,
+            createSharedPreferences = createSharedPreferences
         )
     }
 
@@ -480,17 +484,18 @@ class PlayersListViewModelTest {
             verify(exactly = 0) { playersListViewModel.onEditPlayerClicked(player = player) }
         }
 
-//        @Test
-//        fun `when shot list is not empty and index passed in is set to 0 should call shot list`() {
-//            val index = 0
-//            val player = TestPlayer().create().copy(shotsLoggedList = listOf(TestShotLogged.build()))
-//
-//            playersListViewModel.selectedPlayer = player
-//
-//            playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
-//
-//            verify { navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName) }
-//        }
+        @Test
+        fun `when shot list is not empty and index passed in is set to 0 should call shot list`() {
+            val index = 0
+            val player = TestPlayer().create().copy(shotsLoggedList = listOf(TestShotLogged.build()))
+
+            playersListViewModel.selectedPlayer = player
+
+            playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
+
+            verify { createSharedPreferences.createPlayerFilterName(value = player.fullName()) }
+            verify { navigation.navigateToShotList() }
+        }
 
         @Test
         fun `when shot list is not empty and index passed in is set to 1 should call on edit player clicked`() {

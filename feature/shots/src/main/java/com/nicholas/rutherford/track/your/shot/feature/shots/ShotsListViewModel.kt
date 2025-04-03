@@ -54,7 +54,11 @@ class ShotsListViewModel(
         }
     }
 
-    private suspend fun updateShotListState() {
+    internal fun filterShotList(shotList: List<ShotLoggedWithPlayer>): List<ShotLoggedWithPlayer> {
+        return shotList.filterNot { it.playerName != playerFilteredName }
+    }
+
+    internal suspend fun updateShotListState() {
         currentShotArrayList.clear()
 
         playerRepository.fetchAllPlayers().flatMap { player ->
@@ -75,10 +79,6 @@ class ShotsListViewModel(
             )
         }
         shotListMutableStateFlow.update { it.copy(shotList = currentShotArrayList.toList()) }
-    }
-
-    fun filterShotList(shotList: List<ShotLoggedWithPlayer>): List<ShotLoggedWithPlayer> {
-        return shotList.filterNot { it.playerName != playerFilteredName }
     }
 
     fun onToolbarMenuClicked() {

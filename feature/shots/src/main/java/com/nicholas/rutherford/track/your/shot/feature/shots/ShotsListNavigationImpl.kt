@@ -1,6 +1,5 @@
 package com.nicholas.rutherford.track.your.shot.feature.shots
 
-import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
