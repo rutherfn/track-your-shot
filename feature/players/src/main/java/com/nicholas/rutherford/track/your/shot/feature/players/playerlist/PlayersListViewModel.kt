@@ -213,7 +213,7 @@ class PlayersListViewModel(
 
     internal fun onShotListClicked(playerName: String) {
         createSharedPreferences.createPlayerFilterName(value = playerName)
-        navigation.navigateToShotList(playerName = playerName)
+        navigation.navigateToShotList()
     }
 
     internal fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)

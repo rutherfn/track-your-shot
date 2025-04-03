@@ -5,7 +5,7 @@ object NamedArguments {
     const val EMAIL = "email"
     const val FIRST_NAME = "firstName"
     const val LAST_NAME = "lastName"
-    const val PLAYER_NAME = "playerName"
+    const val SHOULD_SHOW_ALL_PLAYERS_SHOTS = "shouldShowAllPlayersShots"
     const val IS_EXISTING_PLAYER = "isExistingPlayer"
     const val IS_ACKNOWLEDGE_CONDITIONS = "isAcknowledgeConditions"
     const val PLAYER_ID = "playerId"

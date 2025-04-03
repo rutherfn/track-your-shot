@@ -38,7 +38,7 @@ import java.util.Date
 @Composable
 fun ShotsListScreen(params: ShotsListScreenParams) {
     val isShotListEmpty = params.state.shotList.isEmpty()
-    val toolbarTitle = if (params.showAllPlayersAppBar) {
+    val toolbarTitle = if (params.shouldShowAllPlayerShots) {
         stringResource(id = R.string.shots)
     } else {
         "Player Shots"
@@ -54,12 +54,12 @@ fun ShotsListScreen(params: ShotsListScreenParams) {
         },
         appBar = AppBar(
                 toolbarTitle = toolbarTitle,
-                shouldShowMiddleContentAppBar = params.showAllPlayersAppBar,
+                shouldShowMiddleContentAppBar = params.shouldShowAllPlayerShots,
                 onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
                 onSecondaryIconButtonClicked = {
-                    if (params.showAllPlayersAppBar) {
-                        // todo user should be taken where they can filter there shots screen
-                    }
+//                    if (params.shouldShowAllPlayerShots) {
+//                        // todo user should be taken where they can filter there shots screen
+//                    }
                 }
         ),
         secondaryImageVector = Icons.Filled.FilterAlt,

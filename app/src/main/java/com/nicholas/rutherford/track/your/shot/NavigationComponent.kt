@@ -373,7 +373,7 @@ fun NavigationComponent(
                         state = shotsListViewModel.shotListStateFlow.collectAsState().value,
                         onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked() },
                         onShotItemClicked = { shotLoggedWithPlayer -> shotsListViewModel.onShotItemClicked(shotLoggedWithPlayer) }, 
-                        showAllPlayersAppBar = entry.arguments?.getString(NamedArguments.PLAYER_NAME).isNullOrEmpty()
+                        shouldShowAllPlayerShots = entry.arguments?.getBoolean(NamedArguments.SHOULD_SHOW_ALL_PLAYERS_SHOTS) ?: false
                     )
                 )
             }

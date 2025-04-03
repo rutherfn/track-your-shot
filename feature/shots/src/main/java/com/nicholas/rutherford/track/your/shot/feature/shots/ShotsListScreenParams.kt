@@ -4,5 +4,5 @@ data class ShotsListScreenParams(
     val state: ShotsListState,
     val onToolbarMenuClicked: () -> Unit,
     val onShotItemClicked: (ShotLoggedWithPlayer) -> Unit,
-    val showAllPlayersAppBar: Boolean
+    val shouldShowAllPlayerShots: Boolean
 )

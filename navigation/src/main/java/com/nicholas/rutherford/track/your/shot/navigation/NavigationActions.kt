@@ -115,8 +115,8 @@ object NavigationActions {
             override val navOptions = NavOptions.Builder().build()
         }
 
-        fun shotList(playerName: String) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.shotsListScreenWithParams(playerName = playerName)
+        fun shotList(shouldShowAllPlayersShots: Boolean) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots = shouldShowAllPlayersShots)
             override val navOptions = NavOptions.Builder().build()
         }
     }

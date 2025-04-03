@@ -25,7 +25,7 @@ object NavigationDestinations {
     const val SPLASH_SCREEN = "splashScreen"
     const val COMPARE_PLAYERS_SCREEN = "comparePlayersScreen"
     const val SHOTS_LIST_SCREEN = "shotsListScreen"
-    const val SHOTS_LIST_SCREEN_WITH_PARAMS = "shotsListScreen/{playerName}"
+    const val SHOTS_LIST_SCREEN_WITH_PARAMS = "shotsListScreen/{shouldShowAllPlayersShots}"
     const val SETTINGS_SCREEN = "settingsScreen"
     const val STATS_SCREEN = "statsScreen"
     const val VOICE_COMMANDS_SCREEN = "voiceCommandsScreen"
