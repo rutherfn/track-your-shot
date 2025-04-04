@@ -36,6 +36,7 @@ class SettingsViewModelTest {
 
     @BeforeEach
     fun beforeEach() {
+        every { application.getString(StringsIds.manageDeclaredShots) } returns "Manage Declared Shots"
         every { application.getString(StringsIds.gotIt) } returns "Got It"
         every { application.getString(StringsIds.settings) } returns "Settings"
         every { application.getString(StringsIds.accountInfo) } returns "Account Info"
@@ -58,7 +59,7 @@ class SettingsViewModelTest {
         Assertions.assertEquals(
             settingsViewModel.settingsMutableStateFlow.value,
             SettingsState(
-                generalSettings = listOf("Account Info", "Terms & Conditions", "Using The App"),
+                generalSettings = listOf("Account Info", "Manage Declared Shots", "Terms & Conditions", "Using The App"),
                 permissionSettings = listOf("Enabled Permissions", "View More Info")
             )
         )
@@ -68,7 +69,7 @@ class SettingsViewModelTest {
     fun `general settings should return expected list`() {
         Assertions.assertEquals(
             settingsViewModel.generalSettings(),
-            listOf("Account Info", "Terms & Conditions", "Using The App")
+            listOf("Account Info", "Manage Declared Shots", "Terms & Conditions", "Using The App")
         )
     }
 

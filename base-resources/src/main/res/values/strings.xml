@@ -118,6 +118,7 @@
     <string name="log_your_shots">Log Your Shots</string>
     <string name="log_your_shots_description">Choose the type of shot you want to record and input the makes and misses for the day the player took them.</string>
     <string name="made_shots_x">Made Shots: %s</string>
+    <string name="manage_declared_shots">Manage Declared shots</string>
     <string name="menu">Menu</string>
     <string name="more_info">More Info</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>

@@ -126,6 +126,7 @@ object StringsIds {
     val logShot = R.string.log_shot
     val logYourShotsDescription = R.string.log_your_shots_description
     val logYourShots = R.string.log_your_shots
+    val manageDeclaredShots = R.string.manage_declared_shots
     val moreInfo = R.string.more_info
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields

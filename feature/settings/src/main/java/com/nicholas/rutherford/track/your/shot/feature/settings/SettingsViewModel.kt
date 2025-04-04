@@ -38,6 +38,7 @@ class SettingsViewModel(
     internal fun generalSettings(): List<String> =
         listOf(
             application.getString(StringsIds.accountInfo),
+            application.getString(StringsIds.manageDeclaredShots),
             application.getString(StringsIds.termsConditions),
             application.getString(StringsIds.usingTheApp)
         )

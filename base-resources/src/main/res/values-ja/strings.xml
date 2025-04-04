@@ -276,4 +276,5 @@
     <string name="shot_taken_on_x">Shot Taken On %s</string>
     <string name="player_shots">Player Shots</string>
     <string name="view_x_shots">View %s Shots</string>
+    <string name="manage_declared_shots">Manage Declared shots</string>
 </resources>
