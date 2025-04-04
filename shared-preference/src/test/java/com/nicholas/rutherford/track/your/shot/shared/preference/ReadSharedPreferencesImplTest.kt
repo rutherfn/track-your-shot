@@ -181,6 +181,42 @@ class ReadSharedPreferencesImplTest {
     }
 
     @Nested
+    inner class PlayerFilterName {
+
+        @BeforeEach
+        fun beforeEach() {
+            mockkStatic(SharedPreferences::class)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return value when getString returns back a value`() =
+            runTest {
+                val value = "value"
+
+                coEvery {
+                    sharedPreferences.getString(
+                        Constants.Preferences.PLAYER_FILTER_NAME,
+                        ""
+                    )
+                } returns value
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.playerFilterName(), value)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return empty string when getString returns back no value`() =
+            runTest {
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.playerFilterName(), "")
+            }
+    }
+
+    @Nested
     inner class ShouldShowTermsAndConditions {
 
         @BeforeEach

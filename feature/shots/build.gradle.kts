@@ -70,6 +70,7 @@ dependencies {
     api(project(path = ":base:vm"))
     api(project(path = ":compose:components"))
     api(project(path = ":navigation"))
+    api(project(path = ":shared-preference"))
 
     debugImplementation(Dependencies.Compose.uiToolingPreview)
 

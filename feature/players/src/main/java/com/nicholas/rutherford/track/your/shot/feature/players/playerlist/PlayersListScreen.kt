@@ -71,7 +71,8 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             },
             onSecondaryIconButtonClicked = {
                 playerListScreenParams.onAddPlayerClicked.invoke()
-            }
+            },
+            shouldIncludeSpaceAfterDeclaration = false
         )
     )
 }
@@ -86,10 +87,7 @@ private fun PlayerList(playerListScreenParams: PlayersListScreenParams) {
         sheetState = sheetState,
         sheetInfo = Sheet(
             title = stringResource(id = StringsIds.chooseOption),
-            values = listOf(
-                stringResource(id = R.string.edit_x, playerListScreenParams.state.selectedPlayer.fullName()),
-                stringResource(id = R.string.delete_x, playerListScreenParams.state.selectedPlayer.fullName())
-            )
+            values = playerListScreenParams.state.sheetOptions
         ),
         onSheetItemClicked = { _, index ->
             scope.launch {
@@ -133,8 +131,8 @@ private fun PlayerItem(
             .fillMaxWidth()
             .padding(16.dp)
             .clickable {
-                scope.launch { sheetState.show() }
                 onPlayerClicked.invoke(player)
+                scope.launch { sheetState.show() }
             },
         elevation = 2.dp
     ) {

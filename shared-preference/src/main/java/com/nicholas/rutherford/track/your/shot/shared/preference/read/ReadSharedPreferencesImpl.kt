@@ -16,4 +16,6 @@ class ReadSharedPreferencesImpl(private val sharedPreferences: SharedPreferences
     override fun hasAccountBeenAuthenticated(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.HAS_AUTHENTICATED_ACCOUNT, false)
 
     override fun isLoggedIn(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.IS_LOGGED_IN, false)
+
+    override fun playerFilterName(): String = sharedPreferences.getString(Constants.Preferences.PLAYER_FILTER_NAME, "") ?: ""
 }

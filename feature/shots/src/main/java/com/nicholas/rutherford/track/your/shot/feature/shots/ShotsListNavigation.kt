@@ -11,4 +11,5 @@ interface ShotsListNavigation {
         fromShotList: Boolean
     )
     fun openNavigationDrawer()
+    fun popToPlayerList()
 }

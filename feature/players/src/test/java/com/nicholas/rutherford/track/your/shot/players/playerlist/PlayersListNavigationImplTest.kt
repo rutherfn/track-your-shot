@@ -50,6 +50,20 @@ class PlayersListNavigationImplTest {
     }
 
     @Test
+    fun `navigate to shot list`() {
+        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+
+        playersListNavigationImpl.navigateToShotList()
+
+        verify { navigator.navigate(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+        val expectedAction = NavigationActions.PlayersList.shotList(shouldShowAllPlayersShots = false)
+
+        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
+    }
+
+    @Test
     fun `navigate to create player`() {
         val firstName = "firstName"
         val lastName = "lastName"

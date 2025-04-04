@@ -4,13 +4,9 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nicholas.rutherford.track.your.shot.MainActivity
-import com.nicholas.rutherford.track.your.shot.fakes.FakeReadFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.fakes.FakeReadSharedPreferences
-import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.robots.AuthenticationRobot
 import com.nicholas.rutherford.track.your.shot.robots.LoginRobot
 import com.nicholas.rutherford.track.your.shot.robots.SplashRobot
-import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import com.nicholas.rutherford.track.your.shot.utility.TestUtil
 import org.junit.Before
 import org.junit.Rule
@@ -50,8 +46,8 @@ class SplashUiTest {
     fun verify_splash_screen_content_navigating_to_home() {
         testUtil.setContentAndLoadOptionalModule(
             koinModule = module {
-                single<ReadSharedPreferences> { FakeReadSharedPreferences() }
-                single<ReadFirebaseUserInfo> { FakeReadFirebaseUserInfo(isLoggedIn = true, isEmailVerified = true) }
+                //  single<ReadSharedPreferences> { FakeReadSharedPreferences() }
+                //  single<ReadFirebaseUserInfo> { FakeReadFirebaseUserInfo(isLoggedIn = true, isEmailVerified = true) }
             }
         )
 
@@ -64,8 +60,8 @@ class SplashUiTest {
     fun verify_splash_screen_content_navigating_to_authentication() {
         testUtil.setContentAndLoadOptionalModule(
             koinModule = module {
-                single<ReadSharedPreferences> { FakeReadSharedPreferences() }
-                single<ReadFirebaseUserInfo> { FakeReadFirebaseUserInfo(isLoggedIn = true) }
+                //   single<ReadSharedPreferences> { FakeReadSharedPreferences() }
+                //  single<ReadFirebaseUserInfo> { FakeReadFirebaseUserInfo(isLoggedIn = true) }
             }
         )
 

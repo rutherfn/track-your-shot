@@ -139,7 +139,7 @@ class DrawerActionsTest {
         )
         Assertions.assertEquals(
             ShotsAction.route,
-            NavigationDestinations.SHOTS_LIST_SCREEN
+            NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots = true)
         )
         Assertions.assertEquals(
             VoiceCommandsAction.navOptions,

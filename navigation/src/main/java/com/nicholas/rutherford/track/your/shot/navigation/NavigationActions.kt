@@ -114,6 +114,11 @@ object NavigationActions {
             override val destination = NavigationDestinationsWithParams.createEditPlayerWithParams(firstName = firstName, lastName = lastName)
             override val navOptions = NavOptions.Builder().build()
         }
+
+        fun shotList(shouldShowAllPlayersShots: Boolean) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots = shouldShowAllPlayersShots)
+            override val navOptions = NavOptions.Builder().build()
+        }
     }
 
     object ShotsList {

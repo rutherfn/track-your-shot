@@ -8,4 +8,5 @@ interface ReadSharedPreferences {
     fun shouldShowTermsAndConditions(): Boolean
     fun hasAccountBeenAuthenticated(): Boolean
     fun isLoggedIn(): Boolean
+    fun playerFilterName(): String
 }

@@ -10,6 +10,7 @@ object Constants {
         const val SHOULD_SHOW_TERM_AND_CONDITIONS = "shouldShowTermsAndConditions"
         const val SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST = "shouldUpdateLoggedInPlayerList"
         const val SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST = "shouldUpdateLoggedInDeclaredShotList"
+        const val PLAYER_FILTER_NAME = "playerFilterName"
     }
     const val CREATE_REPORT_INDEX = 0
     const val APP_DATABASE_NAME = "app_database.db"

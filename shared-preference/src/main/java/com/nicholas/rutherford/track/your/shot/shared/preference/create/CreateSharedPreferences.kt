@@ -7,4 +7,5 @@ interface CreateSharedPreferences {
     fun createShouldShowTermsAndConditionsPreference(value: Boolean)
     fun createHasAuthenticatedAccount(value: Boolean)
     fun createIsLoggedIn(value: Boolean)
+    fun createPlayerFilterName(value: String)
 }

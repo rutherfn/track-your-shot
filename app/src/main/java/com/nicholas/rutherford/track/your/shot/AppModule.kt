@@ -348,7 +348,8 @@ class AppModule {
                 deleteFirebaseUserInfo = get(),
                 dataAdditionUpdates = get(),
                 playerRepository = get(),
-                pendingPlayerRepository = get()
+                pendingPlayerRepository = get(),
+                createSharedPreferences = get()
             )
         }
         viewModel {
@@ -490,7 +491,9 @@ class AppModule {
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 dataAdditionUpdates = get(),
-                playerRepository = get()
+                playerRepository = get(),
+                createSharedPreferences = get(),
+                readSharedPreferences = get()
             )
         }
     }

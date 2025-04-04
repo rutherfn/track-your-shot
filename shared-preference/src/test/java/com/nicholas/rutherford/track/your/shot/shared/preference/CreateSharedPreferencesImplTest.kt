@@ -146,4 +146,22 @@ class CreateSharedPreferencesImplTest {
             }
             verify { editor.apply() }
         }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `createPlayerFilterName should call editor putString and apply`() =
+        runTest {
+            val defaultValue = "value"
+
+            coEvery { sharedPreferences.edit() } returns editor
+
+            init()
+
+            createSharedPreferencesImpl.createPlayerFilterName(value = defaultValue)
+
+            verify {
+                editor.putString(Constants.Preferences.PLAYER_FILTER_NAME, defaultValue)
+            }
+            verify { editor.apply() }
+        }
 }

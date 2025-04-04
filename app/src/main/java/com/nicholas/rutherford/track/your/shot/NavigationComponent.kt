@@ -255,6 +255,7 @@ fun NavigationComponent(
                 navHostController.popBackStack()
             } else {
                 navHostController.popBackStack(route = route, inclusive = false)
+                findViewModelByDestination(destination = route)?.onNavigatedTo()
             }
             navigator.pop(popRouteAction = null) // need to set this to null to listen to next pop action
         }
@@ -363,12 +364,16 @@ fun NavigationComponent(
                     )
                 )
             }
-            composable(route = NavigationDestinations.SHOTS_LIST_SCREEN) {
+            composable(
+                route = NavigationDestinations.SHOTS_LIST_SCREEN_WITH_PARAMS,
+                arguments = NavArguments.shotsList
+            ) { entry ->
                 ShotsListScreen(
                     params = ShotsListScreenParams(
                         state = shotsListViewModel.shotListStateFlow.collectAsState().value,
                         onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked() },
-                        onShotItemClicked = { shotLoggedWithPlayer -> shotsListViewModel.onShotItemClicked(shotLoggedWithPlayer) }
+                        onShotItemClicked = { shotLoggedWithPlayer -> shotsListViewModel.onShotItemClicked(shotLoggedWithPlayer) },
+                        shouldShowAllPlayerShots = entry.arguments?.getBoolean(NamedArguments.SHOULD_SHOW_ALL_PLAYERS_SHOTS) ?: false
                     )
                 )
             }

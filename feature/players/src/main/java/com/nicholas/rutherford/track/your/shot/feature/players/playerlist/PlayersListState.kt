@@ -12,5 +12,6 @@ data class PlayersListState(
         firebaseKey = "",
         imageUrl = "",
         shotsLoggedList = emptyList()
-    )
+    ),
+    val sheetOptions: List<String> = emptyList()
 )

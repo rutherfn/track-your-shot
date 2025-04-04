@@ -6,16 +6,18 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlaye
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
+import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.DELETE_PLAYER_DELAY_IN_MILLIS
-import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.EDIT_PLAYER_OPTION_INDEX
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListState
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -26,7 +28,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -52,6 +53,8 @@ class PlayersListViewModelTest {
 
     private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
 
+    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
+
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
 
@@ -68,14 +71,14 @@ class PlayersListViewModelTest {
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
             dataAdditionUpdates = dataAdditionUpdates,
             playerRepository = playerRepository,
-            pendingPlayerRepository = pendingPlayerRepository
+            pendingPlayerRepository = pendingPlayerRepository,
+            createSharedPreferences = createSharedPreferences
         )
     }
 
     @Test
     fun `constants for player list`() {
         Assertions.assertEquals(DELETE_PLAYER_DELAY_IN_MILLIS, 2000L)
-        Assertions.assertEquals(EDIT_PLAYER_OPTION_INDEX, 0)
     }
 
     @Test
@@ -94,6 +97,42 @@ class PlayersListViewModelTest {
             playersListViewModel.currentPlayerArrayList.toList(),
             playerList
         )
+    }
+
+    @Nested
+    inner class BuildSheetOptions {
+
+        @Test
+        fun `when shot logged list is empty should return base sheet options`() {
+            val player = TestPlayer().create().copy(shotsLoggedList = emptyList())
+
+            val editPlayerOption = "Edit ${player.fullName()}"
+            val deletePlayerOption = "Delete ${player.fullName()}"
+
+            every { application.getString(StringsIds.editX, player.fullName()) } returns editPlayerOption
+            every { application.getString(StringsIds.deleteX, player.fullName()) } returns deletePlayerOption
+
+            val result = playersListViewModel.buildSheetOptions(selectedPlayer = player)
+
+            Assertions.assertEquals(result, listOf(editPlayerOption, deletePlayerOption))
+        }
+
+        @Test
+        fun `when shot logged list is not empty should return view shot and base sheet options`() {
+            val player = TestPlayer().create()
+
+            val editPlayerOption = "Edit ${player.fullName()}"
+            val deletePlayerOption = "Delete ${player.fullName()}"
+            val viewShotsOption = "View ${player.fullName()} Shots"
+
+            every { application.getString(StringsIds.editX, player.fullName()) } returns editPlayerOption
+            every { application.getString(StringsIds.deleteX, player.fullName()) } returns deletePlayerOption
+            every { application.getString(StringsIds.viewXShots, player.fullName()) } returns viewShotsOption
+
+            val result = playersListViewModel.buildSheetOptions(selectedPlayer = player)
+
+            Assertions.assertEquals(result, listOf(viewShotsOption, editPlayerOption, deletePlayerOption))
+        }
     }
 
     @Nested
@@ -400,27 +439,88 @@ class PlayersListViewModelTest {
     fun `on player clicked should update state`() {
         val player = TestPlayer().create()
 
+        val editPlayerOption = "Edit ${player.fullName()}"
+        val deletePlayerOption = "Delete ${player.fullName()}"
+        val viewShotsOption = "View ${player.fullName()} Shots"
+
+        every { application.getString(StringsIds.editX, player.fullName()) } returns editPlayerOption
+        every { application.getString(StringsIds.deleteX, player.fullName()) } returns deletePlayerOption
+        every { application.getString(StringsIds.viewXShots, player.fullName()) } returns viewShotsOption
+
         playersListViewModel.onPlayerClicked(player = player)
 
         val result = playersListViewModel.playerListMutableStateFlow.value
 
-        Assertions.assertEquals(result, PlayersListState(selectedPlayer = player))
+        Assertions.assertEquals(playersListViewModel.selectedPlayer, player)
+        Assertions.assertEquals(result, PlayersListState(selectedPlayer = player, sheetOptions = listOf(viewShotsOption, editPlayerOption, deletePlayerOption)))
     }
 
     @Nested
     inner class OnSheetItemClicked {
 
         @Test
-        fun `when index passed in is set to 0 should call on edit player clicked`() {
+        fun `when shot list is empty and index passed in is set to 0 should call on edit player clicked`() {
             val index = 0
-            val player = TestPlayer().create()
+            val player = TestPlayer().create().copy(shotsLoggedList = emptyList())
 
-            playersListViewModel.playerListMutableStateFlow.update { it.copy(selectedPlayer = player) }
+            playersListViewModel.selectedPlayer = player
 
             playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
 
             verify(exactly = 1) { playersListViewModel.onEditPlayerClicked(player = player) }
-            verify(exactly = 0) { playersListViewModel.onDeletePlayerClicked(isConnectedToInternet = true, player = player) }
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when shot list is empty and index passed in not 0 should call on alert for delete player`() {
+            val index = 1
+            val player = TestPlayer().create().copy(shotsLoggedList = emptyList())
+
+            playersListViewModel.selectedPlayer = player
+
+            playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
+
+            verify { navigation.alert(alert = any()) }
+            verify(exactly = 0) { playersListViewModel.onEditPlayerClicked(player = player) }
+        }
+
+        @Test
+        fun `when shot list is not empty and index passed in is set to 0 should call shot list`() {
+            val index = 0
+            val player = TestPlayer().create().copy(shotsLoggedList = listOf(TestShotLogged.build()))
+
+            playersListViewModel.selectedPlayer = player
+
+            playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
+
+            verify { createSharedPreferences.createPlayerFilterName(value = player.fullName()) }
+            verify { navigation.navigateToShotList() }
+        }
+
+        @Test
+        fun `when shot list is not empty and index passed in is set to 1 should call on edit player clicked`() {
+            val index = 1
+            val player = TestPlayer().create()
+
+            playersListViewModel.selectedPlayer = player
+
+            playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
+
+            verify(exactly = 1) { playersListViewModel.onEditPlayerClicked(player = player) }
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when shot list is not empty and index passed in not 1 or 0 should call on alert for delete player`() {
+            val index = 2
+            val player = TestPlayer().create()
+
+            playersListViewModel.selectedPlayer = player
+
+            playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
+
+            verify { navigation.alert(alert = any()) }
+            verify(exactly = 0) { playersListViewModel.onEditPlayerClicked(player = player) }
         }
     }
 

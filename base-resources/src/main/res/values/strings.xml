@@ -171,6 +171,7 @@
     <string name="player_report">Player Report</string>
     <string name="player_report_created_description">A player report has been generated and saved to your device\'s download folder. You can view the report now or access it later in the app for future use.</string>
     <string name="player_report_created_for_x">Player Report Created For %s</string>
+    <string name="player_shots">Player Shots</string>
     <string name="players">Players</string>
     <string name="players_first_name_empty_description">The player\'s first name is missing. Kindly provide a first name to proceed.</string>
     <string name="players_last_name_empty_description">The player\'s last name is missing. Kindly provide a first name to proceed.</string>
@@ -260,6 +261,7 @@
     <string name="view_reports">View Reports</string>
     <string name="view_more_info">View More Info</string>
     <string name="view_x">View %s</string>
+    <string name="view_x_shots">View %s Shots</string>
     <string name="voice_commands">Voice Commands</string>
     <string name="x_report">%s Report</string>
     <string name="x_created">%s Created</string>

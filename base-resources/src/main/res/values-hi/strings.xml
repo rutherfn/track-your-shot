@@ -274,4 +274,6 @@
     <string name="no_current_shots_added">No Current Shots Added</string>
     <string name="shot_taken_by_x">Shot Taken By %s</string>
     <string name="shot_taken_on_x">Shot Taken On %s</string>
+    <string name="player_shots">Player Shots</string>
+    <string name="view_x_shots">View %s Shots</string>
 </resources>

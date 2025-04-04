@@ -5,6 +5,7 @@ object NamedArguments {
     const val EMAIL = "email"
     const val FIRST_NAME = "firstName"
     const val LAST_NAME = "lastName"
+    const val SHOULD_SHOW_ALL_PLAYERS_SHOTS = "shouldShowAllPlayersShots"
     const val IS_EXISTING_PLAYER = "isExistingPlayer"
     const val IS_ACKNOWLEDGE_CONDITIONS = "isAcknowledgeConditions"
     const val PLAYER_ID = "playerId"
@@ -13,5 +14,4 @@ object NamedArguments {
     const val VIEW_CURRENT_EXISTING_SHOT = "viewCurrentExistingShot"
     const val VIEW_CURRENT_PENDING_SHOT = "viewCurrentPendingShot"
     const val FROM_SHOT_LIST = "fromShotList"
-    const val SHOULD_REFRESH_DATA = "shouldRefreshData"
 }

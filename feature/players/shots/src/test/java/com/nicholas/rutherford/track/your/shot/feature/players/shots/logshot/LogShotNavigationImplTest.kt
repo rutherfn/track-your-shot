@@ -59,7 +59,7 @@ class LogShotNavigationImplTest {
         verify { navigator.pop(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationDestinations.SHOTS_LIST_SCREEN
+        val expectedAction = NavigationDestinations.SHOTS_LIST_SCREEN_WITH_PARAMS
 
         Assertions.assertEquals(expectedAction, capturedArgument)
     }

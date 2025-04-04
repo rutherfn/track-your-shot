@@ -6,12 +6,14 @@ import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +23,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 const val DELETE_PLAYER_DELAY_IN_MILLIS = 2000L
-const val EDIT_PLAYER_OPTION_INDEX = 0
 
 class PlayersListViewModel(
     private val application: Application,
@@ -30,9 +31,18 @@ class PlayersListViewModel(
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val dataAdditionUpdates: DataAdditionUpdates,
     private val playerRepository: PlayerRepository,
-    private val pendingPlayerRepository: PendingPlayerRepository
+    private val pendingPlayerRepository: PendingPlayerRepository,
+    private val createSharedPreferences: CreateSharedPreferences
 ) : BaseViewModel() {
 
+    internal var selectedPlayer: Player = Player(
+        firstName = "",
+        lastName = "",
+        position = PlayerPositions.None,
+        firebaseKey = "",
+        imageUrl = "",
+        shotsLoggedList = emptyList()
+    )
     internal var currentPlayerArrayList: ArrayList<Player> = arrayListOf()
 
     internal val playerListMutableStateFlow = MutableStateFlow(value = PlayersListState())
@@ -56,9 +66,30 @@ class PlayersListViewModel(
                 currentPlayerArrayList.add(player)
             }
             playerListMutableStateFlow.value =
-                PlayersListState(playerList = currentPlayerArrayList.toList())
+                PlayersListState(
+                    playerList = currentPlayerArrayList.toList()
+                )
         }
     }
+
+    internal fun buildSheetOptions(selectedPlayer: Player): List<String> {
+        val selectedPlayerFullName = selectedPlayer.fullName()
+        val baseSheetOptions = buildBaseSheetOptions(selectedPlayerFullName = selectedPlayerFullName)
+
+        return if (selectedPlayer.shotsLoggedList.isEmpty()) {
+            baseSheetOptions
+        } else {
+            buildAddViewShotsOption(selectedPlayerFullName = selectedPlayerFullName)
+        }
+    }
+
+    private fun buildBaseSheetOptions(selectedPlayerFullName: String): List<String> = listOf(
+        application.getString(StringsIds.editX, selectedPlayerFullName),
+        application.getString(StringsIds.deleteX, selectedPlayerFullName)
+    )
+
+    private fun buildAddViewShotsOption(selectedPlayerFullName: String): List<String> =
+        listOf(application.getString(StringsIds.viewXShots, selectedPlayerFullName)) + buildBaseSheetOptions(selectedPlayerFullName = selectedPlayerFullName)
 
     private fun clearAndUpdatePlayerListState() {
         currentPlayerArrayList.clear()
@@ -140,17 +171,49 @@ class PlayersListViewModel(
     }
 
     fun onPlayerClicked(player: Player) {
-        playerListMutableStateFlow.update { it.copy(selectedPlayer = player) }
+        selectedPlayer = player
+        playerListMutableStateFlow.update {
+            it.copy(
+                selectedPlayer = player,
+                sheetOptions = buildSheetOptions(selectedPlayer = player)
+            )
+        }
     }
 
     fun onSheetItemClicked(isConnectedToInternet: Boolean, index: Int) {
-        val player = playerListMutableStateFlow.value.selectedPlayer
-
-        if (index == EDIT_PLAYER_OPTION_INDEX) {
-            onEditPlayerClicked(player = player)
+        if (selectedPlayer.shotsLoggedList.isEmpty()) {
+            handleSheetItemClickForEmptyPlayerList(isConnectedToInternet = isConnectedToInternet, index = index)
         } else {
-            onDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = player)
+            handleSheetItemClickForPlayerList(isConnectedToInternet = isConnectedToInternet, index = index)
         }
+    }
+
+    private fun handleSheetItemClickForEmptyPlayerList(isConnectedToInternet: Boolean, index: Int) {
+        val editPlayerOptionIndex = 0
+
+        if (index == editPlayerOptionIndex) {
+            onEditPlayerClicked(player = selectedPlayer)
+        } else {
+            onDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = selectedPlayer)
+        }
+    }
+
+    private fun handleSheetItemClickForPlayerList(isConnectedToInternet: Boolean, index: Int) {
+        val viewPlayerShotOptionIndex = 0
+        val editPlayerOptionIndex = 1
+
+        if (index == viewPlayerShotOptionIndex) {
+            onShotListClicked(playerName = selectedPlayer.fullName())
+        } else if (index == editPlayerOptionIndex) {
+            onEditPlayerClicked(player = selectedPlayer)
+        } else {
+            onDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = selectedPlayer)
+        }
+    }
+
+    internal fun onShotListClicked(playerName: String) {
+        createSharedPreferences.createPlayerFilterName(value = playerName)
+        navigation.navigateToShotList()
     }
 
     internal fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)
