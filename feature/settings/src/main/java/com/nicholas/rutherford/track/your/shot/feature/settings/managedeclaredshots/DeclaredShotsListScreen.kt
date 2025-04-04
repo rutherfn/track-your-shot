@@ -51,7 +51,7 @@ fun DeclaredShotsListScreen(declaredShotsListScreenParams: DeclaredShotsListScre
         },
         appBar = AppBar(
             toolbarTitle = stringResource(id = StringsIds.shots),
-            shouldShowMiddleContentAppBar = false,
+            shouldShowMiddleContentAppBar = false
 
         )
     )
@@ -113,7 +113,7 @@ private fun DeclaredShotListEmptyState() {
             )
 
             TextButton(
-                onClick = {  },
+                onClick = { },
                 content = { Text(text = stringResource(id = StringsIds.addShot)) },
                 colors = ButtonDefaults.textButtonColors(contentColor = AppColors.OrangeVariant)
             )

@@ -532,7 +532,7 @@ fun NavigationComponent(
                 DeclaredShotsListScreen(
                     declaredShotsListScreenParams = DeclaredShotsListScreenParams(
                         state = declaredShotsListViewModel.declaredShotsListStateFlow.collectAsState().value,
-                        onDeclaredShotClicked = { id -> declaredShotsListViewModel.onDeclaredShotClicked(id = id)}
+                        onDeclaredShotClicked = { id -> declaredShotsListViewModel.onDeclaredShotClicked(id = id) }
                     )
                 )
             }

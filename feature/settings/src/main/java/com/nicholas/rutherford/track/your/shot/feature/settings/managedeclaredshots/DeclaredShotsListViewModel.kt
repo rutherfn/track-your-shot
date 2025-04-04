@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class DeclaredShotsListViewModel(
     private val declaredShotRepository: DeclaredShotRepository,
-    private val scope: CoroutineScope,
+    private val scope: CoroutineScope
 ) : BaseViewModel() {
 
     internal var currentDeclaredShotArrayList: ArrayList<DeclaredShot> = arrayListOf()
@@ -35,6 +35,5 @@ class DeclaredShotsListViewModel(
     }
 
     fun onDeclaredShotClicked(id: Int) {
-
     }
 }
