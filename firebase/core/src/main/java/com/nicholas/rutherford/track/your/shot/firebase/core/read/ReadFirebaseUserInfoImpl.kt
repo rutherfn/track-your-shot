@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.AccountInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
@@ -76,10 +77,11 @@ class ReadFirebaseUserInfoImpl(
                         if (snapshot.exists()) {
                             val email = snapshot.child(Constants.EMAIL).getValue(String::class.java)
                             val username = snapshot.child(Constants.USERNAME).getValue(String::class.java)
+                            val defaultShotIdsToIgnore = snapshot.child(Constants.DEFAULT_SHOT_IDS_TO_IGNORE).getValue(object : GenericTypeIndicator<List<Int>>() {}) ?: emptyList()
                             safeLet(email, username) { accountEmail, accountUsername ->
-                                trySend(element = AccountInfoRealtimeResponse(userName = accountUsername, email = accountEmail))
+                                trySend(element = AccountInfoRealtimeResponse(userName = accountUsername, email = accountEmail, defaultShotIdsToIgnore = defaultShotIdsToIgnore))
                             } ?: run {
-                                Timber.e(message = "Error(getAccountInfoFlowByEmail) -> Current snapshot exists but email is $email and username is $username")
+                                Timber.e(message = "Error(getAccountInfoFlowByEmail) -> Current snapshot exists but email is $email and username is $username and shot ids to ignore is $defaultShotIdsToIgnore")
                                 trySend(element = null)
                             }
                         } else {

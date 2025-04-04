@@ -20,6 +20,7 @@ object Constants {
     const val CONTENT_LAST_UPDATED_PATH = "contentLastUpdated"
     const val DATE_PATTERN = "MMMM dd, yyyy"
     const val DEFAULT_SHOT_ID = 0
+    const val DEFAULT_SHOT_IDS_TO_IGNORE = "defaultShotIdsToIgnore"
     const val DELAY_IN_MILLISECONDS_BEFORE_LOGGING_OUT = 1000L
     const val DELAY_IN_MILLISECONDS_TO_SHOW_PROGRESS_MASK_ON_LOG_OUT = 3000L
     const val EMAIL = "email"
