@@ -5,6 +5,7 @@ object Constants {
         const val TRACK_MY_SHOT_PREFERENCES = "TRACK_MY_SHOT_PREFERENCES"
 
         const val APP_HAS_LAUNCHED = "appHasLaunched"
+        const val DECLARED_SHOT_ID = "declaredShotId"
         const val IS_LOGGED_IN = "isLoggedIn"
         const val HAS_AUTHENTICATED_ACCOUNT = "hasAuthenticatedAccount"
         const val SHOULD_SHOW_TERM_AND_CONDITIONS = "shouldShowTermsAndConditions"

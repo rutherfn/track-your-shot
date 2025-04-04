@@ -2,7 +2,6 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclareds
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +15,9 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,19 +27,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
+import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun DeclaredShotsListScreen(declaredShotsListScreenParams: DeclaredShotsListScreenParams) {
     val isDeclaredShotListEmpty = declaredShotsListScreenParams.state.declaredShotsList.isEmpty()
-
     Content(
         ui = {
             if (!isDeclaredShotListEmpty) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(modifier = Modifier.fillMaxSize()     .padding(
+                    start = Padding.sixteen,
+                    end = Padding.sixteen,
+                    bottom = Padding.sixteen
+                )) {
                     items(declaredShotsListScreenParams.state.declaredShotsList) { declaredShot ->
                         DeclaredShotItem(
                             declaredShot = declaredShot,
@@ -50,10 +57,13 @@ fun DeclaredShotsListScreen(declaredShotsListScreenParams: DeclaredShotsListScre
             }
         },
         appBar = AppBar(
-            toolbarTitle = stringResource(id = StringsIds.shots),
-            shouldShowMiddleContentAppBar = false
-
-        )
+            toolbarTitle = stringResource(id = StringsIds.manageDeclaredShots),
+            shouldShowMiddleContentAppBar = false,
+            shouldShowSecondaryButton = true,
+            onSecondaryIconButtonClicked = {}
+        ),
+        secondaryImageVector = Icons.Filled.Add,
+        secondaryIconTint = AppColors.White
     )
 }
 
@@ -63,18 +73,16 @@ private fun DeclaredShotItem(declaredShot: DeclaredShot, onDeclaredShotClicked: 
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
-            .padding(16.dp)
-            .clickable {
-                onDeclaredShotClicked.invoke(declaredShot.id)
-            },
+            .padding(top = Padding.eight, bottom = Padding.eight),
         elevation = 2.dp
     ) {
         Column {
-            Text(
-                text = declaredShot.title,
-                style = TextStyles.bodyBold,
-                textAlign = TextAlign.Start
-            )
+                BaseRow(
+                    title = declaredShot.title,
+                    titleStyle = TextStyles.bodyBold,
+                    onClicked = { onDeclaredShotClicked.invoke(declaredShot.id) },
+                    imageVector = Icons.Filled.ChevronRight
+                )
         }
     }
 }

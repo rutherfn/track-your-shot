@@ -72,6 +72,7 @@ import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArgumen
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
 import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
 import kotlinx.coroutines.launch
+import androidx.core.net.toUri
 
 @Composable
 fun NavigationComponent(
@@ -214,7 +215,7 @@ fun NavigationComponent(
         emailDevState?.let { devEmail ->
             try {
                 val intent = Intent(Intent.ACTION_SENDTO).apply {
-                    data = Uri.parse("mailto:$devEmail")
+                    data = "mailto:$devEmail".toUri()
                 }
 
                 activity.startActivity(intent)
@@ -232,6 +233,7 @@ fun NavigationComponent(
             destination.contains(NavigationDestinations.PLAYERS_LIST_SCREEN) -> playersListViewModel
             destination.contains(NavigationDestinations.SELECT_SHOT_SCREEN) -> selectShotViewModel
             destination.contains(NavigationDestinations.SHOTS_LIST_SCREEN) -> shotsListViewModel
+            destination.contains(NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN) -> declaredShotsListViewModel
             else -> null
         }
     }

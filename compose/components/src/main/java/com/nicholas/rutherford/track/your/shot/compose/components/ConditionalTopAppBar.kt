@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -18,8 +20,10 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
@@ -38,7 +42,8 @@ fun ConditionalTopAppBar(
     appBar: AppBar,
     imageVector: ImageVector?,
     secondaryImageVector: ImageVector?,
-    secondaryImageEnabled: Boolean?
+    secondaryImageEnabled: Boolean?,
+    secondaryIconTint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
 ) {
     if (appBar.shouldShowMiddleContentAppBar) {
         ComplexTopAppBar(
@@ -52,7 +57,8 @@ fun ConditionalTopAppBar(
             appBar = appBar,
             imageVector = imageVector,
             secondaryImageVector = secondaryImageVector,
-            secondaryImageEnabled = secondaryImageEnabled
+            secondaryImageEnabled = secondaryImageEnabled,
+            secondaryIconTint = secondaryIconTint
         )
     }
 }
@@ -62,14 +68,17 @@ private fun SimpleTopAppBar(
     appBar: AppBar,
     imageVector: ImageVector?,
     secondaryImageVector: ImageVector?,
-    secondaryImageEnabled: Boolean?
+    secondaryImageEnabled: Boolean?,
+    secondaryIconTint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
 ) {
     TopAppBar(
         title = {
             Text(
                 text = appBar.toolbarTitle,
                 modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_TITLE),
-                style = TextStyles.toolbar
+                style = TextStyles.toolbar,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         },
         navigationIcon = {
@@ -92,7 +101,8 @@ private fun SimpleTopAppBar(
                 ) {
                     Icon(
                         imageVector = secondaryImageVector ?: Icons.Filled.Save,
-                        contentDescription = "Secondary icon"
+                        contentDescription = "Secondary icon",
+                        tint = secondaryIconTint
                     )
                 }
             }
@@ -129,7 +139,9 @@ private fun ComplexTopAppBar(
                 Text(
                     text = appBar.toolbarTitle,
                     modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_TITLE),
-                    style = TextStyles.toolbar
+                    style = TextStyles.toolbar,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
 
                 IconButton(

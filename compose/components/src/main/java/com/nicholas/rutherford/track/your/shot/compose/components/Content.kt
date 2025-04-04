@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,7 +42,8 @@ fun Content(
     imageVector: ImageVector? = null,
     secondaryImageVector: ImageVector? = null,
     secondaryImageEnabled: Boolean? = null,
-    invokeFunctionOnInit: (() -> Unit?)? = null
+    invokeFunctionOnInit: (() -> Unit?)? = null,
+    secondaryIconTint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
 ) {
     TrackMyShotTheme {
         Column {
@@ -50,7 +54,8 @@ fun Content(
                     appBar = appBar,
                     imageVector = imageVector,
                     secondaryImageVector = secondaryImageVector,
-                    secondaryImageEnabled = secondaryImageEnabled
+                    secondaryImageEnabled = secondaryImageEnabled,
+                    secondaryIconTint = secondaryIconTint
                 )
             }
 

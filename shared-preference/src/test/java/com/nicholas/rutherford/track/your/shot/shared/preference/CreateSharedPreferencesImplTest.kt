@@ -164,4 +164,22 @@ class CreateSharedPreferencesImplTest {
             }
             verify { editor.apply() }
         }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `createDeclaredShotId should call editor putInt and apply`() =
+        runTest {
+            val defaultValue = 2
+
+            coEvery { sharedPreferences.edit() } returns editor
+
+            init()
+
+            createSharedPreferencesImpl.createDeclaredShotId(value = defaultValue)
+
+            verify {
+                editor.putInt(Constants.Preferences.DECLARED_SHOT_ID, defaultValue)
+            }
+            verify { editor.apply() }
+        }
 }

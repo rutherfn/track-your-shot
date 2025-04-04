@@ -9,4 +9,5 @@ interface ReadSharedPreferences {
     fun hasAccountBeenAuthenticated(): Boolean
     fun isLoggedIn(): Boolean
     fun playerFilterName(): String
+    fun declaredShotId(): Int
 }
