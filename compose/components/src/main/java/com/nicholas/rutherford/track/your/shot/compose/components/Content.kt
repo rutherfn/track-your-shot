@@ -43,7 +43,7 @@ fun Content(
     secondaryImageVector: ImageVector? = null,
     secondaryImageEnabled: Boolean? = null,
     invokeFunctionOnInit: (() -> Unit?)? = null,
-    secondaryIconTint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
+    secondaryIconTint: Color = AppColors.White
 ) {
     TrackMyShotTheme {
         Column {

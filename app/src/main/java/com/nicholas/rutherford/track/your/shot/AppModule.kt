@@ -67,7 +67,12 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.Acco
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsViewModel
-import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.DeclaredShotsListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotNavigation
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListNavigation
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
@@ -318,6 +323,12 @@ class AppModule {
         single<ShotsListNavigation> {
             ShotsListNavigationImpl(navigator = get())
         }
+        single<DeclaredShotsListNavigation> {
+            DeclaredShotsListNavigationImpl(navigator = get())
+        }
+        single<CreateEditDeclaredShotNavigation> {
+            CreateEditDeclaredShotNavigationImpl(navigator = get())
+        }
         viewModel {
             MainActivityViewModel(accountManager = get(), scope = defaultCoroutineScope, network = get())
         }
@@ -460,8 +471,20 @@ class AppModule {
         }
         viewModel {
             DeclaredShotsListViewModel(
-                scope = defaultCoroutineScope,
-                declaredShotRepository = get()
+                declaredShotRepository = get(),
+                createSharedPreferences = get(),
+                navigation = get(),
+                scope = defaultCoroutineScope
+            )
+        }
+        viewModel {
+            CreateEditDeclaredShotViewModel(
+                application = androidApplication(),
+                declaredShotRepository = get(),
+                createSharedPreferences = get(),
+                readSharedPreferences = get(),
+                navigation = get(),
+                scope = defaultCoroutineScope
             )
         }
         viewModel {

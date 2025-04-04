@@ -1,10 +1,15 @@
-package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots
+package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotlist
 
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListNavigation
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListState
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListViewModel
+import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.coEvery
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
@@ -21,18 +26,23 @@ class DeclaredShotsListViewModelTest {
 
     private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
 
+    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
+    private val navigation = mockk<DeclaredShotsListNavigation>(relaxed = true)
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private val dispatcher = UnconfinedTestDispatcher()
 
     private val scope = CoroutineScope(SupervisorJob() + dispatcher)
 
-    val vs = DeclaredShotsListState()
+    val state = DeclaredShotsListState()
 
     @BeforeEach
     fun beforeEach() {
         viewModel = DeclaredShotsListViewModel(
-            scope = scope,
-            declaredShotRepository = declaredShotRepository
+            declaredShotRepository = declaredShotRepository,
+            createSharedPreferences = createSharedPreferences,
+            navigation = navigation,
+            scope = scope
         )
     }
 
@@ -48,7 +58,7 @@ class DeclaredShotsListViewModelTest {
             viewModel.onNavigatedTo()
 
             Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, emptyDeclaredShotArrayList)
-            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, DeclaredShotsListState())
+            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state)
         }
 
         @Test
@@ -60,7 +70,31 @@ class DeclaredShotsListViewModelTest {
             viewModel.onNavigatedTo()
 
             Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, declaredShotArrayList)
-            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, DeclaredShotsListState(declaredShotsList = declaredShotArrayList.toList()))
+            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state.copy(declaredShotsList = declaredShotArrayList.toList()))
         }
+    }
+
+    @Test
+    fun `on toolbar menu clicked should call pop`() {
+        viewModel.onToolbarMenuClicked()
+
+        verify { navigation.pop() }
+    }
+
+    @Test
+    fun `on declared shot clicked should create declared shot id and navigate to create edit declared shot`() {
+        val id = 2
+
+        viewModel.onDeclaredShotClicked(id = id)
+
+        verify { createSharedPreferences.createDeclaredShotId(value = id) }
+        verify { navigation.createEditDeclaredShot() }
+    }
+
+    @Test
+    fun `on add declared shot clicked should navigate to create edit declared shot`() {
+        viewModel.onAddDeclaredShotClicked()
+
+        verify { navigation.createEditDeclaredShot() }
     }
 }

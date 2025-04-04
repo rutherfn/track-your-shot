@@ -48,6 +48,7 @@ object StringsIds {
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val createAccount = R.string.create_account
     val createPlayer = R.string.create_player
+    val createShot = R.string.create_shot
     val createPlayerReport = R.string.create_player_report
     val createYourPlayersProfile = R.string.create_your_players_profile
     val createYourPlayerProfileDescription = R.string.create_your_player_profile_description
@@ -262,6 +263,7 @@ object StringsIds {
     val verifyAccount = R.string.verify_account
     val viewReports = R.string.view_reports
     val viewMoreInfo = R.string.view_more_info
+    val viewX = R.string.view_x
     val viewXShots = R.string.view_x_shots
     val voiceCommands = R.string.voice_commands
     val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue =

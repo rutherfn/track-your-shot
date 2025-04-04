@@ -39,7 +39,8 @@ open class MainActivity : ComponentActivity() {
                     reportListViewModel = getViewModel(),
                     createReportViewModel = getViewModel(),
                     shotsListViewModel = getViewModel(),
-                    declaredShotsListViewModel = getViewModel()
+                    declaredShotsListViewModel = getViewModel(),
+                    createEditDeclaredShotsViewModel = getViewModel()
                 )
             )
         }

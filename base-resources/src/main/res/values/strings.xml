@@ -47,6 +47,7 @@
     <string name="create_account">Create Account</string>
     <string name="create_player">Create Player</string>
     <string name="create_player_report">Create Player Report</string>
+    <string name="create_shot">Create Shot</string>
     <string name="create_your_players_profile">Create Your Players Profile</string>
     <string name="create_your_player_profile_description">Begin by creating a player profile, including details like first name, last name, position, and a player image.</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>

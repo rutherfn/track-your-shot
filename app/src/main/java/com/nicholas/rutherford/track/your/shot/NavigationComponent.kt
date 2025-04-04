@@ -49,8 +49,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.Acco
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsScreen
-import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.DeclaredShotsListScreen
-import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.DeclaredShotsListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationParams
@@ -73,6 +73,8 @@ import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
 import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
 import kotlinx.coroutines.launch
 import androidx.core.net.toUri
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotScreenParams
 
 @Composable
 fun NavigationComponent(
@@ -161,6 +163,7 @@ fun NavigationComponent(
     val createReportViewModel = viewModels.createReportViewModel
     val shotsListViewModel = viewModels.shotsListViewModel
     val declaredShotsListViewModel = viewModels.declaredShotsListViewModel
+    val createEditDeclaredShotViewModel = viewModels.createEditDeclaredShotsViewModel
 
     val isConnectedToInternet = mainActivityViewModel.isConnected.collectAsState().value
 
@@ -234,6 +237,7 @@ fun NavigationComponent(
             destination.contains(NavigationDestinations.SELECT_SHOT_SCREEN) -> selectShotViewModel
             destination.contains(NavigationDestinations.SHOTS_LIST_SCREEN) -> shotsListViewModel
             destination.contains(NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN) -> declaredShotsListViewModel
+            destination.contains(NavigationDestinations.CREATE_EDIT_DECLARED_SHOTS_SCREEN) -> createEditDeclaredShotViewModel
             else -> null
         }
     }
@@ -289,7 +293,7 @@ fun NavigationComponent(
 
     LaunchedEffect(urlState) {
         urlState?.let { url ->
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            val intent = Intent(Intent.ACTION_VIEW, url.toUri())
             activity.startActivity(intent)
             navigator.url(url = null)
         }
@@ -534,7 +538,19 @@ fun NavigationComponent(
                 DeclaredShotsListScreen(
                     declaredShotsListScreenParams = DeclaredShotsListScreenParams(
                         state = declaredShotsListViewModel.declaredShotsListStateFlow.collectAsState().value,
-                        onDeclaredShotClicked = { id -> declaredShotsListViewModel.onDeclaredShotClicked(id = id) }
+                        onDeclaredShotClicked = { id -> declaredShotsListViewModel.onDeclaredShotClicked(id = id) },
+                        onToolbarMenuClicked = { declaredShotsListViewModel.onToolbarMenuClicked() },
+                        onAddDeclaredShotClicked = { declaredShotsListViewModel.onAddDeclaredShotClicked() }
+                    )
+                )
+            }
+            composable(
+                route = NavigationDestinations.CREATE_EDIT_DECLARED_SHOTS_SCREEN
+            ) {
+                CreateEditDeclaredShotScreen(
+                    params = CreateEditDeclaredShotScreenParams(
+                        state = createEditDeclaredShotViewModel.createEditDeclaredShotStateFlow.collectAsState().value,
+                        onToolbarMenuClicked = { createEditDeclaredShotViewModel.onToolbarMenuClicked() }
                     )
                 )
             }

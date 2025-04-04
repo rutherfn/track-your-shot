@@ -319,6 +319,18 @@ class NavigationActionsTest {
         }
 
         @Nested
+        inner class DeclaredShotsList {
+
+            @Test
+            fun createEditDeclaredShot() {
+                val result = Actions.DeclaredShotsList.createEditDeclaredShot()
+
+                Assertions.assertEquals(result.destination, "createEditDeclaredShotsScreen")
+                Assertions.assertEquals(result.navOptions, NavOptions.Builder().build())
+            }
+        }
+
+        @Nested
         inner class Settings {
 
             @Test

@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
@@ -43,7 +44,7 @@ fun ConditionalTopAppBar(
     imageVector: ImageVector?,
     secondaryImageVector: ImageVector?,
     secondaryImageEnabled: Boolean?,
-    secondaryIconTint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
+    secondaryIconTint: Color
 ) {
     if (appBar.shouldShowMiddleContentAppBar) {
         ComplexTopAppBar(
@@ -89,7 +90,8 @@ private fun SimpleTopAppBar(
             ) {
                 Icon(
                     imageVector = imageVector ?: Icons.Filled.ArrowBack,
-                    contentDescription = appBar.iconContentDescription
+                    contentDescription = appBar.iconContentDescription,
+                    tint = AppColors.White
                 )
             }
         },
@@ -132,7 +134,8 @@ private fun ComplexTopAppBar(
                 }) {
                     Icon(
                         imageVector = imageVector ?: Icons.Filled.Menu,
-                        contentDescription = appBar.iconContentDescription
+                        contentDescription = appBar.iconContentDescription,
+                        tint = AppColors.White
                     )
                 }
 
@@ -141,7 +144,8 @@ private fun ComplexTopAppBar(
                     modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_TITLE),
                     style = TextStyles.toolbar,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = AppColors.White
                 )
 
                 IconButton(
@@ -150,7 +154,8 @@ private fun ComplexTopAppBar(
                 ) {
                     Icon(
                         imageVector = secondaryImageVector ?: Icons.Filled.Add,
-                        contentDescription = appBar.secondaryIconContentDescription
+                        contentDescription = appBar.secondaryIconContentDescription,
+                        tint = AppColors.White
                     )
                 }
             }
@@ -172,7 +177,8 @@ fun ConditionalTopAppBarForSimplePreview() {
         ),
         imageVector = null,
         secondaryImageVector = null,
-        secondaryImageEnabled = true
+        secondaryImageEnabled = true,
+        secondaryIconTint = AppColors.White
     )
 }
 
@@ -186,6 +192,7 @@ fun ConditionalTopAppBarForComplexPreview() {
         ),
         imageVector = null,
         secondaryImageVector = Icons.Filled.AddCircle,
-        secondaryImageEnabled = true
+        secondaryImageEnabled = true,
+        secondaryIconTint = AppColors.White
     )
 }

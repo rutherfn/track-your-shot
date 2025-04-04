@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots
+package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,6 +37,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 @Composable
 fun DeclaredShotsListScreen(declaredShotsListScreenParams: DeclaredShotsListScreenParams) {
     val isDeclaredShotListEmpty = declaredShotsListScreenParams.state.declaredShotsList.isEmpty()
+
     Content(
         ui = {
             if (!isDeclaredShotListEmpty) {
@@ -60,7 +61,8 @@ fun DeclaredShotsListScreen(declaredShotsListScreenParams: DeclaredShotsListScre
             toolbarTitle = stringResource(id = StringsIds.manageDeclaredShots),
             shouldShowMiddleContentAppBar = false,
             shouldShowSecondaryButton = true,
-            onSecondaryIconButtonClicked = {}
+            onIconButtonClicked = { declaredShotsListScreenParams.onToolbarMenuClicked.invoke() },
+            onSecondaryIconButtonClicked = { declaredShotsListScreenParams.onAddDeclaredShotClicked.invoke() }
         ),
         secondaryImageVector = Icons.Filled.Add,
         secondaryIconTint = AppColors.White

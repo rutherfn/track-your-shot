@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots
+package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist
 
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 
