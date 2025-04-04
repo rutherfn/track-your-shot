@@ -261,6 +261,96 @@ class ReadFirebaseUserInfoImplTest {
     }
 
     @Nested
+    inner class GetDeletedShotIdsFromJsonFlow {
+
+        @Test
+        fun `when onCancelled is called should return empty list`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.ACCOUNT_INFO}"
+
+            val mockDatabaseError = mockk<DatabaseError>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<ValueEventListener>()
+
+            mockkStatic(FirebaseUser::class)
+
+            every { mockDatabaseError.message } returns "message"
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every { firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot)) } answers {
+                slot.captured.onCancelled(mockDatabaseError)
+            }
+
+            Assertions.assertEquals(emptyList<Int>(), readFirebaseUserInfoImpl.getDeletedShotIdsFromJsonFlow().first())
+        }
+
+        @Test
+        fun `when onDataChange is called but the count is 0 should return empty list`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.ACCOUNT_INFO}"
+
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val mockDataSnapshotList = listOf(mockDataSnapshot)
+            val mockDefaultShotIdsSnapshot = mockk<DataSnapshot>()
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
+
+            every { mockDataSnapshot.child(Constants.DEFAULT_SHOT_IDS_TO_IGNORE) } returns mockDefaultShotIdsSnapshot
+            every {
+                mockDefaultShotIdsSnapshot.getValue(any<GenericTypeIndicator<List<Int>>>())
+            } returns null
+            every { mockDataSnapshot.children } returns mockDataSnapshotList
+
+            mockkStatic(DataSnapshot::class)
+            mockkStatic(FirebaseUser::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every { firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot)) } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(emptyList<Int>(), readFirebaseUserInfoImpl.getDeletedShotIdsFromJsonFlow().first())
+        }
+
+        @Test
+        fun `when onDataChange is called and data exists, should return a list of integers`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.ACCOUNT_INFO}"
+            val values = listOf(2, 4, 5)
+
+            val mockDataSnapshot = mockk<DataSnapshot>(relaxed = true)
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val mockDefaultShotIdsSnapshot = mockk<DataSnapshot>()
+            val slot = slot<ValueEventListener>()
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.child(Constants.DEFAULT_SHOT_IDS_TO_IGNORE) } returns mockDefaultShotIdsSnapshot
+            every {
+                mockDefaultShotIdsSnapshot.getValue(any<GenericTypeIndicator<List<Int>>>())
+            } returns values
+
+            val result = readFirebaseUserInfoImpl.getDeletedShotIdsFromJsonFlow().first()
+
+            Assertions.assertEquals(values, result)
+        }
+    }
+
+    @Nested
     inner class GetAccountInfoFlow {
 
         @Test
@@ -292,18 +382,12 @@ class ReadFirebaseUserInfoImplTest {
             val mockDataSnapshot = mockk<DataSnapshot>()
             val mockFirebaseUser = mockk<FirebaseUser>()
             val mockDataSnapshotList = listOf(mockDataSnapshot)
-            val mockDefaultShotIdsSnapshot = mockk<DataSnapshot>()
             val slot = slot<ValueEventListener>()
 
             every { mockDataSnapshot.exists() } returns true
             every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
             every { mockDataSnapshot.child(Constants.EMAIL).getValue(String::class.java) } returns null
             every { mockDataSnapshot.child(Constants.USERNAME).getValue(String::class.java) } returns null
-
-            every { mockDataSnapshot.child(Constants.DEFAULT_SHOT_IDS_TO_IGNORE) } returns mockDefaultShotIdsSnapshot
-            every {
-                mockDefaultShotIdsSnapshot.getValue(any<GenericTypeIndicator<List<Int>>>())
-            } returns null
             every { mockDataSnapshot.children } returns mockDataSnapshotList
 
             mockkStatic(DataSnapshot::class)
@@ -326,7 +410,6 @@ class ReadFirebaseUserInfoImplTest {
 
             val mockDataSnapshot = mockk<DataSnapshot>(relaxed = true)
             val mockFirebaseUser = mockk<FirebaseUser>()
-            val mockDefaultShotIdsSnapshot = mockk<DataSnapshot>()
             val slot = slot<ValueEventListener>()
 
             val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create()
@@ -343,11 +426,6 @@ class ReadFirebaseUserInfoImplTest {
             every { mockDataSnapshot.exists() } returns true
             every { mockDataSnapshot.child(Constants.EMAIL).getValue(String::class.java) } returns accountInfoRealtimeResponse.email
             every { mockDataSnapshot.child(Constants.USERNAME).getValue(String::class.java) } returns accountInfoRealtimeResponse.userName
-
-            every { mockDataSnapshot.child(Constants.DEFAULT_SHOT_IDS_TO_IGNORE) } returns mockDefaultShotIdsSnapshot
-            every {
-                mockDefaultShotIdsSnapshot.getValue(any<GenericTypeIndicator<List<Int>>>())
-            } returns accountInfoRealtimeResponse.defaultShotIdsToIgnore
 
             val result = readFirebaseUserInfoImpl.getAccountInfoFlow().first()
 

@@ -129,6 +129,141 @@ class CreateFirebaseUserInfoImplTest {
     }
 
     @Nested
+    inner class AttemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow {
+
+        @Test
+        fun `when add on complete listener is executed should set flow a list and value Pair when isSuccessful returns back true`() =
+            runTest {
+                val uid = "uid"
+                val path = "${Constants.USERS_PATH}/$uid/${Constants.ACCOUNT_INFO}"
+                val defaultShotIdsToIgnore = listOf(11, 22, 44, 2)
+
+                val mockTaskVoidResult = mockk<Task<Void>>()
+                val mockFirebaseUser = mockk<FirebaseUser>()
+                val onCompleteListenerSlot = slot<OnCompleteListener<Void>>()
+                val failureListenerSlot = slot<OnFailureListener>()
+
+                val values = hashMapOf<String, Any>()
+
+                values[Constants.DEFAULT_SHOT_IDS_TO_IGNORE] = defaultShotIdsToIgnore
+
+                mockkStatic(Tasks::class)
+                mockkStatic(FirebaseUser::class)
+
+                every { mockTaskVoidResult.isSuccessful } returns true
+
+                every { mockFirebaseUser.uid } returns uid
+                every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+                every { firebaseDatabase.getReference(path).key } returns key
+
+                every {
+                    firebaseDatabase.getReference(path).setValue(values)
+                        .addOnCompleteListener(capture(onCompleteListenerSlot))
+                        .addOnFailureListener(capture(failureListenerSlot))
+                } answers {
+                    onCompleteListenerSlot.captured.onComplete(mockTaskVoidResult)
+                    mockTaskVoidResult
+                }
+
+                val reference = firebaseDatabase.getReference(path).push()
+
+                every { reference.setValue(values, any()) }
+
+                val value =
+                    createFirebaseUserInfoImpl.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = defaultShotIdsToIgnore).first()
+
+                Assertions.assertEquals(Pair(true, defaultShotIdsToIgnore), value)
+            }
+
+        @Test
+        fun `when add on failure listener is executed should set flow to false and null Pair`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.ACCOUNT_INFO}"
+            val defaultShotIdsToIgnore = listOf(11, 22, 44, 2)
+
+            val mockException = Exception("Simulated failure")
+
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val completeListenerSlot = slot<OnCompleteListener<Void>>()
+            val failureListenerSlot = slot<OnFailureListener>()
+
+            val values = hashMapOf<String, Any>()
+            values[Constants.DEFAULT_SHOT_IDS_TO_IGNORE] = defaultShotIdsToIgnore
+
+            mockkStatic(Tasks::class)
+            mockkStatic(FirebaseUser::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path).setValue(values)
+                    .addOnCompleteListener(capture(completeListenerSlot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                failureListenerSlot.captured.onFailure(mockException)
+                mockTaskVoidResult
+            }
+
+            val reference = firebaseDatabase.getReference(path).push()
+
+            every { reference.setValue(values, any()) }
+
+            val value =
+                createFirebaseUserInfoImpl.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = defaultShotIdsToIgnore).first()
+
+            Assertions.assertEquals(Pair(false, null), value)
+        }
+
+        @Test
+        fun `when add on complete listener is executed should set flow to a null and value Pair of false when isSuccessful returns back false`() =
+            runTest {
+                val uid = "uid"
+                val path = "${Constants.USERS_PATH}/$uid/${Constants.ACCOUNT_INFO}"
+                val defaultShotIdsToIgnore = listOf(11, 22, 44, 2)
+
+                val mockTaskVoidResult = mockk<Task<Void>>()
+                val mockFirebaseUser = mockk<FirebaseUser>()
+                val onCompleteListenerSlot = slot<OnCompleteListener<Void>>()
+                val failureListenerSlot = slot<OnFailureListener>()
+
+                val values = hashMapOf<String, Any>()
+
+                values[Constants.DEFAULT_SHOT_IDS_TO_IGNORE] = defaultShotIdsToIgnore
+
+                mockkStatic(Tasks::class)
+                mockkStatic(FirebaseUser::class)
+
+                every { mockTaskVoidResult.isSuccessful } returns false
+
+                every { mockFirebaseUser.uid } returns uid
+                every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+                every { firebaseDatabase.getReference(path).key } returns key
+
+                every {
+                    firebaseDatabase.getReference(path).setValue(values)
+                        .addOnCompleteListener(capture(onCompleteListenerSlot))
+                        .addOnFailureListener(capture(failureListenerSlot))
+                } answers {
+                    onCompleteListenerSlot.captured.onComplete(mockTaskVoidResult)
+                    mockTaskVoidResult
+                }
+
+                val reference = firebaseDatabase.getReference(path).push()
+
+                every { reference.setValue(values, any()) }
+
+                val value =
+                    createFirebaseUserInfoImpl.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = defaultShotIdsToIgnore).first()
+
+                Assertions.assertEquals(Pair(false, null), value)
+            }
+    }
+
+    @Nested
     inner class AttemptToCreateFirebaseRealtimeDatabaseResponseFlow {
 
         @Test

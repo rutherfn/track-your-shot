@@ -9,6 +9,7 @@ import java.util.Date
 interface ReadFirebaseUserInfo {
     fun getLoggedInAccountEmail(): Flow<String?>
     fun getAccountInfoFlow(): Flow<AccountInfoRealtimeResponse?>
+    fun getDeletedShotIdsFromJsonFlow(): Flow<List<Int>>
     fun getAccountInfoKeyFlow(): Flow<String?>
     fun getPlayerInfoList(): Flow<List<PlayerInfoRealtimeWithKeyResponse>>
     fun getReportList(): Flow<List<IndividualPlayerReportWithKeyRealtimeResponse>>

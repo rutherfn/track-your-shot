@@ -77,11 +77,10 @@ class ReadFirebaseUserInfoImpl(
                         if (snapshot.exists()) {
                             val email = snapshot.child(Constants.EMAIL).getValue(String::class.java)
                             val username = snapshot.child(Constants.USERNAME).getValue(String::class.java)
-                            val defaultShotIdsToIgnore = snapshot.child(Constants.DEFAULT_SHOT_IDS_TO_IGNORE).getValue(object : GenericTypeIndicator<List<Int>>() {}) ?: emptyList()
                             safeLet(email, username) { accountEmail, accountUsername ->
-                                trySend(element = AccountInfoRealtimeResponse(userName = accountUsername, email = accountEmail, defaultShotIdsToIgnore = defaultShotIdsToIgnore))
+                                trySend(element = AccountInfoRealtimeResponse(userName = accountUsername, email = accountEmail))
                             } ?: run {
-                                Timber.e(message = "Error(getAccountInfoFlowByEmail) -> Current snapshot exists but email is $email and username is $username and shot ids to ignore is $defaultShotIdsToIgnore")
+                                Timber.e(message = "Error(getAccountInfoFlowByEmail) -> Current snapshot exists but email is $email and username is $username")
                                 trySend(element = null)
                             }
                         } else {
@@ -93,6 +92,31 @@ class ReadFirebaseUserInfoImpl(
                     override fun onCancelled(error: DatabaseError) {
                         Timber.e(message = "Error(getAccountInfoFlowByEmail) -> Database error when attempting to get account info")
                         trySend(element = null)
+                    }
+                })
+            awaitClose()
+        }
+    }
+
+    override fun getDeletedShotIdsFromJsonFlow(): Flow<List<Int>> {
+        return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+
+            firebaseDatabase.getReference("${Constants.USERS}/$uid/${Constants.ACCOUNT_INFO}")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            val defaultShotIdsToIgnore = snapshot.child(Constants.DEFAULT_SHOT_IDS_TO_IGNORE).getValue(object : GenericTypeIndicator<List<Int>>() {}) ?: emptyList()
+                            trySend(element = defaultShotIdsToIgnore)
+                        } else {
+                            Timber.e(message = "Error(getDeletedShotIdsFromJsonFlow) -> Current snapshot does not exist")
+                            trySend(element = emptyList())
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Timber.e(message = "Error(getDeletedShotIdsFromJsonFlow) -> Database error when attempting to ge deleted shot ids from json with following stack trace - ${error.message}")
+                        trySend(element = emptyList())
                     }
                 })
             awaitClose()
