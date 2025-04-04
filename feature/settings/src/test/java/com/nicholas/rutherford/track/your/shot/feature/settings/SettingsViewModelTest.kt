@@ -120,6 +120,13 @@ class SettingsViewModelTest {
         }
 
         @Test
+        fun `when value passed in is manage declared shots should navigate to manage declared shots`() {
+            settingsViewModel.onSettingItemClicked(value = "Manage Declared Shots")
+
+            verify { navigation.navigateToDeclaredShotsList() }
+        }
+
+        @Test
         fun `when value passed in is terms and conditions should navigate to terms and conditions screen`() {
             settingsViewModel.onSettingItemClicked(value = "Terms & Conditions")
 

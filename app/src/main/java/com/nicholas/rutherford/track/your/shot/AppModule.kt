@@ -67,6 +67,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.Acco
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.DeclaredShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
@@ -455,6 +456,12 @@ class AppModule {
             EnabledPermissionsViewModel(
                 navigation = get(),
                 application = androidApplication()
+            )
+        }
+        viewModel {
+            DeclaredShotsListViewModel(
+                scope = defaultCoroutineScope,
+                declaredShotRepository = get()
             )
         }
         viewModel {

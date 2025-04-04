@@ -322,6 +322,37 @@ class NavigationActionsTest {
         inner class Settings {
 
             @Test
+            fun accountInfo() {
+                val username = "username"
+                val email = "email"
+
+                val result = Actions.Settings.accountInfo(username = username, email = email)
+
+                Assertions.assertEquals(
+                    result.destination,
+                    NavigationDestinationsWithParams.accountInfoWithParams(username = username, email = email)
+                )
+                Assertions.assertEquals(
+                    result.navOptions,
+                    NavOptions.Builder().build()
+                )
+            }
+
+            @Test
+            fun declaredShotsList() {
+                val result = Actions.Settings.declaredShotsList()
+
+                Assertions.assertEquals(
+                    result.destination,
+                    NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN
+                )
+                Assertions.assertEquals(
+                    result.navOptions,
+                    NavOptions.Builder().build()
+                )
+            }
+
+            @Test
             fun permissionEducation() {
                 Assertions.assertEquals(
                     Actions.Settings.permissionEducation().destination,

@@ -57,6 +57,9 @@ class SettingsViewModel(
             application.getString(StringsIds.termsConditions) -> {
                 navigation.navigateToTermsConditions()
             }
+            application.getString(StringsIds.manageDeclaredShots) -> {
+                navigation.navigateToDeclaredShotsList()
+            }
             application.getString(StringsIds.accountInfo) -> {
                 scope.launch {
                     val activeUser = activeUserRepository.fetchActiveUser()

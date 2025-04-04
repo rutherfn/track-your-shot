@@ -230,6 +230,11 @@ object NavigationActions {
             override val navOptions = NavOptions.Builder().build()
         }
 
+        fun declaredShotsList() = object : NavigationAction {
+            override val destination: String = NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN
+            override val navOptions = NavOptions.Builder().build()
+        }
+
         fun enabledPermissions() = object : NavigationAction {
             override val destination = NavigationDestinations.ENABLED_PERMISSIONS_SCREEN
             override val navOptions = NavOptions.Builder()

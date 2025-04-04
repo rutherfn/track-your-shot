@@ -49,6 +49,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.Acco
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.DeclaredShotsListScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.DeclaredShotsListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationParams
@@ -157,6 +159,7 @@ fun NavigationComponent(
     val reportListViewModel = viewModels.reportListViewModel
     val createReportViewModel = viewModels.createReportViewModel
     val shotsListViewModel = viewModels.shotsListViewModel
+    val declaredShotsListViewModel = viewModels.declaredShotsListViewModel
 
     val isConnectedToInternet = mainActivityViewModel.isConnected.collectAsState().value
 
@@ -520,6 +523,16 @@ fun NavigationComponent(
                         onToolbarMenuClicked = { enabledPermissionsViewModel.onToolbarMenuClicked() },
                         onSwitchChangedToTurnOffPermission = { enabledPermissionsViewModel.onSwitchChangedToTurnOffPermission() },
                         permissionNotGrantedForCameraAlert = { enabledPermissionsViewModel.permissionNotGrantedForCameraAlert() }
+                    )
+                )
+            }
+            composable(
+                route = NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN
+            ) {
+                DeclaredShotsListScreen(
+                    declaredShotsListScreenParams = DeclaredShotsListScreenParams(
+                        state = declaredShotsListViewModel.declaredShotsListStateFlow.collectAsState().value,
+                        onDeclaredShotClicked = { id -> declaredShotsListViewModel.onDeclaredShotClicked(id = id)}
                     )
                 )
             }

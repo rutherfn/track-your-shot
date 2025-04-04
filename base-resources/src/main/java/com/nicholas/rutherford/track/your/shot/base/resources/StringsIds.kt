@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.base.resources
 
 object StringsIds {
+    val addShot = R.string.add_shot
     val acceptanceOfTheseTerms = R.string.acceptance_of_these_terms
     val acceptanceOfTheseTermsDescription = R.string.acceptance_of_these_terms_description
     val accounts = R.string.accounts
@@ -144,6 +145,7 @@ object StringsIds {
     val noLastNameEntered = R.string.no_last_name_entered
     val noShotsCreated = R.string.no_shots_created
     val noShotsCreatedDescription = R.string.no_shots_created_descriipton
+    val noShotsDeclaredDescription = R.string._no_shots_declared_description
     val noShotsResultsFound = R.string.no_shots_results_found
     val noShotsResultsFoundDescription = R.string.no_shots_results_found_description
     val notConnectedToInternet = R.string.not_connected_to_internet

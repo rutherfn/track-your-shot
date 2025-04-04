@@ -33,6 +33,13 @@ class SettingsNavigationImplTest {
     }
 
     @Test
+    fun `navigate to declared shots list`() {
+        settingsNavigationImpl.navigateToDeclaredShotsList()
+
+        verify { navigator.navigate(navigationAction = NavigationActions.Settings.declaredShotsList()) }
+    }
+
+    @Test
     fun `open navigation drawer`() {
         settingsNavigationImpl.openNavigationDrawer()
 
