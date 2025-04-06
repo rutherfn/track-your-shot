@@ -203,6 +203,9 @@ object StringsIds {
     val shotsAttemptedDateX = R.string.shots_attempted_date_x
     val shotsLoggedDateX = R.string.shots_logged_date_x
     val shotsMadeAccuracyX = R.string.shots_made_accuracy_x
+    val shotCategory = R.string.shot_ceategory
+    val shotDescription = R.string.shot_description
+    val shotName = R.string.shot_name
     val shotsMissedAccuracyX = R.string.shots_missed_accuracy_x
     val shotHasBeenDeleted = R.string.shot_has_been_deleted
     val shotHasNotBeenDeleted = R.string.shot_has_not_been_deleted

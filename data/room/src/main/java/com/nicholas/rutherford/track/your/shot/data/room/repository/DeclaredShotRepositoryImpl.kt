@@ -2,17 +2,15 @@ package com.nicholas.rutherford.track.your.shot.data.room.repository
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.nicholas.rutherford.track.your.shot.base.resources.declaredshotsjson.DeclaredShotsJson
 import com.nicholas.rutherford.track.your.shot.data.room.dao.DeclaredShotDao
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.toDeclaredShotEntity
 
 // todo -> Unit tests this since now where grabbing natively in the app.
-class DeclaredShotRepositoryImpl(
-    private val declaredShotDao: DeclaredShotDao,
-    private val declaredShotsJson: DeclaredShotsJson
-) : DeclaredShotRepository {
+class DeclaredShotRepositoryImpl(private val declaredShotDao: DeclaredShotDao) : DeclaredShotRepository {
+
+    override suspend fun createNewDeclaredShot(declaredShot: DeclaredShot) = declaredShotDao.insert(declaredShotEntity = declaredShot.toDeclaredShotEntity())
 
     override suspend fun createDeclaredShots() {
         val declaredShots = declaredShotDao.getAllDeclaredShots()
@@ -29,13 +27,15 @@ class DeclaredShotRepositoryImpl(
 
     override suspend fun deleteAllDeclaredShots() = declaredShotDao.deleteAll()
 
+    override suspend fun deleteShotById(id: Int) = declaredShotDao.deleteDeclaredShotById(id = id)
+
     override suspend fun fetchDeclaredShotFromId(id: Int): DeclaredShot? =
         declaredShotDao.getDeclaredShotFromId(id = id)?.toDeclaredShot()
 
     override suspend fun fetchDeclaredShotsBySearchQuery(searchQuery: String): List<DeclaredShot> =
         declaredShotDao.getDeclaredShotsBySearchQuery(searchQuery = searchQuery).map { it.toDeclaredShot() }
 
-    private fun getDeclaredShotsFromJson(): List<DeclaredShot> {
+    fun getDeclaredShotsFromJson(): List<DeclaredShot> {
         val json = """
 [
   {

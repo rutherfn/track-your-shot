@@ -41,11 +41,13 @@ fun DeclaredShotsListScreen(declaredShotsListScreenParams: DeclaredShotsListScre
     Content(
         ui = {
             if (!isDeclaredShotListEmpty) {
-                LazyColumn(modifier = Modifier.fillMaxSize()     .padding(
-                    start = Padding.sixteen,
-                    end = Padding.sixteen,
-                    bottom = Padding.sixteen
-                )) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize().padding(
+                        start = Padding.sixteen,
+                        end = Padding.sixteen,
+                        bottom = Padding.sixteen
+                    )
+                ) {
                     items(declaredShotsListScreenParams.state.declaredShotsList) { declaredShot ->
                         DeclaredShotItem(
                             declaredShot = declaredShot,
@@ -79,12 +81,12 @@ private fun DeclaredShotItem(declaredShot: DeclaredShot, onDeclaredShotClicked: 
         elevation = 2.dp
     ) {
         Column {
-                BaseRow(
-                    title = declaredShot.title,
-                    titleStyle = TextStyles.bodyBold,
-                    onClicked = { onDeclaredShotClicked.invoke(declaredShot.id) },
-                    imageVector = Icons.Filled.ChevronRight
-                )
+            BaseRow(
+                title = declaredShot.title,
+                titleStyle = TextStyles.bodyBold,
+                onClicked = { onDeclaredShotClicked.invoke(declaredShot.id) },
+                imageVector = Icons.Filled.ChevronRight
+            )
         }
     }
 }

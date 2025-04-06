@@ -72,6 +72,17 @@ class DeclaredShotEntityDaoTest {
     }
 
     @Test
+    fun deleteDeclaredShotById() = runBlocking {
+        declaredShotDao.insert(declaredShotEntities = listOf(declaredShotEntity, declaredShotEntity.copy(id = 4)))
+
+        assertThat(listOf(declaredShotEntity, declaredShotEntity.copy(id = 4)), equalTo(declaredShotDao.getAllDeclaredShots()))
+
+        declaredShotDao.deleteDeclaredShotById(id = 4)
+
+        assertThat(declaredShotDao.getAllDeclaredShots(), equalTo(arrayListOf(declaredShotEntity)))
+    }
+
+    @Test
     fun getAllDeclaredShots() = runBlocking {
         declaredShotDao.insert(declaredShotEntities = listOf(declaredShotEntity))
 

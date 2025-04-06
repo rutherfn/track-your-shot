@@ -10,6 +10,9 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.DeclaredShotEn
 interface DeclaredShotDao {
 
     @Insert
+    suspend fun insert(declaredShotEntity: DeclaredShotEntity)
+
+    @Insert
     suspend fun insert(declaredShotEntities: List<DeclaredShotEntity>)
 
     @Update
@@ -17,6 +20,9 @@ interface DeclaredShotDao {
 
     @Query("DELETE FROM declaredShots")
     suspend fun deleteAll()
+
+    @Query("DELETE FROM declaredShots WHERE id = :id")
+    suspend fun deleteDeclaredShotById(id: Int)
 
     @Query("SELECT * FROM declaredShots ORDER BY title ASC")
     suspend fun getAllDeclaredShots(): List<DeclaredShotEntity>

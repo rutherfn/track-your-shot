@@ -194,6 +194,9 @@
     <string name="shots_logged_date_x">Shots Logged Date: %s</string>
     <string name="shots_made_accuracy_x">Shots Made Accuracy: %s %%</string>
     <string name="shots_missed_accuracy_x">Shots Missed Accuracy: %s %%</string>
+    <string name="shot_ceategory">Shot Category:</string>
+    <string name="shot_description">Shot Description:</string>
+    <string name="shot_name">Shot Name:</string>
     <string name="shot_has_been_deleted">Shot Has Been Deleted</string>
     <string name="shot_has_not_been_deleted">Shot Hsa Not Been Deleted</string>
     <string name="shot_percentage">%s %%</string>

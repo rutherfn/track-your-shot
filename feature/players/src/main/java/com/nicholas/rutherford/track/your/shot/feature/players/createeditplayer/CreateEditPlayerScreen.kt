@@ -141,7 +141,7 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
             },
             onSecondaryIconButtonClicked = {
                 createEditPlayerParams.onCreatePlayerClicked.invoke(imageUri)
-            },
+            }
         ),
         secondaryIconTint = AppColors.White
     )
