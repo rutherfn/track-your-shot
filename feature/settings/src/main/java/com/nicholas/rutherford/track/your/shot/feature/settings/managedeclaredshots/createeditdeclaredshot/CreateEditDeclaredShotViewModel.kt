@@ -70,6 +70,7 @@ class CreateEditDeclaredShotViewModel(
 
     suspend fun onYesDeleteShot(id: Int) {
         navigation.enableProgress(progress = Progress())
+
         declaredShotRepository.deleteAllDeclaredShots()
     }
 

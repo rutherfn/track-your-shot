@@ -22,6 +22,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlaye
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepositoryImpl
+import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationNavigation
@@ -166,8 +168,7 @@ class AppModule {
         }
         single<DeclaredShotRepository> {
             DeclaredShotRepositoryImpl(
-                declaredShotDao = get(),
-                declaredShotsJson = get()
+                declaredShotDao = get()
             )
         }
         single<IndividualPlayerReportRepository> {
@@ -177,9 +178,8 @@ class AppModule {
         }
         single<CurrentPendingShot> { CurrentPendingShotImpl() }
         single<UserRepository> { UserRepositoryImpl(userDao = get()) }
-        single<PlayerRepository> {
-            PlayerRepositoryImpl(playerDao = get())
-        }
+        single<ShotIgnoringRepository> { ShotIgnoringRepositoryImpl(shotIgnoringDao = get()) }
+        single<PlayerRepository> { PlayerRepositoryImpl(playerDao = get()) }
         single<PendingPlayerRepository> {
             PendingPlayerRepositoryImpl(pendingPlayerDao = get())
         }
