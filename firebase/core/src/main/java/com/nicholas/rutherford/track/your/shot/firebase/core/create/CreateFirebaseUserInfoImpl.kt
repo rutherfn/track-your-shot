@@ -4,6 +4,7 @@ import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.CreateAccountFirebaseRealtimeDatabaseResult
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
@@ -57,7 +58,7 @@ class CreateFirebaseUserInfoImpl(
             val values = hashMapOf<String, Any>()
 
             val uid = firebaseAuth.currentUser?.uid ?: ""
-            val reference = firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.ACCOUNT_INFO}")
+            val reference = firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.SHOT_IDS_TO_IGNORE}")
 
             values[Constants.DEFAULT_SHOT_IDS_TO_IGNORE] = defaultShotIdsToIgnore
 
@@ -74,6 +75,36 @@ class CreateFirebaseUserInfoImpl(
                     Timber.e(message = "Error(attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow) -> Creating account failed to create in Firebase Realtime Database following stack trace ${exception.stackTrace}")
                     trySend(Pair(first = false, second = null))
                 }
+            awaitClose()
+        }
+    }
+
+    override fun attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot: DeclaredShot): Flow<Pair<Boolean, DeclaredShot?>> {
+        return callbackFlow {
+            val values = hashMapOf<String, Any>()
+
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val reference = firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}")
+
+            values[Constants.ID] = declaredShot.id
+            values[Constants.SHOT_CATEGORY] = declaredShot.shotCategory
+            values[Constants.TITLE] = declaredShot.title
+            values[Constants.DESCRIPTION] = declaredShot.description
+
+            reference.setValue(values)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        trySend(Pair(first = true, second = declaredShot))
+                    } else {
+                        Timber.w(message = "Warning(attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow) -> Creating declared shot failed to create in Firebase Realtime Database.}")
+                        trySend(Pair(first = false, second = null))
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow) -> Creating declared shot failed to create in Firebase Realtime Database following stack trace ${exception.stackTrace}")
+                    trySend(Pair(first = false, second = null))
+                }
+
             awaitClose()
         }
     }

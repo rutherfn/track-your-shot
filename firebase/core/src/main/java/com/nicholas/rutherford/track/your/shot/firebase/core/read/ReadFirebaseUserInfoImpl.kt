@@ -102,7 +102,7 @@ class ReadFirebaseUserInfoImpl(
         return callbackFlow {
             val uid = firebaseAuth.currentUser?.uid ?: ""
 
-            firebaseDatabase.getReference("${Constants.USERS}/$uid/${Constants.ACCOUNT_INFO}")
+            firebaseDatabase.getReference("${Constants.USERS}/$uid/${Constants.SHOT_IDS_TO_IGNORE}")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {

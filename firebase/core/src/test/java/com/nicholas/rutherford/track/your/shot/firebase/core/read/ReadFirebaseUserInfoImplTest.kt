@@ -266,7 +266,7 @@ class ReadFirebaseUserInfoImplTest {
         @Test
         fun `when onCancelled is called should return empty list`() = runTest {
             val uid = "uid"
-            val path = "${Constants.USERS_PATH}/$uid/${Constants.ACCOUNT_INFO}"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.SHOT_IDS_TO_IGNORE}"
 
             val mockDatabaseError = mockk<DatabaseError>()
             val mockFirebaseUser = mockk<FirebaseUser>()
@@ -288,7 +288,7 @@ class ReadFirebaseUserInfoImplTest {
         @Test
         fun `when onDataChange is called but the count is 0 should return empty list`() = runTest {
             val uid = "uid"
-            val path = "${Constants.USERS_PATH}/$uid/${Constants.ACCOUNT_INFO}"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.SHOT_IDS_TO_IGNORE}"
 
             val mockDataSnapshot = mockk<DataSnapshot>()
             val mockFirebaseUser = mockk<FirebaseUser>()
@@ -321,7 +321,7 @@ class ReadFirebaseUserInfoImplTest {
         @Test
         fun `when onDataChange is called and data exists, should return a list of integers`() = runTest {
             val uid = "uid"
-            val path = "${Constants.USERS_PATH}/$uid/${Constants.ACCOUNT_INFO}"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.SHOT_IDS_TO_IGNORE}"
             val values = listOf(2, 4, 5)
 
             val mockDataSnapshot = mockk<DataSnapshot>(relaxed = true)
