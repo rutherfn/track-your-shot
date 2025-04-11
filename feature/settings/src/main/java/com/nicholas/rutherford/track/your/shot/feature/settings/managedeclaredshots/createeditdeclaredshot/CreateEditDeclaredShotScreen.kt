@@ -42,9 +42,10 @@ fun CreateEditDeclaredShotScreen(params: CreateEditDeclaredShotScreenParams) {
         ui = {
             if (params.state.declaredShotState == DeclaredShotState.VIEWING && params.state.currentDeclaredShot != null) {
                 params.state.currentDeclaredShot.let { declaredShot ->
-                    ViewDeclaredShot(declaredShot = declaredShot)
+                    ViewDeclaredShot(declaredShot = declaredShot, onDeleteShotClicked = params.onDeleteShotClicked)
                 }
             } else {
+
             }
         },
         appBar = AppBar(
@@ -62,7 +63,10 @@ fun CreateEditDeclaredShotScreen(params: CreateEditDeclaredShotScreenParams) {
 }
 
 @Composable
-fun ViewDeclaredShot(declaredShot: DeclaredShot) {
+fun ViewDeclaredShot(
+    declaredShot: DeclaredShot,
+    onDeleteShotClicked: (id: Int) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -126,7 +130,7 @@ fun ViewDeclaredShot(declaredShot: DeclaredShot) {
 
         DeleteShotButton(
             id = declaredShot.id,
-            onDeleteShotClicked = {}
+            onDeleteShotClicked = { onDeleteShotClicked.invoke(declaredShot.id) }
         )
     }
 }

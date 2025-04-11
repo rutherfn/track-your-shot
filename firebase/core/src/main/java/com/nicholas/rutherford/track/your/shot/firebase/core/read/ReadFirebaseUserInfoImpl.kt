@@ -106,7 +106,7 @@ class ReadFirebaseUserInfoImpl(
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
-                            val defaultShotIdsToIgnore = snapshot.child(Constants.DEFAULT_SHOT_IDS_TO_IGNORE).getValue(object : GenericTypeIndicator<List<Int>>() {}) ?: emptyList()
+                            val defaultShotIdsToIgnore = snapshot.getValue(object : GenericTypeIndicator<List<Int>>() {}) ?: emptyList()
                             trySend(element = defaultShotIdsToIgnore)
                         } else {
                             Timber.e(message = "Error(getDeletedShotIdsFromJsonFlow) -> Current snapshot does not exist")

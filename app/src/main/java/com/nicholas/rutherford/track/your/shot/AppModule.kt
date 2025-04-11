@@ -163,6 +163,9 @@ class AppModule {
         single {
             get<AppDatabase>().playerDao()
         }
+        single {
+            get<AppDatabase>().shotIgnoringDao()
+        }
         single<ActiveUserRepository> {
             ActiveUserRepositoryImpl(activeUserDao = get())
         }
@@ -481,6 +484,8 @@ class AppModule {
             CreateEditDeclaredShotViewModel(
                 application = androidApplication(),
                 declaredShotRepository = get(),
+                shotIgnoringRepository = get(),
+                createFirebaseUserInfo = get(),
                 createSharedPreferences = get(),
                 readSharedPreferences = get(),
                 navigation = get(),

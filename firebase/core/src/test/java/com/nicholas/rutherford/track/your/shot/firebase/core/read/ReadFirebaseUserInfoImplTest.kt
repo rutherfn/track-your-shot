@@ -286,36 +286,27 @@ class ReadFirebaseUserInfoImplTest {
         }
 
         @Test
-        fun `when onDataChange is called but the count is 0 should return empty list`() = runTest {
+        fun `when onDataChange is called but the data is null should return empty list`() = runTest {
             val uid = "uid"
             val path = "${Constants.USERS_PATH}/$uid/${Constants.SHOT_IDS_TO_IGNORE}"
 
             val mockDataSnapshot = mockk<DataSnapshot>()
             val mockFirebaseUser = mockk<FirebaseUser>()
-            val mockDataSnapshotList = listOf(mockDataSnapshot)
-            val mockDefaultShotIdsSnapshot = mockk<DataSnapshot>()
             val slot = slot<ValueEventListener>()
 
-            every { mockDataSnapshot.exists() } returns true
-            every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
-
-            every { mockDataSnapshot.child(Constants.DEFAULT_SHOT_IDS_TO_IGNORE) } returns mockDefaultShotIdsSnapshot
-            every {
-                mockDefaultShotIdsSnapshot.getValue(any<GenericTypeIndicator<List<Int>>>())
-            } returns null
-            every { mockDataSnapshot.children } returns mockDataSnapshotList
-
-            mockkStatic(DataSnapshot::class)
             mockkStatic(FirebaseUser::class)
 
             every { mockFirebaseUser.uid } returns uid
             every { firebaseAuth.currentUser } returns mockFirebaseUser
 
-            every { firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot)) } answers {
-                slot.captured.onDataChange(mockDataSnapshot)
-            }
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.getValue(any<GenericTypeIndicator<List<Int>>>()) } returns null
 
-            Assertions.assertEquals(emptyList<Int>(), readFirebaseUserInfoImpl.getDeletedShotIdsFromJsonFlow().first())
+            every { firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot)) } answers { slot.captured.onDataChange(mockDataSnapshot) }
+
+            val result = readFirebaseUserInfoImpl.getDeletedShotIdsFromJsonFlow().first()
+
+            Assertions.assertEquals(emptyList<Int>(), result)
         }
 
         @Test
@@ -326,7 +317,6 @@ class ReadFirebaseUserInfoImplTest {
 
             val mockDataSnapshot = mockk<DataSnapshot>(relaxed = true)
             val mockFirebaseUser = mockk<FirebaseUser>()
-            val mockDefaultShotIdsSnapshot = mockk<DataSnapshot>()
             val slot = slot<ValueEventListener>()
 
             every { mockFirebaseUser.uid } returns uid
@@ -339,9 +329,8 @@ class ReadFirebaseUserInfoImplTest {
             }
 
             every { mockDataSnapshot.exists() } returns true
-            every { mockDataSnapshot.child(Constants.DEFAULT_SHOT_IDS_TO_IGNORE) } returns mockDefaultShotIdsSnapshot
             every {
-                mockDefaultShotIdsSnapshot.getValue(any<GenericTypeIndicator<List<Int>>>())
+                mockDataSnapshot.getValue(any<GenericTypeIndicator<List<Int>>>())
             } returns values
 
             val result = readFirebaseUserInfoImpl.getDeletedShotIdsFromJsonFlow().first()

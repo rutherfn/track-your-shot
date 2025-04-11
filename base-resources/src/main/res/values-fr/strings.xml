@@ -280,4 +280,5 @@
     <string name="manage_declared_shots">Manage Declared Shots</string>
     <string name="_no_shots_declared_description">No shots have been declared yet. Tap Add Shot to start adding your shots.</string>
     <string name="create_shot">Create Shot</string>
+    <string name="view_report">View Report</string>
 </resources>

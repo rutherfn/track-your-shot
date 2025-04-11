@@ -249,6 +249,7 @@ object StringsIds {
     val unableToCreateAccount = R.string.unable_to_create_account
     val unableToDeletePlayerPleaseContactSupport =
         R.string.unable_to_delete_player_please_contact_support
+    val unableToDeleteShot = R.string.unable_to_delete_shot
     val unableToLoginToAccount = R.string.unable_to_login_to_account
     val unableToResetPassword = R.string.unable_to_reset_password
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
@@ -269,6 +270,7 @@ object StringsIds {
     val viewX = R.string.view_x
     val viewXShots = R.string.view_x_shots
     val voiceCommands = R.string.voice_commands
+    val weCouldNotDeleteXShot = R.string.we_could_not_delete_x_shot_please_try_again_later
     val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue =
         R.string.we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue
     val weHaveDetectedCurrentlyNotConnectedToInternetDescription =

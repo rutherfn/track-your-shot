@@ -144,10 +144,6 @@ class CreateFirebaseUserInfoImplTest {
                 val onCompleteListenerSlot = slot<OnCompleteListener<Void>>()
                 val failureListenerSlot = slot<OnFailureListener>()
 
-                val values = hashMapOf<String, Any>()
-
-                values[Constants.DEFAULT_SHOT_IDS_TO_IGNORE] = defaultShotIdsToIgnore
-
                 mockkStatic(Tasks::class)
                 mockkStatic(FirebaseUser::class)
 
@@ -159,7 +155,7 @@ class CreateFirebaseUserInfoImplTest {
                 every { firebaseDatabase.getReference(path).key } returns key
 
                 every {
-                    firebaseDatabase.getReference(path).setValue(values)
+                    firebaseDatabase.getReference(path).setValue(defaultShotIdsToIgnore)
                         .addOnCompleteListener(capture(onCompleteListenerSlot))
                         .addOnFailureListener(capture(failureListenerSlot))
                 } answers {
@@ -169,7 +165,7 @@ class CreateFirebaseUserInfoImplTest {
 
                 val reference = firebaseDatabase.getReference(path).push()
 
-                every { reference.setValue(values, any()) }
+                every { reference.setValue(defaultShotIdsToIgnore, any()) }
 
                 val value =
                     createFirebaseUserInfoImpl.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = defaultShotIdsToIgnore).first()
@@ -190,9 +186,6 @@ class CreateFirebaseUserInfoImplTest {
             val completeListenerSlot = slot<OnCompleteListener<Void>>()
             val failureListenerSlot = slot<OnFailureListener>()
 
-            val values = hashMapOf<String, Any>()
-            values[Constants.DEFAULT_SHOT_IDS_TO_IGNORE] = defaultShotIdsToIgnore
-
             mockkStatic(Tasks::class)
             mockkStatic(FirebaseUser::class)
 
@@ -200,7 +193,7 @@ class CreateFirebaseUserInfoImplTest {
             every { firebaseAuth.currentUser } returns mockFirebaseUser
 
             every {
-                firebaseDatabase.getReference(path).setValue(values)
+                firebaseDatabase.getReference(path).setValue(defaultShotIdsToIgnore)
                     .addOnCompleteListener(capture(completeListenerSlot))
                     .addOnFailureListener(capture(failureListenerSlot))
             } answers {
@@ -210,7 +203,7 @@ class CreateFirebaseUserInfoImplTest {
 
             val reference = firebaseDatabase.getReference(path).push()
 
-            every { reference.setValue(values, any()) }
+            every { reference.setValue(defaultShotIdsToIgnore, any()) }
 
             val value =
                 createFirebaseUserInfoImpl.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = defaultShotIdsToIgnore).first()
@@ -230,10 +223,6 @@ class CreateFirebaseUserInfoImplTest {
                 val onCompleteListenerSlot = slot<OnCompleteListener<Void>>()
                 val failureListenerSlot = slot<OnFailureListener>()
 
-                val values = hashMapOf<String, Any>()
-
-                values[Constants.DEFAULT_SHOT_IDS_TO_IGNORE] = defaultShotIdsToIgnore
-
                 mockkStatic(Tasks::class)
                 mockkStatic(FirebaseUser::class)
 
@@ -245,7 +234,7 @@ class CreateFirebaseUserInfoImplTest {
                 every { firebaseDatabase.getReference(path).key } returns key
 
                 every {
-                    firebaseDatabase.getReference(path).setValue(values)
+                    firebaseDatabase.getReference(path).setValue(defaultShotIdsToIgnore)
                         .addOnCompleteListener(capture(onCompleteListenerSlot))
                         .addOnFailureListener(capture(failureListenerSlot))
                 } answers {
@@ -255,7 +244,7 @@ class CreateFirebaseUserInfoImplTest {
 
                 val reference = firebaseDatabase.getReference(path).push()
 
-                every { reference.setValue(values, any()) }
+                every { reference.setValue(defaultShotIdsToIgnore, any()) }
 
                 val value =
                     createFirebaseUserInfoImpl.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = defaultShotIdsToIgnore).first()

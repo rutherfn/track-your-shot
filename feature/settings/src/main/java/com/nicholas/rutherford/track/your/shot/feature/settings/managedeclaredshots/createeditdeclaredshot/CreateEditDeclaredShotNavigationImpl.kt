@@ -2,7 +2,7 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclareds
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
 class CreateEditDeclaredShotNavigationImpl(private val navigator: Navigator) : CreateEditDeclaredShotNavigation {
@@ -12,5 +12,5 @@ class CreateEditDeclaredShotNavigationImpl(private val navigator: Navigator) : C
 
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
 
-    override fun pop() = navigator.pop(popRouteAction = Constants.POP_DEFAULT_ACTION)
+    override fun pop() = navigator.pop(popRouteAction = NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN)
 }

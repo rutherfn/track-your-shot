@@ -2,5 +2,6 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclareds
 
 data class CreateEditDeclaredShotScreenParams(
     val state: CreateEditDeclaredShotState,
-    val onToolbarMenuClicked: () -> Unit
+    val onToolbarMenuClicked: () -> Unit,
+    val onDeleteShotClicked: (id: Int) -> Unit
 )

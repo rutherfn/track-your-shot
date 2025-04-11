@@ -55,14 +55,10 @@ class CreateFirebaseUserInfoImpl(
         defaultShotIdsToIgnore: List<Int>
     ): Flow<Pair<Boolean, List<Int>?>> {
         return callbackFlow {
-            val values = hashMapOf<String, Any>()
-
             val uid = firebaseAuth.currentUser?.uid ?: ""
             val reference = firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.SHOT_IDS_TO_IGNORE}")
 
-            values[Constants.DEFAULT_SHOT_IDS_TO_IGNORE] = defaultShotIdsToIgnore
-
-            reference.setValue(values)
+            reference.setValue(defaultShotIdsToIgnore)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         trySend(Pair(first = true, second = defaultShotIdsToIgnore))

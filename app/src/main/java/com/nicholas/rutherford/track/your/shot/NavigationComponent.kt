@@ -550,7 +550,8 @@ fun NavigationComponent(
                 CreateEditDeclaredShotScreen(
                     params = CreateEditDeclaredShotScreenParams(
                         state = createEditDeclaredShotViewModel.createEditDeclaredShotStateFlow.collectAsState().value,
-                        onToolbarMenuClicked = { createEditDeclaredShotViewModel.onToolbarMenuClicked() }
+                        onToolbarMenuClicked = { createEditDeclaredShotViewModel.onToolbarMenuClicked() },
+                        onDeleteShotClicked = { id -> createEditDeclaredShotViewModel.onDeleteShotClicked(id = id) }
                     )
                 )
             }

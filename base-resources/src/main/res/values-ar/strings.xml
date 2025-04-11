@@ -263,6 +263,7 @@
     <string name="shots_made_x_secondary">اللقطات التي تم إجراؤها: %s</string>
     <string name="shots_missed_x">التسديدات الضائعة: %s</string>
     <string name="selected_player">اللاعب المختار</string>
+    <string name="view_report">View Report</string>
     <string name="view_reports">عرض التقارير</string>
     <string name="x_report">%sتقرير</string>
     <string name="x_created">%sمخلوق</string>
