@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.AccountInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportWithKeyRealtimeResponse
@@ -119,6 +120,45 @@ class ReadFirebaseUserInfoImpl(
                         trySend(element = emptyList())
                     }
                 })
+            awaitClose()
+        }
+    }
+
+    override fun getCreatedDeclaredShotsFlow(): Flow<List<DeclaredShot>> {
+        return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
+
+            val declaredShotArrayList: ArrayList<DeclaredShot> = arrayListOf()
+
+            firebaseDatabase.getReference(path)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            if (snapshot.childrenCount == Constants.FIREBASE_CHILDREN_COUNT_ZERO) {
+                                Timber.w("Warning(getCreatedDeclaredShotsFlow) -> No created shots currently exist for this account")
+                                trySend(element = emptyList())
+                            } else {
+                                for (createdDeclaredShotSnapshot in snapshot.children) {
+                                    val info = createdDeclaredShotSnapshot.getValue(DeclaredShot::class.java)
+
+                                    info?.let { declaredShot -> declaredShotArrayList.add(declaredShot) }
+                                }
+                            }
+
+                            trySend(declaredShotArrayList.toList())
+                        } else {
+                            Timber.w("Warning(getCreatedDeclaredShotsFlow) -> No created shots reference currently exist for this account")
+                            trySend(element = emptyList())
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Timber.e(message = "Error(getCreatedDeclaredShotsFlow) -> Database error when attempting to get user created declared shot list with the following error ${error.message}")
+                        trySend(element = emptyList())
+                    }
+                })
+
             awaitClose()
         }
     }

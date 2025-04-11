@@ -6,7 +6,6 @@ import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
-import com.nicholas.rutherford.track.your.shot.data.room.response.ShotIgnoring
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
@@ -19,6 +18,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+
+const val DEFAULT_ID = 0
 
 class CreateEditDeclaredShotViewModel(
     private val application: Application,
@@ -40,7 +41,7 @@ class CreateEditDeclaredShotViewModel(
         super.onNavigatedTo()
         val id = readSharedPreferences.declaredShotId()
 
-        if (id != 0) {
+        if (id != DEFAULT_ID) {
             attemptToUpdateDeclaredShotState(id = id)
         } else {
             createEditDeclaredShotMutableStateFlow.update { state ->
@@ -54,7 +55,7 @@ class CreateEditDeclaredShotViewModel(
 
     fun onToolbarMenuClicked() = navigation.pop()
 
-    private fun attemptToUpdateDeclaredShotState(id: Int) {
+   internal  fun attemptToUpdateDeclaredShotState(id: Int) {
         scope.launch {
             currentDeclaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = id)
 

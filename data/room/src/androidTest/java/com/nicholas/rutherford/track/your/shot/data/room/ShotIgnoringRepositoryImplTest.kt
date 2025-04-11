@@ -45,14 +45,14 @@ class ShotIgnoringRepositoryImplTest {
 
     @Test
     fun createShotIgnoring() = runBlocking {
-        shotIgnoringRepositoryImpl.createShotIgnoring(shotIgnoring = shotIgnoring)
+        shotIgnoringRepositoryImpl.createShotIgnoring(shotId = shotIgnoring.shotId)
 
         assertThat(shotIgnoringRepositoryImpl.fetchAllIgnoringShots(), equalTo(listOf(shotIgnoring)))
     }
 
     @Test
     fun updateShotIgnoring() = runBlocking {
-        shotIgnoringRepositoryImpl.createShotIgnoring(shotIgnoring = shotIgnoring)
+        shotIgnoringRepositoryImpl.createShotIgnoring(shotId = shotIgnoring.shotId)
 
         assertThat(shotIgnoringRepositoryImpl.fetchAllIgnoringShots(), equalTo(listOf(shotIgnoring)))
 
@@ -70,7 +70,7 @@ class ShotIgnoringRepositoryImplTest {
 
     @Test
     fun fetchAllIgnoringShots() = runBlocking {
-        shotIgnoringRepositoryImpl.createShotIgnoring(shotIgnoring = shotIgnoring)
+        shotIgnoringRepositoryImpl.createShotIgnoring(shotId = shotIgnoring.shotId)
 
         assertThat(shotIgnoringRepositoryImpl.fetchAllIgnoringShots(), equalTo(listOf(shotIgnoring)))
     }

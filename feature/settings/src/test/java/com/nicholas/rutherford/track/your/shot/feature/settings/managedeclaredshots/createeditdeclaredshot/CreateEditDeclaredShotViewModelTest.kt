@@ -2,17 +2,23 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclareds
 
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.data.room.entities.toShotIgnoring
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotIgnoringEntity
+import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -27,6 +33,9 @@ class CreateEditDeclaredShotViewModelTest {
     private var application = mockk<Application>(relaxed = true)
 
     private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
+    private val shotIgnoringRepository = mockk<ShotIgnoringRepository>(relaxed = true)
+
+    private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
 
     private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
     private val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
@@ -45,11 +54,18 @@ class CreateEditDeclaredShotViewModelTest {
         viewModel = CreateEditDeclaredShotViewModel(
             application = application,
             declaredShotRepository = declaredShotRepository,
+            shotIgnoringRepository = shotIgnoringRepository,
+            createFirebaseUserInfo = createFirebaseUserInfo,
             createSharedPreferences = createSharedPreferences,
             readSharedPreferences = readSharedPreferences,
             navigation = navigation,
             scope = scope
         )
+    }
+
+    @Test
+    fun constants() {
+        Assertions.assertEquals(DEFAULT_ID, 0)
     }
 
     @Nested
@@ -117,5 +133,126 @@ class CreateEditDeclaredShotViewModelTest {
         viewModel.onToolbarMenuClicked()
 
         verify { navigation.pop() }
+    }
+
+    @Nested
+    inner class AttemptToUpdateDeclaredShotState {
+
+        @Test
+        fun `when fetch declared shot from id returns null should not update state`() {
+            val id = 2
+
+            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = id) } returns null
+
+            viewModel.attemptToUpdateDeclaredShotState(id = id)
+
+            Assertions.assertEquals(viewModel.currentDeclaredShot, null)
+            Assertions.assertEquals(viewModel.createEditDeclaredShotMutableStateFlow.value, state)
+            verify { createSharedPreferences.createDeclaredShotId(value = 0) }
+        }
+
+        @Test
+        fun `when fetch declared shot from id returns declared shot should update state`() {
+            val id = 2
+            val declaredShot = TestDeclaredShot.build()
+            val viewShotName = "View ${declaredShot.title}"
+
+            every { application.getString(StringsIds.viewX, declaredShot.title) } returns viewShotName
+            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = id) } returns declaredShot
+
+            viewModel.attemptToUpdateDeclaredShotState(id = id)
+
+            Assertions.assertEquals(viewModel.currentDeclaredShot, declaredShot)
+            Assertions.assertEquals(
+                viewModel.createEditDeclaredShotMutableStateFlow.value,
+                state.copy(
+                    currentDeclaredShot = declaredShot,
+                    declaredShotState = DeclaredShotState.VIEWING,
+                    toolbarTitle = viewShotName
+                )
+            )
+            verify { createSharedPreferences.createDeclaredShotId(value = 0) }
+        }
+    }
+
+    @Nested
+    inner class OnYesDeleteShot {
+        val shotName = "shotName"
+        val id = 1
+
+        @Test
+        fun `when attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow returns the first value as false should disable progress and show alert`() = runTest {
+            val currentIdsToIgnore = listOf(22, 44)
+
+            coEvery { shotIgnoringRepository.fetchAllIgnoringShots() } returns listOf(TestShotIgnoringEntity.build().toShotIgnoring(), TestShotIgnoringEntity.build().toShotIgnoring().copy(shotId = 44))
+            coEvery { createFirebaseUserInfo.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = currentIdsToIgnore) } returns flowOf(Pair(false, currentIdsToIgnore))
+
+            viewModel.onYesDeleteShot(shotName = shotName, id = id)
+
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(id = id) }
+            coVerify(exactly = 0) { shotIgnoringRepository.createShotIgnoring(shotId = id) }
+            coVerify(exactly = 0) { navigation.pop() }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow returns the first value as true should pop and disable progress`() = runTest {
+            val currentIdsToIgnore = listOf(22, 44)
+
+            coEvery { shotIgnoringRepository.fetchAllIgnoringShots() } returns listOf(TestShotIgnoringEntity.build().toShotIgnoring(), TestShotIgnoringEntity.build().toShotIgnoring().copy(shotId = 44))
+            coEvery { createFirebaseUserInfo.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = currentIdsToIgnore) } returns flowOf(Pair(true, currentIdsToIgnore))
+
+            viewModel.onYesDeleteShot(shotName = shotName, id = id)
+
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+
+            coVerify { declaredShotRepository.deleteShotById(id = id) }
+            coVerify { shotIgnoringRepository.createShotIgnoring(shotId = id) }
+            verify { navigation.pop() }
+            verify { navigation.disableProgress() }
+        }
+    }
+
+    @Test
+    fun `build could not delete shot alert`() {
+        val shotName = "shotName"
+
+        every { application.getString(StringsIds.unableToDeleteShot) } returns "Unable To Delete Shot"
+        every { application.getString(StringsIds.weCouldNotDeleteXShot, shotName) } returns "We could not delete $shotName. Please try again later."
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+
+        val alert = viewModel.buildCouldNotDeleteShotAlert(shotName = shotName)
+
+        Assertions.assertEquals(alert.title, "Unable To Delete Shot")
+        Assertions.assertEquals(alert.description, "We could not delete $shotName. Please try again later.")
+        Assertions.assertEquals(alert.confirmButton!!.buttonText, "Got It")
+    }
+
+    @Test
+    fun `build delete shot alert should return alert`() {
+        val shotName = "shotName"
+        val id = 22
+
+        every { application.getString(StringsIds.no) } returns "No"
+        every { application.getString(StringsIds.yes) } returns "Yes"
+        every { application.getString(StringsIds.deleteShot) } returns "Delete Shot"
+        every { application.getString(StringsIds.areYouSureYouWantToDeleteXShot, shotName) } returns "Are you sure you want to delete $shotName?"
+
+        val alert = viewModel.buildDeleteShotAlert(shotName = shotName, id = id)
+
+        Assertions.assertEquals(alert.title, "Delete Shot")
+        Assertions.assertEquals(alert.description, "Are you sure you want to delete $shotName?")
+        Assertions.assertEquals(alert.confirmButton!!.buttonText, "Yes")
+        Assertions.assertEquals(alert.dismissButton!!.buttonText, "No")
+    }
+
+    @Test
+    fun `on delete shot clicked`() {
+        val id = 22
+
+        viewModel.onDeleteShotClicked(id = id)
+
+        verify { navigation.alert(alert = any()) }
     }
 }
