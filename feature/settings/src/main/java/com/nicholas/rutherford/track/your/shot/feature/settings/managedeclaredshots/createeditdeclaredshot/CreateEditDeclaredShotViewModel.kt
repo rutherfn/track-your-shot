@@ -77,7 +77,7 @@ class CreateEditDeclaredShotViewModel(
 
     suspend fun onYesDeleteShot(shotName: String, id: Int) {
         navigation.enableProgress(progress = Progress())
-        val currentIdsToIgnore = shotIgnoringRepository.fetchAllIgnoringShots().map { it.shotId }
+        val currentIdsToIgnore = shotIgnoringRepository.fetchAllIgnoringShots().map { it.shotId } + listOf(id)
 
         createFirebaseUserInfo.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = currentIdsToIgnore).collectLatest { result ->
             if (result.first) {

@@ -262,7 +262,7 @@ class ReadFirebaseUserInfoImplTest {
     }
 
     @Nested
-    inner class GetDeletedShotIdsFromJsonFlow {
+    inner class GetDeletedShotIdsFlow {
 
         @Test
         fun `when onCancelled is called should return empty list`() = runTest {
@@ -283,7 +283,7 @@ class ReadFirebaseUserInfoImplTest {
                 slot.captured.onCancelled(mockDatabaseError)
             }
 
-            Assertions.assertEquals(emptyList<Int>(), readFirebaseUserInfoImpl.getDeletedShotIdsFromJsonFlow().first())
+            Assertions.assertEquals(emptyList<Int>(), readFirebaseUserInfoImpl.getDeletedShotIdsFlow().first())
         }
 
         @Test
@@ -305,7 +305,7 @@ class ReadFirebaseUserInfoImplTest {
 
             every { firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot)) } answers { slot.captured.onDataChange(mockDataSnapshot) }
 
-            val result = readFirebaseUserInfoImpl.getDeletedShotIdsFromJsonFlow().first()
+            val result = readFirebaseUserInfoImpl.getDeletedShotIdsFlow().first()
 
             Assertions.assertEquals(emptyList<Int>(), result)
         }
@@ -334,7 +334,7 @@ class ReadFirebaseUserInfoImplTest {
                 mockDataSnapshot.getValue(any<GenericTypeIndicator<List<Int>>>())
             } returns values
 
-            val result = readFirebaseUserInfoImpl.getDeletedShotIdsFromJsonFlow().first()
+            val result = readFirebaseUserInfoImpl.getDeletedShotIdsFlow().first()
 
             Assertions.assertEquals(values, result)
         }

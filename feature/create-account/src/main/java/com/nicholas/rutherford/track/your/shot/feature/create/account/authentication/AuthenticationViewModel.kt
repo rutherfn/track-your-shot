@@ -107,7 +107,7 @@ class AuthenticationViewModel(
                             createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true)
                             createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
                             createSharedPreferences.createHasAuthenticatedAccount(value = true)
-                            declaredShotRepository.createDeclaredShots()
+                            declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList())
                             navigation.disableProgress()
                             navigation.navigateToTermsAndConditions()
                         } else {

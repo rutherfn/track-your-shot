@@ -5,7 +5,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 interface DeclaredShotRepository {
 
     suspend fun createNewDeclaredShot(declaredShot: DeclaredShot)
-    suspend fun createDeclaredShots()
+    suspend fun createDeclaredShots(shotIdsToFilterOut: List<Int>)
 
     suspend fun updateDeclaredShot(declaredShot: DeclaredShot)
 

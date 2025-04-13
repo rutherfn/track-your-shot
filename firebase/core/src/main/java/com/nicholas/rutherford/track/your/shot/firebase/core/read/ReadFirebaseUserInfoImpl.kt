@@ -99,7 +99,7 @@ class ReadFirebaseUserInfoImpl(
         }
     }
 
-    override fun getDeletedShotIdsFromJsonFlow(): Flow<List<Int>> {
+    override fun getDeletedShotIdsFlow(): Flow<List<Int>> {
         return callbackFlow {
             val uid = firebaseAuth.currentUser?.uid ?: ""
 
@@ -110,13 +110,13 @@ class ReadFirebaseUserInfoImpl(
                             val defaultShotIdsToIgnore = snapshot.getValue(object : GenericTypeIndicator<List<Int>>() {}) ?: emptyList()
                             trySend(element = defaultShotIdsToIgnore)
                         } else {
-                            Timber.e(message = "Error(getDeletedShotIdsFromJsonFlow) -> Current snapshot does not exist")
+                            Timber.e(message = "Error(getDeletedShotIdsFlow) -> Current snapshot does not exist")
                             trySend(element = emptyList())
                         }
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        Timber.e(message = "Error(getDeletedShotIdsFromJsonFlow) -> Database error when attempting to ge deleted shot ids from json with following stack trace - ${error.message}")
+                        Timber.e(message = "Error(getDeletedShotIdsFlow) -> Database error when attempting to ge deleted shot ids from json with following stack trace - ${error.message}")
                         trySend(element = emptyList())
                     }
                 })

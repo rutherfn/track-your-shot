@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.dao.DeclaredShotDao
 import com.nicholas.rutherford.track.your.shot.data.room.database.AppDatabase
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepositoryImpl
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShotEntity
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
@@ -45,7 +46,7 @@ class DeclaredShotRepositoryImplTest {
 
     @Test
     fun createDeclaredShotsWithEmptyDeclaredShots() = runBlocking {
-        declaredShotRepositoryImpl.createDeclaredShots()
+        declaredShotRepositoryImpl.createDeclaredShots(shotIdsToFilterOut = emptyList())
 
         assertThat(declaredShotRepositoryImpl.fetchAllDeclaredShots(), equalTo(declaredShotRepositoryImpl.getDeclaredShotsFromJson().sortedBy { it.title }))
     }
@@ -56,9 +57,30 @@ class DeclaredShotRepositoryImplTest {
 
         assertThat(declaredShotRepositoryImpl.fetchAllDeclaredShots(), equalTo(listOf(declaredShotEntity.toDeclaredShot())))
 
-        declaredShotRepositoryImpl.createDeclaredShots()
+        declaredShotRepositoryImpl.createDeclaredShots(shotIdsToFilterOut = emptyList())
 
         assertThat(declaredShotRepositoryImpl.fetchAllDeclaredShots(), equalTo(listOf(declaredShotEntity.toDeclaredShot())))
+    }
+
+    @Test
+    fun createDeclaredShotsWithShotIdsToFilterOut() = runBlocking {
+        val shotIdsToFilterOut = (1..39).toList()
+
+        declaredShotRepositoryImpl.createDeclaredShots(shotIdsToFilterOut = shotIdsToFilterOut)
+
+        assertThat(
+            declaredShotRepositoryImpl.fetchAllDeclaredShots(),
+            equalTo(
+                listOf(
+                    DeclaredShot(
+                        id = 40,
+                        shotCategory = "mid-range",
+                        title = "Pull-Up Bank Shot",
+                        description = "A pull-up jumper off the backboard from mid-range distance."
+                    )
+                )
+            )
+        )
     }
 
     @Test
@@ -74,14 +96,14 @@ class DeclaredShotRepositoryImplTest {
 
     @Test
     fun fetchAllDeclaredShots() = runBlocking {
-        declaredShotRepositoryImpl.createDeclaredShots()
+        declaredShotRepositoryImpl.createDeclaredShots(shotIdsToFilterOut = emptyList())
 
         assertThat(declaredShotRepositoryImpl.fetchAllDeclaredShots(), equalTo(declaredShotRepositoryImpl.getDeclaredShotsFromJson().sortedBy { it.title }))
     }
 
     @Test
     fun deleteAllDeclaredShots() = runBlocking {
-        declaredShotRepositoryImpl.createDeclaredShots()
+        declaredShotRepositoryImpl.createDeclaredShots(shotIdsToFilterOut = emptyList())
 
         assertThat(declaredShotRepositoryImpl.fetchAllDeclaredShots(), equalTo(declaredShotRepositoryImpl.getDeclaredShotsFromJson().sortedBy { it.title }))
 
@@ -112,7 +134,7 @@ class DeclaredShotRepositoryImplTest {
     fun fetchDeclaredShotsBySearchQuery() = runBlocking {
         declaredShotRepositoryImpl.createNewDeclaredShot(declaredShot = declaredShotEntity.toDeclaredShot())
 
-        assertThat(declaredShotRepositoryImpl.fetchDeclaredShotsBySearchQuery(searchQuery = "terere"), equalTo(emptyList()))
+        assertThat(declaredShotRepositoryImpl.fetchDeclaredShotsBySearchQuery(searchQuery = "test"), equalTo(emptyList()))
         assertThat(declaredShotRepositoryImpl.fetchDeclaredShotsBySearchQuery(searchQuery = declaredShotEntity.title), equalTo(listOf(declaredShotEntity.toDeclaredShot())))
     }
 }

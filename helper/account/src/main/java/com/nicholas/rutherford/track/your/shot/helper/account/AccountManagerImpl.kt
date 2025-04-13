@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
@@ -39,6 +40,7 @@ class AccountManagerImpl(
     private val playerRepository: PlayerRepository,
     private val individualPlayerReportRepository: IndividualPlayerReportRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
+    private val shotIgnoringRepository: ShotIgnoringRepository,
     private val userRepository: UserRepository,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val existingUserFirebase: ExistingUserFirebase,
@@ -155,8 +157,6 @@ class AccountManagerImpl(
                         firebaseAccountInfoKey = firebaseAccountInfoKey
                     )
                 )
-                createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
-                declaredShotRepository.createDeclaredShots()
 
                 collectPlayerInfoList()
             } ?: disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
@@ -218,8 +218,27 @@ class AccountManagerImpl(
                             )
                         }
                     individualPlayerReportRepository.createReports(individualPlayerReports = individualPlayerReportList)
+                    collectDeletedShotIds()
+                } else {
+                    collectDeletedShotIds()
+                }
+            }
+    }
+
+    // todo come back and test this
+    internal suspend fun collectDeletedShotIds() {
+        readFirebaseUserInfo.getDeletedShotIdsFlow()
+            .collectLatest { shotIds ->
+                if (shotIds.isNotEmpty()) {
+                    shotIds.forEach { shotId ->
+                        shotIgnoringRepository.createShotIgnoring(shotId = shotId)
+                    }
+                    createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
+                    declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = shotIds)
                     hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
                 } else {
+                    createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
+                    declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList())
                     hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
                 }
 

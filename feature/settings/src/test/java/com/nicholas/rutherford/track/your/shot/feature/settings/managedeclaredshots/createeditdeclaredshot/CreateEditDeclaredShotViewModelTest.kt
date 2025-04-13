@@ -177,12 +177,12 @@ class CreateEditDeclaredShotViewModelTest {
 
     @Nested
     inner class OnYesDeleteShot {
-        val shotName = "shotName"
-        val id = 1
+        private val shotName = "shotName"
+        private val id = 1
 
         @Test
         fun `when attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow returns the first value as false should disable progress and show alert`() = runTest {
-            val currentIdsToIgnore = listOf(22, 44)
+            val currentIdsToIgnore = listOf(22, 44, 1)
 
             coEvery { shotIgnoringRepository.fetchAllIgnoringShots() } returns listOf(TestShotIgnoringEntity.build().toShotIgnoring(), TestShotIgnoringEntity.build().toShotIgnoring().copy(shotId = 44))
             coEvery { createFirebaseUserInfo.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = currentIdsToIgnore) } returns flowOf(Pair(false, currentIdsToIgnore))
@@ -198,7 +198,7 @@ class CreateEditDeclaredShotViewModelTest {
 
         @Test
         fun `when attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow returns the first value as true should pop and disable progress`() = runTest {
-            val currentIdsToIgnore = listOf(22, 44)
+            val currentIdsToIgnore = listOf(22, 44, 1)
 
             coEvery { shotIgnoringRepository.fetchAllIgnoringShots() } returns listOf(TestShotIgnoringEntity.build().toShotIgnoring(), TestShotIgnoringEntity.build().toShotIgnoring().copy(shotId = 44))
             coEvery { createFirebaseUserInfo.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = currentIdsToIgnore) } returns flowOf(Pair(true, currentIdsToIgnore))
