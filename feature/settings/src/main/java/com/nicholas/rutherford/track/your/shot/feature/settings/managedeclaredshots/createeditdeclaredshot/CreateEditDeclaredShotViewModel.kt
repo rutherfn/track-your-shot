@@ -55,7 +55,7 @@ class CreateEditDeclaredShotViewModel(
 
     fun onToolbarMenuClicked() = navigation.pop()
 
-   internal  fun attemptToUpdateDeclaredShotState(id: Int) {
+    internal fun attemptToUpdateDeclaredShotState(id: Int) {
         scope.launch {
             currentDeclaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = id)
 
@@ -98,7 +98,7 @@ class CreateEditDeclaredShotViewModel(
             description = application.getString(StringsIds.weCouldNotDeleteXShot, shotName),
             confirmButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.gotIt),
-                onButtonClicked = {  }
+                onButtonClicked = { }
             )
         )
     }

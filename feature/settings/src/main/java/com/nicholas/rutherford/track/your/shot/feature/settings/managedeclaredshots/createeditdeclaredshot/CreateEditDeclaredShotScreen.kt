@@ -45,7 +45,6 @@ fun CreateEditDeclaredShotScreen(params: CreateEditDeclaredShotScreenParams) {
                     ViewDeclaredShot(declaredShot = declaredShot, onDeleteShotClicked = params.onDeleteShotClicked)
                 }
             } else {
-
             }
         },
         appBar = AppBar(
@@ -101,17 +100,17 @@ fun ViewDeclaredShot(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-                Text(
-                    text = stringResource(StringsIds.shotCategory),
-                    modifier = Modifier.alignBy(FirstBaseline),
-                    style = TextStyles.smallBold
-                )
+            Text(
+                text = stringResource(StringsIds.shotCategory),
+                modifier = Modifier.alignBy(FirstBaseline),
+                style = TextStyles.smallBold
+            )
 
-                Text(
-                    text = " ${declaredShot.shotCategory.replaceFirstChar { it.uppercaseChar() }}",
-                    modifier = Modifier.alignBy(FirstBaseline),
-                    style = TextStyles.body
-                )
+            Text(
+                text = " ${declaredShot.shotCategory.replaceFirstChar { it.uppercaseChar() }}",
+                modifier = Modifier.alignBy(FirstBaseline),
+                style = TextStyles.body
+            )
         }
 
         Spacer(modifier = Modifier.height(Padding.eight))
@@ -151,7 +150,7 @@ private fun DeleteShotButton(
             verticalArrangement = Arrangement.Center
         ) {
             Button(
-                onClick = {  onDeleteShotClicked.invoke(id) },
+                onClick = { onDeleteShotClicked.invoke(id) },
                 shape = RoundedCornerShape(size = 50.dp),
                 modifier = Modifier
                     .padding(vertical = Padding.twelve)
