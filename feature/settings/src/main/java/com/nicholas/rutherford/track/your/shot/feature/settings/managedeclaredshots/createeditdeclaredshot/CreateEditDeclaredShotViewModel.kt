@@ -33,6 +33,7 @@ class CreateEditDeclaredShotViewModel(
 ) : BaseViewModel() {
 
     internal var currentDeclaredShot: DeclaredShot? = null
+    internal var newDeclaredShot: DeclaredShot? = null
 
     internal var createEditDeclaredShotMutableStateFlow = MutableStateFlow(value = CreateEditDeclaredShotState())
     var createEditDeclaredShotStateFlow = createEditDeclaredShotMutableStateFlow.asStateFlow()
@@ -53,7 +54,23 @@ class CreateEditDeclaredShotViewModel(
         }
     }
 
-    fun onToolbarMenuClicked() = navigation.pop()
+    fun onToolbarMenuClicked() {
+        val declaredShotState = createEditDeclaredShotMutableStateFlow.value.declaredShotState
+
+        if (declaredShotState == DeclaredShotState.EDITING) {
+            createEditDeclaredShotMutableStateFlow.update { state ->
+                state.copy(
+                    declaredShotState = DeclaredShotState.VIEWING,
+                    toolbarTitle = application.getString(
+                        StringsIds.viewX,
+                        currentDeclaredShot?.title ?: ""
+                    )
+                )
+            }
+        } else {
+            navigation.pop()
+        }
+    }
 
     internal fun attemptToUpdateDeclaredShotState(id: Int) {
         scope.launch {
@@ -119,5 +136,84 @@ class CreateEditDeclaredShotViewModel(
 
     fun onDeleteShotClicked(id: Int) {
         navigation.alert(alert = buildDeleteShotAlert(shotName = currentDeclaredShot?.title ?: "", id = id))
+    }
+
+    fun onEditShotPencilClicked() {
+        newDeclaredShot= currentDeclaredShot
+        createEditDeclaredShotMutableStateFlow.update { state ->
+            state.copy(
+                declaredShotState = DeclaredShotState.EDITING,
+                toolbarTitle = application.getString(
+                    StringsIds.editX,
+                    newDeclaredShot?.title ?: application.getString(StringsIds.empty)
+                )
+            )
+        }
+    }
+
+    fun onEditShotNameValueChanged(shotName: String) {
+        newDeclaredShot?.let { declaredShot ->
+            newDeclaredShot = declaredShot.copy(title = shotName)
+        }
+    }
+
+    fun onEditShotCategoryValueChanged(shotCategory: String) {
+        newDeclaredShot?.let { declaredShot ->
+            newDeclaredShot = declaredShot.copy(shotCategory = shotCategory)
+        }
+    }
+
+    fun onEditShotDescriptionValueChanged(description: String) {
+        newDeclaredShot?.let { declaredShot ->
+            newDeclaredShot = declaredShot.copy(description = description)
+        }
+    }
+
+    fun onEditOrCreateNewShot() {
+        scope.launch {
+            val shotState = createEditDeclaredShotStateFlow.value.declaredShotState
+
+            navigation.enableProgress(Progress())
+
+            when (shotState) {
+                DeclaredShotState.EDITING -> handleShotEdit()
+                else -> handleShotCreation()
+            }
+        }
+    }
+
+    private suspend fun handleShotEdit() {
+        newDeclaredShot?.let { shot ->
+            declaredShotRepository.deleteShotById(shot.id)
+            submitShotToRepositoryAndFirebase(shot)
+        } ?: handleShotError()
+    }
+
+    private suspend fun handleShotCreation() {
+        newDeclaredShot?.let { shot ->
+            submitShotToRepositoryAndFirebase(shot)
+        } ?: handleShotError()
+    }
+
+    private suspend fun submitShotToRepositoryAndFirebase(shot: DeclaredShot) {
+        declaredShotRepository.createNewDeclaredShot(shot)
+
+        createFirebaseUserInfo
+            .attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(shot)
+            .collectLatest { (success, _) ->
+                navigation.disableProgress()
+
+                if (success) {
+                    navigation.pop()
+                    // TODO: show success confirmation dialog
+                } else {
+                    // TODO: show failure alert
+                }
+            }
+    }
+
+    private fun handleShotError() {
+        navigation.disableProgress()
+        // TODO: show missing data alert
     }
 }

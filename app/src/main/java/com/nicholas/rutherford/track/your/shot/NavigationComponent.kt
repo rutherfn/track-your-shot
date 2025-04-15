@@ -551,7 +551,12 @@ fun NavigationComponent(
                     params = CreateEditDeclaredShotScreenParams(
                         state = createEditDeclaredShotViewModel.createEditDeclaredShotStateFlow.collectAsState().value,
                         onToolbarMenuClicked = { createEditDeclaredShotViewModel.onToolbarMenuClicked() },
-                        onDeleteShotClicked = { id -> createEditDeclaredShotViewModel.onDeleteShotClicked(id = id) }
+                        onDeleteShotClicked = { id -> createEditDeclaredShotViewModel.onDeleteShotClicked(id = id) },
+                        onEditShotPencilClicked = { createEditDeclaredShotViewModel.onEditShotPencilClicked() },
+                        onShotNameValueChanged = { shotName -> createEditDeclaredShotViewModel.onEditShotNameValueChanged(shotName = shotName) },
+                        onShotCategoryValueChanged = { shotCategory -> createEditDeclaredShotViewModel.onEditShotCategoryValueChanged(shotCategory = shotCategory) },
+                        onShotDescriptionValueChanged = { description -> createEditDeclaredShotViewModel.onEditShotDescriptionValueChanged(description = description) },
+                        onEditOrCreateNewShot = { createEditDeclaredShotViewModel.onEditOrCreateNewShot() }
                     )
                 )
             }

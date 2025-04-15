@@ -301,7 +301,10 @@ class CreateFirebaseUserInfoImplTest {
 
                 val reference = firebaseDatabase.getReference(path).push()
 
-                every { reference.setValue(values, any()) }
+                val key = "mockKey"
+                every { reference.push().key } returns key
+
+                every { reference.child(key).setValue(values, any()) }
 
                 val value =
                     createFirebaseUserInfoImpl.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(
@@ -356,7 +359,10 @@ class CreateFirebaseUserInfoImplTest {
 
                 val reference = firebaseDatabase.getReference(path).push()
 
-                every { reference.setValue(values, any()) }
+                val key = "mockKey"
+                every { reference.push().key } returns key
+
+                every { reference.child(key).setValue(values, any()) }
 
                 val value =
                     createFirebaseUserInfoImpl.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(
@@ -408,7 +414,10 @@ class CreateFirebaseUserInfoImplTest {
 
             val reference = firebaseDatabase.getReference(path).push()
 
-            every { reference.setValue(values, any()) }
+            val key = "mockKey"
+            every { reference.push().key } returns key
+
+            every { reference.child(key).setValue(values, any()) }
 
             val value =
                 createFirebaseUserInfoImpl.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(

@@ -20,6 +20,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +35,8 @@ import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
+import com.nicholas.rutherford.track.your.shot.compose.components.CoreMultilineTextField
+import com.nicholas.rutherford.track.your.shot.compose.components.CoreTextField
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
@@ -44,21 +50,114 @@ fun CreateEditDeclaredShotScreen(params: CreateEditDeclaredShotScreenParams) {
                 params.state.currentDeclaredShot.let { declaredShot ->
                     ViewDeclaredShot(declaredShot = declaredShot, onDeleteShotClicked = params.onDeleteShotClicked)
                 }
-            } else {
+            } else if (params.state.declaredShotState == DeclaredShotState.EDITING  && params.state.currentDeclaredShot != null) {
+                params.state.currentDeclaredShot.let { declaredShot ->
+                    EditDeclaredShot(
+                        declaredShot = declaredShot,
+                        onShotNameValueChanged = params.onShotNameValueChanged,
+                        onShotCategoryValueChanged = params.onShotCategoryValueChanged,
+                        onShotDescriptionValueChanged = params.onShotDescriptionValueChanged
+                    )
+                }
             }
         },
         appBar = AppBar(
             toolbarTitle = params.state.toolbarTitle,
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
-            shouldShowSecondaryButton = true
+            shouldShowSecondaryButton = true,
+            onSecondaryIconButtonClicked = {
+                if (params.state.declaredShotState == DeclaredShotState.VIEWING) {
+                    params.onEditShotPencilClicked.invoke()
+                } else {
+                    params.onEditOrCreateNewShot.invoke()
+                }
+            }
         ),
         secondaryImageEnabled = true,
-        secondaryImageVector = if (params.state.declaredShotState == DeclaredShotState.EDITING || params.state.declaredShotState == DeclaredShotState.VIEWING) {
+        secondaryImageVector = if (params.state.declaredShotState == DeclaredShotState.VIEWING) {
             Icons.Default.Edit
         } else {
             Icons.Default.Save
-        }
+        },
     )
+}
+
+@Composable
+fun EditDeclaredShot(
+    declaredShot: DeclaredShot,
+    onShotNameValueChanged: (shotName: String) -> Unit,
+    onShotDescriptionValueChanged: (shotDescription: String) -> Unit,
+    onShotCategoryValueChanged: (shotDescription: String) -> Unit
+) {
+    var title by remember { mutableStateOf(declaredShot.title) }
+    var category by remember { mutableStateOf(declaredShot.shotCategory) }
+    var description by remember { mutableStateOf(declaredShot.description) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(
+                start = Padding.sixteen,
+                end = Padding.sixteen,
+                bottom = Padding.sixteen
+            ),
+        horizontalAlignment = Alignment.Start
+    ) {
+        Spacer(modifier = Modifier.height(Padding.sixteen))
+
+        Text(
+            text = stringResource(id = StringsIds.shotName),
+            style = TextStyles.smallBold
+        )
+        CoreTextField(
+            value = title,
+            onValueChange = { shotName ->
+                title = shotName
+                onShotNameValueChanged.invoke(shotName)
+            },
+            placeholderValue = ""
+        )
+
+        Spacer(modifier = Modifier.height(Padding.eight))
+
+        Text(
+            text = stringResource(id = StringsIds.shotCategory),
+            style = TextStyles.smallBold
+        )
+        CoreTextField(
+            value = category,
+            onValueChange = { shotCategory ->
+                category = shotCategory
+                onShotCategoryValueChanged.invoke(shotCategory)
+            },
+            placeholderValue = ""
+        )
+
+        Spacer(modifier = Modifier.height(Padding.eight))
+
+        Text(
+            text = stringResource(id = StringsIds.shotDescription),
+            style = TextStyles.smallBold
+        )
+        CoreMultilineTextField(
+            value = description,
+            onValueChange = { shotDescription ->
+                description = shotDescription
+                onShotDescriptionValueChanged.invoke(shotDescription)
+            },
+            placeholderValue = ""
+        )
+
+        Spacer(modifier = Modifier.height(Padding.sixteen))
+
+        Text(
+            text = "All fields are required to update the shot details. Make sure each one is filled out before saving.",
+            style = TextStyles.body,
+            color = AppColors.LightGray
+        )
+
+    }
 }
 
 @Composable

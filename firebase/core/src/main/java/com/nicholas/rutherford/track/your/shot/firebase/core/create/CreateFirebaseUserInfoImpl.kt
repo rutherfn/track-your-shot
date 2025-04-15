@@ -82,12 +82,14 @@ class CreateFirebaseUserInfoImpl(
             val uid = firebaseAuth.currentUser?.uid ?: ""
             val reference = firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}")
 
+            val key = reference.push().key ?: ""
+
             values[Constants.ID] = declaredShot.id
             values[Constants.SHOT_CATEGORY] = declaredShot.shotCategory
             values[Constants.TITLE] = declaredShot.title
             values[Constants.DESCRIPTION] = declaredShot.description
 
-            reference.setValue(values)
+            reference.child(key).setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         trySend(Pair(first = true, second = declaredShot))
