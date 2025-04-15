@@ -109,7 +109,7 @@ class CreateEditDeclaredShotViewModel(
         }
     }
 
-    fun buildCouldNotDeleteShotAlert(shotName: String): Alert {
+   internal fun buildCouldNotDeleteShotAlert(shotName: String): Alert {
         return Alert(
             title = application.getString(StringsIds.unableToDeleteShot),
             description = application.getString(StringsIds.weCouldNotDeleteXShot, shotName),
@@ -120,7 +120,7 @@ class CreateEditDeclaredShotViewModel(
         )
     }
 
-    fun buildDeleteShotAlert(shotName: String, id: Int): Alert {
+    internal fun buildDeleteShotAlert(shotName: String, id: Int): Alert {
         return Alert(
             title = application.getString(StringsIds.deleteShot),
             description = application.getString(StringsIds.areYouSureYouWantToDeleteXShot, shotName),
@@ -134,12 +134,48 @@ class CreateEditDeclaredShotViewModel(
         )
     }
 
-    fun onDeleteShotClicked(id: Int) {
-        navigation.alert(alert = buildDeleteShotAlert(shotName = currentDeclaredShot?.title ?: "", id = id))
+    internal fun buildShotHasBeenCreatedAlert(shotName: String): Alert {
+        return Alert(
+            title = application.getString(StringsIds.shotXHasBeenCreated, shotName),
+            description = application.getString(StringsIds.shotXHasBeenCreatedDescription, shotName),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            )
+        )
     }
 
+    internal fun buildShotHasBeenEditedAlert(shotName: String): Alert {
+        return Alert(
+            title = application.getString(StringsIds.shotXHasBeenEdited, shotName),
+            description = application.getString(StringsIds.shotXHasBeenEditedDescription, shotName),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            )
+        )
+    }
+
+    internal fun buildShotErrorAlert(shotName: String): Alert {
+        return Alert(
+            title = application.getString(StringsIds.shotXHadIssueSavingDetails, shotName),
+            description = application.getString(StringsIds.shotXHadIssueSavingDetailsDescription, shotName),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            )
+        )
+    }
+
+    internal fun buildSubmitShotAlert(hasShotBeenCreated: Boolean, shotName: String): Alert {
+        return if (hasShotBeenCreated) {
+            buildShotHasBeenCreatedAlert(shotName = shotName)
+        } else {
+            buildShotHasBeenEditedAlert(shotName = shotName)
+        }
+    }
+
+    fun onDeleteShotClicked(id: Int) = navigation.alert(alert = buildDeleteShotAlert(shotName = currentDeclaredShot?.title ?: "", id = id))
+
     fun onEditShotPencilClicked() {
-        newDeclaredShot= currentDeclaredShot
+        newDeclaredShot = currentDeclaredShot
         createEditDeclaredShotMutableStateFlow.update { state ->
             state.copy(
                 declaredShotState = DeclaredShotState.EDITING,
@@ -171,7 +207,7 @@ class CreateEditDeclaredShotViewModel(
 
     fun onEditOrCreateNewShot() {
         scope.launch {
-            val shotState = createEditDeclaredShotStateFlow.value.declaredShotState
+            val shotState = createEditDeclaredShotMutableStateFlow.value.declaredShotState
 
             navigation.enableProgress(Progress())
 
@@ -182,38 +218,38 @@ class CreateEditDeclaredShotViewModel(
         }
     }
 
+    private fun handleShotError(shotName: String) {
+        navigation.disableProgress()
+        navigation.alert(buildShotErrorAlert(shotName = shotName))
+    }
+
     private suspend fun handleShotEdit() {
         newDeclaredShot?.let { shot ->
             declaredShotRepository.deleteShotById(shot.id)
-            submitShotToRepositoryAndFirebase(shot)
-        } ?: handleShotError()
+            submitShotToRepositoryAndFirebase(shot = shot, hasShotBeenCreated = false)
+        } ?: handleShotError(shotName = application.getString(StringsIds.empty))
     }
 
     private suspend fun handleShotCreation() {
         newDeclaredShot?.let { shot ->
-            submitShotToRepositoryAndFirebase(shot)
-        } ?: handleShotError()
+            submitShotToRepositoryAndFirebase(shot = shot, hasShotBeenCreated = true)
+        } ?: handleShotError(shotName = application.getString(StringsIds.empty))
     }
 
-    private suspend fun submitShotToRepositoryAndFirebase(shot: DeclaredShot) {
+    private suspend fun submitShotToRepositoryAndFirebase(shot: DeclaredShot, hasShotBeenCreated: Boolean) {
         declaredShotRepository.createNewDeclaredShot(shot)
 
         createFirebaseUserInfo
             .attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(shot)
             .collectLatest { (success, _) ->
-                navigation.disableProgress()
 
                 if (success) {
+                    navigation.disableProgress()
                     navigation.pop()
-                    // TODO: show success confirmation dialog
+                    navigation.alert(buildSubmitShotAlert(hasShotBeenCreated = hasShotBeenCreated, shotName = shot.title))
                 } else {
-                    // TODO: show failure alert
+                    handleShotError(shotName = shot.title)
                 }
             }
-    }
-
-    private fun handleShotError() {
-        navigation.disableProgress()
-        // TODO: show missing data alert
     }
 }

@@ -204,6 +204,12 @@
     <string name="shot_taken_on_x">Shot Taken On %s</string>
     <string name="shot_updated">Shot Updated</string>
     <string name="shot_x">Shot %s</string>
+    <string name="shot_x_has_been_created">Shot %s Has Been Created</string>
+    <string name="shot_x_had_issue_saving_details">Shot %s Had Issues Saving Details</string>
+    <string name="shot_x_had_issue_saving_details_description">There was an issue saving the shot "%s" details. Please try again or contact support if the problem continues.</string>
+    <string name="shot_x_has_been_created_description">The shot "%s" has been created. You can now select it when logging shots for a player.</string>
+    <string name="shot_x_has_been_edited">Shot %s Has Been Edited</string>
+    <string name="shot_x_has_been_edited_description">The shot "%s" has been edited. You can now select it when logging shots for a player.</string>
     <string name="shots">Shots</string>
     <string name="shots_attempted">Shots Attempted</string>
     <string name="shots_made">Shots Made</string>

@@ -216,6 +216,12 @@ object StringsIds {
     val shotX = R.string.shot_x
     val shots = R.string.shots
     val shotsAttempted = R.string.shots_attempted
+    val shotXHadIssueSavingDetails = R.string.shot_x_had_issue_saving_details
+    val shotXHadIssueSavingDetailsDescription = R.string.shot_x_had_issue_saving_details_description
+    val shotXHasBeenCreated = R.string.shot_x_has_been_created
+    val shotXHasBeenCreatedDescription = R.string.shot_x_has_been_created_description
+    val shotXHasBeenEdited = R.string.shot_x_has_been_edited
+    val shotXHasBeenEditedDescription = R.string.shot_x_has_been_edited_description
     val shotsMade = R.string.shots_made
     val shotsMadeX = R.string.shots_made_x
     val shotsMadeXSecondary = R.string.shots_made_x_secondary
