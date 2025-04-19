@@ -6,8 +6,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
-import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
@@ -124,12 +125,12 @@ class ReadFirebaseUserInfoImpl(
         }
     }
 
-    override fun getCreatedDeclaredShotsFlow(): Flow<List<DeclaredShot>> {
+    override fun getCreatedDeclaredShotsFlow(): Flow<List<DeclaredShotWithKeyRealtimeResponse>> {
         return callbackFlow {
             val uid = firebaseAuth.currentUser?.uid ?: ""
             val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
 
-            val declaredShotArrayList: ArrayList<DeclaredShot> = arrayListOf()
+            val declaredShotWithKeyRealtimeResponseArrayList: ArrayList<DeclaredShotWithKeyRealtimeResponse> = arrayListOf()
 
             firebaseDatabase.getReference(path)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -140,13 +141,21 @@ class ReadFirebaseUserInfoImpl(
                                 trySend(element = emptyList())
                             } else {
                                 for (createdDeclaredShotSnapshot in snapshot.children) {
-                                    val info = createdDeclaredShotSnapshot.getValue(DeclaredShot::class.java)
+                                    val key = createdDeclaredShotSnapshot.key
+                                    val info = createdDeclaredShotSnapshot.getValue(DeclaredShotRealtimeResponse::class.java)
 
-                                    info?.let { declaredShot -> declaredShotArrayList.add(declaredShot) }
+                                    safeLet(key, info) { declaredShotFirebaseKey, declaredShotRealtimeResponse ->
+                                        declaredShotWithKeyRealtimeResponseArrayList.add(
+                                            DeclaredShotWithKeyRealtimeResponse(
+                                                declaredShotFirebaseKey = declaredShotFirebaseKey,
+                                                declaredShotRealtimeResponse = declaredShotRealtimeResponse
+                                            )
+                                        )
+                                    }
                                 }
                             }
 
-                            trySend(declaredShotArrayList.toList())
+                            trySend(declaredShotWithKeyRealtimeResponseArrayList.toList())
                         } else {
                             Timber.w("Warning(getCreatedDeclaredShotsFlow) -> No created shots reference currently exist for this account")
                             trySend(element = emptyList())

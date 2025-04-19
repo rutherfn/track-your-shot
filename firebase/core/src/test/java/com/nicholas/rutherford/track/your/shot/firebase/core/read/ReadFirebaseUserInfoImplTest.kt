@@ -12,9 +12,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestAccountInfoRealTimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestDeclaredShotRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestDeclaredShotWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
@@ -434,17 +437,19 @@ class ReadFirebaseUserInfoImplTest {
             val mockFirebaseUser = mockk<FirebaseUser>()
             val slot = slot<ValueEventListener>()
 
-            val declaredShotList = listOf(
-                DeclaredShot(id = 1, shotCategory = "category1", title = "title1", description = "desc1"),
-                DeclaredShot(id = 2, shotCategory = "category1", title = "title2", description = "desc2")
+            val declaredShotWithKeyRealtimeResponse = TestDeclaredShotWithKeyRealtimeResponse.create()
+            val declaredShotWithKeyRealtimeResponseList = listOf(
+                declaredShotWithKeyRealtimeResponse,
+                declaredShotWithKeyRealtimeResponse.copy(declaredShotFirebaseKey = "-j0P5J2LcXmXF", declaredShotRealtimeResponse = TestDeclaredShotRealtimeResponse.create().copy(title = "ShotTitle1"))
             )
 
             every { mockDataSnapshot.exists() } returns true
-            every { mockDataSnapshot.childrenCount } returns declaredShotList.size.toLong()
+            every { mockDataSnapshot.childrenCount } returns declaredShotWithKeyRealtimeResponseList.size.toLong()
 
-            every { mockDataSnapshot.children } returns declaredShotList.map { declaredShot ->
+            every { mockDataSnapshot.children } returns declaredShotWithKeyRealtimeResponseList.map { declaredShot ->
                 val mockChildSnapshot = mockk<DataSnapshot>()
-                every { mockChildSnapshot.getValue(DeclaredShot::class.java) } returns declaredShot
+                every { mockChildSnapshot.key } returns declaredShotWithKeyRealtimeResponse.declaredShotFirebaseKey
+                every { mockChildSnapshot.getValue(DeclaredShotRealtimeResponse::class.java) } returns declaredShot.declaredShotRealtimeResponse
                 mockChildSnapshot
             }
 
@@ -460,7 +465,7 @@ class ReadFirebaseUserInfoImplTest {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
 
-            Assertions.assertEquals(declaredShotList, readFirebaseUserInfoImpl.getCreatedDeclaredShotsFlow().first())
+            Assertions.assertEquals(declaredShotWithKeyRealtimeResponseList, readFirebaseUserInfoImpl.getCreatedDeclaredShotsFlow().first())
         }
     }
 

@@ -9,6 +9,9 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotIgnoringEntity
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import io.mockk.coEvery
@@ -38,6 +41,7 @@ class CreateEditDeclaredShotViewModelTest {
     private val shotIgnoringRepository = mockk<ShotIgnoringRepository>(relaxed = true)
 
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
+    private val updateFirebaseUserInfo = mockk<UpdateFirebaseUserInfo>(relaxed = true)
 
     private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
     private val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
@@ -58,6 +62,7 @@ class CreateEditDeclaredShotViewModelTest {
             declaredShotRepository = declaredShotRepository,
             shotIgnoringRepository = shotIgnoringRepository,
             createFirebaseUserInfo = createFirebaseUserInfo,
+            updateFirebaseUserInfo = updateFirebaseUserInfo,
             createSharedPreferences = createSharedPreferences,
             readSharedPreferences = readSharedPreferences,
             navigation = navigation,
@@ -609,20 +614,78 @@ class CreateEditDeclaredShotViewModelTest {
 
         @Test
         fun `when editedDeclaredShot state is editing, editedDeclaredShot is not null, and attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow returns false should show error alert`() = runTest {
-            viewModel.editedDeclaredShot = declaredShot
+            val newKey = "new-key"
+
+            viewModel.editedDeclaredShot = declaredShot.copy(firebaseKey = null)
             viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.EDITING) }
 
-            coEvery { createFirebaseUserInfo.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot = declaredShot) } returns flowOf(Pair(false, null))
+            coEvery { createFirebaseUserInfo.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot = declaredShot.copy(firebaseKey = null)) } returns flowOf(Pair(false, newKey))
 
             viewModel.onEditOrCreateNewShot()
-
-            coVerify { declaredShotRepository.deleteShotById(declaredShot.id) }
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
             verify { navigation.alert(alert = any()) }
 
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
             verify(exactly = 0) { navigation.pop() }
+        }
+
+        @Test
+        fun `when editedDeclaredShot state is editing, editedDeclaredShot is not null, and updateDeclaredShot returns back as false should show error alert`() = runTest {
+            val declaredShotWithKeyRealtimeResponse = DeclaredShotWithKeyRealtimeResponse(
+                declaredShotFirebaseKey = declaredShot.firebaseKey!!,
+                declaredShotRealtimeResponse = DeclaredShotRealtimeResponse(
+                    id = declaredShot.id,
+                    shotCategory = declaredShot.shotCategory,
+                    title = declaredShot.title,
+                    description = declaredShot.description
+
+                )
+            )
+
+            viewModel.editedDeclaredShot = declaredShot
+            viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.EDITING) }
+
+            coEvery { updateFirebaseUserInfo.updateDeclaredShot(declaredShotWithKeyRealtimeResponse = declaredShotWithKeyRealtimeResponse) } returns flowOf(value = false)
+
+            viewModel.onEditOrCreateNewShot()
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) { declaredShotRepository.updateDeclaredShot(declaredShot = declaredShot) }
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
+            verify(exactly = 0) { navigation.pop() }
+        }
+
+        @Test
+        fun `when editedDeclaredShot state is editing, editedDeclaredShot is not null, and updateDeclaredShot returns back as true should pop and show alert`() = runTest {
+            val declaredShotWithKeyRealtimeResponse = DeclaredShotWithKeyRealtimeResponse(
+                declaredShotFirebaseKey = declaredShot.firebaseKey!!,
+                declaredShotRealtimeResponse = DeclaredShotRealtimeResponse(
+                    id = declaredShot.id,
+                    shotCategory = declaredShot.shotCategory,
+                    title = declaredShot.title,
+                    description = declaredShot.description
+
+                )
+            )
+
+            viewModel.editedDeclaredShot = declaredShot
+            viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.EDITING) }
+
+            coEvery { updateFirebaseUserInfo.updateDeclaredShot(declaredShotWithKeyRealtimeResponse = declaredShotWithKeyRealtimeResponse) } returns flowOf(value = true)
+
+            viewModel.onEditOrCreateNewShot()
+
+            verify { navigation.enableProgress(progress = any()) }
+            coVerify { declaredShotRepository.deleteShotById(declaredShot.id) }
+            coVerify { declaredShotRepository.updateDeclaredShot(declaredShot = declaredShot) }
+            verify { navigation.disableProgress() }
+            verify { navigation.pop() }
+            verify { navigation.alert(alert = any()) }
         }
 
         @Test
@@ -767,10 +830,12 @@ class CreateEditDeclaredShotViewModelTest {
 
         @Test
         fun `when editedDeclaredShot state is editing, editedDeclaredShot is not null, and attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow returns true should pop and show alert`() = runTest {
-            viewModel.editedDeclaredShot = declaredShot
+            val newKey = "newKey"
+
+            viewModel.editedDeclaredShot = declaredShot.copy(firebaseKey = null)
             viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.EDITING) }
 
-            coEvery { createFirebaseUserInfo.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot = declaredShot) } returns flowOf(Pair(true, declaredShot))
+            coEvery { createFirebaseUserInfo.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot = declaredShot.copy(firebaseKey = null)) } returns flowOf(Pair(true, newKey))
 
             viewModel.onEditOrCreateNewShot()
 
@@ -788,19 +853,21 @@ class CreateEditDeclaredShotViewModelTest {
                 id = 444,
                 shotCategory = "category",
                 title = "name",
-                description = "description"
+                description = "description",
+                firebaseKey = null
             )
+            val newKey = "newKey"
 
             viewModel.allDeclaredShotNames = emptyList()
             viewModel.createdShotInfo = CreateShotInfo(name = "name", "description", "category")
             viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.CREATING) }
 
             coEvery { declaredShotRepository.fetchMaxId() } returns 444
-            coEvery { createFirebaseUserInfo.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot = newDeclaredShot.copy(id = 445)) } returns flowOf(Pair(true, newDeclaredShot.copy(id = 445)))
+            coEvery { createFirebaseUserInfo.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot = newDeclaredShot.copy(id = 445)) } returns flowOf(Pair(true, newKey))
 
             viewModel.onEditOrCreateNewShot()
 
-            coVerify { declaredShotRepository.createNewDeclaredShot(newDeclaredShot.copy(id = 445)) }
+            coVerify { declaredShotRepository.createNewDeclaredShot(newDeclaredShot.copy(id = 445, firebaseKey = newKey)) }
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
             verify { navigation.pop() }

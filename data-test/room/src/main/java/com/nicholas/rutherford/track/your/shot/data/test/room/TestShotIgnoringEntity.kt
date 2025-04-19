@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.data.test.room
 
 import com.nicholas.rutherford.track.your.shot.data.room.entities.ShotIgnoringEntity
-import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 
 object TestShotIgnoringEntity {
 
@@ -16,8 +15,8 @@ object TestShotIgnoringEntity {
 const val SHOT_IGNORING_ID = 1
 const val SHOT_IGNORING_SHOT_ID = 22
 
-//@Test
-//fun `when add on complete listener is executed should set flow to true and value Pair when isSuccessful returns back true`() =
+// @Test
+// fun `when add on complete listener is executed should set flow to true and value Pair when isSuccessful returns back true`() =
 //    runTest {
 //        val uid = "uid"
 //        val path = "${Constants.USERS_PATH}/$uid"

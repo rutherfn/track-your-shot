@@ -10,6 +10,9 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.extensions.normalizeSpaces
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
@@ -27,6 +30,7 @@ class CreateEditDeclaredShotViewModel(
     private val declaredShotRepository: DeclaredShotRepository,
     private val shotIgnoringRepository: ShotIgnoringRepository,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
+    private val updateFirebaseUserInfo: UpdateFirebaseUserInfo,
     private val createSharedPreferences: CreateSharedPreferences,
     private val readSharedPreferences: ReadSharedPreferences,
     private val navigation: CreateEditDeclaredShotNavigation,
@@ -315,8 +319,21 @@ class CreateEditDeclaredShotViewModel(
             return
         }
 
-        declaredShotRepository.deleteShotById(shot.id)
-        submitShotToRepositoryAndFirebase(shot = shot, hasShotBeenCreated = false)
+        shot.firebaseKey?.let { declaredShotFirebaseKey ->
+            submitUpdatedShotToRepositoryAndFirebase(
+                declaredShotWithKeyRealtimeResponse = DeclaredShotWithKeyRealtimeResponse(
+                    declaredShotFirebaseKey = declaredShotFirebaseKey,
+                    declaredShotRealtimeResponse = DeclaredShotRealtimeResponse(
+                        id = shot.id,
+                        shotCategory = shot.shotCategory,
+                        title = shot.title,
+                        description = shot.description
+                    )
+                )
+            )
+        } ?: run {
+            submitShotToRepositoryAndFirebase(shot = shot, shouldDeleteShotById = true, hasShotBeenCreated = false)
+        }
     }
 
     private suspend fun handleShotCreation() {
@@ -340,20 +357,48 @@ class CreateEditDeclaredShotViewModel(
             id = declaredShotRepository.fetchMaxId() + 1,
             shotCategory = createdShotInfo.category,
             title = createdShotInfo.name,
-            description = createdShotInfo.description
+            description = createdShotInfo.description,
+            firebaseKey = null
         )
 
-        submitShotToRepositoryAndFirebase(shot = declaredShot, hasShotBeenCreated = true)
+        submitShotToRepositoryAndFirebase(shot = declaredShot, shouldDeleteShotById = false, hasShotBeenCreated = true)
     }
 
-    private suspend fun submitShotToRepositoryAndFirebase(shot: DeclaredShot, hasShotBeenCreated: Boolean) {
-        declaredShotRepository.createNewDeclaredShot(shot)
+    private suspend fun submitUpdatedShotToRepositoryAndFirebase(declaredShotWithKeyRealtimeResponse: DeclaredShotWithKeyRealtimeResponse) {
+        updateFirebaseUserInfo
+            .updateDeclaredShot(declaredShotWithKeyRealtimeResponse = declaredShotWithKeyRealtimeResponse)
+            .collectLatest { success ->
 
-        createFirebaseUserInfo
-            .attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(shot)
-            .collectLatest { (success, _) ->
+                val newDeclaredShot = DeclaredShot(
+                    id = declaredShotWithKeyRealtimeResponse.declaredShotRealtimeResponse.id,
+                    shotCategory = declaredShotWithKeyRealtimeResponse.declaredShotRealtimeResponse.shotCategory,
+                    title = declaredShotWithKeyRealtimeResponse.declaredShotRealtimeResponse.title,
+                    description = declaredShotWithKeyRealtimeResponse.declaredShotRealtimeResponse.description,
+                    firebaseKey = declaredShotWithKeyRealtimeResponse.declaredShotFirebaseKey
+                )
 
                 if (success) {
+                    declaredShotRepository.deleteShotById(newDeclaredShot.id)
+                    declaredShotRepository.updateDeclaredShot(declaredShot = newDeclaredShot)
+                    navigation.disableProgress()
+                    navigation.pop()
+                    navigation.alert(buildSubmitShotAlert(hasShotBeenCreated = false, shotName = newDeclaredShot.title))
+                } else {
+                    handleShotError(shotName = newDeclaredShot.title)
+                }
+            }
+    }
+
+    private suspend fun submitShotToRepositoryAndFirebase(shot: DeclaredShot, shouldDeleteShotById: Boolean, hasShotBeenCreated: Boolean) {
+        createFirebaseUserInfo
+            .attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(shot)
+            .collectLatest { (success, firebaseKey) ->
+
+                if (success) {
+                    if (shouldDeleteShotById) {
+                        declaredShotRepository.deleteShotById(shot.id)
+                    }
+                    declaredShotRepository.createNewDeclaredShot(shot.copy(firebaseKey = firebaseKey))
                     navigation.disableProgress()
                     navigation.pop()
                     navigation.alert(buildSubmitShotAlert(hasShotBeenCreated = hasShotBeenCreated, shotName = shot.title))

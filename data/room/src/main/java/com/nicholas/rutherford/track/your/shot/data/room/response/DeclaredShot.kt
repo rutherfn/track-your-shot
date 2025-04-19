@@ -6,7 +6,8 @@ data class DeclaredShot(
     val id: Int,
     val shotCategory: String,
     val title: String,
-    val description: String
+    val description: String,
+    val firebaseKey: String?
 )
 
 fun DeclaredShot.toDeclaredShotEntity(): DeclaredShotEntity {
@@ -14,6 +15,7 @@ fun DeclaredShot.toDeclaredShotEntity(): DeclaredShotEntity {
         id = id,
         shotCategory = shotCategory,
         title = title,
-        description = description
+        description = description,
+        firebaseKey = firebaseKey
     )
 }
