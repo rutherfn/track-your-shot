@@ -5,6 +5,7 @@ import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toShotIgnoring
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotIgnoringEntity
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
@@ -72,6 +73,11 @@ class CreateEditDeclaredShotViewModelTest {
     @Nested
     inner class OnNavigateTo {
 
+        @BeforeEach
+        fun beforeEach() {
+            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns listOf(TestDeclaredShot.build())
+        }
+
         @Test
         fun `when declaredShotId returns back 0 should update state`() {
             val toolbarTitle = "Create Shot"
@@ -81,6 +87,7 @@ class CreateEditDeclaredShotViewModelTest {
 
             viewModel.onNavigatedTo()
 
+            Assertions.assertEquals(viewModel.allDeclaredShotNames, listOf("Hook Shot"))
             Assertions.assertEquals(
                 viewModel.createEditDeclaredShotMutableStateFlow.value,
                 state.copy(
@@ -99,8 +106,10 @@ class CreateEditDeclaredShotViewModelTest {
 
             viewModel.onNavigatedTo()
 
+            Assertions.assertEquals(viewModel.allDeclaredShotNames, listOf("Hook Shot"))
             Assertions.assertEquals(viewModel.currentDeclaredShot, null)
             Assertions.assertEquals(viewModel.createEditDeclaredShotMutableStateFlow.value, state)
+
             verify { createSharedPreferences.createDeclaredShotId(value = 0) }
         }
 
@@ -116,6 +125,7 @@ class CreateEditDeclaredShotViewModelTest {
 
             viewModel.onNavigatedTo()
 
+            Assertions.assertEquals(viewModel.allDeclaredShotNames, listOf("Hook Shot"))
             Assertions.assertEquals(viewModel.currentDeclaredShot, declaredShot)
             Assertions.assertEquals(
                 viewModel.createEditDeclaredShotMutableStateFlow.value,
@@ -125,6 +135,7 @@ class CreateEditDeclaredShotViewModelTest {
                     toolbarTitle = viewShotName
                 )
             )
+
             verify { createSharedPreferences.createDeclaredShotId(value = 0) }
         }
     }
@@ -305,6 +316,76 @@ class CreateEditDeclaredShotViewModelTest {
         Assertions.assertEquals(alert.confirmButton!!.buttonText, gotIt)
     }
 
+    @Test
+    fun `build shot name not added alert should return alert`() {
+        val shotNameMissing = "Shot Name Missing"
+        val shotNameMissingDescription = "Shot name is required and currently missing. Please enter a shot name to proceed with defining the shot details."
+        val gotIt = "Got It"
+
+        every { application.getString(StringsIds.shotNameMissing) } returns shotNameMissing
+        every { application.getString(StringsIds.shotNameMissingDescription) } returns shotNameMissingDescription
+        every { application.getString(StringsIds.gotIt) } returns gotIt
+
+        val alert = viewModel.buildShotNameNotAddedAlert()
+
+        Assertions.assertEquals(alert.title, shotNameMissing)
+        Assertions.assertEquals(alert.description, shotNameMissingDescription)
+        Assertions.assertEquals(alert.confirmButton!!.buttonText, gotIt)
+    }
+
+    @Test
+    fun `build shot name already exists should return alert`() {
+        val shotWithThatNameAlreadyExists = "Shot With That Name Already Exists"
+        val shotWithThatNameAlreadyExistsDescription = "A shot with that name already exists. Please choose a different name to continue."
+        val gotIt = "Got It"
+
+        every { application.getString(StringsIds.shotWithThatNameAlreadyExists) } returns shotWithThatNameAlreadyExists
+        every { application.getString(StringsIds.shotWithThatNameAlreadyExistsDescription) } returns  shotWithThatNameAlreadyExistsDescription
+        every { application.getString(StringsIds.gotIt) } returns gotIt
+
+        val alert = viewModel.buildShotNameAlreadyExistAlert()
+
+        Assertions.assertEquals(alert.title, shotWithThatNameAlreadyExists)
+        Assertions.assertEquals(alert.description,  shotWithThatNameAlreadyExistsDescription)
+        Assertions.assertEquals(alert.confirmButton!!.buttonText, gotIt)
+    }
+
+    @Test
+    fun `build shot category not added alert should return alert`() {
+        val shotCategoryMissing = "Shot Category Missing"
+        val shotCategoryMissingDescription = "Shot category is required and currently missing. Please enter a shot category to proceed with defining the shot details."
+        val gotIt = "Got It"
+
+        every { application.getString(StringsIds.shotCategoryMissing) } returns shotCategoryMissing
+        every { application.getString(StringsIds.shotCategoryMissingDescription) } returns shotCategoryMissingDescription
+
+        every { application.getString(StringsIds.gotIt) } returns gotIt
+
+        val alert = viewModel.buildShotCategoryNotAddedAlert()
+
+        Assertions.assertEquals(alert.title, shotCategoryMissing)
+        Assertions.assertEquals(alert.description, shotCategoryMissingDescription)
+        Assertions.assertEquals(alert.confirmButton!!.buttonText, gotIt)
+    }
+
+    @Test
+    fun `build shot description not added alert should return alert`() {
+        val shotDescriptionMissing = "Shot Description Missing"
+        val shotDescriptionMissingDesc = "Shot description is required and currently missing. Please enter a shot description to proceed with defining the shot details."
+        val gotIt = "Got It"
+
+        every { application.getString(StringsIds.shotDescriptionMissing) } returns shotDescriptionMissing
+        every { application.getString(StringsIds.shotDescriptionMissingDesc) } returns shotDescriptionMissingDesc
+
+        every { application.getString(StringsIds.gotIt) } returns gotIt
+
+        val alert = viewModel.buildShotDescriptionNotAddedAlert()
+
+        Assertions.assertEquals(alert.title, shotDescriptionMissing)
+        Assertions.assertEquals(alert.description, shotDescriptionMissingDesc)
+        Assertions.assertEquals(alert.confirmButton!!.buttonText, gotIt)
+    }
+
     @Nested
     inner class BuildSubmitShotAlert {
 
@@ -382,25 +463,25 @@ class CreateEditDeclaredShotViewModelTest {
         private val shotName = "shot"
 
         @Test
-        fun `when newDeclaredShot is null should not update the new declared shot with passed in shot name`() {
-            viewModel.newDeclaredShot = null
+        fun `when editedDeclaredShot is null should not update the new declared shot with passed in shot name`() {
+            viewModel.editedDeclaredShot = null
 
             viewModel.onEditShotNameValueChanged(shotName = shotName)
 
-            Assertions.assertEquals(viewModel.newDeclaredShot, null)
+            Assertions.assertEquals(viewModel.editedDeclaredShot, null)
         }
 
         @Test
-        fun `when newDeclaredShot is not null should update new declared shot with passed in shot name`() {
+        fun `when editedDeclaredShot is not null should update new declared shot with passed in shot name`() {
             val declaredShot = TestDeclaredShot.build()
 
-            viewModel.newDeclaredShot = declaredShot
+            viewModel.editedDeclaredShot = declaredShot
 
-            Assertions.assertEquals(viewModel.newDeclaredShot, declaredShot)
+            Assertions.assertEquals(viewModel.editedDeclaredShot, declaredShot)
 
             viewModel.onEditShotNameValueChanged(shotName = shotName)
 
-            Assertions.assertEquals(viewModel.newDeclaredShot, declaredShot.copy(title = shotName))
+            Assertions.assertEquals(viewModel.editedDeclaredShot, declaredShot.copy(title = shotName))
         }
     }
 
@@ -409,25 +490,25 @@ class CreateEditDeclaredShotViewModelTest {
         private val shotCategory = "category"
 
         @Test
-        fun `when newDeclaredShot is null should not update the new declared shot with passed in shot category`() {
-            viewModel.newDeclaredShot = null
+        fun `when editedDeclaredShot is null should not update the new declared shot with passed in shot category`() {
+            viewModel.editedDeclaredShot = null
 
             viewModel.onEditShotCategoryValueChanged(shotCategory = shotCategory)
 
-            Assertions.assertEquals(viewModel.newDeclaredShot, null)
+            Assertions.assertEquals(viewModel.editedDeclaredShot, null)
         }
 
         @Test
-        fun `when newDeclaredShot is not null should update new declared shot with passed in shot category`() {
+        fun `when editedDeclaredShot is not null should update new declared shot with passed in shot category`() {
             val declaredShot = TestDeclaredShot.build()
 
-            viewModel.newDeclaredShot = declaredShot
+            viewModel.editedDeclaredShot = declaredShot
 
-            Assertions.assertEquals(viewModel.newDeclaredShot, declaredShot)
+            Assertions.assertEquals(viewModel.editedDeclaredShot, declaredShot)
 
             viewModel.onEditShotCategoryValueChanged(shotCategory = shotCategory)
 
-            Assertions.assertEquals(viewModel.newDeclaredShot, declaredShot.copy(shotCategory = shotCategory))
+            Assertions.assertEquals(viewModel.editedDeclaredShot, declaredShot.copy(shotCategory = shotCategory))
         }
     }
 
@@ -436,26 +517,60 @@ class CreateEditDeclaredShotViewModelTest {
         private val shotDescription = "description"
 
         @Test
-        fun `when newDeclaredShot is null should not update the new declared shot with passed in shot description`() {
-            viewModel.newDeclaredShot = null
+        fun `when editedDeclaredShot is null should not update the new declared shot with passed in shot description`() {
+            viewModel.editedDeclaredShot = null
 
             viewModel.onEditShotDescriptionValueChanged(description = shotDescription)
 
-            Assertions.assertEquals(viewModel.newDeclaredShot, null)
+            Assertions.assertEquals(viewModel.editedDeclaredShot, null)
         }
 
         @Test
-        fun `when newDeclaredShot is not null should update new declared shot with passed in shot description`() {
+        fun `when editedDeclaredShot is not null should update new declared shot with passed in shot description`() {
             val declaredShot = TestDeclaredShot.build()
 
-            viewModel.newDeclaredShot = declaredShot
+            viewModel.editedDeclaredShot = declaredShot
 
-            Assertions.assertEquals(viewModel.newDeclaredShot, declaredShot)
+            Assertions.assertEquals(viewModel.editedDeclaredShot, declaredShot)
 
             viewModel.onEditShotDescriptionValueChanged(description = shotDescription)
 
-            Assertions.assertEquals(viewModel.newDeclaredShot, declaredShot.copy(description = shotDescription))
+            Assertions.assertEquals(viewModel.editedDeclaredShot, declaredShot.copy(description = shotDescription))
         }
+    }
+
+    @Test
+    fun `on create shot name value changed`() {
+        val shotName = "shotName"
+
+        Assertions.assertEquals(viewModel.createdShotInfo, CreateShotInfo())
+
+        viewModel.onCreateShotNameValueChanged(shotName = shotName)
+
+        Assertions.assertEquals(viewModel.createdShotInfo, CreateShotInfo(name = shotName))
+    }
+
+    @Test
+    fun `on create shot description value changed`() {
+        val shotDescription = "desc"
+
+        Assertions.assertEquals(viewModel.createdShotInfo, CreateShotInfo())
+
+        viewModel.onCreateShotDescriptionValueChanged(shotDescription = shotDescription)
+
+        Assertions.assertEquals(viewModel.createdShotInfo, CreateShotInfo(description = shotDescription))
+
+    }
+
+    @Test
+    fun `on create shot category value changed`() {
+        val shotCategory = "category"
+
+        Assertions.assertEquals(viewModel.createdShotInfo, CreateShotInfo())
+
+        viewModel.onCreateShotCategoryValueChanged(shotCategory = shotCategory)
+
+        Assertions.assertEquals(viewModel.createdShotInfo, CreateShotInfo(category = shotCategory))
     }
 
     @Nested
@@ -463,8 +578,8 @@ class CreateEditDeclaredShotViewModelTest {
         private val declaredShot = TestDeclaredShot.build()
 
         @Test
-        fun `when declaredShot state is editing and newDeclaredShot is null should show error alert`() = runTest {
-            viewModel.newDeclaredShot = null
+        fun `when editedDeclaredShot state is editing and editedDeclaredShot is null should show error alert`() = runTest {
+            viewModel.editedDeclaredShot = null
             viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.EDITING) }
 
             viewModel.onEditOrCreateNewShot()
@@ -478,8 +593,8 @@ class CreateEditDeclaredShotViewModelTest {
         }
 
         @Test
-        fun `when declaredShot state is not editing and newDeclaredShot is null should show error alert`() = runTest {
-            viewModel.newDeclaredShot = null
+        fun `when declaredShot state is not editing and editedDeclaredShot is null should show error alert`() = runTest {
+            viewModel.editedDeclaredShot = null
             viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.CREATING) }
 
             viewModel.onEditOrCreateNewShot()
@@ -493,8 +608,8 @@ class CreateEditDeclaredShotViewModelTest {
         }
 
         @Test
-        fun `when declaredShot state is editing, newDeclaredShot is not null, and attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow returns false should show error alert`() = runTest {
-            viewModel.newDeclaredShot = declaredShot
+        fun `when editedDeclaredShot state is editing, editedDeclaredShot is not null, and attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow returns false should show error alert`() = runTest {
+            viewModel.editedDeclaredShot = declaredShot
             viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.EDITING) }
 
             coEvery { createFirebaseUserInfo.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot = declaredShot) } returns flowOf(Pair(false, null))
@@ -511,8 +626,131 @@ class CreateEditDeclaredShotViewModelTest {
         }
 
         @Test
-        fun `when declaredShot state is not editing, newDeclaredShot is not null, and attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow returns false should show error alert`() = runTest {
-            viewModel.newDeclaredShot = declaredShot
+        fun `when editedDeclaredShot state is editing, editedDeclaredShot is not null, but title is empty should show alert`() = runTest {
+            viewModel.editedDeclaredShot = declaredShot.copy(title = "")
+            viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.EDITING) }
+
+            viewModel.onEditOrCreateNewShot()
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
+            verify(exactly = 0) { navigation.pop() }
+        }
+
+        @Test
+        fun `when editedDeclaredShot state is editing, editedDeclaredShot is not null, but category is empty should show alert`() = runTest {
+            viewModel.editedDeclaredShot = declaredShot.copy(shotCategory = "")
+            viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.EDITING) }
+
+            viewModel.onEditOrCreateNewShot()
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
+            verify(exactly = 0) { navigation.pop() }
+        }
+
+        @Test
+        fun `when editDeclaredShot state is editing, and editedDeclaredShot name contains shot names should show alert`() = runTest {
+            viewModel.editedDeclaredShot = declaredShot
+            viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.EDITING) }
+
+            viewModel.allDeclaredShotNames = listOf(declaredShot.title)
+
+            viewModel.onEditOrCreateNewShot()
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
+            verify(exactly = 0) { navigation.pop() }
+        }
+
+        @Test
+        fun `when editedDeclaredShot state is editing, editedDeclaredShot is not null, but description is empty should show alert`() = runTest {
+            viewModel.editedDeclaredShot = declaredShot.copy(description = "")
+            viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.EDITING) }
+
+            viewModel.onEditOrCreateNewShot()
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
+            verify(exactly = 0) { navigation.pop() }
+        }
+
+        @Test
+        fun `when editedDeclaredShot state is not editing, editDeclaredShot name is empty should return alert`() = runTest {
+            viewModel.editedDeclaredShot = declaredShot.copy(title = "")
+            viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.CREATING) }
+
+            viewModel.onEditOrCreateNewShot()
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
+            verify(exactly = 0) { navigation.pop() }
+        }
+
+        @Test
+        fun `when editedDeclaredShot state is not editing, editDeclaredShot category is empty should return alert`() = runTest {
+            viewModel.editedDeclaredShot = declaredShot.copy(shotCategory = "")
+            viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.CREATING) }
+
+            viewModel.onEditOrCreateNewShot()
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
+            verify(exactly = 0) { navigation.pop() }
+        }
+
+        @Test
+        fun `when editedDeclaredShot state is not editing, editDeclaredShot description is empty should return alert`() = runTest {
+            viewModel.editedDeclaredShot = declaredShot.copy(description = "")
+            viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.CREATING) }
+
+            viewModel.onEditOrCreateNewShot()
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
+            verify(exactly = 0) { navigation.pop() }
+        }
+
+        @Test
+        fun `when editedDeclaredShot state is not editing, editDeclaredShot name contains in declared shot names should return alert`() = runTest {
+            viewModel.editedDeclaredShot = declaredShot
+            viewModel.allDeclaredShotNames = listOf(declaredShot.title)
+            viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.CREATING) }
+
+            viewModel.onEditOrCreateNewShot()
+
+            verify { navigation.enableProgress(progress = any()) }
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
+            verify(exactly = 0) { navigation.pop() }
+        }
+
+        @Test
+        fun `when editedDeclaredShot state is not editing,editedDeclaredShot is not null, and attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow returns false should show error alert`() = runTest {
+            viewModel.editedDeclaredShot = declaredShot
             viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.CREATING) }
 
             coEvery { createFirebaseUserInfo.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot = declaredShot) } returns flowOf(Pair(false, null))
@@ -528,8 +766,8 @@ class CreateEditDeclaredShotViewModelTest {
         }
 
         @Test
-        fun `when declaredShot state is editing, newDeclaredShot is not null, and attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow returns true should pop and show alert`() = runTest {
-            viewModel.newDeclaredShot = declaredShot
+        fun `when editedDeclaredShot state is editing, editedDeclaredShot is not null, and attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow returns true should pop and show alert`() = runTest {
+            viewModel.editedDeclaredShot = declaredShot
             viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.EDITING) }
 
             coEvery { createFirebaseUserInfo.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot = declaredShot) } returns flowOf(Pair(true, declaredShot))
@@ -545,20 +783,30 @@ class CreateEditDeclaredShotViewModelTest {
         }
 
         @Test
-        fun `when declaredShot state is creating, newDeclaredShot is not null, and attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow returns true should pop and show alert`() = runTest {
-            viewModel.newDeclaredShot = declaredShot
+        fun `when editedDeclaredShot state is creating, newDeclaredShot is not empty, and attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow returns true should pop and show alert`() = runTest {
+            val newDeclaredShot = DeclaredShot(
+                id = 444,
+                shotCategory = "category",
+                title = "name",
+                description = "description"
+            )
+
+            viewModel.allDeclaredShotNames = emptyList()
+            viewModel.createdShotInfo = CreateShotInfo(name = "name", "description", "category")
             viewModel.createEditDeclaredShotMutableStateFlow.update { state -> state.copy(declaredShotState = DeclaredShotState.CREATING) }
 
-            coEvery { createFirebaseUserInfo.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot = declaredShot) } returns flowOf(Pair(true, declaredShot))
+            coEvery { declaredShotRepository.fetchMaxId() } returns 444
+            coEvery { createFirebaseUserInfo.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot = newDeclaredShot.copy(id = 445)) } returns flowOf(Pair(true, newDeclaredShot.copy(id = 445)))
 
             viewModel.onEditOrCreateNewShot()
 
+            coVerify { declaredShotRepository.createNewDeclaredShot(newDeclaredShot.copy(id = 445)) }
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
             verify { navigation.pop() }
             verify { navigation.alert(alert = any()) }
 
-            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(445) }
         }
     }
 

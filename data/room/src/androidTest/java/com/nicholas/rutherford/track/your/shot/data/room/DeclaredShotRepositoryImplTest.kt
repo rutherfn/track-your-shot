@@ -137,4 +137,21 @@ class DeclaredShotRepositoryImplTest {
         assertThat(declaredShotRepositoryImpl.fetchDeclaredShotsBySearchQuery(searchQuery = "test"), equalTo(emptyList()))
         assertThat(declaredShotRepositoryImpl.fetchDeclaredShotsBySearchQuery(searchQuery = declaredShotEntity.title), equalTo(listOf(declaredShotEntity.toDeclaredShot())))
     }
+
+    @Test
+    fun fetchMaxIdNoEntries() = runBlocking {
+        val result = declaredShotRepositoryImpl.fetchMaxId()
+
+        assertThat(1, equalTo(result))
+    }
+
+    @Test
+    fun fetchMaxIdWithEntries() = runBlocking {
+        declaredShotRepositoryImpl.createNewDeclaredShot(declaredShot = declaredShotEntity.toDeclaredShot())
+        declaredShotRepositoryImpl.createNewDeclaredShot(declaredShot = declaredShotEntity.toDeclaredShot().copy(id = 444))
+
+        assertThat(listOf(declaredShotEntity.toDeclaredShot(), declaredShotEntity.toDeclaredShot().copy(id = 444)), equalTo(declaredShotRepositoryImpl.fetchAllDeclaredShots()))
+
+        assertThat(444, equalTo(declaredShotRepositoryImpl.fetchMaxId()))
+    }
 }

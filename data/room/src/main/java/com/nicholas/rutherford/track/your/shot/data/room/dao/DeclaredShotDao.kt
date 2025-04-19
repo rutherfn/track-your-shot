@@ -32,4 +32,7 @@ interface DeclaredShotDao {
 
     @Query("SELECT * FROM declaredShots WHERE REPLACE(title, ' ', '') LIKE '%' || REPLACE(:searchQuery, ' ', '') || '%' ORDER BY title ASC")
     suspend fun getDeclaredShotsBySearchQuery(searchQuery: String): List<DeclaredShotEntity>
+
+    @Query("SELECT COALESCE(MAX(id), 1) FROM declaredShots")
+    suspend fun getMaxIdOrDefault(): Int
 }

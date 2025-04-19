@@ -11,7 +11,7 @@ interface CreateFirebaseUserInfo {
     fun attemptToCreateAccountFirebaseAuthResponseFlow(email: String, password: String): Flow<CreateAccountFirebaseAuthResponse>
     fun attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName: String, email: String): Flow<Pair<Boolean, String?>>
     fun attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore: List<Int>): Flow<Pair<Boolean, List<Int>?>>
-    fun attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot: DeclaredShot): Flow<Pair<Boolean, DeclaredShot?>>
+    fun attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot: DeclaredShot): Flow<Pair<Boolean, String?>>
     fun attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(playerInfoRealtimeResponse: PlayerInfoRealtimeResponse): Flow<Pair<Boolean, String?>>
     fun attemptToCreateIndividualPlayerReportFirebaseRealtimeDatabaseResponseFlow(individualPlayerReportRealtimeResponse: IndividualPlayerReportRealtimeResponse): Flow<Pair<Boolean, String?>>
     fun attemptToCreateImageFirebaseStorageResponseFlow(uri: Uri): Flow<String?>

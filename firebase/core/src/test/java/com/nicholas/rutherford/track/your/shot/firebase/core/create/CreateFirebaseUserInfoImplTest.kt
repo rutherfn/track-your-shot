@@ -257,7 +257,7 @@ class CreateFirebaseUserInfoImplTest {
     inner class AttemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow {
 
         @Test
-        fun `when add on complete listener is executed should set flow to true and value Pair of declared shot when isSuccessful returns back true`() =
+        fun `when add on complete listener is executed should set flow to true and value Pair of key when isSuccessful returns back true`() =
             runTest {
                 val declaredShot = DeclaredShot(
                     id = 0,
@@ -274,6 +274,8 @@ class CreateFirebaseUserInfoImplTest {
                 val failureListenerSlot = slot<OnFailureListener>()
 
                 val values = hashMapOf<String, Any>()
+
+                val reference = firebaseDatabase.getReference(path)
 
                 values[Constants.ID] = declaredShot.id
                 values[Constants.SHOT_CATEGORY] = declaredShot.shotCategory
@@ -291,7 +293,7 @@ class CreateFirebaseUserInfoImplTest {
                 every { firebaseDatabase.getReference(path).key } returns key
 
                 every {
-                    firebaseDatabase.getReference(path).setValue(values)
+                    reference.child(key).setValue(values)
                         .addOnCompleteListener(capture(onCompleteListenerSlot))
                         .addOnFailureListener(capture(failureListenerSlot))
                 } answers {
@@ -299,9 +301,6 @@ class CreateFirebaseUserInfoImplTest {
                     mockTaskVoidResult
                 }
 
-                val reference = firebaseDatabase.getReference(path).push()
-
-                val key = "mockKey"
                 every { reference.push().key } returns key
 
                 every { reference.child(key).setValue(values, any()) }
@@ -311,11 +310,11 @@ class CreateFirebaseUserInfoImplTest {
                         declaredShot = declaredShot
                     ).first()
 
-                Assertions.assertEquals(Pair(true, declaredShot), value)
+                Assertions.assertEquals(Pair(true, key), value)
             }
 
         @Test
-        fun `when add on complete listener is executed should set flow to falue and value Pair of declared shot to null when isSuccessful returns back false`() =
+        fun `when add on complete listener is executed should set flow to false and value Pair of key to null when isSuccessful returns back false`() =
             runTest {
                 val declaredShot = DeclaredShot(
                     id = 0,
@@ -333,6 +332,8 @@ class CreateFirebaseUserInfoImplTest {
 
                 val values = hashMapOf<String, Any>()
 
+                val reference = firebaseDatabase.getReference(path)
+
                 values[Constants.ID] = declaredShot.id
                 values[Constants.SHOT_CATEGORY] = declaredShot.shotCategory
                 values[Constants.TITLE] = declaredShot.title
@@ -349,7 +350,7 @@ class CreateFirebaseUserInfoImplTest {
                 every { firebaseDatabase.getReference(path).key } returns key
 
                 every {
-                    firebaseDatabase.getReference(path).setValue(values)
+                    reference.child(key).setValue(values)
                         .addOnCompleteListener(capture(onCompleteListenerSlot))
                         .addOnFailureListener(capture(failureListenerSlot))
                 } answers {
@@ -357,9 +358,6 @@ class CreateFirebaseUserInfoImplTest {
                     mockTaskVoidResult
                 }
 
-                val reference = firebaseDatabase.getReference(path).push()
-
-                val key = "mockKey"
                 every { reference.push().key } returns key
 
                 every { reference.child(key).setValue(values, any()) }
@@ -392,6 +390,8 @@ class CreateFirebaseUserInfoImplTest {
 
             val values = hashMapOf<String, Any>()
 
+            val reference = firebaseDatabase.getReference(path)
+
             values[Constants.ID] = declaredShot.id
             values[Constants.SHOT_CATEGORY] = declaredShot.shotCategory
             values[Constants.TITLE] = declaredShot.title
@@ -404,7 +404,7 @@ class CreateFirebaseUserInfoImplTest {
             every { firebaseAuth.currentUser } returns mockFirebaseUser
 
             every {
-                firebaseDatabase.getReference(path).setValue(values)
+                reference.child(key).setValue(values)
                     .addOnCompleteListener(capture(completeListenerSlot))
                     .addOnFailureListener(capture(failureListenerSlot))
             } answers {
@@ -412,9 +412,6 @@ class CreateFirebaseUserInfoImplTest {
                 mockTaskVoidResult
             }
 
-            val reference = firebaseDatabase.getReference(path).push()
-
-            val key = "mockKey"
             every { reference.push().key } returns key
 
             every { reference.child(key).setValue(values, any()) }

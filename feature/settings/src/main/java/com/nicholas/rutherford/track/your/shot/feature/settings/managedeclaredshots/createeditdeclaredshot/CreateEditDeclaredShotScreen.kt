@@ -50,13 +50,19 @@ fun CreateEditDeclaredShotScreen(params: CreateEditDeclaredShotScreenParams) {
                 params.state.currentDeclaredShot.let { declaredShot ->
                     ViewDeclaredShot(declaredShot = declaredShot, onDeleteShotClicked = params.onDeleteShotClicked)
                 }
-            } else if (params.state.declaredShotState == DeclaredShotState.EDITING  && params.state.currentDeclaredShot != null) {
-                params.state.currentDeclaredShot.let { declaredShot ->
+            } else {
+                params.state.currentDeclaredShot?.let { declaredShot ->
                     EditDeclaredShot(
                         declaredShot = declaredShot,
-                        onShotNameValueChanged = params.onShotNameValueChanged,
-                        onShotCategoryValueChanged = params.onShotCategoryValueChanged,
-                        onShotDescriptionValueChanged = params.onShotDescriptionValueChanged
+                        onEditShotNameValueChanged = params.onEditShotNameValueChanged,
+                        onEditShotCategoryValueChanged = params.onEditShotCategoryValueChanged,
+                        onEditShotDescriptionValueChanged = params.onEditShotDescriptionValueChanged
+                    )
+                } ?: run {
+                    CreateDeclaredShot(
+                        onCreateShotNameValueChanged = params.onCreateShotNameValueChanged,
+                        onCreateShotCategoryValueChanged = params.onCreateShotCategoryValueChanged,
+                        onCreateShotDescriptionValueChanged = params.onCreateShotDescriptionValueChanged
                     )
                 }
             }
@@ -83,11 +89,90 @@ fun CreateEditDeclaredShotScreen(params: CreateEditDeclaredShotScreenParams) {
 }
 
 @Composable
+fun CreateDeclaredShot(
+    onCreateShotNameValueChanged: (shotName: String) -> Unit,
+    onCreateShotDescriptionValueChanged: (shotDescription: String) -> Unit,
+    onCreateShotCategoryValueChanged: (shotDescription: String) -> Unit
+) {
+    var title by remember { mutableStateOf("") }
+    var category by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(
+                start = Padding.sixteen,
+                end = Padding.sixteen,
+                bottom = Padding.sixteen
+            ),
+        horizontalAlignment = Alignment.Start
+    ) {
+        Spacer(modifier = Modifier.height(Padding.sixteen))
+
+        Text(
+            text = stringResource(id = StringsIds.shotName),
+            style = TextStyles.smallBold
+        )
+        CoreTextField(
+            value = title,
+            onValueChange = { shotName ->
+                title = shotName
+                onCreateShotNameValueChanged.invoke(shotName)
+            },
+            placeholderValue = stringResource(StringsIds.enterShotName)
+        )
+
+        Spacer(modifier = Modifier.height(Padding.eight))
+
+        Text(
+            text = stringResource(id = StringsIds.shotCategory),
+            style = TextStyles.smallBold
+        )
+        CoreTextField(
+            value = category,
+            onValueChange = { shotCategory ->
+                category = shotCategory
+                onCreateShotCategoryValueChanged.invoke(shotCategory)
+            },
+            placeholderValue = stringResource(StringsIds.enterShotCategory)
+        )
+
+        Spacer(modifier = Modifier.height(Padding.eight))
+
+        Text(
+            text = stringResource(id = StringsIds.shotDescription),
+            style = TextStyles.smallBold
+        )
+        CoreMultilineTextField(
+            value = description,
+            onValueChange = { shotDescription ->
+                description = shotDescription
+                onCreateShotDescriptionValueChanged.invoke(shotDescription)
+            },
+            placeholderValue = stringResource(StringsIds.enterShotDescription)
+        )
+
+        Spacer(modifier = Modifier.height(Padding.sixteen))
+
+        Text(
+            text = "All fields are required to create shot. Make sure each one is filled out before saving.",
+            style = TextStyles.body,
+            color = AppColors.LightGray
+        )
+
+
+    }
+
+}
+
+@Composable
 fun EditDeclaredShot(
     declaredShot: DeclaredShot,
-    onShotNameValueChanged: (shotName: String) -> Unit,
-    onShotDescriptionValueChanged: (shotDescription: String) -> Unit,
-    onShotCategoryValueChanged: (shotDescription: String) -> Unit
+    onEditShotNameValueChanged: (shotName: String) -> Unit,
+    onEditShotDescriptionValueChanged: (shotDescription: String) -> Unit,
+    onEditShotCategoryValueChanged: (shotDescription: String) -> Unit
 ) {
     var title by remember { mutableStateOf(declaredShot.title) }
     var category by remember { mutableStateOf(declaredShot.shotCategory) }
@@ -114,7 +199,7 @@ fun EditDeclaredShot(
             value = title,
             onValueChange = { shotName ->
                 title = shotName
-                onShotNameValueChanged.invoke(shotName)
+                onEditShotNameValueChanged.invoke(shotName)
             },
             placeholderValue = ""
         )
@@ -129,7 +214,7 @@ fun EditDeclaredShot(
             value = category,
             onValueChange = { shotCategory ->
                 category = shotCategory
-                onShotCategoryValueChanged.invoke(shotCategory)
+                onEditShotCategoryValueChanged.invoke(shotCategory)
             },
             placeholderValue = ""
         )
@@ -144,7 +229,7 @@ fun EditDeclaredShot(
             value = description,
             onValueChange = { shotDescription ->
                 description = shotDescription
-                onShotDescriptionValueChanged.invoke(shotDescription)
+                onEditShotDescriptionValueChanged.invoke(shotDescription)
             },
             placeholderValue = ""
         )

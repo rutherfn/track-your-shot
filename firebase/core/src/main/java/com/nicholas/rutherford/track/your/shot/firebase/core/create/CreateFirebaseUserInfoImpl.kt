@@ -75,7 +75,7 @@ class CreateFirebaseUserInfoImpl(
         }
     }
 
-    override fun attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot: DeclaredShot): Flow<Pair<Boolean, DeclaredShot?>> {
+    override fun attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot: DeclaredShot): Flow<Pair<Boolean, String?>> {
         return callbackFlow {
             val values = hashMapOf<String, Any>()
 
@@ -92,7 +92,7 @@ class CreateFirebaseUserInfoImpl(
             reference.child(key).setValue(values)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        trySend(Pair(first = true, second = declaredShot))
+                        trySend(Pair(first = true, second = key))
                     } else {
                         Timber.w(message = "Warning(attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow) -> Creating declared shot failed to create in Firebase Realtime Database.}")
                         trySend(Pair(first = false, second = null))

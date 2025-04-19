@@ -85,6 +85,9 @@
     <string name="email_required">Email*</string>
     <string name="enter_shots_made">Enter Shots Made</string>
     <string name="enter_shots_missed">Enter Shots Missed</string>
+    <string name="enter_shot_category">Enter Shot Category</string>
+    <string name="enter_shot_description">Enter Shot Description</string>
+    <string name="enter_shot_name">Enter Shot Name</string>
     <string name="edit_player">Edit Player</string>
     <string name="empty" />
     <string name="empty_field">Empty Field</string>
@@ -218,6 +221,14 @@
     <string name="shots_missed_percentage">Shots Missed Percentage</string>
     <string name="shots_missed">Shots Missed</string>
     <string name="shots_missed_x">Shots Missed: %s</string>
+    <string name="shot_description_missing">Shot Description Missing</string>
+    <string name="shot_description_missing_desc">Shot description is required and currently missing. Please enter a shot description to proceed with defining the shot details.</string>
+    <string name="shot_category_missing">Shot Category Missing</string>
+    <string name="shot_category_missing_description">Shot category is required and currently missing. Please enter a shot category to proceed with defining the shot details.</string>
+    <string name="shot_name_missing">Shot Name Missing</string>
+    <string name="shot_name_missing_description">Shot name is required and currently missing. Please enter a shot name to proceed with defining the shot details.</string>
+    <string name="shot_with_that_name_already_exists">Shot With That Name Already Exists</string>
+    <string name="shot_with_that_name_already_exists_description">A shot with that name already exists. Please choose a different name to continue.</string>
     <string name="shots_not_recorded_description">You haven\'t recorded any successful shots. Please input the number of shots made to proceed with logging the shot.</string>
     <string name="missed_shots_not_recorded_description">You haven\'t recorded any missed shots. Please input the number of shots missed to proceed with logging the shot.</string>
     <string name="date_shot_was_taken_description">You haven\'t entered the date the shot was taken. Please input the date the shot was taken to proceed with logging ths shot.</string>

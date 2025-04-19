@@ -5,8 +5,11 @@ data class CreateEditDeclaredShotScreenParams(
     val onToolbarMenuClicked: () -> Unit,
     val onDeleteShotClicked: (id: Int) -> Unit,
     val onEditShotPencilClicked: () -> Unit,
-    val onShotNameValueChanged: (shotName: String) -> Unit,
-    val onShotDescriptionValueChanged: (description: String) -> Unit,
-    val onShotCategoryValueChanged: (category: String) -> Unit,
+    val onEditShotNameValueChanged: (shotName: String) -> Unit,
+    val onEditShotDescriptionValueChanged: (description: String) -> Unit,
+    val onEditShotCategoryValueChanged: (category: String) -> Unit,
+    val onCreateShotNameValueChanged: (shotName: String) -> Unit,
+    val onCreateShotDescriptionValueChanged: (description: String) -> Unit,
+    val onCreateShotCategoryValueChanged: (category: String) -> Unit,
     val onEditOrCreateNewShot: () -> Unit
 )

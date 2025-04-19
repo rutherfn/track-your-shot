@@ -6,6 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nicholas.rutherford.track.your.shot.data.room.dao.DeclaredShotDao
 import com.nicholas.rutherford.track.your.shot.data.room.database.AppDatabase
 import com.nicholas.rutherford.track.your.shot.data.room.entities.DeclaredShotEntity
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShotEntity
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
@@ -106,5 +107,28 @@ class DeclaredShotEntityDaoTest {
         assertThat(listOf(declaredShotEntity), equalTo(declaredShotDao.getDeclaredShotsBySearchQuery("ook")))
 
         assertThat(emptyDeclaredShotEntityList, equalTo(declaredShotDao.getDeclaredShotsBySearchQuery("nick")))
+    }
+
+    @Test
+    fun getMaxIdOrDefaultWithEntries() = runBlocking {
+        declaredShotDao.insert(declaredShotEntities = listOf(declaredShotEntity))
+        declaredShotDao.insert(declaredShotEntities = listOf(declaredShotEntity.copy(id = 44)))
+
+        assertThat(listOf(declaredShotEntity, declaredShotEntity.copy(id = 44)), equalTo(declaredShotDao.getAllDeclaredShots()))
+
+        val result = declaredShotDao.getMaxIdOrDefault()
+
+        assertThat(result, equalTo(44))
+    }
+
+    @Test
+    fun getMaxIdOrDefaultWithNoEntries() = runBlocking {
+        val declaredShotEmptyList: List<DeclaredShot> = emptyList()
+
+        assertThat(declaredShotEmptyList, equalTo(declaredShotDao.getAllDeclaredShots()))
+
+        val result = declaredShotDao.getMaxIdOrDefault()
+
+        assertThat(result, equalTo(1))
     }
 }

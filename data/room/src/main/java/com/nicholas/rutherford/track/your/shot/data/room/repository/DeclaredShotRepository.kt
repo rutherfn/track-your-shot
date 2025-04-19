@@ -17,4 +17,6 @@ interface DeclaredShotRepository {
     suspend fun fetchDeclaredShotFromId(id: Int): DeclaredShot?
 
     suspend fun fetchDeclaredShotsBySearchQuery(searchQuery: String): List<DeclaredShot>
+
+    suspend fun fetchMaxId(): Int
 }

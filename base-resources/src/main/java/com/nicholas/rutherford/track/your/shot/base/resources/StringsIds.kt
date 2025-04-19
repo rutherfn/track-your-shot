@@ -97,6 +97,9 @@ object StringsIds {
     val enabledPermissions = R.string.enabled_permissions
     val enterShotsMade = R.string.enter_shots_made
     val enterShotsMissed = R.string.enter_shots_missed
+    val enterShotCategory = R.string.enter_shot_category
+    val enterShotDescription = R.string.enter_shot_description
+    val enterShotName = R.string.enter_shot_name
     val error = R.string.error
     val errorCreatingAccount = R.string.error_creating_account
     val errorDeletingPendingAccount = R.string.error_deleting_pending_account
@@ -229,6 +232,14 @@ object StringsIds {
     val shotsMissedPercentage = R.string.shots_missed_percentage
     val shotsMissed = R.string.shots_missed
     val shotsMissedX = R.string.shots_missed_x
+    val shotDescriptionMissing = R.string.shot_description_missing
+    val shotDescriptionMissingDesc = R.string.shot_description_missing_desc
+    val shotCategoryMissing = R.string.shot_category_missing
+    val shotCategoryMissingDescription = R.string.shot_category_missing_description
+    val shotNameMissing = R.string.shot_name_missing
+    val shotNameMissingDescription = R.string.shot_name_missing_description
+    val shotWithThatNameAlreadyExists = R.string.shot_with_that_name_already_exists
+    val shotWithThatNameAlreadyExistsDescription = R.string.shot_with_that_name_already_exists_description
     val shotsNotRecordedDescription = R.string.shots_not_recorded_description
     val missedShotsNotRecordedDescription = R.string.missed_shots_not_recorded_description
     val dateShotWasTakenDescription = R.string.date_shot_was_taken_description

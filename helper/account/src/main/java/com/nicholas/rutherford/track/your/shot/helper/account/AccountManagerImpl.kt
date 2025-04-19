@@ -248,6 +248,15 @@ class AccountManagerImpl(
             }
     }
 
+    // before all of that fix the following bug
+    // if i edit the same shot it will save the same shot in declared shot firebase
+    // 1. fetch all of the ignored shot ids from firebase
+    // 2. Do what we currently do in the function up above but, save all ids in a local value, rather then filling db with declared shots from json
+    // 3. Once we do that call declared shots in firebase.
+    // 4. We are then going to loop them and add them as long as the id is not ignored.
+    // 5. After that, we are directly just going to grab all the shots from json and try to fill in the database.
+    // 6. before we fill the database, we check that the id of the json we want to update isn;t already exisitng in the codebase
+
     private fun disableProcessAndNavigateToPlayersList() {
         navigator.progress(progressAction = null)
         navigator.navigate(navigationAction = NavigationActions.DrawerScreen.playersList())

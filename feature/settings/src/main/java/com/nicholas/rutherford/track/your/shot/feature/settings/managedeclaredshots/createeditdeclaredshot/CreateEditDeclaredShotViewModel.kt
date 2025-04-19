@@ -10,6 +10,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.helper.extensions.normalizeSpaces
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
@@ -32,23 +33,32 @@ class CreateEditDeclaredShotViewModel(
     private val scope: CoroutineScope
 ) : BaseViewModel() {
 
+    internal var allDeclaredShotNames: List<String> = emptyList()
     internal var currentDeclaredShot: DeclaredShot? = null
-    internal var newDeclaredShot: DeclaredShot? = null
+    internal var editedDeclaredShot: DeclaredShot? = null
+
+    internal var createdShotInfo = CreateShotInfo()
 
     internal var createEditDeclaredShotMutableStateFlow = MutableStateFlow(value = CreateEditDeclaredShotState())
     var createEditDeclaredShotStateFlow = createEditDeclaredShotMutableStateFlow.asStateFlow()
 
     override fun onNavigatedTo() {
         super.onNavigatedTo()
+
+        scope.launch {
+            allDeclaredShotNames = declaredShotRepository.fetchAllDeclaredShots().map { it.title }
+        }
         val id = readSharedPreferences.declaredShotId()
 
         if (id != DEFAULT_ID) {
             attemptToUpdateDeclaredShotState(id = id)
         } else {
+            currentDeclaredShot = null
             createEditDeclaredShotMutableStateFlow.update { state ->
                 state.copy(
                     declaredShotState = DeclaredShotState.CREATING,
-                    toolbarTitle = application.getString(StringsIds.createShot)
+                    toolbarTitle = application.getString(StringsIds.createShot),
+                    currentDeclaredShot = null
                 )
             }
         }
@@ -67,9 +77,16 @@ class CreateEditDeclaredShotViewModel(
                     )
                 )
             }
+            resetDeclaredShotValues()
         } else {
+            resetDeclaredShotValues()
             navigation.pop()
         }
+    }
+
+    private fun resetDeclaredShotValues() {
+        currentDeclaredShot = null
+        editedDeclaredShot = null
     }
 
     internal fun attemptToUpdateDeclaredShotState(id: Int) {
@@ -164,6 +181,46 @@ class CreateEditDeclaredShotViewModel(
         )
     }
 
+    internal fun buildShotNameNotAddedAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.shotNameMissing),
+            description = application.getString(StringsIds.shotNameMissingDescription),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            )
+        )
+    }
+
+    internal fun buildShotNameAlreadyExistAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.shotWithThatNameAlreadyExists),
+            description = application.getString(StringsIds.shotWithThatNameAlreadyExistsDescription),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            )
+        )
+    }
+
+    internal fun buildShotCategoryNotAddedAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.shotCategoryMissing),
+            description = application.getString(StringsIds.shotCategoryMissingDescription),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            )
+        )
+    }
+
+    internal fun buildShotDescriptionNotAddedAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.shotDescriptionMissing),
+            description = application.getString(StringsIds.shotDescriptionMissingDesc),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            )
+        )
+    }
+
     internal fun buildSubmitShotAlert(hasShotBeenCreated: Boolean, shotName: String): Alert {
         return if (hasShotBeenCreated) {
             buildShotHasBeenCreatedAlert(shotName = shotName)
@@ -175,34 +232,46 @@ class CreateEditDeclaredShotViewModel(
     fun onDeleteShotClicked(id: Int) = navigation.alert(alert = buildDeleteShotAlert(shotName = currentDeclaredShot?.title ?: "", id = id))
 
     fun onEditShotPencilClicked() {
-        newDeclaredShot = currentDeclaredShot
+        editedDeclaredShot= currentDeclaredShot
         createEditDeclaredShotMutableStateFlow.update { state ->
             state.copy(
                 declaredShotState = DeclaredShotState.EDITING,
                 toolbarTitle = application.getString(
                     StringsIds.editX,
-                    newDeclaredShot?.title ?: application.getString(StringsIds.empty)
+                    editedDeclaredShot?.title ?: application.getString(StringsIds.empty)
                 )
             )
         }
     }
 
     fun onEditShotNameValueChanged(shotName: String) {
-        newDeclaredShot?.let { declaredShot ->
-            newDeclaredShot = declaredShot.copy(title = shotName)
+        editedDeclaredShot?.let { declaredShot ->
+            editedDeclaredShot = declaredShot.copy(title = shotName)
         }
     }
 
     fun onEditShotCategoryValueChanged(shotCategory: String) {
-        newDeclaredShot?.let { declaredShot ->
-            newDeclaredShot = declaredShot.copy(shotCategory = shotCategory)
+        editedDeclaredShot?.let { declaredShot ->
+            editedDeclaredShot = declaredShot.copy(shotCategory = shotCategory)
         }
     }
 
     fun onEditShotDescriptionValueChanged(description: String) {
-        newDeclaredShot?.let { declaredShot ->
-            newDeclaredShot = declaredShot.copy(description = description)
+        editedDeclaredShot?.let { declaredShot ->
+            editedDeclaredShot = declaredShot.copy(description = description)
         }
+    }
+
+    fun onCreateShotNameValueChanged(shotName: String) {
+        createdShotInfo = createdShotInfo.copy(name = shotName)
+    }
+
+    fun onCreateShotDescriptionValueChanged(shotDescription: String) {
+        createdShotInfo = createdShotInfo.copy(description = shotDescription)
+    }
+
+    fun onCreateShotCategoryValueChanged(shotCategory: String) {
+        createdShotInfo = createdShotInfo.copy(category = shotCategory)
     }
 
     fun onEditOrCreateNewShot() {
@@ -224,16 +293,57 @@ class CreateEditDeclaredShotViewModel(
     }
 
     private suspend fun handleShotEdit() {
-        newDeclaredShot?.let { shot ->
-            declaredShotRepository.deleteShotById(shot.id)
-            submitShotToRepositoryAndFirebase(shot = shot, hasShotBeenCreated = false)
-        } ?: handleShotError(shotName = application.getString(StringsIds.empty))
+        val shot = editedDeclaredShot ?: run {
+            handleShotError(shotName = application.getString(StringsIds.empty))
+            return
+        }
+
+        val isExactShotNameMatchIgnoringSpaces =
+            shot.title.isNotEmpty() && allDeclaredShotNames.any { it.normalizeSpaces() == shot.title.normalizeSpaces() }
+
+        val missingFieldAlert = when {
+            shot.title.isEmpty() -> buildShotNameNotAddedAlert()
+            shot.shotCategory.isEmpty() -> buildShotCategoryNotAddedAlert()
+            shot.description.isEmpty() -> buildShotDescriptionNotAddedAlert()
+            isExactShotNameMatchIgnoringSpaces -> buildShotDescriptionNotAddedAlert()
+            else -> null
+        }
+
+        if (missingFieldAlert != null) {
+            navigation.disableProgress()
+            navigation.alert(alert = missingFieldAlert)
+            return
+        }
+
+        declaredShotRepository.deleteShotById(shot.id)
+        submitShotToRepositoryAndFirebase(shot = shot, hasShotBeenCreated = false)
     }
 
     private suspend fun handleShotCreation() {
-        newDeclaredShot?.let { shot ->
-            submitShotToRepositoryAndFirebase(shot = shot, hasShotBeenCreated = true)
-        } ?: handleShotError(shotName = application.getString(StringsIds.empty))
+        val isExactShotNameMatchIgnoringSpaces =
+            createdShotInfo.name.isNotEmpty() && allDeclaredShotNames.any { it.normalizeSpaces() == createdShotInfo.name.normalizeSpaces() }
+        val missingFieldAlert = when {
+            createdShotInfo.name.isEmpty() -> buildShotNameNotAddedAlert()
+            createdShotInfo.category.isEmpty() -> buildShotCategoryNotAddedAlert()
+            createdShotInfo.description.isEmpty() -> buildShotDescriptionNotAddedAlert()
+            isExactShotNameMatchIgnoringSpaces -> buildShotNameAlreadyExistAlert()
+            else -> null
+        }
+
+        if (missingFieldAlert != null) {
+            navigation.disableProgress()
+            navigation.alert(alert = missingFieldAlert)
+            return
+        }
+
+        val declaredShot = DeclaredShot(
+            id = declaredShotRepository.fetchMaxId() + 1,
+            shotCategory = createdShotInfo.category,
+            title = createdShotInfo.name,
+            description = createdShotInfo.description
+        )
+
+        submitShotToRepositoryAndFirebase(shot = declaredShot, hasShotBeenCreated = true)
     }
 
     private suspend fun submitShotToRepositoryAndFirebase(shot: DeclaredShot, hasShotBeenCreated: Boolean) {

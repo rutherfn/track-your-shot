@@ -553,9 +553,12 @@ fun NavigationComponent(
                         onToolbarMenuClicked = { createEditDeclaredShotViewModel.onToolbarMenuClicked() },
                         onDeleteShotClicked = { id -> createEditDeclaredShotViewModel.onDeleteShotClicked(id = id) },
                         onEditShotPencilClicked = { createEditDeclaredShotViewModel.onEditShotPencilClicked() },
-                        onShotNameValueChanged = { shotName -> createEditDeclaredShotViewModel.onEditShotNameValueChanged(shotName = shotName) },
-                        onShotCategoryValueChanged = { shotCategory -> createEditDeclaredShotViewModel.onEditShotCategoryValueChanged(shotCategory = shotCategory) },
-                        onShotDescriptionValueChanged = { description -> createEditDeclaredShotViewModel.onEditShotDescriptionValueChanged(description = description) },
+                        onEditShotNameValueChanged = { shotName -> createEditDeclaredShotViewModel.onEditShotNameValueChanged(shotName = shotName) },
+                        onEditShotCategoryValueChanged = { shotCategory -> createEditDeclaredShotViewModel.onEditShotCategoryValueChanged(shotCategory = shotCategory) },
+                        onEditShotDescriptionValueChanged = { description -> createEditDeclaredShotViewModel.onEditShotDescriptionValueChanged(description = description) },
+                        onCreateShotNameValueChanged = { shotName -> createEditDeclaredShotViewModel.onCreateShotNameValueChanged(shotName = shotName) },
+                        onCreateShotDescriptionValueChanged = { shotDescription -> createEditDeclaredShotViewModel.onCreateShotDescriptionValueChanged(shotDescription = shotDescription) },
+                        onCreateShotCategoryValueChanged = { shotCategory -> createEditDeclaredShotViewModel.onCreateShotCategoryValueChanged(shotCategory = shotCategory) },
                         onEditOrCreateNewShot = { createEditDeclaredShotViewModel.onEditOrCreateNewShot() }
                     )
                 )
