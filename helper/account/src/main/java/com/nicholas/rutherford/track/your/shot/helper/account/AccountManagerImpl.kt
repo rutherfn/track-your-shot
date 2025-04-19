@@ -50,6 +50,8 @@ class AccountManagerImpl(
     private val hasLoggedInSuccessfulMutableSharedFlow = MutableSharedFlow<Boolean>(extraBufferCapacity = Channel.UNLIMITED)
     override val hasLoggedInSuccessfulFlow: Flow<Boolean> = hasLoggedInSuccessfulMutableSharedFlow
 
+    private var declaredShotIds: List<Int> = emptyList()
+
     override fun logout() {
         scope.launch {
             navigator.progress(progressAction = Progress())
@@ -59,6 +61,8 @@ class AccountManagerImpl(
             createSharedPreferences.createHasAuthenticatedAccount(value = false)
             createSharedPreferences.createIsLoggedIn(value = false)
             clearOutDatabase()
+
+            declaredShotIds = emptyList()
 
             delay(Constants.DELAY_IN_MILLISECONDS_TO_SHOW_PROGRESS_MASK_ON_LOG_OUT)
 
@@ -230,6 +234,7 @@ class AccountManagerImpl(
         readFirebaseUserInfo.getDeletedShotIdsFlow()
             .collectLatest { shotIds ->
                 if (shotIds.isNotEmpty()) {
+                    declaredShotIds = shotIds
                     shotIds.forEach { shotId ->
                         shotIgnoringRepository.createShotIgnoring(shotId = shotId)
                     }
@@ -248,8 +253,14 @@ class AccountManagerImpl(
             }
     }
 
-    // before all of that fix the following bug
-    // if i edit the same shot it will save the same shot in declared shot firebase
+    // todo come back and test this
+    internal suspend fun collectDeclaredShots() {
+        readFirebaseUserInfo.getCreatedDeclaredShotsFlow()
+            .collectLatest { declaredShots ->
+
+            }
+    }
+
     // 1. fetch all of the ignored shot ids from firebase
     // 2. Do what we currently do in the function up above but, save all ids in a local value, rather then filling db with declared shots from json
     // 3. Once we do that call declared shots in firebase.

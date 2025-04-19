@@ -10,6 +10,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotWithKeyRealtimeResponse
@@ -18,6 +19,7 @@ import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSh
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
@@ -31,6 +33,7 @@ class CreateEditDeclaredShotViewModel(
     private val shotIgnoringRepository: ShotIgnoringRepository,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val updateFirebaseUserInfo: UpdateFirebaseUserInfo,
+    private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val createSharedPreferences: CreateSharedPreferences,
     private val readSharedPreferences: ReadSharedPreferences,
     private val navigation: CreateEditDeclaredShotNavigation,
@@ -113,24 +116,71 @@ class CreateEditDeclaredShotViewModel(
         }
     }
 
-    suspend fun onYesDeleteShot(shotName: String, id: Int) {
+    suspend fun onYesDeleteShot(shotName: String, shotKey: String, id: Int) {
         navigation.enableProgress(progress = Progress())
-        val currentIdsToIgnore = shotIgnoringRepository.fetchAllIgnoringShots().map { it.shotId } + listOf(id)
 
-        createFirebaseUserInfo.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = currentIdsToIgnore).collectLatest { result ->
-            if (result.first) {
-                declaredShotRepository.deleteShotById(id = id)
-                shotIgnoringRepository.createShotIgnoring(shotId = id)
-                navigation.pop()
-                navigation.disableProgress()
-            } else {
-                navigation.disableProgress()
-                navigation.alert(alert = buildCouldNotDeleteShotAlert(shotName = shotName))
-            }
+        val updatedIgnoredShotIds = shotIgnoringRepository
+            .fetchAllIgnoringShots()
+            .map { it.shotId } + id
+
+        if (shotKey.isEmpty()) {
+            handleIdOnlyDelete(
+                shotName = shotName,
+                id = id,
+                ignoredIds = updatedIgnoredShotIds
+            )
+        } else {
+            handleFullShotDelete(
+                shotName = shotName,
+                shotKey = shotKey,
+                id = id,
+                ignoredIds = updatedIgnoredShotIds
+            )
         }
     }
 
-   internal fun buildCouldNotDeleteShotAlert(shotName: String): Alert {
+    private suspend fun handleIdOnlyDelete(shotName: String, id: Int, ignoredIds: List<Int>) {
+        createFirebaseUserInfo
+            .attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(ignoredIds)
+            .collectLatest { result ->
+                processDeleteResult(
+                    idsToIgnoreSuccess = result.first,
+                    deletedShotSuccess = true,
+                    shotName = shotName,
+                    id = id
+                )
+            }
+    }
+
+    private suspend fun handleFullShotDelete(shotName: String, shotKey: String, id: Int, ignoredIds: List<Int>) {
+        combine(
+            createFirebaseUserInfo.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(ignoredIds),
+            deleteFirebaseUserInfo.deleteDeclaredShot(shotKey)
+        ) { ignoreResult, deleteResult ->
+            println("get here test")
+            processDeleteResult(
+                idsToIgnoreSuccess = ignoreResult.first,
+                deletedShotSuccess = deleteResult,
+                shotName = shotName,
+                id = id
+            )
+        }.collectLatest { }
+    }
+
+    private suspend fun processDeleteResult(idsToIgnoreSuccess: Boolean, deletedShotSuccess: Boolean, shotName: String, id: Int) {
+        navigation.disableProgress()
+
+        if (idsToIgnoreSuccess && deletedShotSuccess) {
+            declaredShotRepository.deleteShotById(id)
+            shotIgnoringRepository.createShotIgnoring(shotId = id)
+            navigation.pop()
+        } else {
+            navigation.alert(alert = buildCouldNotDeleteShotAlert(shotName))
+        }
+    }
+
+
+    internal fun buildCouldNotDeleteShotAlert(shotName: String): Alert {
         return Alert(
             title = application.getString(StringsIds.unableToDeleteShot),
             description = application.getString(StringsIds.weCouldNotDeleteXShot, shotName),
@@ -141,13 +191,13 @@ class CreateEditDeclaredShotViewModel(
         )
     }
 
-    internal fun buildDeleteShotAlert(shotName: String, id: Int): Alert {
+    internal fun buildDeleteShotAlert(shotName: String, shotKey: String, id: Int): Alert {
         return Alert(
             title = application.getString(StringsIds.deleteShot),
             description = application.getString(StringsIds.areYouSureYouWantToDeleteXShot, shotName),
             confirmButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.yes),
-                onButtonClicked = { scope.launch { onYesDeleteShot(shotName = shotName, id = id) } }
+                onButtonClicked = { scope.launch { onYesDeleteShot(shotName = shotName, shotKey = shotKey, id = id) } }
             ),
             dismissButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.no)
@@ -233,7 +283,7 @@ class CreateEditDeclaredShotViewModel(
         }
     }
 
-    fun onDeleteShotClicked(id: Int) = navigation.alert(alert = buildDeleteShotAlert(shotName = currentDeclaredShot?.title ?: "", id = id))
+    fun onDeleteShotClicked(id: Int) = navigation.alert(alert = buildDeleteShotAlert(shotName = currentDeclaredShot?.title ?: "", shotKey = currentDeclaredShot?.firebaseKey ?: "", id = id))
 
     fun onEditShotPencilClicked() {
         editedDeclaredShot= currentDeclaredShot

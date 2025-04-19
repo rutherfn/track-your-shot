@@ -6,9 +6,11 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.toShotIgnoring
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotIgnoring
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotIgnoringEntity
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotWithKeyRealtimeResponse
@@ -42,6 +44,7 @@ class CreateEditDeclaredShotViewModelTest {
 
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
     private val updateFirebaseUserInfo = mockk<UpdateFirebaseUserInfo>(relaxed = true)
+    private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
 
     private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
     private val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
@@ -63,6 +66,7 @@ class CreateEditDeclaredShotViewModelTest {
             shotIgnoringRepository = shotIgnoringRepository,
             createFirebaseUserInfo = createFirebaseUserInfo,
             updateFirebaseUserInfo = updateFirebaseUserInfo,
+            deleteFirebaseUserInfo = deleteFirebaseUserInfo,
             createSharedPreferences = createSharedPreferences,
             readSharedPreferences = readSharedPreferences,
             navigation = navigation,
@@ -195,6 +199,7 @@ class CreateEditDeclaredShotViewModelTest {
     @Nested
     inner class OnYesDeleteShot {
         private val shotName = "shotName"
+        private val shotKey = "shotKey"
         private val id = 1
 
         @Test
@@ -204,7 +209,7 @@ class CreateEditDeclaredShotViewModelTest {
             coEvery { shotIgnoringRepository.fetchAllIgnoringShots() } returns listOf(TestShotIgnoringEntity.build().toShotIgnoring(), TestShotIgnoringEntity.build().toShotIgnoring().copy(shotId = 44))
             coEvery { createFirebaseUserInfo.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = currentIdsToIgnore) } returns flowOf(Pair(false, currentIdsToIgnore))
 
-            viewModel.onYesDeleteShot(shotName = shotName, id = id)
+            viewModel.onYesDeleteShot(shotName = shotName, shotKey = "", id = id)
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(id = id) }
             coVerify(exactly = 0) { shotIgnoringRepository.createShotIgnoring(shotId = id) }
@@ -220,7 +225,64 @@ class CreateEditDeclaredShotViewModelTest {
             coEvery { shotIgnoringRepository.fetchAllIgnoringShots() } returns listOf(TestShotIgnoringEntity.build().toShotIgnoring(), TestShotIgnoringEntity.build().toShotIgnoring().copy(shotId = 44))
             coEvery { createFirebaseUserInfo.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = currentIdsToIgnore) } returns flowOf(Pair(true, currentIdsToIgnore))
 
-            viewModel.onYesDeleteShot(shotName = shotName, id = id)
+            viewModel.onYesDeleteShot(shotName = shotName, shotKey = "", id = id)
+
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+
+            coVerify { declaredShotRepository.deleteShotById(id = id) }
+            coVerify { shotIgnoringRepository.createShotIgnoring(shotId = id) }
+            verify { navigation.pop() }
+            verify { navigation.disableProgress() }
+        }
+
+        @Test
+        fun `when attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow returns the first value as false with key not empty should show alert`() = runTest {
+            val shotKey = "shot-key"
+            val currentIdsToIgnore = listOf(22, 44, 1)
+
+            coEvery { shotIgnoringRepository.fetchAllIgnoringShots() } returns listOf(TestShotIgnoringEntity.build().toShotIgnoring(), TestShotIgnoringEntity.build().toShotIgnoring().copy(shotId = 44))
+            coEvery { createFirebaseUserInfo.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = currentIdsToIgnore) } returns flowOf(Pair(false, currentIdsToIgnore))
+            coEvery { deleteFirebaseUserInfo.deleteDeclaredShot(shotKey) } returns flowOf(value = true)
+
+            viewModel.onYesDeleteShot(shotName = shotName, shotKey = shotKey, id = id)
+
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(id = id) }
+            coVerify(exactly = 0) { shotIgnoringRepository.createShotIgnoring(shotId = id) }
+            coVerify(exactly = 0) { navigation.pop() }
+
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when deleteDeclaredShot returns as false with key not empty should show alert`() = runTest {
+            val shotKey = "shot-key"
+            val currentIdsToIgnore = listOf(22, 44, 1)
+
+            coEvery { shotIgnoringRepository.fetchAllIgnoringShots() } returns listOf(TestShotIgnoringEntity.build().toShotIgnoring(), TestShotIgnoringEntity.build().toShotIgnoring().copy(shotId = 44))
+            coEvery { createFirebaseUserInfo.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = currentIdsToIgnore) } returns flowOf(Pair(true, currentIdsToIgnore))
+            coEvery { deleteFirebaseUserInfo.deleteDeclaredShot(shotKey) } returns flowOf(value = false)
+
+            viewModel.onYesDeleteShot(shotName = shotName, shotKey = shotKey, id = id)
+
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(id = id) }
+            coVerify(exactly = 0) { shotIgnoringRepository.createShotIgnoring(shotId = id) }
+            coVerify(exactly = 0) { navigation.pop() }
+
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when deleteDeclaredShot and attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow returns as true with key not empty should pop and disable progress`() = runTest {
+            val shotKey = "shot-key"
+            val currentIdsToIgnore = listOf(22, 44, 1)
+
+            coEvery { shotIgnoringRepository.fetchAllIgnoringShots() } returns listOf(TestShotIgnoringEntity.build().toShotIgnoring(), TestShotIgnoringEntity.build().toShotIgnoring().copy(shotId = 44))
+            coEvery { createFirebaseUserInfo.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = currentIdsToIgnore) } returns flowOf(Pair(true, currentIdsToIgnore))
+            coEvery { deleteFirebaseUserInfo.deleteDeclaredShot(shotKey) } returns flowOf(value = true)
+
+            viewModel.onYesDeleteShot(shotName = shotName, shotKey = shotKey, id = id)
 
             verify(exactly = 0) { navigation.alert(alert = any()) }
 
@@ -249,6 +311,7 @@ class CreateEditDeclaredShotViewModelTest {
     @Test
     fun `build delete shot alert should return alert`() {
         val shotName = "shotName"
+        val shotKey = "shot-key"
         val id = 22
 
         every { application.getString(StringsIds.no) } returns "No"
@@ -256,7 +319,7 @@ class CreateEditDeclaredShotViewModelTest {
         every { application.getString(StringsIds.deleteShot) } returns "Delete Shot"
         every { application.getString(StringsIds.areYouSureYouWantToDeleteXShot, shotName) } returns "Are you sure you want to delete $shotName?"
 
-        val alert = viewModel.buildDeleteShotAlert(shotName = shotName, id = id)
+        val alert = viewModel.buildDeleteShotAlert(shotName = shotName, shotKey = shotKey,  id = id)
 
         Assertions.assertEquals(alert.title, "Delete Shot")
         Assertions.assertEquals(alert.description, "Are you sure you want to delete $shotName?")

@@ -263,7 +263,8 @@ class CreateFirebaseUserInfoImplTest {
                     id = 0,
                     shotCategory = "category",
                     title = "title",
-                    description = "description"
+                    description = "description",
+                    firebaseKey = "firebase-key"
                 )
                 val uid = "uid"
                 val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
@@ -320,7 +321,8 @@ class CreateFirebaseUserInfoImplTest {
                     id = 0,
                     shotCategory = "category",
                     title = "title",
-                    description = "description"
+                    description = "description",
+                    firebaseKey = "firebasekey"
                 )
                 val uid = "uid"
                 val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
@@ -376,7 +378,8 @@ class CreateFirebaseUserInfoImplTest {
                 id = 0,
                 shotCategory = "category",
                 title = "title",
-                description = "description"
+                description = "description",
+                firebaseKey = "firebasekey"
             )
             val uid = "uid"
             val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"

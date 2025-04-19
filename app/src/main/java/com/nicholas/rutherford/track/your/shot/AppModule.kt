@@ -488,6 +488,7 @@ class AppModule {
                 shotIgnoringRepository = get(),
                 createFirebaseUserInfo = get(),
                 updateFirebaseUserInfo = get(),
+                deleteFirebaseUserInfo = get(),
                 createSharedPreferences = get(),
                 readSharedPreferences = get(),
                 navigation = get(),

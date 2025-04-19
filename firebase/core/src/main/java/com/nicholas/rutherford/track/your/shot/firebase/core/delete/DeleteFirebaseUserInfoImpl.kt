@@ -71,6 +71,29 @@ class DeleteFirebaseUserInfoImpl(
         }
     }
 
+    override fun deleteDeclaredShot(shotKey: String): Flow<Boolean> {
+        return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val path = "${Constants.USERS}/$uid/${Constants.CREATED_SHOTS}/$shotKey"
+
+            firebaseDatabase.getReference(path)
+                .removeValue()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        trySend(element = true)
+                    } else {
+                        Timber.w(message = "Error(deleteShot) -> Was not able to delete current shot from given account.")
+                        trySend(element = false)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(deleteShot) -> Was not able to delete current shot from given account. With following stack trace $exception")
+                    trySend(element = false)
+                }
+            awaitClose()
+        }
+    }
+
     override fun deleteReport(reportKey: String): Flow<Boolean> {
         return callbackFlow {
             val uid = firebaseAuth.currentUser?.uid ?: ""
