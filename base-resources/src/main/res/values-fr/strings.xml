@@ -281,4 +281,26 @@
     <string name="_no_shots_declared_description">No shots have been declared yet. Tap Add Shot to start adding your shots.</string>
     <string name="create_shot">Create Shot</string>
     <string name="view_report">View Report</string>
+    <string name="enter_shot_category">Enter Shot Category</string>
+    <string name="enter_shot_description">Enter Shot Description</string>
+    <string name="enter_shot_name">Enter Shot Name</string>
+    <string name="shot_ceategory">Shot Category:</string>
+    <string name="shot_description">Shot Description:</string>
+    <string name="shot_name">Shot Name:</string>
+    <string name="shot_x_has_been_created">Shot %s Has Been Created</string>
+    <string name="shot_x_had_issue_saving_details">Shot %s Had Issues Saving Details</string>
+    <string name="shot_x_had_issue_saving_details_description">There was an issue saving the shot "%s" details. Please try again or contact support if the problem continues.</string>
+    <string name="shot_x_has_been_created_description">The shot "%s" has been created. You can now select it when logging shots for a player.</string>
+    <string name="shot_x_has_been_edited">Shot %s Has Been Edited</string>
+    <string name="shot_x_has_been_edited_description">The shot "%s" has been edited. You can now select it when logging shots for a player.</string>
+    <string name="shot_description_missing">Shot Description Missing</string>
+    <string name="shot_description_missing_desc">Shot description is required and currently missing. Please enter a shot description to proceed with defining the shot details.</string>
+    <string name="shot_category_missing">Shot Category Missing</string>
+    <string name="shot_category_missing_description">Shot category is required and currently missing. Please enter a shot category to proceed with defining the shot details.</string>
+    <string name="shot_name_missing">Shot Name Missing</string>
+    <string name="shot_name_missing_description">Shot name is required and currently missing. Please enter a shot name to proceed with defining the shot details.</string>
+    <string name="shot_with_that_name_already_exists">Shot With That Name Already Exists</string>
+    <string name="shot_with_that_name_already_exists_description">A shot with that name already exists. Please choose a different name to continue.</string>
+    <string name="unable_to_delete_shot">Unable To Delete Shot</string>
+    <string name="we_could_not_delete_x_shot_please_try_again_later">We could not delete %s. Please try again later.</string>
 </resources>
