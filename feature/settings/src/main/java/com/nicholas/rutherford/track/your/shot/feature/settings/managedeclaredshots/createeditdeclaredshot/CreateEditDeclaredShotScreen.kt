@@ -84,7 +84,7 @@ fun CreateEditDeclaredShotScreen(params: CreateEditDeclaredShotScreenParams) {
             Icons.Default.Edit
         } else {
             Icons.Default.Save
-        },
+        }
     )
 }
 
@@ -161,10 +161,7 @@ fun CreateDeclaredShot(
             style = TextStyles.body,
             color = AppColors.LightGray
         )
-
-
     }
-
 }
 
 @Composable
@@ -241,7 +238,6 @@ fun EditDeclaredShot(
             style = TextStyles.body,
             color = AppColors.LightGray
         )
-
     }
 }
 

@@ -318,7 +318,7 @@ class CreateEditDeclaredShotViewModelTest {
         every { application.getString(StringsIds.deleteShot) } returns "Delete Shot"
         every { application.getString(StringsIds.areYouSureYouWantToDeleteXShot, shotName) } returns "Are you sure you want to delete $shotName?"
 
-        val alert = viewModel.buildDeleteShotAlert(shotName = shotName, shotKey = shotKey,  id = id)
+        val alert = viewModel.buildDeleteShotAlert(shotName = shotName, shotKey = shotKey, id = id)
 
         Assertions.assertEquals(alert.title, "Delete Shot")
         Assertions.assertEquals(alert.description, "Are you sure you want to delete $shotName?")
@@ -407,13 +407,13 @@ class CreateEditDeclaredShotViewModelTest {
         val gotIt = "Got It"
 
         every { application.getString(StringsIds.shotWithThatNameAlreadyExists) } returns shotWithThatNameAlreadyExists
-        every { application.getString(StringsIds.shotWithThatNameAlreadyExistsDescription) } returns  shotWithThatNameAlreadyExistsDescription
+        every { application.getString(StringsIds.shotWithThatNameAlreadyExistsDescription) } returns shotWithThatNameAlreadyExistsDescription
         every { application.getString(StringsIds.gotIt) } returns gotIt
 
         val alert = viewModel.buildShotNameAlreadyExistAlert()
 
         Assertions.assertEquals(alert.title, shotWithThatNameAlreadyExists)
-        Assertions.assertEquals(alert.description,  shotWithThatNameAlreadyExistsDescription)
+        Assertions.assertEquals(alert.description, shotWithThatNameAlreadyExistsDescription)
         Assertions.assertEquals(alert.confirmButton!!.buttonText, gotIt)
     }
 
@@ -511,7 +511,7 @@ class CreateEditDeclaredShotViewModelTest {
 
         every { application.getString(StringsIds.editX, declaredShot.title) } returns editShotValue
 
-        viewModel.currentDeclaredShot = declaredShot  // <-- Important
+        viewModel.currentDeclaredShot = declaredShot // <-- Important
 
         viewModel.onEditShotPencilClicked()
 
@@ -626,7 +626,6 @@ class CreateEditDeclaredShotViewModelTest {
         viewModel.onCreateShotDescriptionValueChanged(shotDescription = shotDescription)
 
         Assertions.assertEquals(viewModel.createdShotInfo, CreateShotInfo(description = shotDescription))
-
     }
 
     @Test
@@ -939,5 +938,4 @@ class CreateEditDeclaredShotViewModelTest {
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(445) }
         }
     }
-
 }

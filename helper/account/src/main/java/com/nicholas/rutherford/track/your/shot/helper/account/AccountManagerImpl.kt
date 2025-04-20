@@ -246,19 +246,20 @@ class AccountManagerImpl(
             }
     }
 
-    // todo come back and test this
     internal suspend fun collectDeclaredShots() {
         readFirebaseUserInfo.getCreatedDeclaredShotsFlow()
             .collectLatest { declaredShots ->
                 declaredShots.forEach { shot ->
                     if (!declaredShotIds.contains(shot.declaredShotRealtimeResponse.id)) {
-                        declaredShotRepository.createNewDeclaredShot(declaredShot = DeclaredShot(
-                            id = shot.declaredShotRealtimeResponse.id,
-                            shotCategory = shot.declaredShotRealtimeResponse.shotCategory,
-                            title = shot.declaredShotRealtimeResponse.title,
-                            description = shot.declaredShotRealtimeResponse.description,
-                            firebaseKey = shot.declaredShotFirebaseKey
-                        ))
+                        declaredShotRepository.createNewDeclaredShot(
+                            declaredShot = DeclaredShot(
+                                id = shot.declaredShotRealtimeResponse.id,
+                                shotCategory = shot.declaredShotRealtimeResponse.shotCategory,
+                                title = shot.declaredShotRealtimeResponse.title,
+                                description = shot.declaredShotRealtimeResponse.description,
+                                firebaseKey = shot.declaredShotFirebaseKey
+                            )
+                        )
                     }
                 }
                 createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)

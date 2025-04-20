@@ -19,9 +19,9 @@ import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSh
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -178,7 +178,6 @@ class CreateEditDeclaredShotViewModel(
         }
     }
 
-
     internal fun buildCouldNotDeleteShotAlert(shotName: String): Alert {
         return Alert(
             title = application.getString(StringsIds.unableToDeleteShot),
@@ -285,7 +284,7 @@ class CreateEditDeclaredShotViewModel(
     fun onDeleteShotClicked(id: Int) = navigation.alert(alert = buildDeleteShotAlert(shotName = currentDeclaredShot?.title ?: "", shotKey = currentDeclaredShot?.firebaseKey ?: "", id = id))
 
     fun onEditShotPencilClicked() {
-        editedDeclaredShot= currentDeclaredShot
+        editedDeclaredShot = currentDeclaredShot
         createEditDeclaredShotMutableStateFlow.update { state ->
             state.copy(
                 declaredShotState = DeclaredShotState.EDITING,

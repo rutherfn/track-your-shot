@@ -13,7 +13,6 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoring
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
-import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
@@ -22,7 +21,6 @@ import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayerEntity
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestAccountInfoRealTimeResponse
@@ -31,14 +29,12 @@ import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestIndividualP
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.ExistingUserFirebase
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -431,6 +427,7 @@ class AccountManagerImplTest {
 
             coVerify(exactly = 0) { individualPlayerReportRepository.createReports(individualPlayerReports = any()) }
         }
+
         @Test
         fun `when getReportList returns back non empty list should update database`() = runTest {
             val report = TestIndividualPlayerReportWithKeyRealtimeResponse().create()
@@ -452,7 +449,6 @@ class AccountManagerImplTest {
 
             coVerify(exactly = 1) { individualPlayerReportRepository.createReports(individualPlayerReports = any()) }
         }
-
     }
 
     @Nested
@@ -518,35 +514,35 @@ class AccountManagerImplTest {
             }
         }
 
-            @Test
-            fun `when getCreatedDeclaredShotsFlow return non empty list and does contain declaredShotIds should call functions`() = runTest {
-                accountManagerImpl.declaredShotIds = listOf(1)
-                coEvery { readFirebaseUserInfo.getCreatedDeclaredShotsFlow() } returns flowOf(listOf(declaredShotWithKeyRealtimeResponse))
+        @Test
+        fun `when getCreatedDeclaredShotsFlow return non empty list and does contain declaredShotIds should call functions`() = runTest {
+            accountManagerImpl.declaredShotIds = listOf(1)
+            coEvery { readFirebaseUserInfo.getCreatedDeclaredShotsFlow() } returns flowOf(listOf(declaredShotWithKeyRealtimeResponse))
 
-                accountManagerImpl.collectDeclaredShots()
+            accountManagerImpl.collectDeclaredShots()
 
-                coVerify(exactly = 0) {
-                    declaredShotRepository.createNewDeclaredShot(
-                        declaredShot = DeclaredShot(
-                            id = declaredShotWithKeyRealtimeResponse.declaredShotRealtimeResponse.id,
-                            shotCategory = declaredShotWithKeyRealtimeResponse.declaredShotRealtimeResponse.shotCategory,
-                            title = declaredShotWithKeyRealtimeResponse.declaredShotRealtimeResponse.title,
-                            description = declaredShotWithKeyRealtimeResponse.declaredShotRealtimeResponse.description,
-                            firebaseKey = declaredShotWithKeyRealtimeResponse.declaredShotFirebaseKey
-                        )
+            coVerify(exactly = 0) {
+                declaredShotRepository.createNewDeclaredShot(
+                    declaredShot = DeclaredShot(
+                        id = declaredShotWithKeyRealtimeResponse.declaredShotRealtimeResponse.id,
+                        shotCategory = declaredShotWithKeyRealtimeResponse.declaredShotRealtimeResponse.shotCategory,
+                        title = declaredShotWithKeyRealtimeResponse.declaredShotRealtimeResponse.title,
+                        description = declaredShotWithKeyRealtimeResponse.declaredShotRealtimeResponse.description,
+                        firebaseKey = declaredShotWithKeyRealtimeResponse.declaredShotFirebaseKey
                     )
-                }
-
-                coVerifyOrder {
-                    createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(true)
-                    declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = listOf(1))
-
-                    createSharedPreferences.createHasAuthenticatedAccount(true)
-                    createSharedPreferences.createIsLoggedIn(true)
-                    navigator.progress(null)
-                    navigator.navigate(any())
-                }
+                )
             }
+
+            coVerifyOrder {
+                createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(true)
+                declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = listOf(1))
+
+                createSharedPreferences.createHasAuthenticatedAccount(true)
+                createSharedPreferences.createIsLoggedIn(true)
+                navigator.progress(null)
+                navigator.navigate(any())
+            }
+        }
 
         @Test
         fun `when getCreatedDeclaredShotsFlow return non empty list and does not contain declaredShotIds should call functions`() = runTest {
@@ -574,8 +570,7 @@ class AccountManagerImplTest {
                 navigator.navigate(any())
             }
         }
-        }
-
+    }
 
     @Nested
     inner class DisableProgressAndShowUnableToLoginAlert {
