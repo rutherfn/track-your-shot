@@ -3,12 +3,16 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclareds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+
+const val CREATION_DECLARED_ID_DELAY_IN_MILLIS = 400L
 
 class DeclaredShotsListViewModel(
     private val declaredShotRepository: DeclaredShotRepository,
@@ -40,8 +44,13 @@ class DeclaredShotsListViewModel(
     fun onToolbarMenuClicked() = navigation.pop()
 
     fun onDeclaredShotClicked(id: Int) {
-        createSharedPreferences.createDeclaredShotId(value = id)
-        navigation.createEditDeclaredShot()
+        scope.launch {
+            navigation.enableProgress(Progress())
+            createSharedPreferences.createDeclaredShotId(value = id)
+            delay(CREATION_DECLARED_ID_DELAY_IN_MILLIS)
+            navigation.disableProgress()
+            navigation.createEditDeclaredShot()
+        }
     }
 
     fun onAddDeclaredShotClicked() = navigation.createEditDeclaredShot()

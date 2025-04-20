@@ -6,7 +6,6 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.toShotIgnoring
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
-import com.nicholas.rutherford.track.your.shot.data.room.response.ShotIgnoring
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotIgnoringEntity
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
@@ -744,11 +743,12 @@ class CreateEditDeclaredShotViewModelTest {
             viewModel.onEditOrCreateNewShot()
 
             verify { navigation.enableProgress(progress = any()) }
-            coVerify { declaredShotRepository.deleteShotById(declaredShot.id) }
             coVerify { declaredShotRepository.updateDeclaredShot(declaredShot = declaredShot) }
             verify { navigation.disableProgress() }
             verify { navigation.pop() }
             verify { navigation.alert(alert = any()) }
+
+            coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
         }
 
         @Test

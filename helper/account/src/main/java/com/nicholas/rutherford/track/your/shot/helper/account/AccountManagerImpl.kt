@@ -10,6 +10,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerReposi
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
@@ -50,7 +51,7 @@ class AccountManagerImpl(
     private val hasLoggedInSuccessfulMutableSharedFlow = MutableSharedFlow<Boolean>(extraBufferCapacity = Channel.UNLIMITED)
     override val hasLoggedInSuccessfulFlow: Flow<Boolean> = hasLoggedInSuccessfulMutableSharedFlow
 
-    private var declaredShotIds: List<Int> = emptyList()
+    internal var declaredShotIds: List<Int> = emptyList()
 
     override fun logout() {
         scope.launch {
@@ -109,6 +110,8 @@ class AccountManagerImpl(
         pendingPlayerRepository.deleteAllPendingPlayers()
         userRepository.deleteAllUsers()
         individualPlayerReportRepository.deleteAllReports()
+        declaredShotRepository.deleteAllDeclaredShots()
+        shotIgnoringRepository.deleteAllShotsIgnoring()
     }
 
     override fun deleteAllPendingShotsAndPlayers() {
@@ -206,7 +209,6 @@ class AccountManagerImpl(
             }
     }
 
-    // todo -> Nick come back and test this
     internal suspend fun collectReportList() {
         readFirebaseUserInfo.getReportList()
             .collectLatest { individualPlayerReportWithKeyRealtimeResponse ->
@@ -229,7 +231,6 @@ class AccountManagerImpl(
             }
     }
 
-    // todo come back and test this
     internal suspend fun collectDeletedShotIds() {
         readFirebaseUserInfo.getDeletedShotIdsFlow()
             .collectLatest { shotIds ->
@@ -238,18 +239,10 @@ class AccountManagerImpl(
                     shotIds.forEach { shotId ->
                         shotIgnoringRepository.createShotIgnoring(shotId = shotId)
                     }
-                    createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
-                    declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = shotIds)
-                    hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
+                    collectDeclaredShots()
                 } else {
-                    createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
-                    declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList())
-                    hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
+                    collectDeclaredShots()
                 }
-
-                createSharedPreferences.createHasAuthenticatedAccount(value = true)
-                createSharedPreferences.createIsLoggedIn(value = true)
-                disableProcessAndNavigateToPlayersList()
             }
     }
 
@@ -257,16 +250,28 @@ class AccountManagerImpl(
     internal suspend fun collectDeclaredShots() {
         readFirebaseUserInfo.getCreatedDeclaredShotsFlow()
             .collectLatest { declaredShots ->
+                declaredShots.forEach { shot ->
+                    if (!declaredShotIds.contains(shot.declaredShotRealtimeResponse.id)) {
+                        declaredShotRepository.createNewDeclaredShot(declaredShot = DeclaredShot(
+                            id = shot.declaredShotRealtimeResponse.id,
+                            shotCategory = shot.declaredShotRealtimeResponse.shotCategory,
+                            title = shot.declaredShotRealtimeResponse.title,
+                            description = shot.declaredShotRealtimeResponse.description,
+                            firebaseKey = shot.declaredShotFirebaseKey
+                        ))
+                    }
+                }
+                createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
+                declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = declaredShotIds)
+                hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
 
+                createSharedPreferences.createHasAuthenticatedAccount(value = true)
+                createSharedPreferences.createIsLoggedIn(value = true)
+
+                declaredShotIds = emptyList()
+                disableProcessAndNavigateToPlayersList()
             }
     }
-
-    // 1. fetch all of the ignored shot ids from firebase
-    // 2. Do what we currently do in the function up above but, save all ids in a local value, rather then filling db with declared shots from json
-    // 3. Once we do that call declared shots in firebase.
-    // 4. We are then going to loop them and add them as long as the id is not ignored.
-    // 5. After that, we are directly just going to grab all the shots from json and try to fill in the database.
-    // 6. before we fill the database, we check that the id of the json we want to update isn;t already exisitng in the codebase
 
     private fun disableProcessAndNavigateToPlayersList() {
         navigator.progress(progressAction = null)

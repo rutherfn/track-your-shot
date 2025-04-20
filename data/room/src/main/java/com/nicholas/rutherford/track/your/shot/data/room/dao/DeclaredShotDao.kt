@@ -24,7 +24,7 @@ interface DeclaredShotDao {
     @Query("DELETE FROM declaredShots WHERE id = :id")
     suspend fun deleteDeclaredShotById(id: Int)
 
-    @Query("SELECT * FROM declaredShots ORDER BY title ASC")
+    @Query("SELECT * FROM declaredShots ORDER BY title COLLATE NOCASE ASC")
     suspend fun getAllDeclaredShots(): List<DeclaredShotEntity>
 
     @Query("SELECT * FROM declaredShots WHERE id = :id")

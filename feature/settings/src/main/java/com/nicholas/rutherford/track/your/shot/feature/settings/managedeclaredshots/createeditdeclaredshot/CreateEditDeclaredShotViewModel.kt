@@ -157,7 +157,6 @@ class CreateEditDeclaredShotViewModel(
             createFirebaseUserInfo.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(ignoredIds),
             deleteFirebaseUserInfo.deleteDeclaredShot(shotKey)
         ) { ignoreResult, deleteResult ->
-            println("get here test")
             processDeleteResult(
                 idsToIgnoreSuccess = ignoreResult.first,
                 deletedShotSuccess = deleteResult,
@@ -428,7 +427,6 @@ class CreateEditDeclaredShotViewModel(
                 )
 
                 if (success) {
-                    declaredShotRepository.deleteShotById(newDeclaredShot.id)
                     declaredShotRepository.updateDeclaredShot(declaredShot = newDeclaredShot)
                     navigation.disableProgress()
                     navigation.pop()

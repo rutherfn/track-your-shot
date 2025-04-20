@@ -13,11 +13,11 @@ class DeclaredShotRepositoryImpl(private val declaredShotDao: DeclaredShotDao) :
     override suspend fun createNewDeclaredShot(declaredShot: DeclaredShot) = declaredShotDao.insert(declaredShotEntity = declaredShot.toDeclaredShotEntity())
 
     override suspend fun createDeclaredShots(shotIdsToFilterOut: List<Int>) {
-        val declaredShots = declaredShotDao.getAllDeclaredShots()
+        val declaredShotIds = declaredShotDao.getAllDeclaredShots().map { it.id }
 
-        if (declaredShots.isEmpty()) {
-            declaredShotDao.insert(declaredShotEntities = getDeclaredShotsFromJson().sortedBy { it.title }.map { it.toDeclaredShotEntity() }.filter { !shotIdsToFilterOut.contains(it.id) })
-        }
+        val shots = getDeclaredShotsFromJson().sortedBy { it.title }.map { it.toDeclaredShotEntity() }.filter { !shotIdsToFilterOut.contains(it.id) && !declaredShotIds.contains(it.id) }
+
+        declaredShotDao.insert(declaredShotEntities = shots)
     }
     override suspend fun updateDeclaredShot(declaredShot: DeclaredShot) =
         declaredShotDao.update(declaredShotEntity = declaredShot.toDeclaredShotEntity())

@@ -13,6 +13,7 @@ import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -81,13 +82,15 @@ class DeclaredShotsListViewModelTest {
         verify { navigation.pop() }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `on declared shot clicked should create declared shot id and navigate to create edit declared shot`() {
+    fun `on declared shot clicked should create declared shot id and navigate to create edit declared shot`() = runTest {
         val id = 2
 
         viewModel.onDeclaredShotClicked(id = id)
 
         verify { createSharedPreferences.createDeclaredShotId(value = id) }
+        dispatcher.scheduler.apply { advanceTimeBy(9000); runCurrent() }
         verify { navigation.createEditDeclaredShot() }
     }
 

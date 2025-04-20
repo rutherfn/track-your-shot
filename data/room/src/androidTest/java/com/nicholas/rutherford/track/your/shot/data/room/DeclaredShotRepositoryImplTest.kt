@@ -76,7 +76,9 @@ class DeclaredShotRepositoryImplTest {
                         id = 40,
                         shotCategory = "mid-range",
                         title = "Pull-Up Bank Shot",
-                        description = "A pull-up jumper off the backboard from mid-range distance."
+                        description = "A pull-up jumper off the backboard from mid-range distance.",
+                        firebaseKey = "firebase-key"
+
                     )
                 )
             )
