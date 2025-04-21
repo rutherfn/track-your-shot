@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclareds
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot
 import io.mockk.mockk
@@ -57,7 +58,7 @@ class CreateEditDeclaredShotNavigationImplTest {
         verify { navigator.pop(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = Constants.POP_DEFAULT_ACTION
+        val expectedAction = NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN
 
         Assertions.assertEquals(expectedAction, capturedArgument)
     }
