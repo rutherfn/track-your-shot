@@ -48,6 +48,7 @@ fun ReportListScreen(params: ReportListParams) {
             if (!params.state.hasNoReports) {
                 ReportList(
                     state = params.state,
+                    onViewReportClicked = params.onViewReportClicked,
                     onDeletePlayerReportClicked = params.onDeletePlayerReportClicked,
                     onDownloadPlayerReportClicked = params.onDownloadPlayerReportClicked,
                     buildDateTimeStamp = params.buildDateTimeStamp
@@ -75,6 +76,7 @@ fun ReportListScreen(params: ReportListParams) {
 @Composable
 fun ReportList(
     state: ReportListState,
+    onViewReportClicked: (url: String) -> Unit,
     onDeletePlayerReportClicked: (individualPlayerReport: IndividualPlayerReport) -> Unit,
     onDownloadPlayerReportClicked: (individualPlayerReport: IndividualPlayerReport) -> Unit,
     buildDateTimeStamp: (value: Long) -> String
@@ -83,6 +85,7 @@ fun ReportList(
         items(state.reports) { report ->
             PlayerReport(
                 report = report,
+                onViewReportClicked = onViewReportClicked,
                 onDeletePlayerReportClicked = onDeletePlayerReportClicked,
                 onDownloadPlayerReportClicked = onDownloadPlayerReportClicked,
                 buildDateTimeStamp = buildDateTimeStamp
@@ -94,6 +97,7 @@ fun ReportList(
 @Composable
 fun PlayerReport(
     report: IndividualPlayerReport,
+    onViewReportClicked: (url: String) -> Unit,
     onDeletePlayerReportClicked: (individualPlayerReport: IndividualPlayerReport) -> Unit,
     onDownloadPlayerReportClicked: (individualPlayerReport: IndividualPlayerReport) -> Unit,
     buildDateTimeStamp: (value: Long) -> String
@@ -153,6 +157,7 @@ fun PlayerReport(
                     ) {
                         DropdownMenuItem(onClick = {
                             expanded = false
+                            onViewReportClicked.invoke(report.pdfUrl)
                         }) {
                             Text(
                                 text = stringResource(id = R.string.view_report)

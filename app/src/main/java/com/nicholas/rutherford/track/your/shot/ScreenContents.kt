@@ -76,6 +76,7 @@ class ScreenContents {
                 state = reportListViewModel.reportListStateFlow.collectAsState().value,
                 onToolbarMenuClicked = { reportListViewModel.onToolbarMenuClicked() },
                 onAddReportClicked = { reportListViewModel.onCreatePlayerReportClicked() },
+                onViewReportClicked = { url -> reportListViewModel.onViewReportClicked(url = url) },
                 onDeletePlayerReportClicked = { individualPlayerReport -> reportListViewModel.onDeletePlayerReportClicked(individualPlayerReport = individualPlayerReport) },
                 onDownloadPlayerReportClicked = { individualPlayerReport -> reportListViewModel.onDownloadPlayerReportClicked(individualPlayerReport = individualPlayerReport) },
                 buildDateTimeStamp = { value -> reportListViewModel.buildDateTimeStamp(value) }

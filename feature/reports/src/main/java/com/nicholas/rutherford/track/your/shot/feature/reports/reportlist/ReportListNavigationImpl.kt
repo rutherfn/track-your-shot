@@ -12,6 +12,8 @@ class ReportListNavigationImpl(private val navigator: Navigator) : ReportListNav
 
     override fun navigateToCreateReport() = navigator.navigate(navigationAction = NavigationActions.ReportList.createReport())
 
+    override fun navigateToUrl(url: String) = navigator.url(url = url)
+
     override fun disableProgress() = navigator.progress(progressAction = null)
 
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
