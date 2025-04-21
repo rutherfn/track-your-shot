@@ -233,7 +233,7 @@ class ReadSharedPreferencesImplTest {
                 coEvery {
                     sharedPreferences.getInt(
                         Constants.Preferences.DECLARED_SHOT_ID,
-                        0
+                        -1
                     )
                 } returns value
 
