@@ -17,7 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material.icons.filled.Help
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,13 +57,14 @@ fun ShotsListScreen(params: ShotsListScreenParams) {
             shouldShowMiddleContentAppBar = params.shouldShowAllPlayerShots,
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
             onSecondaryIconButtonClicked = {
+                params.onHelpClicked.invoke()
 //                    if (params.shouldShowAllPlayerShots) {
 //                        // todo user should be taken where they can filter there shots screen
 //                    }
             }
         ),
-        secondaryImageVector = Icons.Filled.FilterAlt,
-        secondaryImageEnabled = !isShotListEmpty
+        secondaryImageVector = Icons.Filled.Help,
+        secondaryImageEnabled = true
     )
 }
 

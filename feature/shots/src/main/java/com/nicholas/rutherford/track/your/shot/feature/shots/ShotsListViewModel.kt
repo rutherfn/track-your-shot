@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.your.shot.feature.shots
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
@@ -99,5 +101,23 @@ class ShotsListViewModel(
             viewCurrentPendingShot = false,
             fromShotList = true
         )
+    }
+
+    // todo - remove this once we add filter functionality
+    fun buildHelpAlert(): Alert {
+        return Alert(
+            title = "View Shots",
+            description = "Access and manage player shot logs with options to create, edit, or delete entries.",
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = "Got It",
+                onButtonClicked = {}
+            )
+        )
+    }
+
+    // todo - remove this once we add filter functionality
+    fun onHelpClicked() {
+        println("here we are test")
+        navigation.alert(alert = buildHelpAlert())
     }
 }
