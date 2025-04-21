@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,6 +35,14 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import androidx.compose.foundation.text.BasicTextField as TextField
 
+/**
+ * Default [TextField] with custom functionality to be reused
+ * more specifically, allocating for more space for multiline [TextField]
+ *
+ * @param value defined value that is the body text inside the [TextField]
+ * @param onValueChange executes whenever the value is changed from the [TextField] gets the new value
+ * @param placeholderValue defined value used for setting a placeholder when [value] is empty
+ */
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun CoreMultilineTextField(

@@ -19,8 +19,6 @@ class ShotIgnoringRepositoryImpl(private val shotIgnoringDao: ShotIgnoringDao) :
         shotIgnoringDao.insert(entity)
     }
 
-    // https://onekeyresources.milwaukeetool.com/en/android-device-fragmentation
-
     override suspend fun updateShotIgnoring(shotIgnoring: ShotIgnoring) =
         shotIgnoringDao.update(shotIgnoringEntity = shotIgnoring.toShotIgnoringEntity())
 
