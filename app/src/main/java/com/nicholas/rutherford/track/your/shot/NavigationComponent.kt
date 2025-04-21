@@ -380,6 +380,7 @@ fun NavigationComponent(
                 ShotsListScreen(
                     params = ShotsListScreenParams(
                         state = shotsListViewModel.shotListStateFlow.collectAsState().value,
+                        onHelpClicked = { shotsListViewModel.onHelpClicked() },
                         onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked() },
                         onShotItemClicked = { shotLoggedWithPlayer -> shotsListViewModel.onShotItemClicked(shotLoggedWithPlayer) },
                         shouldShowAllPlayerShots = entry.arguments?.getBoolean(NamedArguments.SHOULD_SHOW_ALL_PLAYERS_SHOTS) ?: false
