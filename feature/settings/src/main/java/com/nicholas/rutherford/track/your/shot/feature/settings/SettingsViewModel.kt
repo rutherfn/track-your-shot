@@ -38,6 +38,7 @@ class SettingsViewModel(
     internal fun generalSettings(): List<String> =
         listOf(
             application.getString(StringsIds.accountInfo),
+            application.getString(StringsIds.manageDeclaredShots),
             application.getString(StringsIds.termsConditions),
             application.getString(StringsIds.usingTheApp)
         )
@@ -55,6 +56,9 @@ class SettingsViewModel(
             }
             application.getString(StringsIds.termsConditions) -> {
                 navigation.navigateToTermsConditions()
+            }
+            application.getString(StringsIds.manageDeclaredShots) -> {
+                navigation.navigateToDeclaredShotsList()
             }
             application.getString(StringsIds.accountInfo) -> {
                 scope.launch {

@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.base.resources
 
 object StringsIds {
+    val addShot = R.string.add_shot
     val acceptanceOfTheseTerms = R.string.acceptance_of_these_terms
     val acceptanceOfTheseTermsDescription = R.string.acceptance_of_these_terms_description
     val accounts = R.string.accounts
@@ -47,6 +48,7 @@ object StringsIds {
     val clickMeToCreateAccount = R.string.click_me_to_create_account
     val createAccount = R.string.create_account
     val createPlayer = R.string.create_player
+    val createShot = R.string.create_shot
     val createPlayerReport = R.string.create_player_report
     val createYourPlayersProfile = R.string.create_your_players_profile
     val createYourPlayerProfileDescription = R.string.create_your_player_profile_description
@@ -95,6 +97,9 @@ object StringsIds {
     val enabledPermissions = R.string.enabled_permissions
     val enterShotsMade = R.string.enter_shots_made
     val enterShotsMissed = R.string.enter_shots_missed
+    val enterShotCategory = R.string.enter_shot_category
+    val enterShotDescription = R.string.enter_shot_description
+    val enterShotName = R.string.enter_shot_name
     val error = R.string.error
     val errorCreatingAccount = R.string.error_creating_account
     val errorDeletingPendingAccount = R.string.error_deleting_pending_account
@@ -126,6 +131,7 @@ object StringsIds {
     val logShot = R.string.log_shot
     val logYourShotsDescription = R.string.log_your_shots_description
     val logYourShots = R.string.log_your_shots
+    val manageDeclaredShots = R.string.manage_declared_shots
     val moreInfo = R.string.more_info
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
@@ -143,6 +149,7 @@ object StringsIds {
     val noLastNameEntered = R.string.no_last_name_entered
     val noShotsCreated = R.string.no_shots_created
     val noShotsCreatedDescription = R.string.no_shots_created_descriipton
+    val noShotsDeclaredDescription = R.string._no_shots_declared_description
     val noShotsResultsFound = R.string.no_shots_results_found
     val noShotsResultsFoundDescription = R.string.no_shots_results_found_description
     val notConnectedToInternet = R.string.not_connected_to_internet
@@ -199,6 +206,9 @@ object StringsIds {
     val shotsAttemptedDateX = R.string.shots_attempted_date_x
     val shotsLoggedDateX = R.string.shots_logged_date_x
     val shotsMadeAccuracyX = R.string.shots_made_accuracy_x
+    val shotCategory = R.string.shot_ceategory
+    val shotDescription = R.string.shot_description
+    val shotName = R.string.shot_name
     val shotsMissedAccuracyX = R.string.shots_missed_accuracy_x
     val shotHasBeenDeleted = R.string.shot_has_been_deleted
     val shotHasNotBeenDeleted = R.string.shot_has_not_been_deleted
@@ -209,6 +219,12 @@ object StringsIds {
     val shotX = R.string.shot_x
     val shots = R.string.shots
     val shotsAttempted = R.string.shots_attempted
+    val shotXHadIssueSavingDetails = R.string.shot_x_had_issue_saving_details
+    val shotXHadIssueSavingDetailsDescription = R.string.shot_x_had_issue_saving_details_description
+    val shotXHasBeenCreated = R.string.shot_x_has_been_created
+    val shotXHasBeenCreatedDescription = R.string.shot_x_has_been_created_description
+    val shotXHasBeenEdited = R.string.shot_x_has_been_edited
+    val shotXHasBeenEditedDescription = R.string.shot_x_has_been_edited_description
     val shotsMade = R.string.shots_made
     val shotsMadeX = R.string.shots_made_x
     val shotsMadeXSecondary = R.string.shots_made_x_secondary
@@ -216,6 +232,14 @@ object StringsIds {
     val shotsMissedPercentage = R.string.shots_missed_percentage
     val shotsMissed = R.string.shots_missed
     val shotsMissedX = R.string.shots_missed_x
+    val shotDescriptionMissing = R.string.shot_description_missing
+    val shotDescriptionMissingDesc = R.string.shot_description_missing_desc
+    val shotCategoryMissing = R.string.shot_category_missing
+    val shotCategoryMissingDescription = R.string.shot_category_missing_description
+    val shotNameMissing = R.string.shot_name_missing
+    val shotNameMissingDescription = R.string.shot_name_missing_description
+    val shotWithThatNameAlreadyExists = R.string.shot_with_that_name_already_exists
+    val shotWithThatNameAlreadyExistsDescription = R.string.shot_with_that_name_already_exists_description
     val shotsNotRecordedDescription = R.string.shots_not_recorded_description
     val missedShotsNotRecordedDescription = R.string.missed_shots_not_recorded_description
     val dateShotWasTakenDescription = R.string.date_shot_was_taken_description
@@ -242,6 +266,7 @@ object StringsIds {
     val unableToCreateAccount = R.string.unable_to_create_account
     val unableToDeletePlayerPleaseContactSupport =
         R.string.unable_to_delete_player_please_contact_support
+    val unableToDeleteShot = R.string.unable_to_delete_shot
     val unableToLoginToAccount = R.string.unable_to_login_to_account
     val unableToResetPassword = R.string.unable_to_reset_password
     val unableToSendEmailVerification = R.string.unable_to_send_email_verification
@@ -259,8 +284,10 @@ object StringsIds {
     val verifyAccount = R.string.verify_account
     val viewReports = R.string.view_reports
     val viewMoreInfo = R.string.view_more_info
+    val viewX = R.string.view_x
     val viewXShots = R.string.view_x_shots
     val voiceCommands = R.string.voice_commands
+    val weCouldNotDeleteXShot = R.string.we_could_not_delete_x_shot_please_try_again_later
     val weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue =
         R.string.we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue
     val weHaveDetectedCurrentlyNotConnectedToInternetDescription =

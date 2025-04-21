@@ -14,7 +14,9 @@ data class DeclaredShotEntity(
     @ColumnInfo(name = "title")
     val title: String,
     @ColumnInfo(name = "description")
-    val description: String
+    val description: String,
+    @ColumnInfo(name = "firebaseKey")
+    val firebaseKey: String? = null
 )
 
 fun DeclaredShotEntity.toDeclaredShot(): DeclaredShot {
@@ -22,6 +24,7 @@ fun DeclaredShotEntity.toDeclaredShot(): DeclaredShot {
         id = id,
         shotCategory = shotCategory,
         title = title,
-        description = description
+        description = description,
+        firebaseKey = firebaseKey
     )
 }

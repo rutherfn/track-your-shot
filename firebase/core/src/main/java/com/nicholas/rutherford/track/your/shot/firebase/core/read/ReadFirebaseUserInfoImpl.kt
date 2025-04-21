@@ -4,8 +4,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
@@ -93,6 +96,78 @@ class ReadFirebaseUserInfoImpl(
                         trySend(element = null)
                     }
                 })
+            awaitClose()
+        }
+    }
+
+    override fun getDeletedShotIdsFlow(): Flow<List<Int>> {
+        return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+
+            firebaseDatabase.getReference("${Constants.USERS}/$uid/${Constants.SHOT_IDS_TO_IGNORE}")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            val defaultShotIdsToIgnore = snapshot.getValue(object : GenericTypeIndicator<List<Int>>() {}) ?: emptyList()
+                            trySend(element = defaultShotIdsToIgnore)
+                        } else {
+                            Timber.e(message = "Error(getDeletedShotIdsFlow) -> Current snapshot does not exist")
+                            trySend(element = emptyList())
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Timber.e(message = "Error(getDeletedShotIdsFlow) -> Database error when attempting to ge deleted shot ids from json with following stack trace - ${error.message}")
+                        trySend(element = emptyList())
+                    }
+                })
+            awaitClose()
+        }
+    }
+
+    override fun getCreatedDeclaredShotsFlow(): Flow<List<DeclaredShotWithKeyRealtimeResponse>> {
+        return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
+
+            val declaredShotWithKeyRealtimeResponseArrayList: ArrayList<DeclaredShotWithKeyRealtimeResponse> = arrayListOf()
+
+            firebaseDatabase.getReference(path)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            if (snapshot.childrenCount == Constants.FIREBASE_CHILDREN_COUNT_ZERO) {
+                                Timber.w("Warning(getCreatedDeclaredShotsFlow) -> No created shots currently exist for this account")
+                                trySend(element = emptyList())
+                            } else {
+                                for (createdDeclaredShotSnapshot in snapshot.children) {
+                                    val key = createdDeclaredShotSnapshot.key
+                                    val info = createdDeclaredShotSnapshot.getValue(DeclaredShotRealtimeResponse::class.java)
+
+                                    safeLet(key, info) { declaredShotFirebaseKey, declaredShotRealtimeResponse ->
+                                        declaredShotWithKeyRealtimeResponseArrayList.add(
+                                            DeclaredShotWithKeyRealtimeResponse(
+                                                declaredShotFirebaseKey = declaredShotFirebaseKey,
+                                                declaredShotRealtimeResponse = declaredShotRealtimeResponse
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+
+                            trySend(declaredShotWithKeyRealtimeResponseArrayList.toList())
+                        } else {
+                            Timber.w("Warning(getCreatedDeclaredShotsFlow) -> No created shots reference currently exist for this account")
+                            trySend(element = emptyList())
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Timber.e(message = "Error(getCreatedDeclaredShotsFlow) -> Database error when attempting to get user created declared shot list with the following error ${error.message}")
+                        trySend(element = emptyList())
+                    }
+                })
+
             awaitClose()
         }
     }

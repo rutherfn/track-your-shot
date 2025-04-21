@@ -153,6 +153,13 @@ fun PlayerReport(
                     ) {
                         DropdownMenuItem(onClick = {
                             expanded = false
+                        }) {
+                            Text(
+                                text = stringResource(id = R.string.view_report)
+                            )
+                        }
+                        DropdownMenuItem(onClick = {
+                            expanded = false
                             onDownloadPlayerReportClicked.invoke(report)
                         }) {
                             Text(

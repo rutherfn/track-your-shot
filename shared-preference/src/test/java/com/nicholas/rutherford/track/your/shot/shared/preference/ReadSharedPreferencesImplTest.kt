@@ -217,6 +217,42 @@ class ReadSharedPreferencesImplTest {
     }
 
     @Nested
+    inner class DeclaredShotId {
+
+        @BeforeEach
+        fun beforeEach() {
+            mockkStatic(SharedPreferences::class)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return value when getInt returns back a value`() =
+            runTest {
+                val value = 2
+
+                coEvery {
+                    sharedPreferences.getInt(
+                        Constants.Preferences.DECLARED_SHOT_ID,
+                        -1
+                    )
+                } returns value
+
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.declaredShotId(), value)
+            }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `should return default value when getInt returns back no value`() =
+            runTest {
+                init()
+
+                Assertions.assertEquals(readSharedPreferencesImpl.declaredShotId(), 0)
+            }
+    }
+
+    @Nested
     inner class ShouldShowTermsAndConditions {
 
         @BeforeEach

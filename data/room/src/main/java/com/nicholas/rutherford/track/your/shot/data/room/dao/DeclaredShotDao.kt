@@ -10,6 +10,9 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.DeclaredShotEn
 interface DeclaredShotDao {
 
     @Insert
+    suspend fun insert(declaredShotEntity: DeclaredShotEntity)
+
+    @Insert
     suspend fun insert(declaredShotEntities: List<DeclaredShotEntity>)
 
     @Update
@@ -18,7 +21,10 @@ interface DeclaredShotDao {
     @Query("DELETE FROM declaredShots")
     suspend fun deleteAll()
 
-    @Query("SELECT * FROM declaredShots ORDER BY title ASC")
+    @Query("DELETE FROM declaredShots WHERE id = :id")
+    suspend fun deleteDeclaredShotById(id: Int)
+
+    @Query("SELECT * FROM declaredShots ORDER BY title COLLATE NOCASE ASC")
     suspend fun getAllDeclaredShots(): List<DeclaredShotEntity>
 
     @Query("SELECT * FROM declaredShots WHERE id = :id")
@@ -26,4 +32,7 @@ interface DeclaredShotDao {
 
     @Query("SELECT * FROM declaredShots WHERE REPLACE(title, ' ', '') LIKE '%' || REPLACE(:searchQuery, ' ', '') || '%' ORDER BY title ASC")
     suspend fun getDeclaredShotsBySearchQuery(searchQuery: String): List<DeclaredShotEntity>
+
+    @Query("SELECT COALESCE(MAX(id), 1) FROM declaredShots")
+    suspend fun getMaxIdOrDefault(): Int
 }

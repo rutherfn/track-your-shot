@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.firebase.core.read
 
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import kotlinx.coroutines.flow.Flow
@@ -9,6 +10,8 @@ import java.util.Date
 interface ReadFirebaseUserInfo {
     fun getLoggedInAccountEmail(): Flow<String?>
     fun getAccountInfoFlow(): Flow<AccountInfoRealtimeResponse?>
+    fun getDeletedShotIdsFlow(): Flow<List<Int>>
+    fun getCreatedDeclaredShotsFlow(): Flow<List<DeclaredShotWithKeyRealtimeResponse>>
     fun getAccountInfoKeyFlow(): Flow<String?>
     fun getPlayerInfoList(): Flow<List<PlayerInfoRealtimeWithKeyResponse>>
     fun getReportList(): Flow<List<IndividualPlayerReportWithKeyRealtimeResponse>>

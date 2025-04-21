@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.firebase.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestCreateAccountFirebaseRealtimeDatabaseResult
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestIndividualPlayerReportRealtimeResponse
@@ -126,6 +127,305 @@ class CreateFirebaseUserInfoImplTest {
                     createFirebaseUserInfo
                 )
             }
+    }
+
+    @Nested
+    inner class AttemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow {
+
+        @Test
+        fun `when add on complete listener is executed should set flow a list and value Pair when isSuccessful returns back true`() =
+            runTest {
+                val uid = "uid"
+                val path = "${Constants.USERS_PATH}/$uid/${Constants.SHOT_IDS_TO_IGNORE}"
+                val defaultShotIdsToIgnore = listOf(11, 22, 44, 2)
+
+                val mockTaskVoidResult = mockk<Task<Void>>()
+                val mockFirebaseUser = mockk<FirebaseUser>()
+                val onCompleteListenerSlot = slot<OnCompleteListener<Void>>()
+                val failureListenerSlot = slot<OnFailureListener>()
+
+                mockkStatic(Tasks::class)
+                mockkStatic(FirebaseUser::class)
+
+                every { mockTaskVoidResult.isSuccessful } returns true
+
+                every { mockFirebaseUser.uid } returns uid
+                every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+                every { firebaseDatabase.getReference(path).key } returns key
+
+                every {
+                    firebaseDatabase.getReference(path).setValue(defaultShotIdsToIgnore)
+                        .addOnCompleteListener(capture(onCompleteListenerSlot))
+                        .addOnFailureListener(capture(failureListenerSlot))
+                } answers {
+                    onCompleteListenerSlot.captured.onComplete(mockTaskVoidResult)
+                    mockTaskVoidResult
+                }
+
+                val reference = firebaseDatabase.getReference(path).push()
+
+                every { reference.setValue(defaultShotIdsToIgnore, any()) }
+
+                val value =
+                    createFirebaseUserInfoImpl.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = defaultShotIdsToIgnore).first()
+
+                Assertions.assertEquals(Pair(true, defaultShotIdsToIgnore), value)
+            }
+
+        @Test
+        fun `when add on failure listener is executed should set flow to false and null Pair`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.SHOT_IDS_TO_IGNORE}"
+            val defaultShotIdsToIgnore = listOf(11, 22, 44, 2)
+
+            val mockException = Exception("Simulated failure")
+
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val completeListenerSlot = slot<OnCompleteListener<Void>>()
+            val failureListenerSlot = slot<OnFailureListener>()
+
+            mockkStatic(Tasks::class)
+            mockkStatic(FirebaseUser::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path).setValue(defaultShotIdsToIgnore)
+                    .addOnCompleteListener(capture(completeListenerSlot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                failureListenerSlot.captured.onFailure(mockException)
+                mockTaskVoidResult
+            }
+
+            val reference = firebaseDatabase.getReference(path).push()
+
+            every { reference.setValue(defaultShotIdsToIgnore, any()) }
+
+            val value =
+                createFirebaseUserInfoImpl.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = defaultShotIdsToIgnore).first()
+
+            Assertions.assertEquals(Pair(false, null), value)
+        }
+
+        @Test
+        fun `when add on complete listener is executed should set flow to a null and value Pair of false when isSuccessful returns back false`() =
+            runTest {
+                val uid = "uid"
+                val path = "${Constants.USERS_PATH}/$uid/${Constants.SHOT_IDS_TO_IGNORE}"
+                val defaultShotIdsToIgnore = listOf(11, 22, 44, 2)
+
+                val mockTaskVoidResult = mockk<Task<Void>>()
+                val mockFirebaseUser = mockk<FirebaseUser>()
+                val onCompleteListenerSlot = slot<OnCompleteListener<Void>>()
+                val failureListenerSlot = slot<OnFailureListener>()
+
+                mockkStatic(Tasks::class)
+                mockkStatic(FirebaseUser::class)
+
+                every { mockTaskVoidResult.isSuccessful } returns false
+
+                every { mockFirebaseUser.uid } returns uid
+                every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+                every { firebaseDatabase.getReference(path).key } returns key
+
+                every {
+                    firebaseDatabase.getReference(path).setValue(defaultShotIdsToIgnore)
+                        .addOnCompleteListener(capture(onCompleteListenerSlot))
+                        .addOnFailureListener(capture(failureListenerSlot))
+                } answers {
+                    onCompleteListenerSlot.captured.onComplete(mockTaskVoidResult)
+                    mockTaskVoidResult
+                }
+
+                val reference = firebaseDatabase.getReference(path).push()
+
+                every { reference.setValue(defaultShotIdsToIgnore, any()) }
+
+                val value =
+                    createFirebaseUserInfoImpl.attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(defaultShotIdsToIgnore = defaultShotIdsToIgnore).first()
+
+                Assertions.assertEquals(Pair(false, null), value)
+            }
+    }
+
+    @Nested
+    inner class AttemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow {
+
+        @Test
+        fun `when add on complete listener is executed should set flow to true and value Pair of key when isSuccessful returns back true`() =
+            runTest {
+                val declaredShot = DeclaredShot(
+                    id = 0,
+                    shotCategory = "category",
+                    title = "title",
+                    description = "description",
+                    firebaseKey = "firebase-key"
+                )
+                val uid = "uid"
+                val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
+
+                val mockTaskVoidResult = mockk<Task<Void>>()
+                val mockFirebaseUser = mockk<FirebaseUser>()
+                val onCompleteListenerSlot = slot<OnCompleteListener<Void>>()
+                val failureListenerSlot = slot<OnFailureListener>()
+
+                val values = hashMapOf<String, Any>()
+
+                val reference = firebaseDatabase.getReference(path)
+
+                values[Constants.ID] = declaredShot.id
+                values[Constants.SHOT_CATEGORY] = declaredShot.shotCategory
+                values[Constants.TITLE] = declaredShot.title
+                values[Constants.DESCRIPTION] = declaredShot.description
+
+                mockkStatic(Tasks::class)
+                mockkStatic(FirebaseUser::class)
+
+                every { mockTaskVoidResult.isSuccessful } returns true
+
+                every { mockFirebaseUser.uid } returns uid
+                every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+                every { firebaseDatabase.getReference(path).key } returns key
+
+                every {
+                    reference.child(key).setValue(values)
+                        .addOnCompleteListener(capture(onCompleteListenerSlot))
+                        .addOnFailureListener(capture(failureListenerSlot))
+                } answers {
+                    onCompleteListenerSlot.captured.onComplete(mockTaskVoidResult)
+                    mockTaskVoidResult
+                }
+
+                every { reference.push().key } returns key
+
+                every { reference.child(key).setValue(values, any()) }
+
+                val value =
+                    createFirebaseUserInfoImpl.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(
+                        declaredShot = declaredShot
+                    ).first()
+
+                Assertions.assertEquals(Pair(true, key), value)
+            }
+
+        @Test
+        fun `when add on complete listener is executed should set flow to false and value Pair of key to null when isSuccessful returns back false`() =
+            runTest {
+                val declaredShot = DeclaredShot(
+                    id = 0,
+                    shotCategory = "category",
+                    title = "title",
+                    description = "description",
+                    firebaseKey = "firebasekey"
+                )
+                val uid = "uid"
+                val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
+
+                val mockTaskVoidResult = mockk<Task<Void>>()
+                val mockFirebaseUser = mockk<FirebaseUser>()
+                val onCompleteListenerSlot = slot<OnCompleteListener<Void>>()
+                val failureListenerSlot = slot<OnFailureListener>()
+
+                val values = hashMapOf<String, Any>()
+
+                val reference = firebaseDatabase.getReference(path)
+
+                values[Constants.ID] = declaredShot.id
+                values[Constants.SHOT_CATEGORY] = declaredShot.shotCategory
+                values[Constants.TITLE] = declaredShot.title
+                values[Constants.DESCRIPTION] = declaredShot.description
+
+                mockkStatic(Tasks::class)
+                mockkStatic(FirebaseUser::class)
+
+                every { mockTaskVoidResult.isSuccessful } returns false
+
+                every { mockFirebaseUser.uid } returns uid
+                every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+                every { firebaseDatabase.getReference(path).key } returns key
+
+                every {
+                    reference.child(key).setValue(values)
+                        .addOnCompleteListener(capture(onCompleteListenerSlot))
+                        .addOnFailureListener(capture(failureListenerSlot))
+                } answers {
+                    onCompleteListenerSlot.captured.onComplete(mockTaskVoidResult)
+                    mockTaskVoidResult
+                }
+
+                every { reference.push().key } returns key
+
+                every { reference.child(key).setValue(values, any()) }
+
+                val value =
+                    createFirebaseUserInfoImpl.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(
+                        declaredShot = declaredShot
+                    ).first()
+
+                Assertions.assertEquals(Pair(false, null), value)
+            }
+
+        @Test
+        fun `when add on failure listener is executed should set flow to false and null Pair`() = runTest {
+            val declaredShot = DeclaredShot(
+                id = 0,
+                shotCategory = "category",
+                title = "title",
+                description = "description",
+                firebaseKey = "firebasekey"
+            )
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
+
+            val mockException = Exception("Simulated failure")
+
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val completeListenerSlot = slot<OnCompleteListener<Void>>()
+            val failureListenerSlot = slot<OnFailureListener>()
+
+            val values = hashMapOf<String, Any>()
+
+            val reference = firebaseDatabase.getReference(path)
+
+            values[Constants.ID] = declaredShot.id
+            values[Constants.SHOT_CATEGORY] = declaredShot.shotCategory
+            values[Constants.TITLE] = declaredShot.title
+            values[Constants.DESCRIPTION] = declaredShot.description
+
+            mockkStatic(Tasks::class)
+            mockkStatic(FirebaseUser::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                reference.child(key).setValue(values)
+                    .addOnCompleteListener(capture(completeListenerSlot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                failureListenerSlot.captured.onFailure(mockException)
+                mockTaskVoidResult
+            }
+
+            every { reference.push().key } returns key
+
+            every { reference.child(key).setValue(values, any()) }
+
+            val value =
+                createFirebaseUserInfoImpl.attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(
+                    declaredShot = declaredShot
+                ).first()
+
+            Assertions.assertEquals(Pair(false, null), value)
+        }
     }
 
     @Nested

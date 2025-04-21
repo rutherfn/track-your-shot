@@ -22,6 +22,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlaye
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepositoryImpl
+import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationNavigation
@@ -67,6 +69,12 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.Acco
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotNavigation
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListNavigation
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
@@ -155,13 +163,15 @@ class AppModule {
         single {
             get<AppDatabase>().playerDao()
         }
+        single {
+            get<AppDatabase>().shotIgnoringDao()
+        }
         single<ActiveUserRepository> {
             ActiveUserRepositoryImpl(activeUserDao = get())
         }
         single<DeclaredShotRepository> {
             DeclaredShotRepositoryImpl(
-                declaredShotDao = get(),
-                declaredShotsJson = get()
+                declaredShotDao = get()
             )
         }
         single<IndividualPlayerReportRepository> {
@@ -171,9 +181,8 @@ class AppModule {
         }
         single<CurrentPendingShot> { CurrentPendingShotImpl() }
         single<UserRepository> { UserRepositoryImpl(userDao = get()) }
-        single<PlayerRepository> {
-            PlayerRepositoryImpl(playerDao = get())
-        }
+        single<ShotIgnoringRepository> { ShotIgnoringRepositoryImpl(shotIgnoringDao = get()) }
+        single<PlayerRepository> { PlayerRepositoryImpl(playerDao = get()) }
         single<PendingPlayerRepository> {
             PendingPlayerRepositoryImpl(pendingPlayerDao = get())
         }
@@ -239,6 +248,7 @@ class AppModule {
                 playerRepository = get(),
                 individualPlayerReportRepository = get(),
                 pendingPlayerRepository = get(),
+                shotIgnoringRepository = get(),
                 userRepository = get(),
                 readFirebaseUserInfo = get(),
                 existingUserFirebase = get(),
@@ -316,6 +326,12 @@ class AppModule {
         }
         single<ShotsListNavigation> {
             ShotsListNavigationImpl(navigator = get())
+        }
+        single<DeclaredShotsListNavigation> {
+            DeclaredShotsListNavigationImpl(navigator = get())
+        }
+        single<CreateEditDeclaredShotNavigation> {
+            CreateEditDeclaredShotNavigationImpl(navigator = get())
         }
         viewModel {
             MainActivityViewModel(accountManager = get(), scope = defaultCoroutineScope, network = get())
@@ -455,6 +471,28 @@ class AppModule {
             EnabledPermissionsViewModel(
                 navigation = get(),
                 application = androidApplication()
+            )
+        }
+        viewModel {
+            DeclaredShotsListViewModel(
+                declaredShotRepository = get(),
+                createSharedPreferences = get(),
+                navigation = get(),
+                scope = defaultCoroutineScope
+            )
+        }
+        viewModel {
+            CreateEditDeclaredShotViewModel(
+                application = androidApplication(),
+                declaredShotRepository = get(),
+                shotIgnoringRepository = get(),
+                createFirebaseUserInfo = get(),
+                updateFirebaseUserInfo = get(),
+                deleteFirebaseUserInfo = get(),
+                createSharedPreferences = get(),
+                readSharedPreferences = get(),
+                navigation = get(),
+                scope = defaultCoroutineScope
             )
         }
         viewModel {

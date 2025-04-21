@@ -33,6 +33,20 @@ class SettingsNavigationImplTest {
     }
 
     @Test
+    fun `navigate to declared shots list`() {
+        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+
+        settingsNavigationImpl.navigateToDeclaredShotsList()
+
+        verify { navigator.navigate(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+        val expectedAction = NavigationActions.Settings.declaredShotsList()
+
+        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
+    }
+
+    @Test
     fun `open navigation drawer`() {
         settingsNavigationImpl.openNavigationDrawer()
 

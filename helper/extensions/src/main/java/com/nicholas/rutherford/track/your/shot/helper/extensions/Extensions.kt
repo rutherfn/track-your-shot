@@ -95,6 +95,9 @@ fun LocalDate.toDateValue(): String? {
     }
 }
 
+fun String.normalizeSpaces(): String =
+    trim().replace(Regex("\\s+"), " ")
+
 fun getImageUri(context: Context, image: Bitmap): Uri? {
     val values = ContentValues().apply {
         put(MediaStore.Images.Media.TITLE, "title")

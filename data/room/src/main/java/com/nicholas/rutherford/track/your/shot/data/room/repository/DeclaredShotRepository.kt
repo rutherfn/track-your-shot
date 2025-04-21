@@ -4,14 +4,19 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 
 interface DeclaredShotRepository {
 
-    suspend fun createDeclaredShots()
+    suspend fun createNewDeclaredShot(declaredShot: DeclaredShot)
+    suspend fun createDeclaredShots(shotIdsToFilterOut: List<Int>)
 
     suspend fun updateDeclaredShot(declaredShot: DeclaredShot)
 
     suspend fun fetchAllDeclaredShots(): List<DeclaredShot>
 
     suspend fun deleteAllDeclaredShots()
+    suspend fun deleteShotById(id: Int)
+
     suspend fun fetchDeclaredShotFromId(id: Int): DeclaredShot?
 
     suspend fun fetchDeclaredShotsBySearchQuery(searchQuery: String): List<DeclaredShot>
+
+    suspend fun fetchMaxId(): Int
 }

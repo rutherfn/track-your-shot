@@ -12,6 +12,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,7 +40,8 @@ fun Content(
     imageVector: ImageVector? = null,
     secondaryImageVector: ImageVector? = null,
     secondaryImageEnabled: Boolean? = null,
-    invokeFunctionOnInit: (() -> Unit?)? = null
+    invokeFunctionOnInit: (() -> Unit?)? = null,
+    secondaryIconTint: Color = AppColors.White
 ) {
     TrackMyShotTheme {
         Column {
@@ -50,7 +52,8 @@ fun Content(
                     appBar = appBar,
                     imageVector = imageVector,
                     secondaryImageVector = secondaryImageVector,
-                    secondaryImageEnabled = secondaryImageEnabled
+                    secondaryImageEnabled = secondaryImageEnabled,
+                    secondaryIconTint = secondaryIconTint
                 )
             }
 

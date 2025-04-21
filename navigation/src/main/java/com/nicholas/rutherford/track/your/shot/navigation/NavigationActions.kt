@@ -220,6 +220,14 @@ object NavigationActions {
         }
     }
 
+    object DeclaredShotsList {
+
+        fun createEditDeclaredShot() = object : NavigationAction {
+            override val destination: String = NavigationDestinations.CREATE_EDIT_DECLARED_SHOTS_SCREEN
+            override val navOptions = NavOptions.Builder().build()
+        }
+    }
+
     object Settings {
 
         fun accountInfo(username: String, email: String) = object : NavigationAction {
@@ -227,6 +235,11 @@ object NavigationActions {
                 username = username,
                 email = email
             )
+            override val navOptions = NavOptions.Builder().build()
+        }
+
+        fun declaredShotsList() = object : NavigationAction {
+            override val destination: String = NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN
             override val navOptions = NavOptions.Builder().build()
         }
 

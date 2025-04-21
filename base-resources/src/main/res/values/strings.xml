@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="add_shot">Add Shot</string>
     <string name="acceptance_of_these_terms">Acceptance Of These Terms</string>
     <string name="acceptance_of_these_terms_description"><![CDATA[You acknowledge that you have read this Agreement and agree to all its terms and conditions. By accessing and using the Mobile Application and Services, you agree to be bound by this Agreement. If you do not agree to abide by the terms of this Agreement, you are not authorized to access or use the Mobile Application and Services.]]></string>
     <string name="accounts">Accounts</string>
@@ -46,6 +47,7 @@
     <string name="create_account">Create Account</string>
     <string name="create_player">Create Player</string>
     <string name="create_player_report">Create Player Report</string>
+    <string name="create_shot">Create Shot</string>
     <string name="create_your_players_profile">Create Your Players Profile</string>
     <string name="create_your_player_profile_description">Begin by creating a player profile, including details like first name, last name, position, and a player image.</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
@@ -83,6 +85,9 @@
     <string name="email_required">Email*</string>
     <string name="enter_shots_made">Enter Shots Made</string>
     <string name="enter_shots_missed">Enter Shots Missed</string>
+    <string name="enter_shot_category">Enter Shot Category</string>
+    <string name="enter_shot_description">Enter Shot Description</string>
+    <string name="enter_shot_name">Enter Shot Name</string>
     <string name="edit_player">Edit Player</string>
     <string name="empty" />
     <string name="empty_field">Empty Field</string>
@@ -118,6 +123,7 @@
     <string name="log_your_shots">Log Your Shots</string>
     <string name="log_your_shots_description">Choose the type of shot you want to record and input the makes and misses for the day the player took them.</string>
     <string name="made_shots_x">Made Shots: %s</string>
+    <string name="manage_declared_shots">Manage Declared Shots</string>
     <string name="menu">Menu</string>
     <string name="more_info">More Info</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
@@ -191,6 +197,9 @@
     <string name="shots_logged_date_x">Shots Logged Date: %s</string>
     <string name="shots_made_accuracy_x">Shots Made Accuracy: %s %%</string>
     <string name="shots_missed_accuracy_x">Shots Missed Accuracy: %s %%</string>
+    <string name="shot_ceategory">Shot Category:</string>
+    <string name="shot_description">Shot Description:</string>
+    <string name="shot_name">Shot Name:</string>
     <string name="shot_has_been_deleted">Shot Has Been Deleted</string>
     <string name="shot_has_not_been_deleted">Shot Hsa Not Been Deleted</string>
     <string name="shot_percentage">%s %%</string>
@@ -198,6 +207,12 @@
     <string name="shot_taken_on_x">Shot Taken On %s</string>
     <string name="shot_updated">Shot Updated</string>
     <string name="shot_x">Shot %s</string>
+    <string name="shot_x_has_been_created">Shot %s Has Been Created</string>
+    <string name="shot_x_had_issue_saving_details">Shot %s Had Issues Saving Details</string>
+    <string name="shot_x_had_issue_saving_details_description">There was an issue saving the shot "%s" details. Please try again or contact support if the problem continues.</string>
+    <string name="shot_x_has_been_created_description">The shot "%s" has been created. You can now select it when logging shots for a player.</string>
+    <string name="shot_x_has_been_edited">Shot %s Has Been Edited</string>
+    <string name="shot_x_has_been_edited_description">The shot "%s" has been edited. You can now select it when logging shots for a player.</string>
     <string name="shots">Shots</string>
     <string name="shots_attempted">Shots Attempted</string>
     <string name="shots_made">Shots Made</string>
@@ -206,6 +221,14 @@
     <string name="shots_missed_percentage">Shots Missed Percentage</string>
     <string name="shots_missed">Shots Missed</string>
     <string name="shots_missed_x">Shots Missed: %s</string>
+    <string name="shot_description_missing">Shot Description Missing</string>
+    <string name="shot_description_missing_desc">Shot description is required and currently missing. Please enter a shot description to proceed with defining the shot details.</string>
+    <string name="shot_category_missing">Shot Category Missing</string>
+    <string name="shot_category_missing_description">Shot category is required and currently missing. Please enter a shot category to proceed with defining the shot details.</string>
+    <string name="shot_name_missing">Shot Name Missing</string>
+    <string name="shot_name_missing_description">Shot name is required and currently missing. Please enter a shot name to proceed with defining the shot details.</string>
+    <string name="shot_with_that_name_already_exists">Shot With That Name Already Exists</string>
+    <string name="shot_with_that_name_already_exists_description">A shot with that name already exists. Please choose a different name to continue.</string>
     <string name="shots_not_recorded_description">You haven\'t recorded any successful shots. Please input the number of shots made to proceed with logging the shot.</string>
     <string name="missed_shots_not_recorded_description">You haven\'t recorded any missed shots. Please input the number of shots missed to proceed with logging the shot.</string>
     <string name="date_shot_was_taken_description">You haven\'t entered the date the shot was taken. Please input the date the shot was taken to proceed with logging ths shot.</string>
@@ -243,6 +266,7 @@
     <string name="username_is_not_in_correct_format_please_enter_username_in_correct_format">Username is not in correct format. Please enter username in correct format</string>
     <string name="unable_to_create_account">Unable to create account</string>
     <string name="unable_to_delete_player_please_contact_support">Unable to delete player. Please contact support.</string>
+    <string name="unable_to_delete_shot">Unable To Delete Shot</string>
     <string name="unable_to_login_to_account">Unable to login to account</string>
     <string name="unable_to_reset_password">Unable to reset password</string>
     <string name="unable_to_set_new_username">Unable to set new username</string>
@@ -251,13 +275,16 @@
     <string name="unsaved_player_changes">Unsaved Player Changes</string>
     <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">We have detected a problem with your account. Please contact support to resolve issue.</string>
     <string name="we_have_detected_currently_not_connected_to_internet_description">We have detected currently not connected to internet. Please connect to service, and try again.</string>
+    <string name="_no_shots_declared_description">No shots have been declared yet. Tap Add Shot to start adding your shots.</string>
     <string name="username_is_required_please_enter_a_username_to_create_a_account">Username is required. Please enter a username to create a account.</string>
     <string name="using_the_app">Using The App</string>
+    <string name="we_could_not_delete_x_shot_please_try_again_later">We could not delete %s. Please try again later.</string>
     <string name="we_were_able_to_send_email_verification_please_check_your_email_to_verify_account">We were able to send email verification. Please check your email to verify account</string>
     <string name="we_were_unable_to_send_email_verification_please_click_send_email_verification_to_try_again">We were unable to send email verification. Please click send email verification to try again.</string>
     <string name="we_were_unable_to_set_new_username_since_the_username_is_empty_please_click_try_again_to_set_new_username">We were unable to set new username since the username is empty. Please click try again to set new username</string>
     <string name="we_were_unable_to_set_new_username_since_the_username_is_the_same_as_the_current_username_please_click_try_again_to_set_new_username">We were unable to set new username since the username is the same as the current username. Please click try again to set new username</string>
     <string name="verify_account">Verify Account</string>
+    <string name="view_report">View Report</string>
     <string name="view_reports">View Reports</string>
     <string name="view_more_info">View More Info</string>
     <string name="view_x">View %s</string>

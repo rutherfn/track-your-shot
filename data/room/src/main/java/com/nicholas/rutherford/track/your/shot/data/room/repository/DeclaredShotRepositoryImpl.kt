@@ -2,24 +2,22 @@ package com.nicholas.rutherford.track.your.shot.data.room.repository
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.nicholas.rutherford.track.your.shot.base.resources.declaredshotsjson.DeclaredShotsJson
 import com.nicholas.rutherford.track.your.shot.data.room.dao.DeclaredShotDao
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.toDeclaredShotEntity
 
 // todo -> Unit tests this since now where grabbing natively in the app.
-class DeclaredShotRepositoryImpl(
-    private val declaredShotDao: DeclaredShotDao,
-    private val declaredShotsJson: DeclaredShotsJson
-) : DeclaredShotRepository {
+class DeclaredShotRepositoryImpl(private val declaredShotDao: DeclaredShotDao) : DeclaredShotRepository {
 
-    override suspend fun createDeclaredShots() {
-        val declaredShots = declaredShotDao.getAllDeclaredShots()
+    override suspend fun createNewDeclaredShot(declaredShot: DeclaredShot) = declaredShotDao.insert(declaredShotEntity = declaredShot.toDeclaredShotEntity())
 
-        if (declaredShots.isEmpty()) {
-            declaredShotDao.insert(declaredShotEntities = getDeclaredShotsFromJson().sortedBy { it.title }.map { it.toDeclaredShotEntity() })
-        }
+    override suspend fun createDeclaredShots(shotIdsToFilterOut: List<Int>) {
+        val declaredShotIds = declaredShotDao.getAllDeclaredShots().map { it.id }
+
+        val shots = getDeclaredShotsFromJson().sortedBy { it.title }.map { it.toDeclaredShotEntity() }.filter { !shotIdsToFilterOut.contains(it.id) && !declaredShotIds.contains(it.id) }
+
+        declaredShotDao.insert(declaredShotEntities = shots)
     }
     override suspend fun updateDeclaredShot(declaredShot: DeclaredShot) =
         declaredShotDao.update(declaredShotEntity = declaredShot.toDeclaredShotEntity())
@@ -29,13 +27,18 @@ class DeclaredShotRepositoryImpl(
 
     override suspend fun deleteAllDeclaredShots() = declaredShotDao.deleteAll()
 
+    override suspend fun deleteShotById(id: Int) = declaredShotDao.deleteDeclaredShotById(id = id)
+
     override suspend fun fetchDeclaredShotFromId(id: Int): DeclaredShot? =
         declaredShotDao.getDeclaredShotFromId(id = id)?.toDeclaredShot()
 
     override suspend fun fetchDeclaredShotsBySearchQuery(searchQuery: String): List<DeclaredShot> =
         declaredShotDao.getDeclaredShotsBySearchQuery(searchQuery = searchQuery).map { it.toDeclaredShot() }
 
-    private fun getDeclaredShotsFromJson(): List<DeclaredShot> {
+    override suspend fun fetchMaxId(): Int =
+        declaredShotDao.getMaxIdOrDefault()
+
+    fun getDeclaredShotsFromJson(): List<DeclaredShot> {
         val json = """
 [
   {

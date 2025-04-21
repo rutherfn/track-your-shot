@@ -4,6 +4,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 
 interface SettingsNavigation {
     fun alert(alert: Alert)
+    fun navigateToDeclaredShotsList()
     fun openNavigationDrawer()
     fun navigateToAccountInfoScreen(username: String, email: String)
     fun navigateToEnabledPermissions()

@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.BottomSheetWithOptions
 import com.nicholas.rutherford.track.your.shot.compose.components.Content
@@ -141,7 +142,8 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
             onSecondaryIconButtonClicked = {
                 createEditPlayerParams.onCreatePlayerClicked.invoke(imageUri)
             }
-        )
+        ),
+        secondaryIconTint = AppColors.White
     )
 }
 

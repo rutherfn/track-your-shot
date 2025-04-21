@@ -18,4 +18,6 @@ class ReadSharedPreferencesImpl(private val sharedPreferences: SharedPreferences
     override fun isLoggedIn(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.IS_LOGGED_IN, false)
 
     override fun playerFilterName(): String = sharedPreferences.getString(Constants.Preferences.PLAYER_FILTER_NAME, "") ?: ""
+
+    override fun declaredShotId(): Int = sharedPreferences.getInt(Constants.Preferences.DECLARED_SHOT_ID, -1)
 }

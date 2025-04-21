@@ -8,4 +8,5 @@ interface CreateSharedPreferences {
     fun createHasAuthenticatedAccount(value: Boolean)
     fun createIsLoggedIn(value: Boolean)
     fun createPlayerFilterName(value: String)
+    fun createDeclaredShotId(value: Int)
 }

@@ -4,6 +4,7 @@ import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.CreateAccountFirebaseRealtimeDatabaseResult
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
@@ -46,6 +47,62 @@ class CreateFirebaseUserInfoImpl(
                         )
                     )
                 }
+            awaitClose()
+        }
+    }
+
+    override fun attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow(
+        defaultShotIdsToIgnore: List<Int>
+    ): Flow<Pair<Boolean, List<Int>?>> {
+        return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val reference = firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.SHOT_IDS_TO_IGNORE}")
+
+            reference.setValue(defaultShotIdsToIgnore)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        trySend(Pair(first = true, second = defaultShotIdsToIgnore))
+                    } else {
+                        Timber.w(message = "Warning(attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow() -> Creating default shot ids to ignore has failed in Firebase Realtime Database.")
+                        trySend(Pair(first = false, second = null))
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(attemptToCreateDefaultShotIdsToIgnoreFirebaseRealTimeDatabaseResponseFlow) -> Creating account failed to create in Firebase Realtime Database following stack trace ${exception.stackTrace}")
+                    trySend(Pair(first = false, second = null))
+                }
+            awaitClose()
+        }
+    }
+
+    override fun attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow(declaredShot: DeclaredShot): Flow<Pair<Boolean, String?>> {
+        return callbackFlow {
+            val values = hashMapOf<String, Any>()
+
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val reference = firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}")
+
+            val key = reference.push().key ?: ""
+
+            values[Constants.ID] = declaredShot.id
+            values[Constants.SHOT_CATEGORY] = declaredShot.shotCategory
+            values[Constants.TITLE] = declaredShot.title
+            values[Constants.DESCRIPTION] = declaredShot.description
+
+            reference.child(key).setValue(values)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        trySend(Pair(first = true, second = key))
+                    } else {
+                        Timber.w(message = "Warning(attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow) -> Creating declared shot failed to create in Firebase Realtime Database.}")
+                        trySend(Pair(first = false, second = null))
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(attemptToCreateDeclaredShotFirebaseRealtimeDatabaseResponseFlow) -> Creating declared shot failed to create in Firebase Realtime Database following stack trace ${exception.stackTrace}")
+                    trySend(Pair(first = false, second = null))
+                }
+
             awaitClose()
         }
     }

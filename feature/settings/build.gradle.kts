@@ -67,9 +67,11 @@ android {
 }
 
 dependencies {
+    api(project(path = ":base:vm"))
     api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
     api(project(path = ":compose:components"))
+    api(project(path = ":firebase:core"))
     api(project(path = ":helper:extensions"))
     api(project(path = ":navigation"))
     api(project(path = ":shared-preference"))
@@ -92,4 +94,6 @@ dependencies {
     testImplementation(Dependencies.Mockk.core)
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+
+    testImplementation(project(path = ":data-test:room"))
 }

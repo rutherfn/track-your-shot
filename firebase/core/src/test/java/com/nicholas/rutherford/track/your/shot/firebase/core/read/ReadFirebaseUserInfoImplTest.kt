@@ -9,11 +9,15 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.AccountInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestAccountInfoRealTimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestDeclaredShotRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestDeclaredShotWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
@@ -261,6 +265,211 @@ class ReadFirebaseUserInfoImplTest {
     }
 
     @Nested
+    inner class GetDeletedShotIdsFlow {
+
+        @Test
+        fun `when onCancelled is called should return empty list`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.SHOT_IDS_TO_IGNORE}"
+
+            val mockDatabaseError = mockk<DatabaseError>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<ValueEventListener>()
+
+            mockkStatic(FirebaseUser::class)
+
+            every { mockDatabaseError.message } returns "message"
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every { firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot)) } answers {
+                slot.captured.onCancelled(mockDatabaseError)
+            }
+
+            Assertions.assertEquals(emptyList<Int>(), readFirebaseUserInfoImpl.getDeletedShotIdsFlow().first())
+        }
+
+        @Test
+        fun `when onDataChange is called but the data is null should return empty list`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.SHOT_IDS_TO_IGNORE}"
+
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<ValueEventListener>()
+
+            mockkStatic(FirebaseUser::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.getValue(any<GenericTypeIndicator<List<Int>>>()) } returns null
+
+            every { firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot)) } answers { slot.captured.onDataChange(mockDataSnapshot) }
+
+            val result = readFirebaseUserInfoImpl.getDeletedShotIdsFlow().first()
+
+            Assertions.assertEquals(emptyList<Int>(), result)
+        }
+
+        @Test
+        fun `when onDataChange is called and data exists, should return a list of integers`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.SHOT_IDS_TO_IGNORE}"
+            val values = listOf(2, 4, 5)
+
+            val mockDataSnapshot = mockk<DataSnapshot>(relaxed = true)
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<ValueEventListener>()
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            every { mockDataSnapshot.exists() } returns true
+            every {
+                mockDataSnapshot.getValue(any<GenericTypeIndicator<List<Int>>>())
+            } returns values
+
+            val result = readFirebaseUserInfoImpl.getDeletedShotIdsFlow().first()
+
+            Assertions.assertEquals(values, result)
+        }
+    }
+
+    @Nested
+    inner class GetCreatedDeclaredShotsFlow {
+
+        @Test
+        fun `when onCancelled is called should return null`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
+
+            val emptyDeclaredShotList: List<DeclaredShot> = emptyList()
+            val errorMessage = "message"
+
+            val mockDatabaseError = mockk<DatabaseError>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<ValueEventListener>()
+
+            mockkStatic(FirebaseUser::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { mockDatabaseError.message } returns errorMessage
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every { firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot)) } answers {
+                slot.captured.onCancelled(mockDatabaseError)
+            }
+
+            Assertions.assertEquals(emptyDeclaredShotList, readFirebaseUserInfoImpl.getCreatedDeclaredShotsFlow().first())
+        }
+
+        @Test
+        fun `when on data change is called but snapshot does not exist should return empty list`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
+
+            val emptyDeclaredShotList: List<DeclaredShot> = emptyList()
+
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns false
+
+            mockkStatic(FirebaseUser::class)
+            mockkStatic(DataSnapshot::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(emptyDeclaredShotList, readFirebaseUserInfoImpl.getCreatedDeclaredShotsFlow().first())
+        }
+
+        @Test
+        fun `when snapshot exists but children count is zero should return empty list`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
+
+            val emptyDeclaredShotList: List<DeclaredShot> = emptyList()
+
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.childrenCount } returns 0
+
+            mockkStatic(FirebaseUser::class)
+            mockkStatic(DataSnapshot::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(emptyDeclaredShotList, readFirebaseUserInfoImpl.getCreatedDeclaredShotsFlow().first())
+        }
+
+        @Test
+        fun `when snapshot exists and has children should return list of declared shots`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
+
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<ValueEventListener>()
+
+            val declaredShotWithKeyRealtimeResponse = TestDeclaredShotWithKeyRealtimeResponse.create()
+            val declaredShotWithKeyRealtimeResponseList = listOf(
+                declaredShotWithKeyRealtimeResponse,
+                declaredShotWithKeyRealtimeResponse.copy(declaredShotFirebaseKey = "-j0P5J2LcXmXF", declaredShotRealtimeResponse = TestDeclaredShotRealtimeResponse.create().copy(title = "ShotTitle1"))
+            )
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.childrenCount } returns declaredShotWithKeyRealtimeResponseList.size.toLong()
+
+            every { mockDataSnapshot.children } returns declaredShotWithKeyRealtimeResponseList.map { declaredShot ->
+                val mockChildSnapshot = mockk<DataSnapshot>()
+                every { mockChildSnapshot.key } returns declaredShotWithKeyRealtimeResponse.declaredShotFirebaseKey
+                every { mockChildSnapshot.getValue(DeclaredShotRealtimeResponse::class.java) } returns declaredShot.declaredShotRealtimeResponse
+                mockChildSnapshot
+            }
+
+            mockkStatic(FirebaseUser::class)
+            mockkStatic(DataSnapshot::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(declaredShotWithKeyRealtimeResponseList, readFirebaseUserInfoImpl.getCreatedDeclaredShotsFlow().first())
+        }
+    }
+
+    @Nested
     inner class GetAccountInfoFlow {
 
         @Test
@@ -314,32 +523,32 @@ class ReadFirebaseUserInfoImplTest {
         }
 
         @Test
-        fun `when onDataChange is called but the count is 1 should set data`() = runTest {
+        fun `when onDataChange is called and data exists, should emit AccountInfoRealtimeResponse`() = runTest {
             val uid = "uid"
             val path = "${Constants.USERS_PATH}/$uid"
 
-            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockDataSnapshot = mockk<DataSnapshot>(relaxed = true)
             val mockFirebaseUser = mockk<FirebaseUser>()
-            val mockDataSnapshotList = listOf(mockDataSnapshot)
             val slot = slot<ValueEventListener>()
 
-            every { mockDataSnapshot.exists() } returns true
-            every { mockDataSnapshot.childrenCount } returns mockDataSnapshotList.size.toLong()
-            every { mockDataSnapshot.child(Constants.EMAIL).getValue(String::class.java) } returns accountInfoRealtimeResponse.email
-            every { mockDataSnapshot.child(Constants.USERNAME).getValue(String::class.java) } returns accountInfoRealtimeResponse.userName
-            every { mockDataSnapshot.children } returns mockDataSnapshotList
-
-            mockkStatic(DataSnapshot::class)
-            mockkStatic(FirebaseUser::class)
+            val accountInfoRealtimeResponse = TestAccountInfoRealTimeResponse().create()
 
             every { mockFirebaseUser.uid } returns uid
             every { firebaseAuth.currentUser } returns mockFirebaseUser
 
-            every { firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot)) } answers {
+            every {
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
+            } answers {
                 slot.captured.onDataChange(mockDataSnapshot)
             }
 
-            Assertions.assertEquals(AccountInfoRealtimeResponse(userName = "boomyNicholasR", email = "testEmail@yahoo.com"), readFirebaseUserInfoImpl.getAccountInfoFlow().first())
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.child(Constants.EMAIL).getValue(String::class.java) } returns accountInfoRealtimeResponse.email
+            every { mockDataSnapshot.child(Constants.USERNAME).getValue(String::class.java) } returns accountInfoRealtimeResponse.userName
+
+            val result = readFirebaseUserInfoImpl.getAccountInfoFlow().first()
+
+            Assertions.assertEquals(accountInfoRealtimeResponse, result)
         }
     }
 

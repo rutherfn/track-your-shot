@@ -9,7 +9,8 @@ object TestDeclaredShotEntity {
             id = DECLARED_SHOT_ID,
             shotCategory = SHOT_CATEGORY,
             title = TITLE,
-            description = DESCRIPTION
+            description = DESCRIPTION,
+            firebaseKey = FIREBASE_KEY
         )
     }
 }
@@ -18,3 +19,4 @@ const val DECLARED_SHOT_ID = 1
 const val SHOT_CATEGORY = "other"
 const val TITLE = "Hook Shot"
 const val DESCRIPTION = "description 1"
+const val FIREBASE_KEY = "firebase-key"
