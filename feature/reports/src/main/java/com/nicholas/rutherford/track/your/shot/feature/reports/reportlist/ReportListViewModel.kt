@@ -153,6 +153,8 @@ class ReportListViewModel(
 
     fun buildDateTimeStamp(value: Long): String = Date(value).toTimestampString()
 
+    fun onViewReportClicked(url: String) = navigation.navigateToUrl(url = url)
+
     fun onDeletePlayerReportClicked(individualPlayerReport: IndividualPlayerReport) = navigation.alert(alert = deleteReportAlert(individualPlayerReport = individualPlayerReport))
 
     fun onDownloadPlayerReportClicked(individualPlayerReport: IndividualPlayerReport) =

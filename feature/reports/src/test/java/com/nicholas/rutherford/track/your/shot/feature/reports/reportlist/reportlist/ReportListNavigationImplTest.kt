@@ -53,4 +53,18 @@ class ReportListNavigationImplTest {
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }
+
+    @Test
+    fun `navigate to url action`() {
+        val argumentCapture: CapturingSlot<String> = slot()
+        val url = "url"
+
+        reportListNavigationImpl.navigateToUrl(url = url)
+
+        verify { navigator.url(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+
+        Assertions.assertEquals(url, capturedArgument)
+    }
 }

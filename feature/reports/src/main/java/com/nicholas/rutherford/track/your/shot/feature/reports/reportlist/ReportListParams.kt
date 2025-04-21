@@ -6,6 +6,7 @@ data class ReportListParams(
     val state: ReportListState,
     val onToolbarMenuClicked: () -> Unit,
     val onAddReportClicked: () -> Unit,
+    val onViewReportClicked: (url: String) -> Unit,
     val onDeletePlayerReportClicked: (individualPlayerReport: IndividualPlayerReport) -> Unit,
     val onDownloadPlayerReportClicked: (individualPlayerReport: IndividualPlayerReport) -> Unit,
     val buildDateTimeStamp: (value: Long) -> String
