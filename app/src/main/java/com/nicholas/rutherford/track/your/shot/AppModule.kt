@@ -4,6 +4,7 @@ import android.app.Application
 import android.net.ConnectivityManager
 import android.os.Build
 import androidx.room.Room
+import com.nicholas.rutherford.track.your.shot.BuildConfig
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -125,6 +126,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -231,8 +233,8 @@ class AppModule {
         }
         single<BuildType> {
             BuildTypeImpl(
-                sdkValue = 35,
-                buildTypeValue = "test"
+                sdkValue = Build.VERSION.SDK_INT,
+                buildTypeValue = BuildConfig.BUILD_TYPE
             )
         }
         single<Navigator> {

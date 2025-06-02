@@ -16,6 +16,7 @@ android {
 
     buildFeatures {
         compose = ComposeData.Enabled.value
+        buildConfig = true
     }
 
     composeOptions {
@@ -27,10 +28,6 @@ android {
             applicationIdSuffix = types.BuildTypes.UniqueBuilds.Release.applicationIdSuffix
             isMinifyEnabled = types.BuildTypes.UniqueBuilds.Release.isMinifyEnabled
             isDebuggable = types.BuildTypes.UniqueBuilds.Release.isDebuggable
-//            proguardFiles(
-//                getDefaultProguardFile(types.BuildTypes.proguardAndroidOptimizeTxt),
-//                types.BuildTypes.proguardRulesPro
-//            )
 
             manifestPlaceholders[types.BuildTypes.ManifiestOptions.appLabel] = types.BuildTypes.UniqueBuilds.Release.appName
             manifestPlaceholders[types.BuildTypes.ManifiestOptions.appIcon] = types.BuildTypes.UniqueBuilds.Release.appIconRoute
