@@ -29,7 +29,7 @@ object Versions {
         }
 
         object Compose {
-            const val activity = "1.5.1"
+            const val activity = "1.10.1"
             const val bom = "2023.10.01"
             const val coil = "2.5.0"
             const val core = "1.5.3"
@@ -83,8 +83,8 @@ object Versions {
         object Mockk { const val core = "1.13.2" }
 
         object Room {
-            const val core = "2.5.2"
-            const val coroutines = "1.7.3"
+            const val core = "2.6.1"
+            const val coroutines = "1.8.0"
         }
 
         object Timber { const val core = "5.0.1" }

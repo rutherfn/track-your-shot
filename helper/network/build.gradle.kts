@@ -6,6 +6,8 @@ plugins {
 }
 
 android {
+    namespace = "com.nicholas.rutherford.track.your.shot.helper.network"
+
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 

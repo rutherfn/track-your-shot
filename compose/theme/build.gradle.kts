@@ -2,9 +2,12 @@ plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
+    namespace = "com.nicholas.rutherford.track.your.shot.compose.theme"
+
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 

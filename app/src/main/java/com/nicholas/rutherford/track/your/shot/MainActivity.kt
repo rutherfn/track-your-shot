@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.your.shot
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -14,7 +16,9 @@ open class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
+            enableEdgeToEdge()
             NavigationComponent(
                 activity = this,
                 navHostController = rememberNavController(),

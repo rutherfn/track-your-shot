@@ -6,6 +6,8 @@ plugins {
 }
 
 android {
+    namespace = "com.nicholas.rutherford.track.your.shot.firebase"
+
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 

@@ -5,6 +5,8 @@ plugins {
 }
 
 android {
+    namespace = "com.nicholas.rutherford.track.your.shot.data.user"
+
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 

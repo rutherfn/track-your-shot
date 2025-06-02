@@ -3,9 +3,12 @@ plugins {
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
     id(BuildIds.kover)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
+    namespace = "com.nicholas.rutherford.track.your.shot.base.vm"
+
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 

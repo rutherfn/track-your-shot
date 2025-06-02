@@ -22,6 +22,7 @@ object Dependencies {
         const val bom = "androidx.compose:compose-bom:${Versions.Dependencies.Compose.bom}"
         const val coil = "io.coil-kt:coil-compose:${Versions.Dependencies.Compose.coil}"
         const val foundation = "androidx.compose.foundation:foundation:${Versions.Dependencies.Compose.core}"
+        const val ktx = "androidx.activity:activity-ktx:${Versions.Dependencies.Compose.activity}"
         const val material = "androidx.compose.material:material:${Versions.Dependencies.Compose.core}"
         const val materialDesignIconsCore = "androidx.compose.material:material-icons-core:${Versions.Dependencies.Compose.core}"
         const val materialDesignIconsExtended = "androidx.compose.material:material-icons-extended:${Versions.Dependencies.Compose.core}"

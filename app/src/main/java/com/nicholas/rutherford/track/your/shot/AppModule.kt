@@ -231,8 +231,8 @@ class AppModule {
         }
         single<BuildType> {
             BuildTypeImpl(
-                sdkValue = Build.VERSION.SDK_INT,
-                buildTypeValue = BuildConfig.BUILD_TYPE
+                sdkValue = 35,
+                buildTypeValue = "test"
             )
         }
         single<Navigator> {

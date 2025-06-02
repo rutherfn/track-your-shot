@@ -5,9 +5,12 @@ plugins {
     id(BuildIds.gmsGoogleServices)
     id(BuildIds.ksp)
     id(BuildIds.kover)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
+    namespace = "com.nicholas.rutherford.track.your.shot"
+
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
@@ -133,6 +136,7 @@ dependencies {
     implementation(Dependencies.Android.ktx)
 
     implementation(Dependencies.Compose.activity)
+    implementation(Dependencies.Compose.ktx)
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.uiToolingPreview)
