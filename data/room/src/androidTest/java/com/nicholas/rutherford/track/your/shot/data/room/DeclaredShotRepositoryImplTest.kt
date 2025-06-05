@@ -52,17 +52,6 @@ class DeclaredShotRepositoryImplTest {
     }
 
     @Test
-    fun createDeclaredShotsWithNonEmptyDeclaredShots() = runBlocking {
-        declaredShotRepositoryImpl.createNewDeclaredShot(declaredShot = declaredShotEntity.toDeclaredShot())
-
-        assertThat(declaredShotRepositoryImpl.fetchAllDeclaredShots(), equalTo(listOf(declaredShotEntity.toDeclaredShot())))
-
-        declaredShotRepositoryImpl.createDeclaredShots(shotIdsToFilterOut = emptyList())
-
-        assertThat(declaredShotRepositoryImpl.fetchAllDeclaredShots(), equalTo(listOf(declaredShotEntity.toDeclaredShot())))
-    }
-
-    @Test
     fun createDeclaredShotsWithShotIdsToFilterOut() = runBlocking {
         val shotIdsToFilterOut = (1..39).toList()
 

@@ -65,8 +65,8 @@ android {
 dependencies {
 
     api(project(":data:firebase"))
-    implementation(Dependencies.Firebase.authKtx)
-    implementation(Dependencies.Firebase.bom)
+    implementation(libs.firebase.auth.ktx)
+    implementation(platform(libs.firebase.bom))
 
     testImplementation(Dependencies.Coroutine.test)
 
@@ -74,7 +74,7 @@ dependencies {
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
-    testImplementation(Dependencies.Junit.junit)
+    testImplementation(libs.android.junit5)
 
     testImplementation(libs.mockk)
 

@@ -138,11 +138,11 @@ dependencies {
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.uiToolingPreview)
 
-    implementation(Dependencies.Firebase.analytics)
-    implementation(Dependencies.Firebase.authKtx)
-    implementation(Dependencies.Firebase.bom)
-    implementation(Dependencies.Firebase.databaseKtx)
-    implementation(Dependencies.Firebase.storageKtx)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth.ktx)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.database.ktx)
+    implementation(libs.firebase.storage.ktx)
 
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.android)
@@ -162,7 +162,7 @@ dependencies {
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
-    testImplementation(Dependencies.Junit.junit)
+    testImplementation(libs.android.junit5)
 
     testRuntimeOnly(libs.junit.jupiter.engine)
 

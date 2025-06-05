@@ -71,8 +71,8 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":helper:constants"))
 
-    androidTestImplementation(Dependencies.Junit.ext)
-    androidTestImplementation(Dependencies.CoreTesting.core)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.core.testing)
     androidTestImplementation(Dependencies.Espresso.core)
     androidTestImplementation(libs.truth)
 
@@ -83,7 +83,7 @@ dependencies {
 
     ksp(libs.room.compiler)
 
-    testImplementation(Dependencies.Junit.core)
+    testImplementation(libs.junit)
 
     androidTestImplementation(project(path = ":data-test:room"))
 }

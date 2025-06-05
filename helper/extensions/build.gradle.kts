@@ -69,7 +69,7 @@ dependencies {
     testImplementation(Dependencies.Coroutine.test)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
-    testImplementation(Dependencies.Junit.junit)
+    testImplementation(libs.android.junit5)
 
     testRuntimeOnly(libs.junit.jupiter.engine)
 }

@@ -50,21 +50,4 @@ object Dependencies {
         const val idilingResource = "androidx.test.espresso:espresso-idling-resource:${Versions.Dependencies.Espresso.core}"
     }
 
-    object Firebase {
-        const val analytics = "com.google.firebase:firebase-analytics:${Versions.Dependencies.Firebase.analytics}"
-        const val authKtx = "com.google.firebase:firebase-auth-ktx:${Versions.Dependencies.Firebase.authKtx}"
-        const val bom = "com.google.firebase:firebase-bom:${Versions.Dependencies.Firebase.bom}"
-        const val databaseKtx = "com.google.firebase:firebase-database-ktx:${Versions.Dependencies.Firebase.ktx}"
-        const val storageKtx = "com.google.firebase:firebase-storage-ktx:${Versions.Dependencies.Firebase.ktx}"
-    }
-
-    object Gson {
-        const val core = "com.google.code.gson:gson:${Versions.Dependencies.Gson.core}"
-    }
-
-    object Junit {
-        const val core = "junit:junit:${Versions.Dependencies.Junit.core}"
-        const val ext = "androidx.test.ext:junit:${Versions.Dependencies.JunitJupiter.ext}"
-        const val junit = "de.mannodermaus.gradle.plugins:android-junit5:${Versions.Dependencies.JunitJupiter.junit}"
-    }
 }

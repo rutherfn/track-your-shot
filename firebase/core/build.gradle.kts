@@ -67,10 +67,10 @@ dependencies {
     api(project(path = ":helper:constants"))
     api(project(path = ":helper:extensions"))
 
-    implementation(Dependencies.Firebase.authKtx)
-    implementation(Dependencies.Firebase.bom)
-    implementation(Dependencies.Firebase.databaseKtx)
-    implementation(Dependencies.Firebase.storageKtx)
+    implementation(libs.firebase.auth.ktx)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.database.ktx)
+    implementation(libs.firebase.storage.ktx)
 
     implementation(libs.timber)
 
@@ -78,7 +78,7 @@ dependencies {
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
-    testImplementation(Dependencies.Junit.junit)
+    testImplementation(libs.android.junit5)
 
     testImplementation(libs.mockk)
 
