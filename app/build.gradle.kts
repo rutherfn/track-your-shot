@@ -144,27 +144,27 @@ dependencies {
     implementation(Dependencies.Firebase.databaseKtx)
     implementation(Dependencies.Firebase.storageKtx)
 
-    implementation(Dependencies.Koin.compose)
-    implementation(Dependencies.Koin.core)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.android)
 
     implementation(libs.room.runtime)
     implementation(libs.timber)
 
-    implementation(Dependencies.Material.material)
+    implementation(libs.material)
 
     ksp(libs.room.compiler)
 
     testImplementation(Dependencies.Coroutine.test)
 
-    testImplementation(Dependencies.Koin.koinTest)
-    testImplementation(Dependencies.Koin.test)
-    testImplementation(Dependencies.Koin.testJunit4)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.koin.core)
+    testImplementation(libs.koin.test.junit4)
 
-    testImplementation(Dependencies.Junit.Jupiter.api)
-    testImplementation(Dependencies.Junit.Jupiter.params)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
     testImplementation(Dependencies.Junit.junit)
 
-    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+    testRuntimeOnly(libs.junit.jupiter.engine)
 
     testImplementation(libs.mockk)
 }

@@ -66,23 +66,5 @@ object Dependencies {
         const val core = "junit:junit:${Versions.Dependencies.Junit.core}"
         const val ext = "androidx.test.ext:junit:${Versions.Dependencies.JunitJupiter.ext}"
         const val junit = "de.mannodermaus.gradle.plugins:android-junit5:${Versions.Dependencies.JunitJupiter.junit}"
-
-        object Jupiter {
-            const val api = "org.junit.jupiter:junit-jupiter-api:${Versions.Dependencies.JunitJupiter.junitJupiter}"
-            const val engine = "org.junit.jupiter:junit-jupiter-engine:${Versions.Dependencies.JunitJupiter.junitJupiter}"
-            const val params = "org.junit.jupiter:junit-jupiter-params:${Versions.Dependencies.JunitJupiter.junitJupiter}"
-        }
-    }
-
-    object Koin {
-        const val compose = "io.insert-koin:koin-androidx-compose:${Versions.Dependencies.Koin.latestVersion}"
-        const val core = "io.insert-koin:koin-android:${Versions.Dependencies.Koin.latestVersion}"
-        const val koinTest = "io.insert-koin:koin-test:${Versions.Dependencies.Koin.latestVersion}"
-        const val test = "io.insert-koin:koin-core:${Versions.Dependencies.Koin.latestVersion}"
-        const val testJunit4 = "io.insert-koin:koin-test-junit4:${Versions.Dependencies.Koin.latestVersion}"
-    }
-
-    object Material {
-        const val material = "com.google.android.material:material:${Versions.Dependencies.Material.material}"
     }
 }

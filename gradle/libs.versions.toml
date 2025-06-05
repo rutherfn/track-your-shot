@@ -1,6 +1,10 @@
 [versions]
+gson = "2.13.1"
+jupiter = "5.7.2"
+koin = "4.0.0"
 kotlin = "2.0.21"
 kotlinxCoroutinesAndroid = "1.10.2"
+material = "1.12.0"
 mockk = "1.13.10"
 room = "2.6.1"
 timber = "5.0.1"
@@ -8,7 +12,17 @@ truth = "1.4.4"
 
 [libraries]
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jupiter" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jupiter" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jupiter" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }

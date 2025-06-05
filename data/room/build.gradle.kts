@@ -76,7 +76,7 @@ dependencies {
     androidTestImplementation(Dependencies.Espresso.core)
     androidTestImplementation(libs.truth)
 
-    implementation(Dependencies.Gson.core)
+    implementation(libs.gson)
     implementation(libs.androidx.room.ktx)
     implementation(libs.room.runtime)
     implementation(libs.kotlinx.coroutines.android)

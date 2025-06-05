@@ -76,8 +76,8 @@ dependencies {
 
     testImplementation(Dependencies.Coroutine.test)
 
-    testImplementation(Dependencies.Junit.Jupiter.api)
-    testImplementation(Dependencies.Junit.Jupiter.params)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
     testImplementation(Dependencies.Junit.junit)
 
     testImplementation(libs.mockk)
@@ -85,5 +85,5 @@ dependencies {
     testImplementation(project(path = ":data-test:firebase"))
     testImplementation(project(path = ":data-test:room"))
 
-    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+    testRuntimeOnly(libs.junit.jupiter.engine)
 }

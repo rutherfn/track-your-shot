@@ -77,8 +77,5 @@ object Versions {
             const val core = "2.6.0-alpha02"
             const val runtimeKtx = "2.4.1"
         }
-
-        object Material { const val material = "1.5.0" }
-
     }
 }
