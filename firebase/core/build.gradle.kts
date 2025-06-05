@@ -72,7 +72,7 @@ dependencies {
     implementation(Dependencies.Firebase.databaseKtx)
     implementation(Dependencies.Firebase.storageKtx)
 
-    implementation(Dependencies.Timber.core)
+    implementation(libs.timber)
 
     testImplementation(Dependencies.Coroutine.test)
 
@@ -80,7 +80,7 @@ dependencies {
     testImplementation(Dependencies.Junit.Jupiter.params)
     testImplementation(Dependencies.Junit.junit)
 
-    testImplementation(Dependencies.Mockk.core)
+    testImplementation(libs.mockk)
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 

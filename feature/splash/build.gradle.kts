@@ -98,7 +98,7 @@ dependencies {
     testImplementation(Dependencies.Junit.Jupiter.params)
     testImplementation(Dependencies.Junit.junit)
 
-    testImplementation(Dependencies.Mockk.core)
+    testImplementation(libs.mockk)
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 }

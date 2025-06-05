@@ -82,34 +82,7 @@ object Dependencies {
         const val testJunit4 = "io.insert-koin:koin-test-junit4:${Versions.Dependencies.Koin.latestVersion}"
     }
 
-    object Lifecycle {
-        const val compose = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.Dependencies.Lifecycle.core}"
-        const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.Dependencies.Lifecycle.runtimeKtx}"
-        const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.Dependencies.Lifecycle.core}"
-    }
-
     object Material {
         const val material = "com.google.android.material:material:${Versions.Dependencies.Material.material}"
-    }
-
-    object Mockk {
-        const val core = "io.mockk:mockk:${Versions.Dependencies.Mockk.core}"
-    }
-
-    object Room {
-        const val compiler = "androidx.room:room-compiler:${Versions.Dependencies.Room.core}"
-        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Dependencies.Room.coroutines}"
-        const val kaptCompiler = "androidx.room:room-compiler:${Versions.Dependencies.Room.core}"
-        const val ktx = "androidx.room:room-ktx:${Versions.Dependencies.Room.core}"
-        const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.Dependencies.Room.core}"
-        const val runtime = "androidx.room:room-runtime:${Versions.Dependencies.Room.core}"
-    }
-
-    object Timber {
-        const val core = "com.jakewharton.timber:timber:${Versions.Dependencies.Timber.core}"
-    }
-
-    object Truth {
-        const val core = "com.google.truth:truth:${Versions.Dependencies.Truth.core}"
     }
 }

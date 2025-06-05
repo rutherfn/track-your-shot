@@ -74,14 +74,14 @@ dependencies {
     androidTestImplementation(Dependencies.Junit.ext)
     androidTestImplementation(Dependencies.CoreTesting.core)
     androidTestImplementation(Dependencies.Espresso.core)
-    androidTestImplementation(Dependencies.Truth.core)
+    androidTestImplementation(libs.truth)
 
     implementation(Dependencies.Gson.core)
-    implementation(Dependencies.Room.ktx)
-    implementation(Dependencies.Room.runtime)
-    implementation(Dependencies.Room.coroutines)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.room.runtime)
+    implementation(libs.kotlinx.coroutines.android)
 
-    ksp(Dependencies.Room.compiler)
+    ksp(libs.room.compiler)
 
     testImplementation(Dependencies.Junit.core)
 

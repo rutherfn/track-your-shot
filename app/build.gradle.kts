@@ -147,12 +147,12 @@ dependencies {
     implementation(Dependencies.Koin.compose)
     implementation(Dependencies.Koin.core)
 
-    implementation(Dependencies.Room.runtime)
-    implementation(Dependencies.Timber.core)
+    implementation(libs.room.runtime)
+    implementation(libs.timber)
 
     implementation(Dependencies.Material.material)
 
-    ksp(Dependencies.Room.compiler)
+    ksp(libs.room.compiler)
 
     testImplementation(Dependencies.Coroutine.test)
 
@@ -166,7 +166,7 @@ dependencies {
 
     testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
 
-    testImplementation(Dependencies.Mockk.core)
+    testImplementation(libs.mockk)
 }
 
 koverReport {
