@@ -68,7 +68,7 @@ android {
 dependencies {
     api(project(path = ":helper:constants"))
 
-    testImplementation(Dependencies.Coroutine.test)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)

@@ -92,7 +92,7 @@ dependencies {
     testImplementation(project(":data-test:firebase"))
     testImplementation(project(path = ":data-test:room"))
 
-    testImplementation(Dependencies.Coroutine.test)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)

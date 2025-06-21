@@ -4,19 +4,6 @@
  */
 object Dependencies {
 
-    object Android {
-        const val annotationJvm = "androidx.annotation:annotation-jvm:${Versions.Dependencies.Android.annotationJvm}"
-        const val appCompat = "androidx.appcompat:appcompat:${Versions.Dependencies.Android.appCompat}"
-        const val core = "androidx.core:core:"
-        const val ktx = "androidx.core:core-ktx:${Versions.Dependencies.Android.ktx}"
-        const val testRules = "androidx.test:rules:${Versions.Dependencies.Android.testRules}"
-    }
-
-    object Accompanist {
-        const val permissions = "com.google.accompanist:accompanist-permissions:${Versions.Dependencies.Accompanist.permissions}"
-        const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${Versions.Dependencies.Accompanist.systemUiController}"
-    }
-
     object Compose {
         const val activity = "androidx.activity:activity-compose:${Versions.Dependencies.Compose.activity}"
         const val bom = "androidx.compose:compose-bom:${Versions.Dependencies.Compose.bom}"
@@ -34,20 +21,4 @@ object Dependencies {
         const val uiToolingPreview = "androidx.compose.ui:ui-tooling-preview"
         const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.Dependencies.Compose.viewModel}"
     }
-
-    object CoreTesting {
-        const val core = "androidx.arch.core:core-testing:${Versions.Dependencies.CoreTesting.core}"
-    }
-
-    object Coroutine {
-        const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Dependencies.Coroutine.core}"
-        const val jvm = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${Versions.Dependencies.Coroutine.jvm}"
-        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.Dependencies.Coroutine.jvm}"
-    }
-
-    object Espresso {
-        const val core = "androidx.test.espresso:espresso-core:${Versions.Dependencies.Espresso.core}"
-        const val idilingResource = "androidx.test.espresso:espresso-idling-resource:${Versions.Dependencies.Espresso.core}"
-    }
-
 }

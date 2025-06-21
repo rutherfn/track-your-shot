@@ -68,9 +68,7 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(platform(libs.firebase.bom))
 
-    testImplementation(Dependencies.Coroutine.test)
-
-    testImplementation(Dependencies.Coroutine.test)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)

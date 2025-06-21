@@ -73,7 +73,7 @@ dependencies {
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.core.testing)
-    androidTestImplementation(Dependencies.Espresso.core)
+    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.truth)
 
     implementation(libs.gson)

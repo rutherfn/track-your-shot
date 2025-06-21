@@ -93,10 +93,10 @@ android {
 }
 
 dependencies {
-    androidTestImplementation(Dependencies.Android.testRules)
+    androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(Dependencies.Compose.uiTestJunit4)
-    androidTestImplementation(Dependencies.Espresso.core)
-    androidTestImplementation(Dependencies.Espresso.idilingResource)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.idling.resource)
 
     api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
@@ -129,8 +129,8 @@ dependencies {
     kover(project(":firebase:core"))
     kover(project(":helper:network"))
 
-    implementation(Dependencies.Android.appCompat)
-    implementation(Dependencies.Android.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
 
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.ktx)
@@ -154,7 +154,7 @@ dependencies {
 
     ksp(libs.room.compiler)
 
-    testImplementation(Dependencies.Coroutine.test)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     testImplementation(libs.koin.test)
     testImplementation(libs.koin.core)

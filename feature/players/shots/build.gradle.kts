@@ -85,7 +85,7 @@ dependencies {
     implementation(Dependencies.Compose.uiToolingPreview)
     implementation(Dependencies.Compose.viewModel)
 
-    testImplementation(Dependencies.Coroutine.test)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.android.junit5)

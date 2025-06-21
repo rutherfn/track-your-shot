@@ -27,7 +27,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
@@ -53,7 +52,6 @@ fun SearchTextField(
     placeholderValue: String
 ) {
     var isFocused by remember { mutableStateOf(false) }
-    val keyboardController = LocalSoftwareKeyboardController.current
     var shouldClearFocus by remember { mutableStateOf(false) }
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -82,7 +80,6 @@ fun SearchTextField(
         ),
         keyboardActions = KeyboardActions(
             onDone = {
-                keyboardController?.hide()
                 isFocused = false
                 shouldClearFocus = true
             }

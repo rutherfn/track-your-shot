@@ -84,9 +84,9 @@ dependencies {
 
     debugImplementation(Dependencies.Compose.uiToolingPreview)
 
-    implementation(Dependencies.Android.ktx)
+    implementation(libs.androidx.core.ktx)
 
-    implementation(Dependencies.Accompanist.permissions)
+    implementation(libs.accompanist.permissions)
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.materialDesignIconsCore)
@@ -97,7 +97,7 @@ dependencies {
     testImplementation(project(path = ":data-test:firebase"))
     testImplementation(project(path = ":data-test:room"))
 
-    testImplementation(Dependencies.Coroutine.test)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)

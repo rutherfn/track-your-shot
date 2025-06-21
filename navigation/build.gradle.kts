@@ -81,7 +81,7 @@ dependencies {
     implementation(Dependencies.Compose.materialDesignIconsCore)
     implementation(Dependencies.Compose.materialDesignIconsExtended)
 
-    implementation(Dependencies.Coroutine.jvm)
+    implementation(libs.kotlinx.coroutines.core.jvm)
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)

@@ -83,7 +83,7 @@ dependencies {
 
     debugImplementation(Dependencies.Compose.uiToolingPreview)
 
-    implementation(Dependencies.Accompanist.permissions)
+    implementation(libs.accompanist.permissions)
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.coil)
     implementation(Dependencies.Compose.material)
@@ -92,7 +92,7 @@ dependencies {
     implementation(Dependencies.Compose.uiToolingPreview)
     implementation(Dependencies.Compose.viewModel)
 
-    testImplementation(Dependencies.Coroutine.test)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.android.junit5)

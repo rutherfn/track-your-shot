@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -64,8 +63,6 @@ fun TextFieldNoPadding(
 ) {
     var isFocused by remember { mutableStateOf(false) }
 
-    val keyboardController = LocalSoftwareKeyboardController.current
-
     var shouldClearFocus by remember { mutableStateOf(false) }
 
     if (shouldClearFocus) {
@@ -93,7 +90,6 @@ fun TextFieldNoPadding(
                 keyboardOptions = keyboardOptions,
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        keyboardController?.hide()
                         isFocused = false
                         shouldClearFocus = true
                     }

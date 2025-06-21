@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -51,7 +50,6 @@ fun CoreMultilineTextField(
     placeholderValue: String
 ) {
     var isFocused by remember { mutableStateOf(false) }
-    val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -79,7 +77,6 @@ fun CoreMultilineTextField(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    keyboardController?.hide()
                     focusManager.clearFocus()
                 }
             ),

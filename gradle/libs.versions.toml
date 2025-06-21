@@ -1,6 +1,12 @@
 [versions]
+accompanistPermissions = "0.23.1"
+accompanistSystemuicontroller = "0.27.0"
 androidJunit5 = "1.8.2.1"
+annotationJvm = "1.9.1"
+appCompat = "1.7.1"
+coreKtx = "1.16.0"
 coreTesting = "2.2.0"
+espressoCore = "3.3.0"
 firebaseAnalytics = "22.4.0"
 firebaseAuthKtx = "21.1.0"
 firebaseBom = "31.0.3"
@@ -12,17 +18,27 @@ jupiter = "5.7.2"
 koin = "4.0.0"
 kotlin = "2.0.21"
 kotlinxCoroutinesAndroid = "1.10.2"
+kotlinxCoroutinesCore = "1.10.2"
 material = "1.12.0"
 mockk = "1.13.10"
 room = "2.6.1"
+rules = "1.6.1"
 timber = "5.0.1"
 truth = "1.4.4"
 
 [libraries]
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 android-junit5 = { module = "de.mannodermaus.gradle.plugins:android-junit5", version.ref = "androidJunit5" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appCompat" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
+androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+androidx-espresso-idling-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espressoCore" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junitVersion" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-annotation-jvm = { module = "androidx.annotation:annotation-jvm", version.ref = "annotationJvm"}
+androidx-rules = { module = "androidx.test:rules", version.ref = "rules" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics", version.ref = "firebaseAnalytics" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -39,6 +55,8 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+kotlinx-coroutines-core-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "kotlinxCoroutinesCore"}
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesCore" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }

@@ -63,10 +63,10 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":data:room"))
 
-    implementation(Dependencies.Android.annotationJvm)
-    implementation(Dependencies.Android.core)
+    implementation(libs.androidx.annotation.jvm)
+    implementation("androidx.core:core:")
 
-    testImplementation(Dependencies.Coroutine.test)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.android.junit5)

@@ -2,7 +2,14 @@ package com.nicholas.rutherford.track.your.shot.feature.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -21,13 +28,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -57,14 +62,12 @@ fun LoginScreen(loginScreenParams: LoginScreenParams) {
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
     var isFocusedFirst by remember { mutableStateOf(false) }
     var isFocusedSecond by remember { mutableStateOf(false) }
 
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val keyboardControllerTwo = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
 
     var shouldClearFocusOne by remember { mutableStateOf(false) }
     var shouldClearFocusTwo by remember { mutableStateOf(false) }
@@ -129,7 +132,7 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    keyboardController?.hide()
+                    focusManager.clearFocus()
                     isFocusedFirst = false
                     shouldClearFocusOne = true
                 }
@@ -154,7 +157,7 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    keyboardControllerTwo?.hide()
+                    focusManager.clearFocus()
                     isFocusedSecond = false
                     shouldClearFocusTwo = true
                 }

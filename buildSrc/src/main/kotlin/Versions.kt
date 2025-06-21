@@ -77,5 +77,18 @@ object Versions {
             const val core = "2.6.0-alpha02"
             const val runtimeKtx = "2.4.1"
         }
+
+        object Material { const val material = "1.5.0" }
+
+        object Mockk { const val core = "1.13.2" }
+
+        object Room {
+            const val core = "2.6.1"
+            const val coroutines = "1.8.0"
+        }
+
+        object Timber { const val core = "5.0.1" }
+
+        object Truth { const val core = "1.0.1" }
     }
 }

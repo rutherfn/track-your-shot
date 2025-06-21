@@ -64,5 +64,5 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":helper:constants"))
 
-    implementation(Dependencies.Android.core)
+    implementation("androidx.core:core:")
 }
