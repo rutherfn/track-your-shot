@@ -23,6 +23,7 @@ kotlin = "2.0.21"
 kotlinxCoroutinesAndroid = "1.10.2"
 kotlinxCoroutinesCore = "1.10.2"
 material = "1.12.0"
+materialIconsCore = "1.7.8"
 mockk = "1.13.10"
 room = "2.6.1"
 rules = "1.6.1"
@@ -43,6 +44,8 @@ androidx-core-testing = { module = "androidx.arch.core:core-testing", version.re
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 androidx-espresso-idling-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espressoCore" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junitVersion" }
+androidx-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "materialIconsCore" }
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsCore" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-annotation-jvm = { module = "androidx.annotation:annotation-jvm", version.ref = "annotationJvm"}
 androidx-rules = { module = "androidx.test:rules", version.ref = "rules" }

@@ -6,8 +6,6 @@ object Dependencies {
 
     object Compose {
         const val material = "androidx.compose.material:material:${Versions.Dependencies.Compose.core}"
-        const val materialDesignIconsCore = "androidx.compose.material:material-icons-core:${Versions.Dependencies.Compose.core}"
-        const val materialDesignIconsExtended = "androidx.compose.material:material-icons-extended:${Versions.Dependencies.Compose.core}"
         const val navigation = "androidx.navigation:navigation-compose:${Versions.Dependencies.Compose.navigation}"
         const val ui = "androidx.compose.ui:ui:${Versions.Dependencies.Compose.core}"
         const val uiTestJunit4 = "androidx.compose.ui:ui-test-junit4:${Versions.Dependencies.Compose.uiTest}"

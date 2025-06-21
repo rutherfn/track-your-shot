@@ -89,8 +89,8 @@ dependencies {
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.activity.compose)
     implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.materialDesignIconsCore)
-    implementation(Dependencies.Compose.materialDesignIconsExtended)
+    implementation(libs.androidx.material.icons.core)
+    implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(Dependencies.Compose.viewModel)
 

@@ -78,8 +78,8 @@ dependencies {
 
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.materialDesignIconsCore)
-    implementation(Dependencies.Compose.materialDesignIconsExtended)
+    implementation(libs.androidx.material.icons.core)
+    implementation(libs.androidx.material.icons.extended)
 
     implementation(libs.kotlinx.coroutines.core.jvm)
 
