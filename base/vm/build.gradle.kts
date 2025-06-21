@@ -72,5 +72,5 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.Compose.activity)
+    implementation(libs.androidx.activity.compose)
 }

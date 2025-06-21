@@ -76,13 +76,13 @@ dependencies {
     api(project(path = ":helper:account"))
     api(project(path = ":navigation"))
 
-    debugImplementation(Dependencies.Compose.uiToolingPreview)
+    debugImplementation(libs.androidx.ui.tooling.preview)
 
-    implementation(Dependencies.Compose.activity)
+    implementation(libs.androidx.activity.compose)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.materialDesignIconsCore)
     implementation(Dependencies.Compose.materialDesignIconsExtended)
-    implementation(Dependencies.Compose.uiToolingPreview)
+    implementation(libs.androidx.ui.tooling.preview)
     implementation(Dependencies.Compose.viewModel)
 
     testImplementation(libs.kotlinx.coroutines.test)

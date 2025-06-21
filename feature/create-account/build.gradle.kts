@@ -90,7 +90,7 @@ dependencies {
     api(project(path = ":navigation"))
     api(project(path = ":shared-preference"))
 
-    implementation(Dependencies.Compose.activity)
+    implementation(libs.androidx.activity.compose)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
 

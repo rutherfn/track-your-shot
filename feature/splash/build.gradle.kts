@@ -84,7 +84,7 @@ dependencies {
     api(project(path = ":navigation"))
     api(project(path = ":shared-preference"))
 
-    debugImplementation(Dependencies.Compose.uiTestManifest)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)

@@ -82,16 +82,16 @@ dependencies {
     api(project(path = ":navigation"))
     api(project(path = ":shared-preference"))
 
-    debugImplementation(Dependencies.Compose.uiToolingPreview)
+    debugImplementation(libs.androidx.ui.tooling.preview)
 
     implementation(libs.androidx.core.ktx)
 
     implementation(libs.accompanist.permissions)
-    implementation(Dependencies.Compose.activity)
+    implementation(libs.androidx.activity.compose)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.materialDesignIconsCore)
     implementation(Dependencies.Compose.materialDesignIconsExtended)
-    implementation(Dependencies.Compose.uiToolingPreview)
+    implementation(libs.androidx.ui.tooling.preview)
     implementation(Dependencies.Compose.viewModel)
 
     testImplementation(project(path = ":data-test:firebase"))

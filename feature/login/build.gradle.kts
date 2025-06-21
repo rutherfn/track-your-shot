@@ -89,10 +89,10 @@ dependencies {
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
 
-    implementation(platform(Dependencies.Compose.bom))
+    implementation(platform(libs.androidx.compose.bom))
 
-    debugImplementation(Dependencies.Compose.uiTooling)
-    implementation(Dependencies.Compose.uiToolingPreview)
+    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.androidx.ui.tooling.preview)
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)

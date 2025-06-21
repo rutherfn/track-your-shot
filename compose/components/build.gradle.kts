@@ -80,10 +80,10 @@ dependencies {
     api(project(path = ":helper:extensions"))
     api(project(path = ":helper:ui"))
 
-    debugImplementation(Dependencies.Compose.uiTooling)
+    debugImplementation(libs.androidx.ui.tooling)
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.materialDesignIconsCore)
     implementation(Dependencies.Compose.materialDesignIconsExtended)
-    implementation(Dependencies.Compose.uiToolingPreview)
+    implementation(libs.androidx.ui.tooling.preview)
 }

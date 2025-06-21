@@ -115,8 +115,8 @@ dependencies {
     api(project(path = ":helper:network"))
     api(project(path = ":helper:notifications"))
 
-    debugImplementation(Dependencies.Compose.uiTestManifest)
-    debugImplementation(Dependencies.Compose.uiTooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+    debugImplementation(libs.androidx.ui.tooling)
 
     kover(project(":build-type"))
     kover(project(":feature:create-account"))
@@ -132,11 +132,11 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
 
-    implementation(Dependencies.Compose.activity)
-    implementation(Dependencies.Compose.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.activity.ktx)
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.uiToolingPreview)
+    implementation(libs.androidx.ui.tooling.preview)
 
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth.ktx)
