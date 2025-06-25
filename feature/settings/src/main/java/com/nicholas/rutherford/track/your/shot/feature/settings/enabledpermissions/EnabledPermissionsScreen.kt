@@ -1,17 +1,14 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions
 
 import android.Manifest
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -26,22 +23,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.SwitchCard
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.extensions.hasCameraPermissionEnabled
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 
 @Composable
 fun EnabledPermissionsScreen(params: EnabledPermissionsParams) {
-    Content(
-        ui = { EnabledPermissionsContent(params = params) },
-        appBar = AppBar(
-            toolbarTitle = stringResource(id = StringsIds.enabledPermissions),
-            onIconButtonClicked = { params.onToolbarMenuClicked.invoke() }
-        ),
-        imageVector = Icons.AutoMirrored.Filled.ArrowBack
-    )
+    BackHandler(enabled = true) {
+        params.onToolbarMenuClicked.invoke()
+    }
+    EnabledPermissionsContent(params = params)
 }
 
 @Composable
@@ -80,8 +71,6 @@ fun EnabledPermissionsContent(params: EnabledPermissionsParams) {
             ),
         horizontalAlignment = Alignment.Start
     ) {
-        Spacer(modifier = Modifier.height(Padding.sixteen))
-
         SwitchCard(
             state = hasCameraPermission,
             title = stringResource(id = StringsIds.cameraPermission),

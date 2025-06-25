@@ -39,7 +39,8 @@ fun SwitchCard(
                 end = 4.dp,
                 bottom = 8.dp
             ),
-        elevation = CardDefaults.cardElevation()
+        colors = CardDefaults.cardColors(containerColor = AppColors.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxSize().fillMaxWidth().padding(Padding.eight),

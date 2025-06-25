@@ -5,18 +5,13 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
@@ -30,17 +25,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.nicholas.rutherford.track.your.shot.base.resources.R
-import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
+import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.buildAppBarBasedOnScreen
+import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.buildModalDrawerGesturesEnabled
+import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.findViewModelByDestination
 import com.nicholas.rutherford.track.your.shot.compose.components.AppBar2
-import com.nicholas.rutherford.track.your.shot.compose.components.ConditionalTopAppBar
 import com.nicholas.rutherford.track.your.shot.compose.components.ConditionalTopAppBar2
 import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.AlertDialog
 import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.CustomDatePickerDialog
@@ -49,7 +42,6 @@ import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.ShotIn
 import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationScreen
@@ -65,6 +57,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.Log
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotParams
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotScreen
+import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoParams
@@ -95,7 +88,6 @@ import com.nicholas.rutherford.track.your.shot.navigation.ShotsAction
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArguments
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
 import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -191,6 +183,51 @@ fun NavigationComponent(
     val declaredShotsListViewModel = viewModels.declaredShotsListViewModel
     val createEditDeclaredShotViewModel = viewModels.createEditDeclaredShotsViewModel
 
+    val reportListParams = ReportListParams(
+        state = reportListViewModel.reportListStateFlow.collectAsState().value,
+        onToolbarMenuClicked = { reportListViewModel.onToolbarMenuClicked() },
+        onAddReportClicked = { reportListViewModel.onCreatePlayerReportClicked() },
+        onViewReportClicked = { url -> reportListViewModel.onViewReportClicked(url = url) },
+        onDeletePlayerReportClicked = { individualPlayerReport -> reportListViewModel.onDeletePlayerReportClicked(individualPlayerReport = individualPlayerReport) },
+        onDownloadPlayerReportClicked = { individualPlayerReport -> reportListViewModel.onDownloadPlayerReportClicked(individualPlayerReport = individualPlayerReport) },
+        buildDateTimeStamp = { value -> reportListViewModel.buildDateTimeStamp(value) }
+    )
+    val shotsListScreenParams = ShotsListScreenParams(
+        state = shotsListViewModel.shotListStateFlow.collectAsState().value,
+        onHelpClicked = { shotsListViewModel.onHelpClicked() },
+        onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked() },
+        onShotItemClicked = { shotLoggedWithPlayer ->
+            shotsListViewModel.onShotItemClicked(
+                shotLoggedWithPlayer
+            )
+        },
+        shouldShowAllPlayerShots = true // replace this with user shot usage
+    )
+    val enabledPermissionsParams = EnabledPermissionsParams(
+        onToolbarMenuClicked = { enabledPermissionsViewModel.onToolbarMenuClicked() },
+        onSwitchChangedToTurnOffPermission = { enabledPermissionsViewModel.onSwitchChangedToTurnOffPermission() },
+        permissionNotGrantedForCameraAlert = { enabledPermissionsViewModel.permissionNotGrantedForCameraAlert() }
+    )
+    val settingsParams = SettingsParams(
+        onToolbarMenuClicked = {
+            settingsViewModel.onToolbarMenuClicked()
+        },
+        onHelpClicked = {
+            settingsViewModel.onHelpClicked()
+        },
+        onSettingItemClicked = { value ->
+            settingsViewModel.onSettingItemClicked(value = value)
+        },
+        state = settingsViewModel.settingsStateFlow.collectAsState().value
+    )
+
+    val viewModelParams = ViewModelsParams(
+        reportListParams = reportListParams,
+        shotListParams = shotsListScreenParams,
+        enabledPermissionsParams = enabledPermissionsParams,
+        settingsParams = settingsParams
+    )
+
     val isConnectedToInternet = mainActivityViewModel.isConnected.collectAsState().value
 
     LaunchedEffect(alertState) {
@@ -255,75 +292,17 @@ fun NavigationComponent(
         }
     }
 
-    fun findViewModelByDestination(destination: String): BaseViewModel? {
-        return when {
-            destination.contains(NavigationDestinations.SPLASH_SCREEN) -> splashViewModel
-            destination.contains(NavigationDestinations.CREATE_ACCOUNT_SCREEN) -> createAccountViewModel
-            destination.contains(NavigationDestinations.LOGIN_SCREEN) -> loginViewModel
-            destination.contains(NavigationDestinations.FORGOT_PASSWORD_SCREEN) -> forgotPasswordViewModel
-            destination.contains(NavigationDestinations.REPORTS_LIST_SCREEN) -> reportListViewModel
-            destination.contains(NavigationDestinations.CREATE_REPORT_SCREEN) -> createReportViewModel
-            destination.contains(NavigationDestinations.PLAYERS_LIST_SCREEN) -> playersListViewModel
-            destination.contains(NavigationDestinations.SELECT_SHOT_SCREEN) -> selectShotViewModel
-            destination.contains(NavigationDestinations.SHOTS_LIST_SCREEN) -> shotsListViewModel
-            destination.contains(NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN) -> declaredShotsListViewModel
-            destination.contains(NavigationDestinations.CREATE_EDIT_DECLARED_SHOTS_SCREEN) -> createEditDeclaredShotViewModel
-            else -> null
-        }
-    }
-
-    fun buildGesturesEnabled(viewModel: BaseViewModel): Boolean {
-        return if (viewModel == playersListViewModel || viewModel == shotsListViewModel || viewModel == reportListViewModel || viewModel == settingsViewModel) {
-            true
-        } else {
-             false
-        }
-    }
-
-    fun buildAppBarBasedOnScreen(viewModel: BaseViewModel): AppBar2? {
-        return if (viewModel == splashViewModel) {
-            null
-        } else if (viewModel == createAccountViewModel) {
-            AppBar2(
-                toolbarId = StringsIds.createAccount,
-                onIconButtonClicked = { createAccountViewModel.onBackButtonClicked() }
-            )
-        } else if (viewModel == forgotPasswordViewModel) {
-            AppBar2(
-                toolbarId = StringsIds.forgotPassword,
-                onIconButtonClicked = { forgotPasswordViewModel.onBackButtonClicked() }
-            )
-        } else if (viewModel == playersListViewModel) {
-            AppBar2(
-                toolbarId = R.string.players,
-                shouldShowMiddleContentAppBar = true,
-                onIconButtonClicked = {
-                    playersListViewModel.onToolbarMenuClicked()
-                },
-                onSecondaryIconButtonClicked = {
-                    playersListViewModel.onAddPlayerClicked()
-                },
-                shouldIncludeSpaceAfterDeclaration = false
-            )
-        } else {
-            AppBar2(
-                toolbarId = StringsIds.empty,
-                shouldShow = false
-            )
-        }
-    }
-
 
     LaunchedEffect(navigatorState) {
         navigatorState?.let {
             navHostController.navigate(it.destination, it.navOptions)
             println(it.destination)
-            val test = findViewModelByDestination(destination = it.destination)
+            val test = findViewModelByDestination(destination = it.destination, viewModels = viewModels)
 
             if (test != null) {
                 test.onNavigatedTo()
-                appBar = buildAppBarBasedOnScreen(test)
-                modalDrawerGesturesEnabled = buildGesturesEnabled(viewModel = test)
+                appBar = buildAppBarBasedOnScreen(test, viewModels, viewModelParams)
+                modalDrawerGesturesEnabled = buildModalDrawerGesturesEnabled(viewModel = test, viewModels = viewModels)
                 println(appBar)
             }
            // findViewModelByDestination(destination = it.destination)?.first?.onNavigatedTo()
@@ -345,13 +324,11 @@ fun NavigationComponent(
                 navHostController.popBackStack()
             } else {
                 navHostController.popBackStack(route = route, inclusive = false)
-                val test = findViewModelByDestination(destination = route)
+                val test = findViewModelByDestination(destination = route, viewModels = viewModels)
 
                 if (test != null) {
                     test.onNavigatedTo()
-                    appBar = buildAppBarBasedOnScreen(test)
-                    modalDrawerGesturesEnabled = buildGesturesEnabled(viewModel = test)
-                    println(appBar)
+                    appBar = buildAppBarBasedOnScreen(test, viewModels = viewModels, viewModelParams)
                 }
             }
             navigator.pop(popRouteAction = null) // need to set this to null to listen to next pop action
@@ -408,12 +385,12 @@ fun NavigationComponent(
                         val currentRoute = navHostController.currentDestination?.route ?: ""
                         if (route != currentRoute) {
                             navHostController.navigate(route, navOptions)
-                            val test = findViewModelByDestination(destination = route)
+                            val test = findViewModelByDestination(destination = route, viewModels = viewModels)
 
                             if (test != null) {
                                 test.onNavigatedTo()
-                                appBar = buildAppBarBasedOnScreen(test)
-                                modalDrawerGesturesEnabled = buildGesturesEnabled(viewModel = test)
+                                appBar = buildAppBarBasedOnScreen(test, viewModels = viewModels, viewModelParams)
+                                modalDrawerGesturesEnabled =buildModalDrawerGesturesEnabled(viewModel = test, viewModels = viewModels)
                             }
                         }
                     }
@@ -677,7 +654,7 @@ fun NavigationComponent(
                         )
                     }
                     composable(route = NavigationDestinations.REPORTS_LIST_SCREEN) {
-                        screenContents.reportListContent(reportListViewModel = reportListViewModel)
+                        screenContents.reportListContent(reportListParams = reportListParams)
                             .invoke()
                     }
                     composable(

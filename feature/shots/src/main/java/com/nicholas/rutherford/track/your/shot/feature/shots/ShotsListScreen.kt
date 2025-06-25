@@ -14,9 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Help
-import androidx.compose.material.icons.filled.Help
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,8 +27,6 @@ import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toTimestampString
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import java.util.Date
@@ -39,34 +34,12 @@ import java.util.Date
 @Composable
 fun ShotsListScreen(params: ShotsListScreenParams) {
     val isShotListEmpty = params.state.shotList.isEmpty()
-    val toolbarTitle = if (params.shouldShowAllPlayerShots) {
-        stringResource(id = R.string.shots)
-    } else {
-        stringResource(id = R.string.player_shots)
-    }
 
-    Content(
-        ui = {
-            if (!isShotListEmpty) {
-                ShotsList(params = params)
-            } else {
-                AddShotEmptyState()
-            }
-        },
-        appBar = AppBar(
-            toolbarTitle = toolbarTitle,
-            shouldShowMiddleContentAppBar = params.shouldShowAllPlayerShots,
-            onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
-            onSecondaryIconButtonClicked = {
-                params.onHelpClicked.invoke()
-//                    if (params.shouldShowAllPlayerShots) {
-//                        // todo user should be taken where they can filter there shots screen
-//                    }
-            }
-        ),
-        secondaryImageVector = Icons.AutoMirrored.Filled.Help,
-        secondaryImageEnabled = true
-    )
+    if (!isShotListEmpty) {
+        ShotsList(params = params)
+    } else {
+        AddShotEmptyState()
+    }
 }
 
 @Composable

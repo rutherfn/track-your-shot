@@ -93,6 +93,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.protolite.well.known.types)
     androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(Dependencies.Compose.uiTestJunit4)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -134,6 +135,8 @@ dependencies {
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.material.icons.core)
+    implementation(libs.androidx.material.icons.extended)
     implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material)
     implementation(libs.androidx.ui.tooling.preview)

@@ -1,10 +1,10 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.education.EducationPager
 import com.nicholas.rutherford.track.your.shot.compose.components.education.EducationScreen
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
@@ -13,25 +13,25 @@ import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 fun PermissionEducationScreen(permissionEducationParams: PermissionEducationParams) {
     val pagerState = rememberPagerState { permissionEducationParams.state.educationInfoList.size }
 
-    Content(
-        ui = {
-            EducationPager(
-                items = permissionEducationParams.state.educationInfoList,
+    BackHandler(enabled = true) {
+        permissionEducationParams.onGotItButtonClicked.invoke()
+    }
+
+    EducationPager(
+        items = permissionEducationParams.state.educationInfoList,
+        pagerState = pagerState,
+        pageContent = { page ->
+            EducationScreen(
+                educationInfo = page,
                 pagerState = pagerState,
-                pageContent = { page ->
-                    EducationScreen(
-                        educationInfo = page,
-                        pagerState = pagerState,
-                        nextPage = (pagerState.currentPage + 1).coerceAtMost(maximumValue = permissionEducationParams.state.educationInfoList.size - 1),
-                        onButtonClicked = if (pagerState.currentPage == 0) {
-                            permissionEducationParams.onGotItButtonClicked
-                        } else {
-                            null
-                        },
-                        onMoreInfoClicked = permissionEducationParams.onMoreInfoClicked,
-                        onCloseIconClicked = permissionEducationParams.onGotItButtonClicked
-                    )
-                }
+                nextPage = (pagerState.currentPage + 1).coerceAtMost(maximumValue = permissionEducationParams.state.educationInfoList.size - 1),
+                onButtonClicked = if (pagerState.currentPage == 0) {
+                    permissionEducationParams.onGotItButtonClicked
+                } else {
+                    null
+                },
+                onMoreInfoClicked = permissionEducationParams.onMoreInfoClicked,
+                onCloseIconClicked = permissionEducationParams.onGotItButtonClicked
             )
         }
     )

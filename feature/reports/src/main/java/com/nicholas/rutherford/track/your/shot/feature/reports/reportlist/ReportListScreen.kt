@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
@@ -36,42 +37,29 @@ import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun ReportListScreen(params: ReportListParams) {
-    Content(
-        ui = {
-            if (!params.state.hasNoReports) {
-                ReportList(
-                    state = params.state,
-                    onViewReportClicked = params.onViewReportClicked,
-                    onDeletePlayerReportClicked = params.onDeletePlayerReportClicked,
-                    onDownloadPlayerReportClicked = params.onDownloadPlayerReportClicked,
-                    buildDateTimeStamp = params.buildDateTimeStamp
-                )
-            } else {
-                ReportListEmptyState(
-                    description = if (params.state.hasNoReportPermission) {
-                        stringResource(id = StringsIds.atLeastOnePlayerDescription)
-                    } else {
-                        stringResource(id = StringsIds.hintAddNewReport)
-                    }
-                )
-            }
-        },
-        appBar = AppBar(
-            toolbarTitle = stringResource(id = StringsIds.reports),
-            shouldShowMiddleContentAppBar = true,
-            shouldShowSecondaryButton = !params.state.hasNoReportPermission,
-            onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
-            onSecondaryIconButtonClicked = { params.onAddReportClicked.invoke() }
+    if (!params.state.hasNoReports) {
+        ReportList(
+            state = params.state,
+            onViewReportClicked = params.onViewReportClicked,
+            onDeletePlayerReportClicked = params.onDeletePlayerReportClicked,
+            onDownloadPlayerReportClicked = params.onDownloadPlayerReportClicked,
+            buildDateTimeStamp = params.buildDateTimeStamp
         )
-    )
+    } else {
+        ReportListEmptyState(
+            description = if (params.state.hasNoReportPermission) {
+                stringResource(id = StringsIds.atLeastOnePlayerDescription)
+            } else {
+                stringResource(id = StringsIds.hintAddNewReport)
+            }
+        )
+    }
 }
 
 @Composable
@@ -109,14 +97,16 @@ fun PlayerReport(
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
-            .padding(16.dp),
-        elevation = CardDefaults.cardElevation()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = AppColors.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(8.dp)
+                    .padding(16.dp)
                     .clickable { expanded = true },
                 verticalAlignment = Alignment.CenterVertically
             ) {
