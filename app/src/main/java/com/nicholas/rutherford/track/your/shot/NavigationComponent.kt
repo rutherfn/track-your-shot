@@ -36,6 +36,7 @@ import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.compose.components.AppBar2
@@ -165,6 +166,7 @@ fun NavigationComponent(
     var inputInfo: InputInfo? by remember { mutableStateOf(value = null) }
     var progress: Progress? by remember { mutableStateOf(value = null) }
     var appBar: AppBar2? by remember { mutableStateOf(value = null) }
+    var modalDrawerGesturesEnabled: Boolean by remember { mutableStateOf(value = false) }
 
     val screenContents = ScreenContents()
 
@@ -270,6 +272,14 @@ fun NavigationComponent(
         }
     }
 
+    fun buildGesturesEnabled(viewModel: BaseViewModel): Boolean {
+        return if (viewModel == playersListViewModel || viewModel == shotsListViewModel || viewModel == reportListViewModel || viewModel == settingsViewModel) {
+            true
+        } else {
+             false
+        }
+    }
+
     fun buildAppBarBasedOnScreen(viewModel: BaseViewModel): AppBar2? {
         return if (viewModel == splashViewModel) {
             null
@@ -282,6 +292,18 @@ fun NavigationComponent(
             AppBar2(
                 toolbarId = StringsIds.forgotPassword,
                 onIconButtonClicked = { forgotPasswordViewModel.onBackButtonClicked() }
+            )
+        } else if (viewModel == playersListViewModel) {
+            AppBar2(
+                toolbarId = R.string.players,
+                shouldShowMiddleContentAppBar = true,
+                onIconButtonClicked = {
+                    playersListViewModel.onToolbarMenuClicked()
+                },
+                onSecondaryIconButtonClicked = {
+                    playersListViewModel.onAddPlayerClicked()
+                },
+                shouldIncludeSpaceAfterDeclaration = false
             )
         } else {
             AppBar2(
@@ -301,6 +323,7 @@ fun NavigationComponent(
             if (test != null) {
                 test.onNavigatedTo()
                 appBar = buildAppBarBasedOnScreen(test)
+                modalDrawerGesturesEnabled = buildGesturesEnabled(viewModel = test)
                 println(appBar)
             }
            // findViewModelByDestination(destination = it.destination)?.first?.onNavigatedTo()
@@ -327,6 +350,7 @@ fun NavigationComponent(
                 if (test != null) {
                     test.onNavigatedTo()
                     appBar = buildAppBarBasedOnScreen(test)
+                    modalDrawerGesturesEnabled = buildGesturesEnabled(viewModel = test)
                     println(appBar)
                 }
             }
@@ -389,6 +413,7 @@ fun NavigationComponent(
                             if (test != null) {
                                 test.onNavigatedTo()
                                 appBar = buildAppBarBasedOnScreen(test)
+                                modalDrawerGesturesEnabled = buildGesturesEnabled(viewModel = test)
                             }
                         }
                     }
@@ -927,6 +952,6 @@ fun NavigationComponent(
                 )
             }
         },
-        gesturesEnabled = false
+        gesturesEnabled = modalDrawerGesturesEnabled
     )
     }

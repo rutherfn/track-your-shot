@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,46 +41,48 @@ fun DrawerContent(
 ) {
     TrackMyShotTheme {
         Column(
-            modifier
+            modifier = modifier
                 .fillMaxSize()
-                .padding(start = 24.dp, top = 48.dp)
+                .background(AppColors.White)
+                .padding(horizontal = 24.dp, vertical = 32.dp)
         ) {
             Image(
-                painterResource(R.mipmap.ic_launcher_round),
-                contentDescription = "",
-                contentScale = ContentScale.Fit
+                painter = painterResource(R.mipmap.ic_launcher_round),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .size(72.dp)
+                    .align(Alignment.Start)
             )
 
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(16.dp))
             HorizontalDivider()
+
+            Spacer(Modifier.height(16.dp))
 
             Text(
                 text = stringResource(id = R.string.track_your_shot),
-                style = TextStyles.subLarge,
-                modifier = Modifier.fillMaxWidth()
+                style = TextStyles.subLarge
             )
             Text(
                 text = stringResource(id = R.string.by_nicholas_rutherford),
-                style = TextStyles.smallBold,
-                modifier = Modifier.fillMaxWidth()
+                style = TextStyles.smallBold
+            )
+
+            Spacer(Modifier.height(24.dp))
+
+            Text(
+                text = stringResource(id = R.string.menu),
+                style = TextStyles.subLarge
             )
 
             Spacer(Modifier.height(12.dp))
 
-            Text(
-                text = stringResource(id = R.string.menu),
-                style = TextStyles.subLarge,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(Modifier.height(4.dp))
-
             actions.forEach { action ->
-                Spacer(Modifier.height(12.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 8.dp, end = 8.dp, bottom = 8.dp)
                         .clickable {
                             safeLet(action.route, action.navOptions, action.titleId) { route, navOptions, titleId ->
                                 onDestinationClicked(route, navOptions, titleId)
@@ -86,10 +90,12 @@ fun DrawerContent(
                                 onDestinationClicked("", NavOptions.Builder().build(), action.titleId)
                             }
                         }
+                        .padding(vertical = 12.dp)
                 ) {
                     Icon(
                         imageVector = action.imageVector,
-                        contentDescription = "Icon"
+                        contentDescription = null,
+                        tint = LocalContentColor.current
                     )
                     Spacer(Modifier.width(16.dp))
                     Text(
@@ -101,6 +107,7 @@ fun DrawerContent(
         }
     }
 }
+
 
 @Preview
 @Composable

@@ -125,15 +125,11 @@ private fun ComplexTopAppBar2(
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppColors.White,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = AppColors.Orange,
         ),
-        modifier = Modifier.fillMaxWidth(),  // <-- fix here, avoid fillMaxSize()
         title = {
             Row(
-                modifier = Modifier.fillMaxWidth(), // <-- fix here too
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {

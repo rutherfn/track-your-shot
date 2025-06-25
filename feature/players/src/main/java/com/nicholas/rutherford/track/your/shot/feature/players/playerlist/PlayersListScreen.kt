@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.SheetState
@@ -27,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,11 +42,9 @@ import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.BottomSheetWithOptions
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toPlayerPositionAbvId
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
@@ -54,26 +55,11 @@ import kotlinx.coroutines.launch
 fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
     val isPlayerListEmpty = playerListScreenParams.state.playerList.isEmpty()
 
-    Content(
-        ui = {
-            if (!isPlayerListEmpty) {
-                PlayerList(playerListScreenParams = playerListScreenParams)
-            } else {
-                AddNewPlayerEmptyState()
-            }
-        },
-        appBar = AppBar(
-            toolbarTitle = stringResource(id = R.string.players),
-            shouldShowMiddleContentAppBar = true,
-            onIconButtonClicked = {
-                playerListScreenParams.onToolbarMenuClicked.invoke()
-            },
-            onSecondaryIconButtonClicked = {
-                playerListScreenParams.onAddPlayerClicked.invoke()
-            },
-            shouldIncludeSpaceAfterDeclaration = false
-        )
-    )
+    if (!isPlayerListEmpty) {
+        PlayerList(playerListScreenParams = playerListScreenParams)
+    } else {
+        AddNewPlayerEmptyState()
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -118,7 +104,6 @@ private fun PlayerItem(
     sheetState: SheetState,
     scope: CoroutineScope
 ) {
-    println("get here test")
     val imagePainter = if (!player.imageUrl.isNullOrEmpty()) {
         rememberAsyncImagePainter(model = player.imageUrl)
     } else {
@@ -127,46 +112,59 @@ private fun PlayerItem(
 
     Card(
         modifier = Modifier
-            .background(AppColors.White)
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable {
-                onPlayerClicked.invoke(player)
+                onPlayerClicked(player)
                 scope.launch { sheetState.show() }
-            }
+            },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = AppColors.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column {
-            Row(
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = imagePainter,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .size(36.dp)
+                    .clip(CircleShape)
+                    .background(AppColors.OffWhite) // subtle image frame
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(
+                modifier = Modifier.weight(1f)
             ) {
-                Image(
-                    painter = imagePainter,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape)
-                        .padding(4.dp),
-                    contentScale = ContentScale.Crop
-                )
-
-                Spacer(modifier = Modifier.width(16.dp))
-
                 player.position.value.toPlayerPositionAbvId()?.let { positionId ->
                     Text(
-                        text = stringResource(id = R.string.x_position_x_player_name, stringResource(id = positionId), player.fullName()),
+                        text = stringResource(
+                            id = R.string.x_position_x_player_name,
+                            stringResource(id = positionId),
+                            player.fullName()
+                        ),
                         style = TextStyles.bodyBold,
-                        textAlign = TextAlign.Start
+                        maxLines = 1
                     )
                 }
-            }
 
-            HorizontalDivider()
+                Text(
+                    text = "Tap for more",
+                    style = TextStyles.body,
+                    color = Color.Gray
+                )
+            }
         }
     }
 }
+
 
 @Composable
 private fun AddNewPlayerEmptyState() {

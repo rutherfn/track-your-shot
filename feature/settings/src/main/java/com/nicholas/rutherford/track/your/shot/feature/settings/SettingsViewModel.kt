@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.feature.settings
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
@@ -17,7 +18,7 @@ class SettingsViewModel(
     private val application: Application,
     private val scope: CoroutineScope,
     private val activeUserRepository: ActiveUserRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     internal val settingsMutableStateFlow = MutableStateFlow(value = SettingsState())
     val settingsStateFlow = settingsMutableStateFlow.asStateFlow()
