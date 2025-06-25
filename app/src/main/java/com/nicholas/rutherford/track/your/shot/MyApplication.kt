@@ -19,7 +19,7 @@ open class MyApplication : Application() {
         createNotificationChannel()
     }
 
-    fun createNotificationChannel() {
+    private fun createNotificationChannel() {
         val notificationChannel = NotificationChannel(
             Constants.NOTIFICATION_CHANNEL_ID,
             Constants.NOTIFICATION_NAME,

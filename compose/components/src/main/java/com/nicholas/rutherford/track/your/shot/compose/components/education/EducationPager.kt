@@ -1,6 +1,5 @@
 package com.nicholas.rutherford.track.your.shot.compose.components.education
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,7 +23,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
  * @param pageContent required param - Allows us to pass in a [Composable] with [EducationInfo]
  * as a param, for a given page used in [HorizontalPager]
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EducationPager(
     items: List<EducationInfo>,
@@ -46,7 +44,6 @@ fun EducationPager(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Preview
 @Composable
 fun EducationPagerPreview() {

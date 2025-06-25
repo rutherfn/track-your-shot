@@ -1,8 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
@@ -36,7 +36,7 @@ class CreateAccountViewModel(
     private val createSharedPreferences: CreateSharedPreferences,
     private val authenticationFirebase: AuthenticationFirebase,
     private val scope: CoroutineScope
-) : ViewModel() {
+) : BaseViewModel() {
 
     internal var isUsernameEmptyOrNull: Boolean = false
     internal var isUsernameInNotCorrectFormat: Boolean = false

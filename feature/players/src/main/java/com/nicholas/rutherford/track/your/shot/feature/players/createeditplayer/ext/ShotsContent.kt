@@ -14,13 +14,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -100,8 +101,7 @@ private fun LoggedShotCard(
                 top = 8.dp,
                 end = 4.dp,
                 bottom = 8.dp
-            ),
-        elevation = 2.dp
+            )
     ) {
         Column(
             modifier = Modifier.clickable { onViewShotClicked.invoke(shot.shotType, shot.id) }
@@ -126,7 +126,7 @@ private fun LoggedShotCard(
                 Spacer(modifier = Modifier.weight(1f))
 
                 Icon(
-                    imageVector = Icons.Filled.ArrowForward,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = ""
                 )
             }
@@ -152,7 +152,7 @@ private fun LogNewShotButton(onLogShotsClicked: () -> Unit) {
                 modifier = Modifier
                     .padding(vertical = Padding.twelve)
                     .fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor)
+                colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor)
             ) {
                 Text(
                     text = "Log Shots",
@@ -211,7 +211,7 @@ private fun ColumnScope.ShotContentEmptyState(hintLogNewShotText: String, onLogS
                 modifier = Modifier
                     .padding(vertical = Padding.twelve)
                     .fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor)
+                colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor)
             ) {
                 Text(
                     text = "Log Shots",

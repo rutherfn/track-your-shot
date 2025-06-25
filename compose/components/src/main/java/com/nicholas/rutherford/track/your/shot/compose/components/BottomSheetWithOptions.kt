@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue.Hidden
-import androidx.compose.material.Text
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetValue
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,35 +23,37 @@ import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
- * Basic [ModalBottomSheetLayout] that is reused across the app when displaying sheet with options
+ * Basic Material 3 [ModalBottomSheet] reused across the app to display sheet with options
  *
- * @param sheetState [ModalBottomSheetState] which contains state of the sheet
- * @param sheetInfo [Sheet] optional param that define data for each sheet option
- * @param onSheetItemClicked [Unit] that is invoked when user clicks on a [Sheet] defined item
- * @param onCancelItemClicked [Unit] that is invoked when cancel sheet item is clicked
- * @param content [Composable] [Unit] that contains the User interface outside of the bottom sheet
+ * @param sheetState [SheetState] which contains the state of the bottom sheet
+ * @param sheetInfo [Sheet] optional param that defines the data for each sheet option
+ * @param onSheetItemClicked Callback invoked when a user clicks on a [Sheet] item
+ * @param onCancelItemClicked Callback invoked when the cancel button is clicked
+ * @param content Composable content displayed behind the bottom sheet
  */
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetWithOptions(
-    sheetState: ModalBottomSheetState = rememberModalBottomSheetState(Hidden),
+    sheetState: SheetState = rememberModalBottomSheetState(),
     sheetInfo: Sheet? = null,
     onSheetItemClicked: (String, Int) -> Unit = { _, _ -> },
     onCancelItemClicked: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
-    ModalBottomSheetLayout(
-        sheetState = sheetState,
-        sheetContent = {
+    content()
+
+    if (sheetState.currentValue != SheetValue.Hidden && sheetInfo != null) {
+        ModalBottomSheet(
+            onDismissRequest = onCancelItemClicked,
+            sheetState = sheetState,
+            modifier = Modifier.fillMaxSize()
+        ) {
             SheetContent(
                 sheet = sheetInfo,
                 onSheetItemClicked = onSheetItemClicked,
                 onCancelItemClicked = onCancelItemClicked
             )
-        },
-        modifier = Modifier.fillMaxSize()
-    ) {
-        content()
+        }
     }
 }
 
@@ -84,6 +86,7 @@ private fun SheetContent(
             }
         }
     }
+
     Text(
         text = stringResource(id = R.string.cancel),
         modifier = Modifier
@@ -93,3 +96,4 @@ private fun SheetContent(
         style = TextStyles.body.copy(color = AppColors.Red)
     )
 }
+

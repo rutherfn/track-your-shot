@@ -20,10 +20,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
@@ -32,32 +33,18 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
  * Custom [TopAppBar] that will either draw a [ComplexTopAppBar] or [SimpleTopAppBar]
  *
  * @param appBar builds out the actual content for displaying [TopAppBar]
- * @param imageVector [ImageVector] used for both app bars for displaying [Icon] left of title
- * @param secondaryImageVector [ImageVector] used for [ComplexTopAppBar] and [SimpleTopAppBar] for displaying [Icon] right of title
- * @param secondaryImageEnabled [Boolean] that determines if the secondary image will be enabled or not
  */
 @Composable
-fun ConditionalTopAppBar(
-    appBar: AppBar,
-    imageVector: ImageVector?,
-    secondaryImageVector: ImageVector?,
-    secondaryImageEnabled: Boolean?,
-    secondaryIconTint: Color
+fun ConditionalTopAppBar2(
+    appBar: AppBar2
 ) {
     if (appBar.shouldShowMiddleContentAppBar) {
-        ComplexTopAppBar(
-            appBar = appBar,
-            imageVector = imageVector,
-            secondaryImageVector = secondaryImageVector,
-            secondaryImageEnabled = secondaryImageEnabled
+        ComplexTopAppBar2(
+            appBar = appBar
         )
     } else {
-        SimpleTopAppBar(
-            appBar = appBar,
-            imageVector = imageVector,
-            secondaryImageVector = secondaryImageVector,
-            secondaryImageEnabled = secondaryImageEnabled,
-            secondaryIconTint = secondaryIconTint
+        SimpleTopAppBar2(
+            appBar = appBar
         )
     }
 }
@@ -73,32 +60,28 @@ fun ConditionalTopAppBar(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SimpleTopAppBar(
-    appBar: AppBar,
-    imageVector: ImageVector?,
-    secondaryImageVector: ImageVector?,
-    secondaryImageEnabled: Boolean?,
-    secondaryIconTint: Color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
+private fun SimpleTopAppBar2(
+    appBar: AppBar2
 ) {
     TopAppBar(
         title = {
             Text(
-                text = appBar.toolbarTitle,
+                text = stringResource(appBar.toolbarId),
                 modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_TITLE),
                 style = TextStyles.toolbar,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onPrimary
+                color = AppColors.White
             )
         },
         navigationIcon = {
             IconButton(
                 onClick = { appBar.onIconButtonClicked?.invoke() },
-                enabled = secondaryImageEnabled ?: true,
+                enabled = appBar.secondaryImageEnabled ?: true,
                 modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
             ) {
                 Icon(
-                    imageVector = imageVector ?: androidx.compose.material.icons.Icons.Filled.ArrowBack,
+                    imageVector = appBar.imageVector ?: androidx.compose.material.icons.Icons.Filled.ArrowBack,
                     contentDescription = appBar.iconContentDescription,
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
@@ -111,18 +94,15 @@ private fun SimpleTopAppBar(
                     modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
                 ) {
                     Icon(
-                        imageVector = secondaryImageVector ?: androidx.compose.material.icons.Icons.Filled.Save,
+                        imageVector = appBar.secondaryImageVector ?: androidx.compose.material.icons.Icons.Filled.Save,
                         contentDescription = "Secondary icon",
-                        tint = secondaryIconTint
+                        tint = appBar.secondaryIconTint ?: Color.Unspecified
                     )
                 }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppColors.White,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = AppColors.Orange,
         )
     )
     if (appBar.shouldIncludeSpaceAfterDeclaration) {
@@ -140,11 +120,8 @@ private fun SimpleTopAppBar(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ComplexTopAppBar(
-    appBar: AppBar,
-    imageVector: ImageVector?,
-    secondaryImageVector: ImageVector?,
-    secondaryImageEnabled: Boolean?
+private fun ComplexTopAppBar2(
+    appBar: AppBar2
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -162,27 +139,27 @@ private fun ComplexTopAppBar(
             ) {
                 IconButton(onClick = { appBar.onIconButtonClicked?.invoke() }) {
                     Icon(
-                        imageVector = imageVector ?: androidx.compose.material.icons.Icons.Filled.Menu,
+                        imageVector = appBar.imageVector ?: androidx.compose.material.icons.Icons.Filled.Menu,
                         contentDescription = appBar.iconContentDescription,
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
 
                 Text(
-                    text = appBar.toolbarTitle,
+                    text = stringResource(appBar.toolbarId),
                     modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_TITLE),
                     style = TextStyles.toolbar,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = AppColors.White
                 )
 
                 IconButton(
-                    enabled = secondaryImageEnabled ?: true,
+                    enabled = appBar.secondaryImageEnabled ?: true,
                     onClick = { appBar.onSecondaryIconButtonClicked?.invoke() }
                 ) {
                     Icon(
-                        imageVector = secondaryImageVector ?: androidx.compose.material.icons.Icons.Filled.Add,
+                        imageVector = appBar.secondaryImageVector ?: androidx.compose.material.icons.Icons.Filled.Add,
                         contentDescription = appBar.secondaryIconContentDescription,
                         tint = MaterialTheme.colorScheme.onPrimary
                     )

@@ -16,13 +16,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue.Hidden
-import androidx.compose.material.Text
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -77,10 +76,10 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PlayerList(playerListScreenParams: PlayersListScreenParams) {
-    val sheetState = rememberModalBottomSheetState(Hidden)
+    val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
     BottomSheetWithOptions(
@@ -111,14 +110,15 @@ private fun PlayerList(playerListScreenParams: PlayersListScreenParams) {
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PlayerItem(
     player: Player,
     onPlayerClicked: (player: Player) -> Unit,
-    sheetState: ModalBottomSheetState = rememberModalBottomSheetState(Hidden),
+    sheetState: SheetState,
     scope: CoroutineScope
 ) {
+    println("get here test")
     val imagePainter = if (!player.imageUrl.isNullOrEmpty()) {
         rememberAsyncImagePainter(model = player.imageUrl)
     } else {
@@ -133,8 +133,7 @@ private fun PlayerItem(
             .clickable {
                 onPlayerClicked.invoke(player)
                 scope.launch { sheetState.show() }
-            },
-        elevation = 2.dp
+            }
     ) {
         Column {
             Row(
@@ -164,7 +163,7 @@ private fun PlayerItem(
                 }
             }
 
-            Divider()
+            HorizontalDivider()
         }
     }
 }

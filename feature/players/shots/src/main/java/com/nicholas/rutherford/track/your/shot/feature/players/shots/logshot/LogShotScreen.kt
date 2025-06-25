@@ -11,14 +11,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -105,7 +106,7 @@ fun LogShotContent(logShotParams: LogShotParams) {
                         modifier = Modifier
                             .padding(vertical = Padding.twelve)
                             .fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor)
+                        colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor)
                     ) {
                         Text(
                             text = stringResource(id = StringsIds.deleteX, logShotParams.state.shotName),
@@ -137,7 +138,7 @@ private fun ShotInfoContent(
             .background(AppColors.White)
             .fillMaxWidth()
             .padding(top = 16.dp, bottom = 16.dp),
-        elevation = 2.dp
+        elevation = CardDefaults.cardElevation()
     ) {
         Column {
             BaseRow(
@@ -238,7 +239,7 @@ fun PlayerInfoContent(
             .background(AppColors.White)
             .fillMaxWidth()
             .padding(top = 16.dp, bottom = 16.dp),
-        elevation = 2.dp
+        elevation = CardDefaults.cardElevation()
     ) {
         Column {
             BaseRow(

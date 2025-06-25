@@ -179,7 +179,7 @@ class AuthenticationViewModel(
         )
     }
 
-    internal fun errorDeletingPendingAccountAlert(): Alert {
+    private fun errorDeletingPendingAccountAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.errorDeletingPendingAccount),
             dismissButton = AlertConfirmAndDismissButton(

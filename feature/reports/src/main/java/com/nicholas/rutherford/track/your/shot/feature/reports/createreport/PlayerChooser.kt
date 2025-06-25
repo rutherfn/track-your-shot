@@ -9,12 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,46 +46,42 @@ fun PlayerChooser(params: CreateReportParams) {
         ) {
             options.forEach { option ->
                 DropdownMenuItem(
+                    text = { Text(text = option, style = TextStyles.body) },
                     onClick = {
                         selectedOption = option
                         isDropdownExpanded = false
                         params.onPlayerChanged.invoke(option)
                     }
-                ) {
-                    Text(
-                        text = option,
-                        style = TextStyles.body
-                    )
-                }
+                )
             }
         }
+    }
 
-        Column(modifier = Modifier.fillMaxWidth().padding(top = 12.dp)) {
+    Column(modifier = Modifier.fillMaxWidth().padding(top = 12.dp)) {
+        Text(
+            text = stringResource(id = R.string.selected_player),
+            modifier = Modifier.padding(start = Padding.four),
+            style = TextStyles.body
+        )
+        Spacer(modifier = Modifier.height(Padding.eight))
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
-                text = stringResource(id = R.string.selected_player),
-                modifier = Modifier.padding(start = Padding.four),
+                text = selectedOption,
+                modifier = Modifier
+                    .padding(start = Padding.four)
+                    .clickable { isDropdownExpanded = !isDropdownExpanded },
                 style = TextStyles.body
             )
-            Spacer(modifier = Modifier.height(Padding.eight))
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = selectedOption,
-                    modifier = Modifier
-                        .padding(start = Padding.four)
-                        .clickable { isDropdownExpanded = !isDropdownExpanded },
-                    style = TextStyles.body
-                )
-                Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = "2",
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .size(20.dp)
-                        .clickable { isDropdownExpanded = !isDropdownExpanded }
-                )
-            }
+            Icon(
+                imageVector = Icons.Default.ArrowDropDown,
+                contentDescription = "2",
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .size(20.dp)
+                    .clickable { isDropdownExpanded = !isDropdownExpanded }
+            )
         }
     }
 }

@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,7 +51,7 @@ fun CustomDatePickerDialog(datePickerInfo: DatePickerInfo) {
             modifier = Modifier
                 .wrapContentSize()
                 .background(
-                    color = MaterialTheme.colors.surface,
+                    color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(size = 16.dp)
                 )
         ) {
@@ -60,22 +60,22 @@ fun CustomDatePickerDialog(datePickerInfo: DatePickerInfo) {
                     .defaultMinSize(minHeight = 72.dp)
                     .fillMaxWidth()
                     .background(
-                        color = MaterialTheme.colors.primary,
+                        color = MaterialTheme.colorScheme.primary,
                         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                     )
                     .padding(16.dp)
             ) {
                 Text(
                     text = stringResource(id = StringsIds.selectDate).uppercase(Locale.ENGLISH),
-                    style = MaterialTheme.typography.caption,
+                    style = MaterialTheme.typography.bodySmall,
                     color = AppColors.White
                 )
 
                 Spacer(modifier = Modifier.size(24.dp))
 
                 Text(
-                    text = selDate.value.format(DateTimeFormatter.ofPattern("MMM d, Y")),
-                    style = MaterialTheme.typography.h4,
+                    text = selDate.value.format(DateTimeFormatter.ofPattern("MMM d, y")),
+                    style = MaterialTheme.typography.headlineLarge,
                     color = AppColors.White
                 )
 

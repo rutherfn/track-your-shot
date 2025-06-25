@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.login
 
+import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import kotlinx.coroutines.CoroutineScope
 
 data class LoginScreenParams(

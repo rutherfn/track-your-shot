@@ -1,8 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.forgot.password
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
@@ -15,7 +15,7 @@ class ForgotPasswordViewModel(
     private val application: Application,
     private val authenticationFirebase: AuthenticationFirebase,
     private val navigation: ForgotPasswordNavigation
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val forgotPasswordMutableStateFlow = MutableStateFlow(value = ForgotPasswordState(email = null))
     val forgotPasswordStateFlow = forgotPasswordMutableStateFlow.asStateFlow()

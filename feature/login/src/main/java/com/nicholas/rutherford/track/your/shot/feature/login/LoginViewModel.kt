@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.build.type.BuildType
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
@@ -20,7 +21,7 @@ class LoginViewModel(
     private val buildType: BuildType,
     private val accountManager: AccountManager,
     private val scope: CoroutineScope
-) : ViewModel() {
+) : BaseViewModel() {
 
     internal val loginMutableStateFlow = MutableStateFlow(LoginState())
     val loginStateFlow = loginMutableStateFlow.asStateFlow()

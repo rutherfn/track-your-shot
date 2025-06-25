@@ -1,6 +1,5 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -10,7 +9,6 @@ import com.nicholas.rutherford.track.your.shot.compose.components.education.Educ
 import com.nicholas.rutherford.track.your.shot.compose.components.education.EducationScreen
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PermissionEducationScreen(permissionEducationParams: PermissionEducationParams) {
     val pagerState = rememberPagerState { permissionEducationParams.state.educationInfoList.size }

@@ -12,9 +12,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,9 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.TextFieldNoPadding
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
@@ -39,15 +37,7 @@ fun CreateAccountScreen(createAccountScreenParams: CreateAccountScreenParams) {
     BackHandler(enabled = true) {
         createAccountScreenParams.onBackButtonClicked.invoke()
     }
-    Content(
-        ui = {
-            CreateAccountScreenContent(createAccountScreenParams = createAccountScreenParams)
-        },
-        appBar = AppBar(
-            toolbarTitle = stringResource(id = StringsIds.createAccount),
-            onIconButtonClicked = { createAccountScreenParams.onBackButtonClicked() }
-        )
-    )
+    CreateAccountScreenContent(createAccountScreenParams = createAccountScreenParams)
 }
 
 @Composable
@@ -59,6 +49,8 @@ fun CreateAccountScreenContent(createAccountScreenParams: CreateAccountScreenPar
             .padding(Padding.twenty),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.height(Padding.twentyFour))
+
         Image(
             painter = painterResource(id = DrawablesIds.launcherRound),
             contentDescription = stringResource(id = StringsIds.loginIconDescription),
@@ -111,7 +103,7 @@ fun CreateAccountScreenContent(createAccountScreenParams: CreateAccountScreenPar
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Padding.twelve),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
+            colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
             content = {
                 Text(
                     text = stringResource(id = StringsIds.continueText),

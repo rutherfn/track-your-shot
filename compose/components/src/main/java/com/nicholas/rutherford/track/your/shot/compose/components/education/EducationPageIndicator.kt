@@ -1,6 +1,5 @@
 package com.nicholas.rutherford.track.your.shot.compose.components.education
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,7 +26,6 @@ import com.nicholas.rutherford.track.your.shot.AppColors
  * @param pagerState = [PagerState] pager to use for looping thorugh how many indicators to show
  * as well as setting up state of which one should be active or not.
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BoxScope.EducationPageIndicator(pagerState: PagerState) {
     Row(

@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +24,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
- * Default [Dialog] with given params to build dialogs with [CircularProgressIndicator] used in [Content]
+ * Default [Dialog] with given params to build dialogs with [CircularProgressIndicator] used in content
  *
  * @param onDismissClicked optional param triggers whenever the user attempts to dismiss the [Dialog]
  * @param title optional param that will draw a [Text] inside of said [Box]

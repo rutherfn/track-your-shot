@@ -9,12 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,24 +53,20 @@ fun PositionChooser(createEditPlayerParams: CreateEditPlayerParams) {
         ) {
             options.forEachIndexed { index, option ->
                 DropdownMenuItem(
+                    text = { Text(text = option, style = TextStyles.body) },
                     onClick = {
                         selectedOption = option
                         val newPosition = when (index) {
-                            PlayerPositions.PointGuard.value -> { pointGuard }
-                            PlayerPositions.ShootingGuard.value -> { shootingGuard }
-                            PlayerPositions.SmallForward.value -> { smallForward }
-                            PlayerPositions.PowerForward.value -> { powerForward }
-                            else -> { center }
+                            PlayerPositions.PointGuard.value -> pointGuard
+                            PlayerPositions.ShootingGuard.value -> shootingGuard
+                            PlayerPositions.SmallForward.value -> smallForward
+                            PlayerPositions.PowerForward.value -> powerForward
+                            else -> center
                         }
                         createEditPlayerParams.onPlayerPositionStringChanged(newPosition)
                         isDropdownExpanded = false
                     }
-                ) {
-                    Text(
-                        text = option,
-                        style = TextStyles.body
-                    )
-                }
+                )
             }
         }
 

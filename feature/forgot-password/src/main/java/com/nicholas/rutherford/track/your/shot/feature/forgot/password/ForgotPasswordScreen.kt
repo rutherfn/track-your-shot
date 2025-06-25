@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.forgot.password
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,11 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,22 +22,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun ForgotPasswordScreen(forgotPasswordScreenParams: ForgotPasswordScreenParams) {
-    Content(
-        ui = {
-            ForgotPasswordScreenContent(forgotPasswordScreenParams = forgotPasswordScreenParams)
-        },
-        appBar = AppBar(
-            toolbarTitle = stringResource(id = StringsIds.forgotPassword),
-            onIconButtonClicked = { forgotPasswordScreenParams.onBackButtonClicked() }
-        )
-    )
+    BackHandler(enabled = true) {
+        forgotPasswordScreenParams.onBackButtonClicked.invoke()
+    }
+    ForgotPasswordScreenContent(forgotPasswordScreenParams = forgotPasswordScreenParams)
 }
 
 @Composable
@@ -56,7 +50,10 @@ fun ForgotPasswordScreenContent(forgotPasswordScreenParams: ForgotPasswordScreen
             onValueChange = { newEmail -> forgotPasswordScreenParams.onEmailValueChanged(newEmail) },
             textStyle = TextStyles.body,
             singleLine = true,
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Colors.whiteColor,
+                unfocusedContainerColor = Colors.whiteColor
+            )
         )
 
         Spacer(modifier = Modifier.height(Padding.four))
@@ -69,7 +66,7 @@ fun ForgotPasswordScreenContent(forgotPasswordScreenParams: ForgotPasswordScreen
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Padding.twentyFour),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
+            colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
             content = {
                 Text(
                     text = stringResource(id = StringsIds.resetPassword),

@@ -15,11 +15,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.automirrored.filled.Help
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
@@ -97,7 +98,7 @@ fun SelectShotScreen(selectShotParams: SelectShotParams) {
             },
             onSecondaryIconButtonClicked = { selectShotParams.onHelpIconClicked.invoke() }
         ),
-        secondaryImageVector = Icons.Filled.Help
+        secondaryImageVector = Icons.AutoMirrored.Filled.Help
     )
 }
 
@@ -116,7 +117,7 @@ fun DeclaredShotItem(
             .clickable {
                 onItemClicked.invoke(declaredShot.id)
             },
-        elevation = 2.dp
+        elevation = CardDefaults.cardElevation()
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
             Text(
@@ -126,13 +127,13 @@ fun DeclaredShotItem(
             )
 
             if (!isExpanded) {
-                ClickableText(
+                Text(
                     text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = Color.Blue)) {
+                        withStyle(style = SpanStyle(color = Color.Blue, textDecoration = TextDecoration.Underline)) {
                             append(stringResource(id = StringsIds.showMore))
                         }
                     },
-                    onClick = {
+                    modifier = Modifier.clickable {
                         isExpanded = !isExpanded
                     }
                 )
@@ -165,13 +166,13 @@ fun DeclaredShotItem(
 
                 Spacer(modifier = Modifier.width(4.dp))
 
-                ClickableText(
+                Text(
                     text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = Color.Blue)) {
+                        withStyle(style = SpanStyle(color = Color.Blue, textDecoration = TextDecoration.Underline)) {
                             append(stringResource(id = StringsIds.showLess))
                         }
                     },
-                    onClick = {
+                    modifier = Modifier.clickable {
                         isExpanded = !isExpanded
                     }
                 )

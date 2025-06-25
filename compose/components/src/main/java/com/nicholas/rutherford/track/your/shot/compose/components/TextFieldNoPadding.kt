@@ -10,19 +10,18 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldColors
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -31,7 +30,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
-import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
@@ -45,10 +43,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
  * @param keyboardOptions sets the [KeyboardOptions] inside the [TextField]
  * @param textStyle sets the [TextStyles] inside the [TextField]
  * @param singleLine sets whenever the [TextField] is a single line or not
- * @param colors sets the [TextFieldColors] inside the [TextField]
  * @param footerText sets the [Text] of the footer of the [TextField] if not null
  */
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFieldNoPadding(
     label: String,
@@ -58,7 +54,6 @@ fun TextFieldNoPadding(
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     textStyle: TextStyle = TextStyles.body,
     singleLine: Boolean = true,
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor),
     footerText: String? = null
 ) {
     var isFocused by remember { mutableStateOf(false) }
@@ -71,7 +66,6 @@ fun TextFieldNoPadding(
         isFocused = false
     }
 
-    // removes the starting padding of the TextField
     val negativeOffSetPaddingX = (-8).dp
 
     Column {
@@ -79,13 +73,13 @@ fun TextFieldNoPadding(
             modifier = Modifier.clipToBounds()
         ) {
             TextField(
-                label = { Text(text = label) },
-                modifier = Modifier
-                    .requiredWidth(maxWidth + Padding.sixteen)
-                    .offset(x = negativeOffSetPaddingX)
-                    .onFocusChanged { isFocused = it.isFocused }
-                    .fillMaxWidth(),
                 value = value,
+                onValueChange = { newUsername -> onValueChange.invoke(newUsername) },
+                label = {
+                    Text(
+                        text = label
+                    )
+                        },
                 visualTransformation = visualTransformation,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = KeyboardActions(
@@ -94,10 +88,23 @@ fun TextFieldNoPadding(
                         shouldClearFocus = true
                     }
                 ),
-                onValueChange = { newUsername -> onValueChange.invoke(newUsername) },
                 textStyle = textStyle,
                 singleLine = singleLine,
-                colors = colors
+                modifier = Modifier
+                    .requiredWidth(maxWidth + Padding.sixteen)
+                    .offset(x = negativeOffSetPaddingX)
+                    .onFocusChanged { isFocused = it.isFocused }
+                    .fillMaxWidth(),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent,
+                    errorContainerColor = Color.Transparent,
+                    focusedIndicatorColor = AppColors.Orange,
+                    unfocusedIndicatorColor = Color.Black,
+                    disabledIndicatorColor = Color.Gray,
+                    errorIndicatorColor = Color.Red
+                )
             )
         }
 

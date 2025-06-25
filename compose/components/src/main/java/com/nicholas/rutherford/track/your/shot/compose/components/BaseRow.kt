@@ -7,11 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.Text
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +36,7 @@ fun BaseRow(
     onClicked: (() -> Unit)? = null,
     subTextColor: Color = Color.Unspecified,
     titleStyle: TextStyle = TextStyles.smallBold,
-    iconTint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
+    iconTint: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
     subText: String? = null,
     imageVector: ImageVector? = null,
     shouldShowDivider: Boolean = false
@@ -83,7 +82,7 @@ private fun RightRowContent(
     subTextColor: Color = AppColors.LightGray,
     subText: String? = null,
     imageVector: ImageVector? = null,
-    iconTint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
+    iconTint: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
 ) {
     if (imageVector != null && subText != null) {
         safeLet(imageVector, subText) { vector, text ->

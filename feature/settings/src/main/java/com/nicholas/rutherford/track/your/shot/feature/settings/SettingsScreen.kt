@@ -9,18 +9,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Help
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
@@ -50,7 +50,7 @@ fun SettingsScreen(params: SettingsParams) {
                 params.onHelpClicked.invoke()
             }
         ),
-        secondaryImageVector = Icons.Filled.Help
+        secondaryImageVector = Icons.AutoMirrored.Filled.Help
     )
 }
 
@@ -110,8 +110,7 @@ private fun SettingsRowCard(
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
-            .padding(top = Padding.eight, bottom = Padding.eight),
-        elevation = 2.dp
+            .padding(top = Padding.eight, bottom = Padding.eight)
     ) {
         Column {
             values.forEach { value ->

@@ -2,10 +2,10 @@ package com.nicholas.rutherford.track.your.shot.compose.components.dialogs
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,7 +15,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAnd
 import java.util.Locale
 
 /**
- * Default [AlertDialog] with given params to build alerts used in [Content]
+ * Default [AlertDialog] with given params to build alerts used in content
  *
  * @param title sets the [Text] for the [AlertDialog]
  * @param onDismissClicked optional param triggers whenever the user attempts to dismiss the [AlertDialog]

@@ -9,18 +9,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -67,7 +66,7 @@ fun NumericRowStepper(
         }
 
         if (shouldShowDivider) {
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
         }
     }
 }
@@ -78,7 +77,7 @@ fun NumericRowStepperRightContent(
     onDownwardClicked: ((value: Int) -> Unit),
     onUpwardClicked: ((value: Int) -> Unit)
 ) {
-    var value by remember { mutableStateOf(defaultValue) }
+    var value by remember { mutableIntStateOf(defaultValue) }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -100,7 +99,7 @@ fun NumericRowStepperRightContent(
             Icon(
                 imageVector = Icons.Default.ArrowDownward,
                 contentDescription = "Decrease Value",
-                tint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
+                tint = LocalContentColor.current.copy(alpha = 0.0f),
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -127,7 +126,7 @@ fun NumericRowStepperRightContent(
             Icon(
                 imageVector = Icons.Default.ArrowUpward,
                 contentDescription = "Increase Value",
-                tint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
+                tint = LocalContentColor.current.copy(alpha = 0.0f),
                 modifier = Modifier.size(24.dp)
             )
         }

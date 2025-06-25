@@ -13,14 +13,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -109,7 +110,7 @@ fun PlayerReport(
             .background(AppColors.White)
             .fillMaxWidth()
             .padding(16.dp),
-        elevation = 2.dp
+        elevation = CardDefaults.cardElevation()
     ) {
         Column {
             Row(
@@ -155,31 +156,27 @@ fun PlayerReport(
                         expanded = expanded,
                         onDismissRequest = { expanded = false }
                     ) {
-                        DropdownMenuItem(onClick = {
-                            expanded = false
-                            onViewReportClicked.invoke(report.pdfUrl)
-                        }) {
-                            Text(
-                                text = stringResource(id = R.string.view_report)
-                            )
-                        }
-                        DropdownMenuItem(onClick = {
-                            expanded = false
-                            onDownloadPlayerReportClicked.invoke(report)
-                        }) {
-                            Text(
-                                text = stringResource(id = R.string.download_report)
-                            )
-                        }
-
-                        DropdownMenuItem(onClick = {
-                            expanded = false
-                            onDeletePlayerReportClicked.invoke(report)
-                        }) {
-                            Text(
-                                text = stringResource(id = R.string.delete_report)
-                            )
-                        }
+                        DropdownMenuItem(
+                            text = { Text(stringResource(id = R.string.view_report)) },
+                            onClick = {
+                                expanded = false
+                                onViewReportClicked(report.pdfUrl)
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(id = R.string.download_report)) },
+                            onClick = {
+                                expanded = false
+                                onDownloadPlayerReportClicked(report)
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(id = R.string.delete_report)) },
+                            onClick = {
+                                expanded = false
+                                onDeletePlayerReportClicked(report)
+                            }
+                        )
                     }
                 }
             }

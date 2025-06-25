@@ -17,11 +17,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Text
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,10 +48,10 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
-    val bottomState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val bottomState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var hasUploadedImage by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
@@ -171,13 +170,13 @@ private fun handleBottomSheetSelection(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CreateEditPlayerUi(
     createEditPlayerParams: CreateEditPlayerParams,
     hasUploadedImage: Boolean,
     scope: CoroutineScope,
-    bottomState: ModalBottomSheetState,
+    bottomState: SheetState,
     imageUri: Uri?
 ) {
     Column(

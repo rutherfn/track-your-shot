@@ -13,12 +13,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -132,7 +134,7 @@ fun AuthenticationScreenContent(
                 .fillMaxWidth()
                 .padding(Padding.eight)
                 .testTag(tag = AuthenticationTags.OPEN_EMAIL_BUTTON),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
+            colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
             content = {
                 Text(
                     text = stringResource(id = StringsIds.openEmail),
@@ -153,7 +155,7 @@ fun AuthenticationScreenContent(
                 .fillMaxWidth()
                 .padding(Padding.eight)
                 .testTag(tag = AuthenticationTags.RESEND_EMAIL_BUTTON),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
+            colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
             content = {
                 Text(
                     text = stringResource(id = StringsIds.resendEmail),
@@ -173,7 +175,7 @@ fun AuthenticationScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Padding.eight),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
+            colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
             content = {
                 Text(
                     text = stringResource(id = StringsIds.deletePendingAccount),

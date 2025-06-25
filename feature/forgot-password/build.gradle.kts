@@ -73,10 +73,13 @@ android {
 
 dependencies {
     api(project(path = ":base-resources"))
+    api(project(path = ":base:vm"))
     api(project(path = ":compose:components"))
     api(project(path = ":firebase:util"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
+
+    implementation(libs.androidx.activity.compose)
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)

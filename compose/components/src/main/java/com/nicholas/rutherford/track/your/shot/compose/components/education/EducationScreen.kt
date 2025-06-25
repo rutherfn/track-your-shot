@@ -1,6 +1,5 @@
 package com.nicholas.rutherford.track.your.shot.compose.components.education
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,13 +16,13 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,7 +57,6 @@ import kotlinx.coroutines.launch
  * @param onMoreInfoClicked [Unit] function that gets invoked when text of More Info is clicked
  * @param onCloseIconClicked [Unit] function that gets invoked when we click close icon button
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EducationScreen(
     educationInfo: EducationInfo,
@@ -133,7 +131,7 @@ fun EducationScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = Padding.twelve),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
+                colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
                 content = {
                     Text(
                         text = educationInfo.buttonText,
@@ -158,7 +156,6 @@ fun EducationScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Preview
 @Composable
 fun EducationScreenPreview() {

@@ -77,6 +77,7 @@ dependencies {
     androidTestImplementation(Dependencies.Compose.uiTestJunit4)
 
     api(project(path = ":base-resources"))
+    api(project(path = ":base:vm"))
     api(project(path = ":build-type"))
     api(project(path = ":compose:components"))
     api(project(path = ":data:room"))

@@ -16,11 +16,11 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,11 +55,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(loginScreenParams: LoginScreenParams) {
-    Content(
-        ui = {
-            LoginScreenContent(loginScreenParams = loginScreenParams)
-        }
-    )
+    Column {
+        LoginScreenContent(loginScreenParams = loginScreenParams)
+    }
 }
 
 @Composable
@@ -138,7 +136,10 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
                 }
             ),
             singleLine = true,
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor)
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Colors.whiteColor,
+                unfocusedContainerColor = Colors.whiteColor
+            )
         )
 
         Spacer(modifier = Modifier.height(Padding.twenty))
@@ -154,7 +155,10 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
             onValueChange = { newPassword -> loginScreenParams.onPasswordValueChanged.invoke(newPassword) },
             textStyle = TextStyles.body,
             singleLine = true,
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Colors.whiteColor,
+                unfocusedContainerColor = Colors.whiteColor
+            ),
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus()
@@ -175,7 +179,7 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
                     .fillMaxWidth()
                     .padding(vertical = Padding.twelve)
                     .testTag(tag = LoginTags.LOGIN_BUTTON),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor),
+                colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
                 content = {
                     Text(
                         text = stringResource(id = StringsIds.login),

@@ -2,31 +2,26 @@ package com.nicholas.rutherford.track.your.shot.compose.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
-import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import androidx.compose.foundation.text.BasicTextField as TextField
 
@@ -37,7 +32,6 @@ import androidx.compose.foundation.text.BasicTextField as TextField
  * @param onValueChange executes whenever the value is changed from the [TextField] gets the new value
  * @param placeholderValue defined value used for setting a placeholder when [value] is empty
  */
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun CoreTextField(
     value: String,
@@ -79,31 +73,22 @@ fun CoreTextField(
                 shouldClearFocus = true
             }
         ),
-        singleLine = true
-    ) { innerTextField ->
-        TextFieldDefaults.TextFieldDecorationBox(
-            value = value,
-            visualTransformation = VisualTransformation.None,
-            innerTextField = innerTextField,
-            singleLine = true,
-            enabled = true,
-            interactionSource = interactionSource,
-            placeholder = {
-                Text(
-                    text = placeholderValue,
-                    style = TextStyles.body
-                )
-            },
-            contentPadding = PaddingValues(Padding.four),
-            colors = TextFieldDefaults.textFieldColors(
-                cursorColor = AppColors.Black,
-                unfocusedIndicatorColor = AppColors.Black,
-                focusedIndicatorColor = AppColors.Orange
+        singleLine = true,
+        interactionSource = interactionSource,
+        placeholder = {
+            Text(
+                text = placeholderValue,
+                style = TextStyles.body
             )
+        },
+        colors = TextFieldDefaults.colors(
+            cursorColor = AppColors.Black,
+            unfocusedIndicatorColor = AppColors.Black,
+            focusedIndicatorColor = AppColors.Orange
         )
-    }
+    )
 
-    Divider(
+    HorizontalDivider(
         modifier = Modifier
             .fillMaxWidth()
             .height(2.dp)
