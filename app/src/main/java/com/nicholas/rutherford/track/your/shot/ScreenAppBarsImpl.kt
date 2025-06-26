@@ -1,13 +1,31 @@
 package com.nicholas.rutherford.track.your.shot
 
+import android.app.Application
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Help
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Save
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.AppBar2
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountViewModel
+import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.DeclaredShotState
+import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
+import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
+import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 
-class ScreenAppBarsImpl : ScreenAppBars {
+class ScreenAppBarsImpl(
+    private val readSharedPreferences: ReadSharedPreferences,
+    private val application: Application
+) : ScreenAppBars {
 
     override fun buildCreateAccountAppBar(createAccountViewModel: CreateAccountViewModel): AppBar2 =
         AppBar2(
@@ -55,7 +73,7 @@ class ScreenAppBarsImpl : ScreenAppBars {
 
     override fun buildSettingsAppBar(params: SettingsParams): AppBar2 =
         AppBar2(
-            toolbarId = R.string.settings,
+            toolbarId = StringsIds.settings,
             shouldShowMiddleContentAppBar = true,
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
             onSecondaryIconButtonClicked = { params.onHelpClicked.invoke() },
@@ -71,19 +89,19 @@ class ScreenAppBarsImpl : ScreenAppBars {
 
     override fun buildPermissionEducationAppBar(viewModel: PermissionEducationViewModel): AppBar2 =
         AppBar2(
-            toolbarId = R.string.more_info,
+            toolbarId = StringsIds.moreInfo,
             onIconButtonClicked = { viewModel.onGotItButtonClicked() }
         )
 
     override fun buildOnboardingEducationAppBar(viewModel: OnboardingEducationViewModel): AppBar2 =
         AppBar2(
-            toolbarId = R.string.using_the_app,
+            toolbarId = StringsIds.usingTheApp,
             onIconButtonClicked = { viewModel.onGotItButtonClicked() }
         )
 
     override fun buildTermsAndConditionsAppBar(): AppBar2 =
         AppBar2(
-            toolbarId = R.string.terms_conditions,
+            toolbarId = StringsIds.termsConditions,
             shouldShowIcon = false
         )
 
@@ -97,10 +115,15 @@ class ScreenAppBarsImpl : ScreenAppBars {
             onSecondaryIconButtonClicked = { params.onAddDeclaredShotClicked.invoke() }
         )
 
-    override fun buildCreateEditDeclaredShotAppBar(params: CreateEditDeclaredShotScreenParams): AppBar2 =
-        AppBar2(
-            toolbarId = R.string.empty,
-            toolbarTitle = params.state.toolbarTitle,
+    override fun buildCreateEditDeclaredShotAppBar(params: CreateEditDeclaredShotScreenParams): AppBar2 {
+        val declaredShotName = readSharedPreferences.declaredShotName()
+        return AppBar2(
+            toolbarId = StringsIds.empty,
+            toolbarTitle = if (declaredShotName.isEmpty()) {
+                application.getString(StringsIds.createShot)
+            } else {
+                "My Shots"
+            },
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
             shouldShowSecondaryButton = true,
             onSecondaryIconButtonClicked = {
@@ -117,6 +140,7 @@ class ScreenAppBarsImpl : ScreenAppBars {
                 Icons.Default.Save
             }
         )
+    }
 
     override fun buildDefaultAppBar(): AppBar2 =
         AppBar2(

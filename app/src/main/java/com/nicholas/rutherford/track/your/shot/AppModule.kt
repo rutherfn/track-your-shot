@@ -166,6 +166,18 @@ class AppModule {
         single {
             get<AppDatabase>().shotIgnoringDao()
         }
+        single<android.content.SharedPreferences.Editor> {
+            getSharedPreferences(androidApplication()).edit()
+        }
+        single<CreateSharedPreferences> {
+            CreateSharedPreferencesImpl(editor = get())
+        }
+        single<ReadSharedPreferences> {
+            ReadSharedPreferencesImpl(sharedPreferences = get())
+        }
+        single<ScreenAppBars> {
+            ScreenAppBarsImpl(readSharedPreferences = get(), application = androidApplication())
+        }
         single<ActiveUserRepository> {
             ActiveUserRepositoryImpl(activeUserDao = get())
         }
@@ -185,15 +197,6 @@ class AppModule {
         single<PlayerRepository> { PlayerRepositoryImpl(playerDao = get()) }
         single<PendingPlayerRepository> {
             PendingPlayerRepositoryImpl(pendingPlayerDao = get())
-        }
-        single<android.content.SharedPreferences.Editor> {
-            getSharedPreferences(androidApplication()).edit()
-        }
-        single<CreateSharedPreferences> {
-            CreateSharedPreferencesImpl(editor = get())
-        }
-        single<ReadSharedPreferences> {
-            ReadSharedPreferencesImpl(sharedPreferences = get())
         }
         single {
             FirebaseAuth.getInstance()

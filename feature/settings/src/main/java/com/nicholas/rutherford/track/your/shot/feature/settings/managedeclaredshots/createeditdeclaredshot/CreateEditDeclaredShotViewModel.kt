@@ -25,8 +25,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-const val DEFAULT_ID = 0
-
 class CreateEditDeclaredShotViewModel(
     private val application: Application,
     private val declaredShotRepository: DeclaredShotRepository,
@@ -57,8 +55,6 @@ class CreateEditDeclaredShotViewModel(
         }
         val name = readSharedPreferences.declaredShotName()
 
-        println("here is the passed in name $name")
-
         if (name != "") {
             attemptToUpdateDeclaredShotState(name = name)
         } else {
@@ -66,7 +62,6 @@ class CreateEditDeclaredShotViewModel(
             createEditDeclaredShotMutableStateFlow.update { state ->
                 state.copy(
                     declaredShotState = DeclaredShotState.CREATING,
-                    toolbarTitle = application.getString(StringsIds.createShot),
                     currentDeclaredShot = null
                 )
             }
@@ -78,13 +73,7 @@ class CreateEditDeclaredShotViewModel(
 
         if (declaredShotState == DeclaredShotState.EDITING) {
             createEditDeclaredShotMutableStateFlow.update { state ->
-                state.copy(
-                    declaredShotState = DeclaredShotState.VIEWING,
-                    toolbarTitle = application.getString(
-                        StringsIds.viewX,
-                        currentDeclaredShot?.title ?: ""
-                    )
-                )
+                state.copy(declaredShotState = DeclaredShotState.VIEWING)
             }
             resetDeclaredShotValues()
         } else {
@@ -107,11 +96,7 @@ class CreateEditDeclaredShotViewModel(
                 createEditDeclaredShotMutableStateFlow.update { state ->
                     state.copy(
                         currentDeclaredShot = declaredShot,
-                        declaredShotState = DeclaredShotState.VIEWING,
-                        toolbarTitle = application.getString(
-                            StringsIds.viewX,
-                            name
-                        )
+                        declaredShotState = DeclaredShotState.VIEWING
                     )
                 }
             }
@@ -289,11 +274,7 @@ class CreateEditDeclaredShotViewModel(
         editedDeclaredShot = currentDeclaredShot
         createEditDeclaredShotMutableStateFlow.update { state ->
             state.copy(
-                declaredShotState = DeclaredShotState.EDITING,
-                toolbarTitle = application.getString(
-                    StringsIds.editX,
-                    editedDeclaredShot?.title ?: application.getString(StringsIds.empty)
-                )
+                declaredShotState = DeclaredShotState.EDITING
             )
         }
     }

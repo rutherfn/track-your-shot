@@ -99,7 +99,8 @@ fun NavigationComponent(
     activity: MainActivity,
     navHostController: NavHostController,
     navigator: Navigator,
-    viewModels: ViewModels
+    viewModels: ViewModels,
+    screenAppBars: ScreenAppBars
 ) {
     val coroutineScope = rememberCoroutineScope()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -358,7 +359,7 @@ fun NavigationComponent(
 
             if (test != null) {
                 test.onNavigatedTo()
-                appBar = buildAppBarBasedOnScreen(test, viewModels, viewModelParams)
+                appBar = buildAppBarBasedOnScreen(test, viewModels, viewModelParams, screenAppBars = screenAppBars)
                 modalDrawerGesturesEnabled = buildModalDrawerGesturesEnabled(viewModel = test, viewModels = viewModels)
                 println(appBar)
             }
@@ -385,7 +386,12 @@ fun NavigationComponent(
 
                 if (test != null) {
                     test.onNavigatedTo()
-                    appBar = buildAppBarBasedOnScreen(test, viewModels = viewModels, viewModelParams)
+                    appBar = buildAppBarBasedOnScreen(
+                        test,
+                        viewModels = viewModels,
+                        viewModelParams,
+                        screenAppBars = screenAppBars
+                    )
                 }
             }
             navigator.pop(popRouteAction = null) // need to set this to null to listen to next pop action
@@ -446,7 +452,7 @@ fun NavigationComponent(
 
                             if (test != null) {
                                 test.onNavigatedTo()
-                                appBar = buildAppBarBasedOnScreen(test, viewModels = viewModels, viewModelParams)
+                                appBar = buildAppBarBasedOnScreen(test, viewModels = viewModels, viewModelParams, screenAppBars = screenAppBars)
                                 modalDrawerGesturesEnabled =buildModalDrawerGesturesEnabled(viewModel = test, viewModels = viewModels)
                             }
                         }

@@ -73,11 +73,6 @@ class CreateEditDeclaredShotViewModelTest {
         )
     }
 
-    @Test
-    fun constants() {
-        Assertions.assertEquals(DEFAULT_ID, 0)
-    }
-
     @Nested
     inner class OnNavigateTo {
 
