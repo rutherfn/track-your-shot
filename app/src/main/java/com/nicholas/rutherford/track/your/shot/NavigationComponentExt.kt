@@ -24,6 +24,8 @@ object NavigationComponentExt {
             destination.contains(NavigationDestinations.SETTINGS_SCREEN) -> viewModels.settingsViewModel
             destination.contains(NavigationDestinations.PERMISSION_EDUCATION_SCREEN) -> viewModels.permissionEducationViewModel
             destination.contains(NavigationDestinations.ENABLED_PERMISSIONS_SCREEN) -> viewModels.enabledPermissionsViewModel
+            destination.contains(NavigationDestinations.ONBOARDING_EDUCATION_SCREEN) -> viewModels.onboardingEducationViewModel
+            destination.contains(NavigationDestinations.TERMS_CONDITIONS_SCREEN) -> viewModels.termsConditionsViewModel
             else -> null
         }
     }
@@ -39,7 +41,13 @@ object NavigationComponentExt {
             viewModels.shotsListViewModel -> ScreenAppBars.buildShotsListAppBar(params = viewModelParams.shotListParams)
             viewModels.reportListViewModel -> ScreenAppBars.buildReportListAppBar(params = viewModelParams.reportListParams)
             viewModels.settingsViewModel -> ScreenAppBars.buildSettingsAppBar(params = viewModelParams.settingsParams)
+            viewModels.permissionEducationViewModel -> ScreenAppBars.buildPermissionEducationAppBar(viewModel = viewModels.permissionEducationViewModel)
             viewModels.enabledPermissionsViewModel -> ScreenAppBars.buildEnabledPermissionAppBar(params = viewModelParams.enabledPermissionsParams)
+            viewModels.onboardingEducationViewModel -> ScreenAppBars.buildOnboardingEducationAppBar(viewModel = viewModels.onboardingEducationViewModel)
+            viewModels.termsConditionsViewModel -> ScreenAppBars.buildTermsAndConditionsAppBar()
+            viewModels.declaredShotsListViewModel -> ScreenAppBars.buildDeclaredShotListAppBar(declaredShotsListScreenParams = viewModelParams.declaredShotsListScreenParams)
+            viewModels.createEditDeclaredShotsViewModel -> ScreenAppBars.buildCreateEditDeclaredShotAppBar(params = viewModelParams.createEditDeclaredShotParams)
+
             else -> ScreenAppBars.buildDefaultAppBar()
         }
     }

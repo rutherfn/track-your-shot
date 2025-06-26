@@ -141,18 +141,6 @@ fun EducationScreen(
                 }
             )
         }
-        IconButton(
-            onClick = { onCloseIconClicked?.invoke() },
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Close,
-                contentDescription = "Close Icon",
-                tint = Color.Black
-            )
-        }
     }
 }
 

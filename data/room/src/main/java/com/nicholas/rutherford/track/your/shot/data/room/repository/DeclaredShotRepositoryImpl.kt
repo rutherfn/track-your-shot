@@ -32,6 +32,9 @@ class DeclaredShotRepositoryImpl(private val declaredShotDao: DeclaredShotDao) :
     override suspend fun fetchDeclaredShotFromId(id: Int): DeclaredShot? =
         declaredShotDao.getDeclaredShotFromId(id = id)?.toDeclaredShot()
 
+    override suspend fun fetchDeclaredShotFromName(title: String): DeclaredShot? =
+        declaredShotDao.getDeclaredShotByTitle(title = title)?.toDeclaredShot()
+
     override suspend fun fetchDeclaredShotsBySearchQuery(searchQuery: String): List<DeclaredShot> =
         declaredShotDao.getDeclaredShotsBySearchQuery(searchQuery = searchQuery).map { it.toDeclaredShot() }
 

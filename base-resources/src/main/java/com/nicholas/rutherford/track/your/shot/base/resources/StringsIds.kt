@@ -181,6 +181,7 @@ object StringsIds {
     val playerAlreadyHasBeenAddedDescription = R.string.player_already_has_been_added_description
     val playerCreationFailedPleaseTryAgain = R.string.player_creation_failed_please_try_again
     val playerIsInvalidPleaseTryAgain = R.string.player_is_invalid_please_try_again
+    val playerShots = R.string.player_shots
     val players = R.string.players
     val playersFirstNameEmptyDescription = R.string.players_first_name_empty_description
     val playersLastNameEmptyDescription = R.string.players_last_name_empty_description

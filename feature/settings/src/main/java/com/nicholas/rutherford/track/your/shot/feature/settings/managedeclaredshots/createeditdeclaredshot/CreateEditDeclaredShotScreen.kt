@@ -13,9 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -34,58 +31,34 @@ import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.CoreMultilineTextField
 import com.nicholas.rutherford.track.your.shot.compose.components.CoreTextField
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun CreateEditDeclaredShotScreen(params: CreateEditDeclaredShotScreenParams) {
-    Content(
-        ui = {
-            if (params.state.declaredShotState == DeclaredShotState.VIEWING && params.state.currentDeclaredShot != null) {
-                params.state.currentDeclaredShot.let { declaredShot ->
-                    ViewDeclaredShot(declaredShot = declaredShot, onDeleteShotClicked = params.onDeleteShotClicked)
-                }
-            } else {
-                params.state.currentDeclaredShot?.let { declaredShot ->
-                    EditDeclaredShot(
-                        declaredShot = declaredShot,
-                        onEditShotNameValueChanged = params.onEditShotNameValueChanged,
-                        onEditShotCategoryValueChanged = params.onEditShotCategoryValueChanged,
-                        onEditShotDescriptionValueChanged = params.onEditShotDescriptionValueChanged
-                    )
-                } ?: run {
-                    CreateDeclaredShot(
-                        onCreateShotNameValueChanged = params.onCreateShotNameValueChanged,
-                        onCreateShotCategoryValueChanged = params.onCreateShotCategoryValueChanged,
-                        onCreateShotDescriptionValueChanged = params.onCreateShotDescriptionValueChanged
-                    )
-                }
-            }
-        },
-        appBar = AppBar(
-            toolbarTitle = params.state.toolbarTitle,
-            onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
-            shouldShowSecondaryButton = true,
-            onSecondaryIconButtonClicked = {
-                if (params.state.declaredShotState == DeclaredShotState.VIEWING) {
-                    params.onEditShotPencilClicked.invoke()
-                } else {
-                    params.onEditOrCreateNewShot.invoke()
-                }
-            }
-        ),
-        secondaryImageEnabled = true,
-        secondaryImageVector = if (params.state.declaredShotState == DeclaredShotState.VIEWING) {
-            Icons.Default.Edit
-        } else {
-            Icons.Default.Save
+    if (params.state.declaredShotState == DeclaredShotState.VIEWING && params.state.currentDeclaredShot != null) {
+        params.state.currentDeclaredShot.let { declaredShot ->
+            ViewDeclaredShot(declaredShot = declaredShot, onDeleteShotClicked = params.onDeleteShotClicked)
         }
-    )
+    } else {
+        params.state.currentDeclaredShot?.let { declaredShot ->
+            EditDeclaredShot(
+                declaredShot = declaredShot,
+                onEditShotNameValueChanged = params.onEditShotNameValueChanged,
+                onEditShotCategoryValueChanged = params.onEditShotCategoryValueChanged,
+                onEditShotDescriptionValueChanged = params.onEditShotDescriptionValueChanged
+            )
+        } ?: run {
+            CreateDeclaredShot(
+                onCreateShotNameValueChanged = params.onCreateShotNameValueChanged,
+                onCreateShotCategoryValueChanged = params.onCreateShotCategoryValueChanged,
+                onCreateShotDescriptionValueChanged = params.onCreateShotDescriptionValueChanged
+            )
+        }
+    }
 }
 
 @Composable

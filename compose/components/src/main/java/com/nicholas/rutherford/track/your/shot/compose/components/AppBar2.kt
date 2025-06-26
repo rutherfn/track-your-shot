@@ -5,7 +5,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 data class AppBar2(
     val toolbarId: Int,
+    var toolbarTitle: String? = null,
     val shouldShow: Boolean = true,
+    val shouldShowIcon: Boolean = true,
     val shouldShowMiddleContentAppBar: Boolean = false,
     val shouldShowSecondaryButton: Boolean = false,
     val shouldIncludeSpaceAfterDeclaration: Boolean = true,

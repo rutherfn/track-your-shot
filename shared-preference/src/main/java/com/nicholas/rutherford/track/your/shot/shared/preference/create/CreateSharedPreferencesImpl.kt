@@ -44,4 +44,9 @@ class CreateSharedPreferencesImpl(private val editor: SharedPreferences.Editor) 
         editor.putInt(Constants.Preferences.DECLARED_SHOT_ID, value)
         editor.apply()
     }
+
+    override fun createDeclaredShotName(value: String) {
+        editor.putString(Constants.Preferences.DECLARED_SHOT_NAME, value)
+        editor.apply()
+    }
 }

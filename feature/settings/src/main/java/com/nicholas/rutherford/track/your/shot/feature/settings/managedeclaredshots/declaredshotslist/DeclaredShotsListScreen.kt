@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,8 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -29,9 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
@@ -39,53 +38,45 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 fun DeclaredShotsListScreen(declaredShotsListScreenParams: DeclaredShotsListScreenParams) {
     val isDeclaredShotListEmpty = declaredShotsListScreenParams.state.declaredShotsList.isEmpty()
 
-    Content(
-        ui = {
-            if (!isDeclaredShotListEmpty) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize().padding(
-                        start = Padding.sixteen,
-                        end = Padding.sixteen,
-                        bottom = Padding.sixteen
-                    )
-                ) {
-                    items(declaredShotsListScreenParams.state.declaredShotsList) { declaredShot ->
-                        DeclaredShotItem(
-                            declaredShot = declaredShot,
-                            onDeclaredShotClicked = declaredShotsListScreenParams.onDeclaredShotClicked
-                        )
-                    }
-                }
-            } else {
-                DeclaredShotListEmptyState()
+    BackHandler(enabled = true) {
+        declaredShotsListScreenParams.onToolbarMenuClicked.invoke()
+    }
+    if (!isDeclaredShotListEmpty) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().padding(
+                start = Padding.sixteen,
+                end = Padding.sixteen,
+                bottom = Padding.sixteen
+            )
+        ) {
+            items(declaredShotsListScreenParams.state.declaredShotsList) { declaredShot ->
+                DeclaredShotItem(
+                    declaredShot = declaredShot,
+                    onDeclaredShotClicked = declaredShotsListScreenParams.onDeclaredShotClicked
+                )
             }
-        },
-        appBar = AppBar(
-            toolbarTitle = stringResource(id = StringsIds.manageDeclaredShots),
-            shouldShowMiddleContentAppBar = false,
-            shouldShowSecondaryButton = true,
-            onIconButtonClicked = { declaredShotsListScreenParams.onToolbarMenuClicked.invoke() },
-            onSecondaryIconButtonClicked = { declaredShotsListScreenParams.onAddDeclaredShotClicked.invoke() }
-        ),
-        secondaryImageVector = Icons.Filled.Add,
-        secondaryIconTint = AppColors.White
-    )
+        }
+    } else {
+        DeclaredShotListEmptyState()
+    }
 }
 
 @Composable
-private fun DeclaredShotItem(declaredShot: DeclaredShot, onDeclaredShotClicked: (id: Int) -> Unit) {
+private fun DeclaredShotItem(declaredShot: DeclaredShot, onDeclaredShotClicked: (id: Int, title: String) -> Unit) {
     Card(
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
             .padding(top = Padding.eight, bottom = Padding.eight),
-        elevation = CardDefaults.cardElevation()
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = AppColors.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
             BaseRow(
                 title = declaredShot.title,
                 titleStyle = TextStyles.bodyBold,
-                onClicked = { onDeclaredShotClicked.invoke(declaredShot.id) },
+                onClicked = { onDeclaredShotClicked.invoke(declaredShot.id, declaredShot.title) },
                 imageVector = Icons.Filled.ChevronRight
             )
         }

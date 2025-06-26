@@ -20,4 +20,6 @@ class ReadSharedPreferencesImpl(private val sharedPreferences: SharedPreferences
     override fun playerFilterName(): String = sharedPreferences.getString(Constants.Preferences.PLAYER_FILTER_NAME, "") ?: ""
 
     override fun declaredShotId(): Int = sharedPreferences.getInt(Constants.Preferences.DECLARED_SHOT_ID, -1)
+
+    override fun declaredShotName(): String = sharedPreferences.getString(Constants.Preferences.DECLARED_SHOT_NAME, "") ?: ""
 }

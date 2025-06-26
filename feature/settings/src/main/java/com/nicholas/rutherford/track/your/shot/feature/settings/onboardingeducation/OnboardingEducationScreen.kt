@@ -1,10 +1,10 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.education.EducationPager
 import com.nicholas.rutherford.track.your.shot.compose.components.education.EducationScreen
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
@@ -13,24 +13,24 @@ import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 fun OnboardingEducationScreen(onboardingEducationParams: OnboardingEducationParams) {
     val pagerState = rememberPagerState { onboardingEducationParams.state.educationInfoList.size }
 
-    Content(
-        ui = {
-            EducationPager(
-                items = onboardingEducationParams.state.educationInfoList,
+    BackHandler(enabled = true) {
+        onboardingEducationParams.onGotItButtonClicked.invoke()
+    }
+
+    EducationPager(
+        items = onboardingEducationParams.state.educationInfoList,
+        pagerState = pagerState,
+        pageContent = { page ->
+            EducationScreen(
+                educationInfo = page,
                 pagerState = pagerState,
-                pageContent = { page ->
-                    EducationScreen(
-                        educationInfo = page,
-                        pagerState = pagerState,
-                        nextPage = (pagerState.currentPage + 1).coerceAtMost(maximumValue = onboardingEducationParams.state.educationInfoList.size - 1),
-                        onButtonClicked = if (pagerState.currentPage == 2) {
-                            onboardingEducationParams.onGotItButtonClicked
-                        } else {
-                            null
-                        },
-                        onCloseIconClicked = onboardingEducationParams.onGotItButtonClicked
-                    )
-                }
+                nextPage = (pagerState.currentPage + 1).coerceAtMost(maximumValue = onboardingEducationParams.state.educationInfoList.size - 1),
+                onButtonClicked = if (pagerState.currentPage == 2) {
+                    onboardingEducationParams.onGotItButtonClicked
+                } else {
+                    null
+                },
+                onCloseIconClicked = onboardingEducationParams.onGotItButtonClicked
             )
         }
     )

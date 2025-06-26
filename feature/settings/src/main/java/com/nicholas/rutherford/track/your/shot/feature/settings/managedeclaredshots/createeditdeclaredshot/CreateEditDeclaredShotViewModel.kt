@@ -55,10 +55,12 @@ class CreateEditDeclaredShotViewModel(
         scope.launch {
             allDeclaredShotNames = declaredShotRepository.fetchAllDeclaredShots().map { it.title }
         }
-        val id = readSharedPreferences.declaredShotId()
+        val name = readSharedPreferences.declaredShotName()
 
-        if (id != DEFAULT_ID) {
-            attemptToUpdateDeclaredShotState(id = id)
+        println("here is the passed in name $name")
+
+        if (name != "") {
+            attemptToUpdateDeclaredShotState(name = name)
         } else {
             currentDeclaredShot = null
             createEditDeclaredShotMutableStateFlow.update { state ->
@@ -96,11 +98,11 @@ class CreateEditDeclaredShotViewModel(
         editedDeclaredShot = null
     }
 
-    internal fun attemptToUpdateDeclaredShotState(id: Int) {
+    internal fun attemptToUpdateDeclaredShotState(name: String) {
         scope.launch {
-            currentDeclaredShot = declaredShotRepository.fetchDeclaredShotFromId(id = id)
+            currentDeclaredShot = declaredShotRepository.fetchDeclaredShotFromName(name = name)
 
-            createSharedPreferences.createDeclaredShotId(value = 0)
+            createSharedPreferences.createDeclaredShotName(value = "")
             currentDeclaredShot?.let { declaredShot ->
                 createEditDeclaredShotMutableStateFlow.update { state ->
                     state.copy(
@@ -108,7 +110,7 @@ class CreateEditDeclaredShotViewModel(
                         declaredShotState = DeclaredShotState.VIEWING,
                         toolbarTitle = application.getString(
                             StringsIds.viewX,
-                            declaredShot.title
+                            name
                         )
                     )
                 }

@@ -16,6 +16,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,6 +27,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -208,6 +211,58 @@ fun NavigationComponent(
         onSwitchChangedToTurnOffPermission = { enabledPermissionsViewModel.onSwitchChangedToTurnOffPermission() },
         permissionNotGrantedForCameraAlert = { enabledPermissionsViewModel.permissionNotGrantedForCameraAlert() }
     )
+    val declaredShotsListScreenParams = DeclaredShotsListScreenParams(
+        state = declaredShotsListViewModel.declaredShotsListStateFlow.collectAsState().value,
+        onDeclaredShotClicked = { id, title->
+            declaredShotsListViewModel.onDeclaredShotClicked(
+                id = id,
+                title = title
+            )
+        },
+        onToolbarMenuClicked = { declaredShotsListViewModel.onToolbarMenuClicked() },
+        onAddDeclaredShotClicked = { declaredShotsListViewModel.onAddDeclaredShotClicked() }
+    )
+    val createEditDeclaredScreenParams = CreateEditDeclaredShotScreenParams(
+        state = createEditDeclaredShotViewModel.createEditDeclaredShotStateFlow.collectAsState().value,
+        onToolbarMenuClicked = { createEditDeclaredShotViewModel.onToolbarMenuClicked() },
+        onDeleteShotClicked = { id ->
+            createEditDeclaredShotViewModel.onDeleteShotClicked(
+                id = id
+            )
+        },
+        onEditShotPencilClicked = { createEditDeclaredShotViewModel.onEditShotPencilClicked() },
+        onEditShotNameValueChanged = { shotName ->
+            createEditDeclaredShotViewModel.onEditShotNameValueChanged(
+                shotName = shotName
+            )
+        },
+        onEditShotCategoryValueChanged = { shotCategory ->
+            createEditDeclaredShotViewModel.onEditShotCategoryValueChanged(
+                shotCategory = shotCategory
+            )
+        },
+        onEditShotDescriptionValueChanged = { description ->
+            createEditDeclaredShotViewModel.onEditShotDescriptionValueChanged(
+                description = description
+            )
+        },
+        onCreateShotNameValueChanged = { shotName ->
+            createEditDeclaredShotViewModel.onCreateShotNameValueChanged(
+                shotName = shotName
+            )
+        },
+        onCreateShotDescriptionValueChanged = { shotDescription ->
+            createEditDeclaredShotViewModel.onCreateShotDescriptionValueChanged(
+                shotDescription = shotDescription
+            )
+        },
+        onCreateShotCategoryValueChanged = { shotCategory ->
+            createEditDeclaredShotViewModel.onCreateShotCategoryValueChanged(
+                shotCategory = shotCategory
+            )
+        },
+        onEditOrCreateNewShot = { createEditDeclaredShotViewModel.onEditOrCreateNewShot() }
+    )
     val settingsParams = SettingsParams(
         onToolbarMenuClicked = {
             settingsViewModel.onToolbarMenuClicked()
@@ -225,6 +280,8 @@ fun NavigationComponent(
         reportListParams = reportListParams,
         shotListParams = shotsListScreenParams,
         enabledPermissionsParams = enabledPermissionsParams,
+        declaredShotsListScreenParams = declaredShotsListScreenParams,
+        createEditDeclaredShotParams = createEditDeclaredScreenParams,
         settingsParams = settingsParams
     )
 
@@ -691,9 +748,10 @@ fun NavigationComponent(
                         DeclaredShotsListScreen(
                             declaredShotsListScreenParams = DeclaredShotsListScreenParams(
                                 state = declaredShotsListViewModel.declaredShotsListStateFlow.collectAsState().value,
-                                onDeclaredShotClicked = { id ->
+                                onDeclaredShotClicked = { id, title ->
                                     declaredShotsListViewModel.onDeclaredShotClicked(
-                                        id = id
+                                        id = id,
+                                        title = title
                                     )
                                 },
                                 onToolbarMenuClicked = { declaredShotsListViewModel.onToolbarMenuClicked() },
@@ -703,51 +761,7 @@ fun NavigationComponent(
                     }
                     composable(
                         route = NavigationDestinations.CREATE_EDIT_DECLARED_SHOTS_SCREEN
-                    ) {
-                        CreateEditDeclaredShotScreen(
-                            params = CreateEditDeclaredShotScreenParams(
-                                state = createEditDeclaredShotViewModel.createEditDeclaredShotStateFlow.collectAsState().value,
-                                onToolbarMenuClicked = { createEditDeclaredShotViewModel.onToolbarMenuClicked() },
-                                onDeleteShotClicked = { id ->
-                                    createEditDeclaredShotViewModel.onDeleteShotClicked(
-                                        id = id
-                                    )
-                                },
-                                onEditShotPencilClicked = { createEditDeclaredShotViewModel.onEditShotPencilClicked() },
-                                onEditShotNameValueChanged = { shotName ->
-                                    createEditDeclaredShotViewModel.onEditShotNameValueChanged(
-                                        shotName = shotName
-                                    )
-                                },
-                                onEditShotCategoryValueChanged = { shotCategory ->
-                                    createEditDeclaredShotViewModel.onEditShotCategoryValueChanged(
-                                        shotCategory = shotCategory
-                                    )
-                                },
-                                onEditShotDescriptionValueChanged = { description ->
-                                    createEditDeclaredShotViewModel.onEditShotDescriptionValueChanged(
-                                        description = description
-                                    )
-                                },
-                                onCreateShotNameValueChanged = { shotName ->
-                                    createEditDeclaredShotViewModel.onCreateShotNameValueChanged(
-                                        shotName = shotName
-                                    )
-                                },
-                                onCreateShotDescriptionValueChanged = { shotDescription ->
-                                    createEditDeclaredShotViewModel.onCreateShotDescriptionValueChanged(
-                                        shotDescription = shotDescription
-                                    )
-                                },
-                                onCreateShotCategoryValueChanged = { shotCategory ->
-                                    createEditDeclaredShotViewModel.onCreateShotCategoryValueChanged(
-                                        shotCategory = shotCategory
-                                    )
-                                },
-                                onEditOrCreateNewShot = { createEditDeclaredShotViewModel.onEditOrCreateNewShot() }
-                            )
-                        )
-                    }
+                    ) { CreateEditDeclaredShotScreen(params = createEditDeclaredScreenParams) }
                     composable(
                         route = NavigationDestinations.TERMS_CONDITIONS_WITH_PARAMS,
                         arguments = NavArguments.termsConditions

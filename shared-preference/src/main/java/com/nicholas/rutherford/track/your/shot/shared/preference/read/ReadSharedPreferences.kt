@@ -10,4 +10,5 @@ interface ReadSharedPreferences {
     fun isLoggedIn(): Boolean
     fun playerFilterName(): String
     fun declaredShotId(): Int
+    fun declaredShotName(): String
 }

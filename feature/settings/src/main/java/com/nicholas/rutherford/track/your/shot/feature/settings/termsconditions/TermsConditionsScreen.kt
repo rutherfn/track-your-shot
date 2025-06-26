@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -34,11 +35,11 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 fun TermsConditionsScreen(params: TermsConditionsParams) {
     LaunchedEffect(Unit) { params.updateButtonTextState.invoke() }
 
-    Content(
-        ui = {
-            TermsConditionsContent(params = params)
-        }
-    )
+    BackHandler(enabled = true) {
+        params.onCloseAcceptButtonClicked.invoke()
+    }
+
+    TermsConditionsContent(params = params)
 }
 
 @Composable

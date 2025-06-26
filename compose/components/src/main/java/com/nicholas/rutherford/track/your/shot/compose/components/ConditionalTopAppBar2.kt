@@ -5,8 +5,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,7 +25,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.nicholas.rutherford.track.your.shot.AppColors
-import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
@@ -53,10 +53,6 @@ fun ConditionalTopAppBar2(
  * A simple top app bar with optional navigation and secondary icons.
  *
  * @param appBar [AppBar] data model containing title and callbacks
- * @param imageVector optional leading icon
- * @param secondaryImageVector optional trailing icon
- * @param secondaryImageEnabled flag to enable/disable secondary icon
- * @param secondaryIconTint tint color for secondary icon
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,7 +62,7 @@ private fun SimpleTopAppBar2(
     TopAppBar(
         title = {
             Text(
-                text = stringResource(appBar.toolbarId),
+                text = appBar.toolbarTitle ?: stringResource(appBar.toolbarId),
                 modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_TITLE),
                 style = TextStyles.toolbar,
                 maxLines = 1,
@@ -75,16 +71,18 @@ private fun SimpleTopAppBar2(
             )
         },
         navigationIcon = {
+            if (appBar.shouldShowIcon) {
             IconButton(
                 onClick = { appBar.onIconButtonClicked?.invoke() },
                 enabled = appBar.secondaryImageEnabled ?: true,
                 modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
             ) {
                 Icon(
-                    imageVector = appBar.imageVector ?: androidx.compose.material.icons.Icons.Filled.ArrowBack,
+                    imageVector = appBar.imageVector ?: Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = appBar.iconContentDescription,
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
+            }
             }
         },
         actions = {
@@ -94,7 +92,7 @@ private fun SimpleTopAppBar2(
                     modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
                 ) {
                     Icon(
-                        imageVector = appBar.secondaryImageVector ?: androidx.compose.material.icons.Icons.Filled.Save,
+                        imageVector = appBar.secondaryImageVector ?: Icons.Filled.Save,
                         contentDescription = "Secondary icon",
                         tint = appBar.secondaryIconTint ?: Color.Unspecified
                     )
@@ -114,9 +112,6 @@ private fun SimpleTopAppBar2(
  * A complex top app bar with a centered title and icons spaced on either side.
  *
  * @param appBar [AppBar] data model containing title and callbacks
- * @param imageVector optional leading icon
- * @param secondaryImageVector optional trailing icon
- * @param secondaryImageEnabled flag to enable/disable secondary icon
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -135,14 +130,14 @@ private fun ComplexTopAppBar2(
             ) {
                 IconButton(onClick = { appBar.onIconButtonClicked?.invoke() }) {
                     Icon(
-                        imageVector = appBar.imageVector ?: androidx.compose.material.icons.Icons.Filled.Menu,
+                        imageVector = appBar.imageVector ?: Icons.Filled.Menu,
                         contentDescription = appBar.iconContentDescription,
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
 
                 Text(
-                    text = stringResource(appBar.toolbarId),
+                    text = appBar.toolbarTitle ?: stringResource(appBar.toolbarId),
                     modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_TITLE),
                     style = TextStyles.toolbar,
                     maxLines = 1,
@@ -155,7 +150,7 @@ private fun ComplexTopAppBar2(
                     onClick = { appBar.onSecondaryIconButtonClicked?.invoke() }
                 ) {
                     Icon(
-                        imageVector = appBar.secondaryImageVector ?: androidx.compose.material.icons.Icons.Filled.Add,
+                        imageVector = appBar.secondaryImageVector ?: Icons.Filled.Add,
                         contentDescription = appBar.secondaryIconContentDescription,
                         tint = MaterialTheme.colorScheme.onPrimary
                     )

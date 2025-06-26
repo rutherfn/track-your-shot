@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.update
 class OnboardingEducationViewModel(
     private val navigation: OnboardingEducationNavigation,
     private val application: Application
-) : ViewModel() {
+) : BaseViewModel() {
 
     internal val onboardingEducationMutableStateFlow = MutableStateFlow(value = OnboardingEducationState())
     val onboardingEducationStateFlow = onboardingEducationMutableStateFlow.asStateFlow()

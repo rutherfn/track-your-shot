@@ -1,8 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -18,9 +18,9 @@ class TermsConditionsViewModel(
     private val application: Application,
     private val createSharedPreferences: CreateSharedPreferences,
     private val scope: CoroutineScope
-) : ViewModel() {
+) : BaseViewModel() {
 
-    internal var termsConditionsMutableStateFlow = MutableStateFlow(value = TermsConditionsState())
+    private var termsConditionsMutableStateFlow = MutableStateFlow(value = TermsConditionsState())
     val termsConditionsStateFlow = termsConditionsMutableStateFlow.asStateFlow()
 
     init {

@@ -29,6 +29,7 @@ class DeclaredShotsListViewModel(
     override fun onNavigatedTo() {
         super.onNavigatedTo()
         updateDeclaredShotsListState()
+        createSharedPreferences.createDeclaredShotName(value = "")
     }
 
     fun updateDeclaredShotsListState() {
@@ -43,15 +44,19 @@ class DeclaredShotsListViewModel(
 
     fun onToolbarMenuClicked() = navigation.pop()
 
-    fun onDeclaredShotClicked(id: Int) {
+    fun onDeclaredShotClicked(id: Int, title: String) {
         scope.launch {
             navigation.enableProgress(Progress())
-            createSharedPreferences.createDeclaredShotId(value = id)
+            createSharedPreferences.createDeclaredShotName(value = title)
+            println("here is the declared name $title")
             delay(CREATION_DECLARED_ID_DELAY_IN_MILLIS)
             navigation.disableProgress()
             navigation.createEditDeclaredShot()
         }
     }
 
-    fun onAddDeclaredShotClicked() = navigation.createEditDeclaredShot()
+    fun onAddDeclaredShotClicked() {
+        createSharedPreferences.createDeclaredShotName(value = "")
+        navigation.createEditDeclaredShot()
+    }
 }
