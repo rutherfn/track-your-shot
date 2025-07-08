@@ -17,7 +17,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +30,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.authenticationScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createAccountScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.forgotPasswordScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.loginScreen
@@ -51,12 +50,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAnd
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationScreen
-import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountScreen
-import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordScreen
-import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreen
-import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotParams
@@ -429,17 +422,6 @@ fun NavigationComponent(
         }
     }
 
-    val systemUiController = rememberSystemUiController()
-    val useDarkIcons = true // set false if you want white icons (light content)
-    val statusBarColor = Color.Red // or any other color
-
-    SideEffect {
-        systemUiController.setStatusBarColor(
-            color = statusBarColor,
-            darkIcons = useDarkIcons
-        )
-    }
-
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -528,6 +510,7 @@ fun NavigationComponent(
                     this.loginScreen()
                     this.forgotPasswordScreen()
                     this.createAccountScreen(isConnectedToInternet = isConnectedToInternet)
+                    this.authenticationScreen()
                     composable(route = NavigationDestinations.PLAYERS_LIST_SCREEN) {
                         PlayersListScreen(
                             playerListScreenParams = PlayersListScreenParams(
@@ -783,16 +766,6 @@ fun NavigationComponent(
                                 onGotItButtonClicked = { onboardingEducationViewModel.onGotItButtonClicked() },
                                 state = onboardingEducationViewModel.onboardingEducationStateFlow.collectAsState().value
                             )
-                        )
-                    }
-                    composable(
-                        route = NavigationDestinations.AUTHENTICATION_SCREEN_WITH_PARAMS,
-                        arguments = NavArguments.authentication
-                    ) {
-                        AuthenticationScreen(
-                            viewModel = viewModels.authenticationViewModel,
-                            usernameArgument = it.arguments?.getString(NamedArguments.USERNAME),
-                            emailArgument = it.arguments?.getString(NamedArguments.EMAIL)
                         )
                     }
                     composable(

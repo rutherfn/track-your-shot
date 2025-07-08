@@ -9,8 +9,16 @@ object NavArguments {
         navArgument(NamedArguments.EMAIL) { type = NavType.StringType }
     )
     val authentication = listOf(
-        navArgument(NamedArguments.USERNAME) { type = NavType.StringType },
-        navArgument(NamedArguments.EMAIL) { type = NavType.StringType }
+        navArgument(NamedArguments.USERNAME) {
+            type = NavType.StringType
+            nullable = true
+            defaultValue = null
+                                             },
+        navArgument(NamedArguments.EMAIL) {
+            type = NavType.StringType
+            nullable = true
+            defaultValue = null
+        }
     )
     val createEditPlayer = listOf(
         navArgument(NamedArguments.FIRST_NAME) { type = NavType.StringType },

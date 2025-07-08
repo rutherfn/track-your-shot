@@ -82,11 +82,15 @@ class SplashViewModel(
                 val isVerified = emailVerifiedValue || readSharedPreferences.hasAccountBeenAuthenticated()
                 val isLoggedIn = loggedInValue || readSharedPreferences.isLoggedIn()
 
+                println("test $isLoggedIn")
                 if (isLoggedIn) {
                     if (isVerified && activeUser != null && activeUser.accountHasBeenCreated) {
+                        println("get here test")
                         navigateToLoginOrPlayersList(isLoggedIn = true, email = activeUser.email)
                     } else {
+                        println("else block ")
                         activeUser?.let { user ->
+                            println(user)
                             navigation.navigateToAuthentication(
                                 username = user.username,
                                 email = user.email

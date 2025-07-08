@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.firebase.util.authentication
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.nicholas.rutherford.track.your.shot.firebase.AuthenticateUserViaEmailFirebaseResponse
 import kotlinx.coroutines.channels.awaitClose
@@ -24,7 +25,11 @@ class AuthenticationFirebaseImpl(private val firebaseAuth: FirebaseAuth) : Authe
                 if (firebaseUser.isEmailVerified) {
                     trySend(element = AuthenticateUserViaEmailFirebaseResponse(isSuccessful = false, isAlreadyAuthenticated = true, isUserExist = true))
                 } else {
+                    println("get here firebase user ${firebaseUser.email}")
                     firebaseUser.sendEmailVerification().addOnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Log.e("EmailVerification", "Failed to send verification email", task.exception)
+                        }
                         trySend(element = AuthenticateUserViaEmailFirebaseResponse(isSuccessful = task.isSuccessful, isAlreadyAuthenticated = false, isUserExist = true))
                     }
                 }

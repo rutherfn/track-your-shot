@@ -37,7 +37,7 @@ class CreateFirebaseUserInfoImpl(
                     }
                 }
                 .addOnFailureListener { exception ->
-                    Timber.e(message = "Error(attemptToCreateAccountFirebaseAuthResponseFlow) -> Creating account failed to create in Firebase Authentication, with following stack trace ${exception.stackTrace}")
+                    Timber.e(message = "Error(attemptToCreateAccountFirebaseAuthResponseFlow) -> Creating account failed to create in Firebase Authentication, with following stack trace ${exception.message}")
                     trySend(
                         element = CreateAccountFirebaseAuthResponse(
                             isSuccessful = false,

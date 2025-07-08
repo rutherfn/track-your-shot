@@ -53,6 +53,22 @@ class AccountManagerImpl(
 
     internal var declaredShotIds: List<Int> = emptyList()
 
+    override suspend fun createActiveUser(username: String, email: String) {
+            activeUserRepository.createActiveUser(
+                activeUser = ActiveUser(
+                    id = Constants.ACTIVE_USER_ID,
+                    accountHasBeenCreated = true,
+                    username = username,
+                    email = email,
+                    firebaseAccountInfoKey = ""
+                )
+            )
+
+        val activeuser = activeUserRepository.fetchActiveUser()
+
+        println(activeuser)
+    }
+
     override fun logout() {
         scope.launch {
             navigator.progress(progressAction = Progress())

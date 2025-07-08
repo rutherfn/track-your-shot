@@ -4,10 +4,12 @@ import android.app.Application
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Help
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.AppBar2
+import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
@@ -44,6 +46,13 @@ class AppBarFactoryImpl(
         AppBar2(
             toolbarId = StringsIds.forgotPassword,
             onIconButtonClicked = { viewModel.onBackButtonClicked() }
+        )
+
+    override fun createAuthenticationAppBar(viewModel: AuthenticationViewModel): AppBar2 =
+        AppBar2(
+            toolbarId = StringsIds.verifyAccount,
+            onIconButtonClicked = { viewModel.onNavigateClose() },
+            imageVector = Icons.Filled.Close
         )
 
     override fun createPlayersListAppBar(viewModel: PlayersListViewModel): AppBar2 =

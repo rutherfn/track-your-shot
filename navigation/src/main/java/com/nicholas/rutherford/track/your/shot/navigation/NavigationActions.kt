@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.navigation
 
+import android.net.Uri
 import androidx.navigation.NavOptions
 
 object NavigationActions {
@@ -19,12 +20,31 @@ object NavigationActions {
                 .build()
         }
 
-        fun authentication(username: String, email: String) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.authenticationWithParams(username = username, email = email)
-            override val navOptions = NavOptions.Builder()
-                .setPopUpTo(0, true)
-                .build()
-        }
+        fun authentication(username: String? = null, email: String? = null) =
+            object : NavigationAction {
+                override val destination: String = buildString {
+                    append("authenticationScreen")
+
+                    val queryParams = mutableListOf<String>()
+
+                    username?.takeIf { it.isNotEmpty() }?.let {
+                        queryParams += "username=${Uri.encode(it)}"
+                    }
+
+                    email?.takeIf { it.isNotEmpty() }?.let {
+                        queryParams += "email=${Uri.encode(it)}"
+                    }
+
+                    if (queryParams.isNotEmpty()) {
+                        append("?")
+                        append(queryParams.joinToString("&"))
+                    }
+                }
+
+                override val navOptions = NavOptions.Builder()
+                    .setPopUpTo(0, true)
+                    .build()
+            }
 
         fun termsConditions(isAcknowledgeConditions: Boolean) = object : NavigationAction {
             override val destination = NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = isAcknowledgeConditions)
@@ -57,12 +77,52 @@ object NavigationActions {
     }
 
     object CreateAccountScreen {
-        fun authentication(username: String, email: String) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.authenticationWithParams(username = username, email = email)
-            override val navOptions = NavOptions.Builder()
-                .setPopUpTo(0, true)
-                .build()
-        }
+
+        /**
+         * Object containing predefined navigation actions for the app.
+         *
+         * The `NavigationActions` object centralizes navigation logic and makes it easier to define
+         * common navigation actions, such as navigating to the Authentication screen, by using
+         * a specific function to construct the necessary destination and navigation options.
+         */
+
+        /**
+         * Creates a navigation action to navigate to the "Authentication" screen.
+         *
+         * This function builds a [NavigationAction] object that navigates to the authentication screen
+         * and optionally passes the `username` and `email` as query parameters.
+         *
+         * If either parameter is `null` or empty, it will be excluded from the query string.
+         *
+         * @param username Optional username to pre-fill on the authentication screen.
+         * @param email Optional email to pre-fill on the authentication screen.
+         * @return A [NavigationAction] object to use with a NavController for navigation.
+         */
+        fun authentication(username: String? = null, email: String? = null) =
+            object : NavigationAction {
+                override val destination: String = buildString {
+                    append("authenticationScreen")
+
+                    val queryParams = mutableListOf<String>()
+
+                    username?.takeIf { it.isNotEmpty() }?.let {
+                        queryParams += "username=${Uri.encode(it)}"
+                    }
+
+                    email?.takeIf { it.isNotEmpty() }?.let {
+                        queryParams += "email=${Uri.encode(it)}"
+                    }
+
+                    if (queryParams.isNotEmpty()) {
+                        append("?")
+                        append(queryParams.joinToString("&"))
+                    }
+                }
+
+                override val navOptions = NavOptions.Builder()
+                    .setPopUpTo(0, true)
+                    .build()
+            }
     }
 
     object AuthenticationScreen {

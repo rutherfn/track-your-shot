@@ -1,5 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.navigation
 
+import android.net.Uri
+
 object NavigationDestinationsWithParams {
 
     fun shotsListScreenWithParams(shouldShowAllPlayersShots: Boolean): String {
@@ -10,7 +12,7 @@ object NavigationDestinationsWithParams {
     }
 
     fun authenticationWithParams(username: String, email: String): String {
-        return "${NavigationDestinations.AUTHENTICATION_SCREEN}/$username/$email"
+        return "authenticationScreen?username=${Uri.encode(username)}&email=${Uri.encode(email)}"
     }
 
     fun createEditPlayerWithParams(firstName: String, lastName: String): String {

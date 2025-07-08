@@ -13,13 +13,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,16 +30,13 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
+import com.nicholas.rutherford.track.your.shot.TrackYourShotTheme
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.Shared
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
-import com.nicholas.rutherford.track.your.shot.navigation.OnLifecycleEvent
 import com.nicholas.rutherford.track.yourshot.compose.content.test.rule.drawableId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -50,34 +44,38 @@ import kotlinx.coroutines.launch
 const val EMAIL_IMAGE_HEIGHT_WIDTH = 144
 
 @Composable
-fun AuthenticationScreen(viewModel: AuthenticationViewModel, usernameArgument: String?, emailArgument: String?) {
+fun AuthenticationScreen(viewModel: AuthenticationViewModel) {
     val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(Unit) {
-        viewModel.updateUsernameAndEmail(
-            usernameArgument = usernameArgument,
-            emailArgument = emailArgument
-        )
+    TrackYourShotTheme {
+        AuthenticationScreenContent(viewModel = viewModel, coroutineScope = coroutineScope)
     }
 
-    OnLifecycleEvent { _, event ->
-        if (event == Lifecycle.Event.ON_RESUME) {
-            coroutineScope.launch {
-                viewModel.onResume()
-            }
-        }
-    }
-
-    Content(
-        ui = {
-            AuthenticationScreenContent(viewModel = viewModel, coroutineScope = coroutineScope)
-        },
-        appBar = AppBar(
-            toolbarTitle = stringResource(id = StringsIds.verifyAccount),
-            onIconButtonClicked = { viewModel.onNavigateClose() }
-        ),
-        imageVector = Icons.Filled.Close
-    )
+//    LaunchedEffect(Unit) {
+//        viewModel.updateUsernameAndEmail(
+//            usernameArgument = usernameArgument,
+//            emailArgument = emailArgument
+//        )
+//    }
+//
+//    OnLifecycleEvent { _, event ->
+//        if (event == Lifecycle.Event.ON_RESUME) {
+//            coroutineScope.launch {
+//                viewModel.onResume()
+//            }
+//        }
+//    }
+//
+//    Content(
+//        ui = {
+//            AuthenticationScreenContent(viewModel = viewModel, coroutineScope = coroutineScope)
+//        },
+//        appBar = AppBar(
+//            toolbarTitle = stringResource(id = StringsIds.verifyAccount),
+//            onIconButtonClicked = { viewModel.onNavigateClose() }
+//        ),
+//        imageVector = Icons.Filled.Close
+//    )
 }
 
 @Composable

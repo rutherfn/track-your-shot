@@ -9,6 +9,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.RESET_SCREEN_DELAY_IN_MILLIS
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
@@ -53,6 +54,7 @@ class CreateAccountViewModel(
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val createSharedPreferences: CreateSharedPreferences,
     private val authenticationFirebase: AuthenticationFirebase,
+    private val accountManager: AccountManager,
     private val scope: CoroutineScope
 ) : BaseViewModel() {
 
@@ -216,6 +218,7 @@ class CreateAccountViewModel(
                         .collectLatest { authenticatedUserViaEmailFirebaseResponse ->
                             if (authenticatedUserViaEmailFirebaseResponse.isSuccessful) {
                                 createSharedPreferences.createIsLoggedIn(value = true)
+                                accountManager.createActiveUser(username = username, email = email)
                                 navigateToAuthentication(email = email, username = username)
                                 clearState()
                             } else {

@@ -4,6 +4,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.nicholas.rutherford.track.your.shot.base.vm.ObserveLifecycle
+import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationScreen
+import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountScreen
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountViewModel
@@ -16,7 +18,7 @@ import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
-import kotlinx.coroutines.launch
+import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -105,6 +107,14 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Create Account Screen destination to the NavGraph.
+     * Retrieves [CreateAccountViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [CreateAccountScreen].
+     * Displays the [CreateAccountScreen] composable
+     *
+     * @param isConnectedToInternet [Boolean] to determine if we are connected to the internet or not.
+     */
     fun NavGraphBuilder.createAccountScreen(isConnectedToInternet: Boolean) {
         composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
             val createAccountViewModel: CreateAccountViewModel = koinViewModel()
@@ -137,6 +147,21 @@ object AppNavigationGraph {
                     onBackButtonClicked = { createAccountViewModel.onBackButtonClicked() }
                 )
             )
+        }
+    }
+
+    fun NavGraphBuilder.authenticationScreen() {
+        composable(
+            route = NavigationDestinations.AUTHENTICATION_SCREEN_WITH_PARAMS,
+            arguments = NavArguments.authentication
+        ) { entry ->
+            val authenticationScreenViewModel: AuthenticationViewModel = koinViewModel()
+
+            ObserveLifecycle(viewModel = authenticationScreenViewModel)
+
+            if (entry.arguments != null) {
+                AuthenticationScreen(viewModel = authenticationScreenViewModel)
+            }
         }
     }
 }

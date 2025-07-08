@@ -12,6 +12,7 @@ object NavigationComponentExt {
             destination.contains(NavigationDestinations.CREATE_ACCOUNT_SCREEN) -> viewModels.createAccountViewModel
             destination.contains(NavigationDestinations.LOGIN_SCREEN) -> viewModels.loginViewModel
             destination.contains(NavigationDestinations.FORGOT_PASSWORD_SCREEN) -> viewModels.forgotPasswordViewModel
+            destination.contains(NavigationDestinations.AUTHENTICATION_SCREEN) -> viewModels.authenticationViewModel
             destination.contains(NavigationDestinations.REPORTS_LIST_SCREEN) -> viewModels.reportListViewModel
             destination.contains(NavigationDestinations.CREATE_REPORT_SCREEN) -> viewModels.createReportViewModel
             destination.contains(NavigationDestinations.PLAYERS_LIST_SCREEN) -> viewModels.playersListViewModel
@@ -42,6 +43,7 @@ object NavigationComponentExt {
             viewModels.loginViewModel -> appBarFactory.createLoginAppBar()
             viewModels.createAccountViewModel -> appBarFactory.createCreateAccountAppBar(viewModel = viewModels.createAccountViewModel)
             viewModels.forgotPasswordViewModel -> appBarFactory.createForgotPasswordAppBar(viewModel = viewModels.forgotPasswordViewModel)
+            viewModels.authenticationViewModel -> appBarFactory.createAuthenticationAppBar(viewModel = viewModels.authenticationViewModel)
             viewModels.playersListViewModel -> appBarFactory.createPlayersListAppBar(viewModel = viewModels.playersListViewModel)
             viewModels.shotsListViewModel -> appBarFactory.createShotsListAppBar(params = viewModelParams.shotListParams)
             viewModels.reportListViewModel -> appBarFactory.createReportListAppBar(params = viewModelParams.reportListParams)

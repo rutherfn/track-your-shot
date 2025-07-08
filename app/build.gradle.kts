@@ -93,7 +93,7 @@ android {
 }
 
 dependencies {
-    implementation("com.google.accompanist:accompanist-systemuicontroller:<version>")
+    implementation(libs.koin.androidx.navigation)
 
     implementation(libs.protolite.well.known.types)
     androidTestImplementation(libs.androidx.rules)
