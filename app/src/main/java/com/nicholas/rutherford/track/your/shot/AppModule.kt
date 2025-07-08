@@ -175,8 +175,8 @@ class AppModule {
         single<ReadSharedPreferences> {
             ReadSharedPreferencesImpl(sharedPreferences = get())
         }
-        single<ScreenAppBars> {
-            ScreenAppBarsImpl(readSharedPreferences = get(), application = androidApplication())
+        single<AppBarFactory> {
+           AppBarFactoryImpl(readSharedPreferences = get(), application = androidApplication())
         }
         single<ActiveUserRepository> {
             ActiveUserRepositoryImpl(activeUserDao = get())
@@ -416,7 +416,8 @@ class AppModule {
             ForgotPasswordViewModel(
                 application = androidApplication(),
                 authenticationFirebase = get(),
-                navigation = get()
+                navigation = get(),
+                scope = defaultCoroutineScope
             )
         }
         viewModel {

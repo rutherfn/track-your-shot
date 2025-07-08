@@ -3,6 +3,9 @@ package com.nicholas.rutherford.track.your.shot.feature.create.account.createacc
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 
+/**
+ * Defines navigation actions available from the create account screen.
+ */
 interface CreateAccountNavigation {
     fun alert(alert: Alert)
     fun disableProgress()

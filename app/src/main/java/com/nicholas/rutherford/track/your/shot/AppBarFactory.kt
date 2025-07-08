@@ -6,6 +6,7 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListScreenParams
@@ -13,31 +14,35 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
 
-interface ScreenAppBars {
+interface AppBarFactory {
 
-    fun buildCreateAccountAppBar(createAccountViewModel: CreateAccountViewModel): AppBar2
+    fun createLoginAppBar(): AppBar2
+    fun createCreateAccountAppBar(viewModel: CreateAccountViewModel): AppBar2
 
-    fun buildForgotPasswordAppBar(forgotPasswordViewModel: ForgotPasswordViewModel): AppBar2
+    fun createForgotPasswordAppBar(viewModel: ForgotPasswordViewModel): AppBar2
 
-    fun buildPlayersListAppBar(playersListViewModel: PlayersListViewModel): AppBar2
+    fun createPlayersListAppBar(viewModel: PlayersListViewModel): AppBar2
 
-    fun buildShotsListAppBar(params: ShotsListScreenParams): AppBar2
+    fun createShotsListAppBar(params: ShotsListScreenParams): AppBar2
 
-    fun buildReportListAppBar(params: ReportListParams): AppBar2
+    fun createReportListAppBar(params: ReportListParams): AppBar2
 
-    fun buildSettingsAppBar(params: SettingsParams): AppBar2
+    fun createSettingsAppBar(params: SettingsParams): AppBar2
 
-    fun buildEnabledPermissionAppBar(params: EnabledPermissionsParams): AppBar2
+    fun createEnabledPermissionsAppBar(params: EnabledPermissionsParams): AppBar2
 
-    fun buildPermissionEducationAppBar(viewModel: PermissionEducationViewModel): AppBar2
+    fun createPermissionEducationAppBar(viewModel: PermissionEducationViewModel): AppBar2
 
-    fun buildOnboardingEducationAppBar(viewModel: OnboardingEducationViewModel): AppBar2
+    fun createOnboardingEducationAppBar(viewModel: OnboardingEducationViewModel): AppBar2
 
-    fun buildTermsAndConditionsAppBar(): AppBar2
+    fun createTermsAndConditionsAppBar(): AppBar2
 
-    fun buildDeclaredShotListAppBar(params: DeclaredShotsListScreenParams): AppBar2
+    fun createDeclaredShotsListAppBar(params: DeclaredShotsListScreenParams): AppBar2
 
-    fun buildCreateEditDeclaredShotAppBar(params: CreateEditDeclaredShotScreenParams): AppBar2
+    fun createCreateEditDeclaredShotAppBar(params: CreateEditDeclaredShotScreenParams): AppBar2
 
-    fun buildDefaultAppBar(): AppBar2
+    fun createAccountInfoAppBar(viewModel: AccountInfoViewModel): AppBar2
+
+    fun createDefaultAppBar(): AppBar2
 }
+

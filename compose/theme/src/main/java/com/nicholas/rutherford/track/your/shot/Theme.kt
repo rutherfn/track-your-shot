@@ -18,7 +18,7 @@ private val lightColorScheme = lightColorScheme(
     onSecondary = AppColors.White,
     secondaryContainer = AppColors.BlackVariant,
     onSecondaryContainer = AppColors.White,
-    background = AppColors.LightGray,
+    background = AppColors.OffWhite,
     onBackground = AppColors.Black,
     surface = AppColors.White,
     onSurface = AppColors.Black,
@@ -27,7 +27,7 @@ private val lightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun TrackMyShotTheme(
+fun TrackYourShotTheme(
     content: @Composable () -> Unit
 ) {
     val systemUiController = rememberSystemUiController()

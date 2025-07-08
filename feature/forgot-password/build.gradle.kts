@@ -68,7 +68,7 @@ android {
         useJUnitPlatform()
     }
 
-    tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
+   // tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
 dependencies {
@@ -80,6 +80,7 @@ dependencies {
     api(project(path = ":navigation"))
 
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.ui.tooling.preview)
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)

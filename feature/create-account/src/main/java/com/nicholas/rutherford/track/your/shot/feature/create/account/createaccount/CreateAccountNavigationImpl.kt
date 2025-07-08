@@ -6,6 +6,10 @@ import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
+/**
+ * Implementation of [CreateAccountNavigation] using a [Navigator] to perform
+ * navigation via predefined [NavigationActions].
+ */
 class CreateAccountNavigationImpl(private val navigator: Navigator) : CreateAccountNavigation {
 
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)

@@ -93,6 +93,8 @@ android {
 }
 
 dependencies {
+    implementation("com.google.accompanist:accompanist-systemuicontroller:<version>")
+
     implementation(libs.protolite.well.known.types)
     androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(Dependencies.Compose.uiTestJunit4)

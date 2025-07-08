@@ -24,6 +24,7 @@ object NavigationComponentExt {
             destination.contains(NavigationDestinations.ENABLED_PERMISSIONS_SCREEN) -> viewModels.enabledPermissionsViewModel
             destination.contains(NavigationDestinations.ONBOARDING_EDUCATION_SCREEN) -> viewModels.onboardingEducationViewModel
             destination.contains(NavigationDestinations.TERMS_CONDITIONS_SCREEN) -> viewModels.termsConditionsViewModel
+            destination.contains(NavigationDestinations.ACCOUNT_INFO_SCREEN) -> viewModels.accountInfoViewModel
             else -> null
         }
     }
@@ -34,24 +35,26 @@ object NavigationComponentExt {
         viewModel: BaseViewModel,
         viewModels: ViewModels,
         viewModelParams: ViewModelsParams,
-        screenAppBars: ScreenAppBars
+        appBarFactory: AppBarFactory
     ): AppBar2? {
         return when (viewModel) {
             viewModels.splashViewModel -> null
-            viewModels.createAccountViewModel -> screenAppBars.buildCreateAccountAppBar(createAccountViewModel = viewModels.createAccountViewModel)
-            viewModels.forgotPasswordViewModel -> screenAppBars.buildForgotPasswordAppBar(forgotPasswordViewModel = viewModels.forgotPasswordViewModel)
-            viewModels.playersListViewModel -> screenAppBars.buildPlayersListAppBar(playersListViewModel = viewModels.playersListViewModel)
-            viewModels.shotsListViewModel -> screenAppBars.buildShotsListAppBar(params = viewModelParams.shotListParams)
-            viewModels.reportListViewModel -> screenAppBars.buildReportListAppBar(params = viewModelParams.reportListParams)
-            viewModels.settingsViewModel -> screenAppBars.buildSettingsAppBar(params = viewModelParams.settingsParams)
-            viewModels.permissionEducationViewModel -> screenAppBars.buildPermissionEducationAppBar(viewModel = viewModels.permissionEducationViewModel)
-            viewModels.enabledPermissionsViewModel -> screenAppBars.buildEnabledPermissionAppBar(params = viewModelParams.enabledPermissionsParams)
-            viewModels.onboardingEducationViewModel -> screenAppBars.buildOnboardingEducationAppBar(viewModel = viewModels.onboardingEducationViewModel)
-            viewModels.termsConditionsViewModel -> screenAppBars.buildTermsAndConditionsAppBar()
-            viewModels.declaredShotsListViewModel -> screenAppBars.buildDeclaredShotListAppBar(params = viewModelParams.declaredShotsListScreenParams)
-            viewModels.createEditDeclaredShotsViewModel -> screenAppBars.buildCreateEditDeclaredShotAppBar(params = viewModelParams.createEditDeclaredShotParams)
+            viewModels.loginViewModel -> appBarFactory.createLoginAppBar()
+            viewModels.createAccountViewModel -> appBarFactory.createCreateAccountAppBar(viewModel = viewModels.createAccountViewModel)
+            viewModels.forgotPasswordViewModel -> appBarFactory.createForgotPasswordAppBar(viewModel = viewModels.forgotPasswordViewModel)
+            viewModels.playersListViewModel -> appBarFactory.createPlayersListAppBar(viewModel = viewModels.playersListViewModel)
+            viewModels.shotsListViewModel -> appBarFactory.createShotsListAppBar(params = viewModelParams.shotListParams)
+            viewModels.reportListViewModel -> appBarFactory.createReportListAppBar(params = viewModelParams.reportListParams)
+            viewModels.settingsViewModel -> appBarFactory.createSettingsAppBar(params = viewModelParams.settingsParams)
+            viewModels.permissionEducationViewModel -> appBarFactory.createPermissionEducationAppBar(viewModel = viewModels.permissionEducationViewModel)
+            viewModels.enabledPermissionsViewModel -> appBarFactory.createEnabledPermissionsAppBar(params = viewModelParams.enabledPermissionsParams)
+            viewModels.onboardingEducationViewModel -> appBarFactory.createOnboardingEducationAppBar(viewModel = viewModels.onboardingEducationViewModel)
+            viewModels.termsConditionsViewModel -> appBarFactory.createTermsAndConditionsAppBar()
+            viewModels.declaredShotsListViewModel -> appBarFactory.createDeclaredShotsListAppBar(params = viewModelParams.declaredShotsListScreenParams)
+            viewModels.createEditDeclaredShotsViewModel -> appBarFactory.createCreateEditDeclaredShotAppBar(params = viewModelParams.createEditDeclaredShotParams)
+            viewModels.accountInfoViewModel -> appBarFactory.createAccountInfoAppBar(viewModel = viewModels.accountInfoViewModel)
 
-            else -> screenAppBars.buildDefaultAppBar()
+            else -> appBarFactory.createDefaultAppBar()
         }
     }
 }

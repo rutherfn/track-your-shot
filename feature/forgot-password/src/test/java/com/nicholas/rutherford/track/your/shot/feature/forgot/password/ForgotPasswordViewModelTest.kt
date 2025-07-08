@@ -6,7 +6,11 @@ import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.Auth
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -24,12 +28,18 @@ class ForgotPasswordViewModelTest {
 
     private var state = ForgotPasswordState(email = null)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val dispatcher = UnconfinedTestDispatcher()
+
+    private val scope = CoroutineScope(SupervisorJob() + dispatcher)
+
     @BeforeEach
     fun beforeEach() {
         viewModel = ForgotPasswordViewModel(
             application = application,
             authenticationFirebase = authenticationFirebase,
-            navigation = navigation
+            navigation = navigation,
+            scope = scope
         )
     }
 
@@ -37,7 +47,7 @@ class ForgotPasswordViewModelTest {
     fun initializeForgotPasswordState() {
         Assertions.assertEquals(
             viewModel.forgotPasswordStateFlow.value,
-            state
+            state.copy(email = "")
         )
     }
 
@@ -86,7 +96,7 @@ class ForgotPasswordViewModelTest {
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
-            verify { navigation.alert(alert = viewModel.successSendingRestPasswordAlert()) }
+            verify { navigation.alert(alert = viewModel.successSendingResetPasswordAlert()) }
 
             Assertions.assertEquals(
                 viewModel.forgotPasswordStateFlow.value,
@@ -112,17 +122,17 @@ class ForgotPasswordViewModelTest {
     }
 
     @Test
-    fun `successSendingRestPasswordAlert should have valid values`() {
+    fun `successSendingResetPasswordAlert should have valid values`() {
         Assertions.assertEquals(
-            viewModel.successSendingRestPasswordAlert().title,
+            viewModel.successSendingResetPasswordAlert().title,
             application.getString(StringsIds.resetPasswordEmailSent)
         )
         Assertions.assertEquals(
-            viewModel.successSendingRestPasswordAlert().description,
+            viewModel.successSendingResetPasswordAlert().description,
             application.getString(StringsIds.emailHasBeenSentToRestPasswordPleaseFollowDirectionsToResetPassword)
         )
         Assertions.assertEquals(
-            viewModel.successSendingRestPasswordAlert().dismissButton!!.buttonText,
+            viewModel.successSendingResetPasswordAlert().dismissButton!!.buttonText,
             application.getString(StringsIds.gotIt)
         )
     }
@@ -149,7 +159,7 @@ class ForgotPasswordViewModelTest {
 
         Assertions.assertEquals(
             viewModel.forgotPasswordStateFlow.value,
-            state
+            state.copy(email = "")
         )
 
         viewModel.onEmailValueChanged(newEmail = newEmail)

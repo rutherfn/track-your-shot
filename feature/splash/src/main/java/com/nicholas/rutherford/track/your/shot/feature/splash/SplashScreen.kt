@@ -3,31 +3,35 @@ package com.nicholas.rutherford.track.your.shot.feature.splash
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
+import androidx.compose.ui.tooling.preview.Preview
 
-const val SPLASH_IMAGE_SCALE = 1f
-
+/**
+ * Entry point composable for the splash screen UI.
+ */
 @Composable
-fun SplashScreen(navigateToPlayersListLoginOrAuthentication: () -> Unit) {
-    LaunchedEffect(Unit) {
-        navigateToPlayersListLoginOrAuthentication.invoke()
-    }
+fun SplashScreen() = SplashScreenContent()
 
-    Content(ui = { SplashScreenContent() })
-}
-
+/**
+ * Basic splash screen layout displaying a full-screen transparent background
+ * with content centered.
+ * todo -> Expand on this to make it nicer in a future ticket.
+ */
 @Composable
-fun SplashScreenContent() {
+private fun SplashScreenContent() {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Transparent)
-    ) {
-    }
+            .background(MaterialTheme.colorScheme.background)
+    ) {}
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SplashScreenPreview() {
+    SplashScreen()
 }

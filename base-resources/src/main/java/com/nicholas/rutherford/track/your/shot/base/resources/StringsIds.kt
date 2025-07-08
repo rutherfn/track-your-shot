@@ -258,6 +258,7 @@ object StringsIds {
     val termsConditionsDescription = R.string.terms_conditions_description
     val trackYourProgress = R.string.track_your_progress
     val trackYourProgressDescription = R.string.track_your_progress_description
+    val trackYourShot = R.string.track_your_shot
     val theImageUploadWasUnsuccessful = R.string.the_image_upload_was_unsuccessful
     val thereWasAErrorCreatingYourAccountPleaseTryAgain =
         R.string.there_was_a_error_creating_your_account_please_try_again
@@ -274,6 +275,7 @@ object StringsIds {
     val unableToUploadImage = R.string.unable_to_upload_image
     val unsavedPlayerChanges = R.string.unsaved_player_changes
     val username = R.string.username
+    val usernameHelperText = R.string.username_helper_text
     val usernameRequired = R.string.username_required
     val usernameInUse = R.string.username_in_use
     val usernameInUseDescription = R.string.username_in_use_description

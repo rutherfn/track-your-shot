@@ -70,8 +70,14 @@ class CreateAccountViewModelTest {
     @Test
     fun constants() {
         Assertions.assertEquals(EMAIL_PATTERN, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
-        Assertions.assertEquals(PASSWORD_PATTERN, "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$")
-        Assertions.assertEquals(USERNAME_PATTERN, "^(?=[a-zA-Z\\d._]{8,20}\$)(?!.*[_.]{2})[^_.].*[^_.]\$")
+        Assertions.assertEquals(
+            PASSWORD_PATTERN,
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"
+        )
+        Assertions.assertEquals(
+            USERNAME_PATTERN,
+            "^(?=[a-zA-Z\\d._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$"
+        )
     }
 
     @Test

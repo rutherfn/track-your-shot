@@ -3,6 +3,9 @@ package com.nicholas.rutherford.track.your.shot.feature.login
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 
+/**
+ * Defines navigation actions available from the login screen.
+ */
 interface LoginNavigation {
     fun alert(alert: Alert)
     fun disableProgress()

@@ -11,7 +11,6 @@ import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.Crea
 import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.CreateReportViewModel
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListParams
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListScreen
-import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListViewModel
 
 class ScreenContents {
 

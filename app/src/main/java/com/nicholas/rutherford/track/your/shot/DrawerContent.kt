@@ -39,7 +39,7 @@ fun DrawerContent(
     modifier: Modifier = Modifier,
     onDestinationClicked: (route: String, navOptions: NavOptions, titleId: Int) -> Unit?
 ) {
-    TrackMyShotTheme {
+    TrackYourShotTheme {
         Column(
             modifier = modifier
                 .fillMaxSize()

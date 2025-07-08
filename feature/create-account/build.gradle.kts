@@ -91,6 +91,7 @@ dependencies {
     api(project(path = ":shared-preference"))
 
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.ui.tooling.preview)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
 

@@ -16,8 +16,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,12 +27,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createAccountScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.forgotPasswordScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.loginScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.splashScreen
 import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.buildAppBarBasedOnScreen
 import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.buildModalDrawerGesturesEnabled
 import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.findViewModelByDestination
@@ -79,7 +82,6 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsScreen
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreen
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
@@ -100,7 +102,7 @@ fun NavigationComponent(
     navHostController: NavHostController,
     navigator: Navigator,
     viewModels: ViewModels,
-    screenAppBars: ScreenAppBars
+    appBarFactory: AppBarFactory
 ) {
     val coroutineScope = rememberCoroutineScope()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -359,7 +361,7 @@ fun NavigationComponent(
 
             if (test != null) {
                 test.onNavigatedTo()
-                appBar = buildAppBarBasedOnScreen(test, viewModels, viewModelParams, screenAppBars = screenAppBars)
+                appBar = buildAppBarBasedOnScreen(test, viewModels, viewModelParams, appBarFactory = appBarFactory)
                 modalDrawerGesturesEnabled = buildModalDrawerGesturesEnabled(viewModel = test, viewModels = viewModels)
                 println(appBar)
             }
@@ -390,7 +392,7 @@ fun NavigationComponent(
                         test,
                         viewModels = viewModels,
                         viewModelParams,
-                        screenAppBars = screenAppBars
+                        appBarFactory = appBarFactory
                     )
                 }
             }
@@ -427,6 +429,17 @@ fun NavigationComponent(
         }
     }
 
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = true // set false if you want white icons (light content)
+    val statusBarColor = Color.Red // or any other color
+
+    SideEffect {
+        systemUiController.setStatusBarColor(
+            color = statusBarColor,
+            darkIcons = useDarkIcons
+        )
+    }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -452,7 +465,7 @@ fun NavigationComponent(
 
                             if (test != null) {
                                 test.onNavigatedTo()
-                                appBar = buildAppBarBasedOnScreen(test, viewModels = viewModels, viewModelParams, screenAppBars = screenAppBars)
+                                appBar = buildAppBarBasedOnScreen(test, viewModels = viewModels, viewModelParams, appBarFactory = appBarFactory)
                                 modalDrawerGesturesEnabled =buildModalDrawerGesturesEnabled(viewModel = test, viewModels = viewModels)
                             }
                         }
@@ -461,7 +474,6 @@ fun NavigationComponent(
             )
         },
         content = {
-
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 topBar = {
@@ -471,23 +483,38 @@ fun NavigationComponent(
                                 appBar = bar
                             )
                         } else {
-                            TopAppBar(
-                                title = {},
-                                navigationIcon = {},
-                                actions = {},
-                                colors = TopAppBarDefaults.topAppBarColors(
-                                    containerColor = Color.Transparent,
-                                    titleContentColor = Color.Unspecified,
-                                    navigationIconContentColor = Color.Unspecified,
-                                    actionIconContentColor = Color.Unspecified
-                                ),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color.Transparent),
-                                scrollBehavior = null
-                            )
+//                            TopAppBar(
+//                                title = {},
+//                                navigationIcon = {},
+//                                actions = {},
+//                                colors = TopAppBarDefaults.topAppBarColors(
+//                                    containerColor = Color.Transparent,
+//                                    titleContentColor = Color.Unspecified,
+//                                    navigationIconContentColor = Color.Unspecified,
+//                                    actionIconContentColor = Color.Unspecified
+//                                ),
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .background(Color.Transparent),
+//                                scrollBehavior = null
+//                            )
                         }
                     } ?: run {
+                        TopAppBar(
+                            title = {},
+                            navigationIcon = {},
+                            actions = {},
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = Color.Transparent,
+                                titleContentColor = Color.Unspecified,
+                                navigationIconContentColor = Color.Unspecified,
+                                actionIconContentColor = Color.Unspecified
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color.Transparent),
+                            scrollBehavior = null
+                        )
                     }
                 },
             ) { paddingValues ->
@@ -497,34 +524,10 @@ fun NavigationComponent(
                         .padding(paddingValues),
                     startDestination = NavigationDestinations.SPLASH_SCREEN
                 ) {
-                    composable(route = NavigationDestinations.SPLASH_SCREEN) {
-                        SplashScreen(navigateToPlayersListLoginOrAuthentication = {
-                            viewModels.splashViewModel.navigateToPlayersListLoginOrAuthentication()
-                        })
-                    }
-                    composable(route = NavigationDestinations.LOGIN_SCREEN) {
-                        LoginScreen(
-                            loginScreenParams = LoginScreenParams(
-                                state = loginViewModel.loginStateFlow.collectAsState().value,
-                                onEmailValueChanged = { newEmail ->
-                                    loginViewModel.onEmailValueChanged(
-                                        newEmail = newEmail
-                                    )
-                                },
-                                onPasswordValueChanged = { newPassword ->
-                                    loginViewModel.onPasswordValueChanged(
-                                        newPassword = newPassword
-                                    )
-                                },
-                                onLoginButtonClicked = {
-                                    loginViewModel.onLoginButtonClicked()
-                                },
-                                onForgotPasswordClicked = { loginViewModel.onForgotPasswordClicked() },
-                                onCreateAccountClicked = { loginViewModel.onCreateAccountClicked() },
-                                coroutineScope = coroutineScope
-                            )
-                        )
-                    }
+                    this.splashScreen()
+                    this.loginScreen()
+                    this.forgotPasswordScreen()
+                    this.createAccountScreen(isConnectedToInternet = isConnectedToInternet)
                     composable(route = NavigationDestinations.PLAYERS_LIST_SCREEN) {
                         PlayersListScreen(
                             playerListScreenParams = PlayersListScreenParams(
@@ -677,28 +680,6 @@ fun NavigationComponent(
                         }
                     }
                     composable(
-                        route = NavigationDestinations.FORGOT_PASSWORD_SCREEN
-                    ) {
-                        ForgotPasswordScreen(
-                            forgotPasswordScreenParams = ForgotPasswordScreenParams(
-                                state = forgotPasswordViewModel.forgotPasswordStateFlow.collectAsState().value,
-                                onEmailValueChanged = { newEmail ->
-                                    forgotPasswordViewModel.onEmailValueChanged(
-                                        newEmail = newEmail
-                                    )
-                                },
-                                onSendPasswordResetButtonClicked = { newEmail ->
-                                    coroutineScope.launch {
-                                        forgotPasswordViewModel.onSendPasswordResetButtonClicked(
-                                            newEmail = newEmail
-                                        )
-                                    }
-                                },
-                                onBackButtonClicked = { forgotPasswordViewModel.onBackButtonClicked() }
-                            )
-                        )
-                    }
-                    composable(
                         route = NavigationDestinations.SETTINGS_SCREEN
                     ) {
                         SettingsScreen(
@@ -804,34 +785,6 @@ fun NavigationComponent(
                             )
                         )
                     }
-                    composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
-                        CreateAccountScreen(
-                            createAccountScreenParams = CreateAccountScreenParams(
-                                state = createAccountViewModel.createAccountStateFlow.collectAsState().value,
-                                onUsernameValueChanged = { newUsername ->
-                                    createAccountViewModel.onUsernameValueChanged(
-                                        newUsername = newUsername
-                                    )
-                                },
-                                onEmailValueChanged = { newEmail ->
-                                    createAccountViewModel.onEmailValueChanged(
-                                        newEmail = newEmail
-                                    )
-                                },
-                                onPasswordValueChanged = { newPassword ->
-                                    createAccountViewModel.onPasswordValueChanged(
-                                        newPassword = newPassword
-                                    )
-                                },
-                                onCreateAccountButtonClicked = {
-                                    createAccountViewModel.onCreateAccountButtonClicked(
-                                        isConnectedToInternet = isConnectedToInternet
-                                    )
-                                },
-                                onBackButtonClicked = { createAccountViewModel.onBackButtonClicked() }
-                            )
-                        )
-                    }
                     composable(
                         route = NavigationDestinations.AUTHENTICATION_SCREEN_WITH_PARAMS,
                         arguments = NavArguments.authentication
@@ -885,7 +838,7 @@ fun NavigationComponent(
             }
 
             datePicker?.let { newDatePicker ->
-                TrackMyShotTheme {
+                TrackYourShotTheme {
                     CustomDatePickerDialog(
                         datePickerInfo = DatePickerInfo(
                             onDateOkClicked = { value ->

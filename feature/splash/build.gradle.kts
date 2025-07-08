@@ -68,7 +68,7 @@ android {
         useJUnitPlatform()
     }
 
-    tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
+  //  tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
 dependencies {
@@ -89,6 +89,8 @@ dependencies {
 
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.viewModel)
+
+    implementation(libs.androidx.ui.tooling.preview)
 
     testImplementation(project(":data-test:firebase"))
     testImplementation(project(path = ":data-test:room"))

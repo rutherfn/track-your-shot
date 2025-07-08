@@ -13,6 +13,7 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.DeclaredShotState
@@ -22,33 +23,39 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 
-class ScreenAppBarsImpl(
+class AppBarFactoryImpl(
     private val readSharedPreferences: ReadSharedPreferences,
     private val application: Application
-) : ScreenAppBars {
+) : AppBarFactory {
 
-    override fun buildCreateAccountAppBar(createAccountViewModel: CreateAccountViewModel): AppBar2 =
+    override fun createLoginAppBar(): AppBar2 =
+        AppBar2(
+            toolbarId = StringsIds.trackYourShot,
+            shouldShowIcon = false
+        )
+
+    override fun createCreateAccountAppBar(viewModel: CreateAccountViewModel): AppBar2 =
         AppBar2(
             toolbarId = StringsIds.createAccount,
-            onIconButtonClicked = { createAccountViewModel.onBackButtonClicked() }
+            onIconButtonClicked = { viewModel.onBackButtonClicked() }
         )
 
-    override fun buildForgotPasswordAppBar(forgotPasswordViewModel: ForgotPasswordViewModel): AppBar2 =
+    override fun createForgotPasswordAppBar(viewModel: ForgotPasswordViewModel): AppBar2 =
         AppBar2(
             toolbarId = StringsIds.forgotPassword,
-            onIconButtonClicked = { forgotPasswordViewModel.onBackButtonClicked() }
+            onIconButtonClicked = { viewModel.onBackButtonClicked() }
         )
 
-    override fun buildPlayersListAppBar(playersListViewModel: PlayersListViewModel): AppBar2 =
+    override fun createPlayersListAppBar(viewModel: PlayersListViewModel): AppBar2 =
         AppBar2(
             toolbarId = StringsIds.players,
             shouldShowMiddleContentAppBar = true,
-            onIconButtonClicked = { playersListViewModel.onToolbarMenuClicked() },
-            onSecondaryIconButtonClicked = { playersListViewModel.onAddPlayerClicked() },
+            onIconButtonClicked = { viewModel.onToolbarMenuClicked() },
+            onSecondaryIconButtonClicked = { viewModel.onAddPlayerClicked() },
             shouldIncludeSpaceAfterDeclaration = false
         )
 
-    override fun buildShotsListAppBar(params: ShotsListScreenParams): AppBar2 =
+    override fun createShotsListAppBar(params: ShotsListScreenParams): AppBar2 =
         AppBar2(
             toolbarId = if (params.shouldShowAllPlayerShots) {
                 StringsIds.shots
@@ -62,7 +69,7 @@ class ScreenAppBarsImpl(
             secondaryImageEnabled = true
         )
 
-    override fun buildReportListAppBar(params: ReportListParams): AppBar2 =
+    override fun createReportListAppBar(params: ReportListParams): AppBar2 =
         AppBar2(
             toolbarId = StringsIds.reports,
             shouldShowMiddleContentAppBar = true,
@@ -71,7 +78,7 @@ class ScreenAppBarsImpl(
             onSecondaryIconButtonClicked = { params.onAddReportClicked.invoke() }
         )
 
-    override fun buildSettingsAppBar(params: SettingsParams): AppBar2 =
+    override fun createSettingsAppBar(params: SettingsParams): AppBar2 =
         AppBar2(
             toolbarId = StringsIds.settings,
             shouldShowMiddleContentAppBar = true,
@@ -80,32 +87,32 @@ class ScreenAppBarsImpl(
             secondaryImageVector = Icons.AutoMirrored.Filled.Help
         )
 
-    override fun buildEnabledPermissionAppBar(params: EnabledPermissionsParams): AppBar2 =
+    override fun createEnabledPermissionsAppBar(params: EnabledPermissionsParams): AppBar2 =
         AppBar2(
             toolbarId = StringsIds.enabledPermissions,
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
             imageVector = Icons.AutoMirrored.Filled.ArrowBack
         )
 
-    override fun buildPermissionEducationAppBar(viewModel: PermissionEducationViewModel): AppBar2 =
+    override fun createPermissionEducationAppBar(viewModel: PermissionEducationViewModel): AppBar2 =
         AppBar2(
             toolbarId = StringsIds.moreInfo,
             onIconButtonClicked = { viewModel.onGotItButtonClicked() }
         )
 
-    override fun buildOnboardingEducationAppBar(viewModel: OnboardingEducationViewModel): AppBar2 =
+    override fun createOnboardingEducationAppBar(viewModel: OnboardingEducationViewModel): AppBar2 =
         AppBar2(
             toolbarId = StringsIds.usingTheApp,
             onIconButtonClicked = { viewModel.onGotItButtonClicked() }
         )
 
-    override fun buildTermsAndConditionsAppBar(): AppBar2 =
+    override fun createTermsAndConditionsAppBar(): AppBar2 =
         AppBar2(
             toolbarId = StringsIds.termsConditions,
             shouldShowIcon = false
         )
 
-    override fun buildDeclaredShotListAppBar(params: DeclaredShotsListScreenParams): AppBar2 =
+    override fun createDeclaredShotsListAppBar(params: DeclaredShotsListScreenParams): AppBar2 =
         AppBar2(
             toolbarId = StringsIds.manageDeclaredShots,
             shouldShowMiddleContentAppBar = false,
@@ -115,7 +122,7 @@ class ScreenAppBarsImpl(
             onSecondaryIconButtonClicked = { params.onAddDeclaredShotClicked.invoke() }
         )
 
-    override fun buildCreateEditDeclaredShotAppBar(params: CreateEditDeclaredShotScreenParams): AppBar2 {
+    override fun createCreateEditDeclaredShotAppBar(params: CreateEditDeclaredShotScreenParams): AppBar2 {
         val declaredShotName = readSharedPreferences.declaredShotName()
         return AppBar2(
             toolbarId = StringsIds.empty,
@@ -126,6 +133,7 @@ class ScreenAppBarsImpl(
             },
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
             shouldShowSecondaryButton = true,
+            secondaryIconTint = AppColors.White,
             onSecondaryIconButtonClicked = {
                 if (params.state.declaredShotState == DeclaredShotState.VIEWING) {
                     params.onEditShotPencilClicked.invoke()
@@ -142,7 +150,16 @@ class ScreenAppBarsImpl(
         )
     }
 
-    override fun buildDefaultAppBar(): AppBar2 =
+    override fun createAccountInfoAppBar(viewModel: AccountInfoViewModel): AppBar2 =
+        AppBar2(
+            toolbarId = StringsIds.accountInfo,
+            shouldShowMiddleContentAppBar = false,
+            onIconButtonClicked = {
+                viewModel.onToolbarMenuClicked()
+            }
+        )
+
+    override fun createDefaultAppBar(): AppBar2 =
         AppBar2(
             toolbarId = StringsIds.empty,
             shouldShow = false

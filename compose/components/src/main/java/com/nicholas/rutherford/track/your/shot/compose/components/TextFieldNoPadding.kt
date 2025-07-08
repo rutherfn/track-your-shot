@@ -1,13 +1,12 @@
 package com.nicholas.rutherford.track.your.shot.compose.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
@@ -49,7 +48,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 fun TextFieldNoPadding(
     label: String,
     value: String,
-    onValueChange: ((String) -> Unit),
+    onValueChange: (String) -> Unit,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     textStyle: TextStyle = TextStyles.body,
@@ -57,29 +56,22 @@ fun TextFieldNoPadding(
     footerText: String? = null
 ) {
     var isFocused by remember { mutableStateOf(false) }
-
     var shouldClearFocus by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
+    val negativeOffsetX = (-8).dp
 
     if (shouldClearFocus) {
-        LocalFocusManager.current.clearFocus()
+        focusManager.clearFocus()
         shouldClearFocus = false
         isFocused = false
     }
 
-    val negativeOffSetPaddingX = (-8).dp
-
     Column {
-        BoxWithConstraints(
-            modifier = Modifier.clipToBounds()
-        ) {
+        Box(modifier = Modifier.clipToBounds()) {
             TextField(
                 value = value,
-                onValueChange = { newUsername -> onValueChange.invoke(newUsername) },
-                label = {
-                    Text(
-                        text = label
-                    )
-                        },
+                onValueChange = onValueChange,
+                label = { Text(text = label) },
                 visualTransformation = visualTransformation,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = KeyboardActions(
@@ -91,10 +83,9 @@ fun TextFieldNoPadding(
                 textStyle = textStyle,
                 singleLine = singleLine,
                 modifier = Modifier
-                    .requiredWidth(maxWidth + Padding.sixteen)
-                    .offset(x = negativeOffSetPaddingX)
-                    .onFocusChanged { isFocused = it.isFocused }
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .offset(x = negativeOffsetX)
+                    .onFocusChanged { isFocused = it.isFocused },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
@@ -108,19 +99,22 @@ fun TextFieldNoPadding(
             )
         }
 
-        if (isFocused) {
-            footerText?.let { value ->
-                Spacer(modifier = Modifier.height(Padding.eight))
-                Text(
-                    text = value,
-                    style = TextStyles.bodySmall,
-                    color = AppColors.LightGray
-                )
-            }
+        if (isFocused && !footerText.isNullOrEmpty()) {
+            Spacer(modifier = Modifier.height(Padding.eight))
+            Text(
+                text = footerText,
+                style = TextStyles.bodySmall,
+                color = AppColors.LightGray
+            )
         }
     }
 }
 
+
+
+/**
+ * Preview of the [TextFieldNoPadding] component with mock values.
+ */
 @Preview
 @Composable
 fun TextFieldNoPaddingPreview() {

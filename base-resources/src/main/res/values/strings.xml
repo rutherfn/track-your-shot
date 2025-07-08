@@ -273,6 +273,7 @@
     <string name="unable_to_send_email_verification">Unable to send email verification</string>
     <string name="unable_to_upload_image">Unable to upload image</string>
     <string name="unsaved_player_changes">Unsaved Player Changes</string>
+    <string name="username_helper_text">Username must be 8–30 characters long, contain only letters, numbers, underscores (_), and periods (.), start with a letter, and cannot have consecutive underscores or periods, or start/end with an underscore or period.</string>
     <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">We have detected a problem with your account. Please contact support to resolve issue.</string>
     <string name="we_have_detected_currently_not_connected_to_internet_description">We have detected currently not connected to internet. Please connect to service, and try again.</string>
     <string name="_no_shots_declared_description">No shots have been declared yet. Tap Add Shot to start adding your shots.</string>

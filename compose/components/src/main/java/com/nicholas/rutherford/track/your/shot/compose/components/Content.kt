@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
-import com.nicholas.rutherford.track.your.shot.TrackMyShotTheme
+import com.nicholas.rutherford.track.your.shot.TrackYourShotTheme
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
@@ -59,7 +59,7 @@ fun Content(
     invokeFunctionOnInit: (() -> Unit?)? = null,
     secondaryIconTint: Color = AppColors.White
 ) {
-    TrackMyShotTheme {
+    TrackYourShotTheme {
         Column(
            // modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing)
         ) {

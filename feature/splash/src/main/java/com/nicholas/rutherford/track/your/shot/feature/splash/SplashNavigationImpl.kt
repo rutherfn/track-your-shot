@@ -3,6 +3,10 @@ package com.nicholas.rutherford.track.your.shot.feature.splash
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
+/**
+ * Implementation of [SplashNavigation] using a [Navigator] to perform
+ * navigation via predefined [NavigationActions].
+ */
 class SplashNavigationImpl(private val navigator: Navigator) : SplashNavigation {
 
     override fun navigateToAuthentication(username: String, email: String) = navigator.navigate(navigationAction = NavigationActions.SplashScreen.authentication(username = username, email = email))

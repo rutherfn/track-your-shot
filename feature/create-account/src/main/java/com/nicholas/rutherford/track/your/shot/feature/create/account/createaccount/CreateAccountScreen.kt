@@ -2,19 +2,13 @@ package com.nicholas.rutherford.track.your.shot.feature.create.account.createacc
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +18,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.TrackYourShotTheme
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
@@ -32,21 +29,36 @@ import com.nicholas.rutherford.track.your.shot.compose.components.TextFieldNoPad
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * Top-level composable for the create account screen. Delegates rendering to [ CreateAccountScreenContent].
+ *
+ * @param createAccountScreenParams UI state and callbacks for the screen.
+ */
 @Composable
 fun CreateAccountScreen(createAccountScreenParams: CreateAccountScreenParams) {
-    BackHandler(enabled = true) {
-        createAccountScreenParams.onBackButtonClicked.invoke()
+    TrackYourShotTheme {
+        CreateAccountScreenContent(createAccountScreenParams = createAccountScreenParams)
     }
-    CreateAccountScreenContent(createAccountScreenParams = createAccountScreenParams)
 }
 
+/**
+ * Main UI content composable for the Create Account screen.
+ *
+ * Displays form fields for username, email, and password inputs along with helper texts.
+ * Provides a button to submit the create account request.
+ *
+ * @param createAccountScreenParams UI state and callbacks for the screen.
+ */
 @Composable
 fun CreateAccountScreenContent(createAccountScreenParams: CreateAccountScreenParams) {
+    BackHandler(enabled = true) { createAccountScreenParams.onBackButtonClicked.invoke() }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(Padding.twenty),
+            .padding(Padding.twenty)
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(Padding.twentyFour))
@@ -67,7 +79,7 @@ fun CreateAccountScreenContent(createAccountScreenParams: CreateAccountScreenPar
             onValueChange = { newUsername ->
                 createAccountScreenParams.onUsernameValueChanged(newUsername)
             },
-            footerText = "Username must be 8-30 characters long, contain only letters, numbers, underscores (_), and periods (.), start with a letter, and cannot have consecutive underscores or periods, or start/end with an underscore or period."
+            footerText = stringResource(StringsIds.usernameHelperText)
         )
 
         Spacer(modifier = Modifier.height(Padding.four))
@@ -79,7 +91,7 @@ fun CreateAccountScreenContent(createAccountScreenParams: CreateAccountScreenPar
                 createAccountScreenParams.onEmailValueChanged(newEmail)
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            footerText = "Email must include: a local part (e.g., yourname), an '@' symbol, and a domain (e.g., example.com)."
+            footerText = "Email must include: a local part (e.g., username), an '@' symbol, and a domain (e.g., example.com)."
         )
 
         Spacer(modifier = Modifier.height(Padding.four))
@@ -111,6 +123,30 @@ fun CreateAccountScreenContent(createAccountScreenParams: CreateAccountScreenPar
                     color = Color.White
                 )
             }
+        )
+    }
+}
+
+/**
+ * Preview composable showing a sample Create Account screen with mock state and empty callbacks.
+ */
+@Preview
+@Composable
+private fun CreateAccountScreenPreview() {
+    Column(modifier = Modifier.background(AppColors.White)) {
+        CreateAccountScreen(
+            createAccountScreenParams = CreateAccountScreenParams(
+                state = CreateAccountState(
+                    username = "username",
+                    email = "emailtest@gmail.com",
+                    password = "Password"
+                ),
+                onUsernameValueChanged = {},
+                onEmailValueChanged = {},
+                onPasswordValueChanged = {},
+                onCreateAccountButtonClicked = {},
+                onBackButtonClicked = {}
+            )
         )
     }
 }

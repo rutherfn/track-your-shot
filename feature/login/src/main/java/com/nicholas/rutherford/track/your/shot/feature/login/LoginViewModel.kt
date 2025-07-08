@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.login
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
@@ -12,9 +11,25 @@ import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for handling login screen state and logic.
+ *
+ * Responsibilities include:
+ * - Managing login screen state (email, password, UI assets).
+ * - Validating login input and showing error alerts.
+ * - Initiating login flow via [AccountManager].
+ * - Reacting to login success and clearing input fields.
+ * - Routing user to create account or forgot password screens.
+ *
+ * @param application Application context used for accessing string resources.
+ * @param navigation Interface defining navigation actions from the login screen.
+ * @param buildType Indicates current app build type (debug, stage, release).
+ * @param accountManager Handles user account authentication.
+ * @param scope Coroutine scope for background flows and operations.
+ */
 class LoginViewModel(
     private val application: Application,
     private val navigation: LoginNavigation,
@@ -28,53 +43,71 @@ class LoginViewModel(
 
     init {
         updateLauncherDrawableIdState()
-        collectHasLoggedInSuccessfulFlow()
+        clearState()
     }
 
+    /**
+     * Resets UI state of [LoginState].
+     */
+    internal fun clearState() {
+        onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
+        onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
+    }
+
+    /**
+     * Updates the launcher icon used on the login screen
+     * based on the current build type (debug, stage, release).
+     */
     internal fun updateLauncherDrawableIdState() {
-        if (buildType.isDebug()) {
-            loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundTest)
-        } else if (buildType.isStage()) {
-            loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRoundStage)
-        } else if (buildType.isRelease()) {
-            loginMutableStateFlow.value = loginMutableStateFlow.value.copy(launcherDrawableId = DrawablesIds.launcherRound)
+        val launcherDrawableId = when {
+            buildType.isDebug() -> DrawablesIds.launcherRoundTest
+            buildType.isStage() -> DrawablesIds.launcherRoundStage
+            buildType.isRelease() -> DrawablesIds.launcherRound
+            else -> DrawablesIds.launcherRound
+        }
+
+        loginMutableStateFlow.update { state ->
+            state.copy(launcherDrawableId = launcherDrawableId)
         }
     }
 
-    internal fun collectHasLoggedInSuccessfulFlow() {
+    /**
+     * Returns an appropriate [Alert] if login fields are missing.
+     *
+     * @param email The email input value.
+     * @param password The password input value.
+     * @return [Alert] indicating the missing field, or null if inputs are valid.
+     */
+    internal fun fieldsErrorAlert(email: String?, password: String?): Alert? {
+        return if (email.isNullOrEmpty()) {
+            emailEmptyAlert()
+        } else if (password.isNullOrEmpty()) {
+            passwordEmptyAlert()
+        } else {
+            null
+        }
+    }
+
+    /**
+     * Triggered when the user taps the login button.
+     * Validates fields and initiates login if valid.
+     */
+    fun onLoginButtonClicked() {
         scope.launch {
-            accountManager.hasLoggedInSuccessfulFlow.collectLatest { isSuccessful ->
-                if (isSuccessful) {
-                    onEmailValueChanged(newEmail = application.getString(StringsIds.empty))
-                    onPasswordValueChanged(newPassword = application.getString(StringsIds.empty))
-                }
+            val email = loginStateFlow.value.email
+            val password = loginStateFlow.value.password
+
+            fieldsErrorAlert(email = email, password = password)?.let { alert ->
+                navigation.alert(alert = alert)
+            } ?: run {
+                attemptToLoginToAccount(email = email, password = password)
             }
         }
     }
 
-    internal fun fieldsErrorAlert(email: String?, password: String?): Alert? {
-        if (email.isNullOrEmpty()) {
-            return emailEmptyAlert()
-        }
-
-        if (password.isNullOrEmpty()) {
-            return passwordEmptyAlert()
-        }
-
-        return null
-    }
-
-    fun onLoginButtonClicked() {
-        val email = loginStateFlow.value.email
-        val password = loginStateFlow.value.password
-
-        fieldsErrorAlert(email = email, password = password)?.let { alert ->
-            navigation.alert(alert = alert)
-        } ?: run {
-            attemptToLoginToAccount(email = email, password = password)
-        }
-    }
-
+    /**
+     * Triggers login via [AccountManager] after sanitizing input.
+     */
     internal fun attemptToLoginToAccount(email: String?, password: String?) {
         val emptyString = application.getString(StringsIds.empty)
         val newEmail = email?.filterNot { it.isWhitespace() } ?: emptyString
@@ -86,18 +119,37 @@ class LoginViewModel(
         )
     }
 
-    fun onForgotPasswordClicked() = navigation.navigateToForgotPassword()
+    /** Navigates to forgot password screen. */
+    fun onForgotPasswordClicked() {
+        clearState()
+        navigation.navigateToForgotPassword()
+    }
 
-    fun onCreateAccountClicked() = navigation.navigateToCreateAccount()
+    /** Navigates to create account screen. */
+    fun onCreateAccountClicked() {
+        clearState()
+        navigation.navigateToCreateAccount()
+    }
 
+    /**
+     * Updates email in the UI state.
+     *
+     * @param newEmail The new email value.
+     */
     fun onEmailValueChanged(newEmail: String) {
         loginMutableStateFlow.value = loginMutableStateFlow.value.copy(email = newEmail)
     }
 
+    /**
+     * Updates password in the UI state.
+     *
+     * @param newPassword The new password value.
+     */
     fun onPasswordValueChanged(newPassword: String) {
         loginMutableStateFlow.value = loginMutableStateFlow.value.copy(password = newPassword)
     }
 
+    /** Returns an alert for when the email field is empty. */
     internal fun emailEmptyAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.emptyField),
@@ -108,6 +160,7 @@ class LoginViewModel(
         )
     }
 
+    /** Returns an alert for when the password field is empty. */
     internal fun passwordEmptyAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.emptyField),
@@ -118,3 +171,4 @@ class LoginViewModel(
         )
     }
 }
+
