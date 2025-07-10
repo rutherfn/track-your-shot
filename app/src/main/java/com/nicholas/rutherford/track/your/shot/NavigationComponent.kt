@@ -34,7 +34,9 @@ import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.authentication
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createAccountScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.forgotPasswordScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.loginScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.onBoardingEducationScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.splashScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.termsAndConditionScreen
 import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.buildAppBarBasedOnScreen
 import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.buildModalDrawerGesturesEnabled
 import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.findViewModelByDestination
@@ -352,11 +354,12 @@ fun NavigationComponent(
             println(it.destination)
             val test = findViewModelByDestination(destination = it.destination, viewModels = viewModels)
 
+            println("test here $test")
+
             if (test != null) {
                 test.onNavigatedTo()
-                appBar = buildAppBarBasedOnScreen(test, viewModels, viewModelParams, appBarFactory = appBarFactory)
+                appBar = buildAppBarBasedOnScreen(it.destination,test, viewModels, viewModelParams, appBarFactory = appBarFactory)
                 modalDrawerGesturesEnabled = buildModalDrawerGesturesEnabled(viewModel = test, viewModels = viewModels)
-                println(appBar)
             }
            // findViewModelByDestination(destination = it.destination)?.first?.onNavigatedTo()
         }
@@ -382,6 +385,7 @@ fun NavigationComponent(
                 if (test != null) {
                     test.onNavigatedTo()
                     appBar = buildAppBarBasedOnScreen(
+                        route,
                         test,
                         viewModels = viewModels,
                         viewModelParams,
@@ -447,7 +451,7 @@ fun NavigationComponent(
 
                             if (test != null) {
                                 test.onNavigatedTo()
-                                appBar = buildAppBarBasedOnScreen(test, viewModels = viewModels, viewModelParams, appBarFactory = appBarFactory)
+                                appBar = buildAppBarBasedOnScreen(route,test, viewModels = viewModels, viewModelParams, appBarFactory = appBarFactory)
                                 modalDrawerGesturesEnabled =buildModalDrawerGesturesEnabled(viewModel = test, viewModels = viewModels)
                             }
                         }
@@ -511,6 +515,8 @@ fun NavigationComponent(
                     this.forgotPasswordScreen()
                     this.createAccountScreen(isConnectedToInternet = isConnectedToInternet)
                     this.authenticationScreen()
+                    this.termsAndConditionScreen()
+                    this.onBoardingEducationScreen()
                     composable(route = NavigationDestinations.PLAYERS_LIST_SCREEN) {
                         PlayersListScreen(
                             playerListScreenParams = PlayersListScreenParams(
@@ -732,42 +738,6 @@ fun NavigationComponent(
                     composable(
                         route = NavigationDestinations.CREATE_EDIT_DECLARED_SHOTS_SCREEN
                     ) { CreateEditDeclaredShotScreen(params = createEditDeclaredScreenParams) }
-                    composable(
-                        route = NavigationDestinations.TERMS_CONDITIONS_WITH_PARAMS,
-                        arguments = NavArguments.termsConditions
-                    ) { entry ->
-                        entry.arguments?.let { bundle ->
-                            val isAcknowledgeConditions =
-                                bundle.getBoolean(NamedArguments.IS_ACKNOWLEDGE_CONDITIONS)
-                            TermsConditionsScreen(
-                                params = TermsConditionsParams(
-                                    updateButtonTextState = {
-                                        termsConditionsViewModel.updateButtonTextState(
-                                            isAcknowledgeConditions = isAcknowledgeConditions
-                                        )
-                                    },
-                                    onCloseAcceptButtonClicked = {
-                                        termsConditionsViewModel.onCloseAcceptButtonClicked(
-                                            isAcknowledgeConditions = isAcknowledgeConditions
-                                        )
-                                    },
-                                    onDevEmailClicked = { termsConditionsViewModel.onDevEmailClicked() },
-                                    state = termsConditionsViewModel.termsConditionsStateFlow.collectAsState().value,
-                                    isAcknowledgeConditions = isAcknowledgeConditions
-                                )
-                            )
-                        }
-                    }
-                    composable(
-                        route = NavigationDestinations.ONBOARDING_EDUCATION_SCREEN
-                    ) {
-                        OnboardingEducationScreen(
-                            onboardingEducationParams = OnboardingEducationParams(
-                                onGotItButtonClicked = { onboardingEducationViewModel.onGotItButtonClicked() },
-                                state = onboardingEducationViewModel.onboardingEducationStateFlow.collectAsState().value
-                            )
-                        )
-                    }
                     composable(
                         route = NavigationDestinations.ACCOUNT_INFO_SCREEN_PARAMS,
                         arguments = NavArguments.accountInfo

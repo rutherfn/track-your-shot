@@ -76,7 +76,7 @@ class SettingsNavigationImplTest {
         verify { navigator.navigate(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationActions.Settings.permissionEducation()
+        val expectedAction = NavigationActions.Settings.permissionEducation(isFirstTimeLaunched = false)
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }
@@ -104,7 +104,7 @@ class SettingsNavigationImplTest {
         verify { navigator.navigate(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationActions.Settings.termsConditions(isAcknowledgeConditions = false)
+        val expectedAction = NavigationActions.Settings.termsConditions(shouldAcceptTerms = false)
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }

@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 object NavigationComponentExt {
 
     fun findViewModelByDestination(destination: String, viewModels: ViewModels): BaseViewModel? {
+        println("here is the destination $destination")
         return when {
             destination.contains(NavigationDestinations.SPLASH_SCREEN) -> viewModels.splashViewModel
             destination.contains(NavigationDestinations.CREATE_ACCOUNT_SCREEN) -> viewModels.createAccountViewModel
@@ -32,7 +33,15 @@ object NavigationComponentExt {
 
     fun buildModalDrawerGesturesEnabled(viewModel: BaseViewModel, viewModels: ViewModels): Boolean = viewModel == viewModels.playersListViewModel || viewModel == viewModels.shotsListViewModel || viewModel == viewModels.reportListViewModel || viewModel == viewModels.settingsViewModel
 
+    fun buildIsFirstTimeLaunched(route: String): Boolean {
+        return Regex("isFirstTimeLaunched=(true|false)")
+            .find(route)
+            ?.groupValues?.get(1)
+            ?.toBooleanStrictOrNull() ?: false
+    }
+
     fun buildAppBarBasedOnScreen(
+        destination: String,
         viewModel: BaseViewModel,
         viewModels: ViewModels,
         viewModelParams: ViewModelsParams,
@@ -50,7 +59,7 @@ object NavigationComponentExt {
             viewModels.settingsViewModel -> appBarFactory.createSettingsAppBar(params = viewModelParams.settingsParams)
             viewModels.permissionEducationViewModel -> appBarFactory.createPermissionEducationAppBar(viewModel = viewModels.permissionEducationViewModel)
             viewModels.enabledPermissionsViewModel -> appBarFactory.createEnabledPermissionsAppBar(params = viewModelParams.enabledPermissionsParams)
-            viewModels.onboardingEducationViewModel -> appBarFactory.createOnboardingEducationAppBar(viewModel = viewModels.onboardingEducationViewModel)
+            viewModels.onboardingEducationViewModel -> appBarFactory.createOnboardingEducationAppBar(viewModel = viewModels.onboardingEducationViewModel, isFirstTimeLaunched = buildIsFirstTimeLaunched(route = destination))
             viewModels.termsConditionsViewModel -> appBarFactory.createTermsAndConditionsAppBar()
             viewModels.declaredShotsListViewModel -> appBarFactory.createDeclaredShotsListAppBar(params = viewModelParams.declaredShotsListScreenParams)
             viewModels.createEditDeclaredShotsViewModel -> appBarFactory.createCreateEditDeclaredShotAppBar(params = viewModelParams.createEditDeclaredShotParams)

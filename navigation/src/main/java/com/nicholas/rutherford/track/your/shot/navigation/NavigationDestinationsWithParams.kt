@@ -15,6 +15,10 @@ object NavigationDestinationsWithParams {
         return "authenticationScreen?username=${Uri.encode(username)}&email=${Uri.encode(email)}"
     }
 
+    fun termsConditionsWithParams(shouldAcceptTerms: Boolean): String {
+        return "termsConditionsScreen?shouldAcceptTerms=$shouldAcceptTerms"
+    }
+
     fun createEditPlayerWithParams(firstName: String, lastName: String): String {
         return "${NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN}/$firstName/$lastName"
     }
@@ -30,10 +34,6 @@ object NavigationDestinationsWithParams {
     ): String {
         return "${NavigationDestinations.LOG_SHOT_SCREEN}/$isExistingPlayer/$playerId/$shotType/$shotId/$viewCurrentExistingShot/$viewCurrentPendingShot/$fromShotList"
     }
-
-    fun termsConditionsWithParams(
-        isAcknowledgeConditions: Boolean
-    ): String = "${NavigationDestinations.TERMS_CONDITIONS_SCREEN}/$isAcknowledgeConditions"
 
     fun selectShotWithParams(
         isExistingPlayer: Boolean,

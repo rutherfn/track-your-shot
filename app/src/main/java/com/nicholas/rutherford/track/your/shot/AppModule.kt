@@ -462,14 +462,16 @@ class AppModule {
                 application = androidApplication()
             )
         }
-        viewModel {
+        viewModel { (stateHandle: SavedStateHandle) ->
             OnboardingEducationViewModel(
+                savedStateHandle = stateHandle,
                 navigation = get(),
                 application = androidApplication()
             )
         }
-        viewModel {
+        viewModel { (stateHandle: SavedStateHandle) ->
             TermsConditionsViewModel(
+                savedStateHandle = stateHandle,
                 navigation = get(),
                 application = androidApplication(),
                 createSharedPreferences = get(),

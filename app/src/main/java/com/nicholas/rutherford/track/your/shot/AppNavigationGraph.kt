@@ -15,6 +15,12 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
@@ -150,6 +156,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Authentication Screen destination to the NavGraph.
+     * Grabs navigation arguments declared in [NavArguments.authentication]
+     * Retrieves [AuthenticationViewModel] via Koin and observes its lifecycle.
+     * Displays the [AuthenticationScreen] composable
+     */
     fun NavGraphBuilder.authenticationScreen() {
         composable(
             route = NavigationDestinations.AUTHENTICATION_SCREEN_WITH_PARAMS,
@@ -161,6 +173,62 @@ object AppNavigationGraph {
 
             if (entry.arguments != null) {
                 AuthenticationScreen(viewModel = authenticationScreenViewModel)
+            }
+        }
+    }
+
+    /**
+     * Adds the Terms And Condition Screen destination to the NavGraph.
+     * Grabs navigation arguments declared in [NavArguments.termsConditions]
+     * Retrieves [TermsConditionsViewModel] via Koin and observes its lifecycle.
+     * Displays the [TermsConditionsScreen] composable
+     */
+
+    fun NavGraphBuilder.termsAndConditionScreen() {
+        composable(
+            route = NavigationDestinations.TERMS_CONDITIONS_WITH_PARAMS,
+            arguments = NavArguments.termsConditions
+        ) { entry ->
+            val termsConditionsViewModel: TermsConditionsViewModel = koinViewModel()
+
+            ObserveLifecycle(viewModel = termsConditionsViewModel)
+
+            if (entry.arguments != null) {
+                TermsConditionsScreen(
+                    params = TermsConditionsParams(
+                        onBackClicked = { termsConditionsViewModel.onBackClicked() },
+                        onCloseAcceptButtonClicked = { termsConditionsViewModel.onCloseAcceptButtonClicked() },
+                        onDevEmailClicked = { termsConditionsViewModel.onDevEmailClicked() },
+                        state = termsConditionsViewModel.termsConditionsStateFlow.collectAsState().value
+                    )
+                )
+            }
+        }
+    }
+
+    /**
+     * Adds the Onboarding Education Screen destination to the NavGraph.
+     * Grabs navigation arguments declared in [NavArguments.onBoardingEducation]
+     * Retrieves [OnboardingEducationViewModel] via Koin and observes its lifecycle.
+     * Displays the [OnboardingEducationScreen] composable
+     */
+
+    fun NavGraphBuilder.onBoardingEducationScreen() {
+        composable(
+            route = NavigationDestinations.ONBOARDING_EDUCATION_SCREEN_WITH_PARAMS,
+            arguments = NavArguments.onBoardingEducation
+        ) { entry ->
+            val onboardingEducationViewModel: OnboardingEducationViewModel = koinViewModel()
+
+            ObserveLifecycle(viewModel = onboardingEducationViewModel)
+
+            if (entry.arguments != null) {
+                OnboardingEducationScreen(
+                    onboardingEducationParams = OnboardingEducationParams(
+                        onGotItButtonClicked = { onboardingEducationViewModel.onGotItButtonClicked() },
+                        state = onboardingEducationViewModel.onboardingEducationStateFlow.collectAsState().value
+                    )
+                )
             }
         }
     }

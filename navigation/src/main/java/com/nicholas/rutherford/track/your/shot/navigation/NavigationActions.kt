@@ -46,8 +46,19 @@ object NavigationActions {
                     .build()
             }
 
-        fun termsConditions(isAcknowledgeConditions: Boolean) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = isAcknowledgeConditions)
+        fun termsConditions(shouldAcceptTerms: Boolean) = object : NavigationAction {
+            override val destination: String = buildString {
+                append("termsConditionsScreen")
+
+                val queryParams = mutableListOf<String>()
+
+                queryParams += "shouldAcceptTerms=$shouldAcceptTerms"
+
+                if (queryParams.isNotEmpty()) {
+                    append("?")
+                    append(queryParams.joinToString("&"))
+                }
+            }
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(0, true)
                 .setLaunchSingleTop(true)
@@ -124,8 +135,19 @@ object NavigationActions {
                     .build()
             }
 
-        fun termsConditions(isAcknowledgeConditions: Boolean) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = isAcknowledgeConditions)
+        fun termsConditions(shouldAcceptTerms: Boolean) = object : NavigationAction {
+            override val destination: String = buildString {
+                append("termsConditionsScreen")
+
+                val queryParams = mutableListOf<String>()
+
+                queryParams += "shouldAcceptTerms=$shouldAcceptTerms"
+
+                if (queryParams.isNotEmpty()) {
+                    append("?")
+                    append(queryParams.joinToString("&"))
+                }
+            }
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(0, true)
                 .setLaunchSingleTop(true)
@@ -143,8 +165,19 @@ object NavigationActions {
                 .build()
         }
 
-        fun termsConditions(isAcknowledgeConditions: Boolean) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = isAcknowledgeConditions)
+        fun termsConditions(shouldAcceptTerms: Boolean) = object : NavigationAction {
+            override val destination: String = buildString {
+                append("termsConditionsScreen")
+
+                val queryParams = mutableListOf<String>()
+
+                queryParams += "shouldAcceptTerms=$shouldAcceptTerms"
+
+                if (queryParams.isNotEmpty()) {
+                    append("?")
+                    append(queryParams.joinToString("&"))
+                }
+            }
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(0, true)
                 .setLaunchSingleTop(true)
@@ -318,22 +351,55 @@ object NavigationActions {
                 .build()
         }
 
-        fun permissionEducation() = object : NavigationAction {
-            override val destination = NavigationDestinations.PERMISSION_EDUCATION_SCREEN
+        fun permissionEducation(isFirstTimeLaunched: Boolean) = object : NavigationAction {
+            override val destination: String = buildString {
+                append("onboardingEducationScreen")
+
+                val queryParams = mutableListOf<String>()
+
+                queryParams += "isFirstTimeLaunched=$isFirstTimeLaunched"
+
+                if (queryParams.isNotEmpty()) {
+                    append("?")
+                    append(queryParams.joinToString("&"))
+                }
+            }
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                 .build()
         }
 
-        fun onboardingEducation() = object : NavigationAction {
-            override val destination = NavigationDestinations.ONBOARDING_EDUCATION_SCREEN
+        fun onboardingEducation(isFirstTimeLaunched: Boolean) = object : NavigationAction {
+            override val destination: String = buildString {
+                append("onboardingEducationScreen")
+
+                val queryParams = mutableListOf<String>()
+
+                queryParams += "isFirstTimeLaunched=$isFirstTimeLaunched"
+
+                if (queryParams.isNotEmpty()) {
+                    append("?")
+                    append(queryParams.joinToString("&"))
+                }
+            }
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                 .build()
         }
 
-        fun termsConditions(isAcknowledgeConditions: Boolean) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = isAcknowledgeConditions)
+        fun termsConditions(shouldAcceptTerms: Boolean) = object : NavigationAction {
+            override val destination: String = buildString {
+                append("termsConditionsScreen")
+
+                val queryParams = mutableListOf<String>()
+
+                queryParams += "shouldAcceptTerms=$shouldAcceptTerms"
+
+                if (queryParams.isNotEmpty()) {
+                    append("?")
+                    append(queryParams.joinToString("&"))
+                }
+            }
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                 .build()
@@ -341,8 +407,19 @@ object NavigationActions {
     }
 
     object TermsConditions {
-        fun onboardingEducation() = object : NavigationAction {
-            override val destination = NavigationDestinations.ONBOARDING_EDUCATION_SCREEN
+        fun onboardingEducation(isFirstTimeLaunched: Boolean) = object : NavigationAction {
+            override val destination: String = buildString {
+                append("onboardingEducationScreen")
+
+                val queryParams = mutableListOf<String>()
+
+                queryParams += "isFirstTimeLaunched=$isFirstTimeLaunched"
+
+                if (queryParams.isNotEmpty()) {
+                    append("?")
+                    append(queryParams.joinToString("&"))
+                }
+            }
             override val navOptions = NavOptions.Builder().build()
         }
 

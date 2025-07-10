@@ -53,8 +53,6 @@ class AuthenticationViewModel(
         this.username = usernameParam
         this.email = emailParam
 
-        println("username param $usernameParam email param $emailParam")
-
         safeLet(emailParam, usernameParam) { email, username ->
             attemptToCreateActiveUser(email = email, username = username)
         }

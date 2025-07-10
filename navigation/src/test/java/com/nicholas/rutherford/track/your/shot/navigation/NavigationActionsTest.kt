@@ -367,7 +367,7 @@ class NavigationActionsTest {
             @Test
             fun permissionEducation() {
                 Assertions.assertEquals(
-                    Actions.Settings.permissionEducation().destination,
+                    Actions.Settings.permissionEducation(isFirstTimeLaunched = false).destination,
                     NavigationDestinations.PERMISSION_EDUCATION_SCREEN
                 )
                 Assertions.assertEquals(

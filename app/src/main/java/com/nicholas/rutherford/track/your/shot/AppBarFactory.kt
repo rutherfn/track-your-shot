@@ -26,7 +26,7 @@ interface AppBarFactory {
     fun createSettingsAppBar(params: SettingsParams): AppBar2
     fun createEnabledPermissionsAppBar(params: EnabledPermissionsParams): AppBar2
     fun createPermissionEducationAppBar(viewModel: PermissionEducationViewModel): AppBar2
-    fun createOnboardingEducationAppBar(viewModel: OnboardingEducationViewModel): AppBar2
+    fun createOnboardingEducationAppBar(viewModel: OnboardingEducationViewModel, isFirstTimeLaunched: Boolean): AppBar2
     fun createTermsAndConditionsAppBar(): AppBar2
     fun createDeclaredShotsListAppBar(params: DeclaredShotsListScreenParams): AppBar2
     fun createCreateEditDeclaredShotAppBar(params: CreateEditDeclaredShotScreenParams): AppBar2

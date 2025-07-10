@@ -213,15 +213,16 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
 
         Spacer(modifier = Modifier.height(Padding.twenty))
 
-        Text(
-            text = stringResource(id = StringsIds.forgotPassword),
-            style = TextStyles.hyperLink,
-            modifier = Modifier
-                .clickable { loginScreenParams.onForgotPasswordClicked() }
-                .testTag(LoginTags.FORGOT_PASSWORD_TEXT)
-        )
-
-        Spacer(modifier = Modifier.height(Padding.eight))
+// TODO: Re-enable once "Forgot Password" functionality is implemented.
+// Text(
+//     text = stringResource(id = StringsIds.forgotPassword),
+//     style = TextStyles.hyperLink,
+//     modifier = Modifier
+//         .clickable { loginScreenParams.onForgotPasswordClicked() }
+//         .testTag(LoginTags.FORGOT_PASSWORD_TEXT)
+// )
+//
+// Spacer(modifier = Modifier.height(Padding.eight))
 
         Text(
             text = stringResource(id = StringsIds.clickMeToCreateAccount),

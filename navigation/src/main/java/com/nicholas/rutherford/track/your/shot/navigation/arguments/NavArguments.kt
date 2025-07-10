@@ -40,7 +40,10 @@ object NavArguments {
         navArgument(NamedArguments.VIEW_CURRENT_PENDING_SHOT) { type = NavType.BoolType },
         navArgument(NamedArguments.FROM_SHOT_LIST) { type = NavType.BoolType }
     )
+    val onBoardingEducation = listOf(
+        navArgument(NamedArguments.IS_FIRST_TIME_LAUNCHED) { type = NavType.BoolType }
+    )
     val termsConditions = listOf(
-        navArgument(NamedArguments.IS_ACKNOWLEDGE_CONDITIONS) { type = NavType.BoolType }
+        navArgument(NamedArguments.SHOULD_ACCEPT_TERMS) { type = NavType.BoolType }
     )
 }

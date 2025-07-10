@@ -25,7 +25,6 @@ class AuthenticationFirebaseImpl(private val firebaseAuth: FirebaseAuth) : Authe
                 if (firebaseUser.isEmailVerified) {
                     trySend(element = AuthenticateUserViaEmailFirebaseResponse(isSuccessful = false, isAlreadyAuthenticated = true, isUserExist = true))
                 } else {
-                    println("get here firebase user ${firebaseUser.email}")
                     firebaseUser.sendEmailVerification().addOnCompleteListener { task ->
                         if (!task.isSuccessful) {
                             Log.e("EmailVerification", "Failed to send verification email", task.exception)

@@ -48,7 +48,6 @@ class DeclaredShotsListViewModel(
         scope.launch {
             navigation.enableProgress(Progress())
             createSharedPreferences.createDeclaredShotName(value = title)
-            println("here is the declared name $title")
             delay(CREATION_DECLARED_ID_DELAY_IN_MILLIS)
             navigation.disableProgress()
             navigation.createEditDeclaredShot()

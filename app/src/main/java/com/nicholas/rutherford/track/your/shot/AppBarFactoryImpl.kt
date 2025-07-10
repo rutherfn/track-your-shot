@@ -109,10 +109,14 @@ class AppBarFactoryImpl(
             onIconButtonClicked = { viewModel.onGotItButtonClicked() }
         )
 
-    override fun createOnboardingEducationAppBar(viewModel: OnboardingEducationViewModel): AppBar2 =
+    override fun createOnboardingEducationAppBar(
+        viewModel: OnboardingEducationViewModel,
+        isFirstTimeLaunched: Boolean
+    ): AppBar2 =
         AppBar2(
             toolbarId = StringsIds.usingTheApp,
-            onIconButtonClicked = { viewModel.onGotItButtonClicked() }
+            onIconButtonClicked = { viewModel.onGotItButtonClicked() },
+            shouldShowIcon = !isFirstTimeLaunched
         )
 
     override fun createTermsAndConditionsAppBar(): AppBar2 =

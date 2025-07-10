@@ -14,10 +14,12 @@ object NavigationDestinations {
     const val LOG_SHOT_WITH_PARAMS = "logShotScreen/{isExistingPlayer}/{playerId}/{shotType}/{shotId}/{viewCurrentExistingShot}/{viewCurrentPendingShot}/{fromShotList}"
     const val LOG_SHOT_SCREEN = "logShotScreen"
     const val ONBOARDING_EDUCATION_SCREEN = "onboardingEducationScreen"
+
+    const val ONBOARDING_EDUCATION_SCREEN_WITH_PARAMS = "onboardingEducationScreen?isFirstTimeLaunched={isFirstTimeLaunched}"
     const val PERMISSION_EDUCATION_SCREEN = "permissionEducationScreen"
     const val ENABLED_PERMISSIONS_SCREEN = "enabledPermissionsScreen"
     const val TERMS_CONDITIONS_SCREEN = "termsConditionsScreen"
-    const val TERMS_CONDITIONS_WITH_PARAMS = "termsConditionsScreen/{isAcknowledgeConditions}"
+    const val TERMS_CONDITIONS_WITH_PARAMS = "termsConditionsScreen?shouldAcceptTerms={shouldAcceptTerms}"
     const val SELECT_SHOT_SCREEN = "selectShotScreen"
     const val SELECT_SHOT_SCREEN_WITH_PARAMS = "selectShotScreen/{isExistingPlayer}/{playerId}"
     const val PLAYERS_LIST_SCREEN = "playersListScreen"

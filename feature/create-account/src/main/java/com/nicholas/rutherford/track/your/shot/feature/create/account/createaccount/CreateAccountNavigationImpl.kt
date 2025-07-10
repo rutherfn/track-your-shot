@@ -16,6 +16,6 @@ class CreateAccountNavigationImpl(private val navigator: Navigator) : CreateAcco
     override fun disableProgress() = navigator.progress(progressAction = null)
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
     override fun navigateToAuthentication(email: String, username: String) = navigator.navigate(navigationAction = NavigationActions.CreateAccountScreen.authentication(username = username, email = email))
-    override fun navigateToTermsAndConditions() = navigator.navigate(navigationAction = NavigationActions.CreateAccountScreen.termsConditions(isAcknowledgeConditions = true))
+    override fun navigateToTermsAndConditions() = navigator.navigate(navigationAction = NavigationActions.CreateAccountScreen.termsConditions(shouldAcceptTerms = true))
     override fun pop() = navigator.pop(popRouteAction = NavigationDestinations.LOGIN_SCREEN)
 }

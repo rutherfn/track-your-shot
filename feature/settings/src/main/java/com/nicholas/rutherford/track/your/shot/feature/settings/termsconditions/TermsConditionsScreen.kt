@@ -15,9 +15,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,24 +26,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun TermsConditionsScreen(params: TermsConditionsParams) {
-    LaunchedEffect(Unit) { params.updateButtonTextState.invoke() }
-
-    BackHandler(enabled = true) {
-        params.onCloseAcceptButtonClicked.invoke()
-    }
-
     TermsConditionsContent(params = params)
 }
 
 @Composable
 fun TermsConditionsContent(params: TermsConditionsParams) {
+    BackHandler(enabled = true) { params.onBackClicked.invoke() }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -73,7 +69,8 @@ fun TermsConditionsContent(params: TermsConditionsParams) {
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(Padding.sixteen)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
         ) {
             Text(
                 text = params.state.buttonText
@@ -127,7 +124,7 @@ fun TermsConditionsScreenPreview() {
     Column(modifier = Modifier.background(Color.White)) {
         TermsConditionsScreen(
             params = TermsConditionsParams(
-                updateButtonTextState = {},
+                onBackClicked = {},
                 onCloseAcceptButtonClicked = {},
                 onDevEmailClicked = {},
                 state = TermsConditionsState(
@@ -137,8 +134,7 @@ fun TermsConditionsScreenPreview() {
                             description = stringResource(StringsIds.termsConditionsDescription)
                         )
                     )
-                ),
-                isAcknowledgeConditions = false
+                )
             )
         )
     }

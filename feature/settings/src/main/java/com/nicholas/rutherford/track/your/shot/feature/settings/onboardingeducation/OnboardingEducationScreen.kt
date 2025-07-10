@@ -11,6 +11,11 @@ import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 
 @Composable
 fun OnboardingEducationScreen(onboardingEducationParams: OnboardingEducationParams) {
+    OnboardingEducationContent(onboardingEducationParams = onboardingEducationParams)
+}
+
+@Composable
+private fun OnboardingEducationContent(onboardingEducationParams: OnboardingEducationParams) {
     val pagerState = rememberPagerState { onboardingEducationParams.state.educationInfoList.size }
 
     BackHandler(enabled = true) {

@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
@@ -11,9 +12,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class OnboardingEducationViewModel(
+    savedStateHandle: SavedStateHandle,
     private val navigation: OnboardingEducationNavigation,
     private val application: Application
 ) : BaseViewModel() {
+
+    internal val isFirstTimeLaunchedParam: Boolean = savedStateHandle.get<Boolean>("isFirstTimeLaunched") ?: false
 
     internal val onboardingEducationMutableStateFlow = MutableStateFlow(value = OnboardingEducationState())
     val onboardingEducationStateFlow = onboardingEducationMutableStateFlow.asStateFlow()
@@ -51,5 +55,5 @@ class OnboardingEducationViewModel(
         }
     }
 
-    fun onGotItButtonClicked() = navigation.pop()
+    fun onGotItButtonClicked() = navigation.pop(isFirstTimeLaunchedParam = isFirstTimeLaunchedParam)
 }

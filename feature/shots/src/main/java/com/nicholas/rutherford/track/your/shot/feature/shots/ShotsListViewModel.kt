@@ -117,7 +117,6 @@ class ShotsListViewModel(
 
     // todo - remove this once we add filter functionality
     fun onHelpClicked() {
-        println("here we are test")
         navigation.alert(alert = buildHelpAlert())
     }
 }

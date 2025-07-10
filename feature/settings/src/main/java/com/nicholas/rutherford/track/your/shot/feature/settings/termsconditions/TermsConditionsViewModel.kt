@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 const val DELAY_BEFORE_ONBOARDING = 750L
 
 class TermsConditionsViewModel(
+    savedStateHandle: SavedStateHandle,
     private val navigation: TermsConditionsNavigation,
     private val application: Application,
     private val createSharedPreferences: CreateSharedPreferences,
@@ -23,8 +25,11 @@ class TermsConditionsViewModel(
     private var termsConditionsMutableStateFlow = MutableStateFlow(value = TermsConditionsState())
     val termsConditionsStateFlow = termsConditionsMutableStateFlow.asStateFlow()
 
+    internal val shouldAcceptTermsParam: Boolean = savedStateHandle.get<Boolean>("shouldAcceptTerms") ?: false
+
     init {
         updateInfoListState()
+        updateButtonTextState()
     }
 
     internal fun buildInfoList(): List<TermsConditionInfo> {
@@ -60,10 +65,10 @@ class TermsConditionsViewModel(
         }
     }
 
-    fun updateButtonTextState(isAcknowledgeConditions: Boolean) {
+    fun updateButtonTextState() {
         termsConditionsMutableStateFlow.update {
             it.copy(
-                buttonText = if (isAcknowledgeConditions) {
+                buttonText = if (shouldAcceptTermsParam) {
                     application.getString(StringsIds.acknowledgeAndAgreeToTerms)
                 } else {
                     application.getString(StringsIds.close)
@@ -72,8 +77,16 @@ class TermsConditionsViewModel(
         }
     }
 
-    fun onCloseAcceptButtonClicked(isAcknowledgeConditions: Boolean) {
-        if (isAcknowledgeConditions) {
+    fun onBackClicked() {
+        if (shouldAcceptTermsParam) {
+            navigation.finish()
+        } else {
+            navigation.navigateToSettings()
+        }
+    }
+
+    fun onCloseAcceptButtonClicked() {
+        if (shouldAcceptTermsParam) {
             scope.launch {
                 createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
                 navigation.navigateToPlayerList()
