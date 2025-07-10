@@ -123,6 +123,14 @@ object NavigationActions {
                     .setPopUpTo(0, true)
                     .build()
             }
+
+        fun termsConditions(isAcknowledgeConditions: Boolean) = object : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = isAcknowledgeConditions)
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .setLaunchSingleTop(true)
+                .build()
+        }
     }
 
     object AuthenticationScreen {

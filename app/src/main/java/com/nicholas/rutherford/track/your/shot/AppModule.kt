@@ -429,6 +429,8 @@ class AppModule {
                 createSharedPreferences = get(),
                 authenticationFirebase = get(),
                 accountManager = get(),
+                activeUserRepository = get(),
+                declaredShotRepository = get(),
                 scope = defaultCoroutineScope
             )
         }

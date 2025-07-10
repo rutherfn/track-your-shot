@@ -57,6 +57,20 @@ class CreateAccountNavigationImplTest {
     }
 
     @Test
+    fun `navigate to terms and conditions`() {
+        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+
+        createAccountNavigationImpl.navigateToTermsAndConditions()
+
+        verify { navigator.navigate(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+        val expectedAction = NavigationActions.CreateAccountScreen.termsConditions(isAcknowledgeConditions = true)
+
+        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
+    }
+
+    @Test
     fun `enable progress`() {
         val progress = Progress()
 

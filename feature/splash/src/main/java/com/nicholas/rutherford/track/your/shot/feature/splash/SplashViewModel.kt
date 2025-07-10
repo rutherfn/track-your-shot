@@ -82,23 +82,25 @@ class SplashViewModel(
                 val isVerified = emailVerifiedValue || readSharedPreferences.hasAccountBeenAuthenticated()
                 val isLoggedIn = loggedInValue || readSharedPreferences.isLoggedIn()
 
-                println("test $isLoggedIn")
                 if (isLoggedIn) {
+                    navigatePostAuthDestination(isLoggedIn = true, email = activeUser?.email ?: "")
+
+                // TODO: Uncomment this block once Firebase Authentication issues are resolved
+                    /*
                     if (isVerified && activeUser != null && activeUser.accountHasBeenCreated) {
-                        println("get here test")
-                        navigateToLoginOrPlayersList(isLoggedIn = true, email = activeUser.email)
+                        navigatePostAuthDestination(isLoggedIn = true, email = activeUser.email)
                     } else {
-                        println("else block ")
                         activeUser?.let { user ->
-                            println(user)
                             navigation.navigateToAuthentication(
                                 username = user.username,
                                 email = user.email
                             )
                         }
                     }
+                    */
+
                 } else {
-                    navigateToLoginOrPlayersList(isLoggedIn = false, email = activeUser?.email)
+                    navigatePostAuthDestination(isLoggedIn = false, email = activeUser?.email)
                 }
             }.collectLatest { }
         }
@@ -111,8 +113,8 @@ class SplashViewModel(
      * @param isLoggedIn Whether the user is considered logged in.
      * @param email Optional email address of the logged-in user.
      */
-    internal fun navigateToLoginOrPlayersList(isLoggedIn: Boolean, email: String?) {
-        if (readSharedPreferences.shouldShowTermsAndConditions()) {
+    internal fun navigatePostAuthDestination(isLoggedIn: Boolean, email: String?) {
+        if (readSharedPreferences.shouldShowTermsAndConditions() && isLoggedIn) {
             navigation.navigateToTermsAndConditions()
         } else if (isLoggedIn) {
             email?.let {

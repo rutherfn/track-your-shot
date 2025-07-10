@@ -3,6 +3,9 @@ package com.nicholas.rutherford.track.your.shot.feature.create.account.createacc
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
+import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
+import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
@@ -10,6 +13,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
@@ -46,6 +50,9 @@ const val USERNAME_PATTERN = "^(?=[a-zA-Z\\d._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]
  * @param createFirebaseUserInfo Handles Firebase user creation logic.
  * @param createSharedPreferences Manages shared preferences related to user state.
  * @param authenticationFirebase Handles Firebase authentication operations.
+ * @param accountManager Handles account-related operations.
+ * @param activeUserRepository Manages active user data store in Room
+ * @param declaredShotRepository Manages declared shot data store in Room
  * @param scope CoroutineScope for asynchronous operations.
  */
 class CreateAccountViewModel(
@@ -55,6 +62,8 @@ class CreateAccountViewModel(
     private val createSharedPreferences: CreateSharedPreferences,
     private val authenticationFirebase: AuthenticationFirebase,
     private val accountManager: AccountManager,
+    private val activeUserRepository: ActiveUserRepository,
+    private val declaredShotRepository: DeclaredShotRepository,
     private val scope: CoroutineScope
 ) : BaseViewModel() {
 
@@ -219,8 +228,7 @@ class CreateAccountViewModel(
                             if (authenticatedUserViaEmailFirebaseResponse.isSuccessful) {
                                 createSharedPreferences.createIsLoggedIn(value = true)
                                 accountManager.createActiveUser(username = username, email = email)
-                                navigateToAuthentication(email = email, username = username)
-                                clearState()
+                                attemptToCreateAccount(email = email, username = username)
                             } else {
                                 showUnableToSendEmailVerificationAlert(email = email, username = username)
                             }
@@ -229,6 +237,51 @@ class CreateAccountViewModel(
                     showUnableToCreateFirebaseAuthAlert(message = createAccountFirebaseAuthResponse.exception?.message)
                 }
             }
+    }
+
+    /**
+     * Attempts to create a Firebase and Room account
+     *
+     * Note -> This needs to be moved over to the Authentication screen; once we fix that fucntionality
+     *
+     * @param email User email.
+     * @param username Username.
+     */
+    internal suspend fun attemptToCreateAccount(username: String, email: String) {
+        createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(
+            userName = username,
+            email = email
+        ).collectLatest { response ->
+            val isSuccessful = response.first
+            val firebaseAccountInfoKey = response.second
+
+            if (isSuccessful) {
+                activeUserRepository.updateActiveUser(
+                    activeUser = ActiveUser(
+                        id = Constants.ACTIVE_USER_ID,
+                        accountHasBeenCreated = true,
+                        email = email,
+                        username = username,
+                        firebaseAccountInfoKey = firebaseAccountInfoKey
+                    )
+                )
+                createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true)
+                createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
+                createSharedPreferences.createHasAuthenticatedAccount(value = true)
+                declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList())
+                navigation.disableProgress()
+                navigation.navigateToTermsAndConditions()
+                clearState()
+            } else {
+                navigation.disableProgress()
+                navigation.alert(
+                    alert = defaultAlert.copy(
+                        title = application.getString(StringsIds.errorCreatingAccount),
+                        description = application.getString(StringsIds.thereWasAErrorCreatingYourAccountPleaseTryAgain)
+                    )
+                )
+            }
+        }
     }
 
     /** Navigates to Authentication screen and disables progress indicator. */

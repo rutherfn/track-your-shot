@@ -97,73 +97,7 @@ class SplashViewModelTest {
         }
 
         @Nested
-        inner class NavigateToAuthentication {
-
-            @OptIn(ExperimentalCoroutinesApi::class)
-            @Test
-            fun `when isLoggedIn is set to true, isEmailVerified set to false, accountHasBeenCreated is set to true, and fields are not null should call navigateToAuthentication`() =
-                runTest {
-                    coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
-                        accountHasBeenCreated = true
-                    )
-
-                    every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(true)
-                    every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(false)
-                    every { readSharedPreferences.hasAccountBeenAuthenticated() } returns false
-
-                    Dispatchers.setMain(dispatcher)
-                    viewModel = SplashViewModel(
-                        navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        accountManager = accountManager,
-                        readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences,
-                        scope = scope
-                    )
-
-                    viewModel.navigateToPlayersListLoginOrAuthentication()
-
-                    coVerify {
-                        navigation.navigateToAuthentication(
-                            username = activeUser.username,
-                            email = activeUser.email
-                        )
-                    }
-                }
-
-            @OptIn(ExperimentalCoroutinesApi::class)
-            @Test
-            fun `when isLoggedIn is set to true, isEmailVerified set to true, accountHasBeenCreated is set to false and fields are not null should call navigateToAuthentication`() =
-                runTest {
-                    coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
-                        accountHasBeenCreated = false
-                    )
-
-                    every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(true)
-                    every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(true)
-                    every { readSharedPreferences.hasAccountBeenAuthenticated() } returns false
-
-                    Dispatchers.setMain(dispatcher)
-                    viewModel = SplashViewModel(
-                        navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        accountManager = accountManager,
-                        readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences,
-                        scope = scope
-                    )
-
-                    viewModel.navigateToPlayersListLoginOrAuthentication()
-
-                    coVerify {
-                        navigation.navigateToAuthentication(
-                            username = activeUser.username,
-                            email = activeUser.email
-                        )
-                    }
-                }
+        inner class NavigatePostAuthDestination {
 
             @OptIn(ExperimentalCoroutinesApi::class)
             @Test
@@ -229,7 +163,7 @@ class SplashViewModelTest {
                             email = any()
                         )
                     }
-                    verify { viewModel.navigateToLoginOrPlayersList(isLoggedIn = true, email = activeUser.email) }
+                    verify { viewModel.navigatePostAuthDestination(isLoggedIn = true, email = activeUser.email) }
                 }
 
             @OptIn(ExperimentalCoroutinesApi::class)
@@ -263,7 +197,7 @@ class SplashViewModelTest {
                             email = any()
                         )
                     }
-                    verify { viewModel.navigateToLoginOrPlayersList(isLoggedIn = true, email = activeUser.email) }
+                    verify { viewModel.navigatePostAuthDestination(isLoggedIn = true, email = activeUser.email) }
                 }
 
             @OptIn(ExperimentalCoroutinesApi::class)
@@ -356,6 +290,68 @@ class SplashViewModelTest {
 
                     coVerify { navigation.navigateToPlayersList() }
                 }
+        }
+
+        @Nested
+        inner class NavigateToPostAuthDestination {
+
+            @Test
+            fun `when shouldShowTermsAndConditions and isLoggedIn is set to true should navigate to terms and conditions`() {
+                val isLoggedIn = true
+                val email = "emailtest@gmail.com"
+
+                every { readSharedPreferences.shouldShowTermsAndConditions() } returns true
+
+                viewModel.navigatePostAuthDestination(isLoggedIn = isLoggedIn, email = email)
+
+                verify { navigation.navigateToTermsAndConditions() }
+
+                verify(exactly = 0) { navigation.navigateToPlayersList() }
+                verify(exactly = 0) { navigation.navigateToLogin() }
+            }
+
+            @Test
+            fun `when shouldShowTermsAndConditions is set to false, isLoggedIn set to true, end email is null should navigate to login`() {
+                val isLoggedIn = true
+
+                every { readSharedPreferences.shouldShowTermsAndConditions() } returns false
+
+                viewModel.navigatePostAuthDestination(isLoggedIn = isLoggedIn, email = null)
+
+                verify { navigation.navigateToLogin() }
+
+                verify(exactly = 0) { navigation.navigateToPlayersList() }
+                verify(exactly = 0) { navigation.navigateToTermsAndConditions() }
+            }
+
+            @Test
+            fun `when shouldShowTermsAndConditions is set to false, isLoggedIn set to true, end email is not null should navigate to players list`() {
+                val isLoggedIn = true
+                val email = "emailtest@gmail.com"
+
+                every { readSharedPreferences.shouldShowTermsAndConditions() } returns false
+
+                viewModel.navigatePostAuthDestination(isLoggedIn = isLoggedIn, email = email)
+
+                verify { navigation.navigateToPlayersList() }
+
+                verify(exactly = 0) { navigation.navigateToLogin() }
+                verify(exactly = 0) { navigation.navigateToTermsAndConditions() }
+            }
+
+            @Test
+            fun `when shouldShowTermsAndConditions is set to false and isLoggedIn set to false should navigate to login`() {
+                val isLoggedIn = false
+
+                every { readSharedPreferences.shouldShowTermsAndConditions() } returns false
+
+                viewModel.navigatePostAuthDestination(isLoggedIn = isLoggedIn, email = null)
+
+                verify { navigation.navigateToLogin() }
+
+                verify(exactly = 0) { navigation.navigateToPlayersList() }
+                verify(exactly = 0) { navigation.navigateToTermsAndConditions() }
+            }
         }
     }
 }
