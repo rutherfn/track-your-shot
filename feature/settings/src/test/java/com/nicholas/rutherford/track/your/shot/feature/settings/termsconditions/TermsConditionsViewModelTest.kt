@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.every
@@ -25,6 +26,8 @@ class TermsConditionsViewModelTest {
 
     private lateinit var termsConditionsViewModel: TermsConditionsViewModel
 
+    private var savedStateHandle = mockk<SavedStateHandle>(relaxed = true)
+
     private var navigation = mockk<TermsConditionsNavigation>(relaxed = true)
 
     private val application = mockk<Application>(relaxed = true)
@@ -40,6 +43,7 @@ class TermsConditionsViewModelTest {
     @BeforeEach
     fun beforeEach() {
         Dispatchers.setMain(dispatcher)
+
         every { application.getString(StringsIds.introduction) } returns "Introduction"
         every { application.getString(StringsIds.termsConditionsDescription) } returns "These terms and conditions (&quot;Agreement&quot;) set forth the general terms and conditions of your use of the &quot;Track Your Shot&quot; mobile application (&quot;Mobile Application&quot; or &quot;Service&quot;) and any of its related products and services (collectively, &quot;Services&quot;). This Agreement is legally binding between you (&quot;User&quot;, &quot;you&quot; or &quot;your&quot;) and Track Your Shot (&quot;Track Your Shot&quot;, &quot;we&quot;, &quot;us&quot; or &quot;our&quot;). If you are entering into this Agreement on behalf of a business or other legal entity, you represent that you have the authority to bind such entity to this Agreement, in which case the terms &quot;User&quot;, &quot;you&quot; or &quot;your&quot; shall refer to such entity. If you do not have such authority, or if you do not agree with the terms of this Agreement, you must not accept this Agreement and may not access and use the Mobile Application and Services. By accessing and using the Mobile Application and Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Agreement. You acknowledge that this Agreement is a contract between you and Track Your Shot, even though it is electronic and is not physically signed by you, and it governs your use of the Mobile Application and Services."
         every { application.getString(StringsIds.accounts) } returns "Accounts"
@@ -55,7 +59,10 @@ class TermsConditionsViewModelTest {
         every { application.getString(StringsIds.thisDocumentWasLastUpdatedOn) } returns "This document was last updated on November 9, 2024"
         every { application.getString(StringsIds.acknowledgeAndAgreeToTerms) } returns "Acknowledge / Agree To Terms"
 
+        every { savedStateHandle.get<Boolean>("shouldAcceptTerms") } returns false
+
         termsConditionsViewModel = TermsConditionsViewModel(
+            savedStateHandle = savedStateHandle,
             navigation = navigation,
             application = application,
             createSharedPreferences = createSharedPreferences,
@@ -107,6 +114,16 @@ class TermsConditionsViewModelTest {
 
     @Test
     fun `update info list state should update state`() {
+        every { savedStateHandle.get<Boolean>("shouldAcceptTerms") } returns true
+
+        termsConditionsViewModel = TermsConditionsViewModel(
+            savedStateHandle = savedStateHandle,
+            navigation = navigation,
+            application = application,
+            createSharedPreferences = createSharedPreferences,
+            scope = scope
+        )
+
         termsConditionsViewModel.updateInfoListState()
 
         val result = termsConditionsViewModel.termsConditionsStateFlow.value
@@ -135,7 +152,8 @@ class TermsConditionsViewModelTest {
                         title = "Contacting Us",
                         description = "If you have any questions, concerns, or complaints regarding this Agreement, we encourage you to contact us with the email below: "
                     )
-                )
+                ),
+                buttonText = "Acknowledge / Agree To Terms"
             )
         )
     }
@@ -144,8 +162,18 @@ class TermsConditionsViewModelTest {
     inner class UpdateButtonTextState {
 
         @Test
-        fun `when isAcknowledgeConditions is set to true should update button state`() {
-            termsConditionsViewModel.updateButtonTextState(isAcknowledgeConditions = true)
+        fun `when shouldAcceptTerms is set to true should update button state`() {
+            every { savedStateHandle.get<Boolean>("shouldAcceptTerms") } returns true
+
+            termsConditionsViewModel = TermsConditionsViewModel(
+                savedStateHandle = savedStateHandle,
+                navigation = navigation,
+                application = application,
+                createSharedPreferences = createSharedPreferences,
+                scope = scope
+            )
+
+            termsConditionsViewModel.updateButtonTextState()
 
             val result = termsConditionsViewModel.termsConditionsStateFlow.value
 
@@ -181,7 +209,7 @@ class TermsConditionsViewModelTest {
 
         @Test
         fun `when isAcknowledgeConditions is set to false should update button state`() {
-            termsConditionsViewModel.updateButtonTextState(isAcknowledgeConditions = false)
+            termsConditionsViewModel.updateButtonTextState()
 
             val result = termsConditionsViewModel.termsConditionsStateFlow.value
 
@@ -217,21 +245,64 @@ class TermsConditionsViewModelTest {
     }
 
     @Nested
-    inner class OnCloseAcceptButtonClicked {
+    inner class OnBackClicked {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
-        fun `when isAcknowledgeConditions is set to true should call navigate to player list`() = runTest {
-            Dispatchers.setMain(dispatcher)
+        fun `when shouldAcceptTermsParam is set to false should call navigate to settings`() {
+            every { savedStateHandle.get<Boolean>("shouldAcceptTerms") } returns false
 
             termsConditionsViewModel = TermsConditionsViewModel(
+                savedStateHandle = savedStateHandle,
                 navigation = navigation,
                 application = application,
                 createSharedPreferences = createSharedPreferences,
                 scope = scope
             )
 
-            termsConditionsViewModel.onCloseAcceptButtonClicked(isAcknowledgeConditions = true)
+            termsConditionsViewModel.onBackClicked()
+
+            verify { navigation.navigateToSettings() }
+            verify(exactly = 0) { navigation.finish() }
+        }
+
+        @Test
+        fun `when shouldAcceptTermsParam is set to true should call finish`() {
+            every { savedStateHandle.get<Boolean>("shouldAcceptTerms") } returns true
+
+            termsConditionsViewModel = TermsConditionsViewModel(
+                savedStateHandle = savedStateHandle,
+                navigation = navigation,
+                application = application,
+                createSharedPreferences = createSharedPreferences,
+                scope = scope
+            )
+
+            termsConditionsViewModel.onBackClicked()
+
+            verify { navigation.finish() }
+            verify(exactly = 0) { navigation.navigateToSettings() }
+        }
+    }
+
+    @Nested
+    inner class OnCloseAcceptButtonClicked {
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        @Test
+        fun `when shouldAcceptTermsParam is set to true should call navigate to player list`() = runTest {
+            Dispatchers.setMain(dispatcher)
+
+            every { savedStateHandle.get<Boolean>("shouldAcceptTerms") } returns true
+
+            termsConditionsViewModel = TermsConditionsViewModel(
+                savedStateHandle = savedStateHandle,
+                navigation = navigation,
+                application = application,
+                createSharedPreferences = createSharedPreferences,
+                scope = scope
+            )
+
+            termsConditionsViewModel.onCloseAcceptButtonClicked()
 
             delay(750L)
 
@@ -242,7 +313,7 @@ class TermsConditionsViewModelTest {
 
         @Test
         fun `when isAcknowledgeConditions is set to false should call navigate to player list`() {
-            termsConditionsViewModel.onCloseAcceptButtonClicked(isAcknowledgeConditions = false)
+            termsConditionsViewModel.onCloseAcceptButtonClicked()
 
             verify { navigation.navigateToSettings() }
         }

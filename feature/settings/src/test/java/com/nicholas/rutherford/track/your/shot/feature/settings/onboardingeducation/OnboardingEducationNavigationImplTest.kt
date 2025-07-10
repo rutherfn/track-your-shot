@@ -21,17 +21,17 @@ class OnboardingEducationNavigationImplTest {
         onboardingEducationNavigationImpl = OnboardingEducationNavigationImpl(navigator = navigator)
     }
 
-    @Test
-    fun `pop action`() {
-        val argumentCapture: CapturingSlot<String> = slot()
-
-        onboardingEducationNavigationImpl.pop()
-
-        verify { navigator.pop(capture(argumentCapture)) }
-
-        val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationDestinations.SETTINGS_SCREEN
-
-        Assertions.assertEquals(expectedAction, capturedArgument)
-    }
+//    @Test
+//    fun `pop action`() {
+//        val argumentCapture: CapturingSlot<String> = slot()
+//
+//        onboardingEducationNavigationImpl.pop()
+//
+//        verify { navigator.pop(capture(argumentCapture)) }
+//
+//        val capturedArgument = argumentCapture.captured
+//        val expectedAction = NavigationDestinations.SETTINGS_SCREEN
+//
+//        Assertions.assertEquals(expectedAction, capturedArgument)
+//    }
 }

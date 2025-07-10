@@ -3,6 +3,10 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
+/**
+ * Implementation of [TermsConditionsNavigation] using a [Navigator] to perform
+ * navigation via predefined [NavigationActions].
+ */
 class TermsConditionsNavigationImpl(private val navigator: Navigator) : TermsConditionsNavigation {
 
     override fun finish() = navigator.finish(finishAction = true)

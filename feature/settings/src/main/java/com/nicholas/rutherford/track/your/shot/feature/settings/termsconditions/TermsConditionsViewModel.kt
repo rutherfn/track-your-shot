@@ -14,6 +14,20 @@ import kotlinx.coroutines.launch
 
 const val DELAY_BEFORE_ONBOARDING = 750L
 
+/**
+ * ViewModel for managing the Terms & Conditions screen state and interactions.
+ *
+ * Responsibilities include:
+ * - Building and updating the list of terms sections displayed to the user.
+ * - Handling button text based on whether terms need to be accepted.
+ * - Navigating back, accepting terms, or sending user to the appropriate screens.
+ *
+ * @param savedStateHandle Used to retrieve arguments passed to the screen (e.g., `shouldAcceptTerms`).
+ * @param navigation Interface that defines navigation actions for this screen.
+ * @param application Provides access to localized string resources.
+ * @param createSharedPreferences Allows storing user's acknowledgement of terms.
+ * @param scope Coroutine scope for launching background tasks.
+ */
 class TermsConditionsViewModel(
     savedStateHandle: SavedStateHandle,
     private val navigation: TermsConditionsNavigation,
@@ -32,6 +46,9 @@ class TermsConditionsViewModel(
         updateButtonTextState()
     }
 
+    /**
+     * Builds and returns the list of terms and conditions sections.
+     */
     internal fun buildInfoList(): List<TermsConditionInfo> {
         return listOf(
             TermsConditionInfo(
@@ -57,6 +74,9 @@ class TermsConditionsViewModel(
         )
     }
 
+    /**
+     * Updates the state flow with the full list of terms and conditions sections.
+     */
     fun updateInfoListState() {
         termsConditionsMutableStateFlow.update {
             it.copy(
@@ -65,6 +85,10 @@ class TermsConditionsViewModel(
         }
     }
 
+    /**
+     * Updates the button text shown at the bottom of the screen,
+     * depending on whether the user is expected to accept terms.
+     */
     fun updateButtonTextState() {
         termsConditionsMutableStateFlow.update {
             it.copy(
@@ -77,6 +101,11 @@ class TermsConditionsViewModel(
         }
     }
 
+    /**
+     * Called when the back button is pressed.
+     *
+     * Navigates to the appropriate screen based on whether terms need to be accepted.
+     */
     fun onBackClicked() {
         if (shouldAcceptTermsParam) {
             navigation.finish()
@@ -85,6 +114,12 @@ class TermsConditionsViewModel(
         }
     }
 
+    /**
+     * Called when the close/accept button is clicked.
+     *
+     * - If user must accept terms: saves acceptance to preferences and navigates to onboarding.
+     * - Otherwise, simply returns to the settings screen.
+     */
     fun onCloseAcceptButtonClicked() {
         if (shouldAcceptTermsParam) {
             scope.launch {
@@ -99,7 +134,12 @@ class TermsConditionsViewModel(
         }
     }
 
+    /**
+     * Called when the user taps the developer support email link.
+     * Navigates to the user's email client with pre-filled developer email.
+     */
     fun onDevEmailClicked() {
         navigation.navigateToDevEmail(email = application.getString(StringsIds.devEmail))
     }
 }
+

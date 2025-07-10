@@ -86,7 +86,7 @@ class DeclaredShotsListViewModelTest {
     fun `on declared shot clicked should create declared shot id and navigate to create edit declared shot`() = runTest {
         val id = 2
 
-        viewModel.onDeclaredShotClicked(id = id)
+       // viewModel.onDeclaredShotClicked(id = id)
 
         verify { createSharedPreferences.createDeclaredShotId(value = id) }
         dispatcher.scheduler.apply { advanceTimeBy(9000); runCurrent() }

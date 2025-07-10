@@ -7,7 +7,6 @@ import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 object NavigationComponentExt {
 
     fun findViewModelByDestination(destination: String, viewModels: ViewModels): BaseViewModel? {
-        println("here is the destination $destination")
         return when {
             destination.contains(NavigationDestinations.SPLASH_SCREEN) -> viewModels.splashViewModel
             destination.contains(NavigationDestinations.CREATE_ACCOUNT_SCREEN) -> viewModels.createAccountViewModel

@@ -90,7 +90,7 @@ class SettingsNavigationImplTest {
         verify { navigator.navigate(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationActions.Settings.onboardingEducation()
+        val expectedAction = NavigationActions.Settings.onboardingEducation(isFirstTimeLaunched = false)
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }
