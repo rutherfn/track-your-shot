@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -51,20 +50,35 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+/**
+ * Displays the main screen for the list of players.
+ *
+ * This composable shows either the list of players or an empty state UI if no players are available.
+ *
+ * @param playerListScreenParams Contains the screen state and callbacks used to interact with the screen.
+ */
 @Composable
 fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
     val isPlayerListEmpty = playerListScreenParams.state.playerList.isEmpty()
 
     if (!isPlayerListEmpty) {
-        PlayerList(playerListScreenParams = playerListScreenParams)
+        PlayerListContent(playerListScreenParams = playerListScreenParams)
     } else {
-        AddNewPlayerEmptyState()
+        AddNewPlayerEmptyStateContent()
     }
 }
 
+/**
+ * Displays the list of player cards and a bottom sheet for player-related actions.
+ *
+ * This content is shown when the player list is not empty. Each player can be clicked
+ * to open a modal bottom sheet with actionable options.
+ *
+ * @param playerListScreenParams The parameters required for rendering and interacting with the player list.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PlayerList(playerListScreenParams: PlayersListScreenParams) {
+private fun PlayerListContent(playerListScreenParams: PlayersListScreenParams) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
@@ -96,6 +110,16 @@ private fun PlayerList(playerListScreenParams: PlayersListScreenParams) {
     )
 }
 
+/**
+ * Displays a single player item as a card.
+ *
+ * The card shows the player’s image, name, and position. Clicking the card opens the bottom sheet.
+ *
+ * @param player The player data to display.
+ * @param onPlayerClicked Callback when a player is selected.
+ * @param sheetState Controls the visibility of the bottom sheet.
+ * @param scope Coroutine scope to launch showing the sheet.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PlayerItem(
@@ -135,7 +159,7 @@ private fun PlayerItem(
                 modifier = Modifier
                     .size(36.dp)
                     .clip(CircleShape)
-                    .background(AppColors.OffWhite) // subtle image frame
+                    .background(AppColors.OffWhite)
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -156,7 +180,7 @@ private fun PlayerItem(
                 }
 
                 Text(
-                    text = "Tap for more",
+                    text = stringResource(StringsIds.tapForMore),
                     style = TextStyles.body,
                     color = Color.Gray
                 )
@@ -165,9 +189,13 @@ private fun PlayerItem(
     }
 }
 
-
+/**
+ * Displays the empty state when no players are available.
+ *
+ * This UI encourages users to add a new player to their list.
+ */
 @Composable
-private fun AddNewPlayerEmptyState() {
+private fun AddNewPlayerEmptyStateContent() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -202,6 +230,9 @@ private fun AddNewPlayerEmptyState() {
     }
 }
 
+/**
+ * Preview of [PlayersListScreen] with players present.
+ */
 @Composable
 @Preview
 private fun PlayersListScreenWithItemsPreview() {
@@ -228,6 +259,9 @@ private fun PlayersListScreenWithItemsPreview() {
     )
 }
 
+/**
+ * Preview of [PlayersListScreen] in the empty state when no players exist.
+ */
 @Composable
 @Preview
 fun PlayerListScreenEmptyStatePreview() {

@@ -254,6 +254,7 @@ object StringsIds {
     val splashIconDescription = R.string.splash_icon_description
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
     val takeAPicture = R.string.take_a_picture
+    val tapForMore = R.string.tap_for_more
     val termsConditions = R.string.terms_conditions
     val termsConditionsDescription = R.string.terms_conditions_description
     val trackYourProgress = R.string.track_your_progress

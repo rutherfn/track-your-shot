@@ -10,6 +10,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,9 +36,7 @@ import androidx.compose.ui.res.stringResource
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.compose.components.BottomSheetWithOptions
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.CoreTextField
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.PositionChooser
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.ShotsContent
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.UploadPlayerImageContent
@@ -48,23 +47,49 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+/**
+ * Composable screen used to either create a new player or edit an existing player.
+ *
+ * It provides UI for inputting a player's general information, selecting their position, uploading
+ * an image, and logging/viewing shots. Also handles user interactions such as selecting images
+ * from camera or gallery and showing a bottom sheet for image upload options.
+ *
+ * @param createEditPlayerParams All state and callback parameters required to drive the screen.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
+    BackHandler(true) {
+        createEditPlayerParams.onToolbarMenuClicked()
+    }
+
+    CreateEditPlayerContent(createEditPlayerParams = createEditPlayerParams)
+}
+
+/**
+ * Core content of the Create/Edit Player screen that manages camera/gallery launchers,
+ * permission requests, and the bottom sheet for image actions.
+ *
+ * @param createEditPlayerParams All state and callback parameters for managing player creation/editing.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CreateEditPlayerContent(createEditPlayerParams: CreateEditPlayerParams) {
     val bottomState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var hasUploadedImage by remember { mutableStateOf(false) }
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
     var shouldAskForCameraPermission by remember { mutableStateOf(value = false) }
     val context = LocalContext.current
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap ->
-        hasUploadedImage = bitmap != null || imageUri != null
-        imageUri = bitmap?.let { getImageUri(context = context, image = it) }
-            ?: imageUri
+        hasUploadedImage = bitmap != null || createEditPlayerParams.state.imageUri != null
+        createEditPlayerParams.updateImageUriState.invoke(
+            bitmap?.let { getImageUri(context = context, image = it) } ?: run { null }
+        )
     }
+
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
@@ -75,77 +100,66 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
             }
         }
     )
+
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
-            hasUploadedImage = uri != null || imageUri != null
-            imageUri = uri ?: imageUri
+            hasUploadedImage = uri != null || createEditPlayerParams.state.imageUri != null
+            createEditPlayerParams.updateImageUriState.invoke(uri)
         }
     )
 
-    if (shouldAskForCameraPermission) {
-        cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-        shouldAskForCameraPermission = false
+    LaunchedEffect(shouldAskForCameraPermission) {
+        if (shouldAskForCameraPermission) {
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+            shouldAskForCameraPermission = false
+        }
     }
 
-    BackHandler(true) {
-        createEditPlayerParams.onToolbarMenuClicked()
-    }
 
-    LaunchedEffect(Unit) {
-        createEditPlayerParams.checkForExistingPlayer()
-    }
-
-    Content(
-        ui = {
-            BottomSheetWithOptions(
-                sheetState = bottomState,
-                sheetInfo = createEditPlayerParams.state.sheet,
-                onSheetItemClicked = { value, _ ->
-                    scope.launch { bottomState.hide() }
-                    handleBottomSheetSelection(
-                        value = value,
-                        context = context,
-                        cameraLauncher = cameraLauncher,
-                        singlePhotoPickerLauncher = singlePhotoPickerLauncher,
-                        createEditPlayerParams = createEditPlayerParams,
-                        shouldAskForCameraPermission = { shouldAskForCameraPermission = it },
-                        resetImageState = {
-                            imageUri = null
-                            hasUploadedImage = false
-                            createEditPlayerParams.onClearImageState()
-                        }
-                    )
-                },
-                onCancelItemClicked = { scope.launch { bottomState.hide() } },
-                content = {
-                    CreateEditPlayerUi(
-                        createEditPlayerParams = createEditPlayerParams,
-                        hasUploadedImage = hasUploadedImage,
-                        scope = scope,
-                        bottomState = bottomState,
-                        imageUri = imageUri
-                    )
+    BottomSheetWithOptions(
+        sheetState = bottomState,
+        sheetInfo = createEditPlayerParams.state.sheet,
+        onSheetItemClicked = { value, _ ->
+            scope.launch { bottomState.hide() }
+            handleBottomSheetSelection(
+                value = value,
+                context = context,
+                cameraLauncher = cameraLauncher,
+                singlePhotoPickerLauncher = singlePhotoPickerLauncher,
+                createEditPlayerParams = createEditPlayerParams,
+                shouldAskForCameraPermission = { shouldAskForCameraPermission = it },
+                resetImageState = {
+                    createEditPlayerParams.updateImageUriState.invoke(null)
+                    hasUploadedImage = false
+                    createEditPlayerParams.onClearImageState()
                 }
-
             )
         },
-        appBar = AppBar(
-            toolbarTitle = stringResource(id = createEditPlayerParams.state.toolbarNameResId),
-            shouldShowMiddleContentAppBar = false,
-            shouldIncludeSpaceAfterDeclaration = false,
-            shouldShowSecondaryButton = true,
-            onIconButtonClicked = {
-                createEditPlayerParams.onToolbarMenuClicked.invoke()
-            },
-            onSecondaryIconButtonClicked = {
-                createEditPlayerParams.onCreatePlayerClicked.invoke(imageUri)
-            }
-        ),
-        secondaryIconTint = AppColors.White
+        onCancelItemClicked = { scope.launch { bottomState.hide() } },
+        content = {
+            CreateEditPlayerUi(
+                createEditPlayerParams = createEditPlayerParams,
+                hasUploadedImage = hasUploadedImage,
+                scope = scope,
+                bottomState = bottomState,
+                imageUri = createEditPlayerParams.state.imageUri
+            )
+        }
     )
 }
 
+/**
+ * Handles selection from the image picker bottom sheet.
+ *
+ * @param value The selected item string.
+ * @param context The current Android context.
+ * @param cameraLauncher Launcher for taking a picture with the camera.
+ * @param singlePhotoPickerLauncher Launcher for picking an image from the gallery.
+ * @param createEditPlayerParams Parameter holder with UI and callback state.
+ * @param shouldAskForCameraPermission Callback to trigger camera permission request.
+ * @param resetImageState Callback to clear the current image state and reset upload state.
+ */
 private fun handleBottomSheetSelection(
     value: String,
     context: Context,
@@ -170,6 +184,16 @@ private fun handleBottomSheetSelection(
     }
 }
 
+/**
+ * UI layout for the Create/Edit Player form. Includes fields for name input, position selection,
+ * image upload, and logged/pending shots display.
+ *
+ * @param createEditPlayerParams Parameters and state used to bind UI to the ViewModel.
+ * @param hasUploadedImage Boolean flag to indicate if an image has been uploaded.
+ * @param scope Coroutine scope used for launching sheet-related actions.
+ * @param bottomState Sheet state for controlling the image options bottom sheet.
+ * @param imageUri The current image URI if an image is selected.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CreateEditPlayerUi(
@@ -183,6 +207,7 @@ private fun CreateEditPlayerUi(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
+            .background(AppColors.White)
             .padding(
                 start = Padding.twenty,
                 end = Padding.twenty,
@@ -220,7 +245,7 @@ private fun CreateEditPlayerUi(
 
         Spacer(modifier = Modifier.height(Padding.sixteen))
 
-        PositionChooser(createEditPlayerParams = createEditPlayerParams)
+        PositionChooser(onPlayerPositionStringChanged = createEditPlayerParams.onPlayerPositionStringChanged)
 
         Spacer(modifier = Modifier.height(Padding.sixteen))
 
@@ -248,3 +273,4 @@ private fun CreateEditPlayerUi(
         )
     }
 }
+

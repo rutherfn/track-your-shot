@@ -6,6 +6,10 @@ import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
+/**
+ * Implementation of [PlayersListNavigation] using a [Navigator] to perform
+ * navigation via predefined [NavigationActions].
+ */
 class PlayersListNavigationImpl(private val navigator: Navigator) : PlayersListNavigation {
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
     override fun disableProgress() = navigator.progress(progressAction = null)
@@ -19,7 +23,7 @@ class PlayersListNavigationImpl(private val navigator: Navigator) : PlayersListN
                 )
             )
         } ?: run {
-            navigator.navigate(navigationAction = NavigationActions.PlayersList.createEditPlayer())
+            navigator.navigate(navigationAction = NavigationActions.PlayersList.createEditPlayerWithParams(firstName = "", lastName = ""))
         }
     }
 

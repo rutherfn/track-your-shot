@@ -1,9 +1,13 @@
 package com.nicholas.rutherford.track.your.shot
 
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.nicholas.rutherford.track.your.shot.base.vm.ObserveLifecycle
+import com.nicholas.rutherford.track.your.shot.compose.components.AppBar2
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationScreen
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountScreen
@@ -15,6 +19,12 @@ import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPas
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreen
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerScreen
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreen
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
@@ -24,15 +34,51 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
+import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArguments
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 /**
  * Defines navigation destinations and composable screens for the app.
  *
- * Contains functions to add screens to the navigation graph.
+ * This object holds navigation functions used to add screens to the navigation graph.
+ * It also manages the dynamic AppBar for each screen via a shared [AppBar2] instance.
+ *
+ * ## App Bar Management
+ * - [currentAppBar] is a [mutableStateOf] object that holds the current top app bar ([AppBar2]).
+ * - [updateAppBar] allows any screen to update the visible app bar.
+ *
+ * The current app bar is meant to be rendered at the top of your app layout (e.g., in your `MainScreen()`).
+ * Each screen is responsible for setting the appropriate app bar using an [AppBarFactory] implementation.
+ *
+ * Example usage from a screen:
+ *
+ * ```kotlin
+ * val viewModel: MyViewModel = koinViewModel()
+ * val appBarFactory: AppBarFactory = koinInject()
+ *
+ * ObserveLifecycle(viewModel)
+ * updateAppBar(appBarFactory.createXAppBar(viewModel))
+ * ```
  */
 object AppNavigationGraph {
+
+    /**
+     * Holds the currently displayed AppBar.
+     * Should be observed and rendered from the top-level UI (e.g. [NavigationComponent]).
+     */
+    var currentAppBar by mutableStateOf<AppBar2?>(null)
+        private set
+
+    /**
+     * Call this function from within a screen to set or update the AppBar.
+     *
+     * @param appBar The [AppBar2] to display or null to hide the app bar.
+     */
+    fun updateAppBar(appBar: AppBar2?) {
+        currentAppBar = appBar
+    }
 
     /**
      * Adds the Splash Screen destination to the NavGraph.
@@ -44,6 +90,7 @@ object AppNavigationGraph {
             val splashViewModel: SplashViewModel = koinViewModel()
 
             ObserveLifecycle(viewModel = splashViewModel)
+            updateAppBar(appBar = null)
 
             SplashScreen()
         }
@@ -58,8 +105,10 @@ object AppNavigationGraph {
     fun NavGraphBuilder.loginScreen() {
         composable(route = NavigationDestinations.LOGIN_SCREEN) {
             val loginViewModel: LoginViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
 
             ObserveLifecycle(viewModel = loginViewModel)
+            updateAppBar(appBar = appBarFactory.createLoginAppBar())
 
             LoginScreen(
                 loginScreenParams = LoginScreenParams(
@@ -93,8 +142,10 @@ object AppNavigationGraph {
     fun NavGraphBuilder.forgotPasswordScreen() {
         composable(route = NavigationDestinations.FORGOT_PASSWORD_SCREEN) {
             val forgotPasswordViewModel: ForgotPasswordViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
 
             ObserveLifecycle(viewModel = forgotPasswordViewModel)
+            updateAppBar(appBar = appBarFactory.createForgotPasswordAppBar(viewModel = forgotPasswordViewModel))
 
             ForgotPasswordScreen(
                 forgotPasswordScreenParams = ForgotPasswordScreenParams(
@@ -124,8 +175,10 @@ object AppNavigationGraph {
     fun NavGraphBuilder.createAccountScreen(isConnectedToInternet: Boolean) {
         composable(route = NavigationDestinations.CREATE_ACCOUNT_SCREEN) {
             val createAccountViewModel: CreateAccountViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
 
             ObserveLifecycle(viewModel = createAccountViewModel)
+            updateAppBar(appBar = appBarFactory.createAccountAppBar(viewModel = createAccountViewModel))
 
             CreateAccountScreen(
                 createAccountScreenParams = CreateAccountScreenParams(
@@ -168,12 +221,12 @@ object AppNavigationGraph {
             arguments = NavArguments.authentication
         ) { entry ->
             val authenticationScreenViewModel: AuthenticationViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
 
             ObserveLifecycle(viewModel = authenticationScreenViewModel)
+            updateAppBar(appBar = appBarFactory.createAuthenticationAppBar(viewModel = authenticationScreenViewModel))
 
-            if (entry.arguments != null) {
-                AuthenticationScreen(viewModel = authenticationScreenViewModel)
-            }
+            AuthenticationScreen(viewModel = authenticationScreenViewModel)
         }
     }
 
@@ -190,19 +243,19 @@ object AppNavigationGraph {
             arguments = NavArguments.termsConditions
         ) { entry ->
             val termsConditionsViewModel: TermsConditionsViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
 
             ObserveLifecycle(viewModel = termsConditionsViewModel)
+            updateAppBar(appBar = appBarFactory.createTermsAndConditionsAppBar())
 
-            if (entry.arguments != null) {
-                TermsConditionsScreen(
-                    params = TermsConditionsParams(
-                        onBackClicked = { termsConditionsViewModel.onBackClicked() },
-                        onCloseAcceptButtonClicked = { termsConditionsViewModel.onCloseAcceptButtonClicked() },
-                        onDevEmailClicked = { termsConditionsViewModel.onDevEmailClicked() },
-                        state = termsConditionsViewModel.termsConditionsStateFlow.collectAsState().value
-                    )
+            TermsConditionsScreen(
+                params = TermsConditionsParams(
+                    onBackClicked = { termsConditionsViewModel.onBackClicked() },
+                    onCloseAcceptButtonClicked = { termsConditionsViewModel.onCloseAcceptButtonClicked() },
+                    onDevEmailClicked = { termsConditionsViewModel.onDevEmailClicked() },
+                    state = termsConditionsViewModel.termsConditionsStateFlow.collectAsState().value
                 )
-            }
+            )
         }
     }
 
@@ -218,18 +271,116 @@ object AppNavigationGraph {
             route = NavigationDestinations.ONBOARDING_EDUCATION_SCREEN_WITH_PARAMS,
             arguments = NavArguments.onBoardingEducation
         ) { entry ->
+            val isFirstTimeLaunched = entry.arguments?.getBoolean(NamedArguments.IS_FIRST_TIME_LAUNCHED) ?: false
             val onboardingEducationViewModel: OnboardingEducationViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
 
             ObserveLifecycle(viewModel = onboardingEducationViewModel)
+            updateAppBar(appBar = appBarFactory.createOnboardingEducationAppBar(viewModel = onboardingEducationViewModel, isFirstTimeLaunched = isFirstTimeLaunched))
 
-            if (entry.arguments != null) {
-                OnboardingEducationScreen(
-                    onboardingEducationParams = OnboardingEducationParams(
-                        onGotItButtonClicked = { onboardingEducationViewModel.onGotItButtonClicked() },
-                        state = onboardingEducationViewModel.onboardingEducationStateFlow.collectAsState().value
+            OnboardingEducationScreen(
+                onboardingEducationParams = OnboardingEducationParams(
+                    onGotItButtonClicked = { onboardingEducationViewModel.onGotItButtonClicked() },
+                    state = onboardingEducationViewModel.onboardingEducationStateFlow.collectAsState().value
+                )
+            )
+        }
+    }
+
+        /**
+         * Adds the Players List Screen destination to the NavGraph.
+         *
+         * Retrieves [PlayersListViewModel] via Koin and observes its lifecycle.
+         * Collects UI state from the ViewModel and passes event callbacks to [PlayersListScreen].
+         * Displays the [PlayersListScreen] composable.
+         *
+         * @param isConnectedToInternet [Boolean] to determine if the device is currently connected to the internet.
+         */
+        fun NavGraphBuilder.playersListScreen(isConnectedToInternet: Boolean) {
+            composable(route = NavigationDestinations.PLAYERS_LIST_SCREEN) {
+                val playersListViewModel: PlayersListViewModel = koinViewModel()
+                val appBarFactory: AppBarFactory = koinInject()
+
+                ObserveLifecycle(viewModel = playersListViewModel)
+                updateAppBar(appBar = appBarFactory.createPlayersListAppBar(viewModel = playersListViewModel))
+
+                PlayersListScreen(
+                    playerListScreenParams = PlayersListScreenParams(
+                        state = playersListViewModel.playerListStateFlow.collectAsState().value,
+                        onToolbarMenuClicked = { playersListViewModel.onToolbarMenuClicked() },
+                        updatePlayerListState = { playersListViewModel.updatePlayerListState() },
+                        onAddPlayerClicked = { playersListViewModel.onAddPlayerClicked() },
+                        onPlayerClicked = { player ->
+                            playersListViewModel.onPlayerClicked(
+                                player = player
+                            )
+                        },
+                        onSheetItemClicked = { index ->
+                            playersListViewModel.onSheetItemClicked(
+                                isConnectedToInternet = isConnectedToInternet,
+                                index = index
+                            )
+                        }
                     )
                 )
             }
+        }
+
+    fun NavGraphBuilder.createOrEditPlayerScreen(isConnectedToInternet: Boolean) {
+        composable(
+            route = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS,
+            arguments = NavArguments.createEditPlayer
+        ) { entry ->
+            val firstName = entry.arguments?.getString(NamedArguments.FIRST_NAME) ?: ""
+            val lastName = entry.arguments?.getString(NamedArguments.LAST_NAME) ?: ""
+            val isEditable = firstName.isNotEmpty() && lastName.isNotEmpty()
+            val createEditPlayerViewModel: CreateEditPlayerViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
+            val createEditPlayerParams = CreateEditPlayerParams(
+                state = createEditPlayerViewModel.createEditPlayerStateFlow.collectAsState().value,
+                updateImageUriState = { uri -> createEditPlayerViewModel.updateImageUriState(uri = uri) },
+                onClearImageState = { createEditPlayerViewModel.onClearImageState() },
+                onToolbarMenuClicked = { createEditPlayerViewModel.onToolbarMenuClicked() },
+                onLogShotsClicked = { createEditPlayerViewModel.onLogShotsClicked() },
+                onFirstNameValueChanged = { newFirstName ->
+                    createEditPlayerViewModel.onFirstNameValueChanged(
+                        newFirstName = newFirstName
+                    )
+                },
+                onLastNameValueChanged = { newLastName ->
+                    createEditPlayerViewModel.onLastNameValueChanged(
+                        newLastName = newLastName
+                    )
+                },
+                onPlayerPositionStringChanged = { newPositionStringResId ->
+                    createEditPlayerViewModel.onPlayerPositionStringChanged(
+                        newPositionStringResId
+                    )
+                },
+                onImageUploadClicked = { uri -> createEditPlayerViewModel.onImageUploadClicked(uri) },
+                onCreatePlayerClicked = { createEditPlayerViewModel.onCreatePlayerClicked(isConnectedToInternet) },
+                permissionNotGrantedForCameraAlert = { createEditPlayerViewModel.permissionNotGrantedForCameraAlert() },
+                onSelectedCreateEditImageOption = { option ->
+                    createEditPlayerViewModel.onSelectedCreateEditImageOption(option)
+                },
+                onViewShotClicked = { shotType, shotId ->
+                    createEditPlayerViewModel.onViewShotClicked(
+                        shotType = shotType,
+                        shotId = shotId
+                    )
+                },
+                onViewPendingShotClicked = { shotType, shotId ->
+                    createEditPlayerViewModel.onViewPendingShotClicked(
+                        shotType = shotType,
+                        shotId = shotId
+                    )
+                }
+            )
+
+            ObserveLifecycle(viewModel = createEditPlayerViewModel)
+            updateAppBar(appBar = appBarFactory.createEditPlayerAppBar(params = createEditPlayerParams, isEditable = isEditable))
+
+            CreateEditPlayerScreen(createEditPlayerParams = createEditPlayerParams)
         }
     }
 }

@@ -26,6 +26,7 @@ object NavigationComponentExt {
             destination.contains(NavigationDestinations.ONBOARDING_EDUCATION_SCREEN) -> viewModels.onboardingEducationViewModel
             destination.contains(NavigationDestinations.TERMS_CONDITIONS_SCREEN) -> viewModels.termsConditionsViewModel
             destination.contains(NavigationDestinations.ACCOUNT_INFO_SCREEN) -> viewModels.accountInfoViewModel
+            destination.contains(NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN) -> viewModels.createEditPlayerViewModel
             else -> null
         }
     }
@@ -39,6 +40,33 @@ object NavigationComponentExt {
             ?.toBooleanStrictOrNull() ?: false
     }
 
+    fun buildIsEditable(route: String): Boolean {
+        val queryParams = route.substringAfter("?", "")
+            .split("&")
+            .mapNotNull { param ->
+                val parts = param.split("=")
+                if (parts.size == 2) {
+                    val key = parts[0]
+                    val value = parts[1]
+                    key to value
+                } else {
+                    null
+                }
+            }
+            .toMap()
+
+        val firstName = queryParams["firstName"].orEmpty()
+        val lastName = queryParams["lastName"].orEmpty()
+
+        return if (firstName.isNotBlank() && lastName.isNotBlank()) {
+            true
+        } else {
+            false
+        }
+    }
+
+
+
     fun buildAppBarBasedOnScreen(
         destination: String,
         viewModel: BaseViewModel,
@@ -49,7 +77,7 @@ object NavigationComponentExt {
         return when (viewModel) {
             viewModels.splashViewModel -> null
             viewModels.loginViewModel -> appBarFactory.createLoginAppBar()
-            viewModels.createAccountViewModel -> appBarFactory.createCreateAccountAppBar(viewModel = viewModels.createAccountViewModel)
+            viewModels.createAccountViewModel -> appBarFactory.createAccountAppBar(viewModel = viewModels.createAccountViewModel)
             viewModels.forgotPasswordViewModel -> appBarFactory.createForgotPasswordAppBar(viewModel = viewModels.forgotPasswordViewModel)
             viewModels.authenticationViewModel -> appBarFactory.createAuthenticationAppBar(viewModel = viewModels.authenticationViewModel)
             viewModels.playersListViewModel -> appBarFactory.createPlayersListAppBar(viewModel = viewModels.playersListViewModel)
@@ -63,7 +91,7 @@ object NavigationComponentExt {
             viewModels.declaredShotsListViewModel -> appBarFactory.createDeclaredShotsListAppBar(params = viewModelParams.declaredShotsListScreenParams)
             viewModels.createEditDeclaredShotsViewModel -> appBarFactory.createCreateEditDeclaredShotAppBar(params = viewModelParams.createEditDeclaredShotParams)
             viewModels.accountInfoViewModel -> appBarFactory.createAccountInfoAppBar(viewModel = viewModels.accountInfoViewModel)
-
+            viewModels.createEditPlayerViewModel -> appBarFactory.createEditPlayerAppBar(params = viewModelParams.createEditPlayerParams, isEditable = buildIsEditable(route = destination))
             else -> appBarFactory.createDefaultAppBar()
         }
     }

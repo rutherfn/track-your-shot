@@ -372,8 +372,9 @@ class AppModule {
                 createSharedPreferences = get()
             )
         }
-        viewModel {
+        viewModel { (stateHandle: SavedStateHandle) ->
             CreateEditPlayerViewModel(
+                savedStateHandle = stateHandle,
                 application = androidApplication(),
                 deleteFirebaseUserInfo = get(),
                 createFirebaseUserInfo = get(),

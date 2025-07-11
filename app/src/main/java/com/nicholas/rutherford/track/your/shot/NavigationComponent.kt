@@ -30,13 +30,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.authenticationScreen
-import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createAccountScreen
-import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.forgotPasswordScreen
-import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.loginScreen
-import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.onBoardingEducationScreen
-import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.splashScreen
-import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.termsAndConditionScreen
 import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.buildAppBarBasedOnScreen
 import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.buildModalDrawerGesturesEnabled
 import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.findViewModelByDestination
@@ -51,9 +44,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationScreen
-import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreen
-import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotParams
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotParams
@@ -69,12 +60,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredsh
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationParams
-import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationScreen
-import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsParams
-import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsScreen
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreen
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
@@ -158,8 +145,8 @@ fun NavigationComponent(
     var datePicker: DatePickerInfo? by remember { mutableStateOf(value = null) }
     var inputInfo: InputInfo? by remember { mutableStateOf(value = null) }
     var progress: Progress? by remember { mutableStateOf(value = null) }
-    var appBar: AppBar2? by remember { mutableStateOf(value = null) }
     var modalDrawerGesturesEnabled: Boolean by remember { mutableStateOf(value = false) }
+    val appBar = AppNavigationGraph.currentAppBar
 
     val screenContents = ScreenContents()
 
@@ -274,15 +261,6 @@ fun NavigationComponent(
         state = settingsViewModel.settingsStateFlow.collectAsState().value
     )
 
-    val viewModelParams = ViewModelsParams(
-        reportListParams = reportListParams,
-        shotListParams = shotsListScreenParams,
-        enabledPermissionsParams = enabledPermissionsParams,
-        declaredShotsListScreenParams = declaredShotsListScreenParams,
-        createEditDeclaredShotParams = createEditDeclaredScreenParams,
-        settingsParams = settingsParams
-    )
-
     val isConnectedToInternet = mainActivityViewModel.isConnected.collectAsState().value
 
     LaunchedEffect(alertState) {
@@ -358,7 +336,6 @@ fun NavigationComponent(
 
             if (test != null) {
                 test.onNavigatedTo()
-                appBar = buildAppBarBasedOnScreen(it.destination,test, viewModels, viewModelParams, appBarFactory = appBarFactory)
                 modalDrawerGesturesEnabled = buildModalDrawerGesturesEnabled(viewModel = test, viewModels = viewModels)
             }
            // findViewModelByDestination(destination = it.destination)?.first?.onNavigatedTo()
@@ -384,13 +361,6 @@ fun NavigationComponent(
 
                 if (test != null) {
                     test.onNavigatedTo()
-                    appBar = buildAppBarBasedOnScreen(
-                        route,
-                        test,
-                        viewModels = viewModels,
-                        viewModelParams,
-                        appBarFactory = appBarFactory
-                    )
                 }
             }
             navigator.pop(popRouteAction = null) // need to set this to null to listen to next pop action
@@ -451,7 +421,7 @@ fun NavigationComponent(
 
                             if (test != null) {
                                 test.onNavigatedTo()
-                                appBar = buildAppBarBasedOnScreen(route,test, viewModels = viewModels, viewModelParams, appBarFactory = appBarFactory)
+                                //appBar = buildAppBarBasedOnScreen(route,test, viewModels = viewModels, viewModelParams, appBarFactory = appBarFactory)
                                 modalDrawerGesturesEnabled =buildModalDrawerGesturesEnabled(viewModel = test, viewModels = viewModels)
                             }
                         }
@@ -510,34 +480,10 @@ fun NavigationComponent(
                         .padding(paddingValues),
                     startDestination = NavigationDestinations.SPLASH_SCREEN
                 ) {
-                    this.splashScreen()
-                    this.loginScreen()
-                    this.forgotPasswordScreen()
-                    this.createAccountScreen(isConnectedToInternet = isConnectedToInternet)
-                    this.authenticationScreen()
-                    this.termsAndConditionScreen()
-                    this.onBoardingEducationScreen()
-                    composable(route = NavigationDestinations.PLAYERS_LIST_SCREEN) {
-                        PlayersListScreen(
-                            playerListScreenParams = PlayersListScreenParams(
-                                state = playersListViewModel.playerListStateFlow.collectAsState().value,
-                                onToolbarMenuClicked = { playersListViewModel.onToolbarMenuClicked() },
-                                updatePlayerListState = { playersListViewModel.updatePlayerListState() },
-                                onAddPlayerClicked = { playersListViewModel.onAddPlayerClicked() },
-                                onPlayerClicked = { player ->
-                                    playersListViewModel.onPlayerClicked(
-                                        player = player
-                                    )
-                                },
-                                onSheetItemClicked = { index ->
-                                    playersListViewModel.onSheetItemClicked(
-                                        isConnectedToInternet = isConnectedToInternet,
-                                        index = index
-                                    )
-                                }
-                            )
-                        )
-                    }
+                    AppNavigationRegistry.registerAll(
+                        navGraphBuilder = this,
+                        isConnectedToInternet = isConnectedToInternet
+                    )
                     composable(
                         route = NavigationDestinations.SHOTS_LIST_SCREEN_WITH_PARAMS,
                         arguments = NavArguments.shotsList
@@ -558,28 +504,6 @@ fun NavigationComponent(
                                     ?: false
                             )
                         )
-                    }
-                    composable(
-                        route = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS,
-                        arguments = NavArguments.createEditPlayer
-                    ) { entry ->
-                        val firstNameArgument =
-                            entry.arguments?.getString(NamedArguments.FIRST_NAME)
-                        val lastNameArgument = entry.arguments?.getString(NamedArguments.LAST_NAME)
-                        screenContents.createEditPlayerContent(
-                            isConnectedToInternet = isConnectedToInternet,
-                            firstNameArgument = firstNameArgument,
-                            lastNameArgument = lastNameArgument,
-                            createEditPlayerViewModel = createEditPlayerViewModel
-                        )(entry)
-                    }
-                    composable(route = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN) { entry ->
-                        screenContents.createEditPlayerContent(
-                            isConnectedToInternet = isConnectedToInternet,
-                            firstNameArgument = null,
-                            lastNameArgument = null,
-                            createEditPlayerViewModel = createEditPlayerViewModel
-                        )(entry)
                     }
                     composable(
                         route = NavigationDestinations.SELECT_SHOT_SCREEN_WITH_PARAMS,

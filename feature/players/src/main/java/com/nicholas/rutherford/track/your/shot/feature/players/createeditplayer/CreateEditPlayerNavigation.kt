@@ -3,6 +3,9 @@ package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 
+/**
+ * Defines navigation actions available from the create edit player screen.
+ */
 interface CreateEditPlayerNavigation {
     fun alert(alert: Alert)
     fun appSettings()

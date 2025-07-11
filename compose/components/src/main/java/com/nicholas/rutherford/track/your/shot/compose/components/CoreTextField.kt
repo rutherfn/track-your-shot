@@ -1,36 +1,31 @@
 package com.nicholas.rutherford.track.your.shot.compose.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
-import androidx.compose.foundation.text.BasicTextField as TextField
 
 /**
- * Default [TextField] with custom functionality to be reused
+ * A reusable [OutlinedTextField] with consistent styling and behavior for text input.
  *
- * @param value defined value that is the body text inside the [TextField]
- * @param onValueChange executes whenever the value is changed from the [TextField] gets the new value
- * @param placeholderValue defined value used for setting a placeholder when [value] is empty
+ * This field includes a placeholder, handles the "Done" keyboard action by clearing focus,
+ * and applies custom colors and rounded styling to match the app's design system.
+ *
+ * @param value The current text shown in the field.
+ * @param onValueChange Callback invoked with the updated text when the input changes.
+ * @param placeholderValue The placeholder text shown when [value] is empty.
  */
 @Composable
 fun CoreTextField(
@@ -38,60 +33,39 @@ fun CoreTextField(
     onValueChange: (String) -> Unit,
     placeholderValue: String
 ) {
-    var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
-    var shouldClearFocus by remember { mutableStateOf(false) }
 
-    val interactionSource = remember { MutableInteractionSource() }
-
-    val color = if (isFocused) {
-        AppColors.Orange
-    } else {
-        AppColors.Black
-    }
-
-    if (shouldClearFocus) {
-        LocalFocusManager.current.clearFocus()
-        shouldClearFocus = false
-    }
-
-    TextField(
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
         modifier = Modifier
             .fillMaxWidth()
-            .onFocusChanged { isFocused = it.isFocused },
-        value = value,
-        onValueChange = { onValueChange.invoke(it) },
-        textStyle = TextStyles.body,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                focusManager.clearFocus()
-                isFocused = false
-                shouldClearFocus = true
-            }
-        ),
-        singleLine = true,
-        interactionSource = interactionSource,
+            .padding(vertical = 8.dp),
         placeholder = {
             Text(
                 text = placeholderValue,
                 style = TextStyles.body
             )
         },
-        colors = TextFieldDefaults.colors(
-            cursorColor = AppColors.Black,
-            unfocusedIndicatorColor = AppColors.Black,
-            focusedIndicatorColor = AppColors.Orange
+        textStyle = TextStyles.body,
+        singleLine = true,
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                focusManager.clearFocus()
+            }
+        ),
+        shape = RoundedCornerShape(12.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = AppColors.Orange,
+            unfocusedBorderColor = AppColors.Black,
+            cursorColor = AppColors.Orange,
+            focusedLabelColor = AppColors.Orange,
+            unfocusedLabelColor = AppColors.Black,
         )
     )
-
-    HorizontalDivider(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(2.dp)
-            .background(color)
-    )
 }
+

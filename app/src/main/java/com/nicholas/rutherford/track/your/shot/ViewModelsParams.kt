@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot
 
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoParams
@@ -14,5 +15,6 @@ data class ViewModelsParams(
     val enabledPermissionsParams: EnabledPermissionsParams,
     val declaredShotsListScreenParams: DeclaredShotsListScreenParams,
     val createEditDeclaredShotParams: CreateEditDeclaredShotScreenParams,
+    val createEditPlayerParams: CreateEditPlayerParams,
     val settingsParams: SettingsParams
 )

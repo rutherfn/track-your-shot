@@ -206,13 +206,25 @@ object NavigationActions {
 
     object PlayersList {
 
-        fun createEditPlayer() = object : NavigationAction {
-            override val destination = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN
-            override val navOptions = NavOptions.Builder().build()
-        }
+        fun createEditPlayerWithParams(firstName: String?, lastName: String?) = object : NavigationAction {
+            override val destination: String = buildString {
+                append("createEditPlayerScreen")
 
-        fun createEditPlayerWithParams(firstName: String, lastName: String) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.createEditPlayerWithParams(firstName = firstName, lastName = lastName)
+                val queryParams = mutableListOf<String>()
+
+                firstName?.let {
+                    queryParams += "firstName=${Uri.encode(it)}"
+                }
+
+                lastName?.let {
+                    queryParams += "lastName=${Uri.encode(it)}"
+                }
+
+                if (queryParams.isNotEmpty()) {
+                    append("?")
+                    append(queryParams.joinToString("&"))
+                }
+            }
             override val navOptions = NavOptions.Builder().build()
         }
 
@@ -303,8 +315,25 @@ object NavigationActions {
 
     object LogShot {
 
-        fun createEditPlayer() = object : NavigationAction {
-            override val destination = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN
+        fun createEditPlayer(firstName: String?, lastName: String?) = object : NavigationAction {
+            override val destination: String = buildString {
+                append("createEditPlayerScreen")
+
+                val queryParams = mutableListOf<String>()
+
+                firstName?.takeIf { it.isNotEmpty() }?.let {
+                    queryParams += "firstName=${Uri.encode(it)}"
+                }
+
+                lastName?.takeIf { it.isNotEmpty() }?.let {
+                    queryParams += "lastName=${Uri.encode(it)}"
+                }
+
+                if (queryParams.isNotEmpty()) {
+                    append("?")
+                    append(queryParams.joinToString("&"))
+                }
+            }
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                 .build()
