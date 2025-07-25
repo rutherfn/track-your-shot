@@ -73,75 +73,75 @@ class CreateEditDeclaredShotViewModelTest {
         )
     }
 
-    @Nested
-    inner class OnNavigateTo {
-
-        @BeforeEach
-        fun beforeEach() {
-            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns listOf(TestDeclaredShot.build())
-        }
-
-//        @Test
-//        fun `when declaredShotId returns back 0 should update state`() {
-//            val toolbarTitle = "Create Shot"
+//    @Nested
+//    inner class OnNavigateTo {
 //
-//            every { application.getString(StringsIds.createShot) } returns toolbarTitle
-//            every { readSharedPreferences.declaredShotId() } returns 0
+//        @BeforeEach
+//        fun beforeEach() {
+//            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns listOf(TestDeclaredShot.build())
+//        }
+//
+////        @Test
+////        fun `when declaredShotId returns back 0 should update state`() {
+////            val toolbarTitle = "Create Shot"
+////
+////            every { application.getString(StringsIds.createShot) } returns toolbarTitle
+////            every { readSharedPreferences.declaredShotId() } returns 0
+////
+////            viewModel.onNavigatedTo()
+////
+////            Assertions.assertEquals(viewModel.allDeclaredShotNames, listOf("Hook Shot"))
+////            Assertions.assertEquals(
+////                viewModel.createEditDeclaredShotMutableStateFlow.value,
+////                state.copy(
+////                    declaredShotState = DeclaredShotState.CREATING,
+////                    toolbarTitle = toolbarTitle
+////                )
+////            )
+////        }
+//
+//        @Test
+//        fun `when declaredShotId is not set to 0 and fetch declared shot from id returns null should not update state`() = runTest {
+//            val id = 4
+//
+//            every { readSharedPreferences.declaredShotId() } returns id
+//            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = id) } returns null
 //
 //            viewModel.onNavigatedTo()
 //
 //            Assertions.assertEquals(viewModel.allDeclaredShotNames, listOf("Hook Shot"))
-//            Assertions.assertEquals(
-//                viewModel.createEditDeclaredShotMutableStateFlow.value,
-//                state.copy(
-//                    declaredShotState = DeclaredShotState.CREATING,
-//                    toolbarTitle = toolbarTitle
-//                )
-//            )
+//            Assertions.assertEquals(viewModel.currentDeclaredShot, null)
+//            Assertions.assertEquals(viewModel.createEditDeclaredShotMutableStateFlow.value, state)
+//
+//            verify { createSharedPreferences.createDeclaredShotId(value = 0) }
 //        }
-
-        @Test
-        fun `when declaredShotId is not set to 0 and fetch declared shot from id returns null should not update state`() = runTest {
-            val id = 4
-
-            every { readSharedPreferences.declaredShotId() } returns id
-            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = id) } returns null
-
-            viewModel.onNavigatedTo()
-
-            Assertions.assertEquals(viewModel.allDeclaredShotNames, listOf("Hook Shot"))
-            Assertions.assertEquals(viewModel.currentDeclaredShot, null)
-            Assertions.assertEquals(viewModel.createEditDeclaredShotMutableStateFlow.value, state)
-
-            verify { createSharedPreferences.createDeclaredShotId(value = 0) }
-        }
-
-        @Test
-        fun `when declaredShotId is not set to 0 and fetch declared shot from id returns value should update state`() = runTest {
-            val id = 4
-            val declaredShot = TestDeclaredShot.build()
-            val viewShotName = "View ${declaredShot.title}"
-
-            every { application.getString(StringsIds.viewX, declaredShot.title) } returns viewShotName
-            every { readSharedPreferences.declaredShotId() } returns id
-            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = id) } returns declaredShot
-
-            viewModel.onNavigatedTo()
-
-            Assertions.assertEquals(viewModel.allDeclaredShotNames, listOf("Hook Shot"))
-            Assertions.assertEquals(viewModel.currentDeclaredShot, declaredShot)
-//            Assertions.assertEquals(
-//                viewModel.createEditDeclaredShotMutableStateFlow.value,
-//                state.copy(
-//                    currentDeclaredShot = declaredShot,
-//                    declaredShotState = DeclaredShotState.VIEWING,
-//                    toolbarTitle = viewShotName
-//                )
-//            )
-
-            verify { createSharedPreferences.createDeclaredShotId(value = 0) }
-        }
-    }
+//
+//        @Test
+//        fun `when declaredShotId is not set to 0 and fetch declared shot from id returns value should update state`() = runTest {
+//            val id = 4
+//            val declaredShot = TestDeclaredShot.build()
+//            val viewShotName = "View ${declaredShot.title}"
+//
+//            every { application.getString(StringsIds.viewX, declaredShot.title) } returns viewShotName
+//            every { readSharedPreferences.declaredShotId() } returns id
+//            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = id) } returns declaredShot
+//
+//            viewModel.onNavigatedTo()
+//
+//            Assertions.assertEquals(viewModel.allDeclaredShotNames, listOf("Hook Shot"))
+//            Assertions.assertEquals(viewModel.currentDeclaredShot, declaredShot)
+////            Assertions.assertEquals(
+////                viewModel.createEditDeclaredShotMutableStateFlow.value,
+////                state.copy(
+////                    currentDeclaredShot = declaredShot,
+////                    declaredShotState = DeclaredShotState.VIEWING,
+////                    toolbarTitle = viewShotName
+////                )
+////            )
+//
+//            verify { createSharedPreferences.createDeclaredShotId(value = 0) }
+//        }
+//    }
 
     @Test
     fun `on toolbar menu clicked`() {

@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.your.shot
 
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
-import com.nicholas.rutherford.track.your.shot.compose.components.AppBar2
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 
 object NavigationComponentExt {

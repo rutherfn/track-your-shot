@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.helper.constants
 
 object Constants {
+    const val MAIL_TO = "mailto:"
     object Preferences {
         const val TRACK_MY_SHOT_PREFERENCES = "TRACK_MY_SHOT_PREFERENCES"
 

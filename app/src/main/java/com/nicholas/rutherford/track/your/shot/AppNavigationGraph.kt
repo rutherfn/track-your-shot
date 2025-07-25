@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.currentAppBar
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.updateAppBar
 import com.nicholas.rutherford.track.your.shot.base.vm.ObserveLifecycle
-import com.nicholas.rutherford.track.your.shot.compose.components.AppBar2
+import com.nicholas.rutherford.track.your.shot.compose.components.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationScreen
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountScreen
@@ -78,10 +78,10 @@ import org.koin.compose.koinInject
  * Defines navigation destinations and composable screens for the app.
  *
  * This object holds navigation functions used to add screens to the navigation graph.
- * It also manages the dynamic AppBar for each screen via a shared [AppBar2] instance.
+ * It also manages the dynamic AppBar for each screen via a shared [AppBar] instance.
  *
  * ## App Bar Management
- * - [currentAppBar] is a [mutableStateOf] object that holds the current top app bar ([AppBar2]).
+ * - [currentAppBar] is a [mutableStateOf] object that holds the current top app bar ([AppBar]).
  * - [updateAppBar] allows any screen to update the visible app bar.
  *
  * The current app bar is meant to be rendered at the top of your app layout (e.g., in your `MainScreen()`).
@@ -103,15 +103,15 @@ object AppNavigationGraph {
      * Holds the currently displayed AppBar.
      * Should be observed and rendered from the top-level UI (e.g. [NavigationComponent]).
      */
-    var currentAppBar by mutableStateOf<AppBar2?>(null)
+    var currentAppBar by mutableStateOf<AppBar?>(null)
         private set
 
     /**
      * Call this function from within a screen to set or update the AppBar.
      *
-     * @param appBar The [AppBar2] to display or null to hide the app bar.
+     * @param appBar The [AppBar] to display or null to hide the app bar.
      */
-    fun updateAppBar(appBar: AppBar2?) {
+    fun updateAppBar(appBar: AppBar?) {
         currentAppBar = appBar
     }
 

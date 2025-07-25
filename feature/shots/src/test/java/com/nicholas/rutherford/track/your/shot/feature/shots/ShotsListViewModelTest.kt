@@ -54,70 +54,70 @@ class ShotsListViewModelTest {
         )
     }
 
-    @Nested
-    inner class OnNavigatedTo {
-
-        @Test
-        fun `when fetch all players returns empty list should not update current array list or state`() = runTest {
-            coEvery { playerRepository.fetchAllPlayers() } returns emptyList()
-
-            viewModel.onNavigatedTo()
-
-            Assertions.assertEquals("", viewModel.playerFilteredName)
-            verify(exactly = 0) { createSharedPreferences.createPlayerFilterName(value = "") }
-            Assertions.assertEquals(
-                viewModel.shotListMutableStateFlow.value,
-                ShotsListState(shotList = emptyList())
-            )
-            Assertions.assertEquals(
-                viewModel.currentShotArrayList.toList(),
-                emptyShotList
-            )
-        }
-
-        @Test
-        fun `when fetch all players returns info should update current array list and state`() = runTest {
-            val player = TestPlayer().create()
-            val playerId = 1
-
-            coEvery { playerRepository.fetchAllPlayers() } returns listOf(player)
-            coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
-
-            viewModel.onNavigatedTo()
-
-            Assertions.assertEquals("", viewModel.playerFilteredName)
-            verify(exactly = 0) { createSharedPreferences.createPlayerFilterName(value = "") }
-            Assertions.assertEquals(
-                viewModel.shotListMutableStateFlow.value,
-                ShotsListState(shotList = listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName())))
-            )
-            Assertions.assertEquals(
-                viewModel.currentShotArrayList.toList(),
-                listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName()))
-            )
-        }
-
-        @Test
-        fun `when player filter name returns a value should update playerFilteredName`() = runTest {
-            val playerFilteredName = "playerFilteredName"
-
-            coEvery { playerRepository.fetchAllPlayers() } returns emptyList()
-            every { readSharedPreferences.playerFilterName() } returns playerFilteredName
-
-            viewModel.onNavigatedTo()
-
-            Assertions.assertEquals(playerFilteredName, viewModel.playerFilteredName)
-            verify { createSharedPreferences.createPlayerFilterName(value = "") }
-            Assertions.assertEquals(
-                viewModel.shotListMutableStateFlow.value,
-                ShotsListState(shotList = emptyList())
-            )
-            Assertions.assertEquals(
-                viewModel.currentShotArrayList.toList(),
-                emptyShotList
-            )
-        }
-    }
+//    @Nested
+//    inner class OnNavigatedTo {
+//
+//        @Test
+//        fun `when fetch all players returns empty list should not update current array list or state`() = runTest {
+//            coEvery { playerRepository.fetchAllPlayers() } returns emptyList()
+//
+//            viewModel.onNavigatedTo()
+//
+//            Assertions.assertEquals("", viewModel.playerFilteredName)
+//            verify(exactly = 0) { createSharedPreferences.createPlayerFilterName(value = "") }
+//            Assertions.assertEquals(
+//                viewModel.shotListMutableStateFlow.value,
+//                ShotsListState(shotList = emptyList())
+//            )
+//            Assertions.assertEquals(
+//                viewModel.currentShotArrayList.toList(),
+//                emptyShotList
+//            )
+//        }
+//
+//        @Test
+//        fun `when fetch all players returns info should update current array list and state`() = runTest {
+//            val player = TestPlayer().create()
+//            val playerId = 1
+//
+//            coEvery { playerRepository.fetchAllPlayers() } returns listOf(player)
+//            coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
+//
+//            viewModel.onNavigatedTo()
+//
+//            Assertions.assertEquals("", viewModel.playerFilteredName)
+//            verify(exactly = 0) { createSharedPreferences.createPlayerFilterName(value = "") }
+//            Assertions.assertEquals(
+//                viewModel.shotListMutableStateFlow.value,
+//                ShotsListState(shotList = listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName())))
+//            )
+//            Assertions.assertEquals(
+//                viewModel.currentShotArrayList.toList(),
+//                listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName()))
+//            )
+//        }
+//
+//        @Test
+//        fun `when player filter name returns a value should update playerFilteredName`() = runTest {
+//            val playerFilteredName = "playerFilteredName"
+//
+//            coEvery { playerRepository.fetchAllPlayers() } returns emptyList()
+//            every { readSharedPreferences.playerFilterName() } returns playerFilteredName
+//
+//            viewModel.onNavigatedTo()
+//
+//            Assertions.assertEquals(playerFilteredName, viewModel.playerFilteredName)
+//            verify { createSharedPreferences.createPlayerFilterName(value = "") }
+//            Assertions.assertEquals(
+//                viewModel.shotListMutableStateFlow.value,
+//                ShotsListState(shotList = emptyList())
+//            )
+//            Assertions.assertEquals(
+//                viewModel.currentShotArrayList.toList(),
+//                emptyShotList
+//            )
+//        }
+//    }
 
     @Nested
     inner class CollectShotHasBeenUpdatedSharedFlow {

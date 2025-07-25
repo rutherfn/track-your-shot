@@ -16,8 +16,6 @@ import timber.log.Timber
  * Usage: Extend this class in your own ViewModel classes to gain automatic lifecycle logging.
  */
 abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
-    open fun onNavigatedTo() {}
-
     /**
      * Called when the ViewModel's lifecycle is created.
      * Logs the `onCreate` event using Timber.

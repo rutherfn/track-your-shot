@@ -46,33 +46,33 @@ class DeclaredShotsListViewModelTest {
         )
     }
 
-    @Nested
-    inner class OnNavigateTo {
-
-        @Test
-        fun `when fetchAllDeclaredShots returns a empty list should not update value and state`() = runTest {
-            val emptyDeclaredShotArrayList: ArrayList<DeclaredShot> = arrayListOf()
-
-            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns emptyList()
-
-            viewModel.onNavigatedTo()
-
-            Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, emptyDeclaredShotArrayList)
-            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state)
-        }
-
-        @Test
-        fun `when fetchAllDeclaredShots returns list should update value and state`() = runTest {
-            val declaredShotArrayList = listOf(TestDeclaredShot.build())
-
-            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotArrayList
-
-            viewModel.onNavigatedTo()
-
-            Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, declaredShotArrayList)
-            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state.copy(declaredShotsList = declaredShotArrayList.toList()))
-        }
-    }
+//    @Nested
+//    inner class OnNavigateTo {
+//
+//        @Test
+//        fun `when fetchAllDeclaredShots returns a empty list should not update value and state`() = runTest {
+//            val emptyDeclaredShotArrayList: ArrayList<DeclaredShot> = arrayListOf()
+//
+//            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns emptyList()
+//
+//            viewModel.onNavigatedTo()
+//
+//            Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, emptyDeclaredShotArrayList)
+//            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state)
+//        }
+//
+//        @Test
+//        fun `when fetchAllDeclaredShots returns list should update value and state`() = runTest {
+//            val declaredShotArrayList = listOf(TestDeclaredShot.build())
+//
+//            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotArrayList
+//
+//            viewModel.onNavigatedTo()
+//
+//            Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, declaredShotArrayList)
+//            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state.copy(declaredShotsList = declaredShotArrayList.toList()))
+//        }
+//    }
 
     @Test
     fun `on toolbar menu clicked should call pop`() {

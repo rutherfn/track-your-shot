@@ -1,6 +1,6 @@
 package com.nicholas.rutherford.track.your.shot
 
-import com.nicholas.rutherford.track.your.shot.compose.components.AppBar2
+import com.nicholas.rutherford.track.your.shot.compose.components.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordViewModel
@@ -20,25 +20,25 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
 
 interface AppBarFactory {
-    fun createLoginAppBar(): AppBar2
-    fun createAccountAppBar(viewModel: CreateAccountViewModel): AppBar2
-    fun createForgotPasswordAppBar(viewModel: ForgotPasswordViewModel): AppBar2
-    fun createAuthenticationAppBar(viewModel: AuthenticationViewModel): AppBar2
-    fun createPlayersListAppBar(viewModel: PlayersListViewModel): AppBar2
-    fun createShotsListAppBar(params: ShotsListScreenParams): AppBar2
-    fun createReportListAppBar(params: ReportListParams): AppBar2
-    fun createSettingsAppBar(params: SettingsParams): AppBar2
-    fun createEnabledPermissionsAppBar(params: EnabledPermissionsParams): AppBar2
-    fun createPermissionEducationAppBar(viewModel: PermissionEducationViewModel): AppBar2
-    fun createOnboardingEducationAppBar(viewModel: OnboardingEducationViewModel, isFirstTimeLaunched: Boolean): AppBar2
-    fun createTermsAndConditionsAppBar(): AppBar2
-    fun createDeclaredShotsListAppBar(params: DeclaredShotsListScreenParams): AppBar2
-    fun createCreateEditDeclaredShotAppBar(params: CreateEditDeclaredShotScreenParams): AppBar2
-    fun createAccountInfoAppBar(viewModel: AccountInfoViewModel): AppBar2
-    fun createEditPlayerAppBar(params: CreateEditPlayerParams, isEditable: Boolean): AppBar2
-    fun createLogShotAppBar(params: LogShotParams): AppBar2
-    fun createSelectShotAppBar(selectShotParams: SelectShotParams): AppBar2
-    fun createReportScreenAppBar(params: CreateReportParams): AppBar2
-    fun createDefaultAppBar(): AppBar2
+    fun createLoginAppBar(): AppBar
+    fun createAccountAppBar(viewModel: CreateAccountViewModel): AppBar
+    fun createForgotPasswordAppBar(viewModel: ForgotPasswordViewModel): AppBar
+    fun createAuthenticationAppBar(viewModel: AuthenticationViewModel): AppBar
+    fun createPlayersListAppBar(viewModel: PlayersListViewModel): AppBar
+    fun createShotsListAppBar(params: ShotsListScreenParams): AppBar
+    fun createReportListAppBar(params: ReportListParams): AppBar
+    fun createSettingsAppBar(params: SettingsParams): AppBar
+    fun createEnabledPermissionsAppBar(params: EnabledPermissionsParams): AppBar
+    fun createPermissionEducationAppBar(viewModel: PermissionEducationViewModel): AppBar
+    fun createOnboardingEducationAppBar(viewModel: OnboardingEducationViewModel, isFirstTimeLaunched: Boolean): AppBar
+    fun createTermsAndConditionsAppBar(): AppBar
+    fun createDeclaredShotsListAppBar(params: DeclaredShotsListScreenParams): AppBar
+    fun createCreateEditDeclaredShotAppBar(params: CreateEditDeclaredShotScreenParams): AppBar
+    fun createAccountInfoAppBar(viewModel: AccountInfoViewModel): AppBar
+    fun createEditPlayerAppBar(params: CreateEditPlayerParams, isEditable: Boolean): AppBar
+    fun createLogShotAppBar(params: LogShotParams): AppBar
+    fun createSelectShotAppBar(selectShotParams: SelectShotParams): AppBar
+    fun createReportScreenAppBar(params: CreateReportParams): AppBar
+    fun createDefaultAppBar(): AppBar
 }
 

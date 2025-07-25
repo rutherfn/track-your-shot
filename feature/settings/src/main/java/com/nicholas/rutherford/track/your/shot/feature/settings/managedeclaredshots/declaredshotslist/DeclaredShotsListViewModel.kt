@@ -26,8 +26,7 @@ class DeclaredShotsListViewModel(
     internal var declaredShotsListMutableStateFlow = MutableStateFlow(value = DeclaredShotsListState())
     val declaredShotsListStateFlow = declaredShotsListMutableStateFlow.asStateFlow()
 
-    override fun onNavigatedTo() {
-        super.onNavigatedTo()
+    init {
         updateDeclaredShotsListState()
         createSharedPreferences.createDeclaredShotName(value = "")
     }

@@ -29,10 +29,9 @@ import androidx.core.net.toUri
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.buildModalDrawerGesturesEnabled
 import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.findViewModelByDestination
-import com.nicholas.rutherford.track.your.shot.compose.components.ConditionalTopAppBar2
+import com.nicholas.rutherford.track.your.shot.compose.components.ConditionalTopAppBar
 import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.AlertDialog
 import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.CustomDatePickerDialog
 import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.ProgressDialog
@@ -42,8 +41,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListScreen
-import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListScreenParams
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
@@ -125,7 +122,6 @@ fun NavigationComponent(
     val appBar = AppNavigationGraph.currentAppBar
 
     val mainActivityViewModel = viewModels.mainActivityViewModel
-    val declaredShotsListViewModel = viewModels.declaredShotsListViewModel
 
     val isConnectedToInternet = mainActivityViewModel.isConnected.collectAsState().value
 
@@ -180,7 +176,7 @@ fun NavigationComponent(
         emailDevState?.let { devEmail ->
             try {
                 val intent = Intent(Intent.ACTION_SENDTO).apply {
-                    data = "mailto:$devEmail".toUri()
+                    data = "${Constants.MAIL_TO}$devEmail".toUri()
                 }
 
                 activity.startActivity(intent)
@@ -193,18 +189,13 @@ fun NavigationComponent(
 
 
     LaunchedEffect(navigatorState) {
-        navigatorState?.let {
-            navHostController.navigate(it.destination, it.navOptions)
-            println(it.destination)
-            val test = findViewModelByDestination(destination = it.destination, viewModels = viewModels)
+        navigatorState?.let { state ->
+            navHostController.navigate(state.destination, state.navOptions)
+            val viewModel = findViewModelByDestination(destination = state.destination, viewModels = viewModels)
 
-            println("test here $test")
-
-            if (test != null) {
-                test.onNavigatedTo()
-                modalDrawerGesturesEnabled = buildModalDrawerGesturesEnabled(viewModel = test, viewModels = viewModels)
+            if (viewModel != null) {
+                modalDrawerGesturesEnabled = buildModalDrawerGesturesEnabled(viewModel = viewModel, viewModels = viewModels)
             }
-           // findViewModelByDestination(destination = it.destination)?.first?.onNavigatedTo()
         }
     }
 
@@ -223,13 +214,8 @@ fun NavigationComponent(
                 navHostController.popBackStack()
             } else {
                 navHostController.popBackStack(route = route, inclusive = false)
-                val test = findViewModelByDestination(destination = route, viewModels = viewModels)
-
-                if (test != null) {
-                    test.onNavigatedTo()
-                }
             }
-            navigator.pop(popRouteAction = null) // need to set this to null to listen to next pop action
+            navigator.pop(popRouteAction = null)
         }
     }
 
@@ -274,21 +260,17 @@ fun NavigationComponent(
                     LogoutAction
                 ),
                 onDestinationClicked = { route, navOptions, titleId ->
-                    scope.launch {
-                        drawerState.close()
-                    }
+                    scope.launch { drawerState.close() }
                     if (route.isEmpty()) {
                         mainActivityViewModel.logout(titleId = titleId)
                     } else {
                         val currentRoute = navHostController.currentDestination?.route ?: ""
                         if (route != currentRoute) {
                             navHostController.navigate(route, navOptions)
-                            val test = findViewModelByDestination(destination = route, viewModels = viewModels)
+                            val viewModel = findViewModelByDestination(destination = route, viewModels = viewModels)
 
-                            if (test != null) {
-                                test.onNavigatedTo()
-                                //appBar = buildAppBarBasedOnScreen(route,test, viewModels = viewModels, viewModelParams, appBarFactory = appBarFactory)
-                                modalDrawerGesturesEnabled =buildModalDrawerGesturesEnabled(viewModel = test, viewModels = viewModels)
+                            if (viewModel != null) {
+                                modalDrawerGesturesEnabled =buildModalDrawerGesturesEnabled(viewModel = viewModel, viewModels = viewModels)
                             }
                         }
                     }
@@ -301,9 +283,7 @@ fun NavigationComponent(
                 topBar = {
                     appBar?.let { bar ->
                         if (bar.shouldShow) {
-                            ConditionalTopAppBar2(
-                                appBar = bar
-                            )
+                            ConditionalTopAppBar(appBar = bar)
                         }
                     } ?: run {
                         TopAppBar(
@@ -330,10 +310,7 @@ fun NavigationComponent(
                         .padding(paddingValues),
                     startDestination = NavigationDestinations.SPLASH_SCREEN
                 ) {
-                    AppNavigationRegistry.registerAll(
-                        navGraphBuilder = this,
-                        isConnectedToInternet = isConnectedToInternet
-                    )
+                    AppNavigationRegistry.registerAll(navGraphBuilder = this, isConnectedToInternet = isConnectedToInternet)
                 }
             }
 
@@ -426,4 +403,4 @@ fun NavigationComponent(
         },
         gesturesEnabled = modalDrawerGesturesEnabled
     )
-    }
+}

@@ -3,7 +3,7 @@ package com.nicholas.rutherford.track.your.shot.compose.components
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 
-data class AppBar2(
+data class AppBar(
     val toolbarId: Int,
     var toolbarTitle: String? = null,
     val shouldShow: Boolean = true,

@@ -47,9 +47,7 @@ class CreateEditDeclaredShotViewModel(
     internal var createEditDeclaredShotMutableStateFlow = MutableStateFlow(value = CreateEditDeclaredShotState())
     var createEditDeclaredShotStateFlow = createEditDeclaredShotMutableStateFlow.asStateFlow()
 
-    override fun onNavigatedTo() {
-        super.onNavigatedTo()
-
+    init {
         scope.launch {
             allDeclaredShotNames = declaredShotRepository.fetchAllDeclaredShots().map { it.title }
         }

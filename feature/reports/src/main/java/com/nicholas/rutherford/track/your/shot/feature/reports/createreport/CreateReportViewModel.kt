@@ -41,13 +41,12 @@ class CreateReportViewModel(
     private val dateExt: DateExt
 ) : BaseViewModel() {
 
-    val createReportMutableStateFlow = MutableStateFlow(value = CreateReportState())
-    val createReportStateFlow = createReportMutableStateFlow.asStateFlow()
-
-    override fun onNavigatedTo() {
-        super.onNavigatedTo()
+    init {
         updatePlayersState()
     }
+
+    val createReportMutableStateFlow = MutableStateFlow(value = CreateReportState())
+    val createReportStateFlow = createReportMutableStateFlow.asStateFlow()
 
     fun resetState() {
         createReportMutableStateFlow.value = CreateReportState()
