@@ -5,6 +5,10 @@ import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
+/**
+ * Implementation of [SelectShotnavigationImpl] using a [Navigator] to perform
+ * navigation via predefined [NavigationActions].
+ */
 class SelectShotNavigationImpl(private val navigator: Navigator) : SelectShotNavigation {
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
     override fun popFromCreatePlayer() = navigator.pop(popRouteAction = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN)

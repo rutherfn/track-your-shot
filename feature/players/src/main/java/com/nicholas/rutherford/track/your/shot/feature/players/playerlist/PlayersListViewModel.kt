@@ -68,8 +68,25 @@ class PlayersListViewModel(
 
     init {
         updatePlayerListState()
-        collectPlayerAdditionUpdates()
+       // collectPlayerAdditionUpdates()
         deleteAllNonEmptyPendingPlayers()
+    }
+
+    fun clearState() {
+        playerListMutableStateFlow.update { state ->
+            state.copy(
+                playerList = emptyList(),
+                selectedPlayer =  Player(
+                    firstName = "",
+                    lastName = "",
+                    position = PlayerPositions.None,
+                    firebaseKey = "",
+                    imageUrl = "",
+                    shotsLoggedList = emptyList()
+                ),
+                sheetOptions = emptyList()
+            )
+        }
     }
 
     /** Loads all players from the repository and updates the state */
@@ -109,15 +126,19 @@ class PlayersListViewModel(
 
     /** Refreshes the player list by clearing and reloading it */
     private fun clearAndUpdatePlayerListState() {
-        currentPlayerArrayList.clear()
-        updatePlayerListState()
+        scope.launch {
+            currentPlayerArrayList.clear()
+            updatePlayerListState()
+            dataAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = false)
+        }
     }
 
     /** Collects shared flow events when new players are added */
     internal fun collectPlayerAdditionUpdates() {
         scope.launch {
             dataAdditionUpdates.newPlayerHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
-                handlePlayerAdded(hasBeenAdded)
+                println("has been addded $hasBeenAdded")
+                handlePlayerAdded(hasBeenAdded = hasBeenAdded)
             }
         }
     }

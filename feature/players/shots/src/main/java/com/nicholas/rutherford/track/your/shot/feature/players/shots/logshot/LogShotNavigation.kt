@@ -5,10 +5,14 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 
+/**
+ * Defines navigation actions available from the log shot screen.
+ */
 interface LogShotNavigation {
     fun alert(alert: Alert)
     fun pop()
     fun popToShotList()
+    fun navigateToShotList(firstName: String?, lastName: String?)
     fun popToCreatePlayer()
     fun popToEditPlayer()
     fun datePicker(datePickerInfo: DatePickerInfo)

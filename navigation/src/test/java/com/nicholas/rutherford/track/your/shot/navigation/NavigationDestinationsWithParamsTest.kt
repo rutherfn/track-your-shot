@@ -50,18 +50,4 @@ class NavigationDestinationsWithParamsTest {
             "termsConditionsScreen/false"
         )
     }
-
-    @Test
-    fun `select shot with params`() {
-        val isExistingPlayer = false
-        val playerId = 22
-
-        Assertions.assertEquals(
-            navigationDestinationsWithParams.selectShotWithParams(
-                isExistingPlayer = isExistingPlayer,
-                playerId = playerId
-            ),
-            "selectShotScreen/false/22"
-        )
-    }
 }

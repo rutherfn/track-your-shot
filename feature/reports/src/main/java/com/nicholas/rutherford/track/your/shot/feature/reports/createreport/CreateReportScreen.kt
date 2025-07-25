@@ -27,25 +27,12 @@ import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun CreateReportScreen(params: CreateReportParams) {
-    Content(
-        ui = {
-            CreateReportContent(params = params)
-        },
-        appBar = AppBar(
-            toolbarTitle = stringResource(id = StringsIds.createPlayerReport),
-            shouldShowMiddleContentAppBar = false,
-            shouldIncludeSpaceAfterDeclaration = false,
-            shouldShowSecondaryButton = false,
-            onIconButtonClicked = { params.onToolbarMenuClicked.invoke() }
-        )
-    )
+    CreateReportContent(params = params)
 }
 
 @Composable

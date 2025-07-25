@@ -2,8 +2,6 @@ package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,7 +19,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,46 +34,39 @@ import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.NumericRowStepper
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
-import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * Entry point composable for the Log Shot screen.
+ *
+ * Wraps [LogShotContent] and intercepts the system back button to call the provided
+ * [LogShotParams.onBackButtonClicked] callback.
+ *
+ * @param logShotParams The state and callbacks necessary to render and interact with the screen.
+ */
 @Composable
 fun LogShotScreen(logShotParams: LogShotParams) {
-    BackHandler(true) {
-        logShotParams.onBackButtonClicked.invoke()
-    }
-
-    LaunchedEffect(Unit) {
-        logShotParams.updateIsExistingPlayerAndPlayerId.invoke()
-    }
-
-    Content(
-        ui = { LogShotContent(logShotParams = logShotParams) },
-        appBar = AppBar(
-            toolbarTitle = stringResource(id = StringsIds.logShot),
-            shouldShowMiddleContentAppBar = false,
-            shouldIncludeSpaceAfterDeclaration = false,
-            shouldShowSecondaryButton = true,
-            onIconButtonClicked = { logShotParams.onBackButtonClicked.invoke() },
-            onSecondaryIconButtonClicked = { logShotParams.onSaveClicked.invoke() }
-        )
-    )
+    BackHandler(true) { logShotParams.onBackButtonClicked() }
+    LogShotContent(logShotParams = logShotParams)
 }
 
+/**
+ * Main layout container for logging a shot.
+ *
+ * Displays both shot and player information with interactive controls to modify
+ * shot counts, view details, and delete the shot (if applicable).
+ *
+ * @param logShotParams Contains UI state and all user interaction callbacks.
+ */
 @Composable
 fun LogShotContent(logShotParams: LogShotParams) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(
-                start = Padding.twenty,
-                end = Padding.twenty,
-                bottom = Padding.twenty
-            ),
+            .background(Color.White)
+            .padding(20.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ShotInfoContent(
@@ -87,98 +77,90 @@ fun LogShotContent(logShotParams: LogShotParams) {
             onShotsMissedUpwardClicked = logShotParams.onShotsMissedUpwardClicked,
             onShotsMissedDownwardClicked = logShotParams.onShotsMissedDownwardClicked
         )
+
         PlayerInfoContent(state = logShotParams.state)
 
         if (logShotParams.state.deleteShotButtonVisible) {
-            Box(
+            Button(
+                onClick = { logShotParams.onDeleteShotClicked() },
+                shape = RoundedCornerShape(50.dp),
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(AppColors.White),
-                contentAlignment = Alignment.Center
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor)
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Button(
-                        onClick = { logShotParams.onDeleteShotClicked.invoke() },
-                        shape = RoundedCornerShape(size = 50.dp),
-                        modifier = Modifier
-                            .padding(vertical = Padding.twelve)
-                            .fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor)
-                    ) {
-                        Text(
-                            text = stringResource(id = StringsIds.deleteX, logShotParams.state.shotName),
-                            style = TextStyles.smallBold,
-                            textAlign = TextAlign.Center,
-                            color = Color.White
-                        )
-                    }
-                }
+                Text(
+                    text = stringResource(id = StringsIds.deleteX, logShotParams.state.shotName),
+                    style = TextStyles.smallBold,
+                    textAlign = TextAlign.Center,
+                    color = Color.White
+                )
             }
         }
     }
 }
 
+/**
+ * Displays a collapsible card with all shot-related data such as date, counts, and percentages.
+ *
+ * Provides interactive numeric steppers for shot made/missed values and shows derived metrics
+ * such as attempts and percentages.
+ *
+ * @param state Current UI state for shot logging.
+ * @param onDateShotsTakenClicked Callback when the shot taken date is clicked.
+ * @param onShotsMadeUpwardClicked Called when incrementing made shots.
+ * @param onShotsMadeDownwardClicked Called when decrementing made shots.
+ * @param onShotsMissedUpwardClicked Called when incrementing missed shots.
+ * @param onShotsMissedDownwardClicked Called when decrementing missed shots.
+ */
 @Composable
 private fun ShotInfoContent(
     state: LogShotState,
     onDateShotsTakenClicked: () -> Unit,
-    onShotsMadeUpwardClicked: (value: Int) -> Unit,
-    onShotsMadeDownwardClicked: (value: Int) -> Unit,
-    onShotsMissedUpwardClicked: (value: Int) -> Unit,
-    onShotsMissedDownwardClicked: (value: Int) -> Unit
+    onShotsMadeUpwardClicked: (Int) -> Unit,
+    onShotsMadeDownwardClicked: (Int) -> Unit,
+    onShotsMissedUpwardClicked: (Int) -> Unit,
+    onShotsMissedDownwardClicked: (Int) -> Unit
 ) {
-    var isPlayerShotInfoExpanded by remember { mutableStateOf(value = false) }
-    var playerShotInfoImageVector by remember { mutableStateOf(value = Icons.Filled.ExpandMore) }
+    var isExpanded by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
-            .background(AppColors.White)
             .fillMaxWidth()
-            .padding(top = 16.dp, bottom = 16.dp),
-        elevation = CardDefaults.cardElevation()
+            .padding(vertical = 16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(12.dp)
     ) {
-        Column {
+        Column(modifier = Modifier.background(AppColors.White)) {
             BaseRow(
                 title = state.shotName,
-                imageVector = playerShotInfoImageVector,
-                onClicked = {
-                    isPlayerShotInfoExpanded = !isPlayerShotInfoExpanded
-                    playerShotInfoImageVector = if (isPlayerShotInfoExpanded) {
-                        Icons.Filled.ExpandLess
-                    } else {
-                        Icons.Filled.ExpandMore
-                    }
-                }
+                imageVector = if (isExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                onClicked = { isExpanded = !isExpanded }
             )
 
-            if (isPlayerShotInfoExpanded) {
+            if (isExpanded) {
                 BaseRow(
                     title = stringResource(id = StringsIds.dateShotsLogged),
-                    onClicked = null,
                     subText = state.shotsLoggedDateValue,
                     subTextColor = AppColors.LightGray,
                     titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
-                    imageVector = null,
                     shouldShowDivider = true
                 )
 
                 BaseRow(
                     title = stringResource(id = StringsIds.dateShotsTaken),
-                    onClicked = { onDateShotsTakenClicked.invoke() },
+                    onClicked = onDateShotsTakenClicked,
+                    subText = state.shotsTakenDateValue,
                     titleStyle = TextStyles.small.copy(fontSize = 16.sp),
                     iconTint = Color.Blue,
-                    subText = state.shotsTakenDateValue,
                     imageVector = Icons.Filled.CalendarToday,
                     shouldShowDivider = true
                 )
 
                 NumericRowStepper(
                     title = stringResource(id = StringsIds.shotsMade),
-                    onDownwardClicked = { value -> onShotsMadeDownwardClicked.invoke(value) },
-                    onUpwardClicked = { value -> onShotsMadeUpwardClicked.invoke(value) },
+                    onUpwardClicked = onShotsMadeUpwardClicked,
+                    onDownwardClicked = onShotsMadeDownwardClicked,
                     titleStyle = TextStyles.small.copy(fontSize = 16.sp),
                     shouldShowDivider = true,
                     defaultValue = state.shotsMade
@@ -186,8 +168,8 @@ private fun ShotInfoContent(
 
                 NumericRowStepper(
                     title = stringResource(id = StringsIds.shotsMissed),
-                    onDownwardClicked = { value -> onShotsMissedDownwardClicked.invoke(value) },
-                    onUpwardClicked = { value -> onShotsMissedUpwardClicked.invoke(value) },
+                    onUpwardClicked = onShotsMissedUpwardClicked,
+                    onDownwardClicked = onShotsMissedDownwardClicked,
                     titleStyle = TextStyles.small.copy(fontSize = 16.sp),
                     shouldShowDivider = true,
                     defaultValue = state.shotsMissed
@@ -195,80 +177,68 @@ private fun ShotInfoContent(
 
                 BaseRow(
                     title = stringResource(id = StringsIds.shotsAttempted),
-                    onClicked = null,
                     subText = state.shotsAttempted.toString(),
                     subTextColor = AppColors.LightGray,
                     titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
-                    imageVector = null,
                     shouldShowDivider = true
                 )
 
                 BaseRow(
                     title = stringResource(id = StringsIds.shotsMadePercentage),
-                    onClicked = null,
                     subText = state.shotsMadePercentValue,
                     subTextColor = AppColors.LightGray,
                     titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
-                    imageVector = null,
                     shouldShowDivider = true
                 )
 
                 BaseRow(
                     title = stringResource(id = StringsIds.shotsMissedPercentage),
-                    onClicked = null,
                     subText = state.shotsMissedPercentValue,
                     subTextColor = AppColors.LightGray,
                     titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
-                    imageVector = null,
-                    shouldShowDivider = true
+                    shouldShowDivider = false
                 )
             }
         }
     }
 }
 
+/**
+ * Displays player information within a collapsible card.
+ *
+ * Initially shows only the player name. Expanding reveals their position,
+ * if it's defined in the [LogShotState].
+ *
+ * @param state Current UI state for the shot being logged.
+ */
 @Composable
-fun PlayerInfoContent(
-    state: LogShotState
-) {
-    var isPlayerInfoExpanded by remember { mutableStateOf(value = false) }
-    var playerInfoImageVector by remember { mutableStateOf(value = Icons.Filled.ExpandMore) }
+fun PlayerInfoContent(state: LogShotState) {
+    var isExpanded by remember { mutableStateOf(false) }
+    val icon = if (isExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore
 
     Card(
         modifier = Modifier
-            .background(AppColors.White)
             .fillMaxWidth()
-            .padding(top = 16.dp, bottom = 16.dp),
-        elevation = CardDefaults.cardElevation()
+            .background(AppColors.White)
+            .padding(vertical = 16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(12.dp)
     ) {
-        Column {
+        Column(modifier = Modifier.background(AppColors.White)) {
             BaseRow(
                 title = state.playerName,
-                imageVector = playerInfoImageVector,
-                onClicked = {
-                    isPlayerInfoExpanded = !isPlayerInfoExpanded
-                    playerInfoImageVector = if (isPlayerInfoExpanded) {
-                        Icons.Filled.ExpandLess
-                    } else {
-                        Icons.Filled.ExpandMore
-                    }
-                }
+                imageVector = icon,
+                onClicked = { isExpanded = !isExpanded }
             )
 
-            if (isPlayerInfoExpanded) {
-                val subTextId = if (state.playerPosition == 0) {
-                    StringsIds.empty
-                } else {
-                    state.playerPosition
-                }
+            if (isExpanded) {
+                val positionText = if (state.playerPosition == 0) "" else stringResource(id = state.playerPosition)
                 BaseRow(
                     title = stringResource(id = StringsIds.position),
-                    onClicked = null,
-                    subText = stringResource(id = subTextId),
+                    subText = positionText,
                     subTextColor = AppColors.LightGray,
                     titleStyle = TextStyles.small.copy(color = AppColors.LightGray, fontSize = 16.sp),
-                    imageVector = null,
-                    shouldShowDivider = true
+                    shouldShowDivider = false
                 )
             }
         }

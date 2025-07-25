@@ -245,26 +245,64 @@ object NavigationActions {
             viewCurrentPendingShot: Boolean,
             fromShotList: Boolean
         ) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.logShotWithParams(
-                isExistingPlayer = isExistingPlayer,
-                playerId = playerId,
-                shotType = shotType,
-                shotId = shotId,
-                viewCurrentExistingShot = viewCurrentExistingShot,
-                viewCurrentPendingShot = viewCurrentPendingShot,
-                fromShotList = fromShotList
-            )
+            override val destination: String = buildString {
+                append("logShotScreen")
+
+                val queryParams = mutableListOf<String>()
+
+                queryParams += "isExistingPlayer=$isExistingPlayer"
+
+                queryParams += "playerId=$playerId"
+
+                queryParams += "shotType=$shotType"
+
+                queryParams += "shotId=$shotId"
+
+                queryParams += "viewCurrentExistingShot=$viewCurrentExistingShot"
+
+                queryParams += "viewCurrentPendingShot=$viewCurrentPendingShot"
+
+                queryParams += "fromShotList=$fromShotList"
+
+                if (queryParams.isNotEmpty()) {
+                    append("?")
+                    append(queryParams.joinToString("&"))
+                }
+            }
             override val navOptions = NavOptions.Builder().build()
         }
     }
 
     object CreateEditPlayer {
 
+        fun playersList() = object : NavigationAction {
+            override val destination = NavigationDestinations.PLAYERS_LIST_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .build()
+        }
+
         fun selectShot(isExistingPlayer: Boolean, playerId: Int) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.selectShotWithParams(
-                isExistingPlayer = isExistingPlayer,
-                playerId = playerId
-            )
+
+            override val destination: String = buildString {
+                append("selectShotScreen")
+
+                val queryParams = mutableListOf<String>()
+
+                queryParams += "isExistingPlayer=$isExistingPlayer"
+
+                queryParams += "playerId=$playerId"
+
+                if (queryParams.isNotEmpty()) {
+                    append("?")
+                    append(queryParams.joinToString("&"))
+                }
+            }
+
+//            override val destination = NavigationDestinationsWithParams.selectShotWithParams(
+//                isExistingPlayer = isExistingPlayer,
+//                playerId = playerId
+//            )
             override val navOptions = NavOptions.Builder().build()
         }
 
@@ -277,15 +315,30 @@ object NavigationActions {
             viewCurrentPendingShot: Boolean,
             fromShotList: Boolean
         ) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.logShotWithParams(
-                isExistingPlayer = isExistingPlayer,
-                playerId = playerId,
-                shotType = shotType,
-                shotId = shotId,
-                viewCurrentExistingShot = viewCurrentExistingShot,
-                viewCurrentPendingShot = viewCurrentPendingShot,
-                fromShotList = fromShotList
-            )
+            override val destination: String = buildString {
+                append("logShotScreen")
+
+                val queryParams = mutableListOf<String>()
+
+                queryParams += "isExistingPlayer=$isExistingPlayer"
+
+                queryParams += "playerId=$playerId"
+
+                queryParams += "shotType=$shotType"
+
+                queryParams += "shotId=$shotId"
+
+                queryParams += "viewCurrentExistingShot=$viewCurrentExistingShot"
+
+                queryParams += "viewCurrentPendingShot=$viewCurrentPendingShot"
+
+                queryParams += "fromShotList=$fromShotList"
+
+                if (queryParams.isNotEmpty()) {
+                    append("?")
+                    append(queryParams.joinToString("&"))
+                }
+            }
             override val navOptions = NavOptions.Builder().build()
         }
     }
@@ -300,15 +353,30 @@ object NavigationActions {
             viewCurrentPendingShot: Boolean,
             fromShotList: Boolean
         ) = object : NavigationAction {
-            override val destination = NavigationDestinationsWithParams.logShotWithParams(
-                isExistingPlayer = isExistingPlayer,
-                playerId = playerId,
-                shotType = shotType,
-                shotId = shotId,
-                viewCurrentExistingShot = viewCurrentExistingShot,
-                viewCurrentPendingShot = viewCurrentPendingShot,
-                fromShotList = fromShotList
-            )
+            override val destination: String = buildString {
+                append("logShotScreen")
+
+                val queryParams = mutableListOf<String>()
+
+                queryParams += "isExistingPlayer=$isExistingPlayer"
+
+                queryParams += "playerId=$playerId"
+
+                queryParams += "shotType=$shotType"
+
+                queryParams += "shotId=$shotId"
+
+                queryParams += "viewCurrentExistingShot=$viewCurrentExistingShot"
+
+                queryParams += "viewCurrentPendingShot=$viewCurrentPendingShot"
+
+                queryParams += "fromShotList=$fromShotList"
+
+                if (queryParams.isNotEmpty()) {
+                    append("?")
+                    append(queryParams.joinToString("&"))
+                }
+            }
             override val navOptions = NavOptions.Builder().build()
         }
     }

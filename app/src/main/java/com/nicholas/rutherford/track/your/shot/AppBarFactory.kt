@@ -6,6 +6,9 @@ import com.nicholas.rutherford.track.your.shot.feature.create.account.createacco
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotParams
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotParams
+import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.CreateReportParams
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoViewModel
@@ -33,6 +36,9 @@ interface AppBarFactory {
     fun createCreateEditDeclaredShotAppBar(params: CreateEditDeclaredShotScreenParams): AppBar2
     fun createAccountInfoAppBar(viewModel: AccountInfoViewModel): AppBar2
     fun createEditPlayerAppBar(params: CreateEditPlayerParams, isEditable: Boolean): AppBar2
+    fun createLogShotAppBar(params: LogShotParams): AppBar2
+    fun createSelectShotAppBar(selectShotParams: SelectShotParams): AppBar2
+    fun createReportScreenAppBar(params: CreateReportParams): AppBar2
     fun createDefaultAppBar(): AppBar2
 }
 

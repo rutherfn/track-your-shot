@@ -7,6 +7,7 @@ import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.ui.res.stringResource
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.AppBar2
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationViewModel
@@ -14,6 +15,9 @@ import com.nicholas.rutherford.track.your.shot.feature.create.account.createacco
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotParams
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotParams
+import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.CreateReportParams
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoViewModel
@@ -71,6 +75,11 @@ class AppBarFactoryImpl(
                 StringsIds.shots
             } else {
                 StringsIds.playerShots
+            },
+            imageVector = if (params.shouldShowAllPlayerShots) {
+                null
+            } else {
+                Icons.AutoMirrored.Filled.ArrowBack
             },
             shouldShowMiddleContentAppBar = true,
             onIconButtonClicked = { params.onToolbarMenuClicked() },
@@ -189,6 +198,40 @@ class AppBarFactoryImpl(
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
             onSecondaryIconButtonClicked = { params.onCreatePlayerClicked.invoke() },
             secondaryIconTint = AppColors.White
+        )
+
+    override fun createLogShotAppBar(params: LogShotParams): AppBar2 =
+        AppBar2(
+            toolbarId = StringsIds.logShot,
+            shouldShowMiddleContentAppBar = false,
+            shouldIncludeSpaceAfterDeclaration = false,
+            shouldShowSecondaryButton = true,
+            onIconButtonClicked = { params.onBackButtonClicked.invoke() },
+            onSecondaryIconButtonClicked = { params.onSaveClicked.invoke() },
+            secondaryIconTint = AppColors.White
+        )
+
+    override fun createSelectShotAppBar(selectShotParams: SelectShotParams): AppBar2 =
+        AppBar2(
+            toolbarId = StringsIds.selectAShot,
+            shouldShowMiddleContentAppBar = false,
+            shouldIncludeSpaceAfterDeclaration = false,
+            shouldShowSecondaryButton = true,
+            onIconButtonClicked = {
+                selectShotParams.onBackButtonClicked.invoke()
+            },
+            onSecondaryIconButtonClicked = { selectShotParams.onHelpIconClicked.invoke() },
+            secondaryIconTint = AppColors.White
+        )
+
+    override fun createReportScreenAppBar(params: CreateReportParams): AppBar2 =
+        AppBar2(
+            toolbarId = StringsIds.createPlayerReport,
+            shouldShowMiddleContentAppBar = false,
+            shouldIncludeSpaceAfterDeclaration = false,
+            shouldShowSecondaryButton = false,
+            onIconButtonClicked = { params.onToolbarMenuClicked.invoke() }
+
         )
 
     override fun createDefaultAppBar(): AppBar2 =

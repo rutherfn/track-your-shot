@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
  * Defines navigation actions available from the create edit player screen.
  */
 interface CreateEditPlayerNavigation {
+    fun navigateToPlayersList()
     fun alert(alert: Alert)
     fun appSettings()
     fun navigateToSelectShot(isExistingPlayer: Boolean, playerId: Int)

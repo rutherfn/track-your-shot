@@ -11,6 +11,8 @@ import com.nicholas.rutherford.track.your.shot.navigation.Navigator
  * navigation via predefined [NavigationActions].
  */
 class CreateEditPlayerNavigationImpl(private val navigator: Navigator) : CreateEditPlayerNavigation {
+    override fun navigateToPlayersList() = navigator.navigate(navigationAction = NavigationActions.CreateEditPlayer.playersList())
+
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
 
     override fun appSettings() = navigator.appSettings(appSettingsAction = true)

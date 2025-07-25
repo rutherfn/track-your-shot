@@ -388,8 +388,9 @@ class AppModule {
                 currentPendingShot = get()
             )
         }
-        viewModel {
+        viewModel { (stateHandle: SavedStateHandle) ->
             SelectShotViewModel(
+                savedStateHandle = stateHandle,
                 application = get(),
                 scope = defaultCoroutineScope,
                 navigation = get(),
@@ -398,8 +399,9 @@ class AppModule {
                 pendingPlayerRepository = get()
             )
         }
-        viewModel {
+        viewModel { (stateHandle: SavedStateHandle) ->
             LogShotViewModel(
+                savedStateHandle = stateHandle,
                 application = androidApplication(),
                 scope = defaultCoroutineScope,
                 navigation = get(),

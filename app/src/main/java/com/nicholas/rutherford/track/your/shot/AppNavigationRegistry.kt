@@ -1,15 +1,26 @@
 package com.nicholas.rutherford.track.your.shot
 
 import androidx.navigation.NavGraphBuilder
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.accountInfoScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.authenticationScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createAccountScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createEditDeclaredScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createOrEditPlayerScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createReportScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.enabledPermissionScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.forgotPasswordScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.loginScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.onBoardingEducationScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.logShotScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.permissionEducationScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.playersListScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.reportListScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.selectShotScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.settingsScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.shotListScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.splashScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.termsAndConditionScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.declaredShotsListScreen
 
 /**
  * Central registry for all navigation destinations in the app.
@@ -40,26 +51,37 @@ object AppNavigationRegistry {
         }
     }
 
-    // Static screens that don't need parameters like internet connection
+    // Static screens that don't need parameters directly linked to it
     val staticScreens: List<Screen.StaticScreen> = listOf(
         Screen.StaticScreen { splashScreen() },
         Screen.StaticScreen { loginScreen() },
         Screen.StaticScreen { forgotPasswordScreen() },
         Screen.StaticScreen { authenticationScreen() },
         Screen.StaticScreen { termsAndConditionScreen() },
-        Screen.StaticScreen { onBoardingEducationScreen() }
+        Screen.StaticScreen { onBoardingEducationScreen() },
+        Screen.StaticScreen { logShotScreen()},
+        Screen.StaticScreen { selectShotScreen() },
+        Screen.StaticScreen { reportListScreen() },
+        Screen.StaticScreen { shotListScreen() },
+        Screen.StaticScreen { createReportScreen() },
+        Screen.StaticScreen { settingsScreen() },
+        Screen.StaticScreen { accountInfoScreen() },
+        Screen.StaticScreen { permissionEducationScreen() },
+        Screen.StaticScreen { enabledPermissionScreen() },
+        Screen.StaticScreen { createEditDeclaredScreen() },
+        Screen.StaticScreen { declaredShotsListScreen() },
     )
 
     // Dynamic screens that require runtime parameters
     val dynamicScreens: List<Screen.DynamicScreen> = listOf(
         Screen.DynamicScreen { isConnected ->
-            { createAccountScreen(isConnected) }
+            { createAccountScreen(isConnectedToInternet = isConnected) }
         },
         Screen.DynamicScreen { isConnected ->
-            { playersListScreen(isConnected) }
+            { playersListScreen(isConnectedToInternet = isConnected) }
         },
         Screen.DynamicScreen { isConnected ->
-            { createOrEditPlayerScreen(isConnected) }
+            { createOrEditPlayerScreen(isConnectedToInternet = isConnected) }
         }
     )
 

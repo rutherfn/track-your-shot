@@ -30,10 +30,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.buildAppBarBasedOnScreen
 import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.buildModalDrawerGesturesEnabled
 import com.nicholas.rutherford.track.your.shot.NavigationComponentExt.findViewModelByDestination
-import com.nicholas.rutherford.track.your.shot.compose.components.AppBar2
 import com.nicholas.rutherford.track.your.shot.compose.components.ConditionalTopAppBar2
 import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.AlertDialog
 import com.nicholas.rutherford.track.your.shot.compose.components.dialogs.CustomDatePickerDialog
@@ -44,26 +42,8 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotParams
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotScreen
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotParams
-import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotScreen
-import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListParams
-import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
-import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsScreen
-import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoParams
-import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoScreen
-import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsParams
-import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsScreen
-import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotScreen
-import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationParams
-import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationScreen
-import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreen
-import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
@@ -72,8 +52,6 @@ import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
 import com.nicholas.rutherford.track.your.shot.navigation.ReportingAction
 import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
 import com.nicholas.rutherford.track.your.shot.navigation.ShotsAction
-import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArguments
-import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
 import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
 import kotlinx.coroutines.launch
 
@@ -83,10 +61,8 @@ fun NavigationComponent(
     activity: MainActivity,
     navHostController: NavHostController,
     navigator: Navigator,
-    viewModels: ViewModels,
-    appBarFactory: AppBarFactory
+    viewModels: ViewModels
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val lifecycleOwner = LocalLifecycleOwner.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
@@ -148,118 +124,8 @@ fun NavigationComponent(
     var modalDrawerGesturesEnabled: Boolean by remember { mutableStateOf(value = false) }
     val appBar = AppNavigationGraph.currentAppBar
 
-    val screenContents = ScreenContents()
-
-    val splashViewModel = viewModels.splashViewModel
     val mainActivityViewModel = viewModels.mainActivityViewModel
-    val createAccountViewModel = viewModels.createAccountViewModel
-    val loginViewModel = viewModels.loginViewModel
-    val playersListViewModel = viewModels.playersListViewModel
-    val createEditPlayerViewModel = viewModels.createEditPlayerViewModel
-    val forgotPasswordViewModel = viewModels.forgotPasswordViewModel
-    val selectShotViewModel = viewModels.selectShotViewModel
-    val logShotViewModel = viewModels.logShotViewModel
-    val settingsViewModel = viewModels.settingsViewModel
-    val permissionEducationViewModel = viewModels.permissionEducationViewModel
-    val termsConditionsViewModel = viewModels.termsConditionsViewModel
-    val onboardingEducationViewModel = viewModels.onboardingEducationViewModel
-    val enabledPermissionsViewModel = viewModels.enabledPermissionsViewModel
-    val accountInfoViewModel = viewModels.accountInfoViewModel
-    val reportListViewModel = viewModels.reportListViewModel
-    val createReportViewModel = viewModels.createReportViewModel
-    val shotsListViewModel = viewModels.shotsListViewModel
     val declaredShotsListViewModel = viewModels.declaredShotsListViewModel
-    val createEditDeclaredShotViewModel = viewModels.createEditDeclaredShotsViewModel
-
-    val reportListParams = ReportListParams(
-        state = reportListViewModel.reportListStateFlow.collectAsState().value,
-        onToolbarMenuClicked = { reportListViewModel.onToolbarMenuClicked() },
-        onAddReportClicked = { reportListViewModel.onCreatePlayerReportClicked() },
-        onViewReportClicked = { url -> reportListViewModel.onViewReportClicked(url = url) },
-        onDeletePlayerReportClicked = { individualPlayerReport -> reportListViewModel.onDeletePlayerReportClicked(individualPlayerReport = individualPlayerReport) },
-        onDownloadPlayerReportClicked = { individualPlayerReport -> reportListViewModel.onDownloadPlayerReportClicked(individualPlayerReport = individualPlayerReport) },
-        buildDateTimeStamp = { value -> reportListViewModel.buildDateTimeStamp(value) }
-    )
-    val shotsListScreenParams = ShotsListScreenParams(
-        state = shotsListViewModel.shotListStateFlow.collectAsState().value,
-        onHelpClicked = { shotsListViewModel.onHelpClicked() },
-        onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked() },
-        onShotItemClicked = { shotLoggedWithPlayer ->
-            shotsListViewModel.onShotItemClicked(
-                shotLoggedWithPlayer
-            )
-        },
-        shouldShowAllPlayerShots = true // replace this with user shot usage
-    )
-    val enabledPermissionsParams = EnabledPermissionsParams(
-        onToolbarMenuClicked = { enabledPermissionsViewModel.onToolbarMenuClicked() },
-        onSwitchChangedToTurnOffPermission = { enabledPermissionsViewModel.onSwitchChangedToTurnOffPermission() },
-        permissionNotGrantedForCameraAlert = { enabledPermissionsViewModel.permissionNotGrantedForCameraAlert() }
-    )
-    val declaredShotsListScreenParams = DeclaredShotsListScreenParams(
-        state = declaredShotsListViewModel.declaredShotsListStateFlow.collectAsState().value,
-        onDeclaredShotClicked = { id, title->
-            declaredShotsListViewModel.onDeclaredShotClicked(
-                id = id,
-                title = title
-            )
-        },
-        onToolbarMenuClicked = { declaredShotsListViewModel.onToolbarMenuClicked() },
-        onAddDeclaredShotClicked = { declaredShotsListViewModel.onAddDeclaredShotClicked() }
-    )
-    val createEditDeclaredScreenParams = CreateEditDeclaredShotScreenParams(
-        state = createEditDeclaredShotViewModel.createEditDeclaredShotStateFlow.collectAsState().value,
-        onToolbarMenuClicked = { createEditDeclaredShotViewModel.onToolbarMenuClicked() },
-        onDeleteShotClicked = { id ->
-            createEditDeclaredShotViewModel.onDeleteShotClicked(
-                id = id
-            )
-        },
-        onEditShotPencilClicked = { createEditDeclaredShotViewModel.onEditShotPencilClicked() },
-        onEditShotNameValueChanged = { shotName ->
-            createEditDeclaredShotViewModel.onEditShotNameValueChanged(
-                shotName = shotName
-            )
-        },
-        onEditShotCategoryValueChanged = { shotCategory ->
-            createEditDeclaredShotViewModel.onEditShotCategoryValueChanged(
-                shotCategory = shotCategory
-            )
-        },
-        onEditShotDescriptionValueChanged = { description ->
-            createEditDeclaredShotViewModel.onEditShotDescriptionValueChanged(
-                description = description
-            )
-        },
-        onCreateShotNameValueChanged = { shotName ->
-            createEditDeclaredShotViewModel.onCreateShotNameValueChanged(
-                shotName = shotName
-            )
-        },
-        onCreateShotDescriptionValueChanged = { shotDescription ->
-            createEditDeclaredShotViewModel.onCreateShotDescriptionValueChanged(
-                shotDescription = shotDescription
-            )
-        },
-        onCreateShotCategoryValueChanged = { shotCategory ->
-            createEditDeclaredShotViewModel.onCreateShotCategoryValueChanged(
-                shotCategory = shotCategory
-            )
-        },
-        onEditOrCreateNewShot = { createEditDeclaredShotViewModel.onEditOrCreateNewShot() }
-    )
-    val settingsParams = SettingsParams(
-        onToolbarMenuClicked = {
-            settingsViewModel.onToolbarMenuClicked()
-        },
-        onHelpClicked = {
-            settingsViewModel.onHelpClicked()
-        },
-        onSettingItemClicked = { value ->
-            settingsViewModel.onSettingItemClicked(value = value)
-        },
-        state = settingsViewModel.settingsStateFlow.collectAsState().value
-    )
 
     val isConnectedToInternet = mainActivityViewModel.isConnected.collectAsState().value
 
@@ -438,22 +304,6 @@ fun NavigationComponent(
                             ConditionalTopAppBar2(
                                 appBar = bar
                             )
-                        } else {
-//                            TopAppBar(
-//                                title = {},
-//                                navigationIcon = {},
-//                                actions = {},
-//                                colors = TopAppBarDefaults.topAppBarColors(
-//                                    containerColor = Color.Transparent,
-//                                    titleContentColor = Color.Unspecified,
-//                                    navigationIconContentColor = Color.Unspecified,
-//                                    actionIconContentColor = Color.Unspecified
-//                                ),
-//                                modifier = Modifier
-//                                    .fillMaxWidth()
-//                                    .background(Color.Transparent),
-//                                scrollBehavior = null
-//                            )
                         }
                     } ?: run {
                         TopAppBar(
@@ -484,201 +334,6 @@ fun NavigationComponent(
                         navGraphBuilder = this,
                         isConnectedToInternet = isConnectedToInternet
                     )
-                    composable(
-                        route = NavigationDestinations.SHOTS_LIST_SCREEN_WITH_PARAMS,
-                        arguments = NavArguments.shotsList
-                    ) { entry ->
-                        ShotsListScreen(
-                            params = ShotsListScreenParams(
-                                state = shotsListViewModel.shotListStateFlow.collectAsState().value,
-                                onHelpClicked = { shotsListViewModel.onHelpClicked() },
-                                onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked() },
-                                onShotItemClicked = { shotLoggedWithPlayer ->
-                                    shotsListViewModel.onShotItemClicked(
-                                        shotLoggedWithPlayer
-                                    )
-                                },
-                                shouldShowAllPlayerShots = entry.arguments?.getBoolean(
-                                    NamedArguments.SHOULD_SHOW_ALL_PLAYERS_SHOTS
-                                )
-                                    ?: false
-                            )
-                        )
-                    }
-                    composable(
-                        route = NavigationDestinations.SELECT_SHOT_SCREEN_WITH_PARAMS,
-                        arguments = NavArguments.selectShot
-                    ) { entry ->
-                        SelectShotScreen(
-                            selectShotParams = SelectShotParams(
-                                state = selectShotViewModel.selectShotStateFlow.collectAsState().value,
-                                onSearchValueChanged = { newSearchQuery ->
-                                    selectShotViewModel.onSearchValueChanged(
-                                        newSearchQuery = newSearchQuery
-                                    )
-                                },
-                                onBackButtonClicked = { selectShotViewModel.onBackButtonClicked() },
-                                onCancelIconClicked = { query ->
-                                    selectShotViewModel.onCancelIconClicked(
-                                        query
-                                    )
-                                },
-                                onnDeclaredShotItemClicked = {},
-                                onHelpIconClicked = { selectShotViewModel.onHelpIconClicked() },
-                                updateIsExistingPlayerAndPlayerId = {
-                                    selectShotViewModel.updateIsExistingPlayerAndPlayerId(
-                                        isExistingPlayerArgument = entry.arguments?.getBoolean(
-                                            NamedArguments.IS_EXISTING_PLAYER
-                                        ),
-                                        playerIdArgument = entry.arguments?.getInt(NamedArguments.PLAYER_ID)
-                                    )
-                                },
-                                onItemClicked = { shotType ->
-                                    selectShotViewModel.onDeclaredShotItemClicked(shotType = shotType)
-                                }
-                            )
-                        )
-                    }
-                    composable(
-                        route = NavigationDestinations.LOG_SHOT_WITH_PARAMS,
-                        arguments = NavArguments.logShot
-                    ) { entry ->
-                        entry.arguments?.let { bundle ->
-                            LogShotScreen(
-                                logShotParams = LogShotParams(
-                                    state = logShotViewModel.logShotStateFlow.collectAsState().value,
-                                    onBackButtonClicked = { logShotViewModel.onBackClicked() },
-                                    onDateShotsTakenClicked = { logShotViewModel.onDateShotsTakenClicked() },
-                                    updateIsExistingPlayerAndPlayerId = {
-                                        logShotViewModel.updateIsExistingPlayerAndId(
-                                            isExistingPlayerArgument = bundle.getBoolean(
-                                                NamedArguments.IS_EXISTING_PLAYER
-                                            ),
-                                            playerIdArgument = bundle.getInt(NamedArguments.PLAYER_ID),
-                                            shotTypeArgument = bundle.getInt(NamedArguments.SHOT_TYPE),
-                                            shotIdArgument = bundle.getInt(NamedArguments.SHOT_ID),
-                                            viewCurrentExistingShotArgument = bundle.getBoolean(
-                                                NamedArguments.VIEW_CURRENT_EXISTING_SHOT
-                                            ),
-                                            viewCurrentPendingShotArgument = bundle.getBoolean(
-                                                NamedArguments.VIEW_CURRENT_PENDING_SHOT
-                                            ),
-                                            fromShotListArgument = bundle.getBoolean(NamedArguments.FROM_SHOT_LIST)
-                                        )
-                                    },
-                                    onShotsMadeUpwardClicked = { value ->
-                                        logShotViewModel.onShotsMadeUpwardOrDownwardClicked(
-                                            shots = value
-                                        )
-                                    },
-                                    onShotsMadeDownwardClicked = { value ->
-                                        logShotViewModel.onShotsMadeUpwardOrDownwardClicked(
-                                            shots = value
-                                        )
-                                    },
-                                    onShotsMissedUpwardClicked = { value ->
-                                        logShotViewModel.onShotsMissedUpwardOrDownwardClicked(
-                                            shots = value
-                                        )
-                                    },
-                                    onShotsMissedDownwardClicked = { value ->
-                                        logShotViewModel.onShotsMissedUpwardOrDownwardClicked(
-                                            shots = value
-                                        )
-                                    },
-                                    onSaveClicked = { logShotViewModel.onSaveClicked() },
-                                    onDeleteShotClicked = { logShotViewModel.onDeleteShotClicked() }
-                                )
-                            )
-                        }
-                    }
-                    composable(
-                        route = NavigationDestinations.SETTINGS_SCREEN
-                    ) {
-                        SettingsScreen(
-                            params = SettingsParams(
-                                onToolbarMenuClicked = {
-                                    settingsViewModel.onToolbarMenuClicked()
-                                },
-                                onHelpClicked = {
-                                    settingsViewModel.onHelpClicked()
-                                },
-                                onSettingItemClicked = { value ->
-                                    settingsViewModel.onSettingItemClicked(value = value)
-                                },
-                                state = settingsViewModel.settingsStateFlow.collectAsState().value
-                            )
-                        )
-                    }
-                    composable(route = NavigationDestinations.REPORTS_LIST_SCREEN) {
-                        screenContents.reportListContent(reportListParams = reportListParams)
-                            .invoke()
-                    }
-                    composable(
-                        route = NavigationDestinations.CREATE_REPORT_SCREEN
-                    ) {
-                        screenContents.createReportContent(createReportViewModel = createReportViewModel)
-                            .invoke()
-                    }
-                    composable(
-                        route = NavigationDestinations.PERMISSION_EDUCATION_SCREEN
-                    ) {
-                        PermissionEducationScreen(
-                            permissionEducationParams = PermissionEducationParams(
-                                onGotItButtonClicked = { permissionEducationViewModel.onGotItButtonClicked() },
-                                onMoreInfoClicked = { permissionEducationViewModel.onMoreInfoClicked() },
-                                state = permissionEducationViewModel.permissionEducationStateFlow.collectAsState().value
-                            )
-                        )
-                    }
-                    composable(
-                        route = NavigationDestinations.ENABLED_PERMISSIONS_SCREEN
-                    ) {
-                        EnabledPermissionsScreen(
-                            params = EnabledPermissionsParams(
-                                onToolbarMenuClicked = { enabledPermissionsViewModel.onToolbarMenuClicked() },
-                                onSwitchChangedToTurnOffPermission = { enabledPermissionsViewModel.onSwitchChangedToTurnOffPermission() },
-                                permissionNotGrantedForCameraAlert = { enabledPermissionsViewModel.permissionNotGrantedForCameraAlert() }
-                            )
-                        )
-                    }
-                    composable(
-                        route = NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN
-                    ) {
-                        DeclaredShotsListScreen(
-                            declaredShotsListScreenParams = DeclaredShotsListScreenParams(
-                                state = declaredShotsListViewModel.declaredShotsListStateFlow.collectAsState().value,
-                                onDeclaredShotClicked = { id, title ->
-                                    declaredShotsListViewModel.onDeclaredShotClicked(
-                                        id = id,
-                                        title = title
-                                    )
-                                },
-                                onToolbarMenuClicked = { declaredShotsListViewModel.onToolbarMenuClicked() },
-                                onAddDeclaredShotClicked = { declaredShotsListViewModel.onAddDeclaredShotClicked() }
-                            )
-                        )
-                    }
-                    composable(
-                        route = NavigationDestinations.CREATE_EDIT_DECLARED_SHOTS_SCREEN
-                    ) { CreateEditDeclaredShotScreen(params = createEditDeclaredScreenParams) }
-                    composable(
-                        route = NavigationDestinations.ACCOUNT_INFO_SCREEN_PARAMS,
-                        arguments = NavArguments.accountInfo
-                    ) { entry ->
-                        entry.arguments?.let { bundle ->
-                            val usernameArgument = bundle.getString(NamedArguments.USERNAME) ?: ""
-                            val emailArgument = bundle.getString(NamedArguments.EMAIL) ?: ""
-
-                            AccountInfoScreen(
-                                params = AccountInfoParams(
-                                    onToolbarMenuClicked = { accountInfoViewModel.onToolbarMenuClicked() },
-                                    usernameArgument = usernameArgument,
-                                    emailArgument = emailArgument
-                                )
-                            )
-                        }
-                    }
                 }
             }
 

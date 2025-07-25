@@ -715,7 +715,7 @@ class CreateEditPlayerViewModel(
         currentPendingShot.clearShotList()
 
         navigation.disableProgress()
-        navigation.pop()
+        navigation.navigateToPlayersList()
 
         resetState()
     }
@@ -1021,7 +1021,7 @@ class CreateEditPlayerViewModel(
             scope.launch { pendingPlayerRepository.deleteAllPendingPlayers() }
             pendingPlayers = emptyList()
         }
-        navigation.pop()
+        navigation.navigateToPlayersList()
         scope.launch {
             delay(RESET_SCREEN_DELAY_IN_MILLIS)
             currentPendingShot.clearShotList()
@@ -1097,21 +1097,17 @@ class CreateEditPlayerViewModel(
      * Otherwise, creates a pending player and returns its ID.
      */
     internal suspend fun existingOrPendingPlayerId(): Int? {
-        // Check if an edited player exists
         editedPlayer?.let { player ->
-            // Fetch ID of the existing player and return it
             return playerRepository.fetchPlayerIdByName(
                 firstName = player.firstName,
                 lastName = player.lastName
             )
         } ?: run {
-            // Delete any pending players if they exist
             pendingPlayerRepository.fetchAllPendingPlayers().takeIf { it.isNotEmpty() }?.let {
                 pendingPlayers = emptyList()
                 pendingPlayerRepository.deleteAllPendingPlayers()
             }
 
-            // Create a new pending player
             val firstName = createEditPlayerMutableStateFlow.value.firstName
             val lastName = createEditPlayerMutableStateFlow.value.lastName
             val pendingPlayer = Player(

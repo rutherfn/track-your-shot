@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
@@ -99,7 +100,7 @@ fun NumericRowStepperRightContent(
             Icon(
                 imageVector = Icons.Default.ArrowDownward,
                 contentDescription = "Decrease Value",
-                tint = LocalContentColor.current.copy(alpha = 0.0f),
+                tint = AppColors.Black,
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -126,7 +127,7 @@ fun NumericRowStepperRightContent(
             Icon(
                 imageVector = Icons.Default.ArrowUpward,
                 contentDescription = "Increase Value",
-                tint = LocalContentColor.current.copy(alpha = 0.0f),
+                tint = AppColors.Black,
                 modifier = Modifier.size(24.dp)
             )
         }

@@ -45,8 +45,7 @@ open class MainActivity : ComponentActivity() {
                     shotsListViewModel = getViewModel(),
                     declaredShotsListViewModel = getViewModel(),
                     createEditDeclaredShotsViewModel = getViewModel()
-                ),
-                appBarFactory = get()
+                )
             )
         }
     }

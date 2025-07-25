@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
@@ -21,7 +22,22 @@ import kotlinx.coroutines.launch
 
 const val UPDATING_DECLARED_SHOT_LIST_DELAY = 400L
 
+/**
+ * ViewModel responsible for managing the selection of a declared shot when logging a shot for a player.
+ *
+ * This ViewModel handles loading declared shots from the repository, filtering shots based on search input,
+ * managing state for the current player context (existing or pending player), and navigation events.
+ *
+ * @property savedStateHandle Provides access to navigation arguments.
+ * @property application Application context to access resources such as string resources.
+ * @property scope CoroutineScope used for launching asynchronous tasks.
+ * @property navigation Interface for navigation actions related to the select shot screen.
+ * @property declaredShotRepository Repository for accessing declared shot data.
+ * @property playerRepository Repository for accessing existing player data.
+ * @property pendingPlayerRepository Repository for accessing pending (not fully saved) player data.
+ */
 class SelectShotViewModel(
+    savedStateHandle: SavedStateHandle,
     private val application: Application,
     private val scope: CoroutineScope,
     private val navigation: SelectShotNavigation,
@@ -33,21 +49,42 @@ class SelectShotViewModel(
     internal var currentDeclaredShotArrayList: ArrayList<DeclaredShot> = arrayListOf()
 
     internal val selectShotMutableStateFlow = MutableStateFlow(value = SelectShotState())
+
     val selectShotStateFlow = selectShotMutableStateFlow.asStateFlow()
 
     internal var isExistingPlayer: Boolean? = null
+
     internal var playerId: Int? = null
 
-    override fun onNavigatedTo() {
-        super.onNavigatedTo()
+    /**
+     * Navigation argument: whether the player is existing.
+     */
+    internal val isExistingPlayerArgument: Boolean = savedStateHandle.get<Boolean>("isExistingPlayer") ?: false
+
+    /**
+     * Navigation argument: the player ID.
+     */
+    internal val playerIdArgument: Int? = savedStateHandle.get<Int>("playerId")
+
+    init {
+        updateIsExistingPlayerAndPlayerId()
         fetchDeclaredShotsAndUpdateState()
     }
 
-    fun updateIsExistingPlayerAndPlayerId(isExistingPlayerArgument: Boolean?, playerIdArgument: Int?) {
+    /**
+     * Updates internal variables to reflect whether the player is existing and their ID,
+     * based on the navigation arguments.
+     */
+    fun updateIsExistingPlayerAndPlayerId() {
         this.isExistingPlayer = isExistingPlayerArgument
         this.playerId = playerIdArgument
     }
 
+    /**
+     * Fetches all declared shots from the repository and updates the UI state.
+     *
+     * @param shouldDelay If true, delays the fetch by [UPDATING_DECLARED_SHOT_LIST_DELAY] milliseconds.
+     */
     internal fun fetchDeclaredShotsAndUpdateState(shouldDelay: Boolean = false) {
         scope.launch {
             currentDeclaredShotArrayList.clear()
@@ -61,6 +98,12 @@ class SelectShotViewModel(
         }
     }
 
+    /**
+     * Handles changes in the search input query.
+     * Filters the declared shot list by the search query and updates the UI state.
+     *
+     * @param newSearchQuery The new search text entered by the user.
+     */
     fun onSearchValueChanged(newSearchQuery: String) {
         currentDeclaredShotArrayList.clear()
 
@@ -74,6 +117,12 @@ class SelectShotViewModel(
         }
     }
 
+    /**
+     * Handles the cancel icon click in the search bar.
+     * Resets the declared shot list to the full list if the search query is not empty.
+     *
+     * @param query The current search query.
+     */
     fun onCancelIconClicked(query: String) {
         if (query.isNotEmpty()) {
             currentDeclaredShotArrayList.clear()
@@ -81,6 +130,10 @@ class SelectShotViewModel(
         }
     }
 
+    /**
+     * Handles the system back button click.
+     * Navigates back differently depending on whether the player is existing or new.
+     */
     fun onBackButtonClicked() {
         if (isExistingPlayer == false) {
             navigation.popFromCreatePlayer()
@@ -89,6 +142,11 @@ class SelectShotViewModel(
         }
     }
 
+    /**
+     * Constructs and returns an informational alert dialog explaining shot selection.
+     *
+     * @return An [Alert] dialog with title, description, and a dismiss button.
+     */
     internal fun moreInfoAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.selectingAShot),
@@ -99,8 +157,17 @@ class SelectShotViewModel(
         )
     }
 
+    /**
+     * Handles clicks on the help icon by showing the more info alert.
+     */
     fun onHelpIconClicked() = navigation.alert(alert = moreInfoAlert())
 
+    /**
+     * Determines the next shot ID to assign when logging a new shot for the given player.
+     *
+     * @param player The player for whom the shot is being logged.
+     * @return The next shot ID to use, or a default constant if no shots exist.
+     */
     internal fun determineShotId(player: Player): Int {
         return if (player.shotsLoggedList.isNotEmpty()) {
             player.shotsLoggedList.size
@@ -109,6 +176,13 @@ class SelectShotViewModel(
         }
     }
 
+    /**
+     * Retrieves the next shot ID for a player identified by the existing status and player ID.
+     *
+     * @param isExistingPlayer True if the player exists in the main repository, false if pending.
+     * @param playerId The ID of the player.
+     * @return The next shot ID for logging.
+     */
     internal suspend fun loggedShotId(isExistingPlayer: Boolean, playerId: Int): Int {
         return if (isExistingPlayer) {
             playerRepository.fetchPlayerById(playerId)?.let { player ->
@@ -121,6 +195,12 @@ class SelectShotViewModel(
         }
     }
 
+    /**
+     * Handles the event when a declared shot is selected by the user.
+     * Navigates to the Log Shot screen passing relevant player and shot details.
+     *
+     * @param shotType The type ID of the declared shot selected.
+     */
     fun onDeclaredShotItemClicked(shotType: Int) {
         safeLet(isExistingPlayer, playerId) { isExisting, id ->
             scope.launch {
