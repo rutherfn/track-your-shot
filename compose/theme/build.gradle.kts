@@ -1,7 +1,7 @@
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
     alias(libs.plugins.kotlin.compose)
 }
 
@@ -77,6 +77,6 @@ android {
 dependencies {
     implementation(libs.accompanist.systemuicontroller)
 
-    implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.ui)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui)
 }

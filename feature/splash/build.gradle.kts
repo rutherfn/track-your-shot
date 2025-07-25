@@ -1,7 +1,7 @@
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
     id(BuildIds.kover)
     alias(libs.plugins.kotlin.compose)
 }
@@ -72,7 +72,7 @@ android {
 }
 
 dependencies {
-    androidTestImplementation(Dependencies.Compose.uiTestJunit4)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
 
     api(project(path = ":base-resources"))
     api(project(path = ":base:vm"))
@@ -87,8 +87,8 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.viewModel)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     implementation(libs.androidx.ui.tooling.preview)
 

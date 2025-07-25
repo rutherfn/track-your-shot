@@ -2,6 +2,7 @@
 /**
  * To define configuration data */
 object ConfigurationData {
+    const val ktlintVersion = "11.5.0"
     const val compileSdk = 35
     const val buildToolsVersion = "35.0.0"
     const val minSdk = 26

@@ -1,7 +1,7 @@
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
     alias(libs.plugins.kotlin.compose)
 }
 
@@ -76,8 +76,8 @@ dependencies {
 
     api(project(path = ":compose:components"))
 
-    implementation(Dependencies.Compose.navigation)
-    implementation(Dependencies.Compose.material)
+    implementation(libs.navigation.compose)
+    implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.core)
     implementation(libs.androidx.material.icons.extended)
 

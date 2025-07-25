@@ -3,7 +3,7 @@ plugins {
     id(BuildIds.ksp)
     kotlin(BuildIds.pluginKotlin)
     kotlin(BuildIds.pluginKapt)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
 }
 
 android {

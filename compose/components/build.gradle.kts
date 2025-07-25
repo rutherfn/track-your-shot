@@ -1,7 +1,7 @@
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
     alias(libs.plugins.kotlin.compose)
 }
 
@@ -82,7 +82,7 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
 
-    implementation(Dependencies.Compose.material)
+    implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.core)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.ui.tooling.preview)

@@ -1,7 +1,7 @@
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
     id(BuildIds.kover)
     alias(libs.plugins.kotlin.compose)
 }
@@ -88,11 +88,11 @@ dependencies {
 
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.activity.compose)
-    implementation(Dependencies.Compose.material)
+    implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.core)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(Dependencies.Compose.viewModel)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     testImplementation(project(path = ":data-test:firebase"))
     testImplementation(project(path = ":data-test:room"))

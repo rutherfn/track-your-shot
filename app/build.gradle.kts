@@ -1,7 +1,7 @@
 plugins {
     id(BuildIds.pluginId)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
     id(BuildIds.gmsGoogleServices)
     id(BuildIds.ksp)
     id(BuildIds.kover)
@@ -97,7 +97,7 @@ dependencies {
 
     implementation(libs.protolite.well.known.types)
     androidTestImplementation(libs.androidx.rules)
-    androidTestImplementation(Dependencies.Compose.uiTestJunit4)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.espresso.idling.resource)
 
@@ -139,8 +139,8 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.material.icons.core)
     implementation(libs.androidx.material.icons.extended)
-    implementation(Dependencies.Compose.navigation)
-    implementation(Dependencies.Compose.material)
+    implementation(libs.navigation.compose)
+    implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.tooling.preview)
 
     implementation(libs.firebase.analytics)

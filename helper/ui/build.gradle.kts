@@ -1,7 +1,7 @@
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
 }
 
 android {
@@ -64,5 +64,5 @@ android {
 dependencies {
     api(project(path = ":base-resources"))
 
-    implementation(Dependencies.Compose.ui)
+    implementation(libs.androidx.ui)
 }
