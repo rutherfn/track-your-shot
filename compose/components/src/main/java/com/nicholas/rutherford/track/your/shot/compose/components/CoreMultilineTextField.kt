@@ -70,7 +70,7 @@ fun CoreMultilineTextField(
             keyboardActions = KeyboardActions(
                 onDone = { focusManager.clearFocus() }
             ),
-           // cursorBrush = SolidColor(AppColors.Black),
+            // cursorBrush = SolidColor(AppColors.Black),
             interactionSource = interactionSource,
             singleLine = false,
             placeholder = {
@@ -95,4 +95,3 @@ fun CoreMultilineTextField(
         color = color
     )
 }
-

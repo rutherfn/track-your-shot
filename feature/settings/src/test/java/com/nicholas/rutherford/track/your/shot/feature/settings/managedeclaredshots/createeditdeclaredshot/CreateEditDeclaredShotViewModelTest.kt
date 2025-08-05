@@ -73,76 +73,6 @@ class CreateEditDeclaredShotViewModelTest {
         )
     }
 
-//    @Nested
-//    inner class OnNavigateTo {
-//
-//        @BeforeEach
-//        fun beforeEach() {
-//            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns listOf(TestDeclaredShot.build())
-//        }
-//
-////        @Test
-////        fun `when declaredShotId returns back 0 should update state`() {
-////            val toolbarTitle = "Create Shot"
-////
-////            every { application.getString(StringsIds.createShot) } returns toolbarTitle
-////            every { readSharedPreferences.declaredShotId() } returns 0
-////
-////            viewModel.onNavigatedTo()
-////
-////            Assertions.assertEquals(viewModel.allDeclaredShotNames, listOf("Hook Shot"))
-////            Assertions.assertEquals(
-////                viewModel.createEditDeclaredShotMutableStateFlow.value,
-////                state.copy(
-////                    declaredShotState = DeclaredShotState.CREATING,
-////                    toolbarTitle = toolbarTitle
-////                )
-////            )
-////        }
-//
-//        @Test
-//        fun `when declaredShotId is not set to 0 and fetch declared shot from id returns null should not update state`() = runTest {
-//            val id = 4
-//
-//            every { readSharedPreferences.declaredShotId() } returns id
-//            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = id) } returns null
-//
-//            viewModel.onNavigatedTo()
-//
-//            Assertions.assertEquals(viewModel.allDeclaredShotNames, listOf("Hook Shot"))
-//            Assertions.assertEquals(viewModel.currentDeclaredShot, null)
-//            Assertions.assertEquals(viewModel.createEditDeclaredShotMutableStateFlow.value, state)
-//
-//            verify { createSharedPreferences.createDeclaredShotId(value = 0) }
-//        }
-//
-//        @Test
-//        fun `when declaredShotId is not set to 0 and fetch declared shot from id returns value should update state`() = runTest {
-//            val id = 4
-//            val declaredShot = TestDeclaredShot.build()
-//            val viewShotName = "View ${declaredShot.title}"
-//
-//            every { application.getString(StringsIds.viewX, declaredShot.title) } returns viewShotName
-//            every { readSharedPreferences.declaredShotId() } returns id
-//            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = id) } returns declaredShot
-//
-//            viewModel.onNavigatedTo()
-//
-//            Assertions.assertEquals(viewModel.allDeclaredShotNames, listOf("Hook Shot"))
-//            Assertions.assertEquals(viewModel.currentDeclaredShot, declaredShot)
-////            Assertions.assertEquals(
-////                viewModel.createEditDeclaredShotMutableStateFlow.value,
-////                state.copy(
-////                    currentDeclaredShot = declaredShot,
-////                    declaredShotState = DeclaredShotState.VIEWING,
-////                    toolbarTitle = viewShotName
-////                )
-////            )
-//
-//            verify { createSharedPreferences.createDeclaredShotId(value = 0) }
-//        }
-//    }
-
     @Test
     fun `on toolbar menu clicked`() {
         viewModel.onToolbarMenuClicked()
@@ -154,46 +84,44 @@ class CreateEditDeclaredShotViewModelTest {
     inner class AttemptToUpdateDeclaredShotState {
 
         @Test
-        fun `when fetch declared shot from id returns null should not update state`() {
-            val id = 2
+        fun `when fetch declared shot from name returns null should not update state`() {
+            val name = "name"
 
-            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = id) } returns null
+            coEvery { declaredShotRepository.fetchDeclaredShotFromName(name = name) } returns null
 
-          //  viewModel.attemptToUpdateDeclaredShotState(id = id)
+            viewModel.attemptToUpdateDeclaredShotState(name = name)
 
             Assertions.assertEquals(viewModel.currentDeclaredShot, null)
-            Assertions.assertEquals(viewModel.createEditDeclaredShotMutableStateFlow.value, state)
-            verify { createSharedPreferences.createDeclaredShotId(value = 0) }
+            Assertions.assertEquals(viewModel.createEditDeclaredShotMutableStateFlow.value, state.copy(declaredShotState = DeclaredShotState.CREATING))
+            verify { createSharedPreferences.createDeclaredShotName(value = "") }
         }
 
         @Test
-        fun `when fetch declared shot from id returns declared shot should update state`() {
-            val id = 2
+        fun `when fetch declared shot from name returns declared shot should update state`() {
+            val name = "name"
             val declaredShot = TestDeclaredShot.build()
             val viewShotName = "View ${declaredShot.title}"
 
             every { application.getString(StringsIds.viewX, declaredShot.title) } returns viewShotName
-            coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = id) } returns declaredShot
+            coEvery { declaredShotRepository.fetchDeclaredShotFromName(name = name) } returns declaredShot
 
-          //  viewModel.attemptToUpdateDeclaredShotState(id = id)
+            viewModel.attemptToUpdateDeclaredShotState(name = name)
 
             Assertions.assertEquals(viewModel.currentDeclaredShot, declaredShot)
-//            Assertions.assertEquals(
-//                viewModel.createEditDeclaredShotMutableStateFlow.value,
-//                state.copy(
-//                    currentDeclaredShot = declaredShot,
-//                    declaredShotState = DeclaredShotState.VIEWING,
-//                    toolbarTitle = viewShotName
-//                )
-//            )
-            verify { createSharedPreferences.createDeclaredShotId(value = 0) }
+            Assertions.assertEquals(
+                viewModel.createEditDeclaredShotMutableStateFlow.value,
+                state.copy(
+                    currentDeclaredShot = declaredShot,
+                    declaredShotState = DeclaredShotState.VIEWING
+                )
+            )
+            verify { createSharedPreferences.createDeclaredShotName(value = "") }
         }
     }
 
     @Nested
     inner class OnYesDeleteShot {
         private val shotName = "shotName"
-        private val shotKey = "shotKey"
         private val id = 1
 
         @Test

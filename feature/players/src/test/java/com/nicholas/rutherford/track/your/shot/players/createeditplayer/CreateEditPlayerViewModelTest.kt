@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.players.createeditplayer
 
 import android.app.Application
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
@@ -74,6 +75,8 @@ class CreateEditPlayerViewModelTest {
 
     private val currentPendingShot = mockk<CurrentPendingShot>(relaxed = true)
 
+    private var savedStateHandle = mockk<SavedStateHandle>(relaxed = true)
+
     private val uri = mockk<Uri>(relaxed = true)
 
     private val defaultState = CreateEditPlayerState(
@@ -118,6 +121,9 @@ class CreateEditPlayerViewModelTest {
     fun beforeEach() {
         mockStrings()
 
+        every { savedStateHandle.get<String>("firstName") } returns "first"
+        every { savedStateHandle.get<String>("lastName") } returns "last"
+
         createEditPlayerViewModel = CreateEditPlayerViewModel(
             application = application,
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
@@ -129,7 +135,8 @@ class CreateEditPlayerViewModelTest {
             scope = scope,
             navigation = navigation,
             dataAdditionUpdates = dataAdditionUpdates,
-            currentPendingShot = currentPendingShot
+            currentPendingShot = currentPendingShot,
+            savedStateHandle = savedStateHandle
         )
     }
 
@@ -329,8 +336,8 @@ class CreateEditPlayerViewModelTest {
             createEditPlayerViewModel.hasCheckedForExistingPlayer = true
 
             createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = null,
-                lastNameArgument = player.lastName
+                firstName = player.firstName,
+                lastName = player.lastName
             )
 
             Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
@@ -349,8 +356,8 @@ class CreateEditPlayerViewModelTest {
             Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
 
             createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = null,
-                lastNameArgument = player.lastName
+                firstName = player.firstName,
+                lastName = player.lastName
             )
 
             Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
@@ -373,32 +380,8 @@ class CreateEditPlayerViewModelTest {
             Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
 
             createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = "",
-                lastNameArgument = player.lastName
-            )
-
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
-            Assertions.assertEquals(
-                createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
-            )
-            Assertions.assertEquals(
-                createEditPlayerViewModel.hasCheckedForExistingPlayer,
-                true
-            )
-        }
-
-        @Test
-        fun `when lastNameArgument is null should update toolbarNameResId to create player`() {
-            Assertions.assertEquals(
-                createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
-            )
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
-
-            createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = player.firstName,
-                lastNameArgument = null
+                firstName = "",
+                lastName = player.lastName
             )
 
             Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
@@ -421,8 +404,8 @@ class CreateEditPlayerViewModelTest {
             Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
 
             createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = player.firstName,
-                lastNameArgument = ""
+                firstName = player.firstName,
+                lastName = ""
             )
 
             Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
@@ -447,8 +430,8 @@ class CreateEditPlayerViewModelTest {
             coEvery { playerRepository.fetchPlayerByName(firstName = player.firstName, lastName = player.lastName) } returns null
 
             createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = player.firstName,
-                lastNameArgument = player.lastName
+                firstName = player.firstName,
+                lastName = player.lastName
             )
 
             Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
@@ -474,8 +457,8 @@ class CreateEditPlayerViewModelTest {
             every { application.getString(StringsIds.hintLogNewShotsForPlayer) } returns "Press the \"Log Shots\" button to record shots for"
 
             createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = player.firstName,
-                lastNameArgument = player.lastName
+                firstName = player.firstName,
+                lastName = player.lastName
             )
 
             Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, player)
@@ -710,7 +693,7 @@ class CreateEditPlayerViewModelTest {
     }
 
     @Test
-    fun `clearLocalDeclartion should clear out properties`() {
+    fun `clearLocalDeclarations should clear out properties`() {
         val emptyPendingPlayersList: List<Player> = listOf()
         val emptyPendingShotList: List<PendingShot> = listOf()
 
@@ -835,24 +818,16 @@ class CreateEditPlayerViewModelTest {
 
         @Test
         fun `when device connected to internet returns false should show alert`() = runTest {
-            val uriString = "uriString"
-
-            every { uri.toString() } returns uriString
-
-            createEditPlayerViewModel.onCreatePlayerClicked(isConnectedToInternet = false, uri = uri)
+            createEditPlayerViewModel.onCreatePlayerClicked(isConnectedToInternet = false)
 
             verify { navigation.alert(alert = any()) }
         }
 
         @Test
         fun `when device is connected to internet should enable progress and call validate player`() = runTest {
-            val uriString = "uriString"
-
-            every { uri.toString() } returns uriString
-
             createEditPlayerViewModel.createEditPlayerMutableStateFlow.value = defaultState
 
-            createEditPlayerViewModel.onCreatePlayerClicked(isConnectedToInternet = true, uri = uri)
+            createEditPlayerViewModel.onCreatePlayerClicked(isConnectedToInternet = true)
 
             verify { navigation.enableProgress(progress = any()) }
             verify { createEditPlayerViewModel.validatePlayer(state = defaultState, uri = uri) }

@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
@@ -41,6 +42,14 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlay
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * Main screen composable for displaying a list of player reports.
+ *
+ * Shows a list of player reports if reports exist; otherwise, displays an empty state
+ * with a message depending on whether the user has permission to view reports.
+ *
+ * @param params Contains the current UI state and event handlers for this screen.
+ */
 @Composable
 fun ReportListScreen(params: ReportListParams) {
     if (!params.state.hasNoReports) {
@@ -62,6 +71,17 @@ fun ReportListScreen(params: ReportListParams) {
     }
 }
 
+/**
+ * Displays a scrollable list of individual player reports.
+ *
+ * Each report is shown using the [PlayerReport] composable.
+ *
+ * @param state The current state containing the list of reports to display.
+ * @param onViewReportClicked Callback invoked when the user chooses to view a report (URL passed).
+ * @param onDeletePlayerReportClicked Callback invoked when the user chooses to delete a report.
+ * @param onDownloadPlayerReportClicked Callback invoked when the user chooses to download a report.
+ * @param buildDateTimeStamp Function to format a timestamp (Long) into a user-readable string.
+ */
 @Composable
 fun ReportList(
     state: ReportListState,
@@ -83,6 +103,17 @@ fun ReportList(
     }
 }
 
+/**
+ * Displays an individual player report item with options to view, download, or delete the report.
+ *
+ * The report is shown inside a Card with the player's name, report creation date, and a menu button.
+ *
+ * @param report The data for the individual player report to display.
+ * @param onViewReportClicked Callback triggered when the user selects to view the report.
+ * @param onDeletePlayerReportClicked Callback triggered when the user selects to delete the report.
+ * @param onDownloadPlayerReportClicked Callback triggered when the user selects to download the report.
+ * @param buildDateTimeStamp Function to format the report's timestamp for display.
+ */
 @Composable
 fun PlayerReport(
     report: IndividualPlayerReport,
@@ -174,6 +205,13 @@ fun PlayerReport(
     }
 }
 
+/**
+ * Displays an empty state UI when there are no reports to show.
+ *
+ * Shows a centered message describing why no reports are visible and encourages user action.
+ *
+ * @param description The text message describing the empty state.
+ */
 @Composable
 fun ReportListEmptyState(description: String) {
     Box(
@@ -202,4 +240,60 @@ fun ReportListEmptyState(description: String) {
             )
         }
     }
+}
+
+/**
+ * Preview of the [ReportListScreen] when there are no reports to display.
+ * Shows the empty state UI with appropriate messages.
+ */
+@Preview(showBackground = true)
+@Composable
+fun ReportListScreenEmptyStatePreview() {
+    ReportListScreen(
+        params = ReportListParams(
+            state = ReportListState(
+                reports = emptyList(),
+                hasNoReports = true,
+                hasNoReportPermission = false
+            ),
+            onViewReportClicked = {},
+            onDeletePlayerReportClicked = {},
+            onDownloadPlayerReportClicked = {},
+            buildDateTimeStamp = { timestamp -> "Jan 01, 2024" },
+            onAddReportClicked = {},
+            onToolbarMenuClicked = {}
+        )
+    )
+}
+
+/**
+ * Preview of the [ReportListScreen] with a list containing a single sample player report.
+ * Displays how an individual report appears within the list.
+ */
+@Preview(showBackground = true)
+@Composable
+fun ReportListScreenWithItemsPreview() {
+    val sampleReport = IndividualPlayerReport(
+        id = 1,
+        playerName = "John Doe",
+        pdfUrl = "https://example.com/report.pdf",
+        loggedDateValue = 1680000000000L,
+        firebaseKey = "firebase"
+    )
+
+    ReportListScreen(
+        params = ReportListParams(
+            state = ReportListState(
+                reports = listOf(sampleReport),
+                hasNoReports = false,
+                hasNoReportPermission = false
+            ),
+            onViewReportClicked = {},
+            onDeletePlayerReportClicked = {},
+            onDownloadPlayerReportClicked = {},
+            buildDateTimeStamp = { timestamp -> "Mar 27, 2023" },
+            onAddReportClicked = {},
+            onToolbarMenuClicked = {}
+        )
+    )
 }

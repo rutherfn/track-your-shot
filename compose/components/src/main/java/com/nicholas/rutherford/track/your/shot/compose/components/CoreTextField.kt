@@ -64,8 +64,7 @@ fun CoreTextField(
             unfocusedBorderColor = AppColors.Black,
             cursorColor = AppColors.Orange,
             focusedLabelColor = AppColors.Orange,
-            unfocusedLabelColor = AppColors.Black,
+            unfocusedLabelColor = AppColors.Black
         )
     )
 }
-

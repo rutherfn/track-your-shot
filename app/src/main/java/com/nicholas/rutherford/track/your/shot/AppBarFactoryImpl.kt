@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Help
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
@@ -141,7 +142,8 @@ class AppBarFactoryImpl(
             shouldShowSecondaryButton = true,
             secondaryIconTint = AppColors.White,
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
-            onSecondaryIconButtonClicked = { params.onAddDeclaredShotClicked.invoke() }
+            onSecondaryIconButtonClicked = { params.onAddDeclaredShotClicked.invoke() },
+            secondaryImageVector = Icons.Default.Add
         )
 
     override fun createCreateEditDeclaredShotAppBar(params: CreateEditDeclaredShotScreenParams): AppBar {

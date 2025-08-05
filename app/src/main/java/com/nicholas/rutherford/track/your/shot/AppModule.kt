@@ -177,7 +177,7 @@ class AppModule {
             ReadSharedPreferencesImpl(sharedPreferences = get())
         }
         single<AppBarFactory> {
-           AppBarFactoryImpl(readSharedPreferences = get(), application = androidApplication())
+            AppBarFactoryImpl(readSharedPreferences = get(), application = androidApplication())
         }
         single<ActiveUserRepository> {
             ActiveUserRepositoryImpl(activeUserDao = get())
@@ -495,8 +495,9 @@ class AppModule {
                 scope = defaultCoroutineScope
             )
         }
-        viewModel {
+        viewModel { (stateHandle: SavedStateHandle) ->
             CreateEditDeclaredShotViewModel(
+                savedStateHandle = stateHandle,
                 application = androidApplication(),
                 declaredShotRepository = get(),
                 shotIgnoringRepository = get(),
@@ -542,7 +543,6 @@ class AppModule {
             ShotsListViewModel(
                 scope = defaultCoroutineScope,
                 navigation = get(),
-                dataAdditionUpdates = get(),
                 playerRepository = get(),
                 createSharedPreferences = get(),
                 readSharedPreferences = get()

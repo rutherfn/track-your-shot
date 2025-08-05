@@ -9,8 +9,8 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -68,7 +68,7 @@ fun EnhancedSearchTextField(
             unfocusedBorderColor = AppColors.Black.copy(alpha = 0.3f),
             cursorColor = AppColors.Orange,
             focusedLabelColor = AppColors.Orange,
-            unfocusedLabelColor = AppColors.Black.copy(alpha = 0.5f),
+            unfocusedLabelColor = AppColors.Black.copy(alpha = 0.5f)
         )
     )
 }

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,10 +25,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toTimestampString
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import java.util.Date
@@ -165,3 +166,47 @@ private fun ShotItem(
     }
 }
 
+
+@Preview(showBackground = true)
+@Composable
+private fun ShotListScreenEmptyStatePreview() {
+    ShotsListScreen(
+        params = ShotsListScreenParams(
+            state = ShotsListState(shotList = emptyList()),
+            onHelpClicked = {},
+            onToolbarMenuClicked = {},
+            onShotItemClicked = {},
+            shouldShowAllPlayerShots = false
+           )
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ShotListWithItemsPreview() {
+    ShotsListScreen(
+        params = ShotsListScreenParams(
+            state = ShotsListState(shotList = listOf(ShotLoggedWithPlayer(
+                shotLogged = ShotLogged(
+                    id = 22,
+                    shotName = "shot name",
+                    shotType = 1,
+                    shotsAttempted = 44,
+                    shotsMade = 4,
+                    shotsMissed = 40,
+                    shotsMadePercentValue = 22.2,
+                    shotsMissedPercentValue = 11.2,
+                    shotsAttemptedMillisecondsValue = 22L,
+                    shotsLoggedMillisecondsValue = 22L,
+                    isPending = false
+                ),
+                playerId = 11,
+                playerName = "player name"
+            ))),
+            onHelpClicked = {},
+            onToolbarMenuClicked = {},
+            onShotItemClicked = {},
+            shouldShowAllPlayerShots = false
+        )
+    )
+}

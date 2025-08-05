@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
@@ -222,3 +223,36 @@ fun SelectShotEmptyState(modifier: Modifier = Modifier) {
         }
     }
 }
+
+/**
+ * Preview of the SelectShotScreen with sample data to visualize the UI.
+ */
+@Preview(showBackground = true)
+@Composable
+fun SelectShotScreenPreview() {
+    SelectShotScreen(selectShotParams = SelectShotParams(
+        state = SelectShotState(declaredShotList = listOf(
+            DeclaredShot(
+                id = 1,
+                title = "Three Pointer",
+                shotCategory = "long range",
+                description = "A shot taken from beyond the three-point line.",
+                firebaseKey = "firebase",
+            ),
+            DeclaredShot(
+                id = 2,
+                title = "Free Throw",
+                shotCategory = "penalty",
+                description = "An unopposed shot taken from the free throw line.",
+                firebaseKey = "firebase"
+            )
+        )),
+        onBackButtonClicked = {},
+        onSearchValueChanged = {},
+        onCancelIconClicked = {},
+        onItemClicked = {},
+        onHelpIconClicked = {},
+        onnDeclaredShotItemClicked = {}
+    ))
+}
+

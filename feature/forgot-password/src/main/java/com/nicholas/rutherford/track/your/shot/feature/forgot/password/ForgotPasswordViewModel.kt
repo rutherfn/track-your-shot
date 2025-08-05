@@ -107,4 +107,3 @@ class ForgotPasswordViewModel(
         description = application.getString(StringsIds.havingTroubleResettingPasswordForThisAccountPleaseTryAgainAndOrEnsureCredentialsExistAndAreValid)
     )
 }
-

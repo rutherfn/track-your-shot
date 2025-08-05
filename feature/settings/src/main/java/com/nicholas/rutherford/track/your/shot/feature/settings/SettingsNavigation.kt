@@ -2,6 +2,9 @@ package com.nicholas.rutherford.track.your.shot.feature.settings
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 
+/**
+ * Defines navigation actions available from the Settings Screen.
+ */
 interface SettingsNavigation {
     fun alert(alert: Alert)
     fun navigateToDeclaredShotsList()

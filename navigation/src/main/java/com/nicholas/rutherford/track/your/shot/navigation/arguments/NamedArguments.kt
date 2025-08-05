@@ -13,6 +13,7 @@ object NamedArguments {
     const val PLAYER_ID = "playerId"
     const val SHOT_TYPE = "shotType"
     const val SHOT_ID = "shotId"
+    const val SHOT_NAME = "shotName"
     const val SHOULD_ACCEPT_TERMS = "shouldAcceptTerms"
     const val VIEW_CURRENT_EXISTING_SHOT = "viewCurrentExistingShot"
     const val VIEW_CURRENT_PENDING_SHOT = "viewCurrentPendingShot"

@@ -68,7 +68,6 @@ fun BottomSheetWithOptions(
     }
 }
 
-
 @Composable
 private fun SheetContent(
     sheet: Sheet?,
@@ -124,5 +123,3 @@ private fun SheetContent(
         }
     }
 }
-
-

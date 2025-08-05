@@ -376,6 +376,8 @@ object AppNavigationGraph {
             val isEditable = firstName.isNotEmpty() && lastName.isNotEmpty()
             val createEditPlayerViewModel: CreateEditPlayerViewModel = koinViewModel()
             val appBarFactory: AppBarFactory = koinInject()
+
+
             val createEditPlayerParams = CreateEditPlayerParams(
                 state = createEditPlayerViewModel.createEditPlayerStateFlow.collectAsState().value,
                 updateImageUriState = { uri -> createEditPlayerViewModel.updateImageUriState(uri = uri) },
@@ -422,6 +424,7 @@ object AppNavigationGraph {
             )
 
             ObserveLifecycle(viewModel = createEditPlayerViewModel)
+            println("call it here ")
             updateAppBar(
                 appBar = appBarFactory.createEditPlayerAppBar(
                     params = createEditPlayerParams,
@@ -583,10 +586,15 @@ object AppNavigationGraph {
 
     fun NavGraphBuilder.createEditDeclaredScreen() {
         composable(
-            route = NavigationDestinations.CREATE_EDIT_DECLARED_SHOTS_SCREEN
-        ) {
+            route = NavigationDestinations.CREATE_EDIT_DECLARED_SHOTS_SCREEN_PARAMS,
+            arguments = NavArguments.createEditDeclaredShot
+        ) { entry ->
             val createEditDeclaredShotViewModel: CreateEditDeclaredShotViewModel = koinViewModel()
             val appBarFactory: AppBarFactory = koinInject()
+
+            val shotName = entry.arguments?.getString(NamedArguments.SHOT_NAME) ?: ""
+
+            println("here is the passed in shot name $shotName")
 
             val createEditDeclaredShotParams = CreateEditDeclaredShotScreenParams(
                 state = createEditDeclaredShotViewModel.createEditDeclaredShotStateFlow.collectAsState().value,
@@ -637,137 +645,134 @@ object AppNavigationGraph {
         }
     }
 
-        fun NavGraphBuilder.accountInfoScreen() {
-            composable(
-                route = NavigationDestinations.ACCOUNT_INFO_SCREEN_WITH_PARAMS,
-                arguments = NavArguments.accountInfo
-            ) { entry ->
-                val accountInfoViewModel: AccountInfoViewModel = koinViewModel()
-                val appBarFactory: AppBarFactory = koinInject()
-                val username = entry.arguments?.getString(NamedArguments.USERNAME) ?: ""
-                val email = entry.arguments?.getString(NamedArguments.EMAIL) ?: ""
+    fun NavGraphBuilder.accountInfoScreen() {
+        composable(
+            route = NavigationDestinations.ACCOUNT_INFO_SCREEN_WITH_PARAMS,
+            arguments = NavArguments.accountInfo
+        ) { entry ->
+            val accountInfoViewModel: AccountInfoViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
+            val username = entry.arguments?.getString(NamedArguments.USERNAME) ?: ""
+            val email = entry.arguments?.getString(NamedArguments.EMAIL) ?: ""
 
-                val accountInfoParams = AccountInfoParams(
-                    onToolbarMenuClicked = { accountInfoViewModel.onToolbarMenuClicked() },
-                    usernameArgument = username,
-                    emailArgument = email
-                )
-                ObserveLifecycle(viewModel = accountInfoViewModel)
+            val accountInfoParams = AccountInfoParams(
+                onToolbarMenuClicked = { accountInfoViewModel.onToolbarMenuClicked() },
+                usernameArgument = username,
+                emailArgument = email
+            )
+            ObserveLifecycle(viewModel = accountInfoViewModel)
 
-                updateAppBar(appBar = appBarFactory.createAccountInfoAppBar(viewModel = accountInfoViewModel))
+            updateAppBar(appBar = appBarFactory.createAccountInfoAppBar(viewModel = accountInfoViewModel))
 
-                AccountInfoScreen(params = accountInfoParams)
-            }
+            AccountInfoScreen(params = accountInfoParams)
         }
+    }
 
-        fun NavGraphBuilder.shotListScreen() {
-            composable(
-                route = NavigationDestinations.SHOTS_LIST_SCREEN_WITH_PARAMS,
-                arguments = NavArguments.shotsList
-            ) { entry ->
-                val shotsListViewModel: ShotsListViewModel = koinViewModel()
-                val appBarFactory: AppBarFactory = koinInject()
-                val shouldShowAllPlayerShotsArgument =
-                    entry.arguments?.getBoolean(NamedArguments.SHOULD_SHOW_ALL_PLAYERS_SHOTS)
-                        ?: false
+    fun NavGraphBuilder.shotListScreen() {
+        composable(
+            route = NavigationDestinations.SHOTS_LIST_SCREEN_WITH_PARAMS,
+            arguments = NavArguments.shotsList
+        ) { entry ->
+            val shotsListViewModel: ShotsListViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
+            val shouldShowAllPlayerShotsArgument =
+                entry.arguments?.getBoolean(NamedArguments.SHOULD_SHOW_ALL_PLAYERS_SHOTS)
+                    ?: false
 
-                val shotsListParams = ShotsListScreenParams(
-                    state = shotsListViewModel.shotListStateFlow.collectAsState().value,
-                    onHelpClicked = { shotsListViewModel.onHelpClicked() },
-                    onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked() },
-                    onShotItemClicked = { shotLoggedWithPlayer ->
-                        shotsListViewModel.onShotItemClicked(
-                            shotLoggedWithPlayer
-                        )
-                    },
-                    shouldShowAllPlayerShots = shouldShowAllPlayerShotsArgument
-                )
-                ObserveLifecycle(viewModel = shotsListViewModel)
-
-                updateAppBar(appBar = appBarFactory.createShotsListAppBar(params = shotsListParams))
-
-                ShotsListScreen(params = shotsListParams)
-            }
-        }
-
-        fun NavGraphBuilder.createReportScreen() {
-            composable(
-                route = NavigationDestinations.CREATE_REPORT_SCREEN
-            ) {
-                val createReportViewModel: CreateReportViewModel = koinViewModel()
-                val appBarFactory: AppBarFactory = koinInject()
-
-                val createReportParams = CreateReportParams(
-                    onToolbarMenuClicked = { createReportViewModel.onToolbarMenuClicked() },
-                    onPlayerChanged = { playerName ->
-                        createReportViewModel.onPlayerChanged(
-                            playerName = playerName
-                        )
-                    },
-                    attemptToGeneratePlayerReport = { createReportViewModel.attemptToGeneratePlayerReport() },
-                    state = createReportViewModel.createReportStateFlow.collectAsState().value
-                )
-
-                ObserveLifecycle(viewModel = createReportViewModel)
-
-                updateAppBar(appBar = appBarFactory.createReportScreenAppBar(params = createReportParams))
-
-                CreateReportScreen(params = createReportParams)
-            }
-        }
-
-        fun NavGraphBuilder.settingsScreen() {
-            composable(
-                route = NavigationDestinations.SETTINGS_SCREEN
-            ) {
-                val settingsViewModel: SettingsViewModel = koinViewModel()
-                val appBarFactory: AppBarFactory = koinInject()
-
-                val settingsParams = SettingsParams(
-                    onToolbarMenuClicked = {
-                        settingsViewModel.onToolbarMenuClicked()
-                    },
-                    onHelpClicked = {
-                        settingsViewModel.onHelpClicked()
-                    },
-                    onSettingItemClicked = { value ->
-                        settingsViewModel.onSettingItemClicked(value = value)
-                    },
-                    state = settingsViewModel.settingsStateFlow.collectAsState().value
-                )
-
-                ObserveLifecycle(viewModel = settingsViewModel)
-
-                updateAppBar(appBar = appBarFactory.createSettingsAppBar(params = settingsParams))
-
-                SettingsScreen(params = settingsParams)
-            }
-        }
-
-            fun NavGraphBuilder.declaredShotsListScreen() {
-                composable(
-                    route = NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN
-                ) {
-                    val declaredShotsListViewModel: DeclaredShotsListViewModel = koinViewModel()
-                    val appBarFactory: AppBarFactory = koinInject()
-
-                    val declaredShotsListScreenParams = DeclaredShotsListScreenParams(
-                        state = declaredShotsListViewModel.declaredShotsListStateFlow.collectAsState().value,
-                        onDeclaredShotClicked = { id, title ->
-                            declaredShotsListViewModel.onDeclaredShotClicked(
-                                id = id,
-                                title = title
-                            )
-                        },
-                        onToolbarMenuClicked = { declaredShotsListViewModel.onToolbarMenuClicked() },
-                        onAddDeclaredShotClicked = { declaredShotsListViewModel.onAddDeclaredShotClicked() }
+            val shotsListParams = ShotsListScreenParams(
+                state = shotsListViewModel.shotListStateFlow.collectAsState().value,
+                onHelpClicked = { shotsListViewModel.onHelpClicked() },
+                onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked() },
+                onShotItemClicked = { shotLoggedWithPlayer ->
+                    shotsListViewModel.onShotItemClicked(
+                        shotLoggedWithPlayer
                     )
+                },
+                shouldShowAllPlayerShots = shouldShowAllPlayerShotsArgument
+            )
+            ObserveLifecycle(viewModel = shotsListViewModel)
 
-                    ObserveLifecycle(viewModel = declaredShotsListViewModel)
+            updateAppBar(appBar = appBarFactory.createShotsListAppBar(params = shotsListParams))
 
-                    updateAppBar(appBar = appBarFactory.createDeclaredShotsListAppBar(params = declaredShotsListScreenParams))
+            ShotsListScreen(params = shotsListParams)
+        }
+    }
 
-                    DeclaredShotsListScreen(declaredShotsListScreenParams = declaredShotsListScreenParams)
-                }
-            }
+    fun NavGraphBuilder.createReportScreen() {
+        composable(
+            route = NavigationDestinations.CREATE_REPORT_SCREEN
+        ) {
+            val createReportViewModel: CreateReportViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
+
+            val createReportParams = CreateReportParams(
+                onToolbarMenuClicked = { createReportViewModel.onToolbarMenuClicked() },
+                onPlayerChanged = { playerName ->
+                    createReportViewModel.onPlayerChanged(
+                        playerName = playerName
+                    )
+                },
+                attemptToGeneratePlayerReport = { createReportViewModel.attemptToGeneratePlayerReport() },
+                state = createReportViewModel.createReportStateFlow.collectAsState().value
+            )
+
+            ObserveLifecycle(viewModel = createReportViewModel)
+
+            updateAppBar(appBar = appBarFactory.createReportScreenAppBar(params = createReportParams))
+
+            CreateReportScreen(params = createReportParams)
+        }
+    }
+
+    fun NavGraphBuilder.settingsScreen() {
+        composable(
+            route = NavigationDestinations.SETTINGS_SCREEN
+        ) {
+            val settingsViewModel: SettingsViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
+
+            val settingsParams = SettingsParams(
+                onToolbarMenuClicked = {
+                    settingsViewModel.onToolbarMenuClicked()
+                },
+                onHelpClicked = {
+                    settingsViewModel.onHelpClicked()
+                },
+                onSettingItemClicked = { value ->
+                    settingsViewModel.onSettingItemClicked(value = value)
+                },
+                state = settingsViewModel.settingsStateFlow.collectAsState().value
+            )
+
+            ObserveLifecycle(viewModel = settingsViewModel)
+
+            updateAppBar(appBar = appBarFactory.createSettingsAppBar(params = settingsParams))
+
+            SettingsScreen(params = settingsParams)
+        }
+    }
+
+    fun NavGraphBuilder.declaredShotsListScreen() {
+        composable(
+            route = NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN
+        ) {
+            val declaredShotsListViewModel: DeclaredShotsListViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
+
+            val declaredShotsListScreenParams = DeclaredShotsListScreenParams(
+                state = declaredShotsListViewModel.declaredShotsListStateFlow.collectAsState().value,
+                onDeclaredShotClicked = { title ->
+                    declaredShotsListViewModel.onDeclaredShotClicked(title = title)
+                },
+                onToolbarMenuClicked = { declaredShotsListViewModel.onToolbarMenuClicked() },
+                onAddDeclaredShotClicked = { declaredShotsListViewModel.onAddDeclaredShotClicked() }
+            )
+
+            ObserveLifecycle(viewModel = declaredShotsListViewModel)
+
+            updateAppBar(appBar = appBarFactory.createDeclaredShotsListAppBar(params = declaredShotsListScreenParams))
+
+            DeclaredShotsListScreen(declaredShotsListScreenParams = declaredShotsListScreenParams)
+        }
+    }
 }

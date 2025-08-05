@@ -4,6 +4,10 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
+/**
+ * Implementation of [SettingsNavigation] using a [Navigator] to perform
+ * navigation via predefined [NavigationActions].
+ */
 class SettingsNavigationImpl(private val navigator: Navigator) : SettingsNavigation {
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
 
@@ -15,7 +19,7 @@ class SettingsNavigationImpl(private val navigator: Navigator) : SettingsNavigat
 
     override fun navigateToEnabledPermissions() = navigator.navigate(navigationAction = NavigationActions.Settings.enabledPermissions())
 
-    override fun navigateToPermissionEducationScreen() = navigator.navigate(navigationAction = NavigationActions.Settings.permissionEducation(isFirstTimeLaunched = false))
+    override fun navigateToPermissionEducationScreen() = navigator.navigate(navigationAction = NavigationActions.Settings.permissionEducation())
 
     override fun navigateToOnboardingEducationScreen() = navigator.navigate(navigationAction = NavigationActions.Settings.onboardingEducation(isFirstTimeLaunched = false))
 

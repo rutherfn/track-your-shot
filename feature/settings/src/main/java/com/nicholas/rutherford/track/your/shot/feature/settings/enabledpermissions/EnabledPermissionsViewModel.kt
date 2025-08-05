@@ -6,15 +6,36 @@ import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 
+/**
+ * ViewModel for the Enabled Permissions screen, responsible for handling permission-related actions
+ * and presenting alerts when permissions are not granted.
+ *
+ * @property navigation Interface for handling navigation events from the Enabled Permissions screen.
+ * @property application Application instance used for accessing resources like strings.
+ */
 class EnabledPermissionsViewModel(
     private val navigation: EnabledPermissionsNavigation,
     private val application: Application
 ) : BaseViewModel() {
 
+    /**
+     * Handles the click event on the toolbar menu button.
+     * Navigates back to the previous screen.
+     */
     fun onToolbarMenuClicked() = navigation.pop()
 
+    /**
+     * Handles the action when the user turns off a permission from the switch.
+     * Navigates the user to the application settings screen.
+     */
     fun onSwitchChangedToTurnOffPermission() = navigation.appSettings()
 
+    /**
+     * Builds an [Alert] notifying the user that the camera permission is not granted.
+     * Provides an option to open the settings screen or dismiss the alert.
+     *
+     * @return An [Alert] configured with a title, description, and action buttons.
+     */
     internal fun cameraPermissionNotGrantedAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.permissionHasBeenDeclined),
@@ -29,7 +50,9 @@ class EnabledPermissionsViewModel(
         )
     }
 
-    fun permissionNotGrantedForCameraAlert() {
-        navigation.alert(alert = cameraPermissionNotGrantedAlert())
-    }
+    /**
+     * Displays the camera permission not granted alert.
+     */
+    fun permissionNotGrantedForCameraAlert() = navigation.alert(alert = cameraPermissionNotGrantedAlert())
 }
+

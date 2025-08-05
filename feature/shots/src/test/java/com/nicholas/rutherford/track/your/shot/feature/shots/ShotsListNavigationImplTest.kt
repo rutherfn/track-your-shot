@@ -24,13 +24,6 @@ class ShotsListNavigationImplTest {
     }
 
     @Test
-    fun `open navigation drawer`() {
-        navigationImpl.openNavigationDrawer()
-
-        verify { navigator.showNavigationDrawer(navigationDrawerAction = true) }
-    }
-
-    @Test
     fun `navigate to log shot`() {
         val isExistingPlayer = false
         val playerId = 5
@@ -65,6 +58,13 @@ class ShotsListNavigationImplTest {
         )
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
+    }
+
+    @Test
+    fun `open navigation drawer`() {
+        navigationImpl.openNavigationDrawer()
+
+        verify { navigator.showNavigationDrawer(navigationDrawerAction = true) }
     }
 
     @Test

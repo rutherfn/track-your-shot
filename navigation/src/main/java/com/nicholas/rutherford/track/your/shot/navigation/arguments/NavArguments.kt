@@ -13,7 +13,7 @@ object NavArguments {
             type = NavType.StringType
             nullable = true
             defaultValue = null
-                                             },
+        },
         navArgument(NamedArguments.EMAIL) {
             type = NavType.StringType
             nullable = true
@@ -45,5 +45,8 @@ object NavArguments {
     )
     val termsConditions = listOf(
         navArgument(NamedArguments.SHOULD_ACCEPT_TERMS) { type = NavType.BoolType }
+    )
+    val createEditDeclaredShot = listOf(
+        navArgument(NamedArguments.SHOT_NAME) { type = NavType.StringType }
     )
 }

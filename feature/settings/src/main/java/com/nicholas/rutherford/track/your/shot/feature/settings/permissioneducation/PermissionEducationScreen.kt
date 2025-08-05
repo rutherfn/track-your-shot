@@ -9,13 +9,21 @@ import com.nicholas.rutherford.track.your.shot.compose.components.education.Educ
 import com.nicholas.rutherford.track.your.shot.compose.components.education.EducationScreen
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 
+/**
+ * Displays the Permission Education screen, which presents a series of
+ * informational pages explaining the need for permissions.
+ *
+ * This screen uses a horizontal pager to allow users to swipe through
+ * the provided list of [EducationInfo] items.
+ *
+ * @param permissionEducationParams Contains the state and callbacks needed
+ * to render and interact with the screen.
+ */
 @Composable
 fun PermissionEducationScreen(permissionEducationParams: PermissionEducationParams) {
     val pagerState = rememberPagerState { permissionEducationParams.state.educationInfoList.size }
 
-    BackHandler(enabled = true) {
-        permissionEducationParams.onGotItButtonClicked.invoke()
-    }
+    BackHandler(enabled = true) { permissionEducationParams.onGotItButtonClicked.invoke() }
 
     EducationPager(
         items = permissionEducationParams.state.educationInfoList,
@@ -24,7 +32,9 @@ fun PermissionEducationScreen(permissionEducationParams: PermissionEducationPara
             EducationScreen(
                 educationInfo = page,
                 pagerState = pagerState,
-                nextPage = (pagerState.currentPage + 1).coerceAtMost(maximumValue = permissionEducationParams.state.educationInfoList.size - 1),
+                nextPage = (pagerState.currentPage + 1).coerceAtMost(
+                    maximumValue = permissionEducationParams.state.educationInfoList.size - 1
+                ),
                 onButtonClicked = if (pagerState.currentPage == 0) {
                     permissionEducationParams.onGotItButtonClicked
                 } else {
@@ -37,6 +47,9 @@ fun PermissionEducationScreen(permissionEducationParams: PermissionEducationPara
     )
 }
 
+/**
+ * Preview of the [PermissionEducationScreen] with a single static education item.
+ */
 @Preview
 @Composable
 fun PermissionEducationScreenPreview() {
@@ -57,3 +70,4 @@ fun PermissionEducationScreenPreview() {
         )
     )
 }
+

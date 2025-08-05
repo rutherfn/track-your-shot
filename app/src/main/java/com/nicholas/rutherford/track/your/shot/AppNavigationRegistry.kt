@@ -7,11 +7,12 @@ import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createAccountS
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createEditDeclaredScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createOrEditPlayerScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createReportScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.declaredShotsListScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.enabledPermissionScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.forgotPasswordScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.logShotScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.loginScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.onBoardingEducationScreen
-import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.logShotScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.permissionEducationScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.playersListScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.reportListScreen
@@ -20,7 +21,6 @@ import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.settingsScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.shotListScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.splashScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.termsAndConditionScreen
-import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.declaredShotsListScreen
 
 /**
  * Central registry for all navigation destinations in the app.
@@ -59,7 +59,7 @@ object AppNavigationRegistry {
         Screen.StaticScreen { authenticationScreen() },
         Screen.StaticScreen { termsAndConditionScreen() },
         Screen.StaticScreen { onBoardingEducationScreen() },
-        Screen.StaticScreen { logShotScreen()},
+        Screen.StaticScreen { logShotScreen() },
         Screen.StaticScreen { selectShotScreen() },
         Screen.StaticScreen { reportListScreen() },
         Screen.StaticScreen { shotListScreen() },
@@ -69,7 +69,7 @@ object AppNavigationRegistry {
         Screen.StaticScreen { permissionEducationScreen() },
         Screen.StaticScreen { enabledPermissionScreen() },
         Screen.StaticScreen { createEditDeclaredScreen() },
-        Screen.StaticScreen { declaredShotsListScreen() },
+        Screen.StaticScreen { declaredShotsListScreen() }
     )
 
     // Dynamic screens that require runtime parameters
@@ -101,5 +101,3 @@ object AppNavigationRegistry {
         }
     }
 }
-
-

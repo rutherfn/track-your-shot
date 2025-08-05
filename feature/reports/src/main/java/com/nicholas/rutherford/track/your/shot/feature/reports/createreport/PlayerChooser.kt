@@ -23,12 +23,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.base.resources.R
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * Composable that displays a dropdown menu allowing the user to select a player.
+ *
+ * @param params Contains the state of the player selection and callbacks for player change.
+ */
 @Composable
 fun PlayerChooser(params: CreateReportParams) {
     var selectedOption by remember { mutableStateOf(value = "") }
@@ -76,7 +84,7 @@ fun PlayerChooser(params: CreateReportParams) {
             )
             Icon(
                 imageVector = Icons.Default.ArrowDropDown,
-                contentDescription = "2",
+                contentDescription = "Dropdown Arrow",
                 modifier = Modifier
                     .padding(start = 4.dp)
                     .size(20.dp)
@@ -84,4 +92,23 @@ fun PlayerChooser(params: CreateReportParams) {
             )
         }
     }
+}
+
+/**
+ * Preview of the [PlayerChooser] composable.
+ */
+@Preview(showBackground = true)
+@Composable
+fun PlayerChooserPreview() {
+    PlayerChooser(
+        params = CreateReportParams(
+            onToolbarMenuClicked = {},
+            attemptToGeneratePlayerReport = {},
+            onPlayerChanged = {},
+            state = CreateReportState(
+                selectedPlayer = Player(firstName = "Alice", lastName = "Johnson", imageUrl = null, position = PlayerPositions.PointGuard, firebaseKey = "firebase", shotsLoggedList = emptyList()),
+                playerOptions = listOf("Alice Johnson", "Bob Smith", "Charlie Davis")
+            )
+        )
+    )
 }

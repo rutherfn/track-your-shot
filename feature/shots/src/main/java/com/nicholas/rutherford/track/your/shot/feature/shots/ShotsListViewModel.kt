@@ -5,13 +5,11 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerReposi
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -21,7 +19,6 @@ import kotlinx.coroutines.launch
  *
  * @property scope CoroutineScope used for asynchronous operations.
  * @property navigation Interface for handling navigation events from the Shots List screen.
- * @property dataAdditionUpdates Flow-based signaler for updates to shot data.
  * @property playerRepository Repository used to fetch player and shot information from local storage.
  * @property createSharedPreferences Interface for writing to shared preferences.
  * @property readSharedPreferences Interface for reading from shared preferences.
@@ -29,47 +26,36 @@ import kotlinx.coroutines.launch
 class ShotsListViewModel(
     private val scope: CoroutineScope,
     private val navigation: ShotsListNavigation,
-    private val dataAdditionUpdates: DataAdditionUpdates,
     private val playerRepository: PlayerRepository,
     private val createSharedPreferences: CreateSharedPreferences,
     private val readSharedPreferences: ReadSharedPreferences
 ) : BaseViewModel() {
 
-    /** Temporary filter name used to filter shots by a specific player. */
+    /** Name of the player currently being filtered. */
     var playerFilteredName = ""
 
-    /** Internal list used to hold the current shot data for UI rendering. */
+    /** List of shots logged by players. */
     internal var currentShotArrayList: ArrayList<ShotLoggedWithPlayer> = arrayListOf()
 
-    /** Backing state flow for [ShotsListState]. */
     internal val shotListMutableStateFlow = MutableStateFlow(value = ShotsListState())
 
-    /** Public immutable state flow for observing shot list UI state. */
+    /** State flow representing the current state of the shots list. */
     val shotListStateFlow = shotListMutableStateFlow.asStateFlow()
 
     init {
-        playerFilteredName = readSharedPreferences.playerFilterName()
-        if (playerFilteredName.isNotEmpty()) {
-            createSharedPreferences.createPlayerFilterName(value = "")
-        }
+        checkToCreatePlayerFilterName()
         scope.launch { updateShotListState() }
     }
 
+
     /**
-     * Collects updates to the shot log via a shared flow.
-     * If a new shot is detected, it refreshes the shot list state.
-     * Also handles the edge case where no shots exist for a filtered player.
+     * Checks to see if a player filter name exists.
+     * If it does, it creates a new one.
      */
-    internal fun collectShotHasBeenUpdatedSharedFlow() {
-        scope.launch {
-            dataAdditionUpdates.shotHasBeenUpdatedSharedFlow.collectLatest { hasBeenUpdated ->
-                if (hasBeenUpdated) {
-                    updateShotListState()
-                }
-                if (currentShotArrayList.isEmpty() && playerFilteredName.isNotEmpty()) {
-                    navigation.popToPlayerList()
-                }
-            }
+    internal fun checkToCreatePlayerFilterName() {
+        playerFilteredName = readSharedPreferences.playerFilterName()
+        if (playerFilteredName.isNotEmpty()) {
+            createSharedPreferences.createPlayerFilterName(value = "")
         }
     }
 
@@ -147,6 +133,8 @@ class ShotsListViewModel(
      * @return An [Alert] containing a title, description, and dismiss button.
      *
      * todo -> Get rid of this once we add filter functionality
+     *
+     * Not testing since it will be removed in the future once we add filter functionality
      */
     fun buildHelpAlert(): Alert {
         return Alert(

@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -27,14 +28,21 @@ import com.nicholas.rutherford.track.your.shot.compose.components.SwitchCard
 import com.nicholas.rutherford.track.your.shot.helper.extensions.hasCameraPermissionEnabled
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 
+/**
+ * Displays the Enabled Permissions screen, where the user can enable or disable camera permission.
+ *
+ * @param params Contains the state and callback handlers for this screen.
+ */
 @Composable
 fun EnabledPermissionsScreen(params: EnabledPermissionsParams) {
-    BackHandler(enabled = true) {
-        params.onToolbarMenuClicked.invoke()
-    }
+    BackHandler(enabled = true) { params.onToolbarMenuClicked.invoke() }
     EnabledPermissionsContent(params = params)
 }
 
+/**
+ * Displays an toggle switch to enable or disable camera permission.
+ * In the future if we decide to ask for more permissions this is where we can add them.
+ */
 @Composable
 fun EnabledPermissionsContent(params: EnabledPermissionsParams) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -83,4 +91,10 @@ fun EnabledPermissionsContent(params: EnabledPermissionsParams) {
             }
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EnabledPermissionsScreenPreview() {
+    EnabledPermissionsScreen(params = EnabledPermissionsParams(onToolbarMenuClicked = {}, onSwitchChangedToTurnOffPermission = {}, permissionNotGrantedForCameraAlert = {}))
 }

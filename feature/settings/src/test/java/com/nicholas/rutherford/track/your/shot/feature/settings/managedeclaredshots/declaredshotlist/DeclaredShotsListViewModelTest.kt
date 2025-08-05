@@ -46,33 +46,33 @@ class DeclaredShotsListViewModelTest {
         )
     }
 
-//    @Nested
-//    inner class OnNavigateTo {
-//
-//        @Test
-//        fun `when fetchAllDeclaredShots returns a empty list should not update value and state`() = runTest {
-//            val emptyDeclaredShotArrayList: ArrayList<DeclaredShot> = arrayListOf()
-//
-//            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns emptyList()
-//
-//            viewModel.onNavigatedTo()
-//
-//            Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, emptyDeclaredShotArrayList)
-//            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state)
-//        }
-//
-//        @Test
-//        fun `when fetchAllDeclaredShots returns list should update value and state`() = runTest {
-//            val declaredShotArrayList = listOf(TestDeclaredShot.build())
-//
-//            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotArrayList
-//
-//            viewModel.onNavigatedTo()
-//
-//            Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, declaredShotArrayList)
-//            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state.copy(declaredShotsList = declaredShotArrayList.toList()))
-//        }
-//    }
+    @Nested
+    inner class OnNavigateTo {
+
+        @Test
+        fun `when fetchAllDeclaredShots returns a empty list should not update value and state`() = runTest {
+            val emptyDeclaredShotArrayList: ArrayList<DeclaredShot> = arrayListOf()
+
+            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns emptyList()
+
+            viewModel.initializeDeclaredShotsScreen()
+
+            Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, emptyDeclaredShotArrayList)
+            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state)
+        }
+
+        @Test
+        fun `when fetchAllDeclaredShots returns list should update value and state`() = runTest {
+            val declaredShotArrayList = listOf(TestDeclaredShot.build())
+
+            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotArrayList
+
+            viewModel.initializeDeclaredShotsScreen()
+
+            Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, declaredShotArrayList)
+            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state.copy(declaredShotsList = declaredShotArrayList.toList()))
+        }
+    }
 
     @Test
     fun `on toolbar menu clicked should call pop`() {
@@ -83,13 +83,14 @@ class DeclaredShotsListViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `on declared shot clicked should create declared shot id and navigate to create edit declared shot`() = runTest {
-        val id = 2
+    fun `on declared shot clicked should create declared shot name and navigate to create edit declared shot`() = runTest {
+        val title = "title"
 
-       // viewModel.onDeclaredShotClicked(id = id)
+       viewModel.onDeclaredShotClicked(title = title)
 
-        verify { createSharedPreferences.createDeclaredShotId(value = id) }
-        dispatcher.scheduler.apply { advanceTimeBy(9000); runCurrent() }
+        verify { navigation.enableProgress(progress = any()) }
+        verify { createSharedPreferences.createDeclaredShotName(value = title) }
+        verify { navigation.disableProgress() }
         verify { navigation.createEditDeclaredShot() }
     }
 

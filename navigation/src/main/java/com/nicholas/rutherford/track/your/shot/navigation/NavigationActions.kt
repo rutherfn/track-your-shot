@@ -20,26 +20,12 @@ object NavigationActions {
                 .build()
         }
 
-        fun authentication(username: String? = null, email: String? = null) =
+        fun authentication(
+            username: String? = null,
+            email: String? = null
+        ) =
             object : NavigationAction {
-                override val destination: String = buildString {
-                    append("authenticationScreen")
-
-                    val queryParams = mutableListOf<String>()
-
-                    username?.takeIf { it.isNotEmpty() }?.let {
-                        queryParams += "username=${Uri.encode(it)}"
-                    }
-
-                    email?.takeIf { it.isNotEmpty() }?.let {
-                        queryParams += "email=${Uri.encode(it)}"
-                    }
-
-                    if (queryParams.isNotEmpty()) {
-                        append("?")
-                        append(queryParams.joinToString("&"))
-                    }
-                }
+                override val destination: String = NavigationDestinationsWithParams.buildAuthenticationDestination(username = username, email = email)
 
                 override val navOptions = NavOptions.Builder()
                     .setPopUpTo(0, true)
@@ -47,18 +33,7 @@ object NavigationActions {
             }
 
         fun termsConditions(shouldAcceptTerms: Boolean) = object : NavigationAction {
-            override val destination: String = buildString {
-                append("termsConditionsScreen")
-
-                val queryParams = mutableListOf<String>()
-
-                queryParams += "shouldAcceptTerms=$shouldAcceptTerms"
-
-                if (queryParams.isNotEmpty()) {
-                    append("?")
-                    append(queryParams.joinToString("&"))
-                }
-            }
+            override val destination: String = NavigationDestinationsWithParams.buildTermsConditionsDestination(shouldAcceptTerms = shouldAcceptTerms)
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(0, true)
                 .setLaunchSingleTop(true)
@@ -213,11 +188,11 @@ object NavigationActions {
                 val queryParams = mutableListOf<String>()
 
                 firstName?.let {
-                    queryParams += "firstName=${Uri.encode(it)}"
+                    queryParams += "firstName=$it"
                 }
 
                 lastName?.let {
-                    queryParams += "lastName=${Uri.encode(it)}"
+                    queryParams += "lastName=$lastName"
                 }
 
                 if (queryParams.isNotEmpty()) {
@@ -245,30 +220,15 @@ object NavigationActions {
             viewCurrentPendingShot: Boolean,
             fromShotList: Boolean
         ) = object : NavigationAction {
-            override val destination: String = buildString {
-                append("logShotScreen")
-
-                val queryParams = mutableListOf<String>()
-
-                queryParams += "isExistingPlayer=$isExistingPlayer"
-
-                queryParams += "playerId=$playerId"
-
-                queryParams += "shotType=$shotType"
-
-                queryParams += "shotId=$shotId"
-
-                queryParams += "viewCurrentExistingShot=$viewCurrentExistingShot"
-
-                queryParams += "viewCurrentPendingShot=$viewCurrentPendingShot"
-
-                queryParams += "fromShotList=$fromShotList"
-
-                if (queryParams.isNotEmpty()) {
-                    append("?")
-                    append(queryParams.joinToString("&"))
-                }
-            }
+            override val destination = NavigationDestinationsWithParams.buildLogShotDestination(
+                isExistingPlayer = isExistingPlayer,
+                playerId = playerId,
+                shotType = shotType,
+                shotId = shotId,
+                viewCurrentExistingShot = viewCurrentExistingShot,
+                viewCurrentPendingShot = viewCurrentPendingShot,
+                fromShotList = fromShotList
+            )
             override val navOptions = NavOptions.Builder().build()
         }
     }
@@ -420,8 +380,8 @@ object NavigationActions {
 
     object DeclaredShotsList {
 
-        fun createEditDeclaredShot() = object : NavigationAction {
-            override val destination: String = NavigationDestinations.CREATE_EDIT_DECLARED_SHOTS_SCREEN
+        fun createEditDeclaredShot(shotName: String) = object : NavigationAction {
+            override val destination: String = NavigationDestinationsWithParams.buildCreateEditDeclaredShotDestination(shotName = shotName)
             override val navOptions = NavOptions.Builder().build()
         }
     }
@@ -448,19 +408,8 @@ object NavigationActions {
                 .build()
         }
 
-        fun permissionEducation(isFirstTimeLaunched: Boolean) = object : NavigationAction {
-            override val destination: String = buildString {
-                append("onboardingEducationScreen")
-
-                val queryParams = mutableListOf<String>()
-
-                queryParams += "isFirstTimeLaunched=$isFirstTimeLaunched"
-
-                if (queryParams.isNotEmpty()) {
-                    append("?")
-                    append(queryParams.joinToString("&"))
-                }
-            }
+        fun permissionEducation() = object : NavigationAction {
+            override val destination: String = NavigationDestinations.PERMISSION_EDUCATION_SCREEN
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                 .build()

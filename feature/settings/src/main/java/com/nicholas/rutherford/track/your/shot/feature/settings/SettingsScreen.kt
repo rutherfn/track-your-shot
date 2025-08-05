@@ -28,6 +28,11 @@ import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * Displays the Settings screen which includes general settings and permission settings categorized.
+ *
+ * @param params Contains the current settings state and click callbacks.
+ */
 @Composable
 fun SettingsScreen(params: SettingsParams) {
     SettingsContent(
@@ -37,6 +42,13 @@ fun SettingsScreen(params: SettingsParams) {
     )
 }
 
+/**
+ * Displays the content of the settings screen including both general and permission sections.
+ *
+ * @param settingGeneralValues List of general setting labels.
+ * @param settingPermissionsValues List of permission setting labels.
+ * @param onSettingItemClicked Callback invoked when a setting item is clicked.
+ */
 @Composable
 private fun SettingsContent(
     settingGeneralValues: List<String>,
@@ -84,6 +96,12 @@ private fun SettingsContent(
     }
 }
 
+/**
+ * Displays a card containing a list of setting items.
+ *
+ * @param values A list of setting labels to display in a vertical list.
+ * @param onSettingItemClicked Callback invoked when a setting item is selected.
+ */
 @Composable
 private fun SettingsRowCard(
     values: List<String>,
@@ -111,6 +129,9 @@ private fun SettingsRowCard(
     }
 }
 
+/**
+ * Previews the Settings screen with sample data for both general and permission sections.
+ */
 @Preview
 @Composable
 fun SettingsScreenPreview() {
@@ -135,3 +156,4 @@ fun SettingsScreenPreview() {
         )
     }
 }
+

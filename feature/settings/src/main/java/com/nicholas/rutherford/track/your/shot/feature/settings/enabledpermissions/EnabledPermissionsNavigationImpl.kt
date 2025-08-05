@@ -2,8 +2,13 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissi
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
+/**
+ * Implementation of [EnabledPermissionsNavigation] using a [Navigator] to perform
+ * navigation via predefined [NavigationActions].
+ */
 class EnabledPermissionsNavigationImpl(private val navigator: Navigator) : EnabledPermissionsNavigation {
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
     override fun appSettings() = navigator.appSettings(appSettingsAction = true)

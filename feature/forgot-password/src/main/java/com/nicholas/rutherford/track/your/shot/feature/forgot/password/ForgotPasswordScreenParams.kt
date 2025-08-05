@@ -14,4 +14,3 @@ data class ForgotPasswordScreenParams(
     val onSendPasswordResetButtonClicked: (newEmail: String?) -> Unit,
     val onBackButtonClicked: () -> Unit
 )
-

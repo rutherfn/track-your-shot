@@ -639,7 +639,6 @@ class LogShotViewModel(
         if (logShotViewModelExt.logShotInfo.isExistingPlayer) {
             navigation.popToEditPlayer()
         } else {
-            println("get here testdsdsds")
             navigation.popToEditPlayer()
         }
     }

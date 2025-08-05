@@ -50,32 +50,6 @@ fun AuthenticationScreen(viewModel: AuthenticationViewModel) {
     TrackYourShotTheme {
         AuthenticationScreenContent(viewModel = viewModel, coroutineScope = coroutineScope)
     }
-
-//    LaunchedEffect(Unit) {
-//        viewModel.updateUsernameAndEmail(
-//            usernameArgument = usernameArgument,
-//            emailArgument = emailArgument
-//        )
-//    }
-//
-//    OnLifecycleEvent { _, event ->
-//        if (event == Lifecycle.Event.ON_RESUME) {
-//            coroutineScope.launch {
-//                viewModel.onResume()
-//            }
-//        }
-//    }
-//
-//    Content(
-//        ui = {
-//            AuthenticationScreenContent(viewModel = viewModel, coroutineScope = coroutineScope)
-//        },
-//        appBar = AppBar(
-//            toolbarTitle = stringResource(id = StringsIds.verifyAccount),
-//            onIconButtonClicked = { viewModel.onNavigateClose() }
-//        ),
-//        imageVector = Icons.Filled.Close
-//    )
 }
 
 @Composable

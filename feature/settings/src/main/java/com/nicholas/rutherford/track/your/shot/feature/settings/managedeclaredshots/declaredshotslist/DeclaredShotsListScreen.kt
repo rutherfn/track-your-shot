@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import com.nicholas.rutherford.track.your.shot.base.resources.R
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -36,33 +37,35 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun DeclaredShotsListScreen(declaredShotsListScreenParams: DeclaredShotsListScreenParams) {
-    val isDeclaredShotListEmpty = declaredShotsListScreenParams.state.declaredShotsList.isEmpty()
+    BackHandler(enabled = true) { declaredShotsListScreenParams.onToolbarMenuClicked.invoke() }
 
-    BackHandler(enabled = true) {
-        declaredShotsListScreenParams.onToolbarMenuClicked.invoke()
-    }
-    if (!isDeclaredShotListEmpty) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(
-                start = Padding.sixteen,
-                end = Padding.sixteen,
-                bottom = Padding.sixteen
-            )
-        ) {
-            items(declaredShotsListScreenParams.state.declaredShotsList) { declaredShot ->
-                DeclaredShotItem(
-                    declaredShot = declaredShot,
-                    onDeclaredShotClicked = declaredShotsListScreenParams.onDeclaredShotClicked
-                )
-            }
-        }
+    if (declaredShotsListScreenParams.state.declaredShotsList.isNotEmpty()) {
+        DeclaredShotListItems(declaredShotsListScreenParams = declaredShotsListScreenParams)
     } else {
         DeclaredShotListEmptyState()
     }
 }
 
 @Composable
-private fun DeclaredShotItem(declaredShot: DeclaredShot, onDeclaredShotClicked: (id: Int, title: String) -> Unit) {
+private fun DeclaredShotListItems(declaredShotsListScreenParams: DeclaredShotsListScreenParams) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize().padding(
+            start = Padding.sixteen,
+            end = Padding.sixteen,
+            bottom = Padding.sixteen
+        )
+    ) {
+        items(declaredShotsListScreenParams.state.declaredShotsList) { declaredShot ->
+            DeclaredShotItem(
+                declaredShot = declaredShot,
+                onDeclaredShotClicked = declaredShotsListScreenParams.onDeclaredShotClicked
+            )
+        }
+    }
+}
+
+@Composable
+private fun DeclaredShotItem(declaredShot: DeclaredShot, onDeclaredShotClicked: (title: String) -> Unit) {
     Card(
         modifier = Modifier
             .background(AppColors.White)
@@ -76,7 +79,7 @@ private fun DeclaredShotItem(declaredShot: DeclaredShot, onDeclaredShotClicked: 
             BaseRow(
                 title = declaredShot.title,
                 titleStyle = TextStyles.bodyBold,
-                onClicked = { onDeclaredShotClicked.invoke(declaredShot.id, declaredShot.title) },
+                onClicked = { onDeclaredShotClicked.invoke(declaredShot.title) },
                 imageVector = Icons.Filled.ChevronRight
             )
         }
@@ -97,7 +100,7 @@ private fun DeclaredShotListEmptyState() {
             modifier = Modifier.padding(16.dp)
         ) {
             Image(
-                painter = painterResource(id = com.nicholas.rutherford.track.your.shot.base.resources.R.drawable.ic_basketball_player_empty_state),
+                painter = painterResource(id = R.drawable.ic_basketball_player_empty_state),
                 contentDescription = null,
                 modifier = Modifier.size(120.dp)
             )

@@ -288,14 +288,6 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    private fun resetState() {
-        scope.launch {
-            delay(RESET_SCREEN_DELAY_IN_MILLIS)
-            clearLocalDeclarations()
-            clearState()
-        }
-    }
-
     /**
      * Handles the toolbar menu click.
      * If there are unsaved changes, shows an alert.
@@ -306,7 +298,6 @@ class CreateEditPlayerViewModel(
             navigation.alert(alert = unsavedPlayerChangesAlert())
         } else {
             navigation.pop()
-            resetState()
         }
     }
 
@@ -716,8 +707,6 @@ class CreateEditPlayerViewModel(
 
         navigation.disableProgress()
         navigation.navigateToPlayersList()
-
-        resetState()
     }
 
     /**

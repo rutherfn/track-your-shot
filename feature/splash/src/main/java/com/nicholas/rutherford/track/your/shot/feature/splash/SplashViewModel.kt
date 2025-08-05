@@ -14,13 +14,13 @@ import kotlinx.coroutines.launch
 
 /**
  * ViewModel responsible for the splash screen logic and navigation flow based on
- * authentication and user state.
+ * user state.
  *
  * This ViewModel handles:
  * - Determining if the app is being launched for the first time.
  * - Navigating to the appropriate screen depending on:
  *   - Whether the user is logged in.
- *   - Whether their email is verified.
+ *   - Whether their email is verified(Although this is broken due to Firebase Authentication)
  *   - Whether they have an active user profile set up.
  *
  * @param navigation Defines navigation actions available from the splash screen.
@@ -66,7 +66,7 @@ class SplashViewModel(
      *
      * Logic includes:
      * - Checking if app has been launched before.
-     * - Checking Firebase login and email verification states.
+     * - Checking Firebase login and email verification states(this is skipped over due to a Firebase AAuthentication issue).
      * - Fetching active user from local database.
      * - Using stored preferences as fallback to determine authentication state.
      */
@@ -79,7 +79,6 @@ class SplashViewModel(
                 readFirebaseUserInfo.isLoggedInFlow()
             ) { emailVerifiedValue, loggedInValue ->
                 val activeUser = activeUserRepository.fetchActiveUser()
-                val isVerified = emailVerifiedValue || readSharedPreferences.hasAccountBeenAuthenticated()
                 val isLoggedIn = loggedInValue || readSharedPreferences.isLoggedIn()
 
                 if (isLoggedIn) {
@@ -87,6 +86,7 @@ class SplashViewModel(
 
                 // TODO: Uncomment this block once Firebase Authentication issues are resolved
                     /*
+                    val isVerified = emailVerifiedValue || readSharedPreferences.hasAccountBeenAuthenticated()
                     if (isVerified && activeUser != null && activeUser.accountHasBeenCreated) {
                         navigatePostAuthDestination(isLoggedIn = true, email = activeUser.email)
                     } else {
@@ -98,7 +98,6 @@ class SplashViewModel(
                         }
                     }
                     */
-
                 } else {
                     navigatePostAuthDestination(isLoggedIn = false, email = activeUser?.email)
                 }

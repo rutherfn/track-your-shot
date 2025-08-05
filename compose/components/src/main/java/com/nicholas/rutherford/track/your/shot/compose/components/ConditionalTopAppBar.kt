@@ -72,17 +72,17 @@ private fun SimpleTopAppBar(
         },
         navigationIcon = {
             if (appBar.shouldShowIcon) {
-            IconButton(
-                onClick = { appBar.onIconButtonClicked?.invoke() },
-                enabled = appBar.secondaryImageEnabled ?: true,
-                modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
-            ) {
-                Icon(
-                    imageVector = appBar.imageVector ?: Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = appBar.iconContentDescription,
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+                IconButton(
+                    onClick = { appBar.onIconButtonClicked?.invoke() },
+                    enabled = appBar.secondaryImageEnabled ?: true,
+                    modifier = Modifier.testTag(tag = TopAppBarTestTags.TOOLBAR_BUTTON_ICON)
+                ) {
+                    Icon(
+                        imageVector = appBar.imageVector ?: Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = appBar.iconContentDescription,
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
             }
         },
         actions = {
@@ -100,7 +100,7 @@ private fun SimpleTopAppBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppColors.Orange,
+            containerColor = AppColors.Orange
         )
     )
     if (appBar.shouldIncludeSpaceAfterDeclaration) {
@@ -120,7 +120,7 @@ private fun ComplexTopAppBar(
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppColors.Orange,
+            containerColor = AppColors.Orange
         ),
         title = {
             Row(
@@ -162,5 +162,3 @@ private fun ComplexTopAppBar(
         Spacer(modifier = Modifier.height(Padding.eight))
     }
 }
-
-

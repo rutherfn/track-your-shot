@@ -109,7 +109,6 @@ private fun ForgotPasswordScreenContent(forgotPasswordScreenParams: ForgotPasswo
     }
 }
 
-
 /**
  * Preview composable showing a sample Forgot Password screen.
  */

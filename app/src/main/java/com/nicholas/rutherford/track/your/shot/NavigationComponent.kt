@@ -187,7 +187,6 @@ fun NavigationComponent(
         }
     }
 
-
     LaunchedEffect(navigatorState) {
         navigatorState?.let { state ->
             navHostController.navigate(state.destination, state.navOptions)
@@ -270,11 +269,11 @@ fun NavigationComponent(
                             val viewModel = findViewModelByDestination(destination = route, viewModels = viewModels)
 
                             if (viewModel != null) {
-                                modalDrawerGesturesEnabled =buildModalDrawerGesturesEnabled(viewModel = viewModel, viewModels = viewModels)
+                                modalDrawerGesturesEnabled = buildModalDrawerGesturesEnabled(viewModel = viewModel, viewModels = viewModels)
                             }
                         }
                     }
-                },
+                }
             )
         },
         content = {
@@ -302,7 +301,7 @@ fun NavigationComponent(
                             scrollBehavior = null
                         )
                     }
-                },
+                }
             ) { paddingValues ->
                 NavHost(
                     navController = navHostController,

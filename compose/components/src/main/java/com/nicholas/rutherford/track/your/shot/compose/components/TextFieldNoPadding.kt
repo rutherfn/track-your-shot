@@ -110,8 +110,6 @@ fun TextFieldNoPadding(
     }
 }
 
-
-
 /**
  * Preview of the [TextFieldNoPadding] component with mock values.
  */

@@ -41,4 +41,3 @@ interface AppBarFactory {
     fun createReportScreenAppBar(params: CreateReportParams): AppBar
     fun createDefaultAppBar(): AppBar
 }
-

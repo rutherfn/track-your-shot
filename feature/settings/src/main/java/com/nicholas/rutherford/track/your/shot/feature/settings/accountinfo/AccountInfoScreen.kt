@@ -13,16 +13,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * Displays the account info screen for info that includes email and username.
+ *
+ * @param params Contains the state and callback handlers for this screen.
+ */
 @Composable
 fun AccountInfoScreen(params: AccountInfoParams) {
     BackHandler { params.onToolbarMenuClicked.invoke() }
     AccountInfoContent(username = params.usernameArgument, email = params.emailArgument)
 }
 
+/**
+ * Displays content on the Account Info screen that includes email and username.
+ */
 @Composable
 private fun AccountInfoContent(username: String, email: String) {
     Column(
@@ -64,4 +73,16 @@ private fun AccountInfoContent(username: String, email: String) {
             style = TextStyles.body
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun AccountInfoScreenPreview() {
+    AccountInfoScreen(
+        params = AccountInfoParams(
+            onToolbarMenuClicked = {},
+            usernameArgument = "username",
+            emailArgument = "email@mailinator.com"
+        )
+    )
 }

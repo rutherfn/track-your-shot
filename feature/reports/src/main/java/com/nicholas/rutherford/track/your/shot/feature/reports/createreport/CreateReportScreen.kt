@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
@@ -30,11 +31,24 @@ import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * The main screen composable for creating a new player report.
+ *
+ * Delegates UI rendering to [CreateReportContent] and passes the required params.
+ *
+ * @param params Contains UI state and event callbacks for this screen.
+ */
 @Composable
-fun CreateReportScreen(params: CreateReportParams) {
-    CreateReportContent(params = params)
-}
+fun CreateReportScreen(params: CreateReportParams) = CreateReportContent(params = params)
 
+/**
+ * UI content of the Create Report screen.
+ *
+ * Displays a player chooser and a generate report button.
+ * Handles runtime permission requests for storage or notifications depending on OS version.
+ *
+ * @param params Contains UI state and event callbacks for this screen.
+ */
 @Composable
 fun CreateReportContent(params: CreateReportParams) {
     val permissionsLauncher = rememberLauncherForActivityResult(
@@ -44,9 +58,10 @@ fun CreateReportContent(params: CreateReportParams) {
         if (allPermissionsGranted) {
             params.attemptToGeneratePlayerReport.invoke()
         } else {
-            // add something here come back to this
+            // TODO: Handle permission denial case (e.g., show rationale or message)
         }
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -100,4 +115,22 @@ fun CreateReportContent(params: CreateReportParams) {
             }
         }
     }
+}
+
+/**
+ * Preview of the Create Report screen content.
+ *
+ * Uses mock parameters with empty callbacks and default state to display the UI for design inspection.
+ */
+@Preview(showBackground = true)
+@Composable
+fun CreateReportContentPreview() {
+    CreateReportContent(
+        params = CreateReportParams(
+            onToolbarMenuClicked = {},
+            attemptToGeneratePlayerReport = {},
+            onPlayerChanged = {},
+            state = CreateReportState()
+        )
+    )
 }

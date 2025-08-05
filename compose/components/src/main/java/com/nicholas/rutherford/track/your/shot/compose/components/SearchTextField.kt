@@ -71,44 +71,43 @@ fun SearchTextField(
                 style = TextStyles.body,
                 color = AppColors.LightGray
             )
-                      },
+        },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Filled.Search,
                 contentDescription = "Search icon",
                 modifier = Modifier.size(20.dp)
             )
-                      },
-                trailingIcon = {
-                    if (value.isNotEmpty()) {
-                        Icon(
-                            imageVector = Icons.Filled.Cancel,
-                            contentDescription = "Clear text",
-                            modifier = Modifier
-                                .size(20.dp)
-                                .clickable {
-                                    onCancelIconClicked()
-                                }
-                        )
-                    }
-                },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        focusManager.clearFocus()
-                    }
-                ),
-                colors = TextFieldDefaults.colors(
-                    cursorColor = AppColors.Black,
-                    unfocusedIndicatorColor = AppColors.Black,
-                    focusedIndicatorColor = AppColors.Orange
+        },
+        trailingIcon = {
+            if (value.isNotEmpty()) {
+                Icon(
+                    imageVector = Icons.Filled.Cancel,
+                    contentDescription = "Clear text",
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable {
+                            onCancelIconClicked()
+                        }
                 )
-            )
-
+            }
+        },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                focusManager.clearFocus()
+            }
+        ),
+        colors = TextFieldDefaults.colors(
+            cursorColor = AppColors.Black,
+            unfocusedIndicatorColor = AppColors.Black,
+            focusedIndicatorColor = AppColors.Orange
+        )
+    )
 
     HorizontalDivider(
         modifier = Modifier
