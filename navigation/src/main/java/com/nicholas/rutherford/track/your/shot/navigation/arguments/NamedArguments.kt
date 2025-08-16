@@ -6,7 +6,6 @@ object NamedArguments {
     const val FIRST_NAME = "firstName"
     const val LAST_NAME = "lastName"
     const val SHOULD_SHOW_ALL_PLAYERS_SHOTS = "shouldShowAllPlayersShots"
-
     const val IS_FIRST_TIME_LAUNCHED = "isFirstTimeLaunched"
     const val IS_EXISTING_PLAYER = "isExistingPlayer"
     const val IS_ACKNOWLEDGE_CONDITIONS = "isAcknowledgeConditions"

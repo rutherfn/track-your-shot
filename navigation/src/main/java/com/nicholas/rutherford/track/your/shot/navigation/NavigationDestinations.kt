@@ -34,4 +34,21 @@ object NavigationDestinations {
     const val SETTINGS_SCREEN = "settingsScreen"
     const val STATS_SCREEN = "statsScreen"
     const val VOICE_COMMANDS_SCREEN = "voiceCommandsScreen"
+
+    // Param keys
+    const val PARAM_USERNAME = "username"
+    const val PARAM_EMAIL = "email"
+    const val PARAM_SHOT_NAME = "shotName"
+    const val PARAM_FIRST_NAME = "firstName"
+    const val PARAM_LAST_NAME = "lastName"
+    const val PARAM_SHOULD_ACCEPT_TERMS = "shouldAcceptTerms"
+    const val PARAM_IS_EXISTING_PLAYER = "isExistingPlayer"
+    const val PARAM_PLAYER_ID = "playerId"
+    const val PARAM_SHOT_TYPE = "shotType"
+    const val PARAM_SHOT_ID = "shotId"
+    const val PARAM_VIEW_CURRENT_EXISTING_SHOT = "viewCurrentExistingShot"
+    const val PARAM_VIEW_CURRENT_PENDING_SHOT = "viewCurrentPendingShot"
+    const val PARAM_FROM_SHOT_LIST = "fromShotList"
+    const val PARAM_SHOULD_SHOW_ALL_PLAYERS_SHOTS = "shouldShowAllPlayersShots"
+    const val LOG_SHOT_SCREEN = "logShotScreen"
 }

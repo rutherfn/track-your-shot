@@ -1,6 +1,9 @@
 package com.nicholas.rutherford.track.your.shot.navigation
 
-import androidx.compose.material3.AssistChip
+import com.nicholas.rutherford.track.your.shot.helper.extensions.UriEncoder
+import io.mockk.every
+import io.mockk.mockkObject
+import io.mockk.unmockkObject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -34,43 +37,73 @@ class NavigationDestinationsWithParamsTest {
 
         @Test
         fun `returns route with only username when only username is provided and email is null`() {
+            mockkObject(UriEncoder)
+
+            every { UriEncoder.encode(any()) } answers { firstArg() }
+
             val username = "username"
             val result = navigationDestinationsWithParams.buildAuthenticationDestination(username = username, email = null)
 
             Assertions.assertEquals("authenticationScreen?username=$username", result)
+
+            unmockkObject(UriEncoder)
         }
 
         @Test
         fun `returns route with only username when only username is provided and email is empty`() {
+            mockkObject(UriEncoder)
+
+            every { UriEncoder.encode(any()) } answers { firstArg() }
+
             val username = "username"
             val result = navigationDestinationsWithParams.buildAuthenticationDestination(username = username, email = "")
 
             Assertions.assertEquals("authenticationScreen?username=$username", result)
+
+            unmockkObject(UriEncoder)
         }
 
         @Test
         fun `returns route with only email when only email is provided and username is null`() {
+            mockkObject(UriEncoder)
+
+            every { UriEncoder.encode(any()) } answers { firstArg() }
+
             val email = "emailtest@gmail.com"
             val result = navigationDestinationsWithParams.buildAuthenticationDestination(username = null, email = email)
 
             Assertions.assertEquals("authenticationScreen?email=$email", result)
+
+            unmockkObject(UriEncoder)
         }
 
         @Test
         fun `returns route with only email when only email is provided and username is empty`() {
+            mockkObject(UriEncoder)
+
+            every { UriEncoder.encode(any()) } answers { firstArg() }
+
             val email = "emailtest@gmail.com"
             val result = navigationDestinationsWithParams.buildAuthenticationDestination(username = "", email = email)
 
             Assertions.assertEquals("authenticationScreen?email=$email", result)
+
+            unmockkObject(UriEncoder)
         }
 
         @Test
         fun `returns route with both email and password when both are provided`() {
+            mockkObject(UriEncoder)
+
+            every { UriEncoder.encode(any()) } answers { firstArg() }
+
             val username = "username"
             val email = "emailtest@gmail.com"
             val result = navigationDestinationsWithParams.buildAuthenticationDestination(username = username, email = email)
 
-            Assertions.assertEquals("authenticationScreen?username=${username}&email=$email", result)
+            Assertions.assertEquals("authenticationScreen?username=$username&email=$email", result)
+
+            unmockkObject(UriEncoder)
         }
     }
 
@@ -107,29 +140,31 @@ class NavigationDestinationsWithParamsTest {
         )
 
         val expected = "logShotScreen?" +
-                "isExistingPlayer=true&" +
-                "playerId=42&" +
-                "shotType=1&" +
-                "shotId=7&" +
-                "viewCurrentExistingShot=false&" +
-                "viewCurrentPendingShot=true&" +
-                "fromShotList=true"
+            "isExistingPlayer=true&" +
+            "playerId=42&" +
+            "shotType=1&" +
+            "shotId=7&" +
+            "viewCurrentExistingShot=false&" +
+            "viewCurrentPendingShot=true&" +
+            "fromShotList=true"
 
         Assertions.assertEquals(expected, result)
     }
 
     @Test
-    fun `authentication with params`() {
+    fun `authentication with params using mocked encoder`() {
+        mockkObject(UriEncoder)
+        every { UriEncoder.encode(any()) } answers { firstArg() }
+
         val username = "username"
         val email = "emailtest@gmail.com"
 
         Assertions.assertEquals(
-            navigationDestinationsWithParams.authenticationWithParams(
-                username = username,
-                email = email
-            ),
-            "authenticationScreen/username/emailtest@gmail.com"
+            "authenticationScreen?username=username&email=emailtest@gmail.com",
+            navigationDestinationsWithParams.authenticationWithParams(username, email)
         )
+
+        unmockkObject(UriEncoder)
     }
 
     @Test

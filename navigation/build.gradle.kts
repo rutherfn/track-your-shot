@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
@@ -15,6 +17,7 @@ android {
         compose = ComposeData.Enabled.value
     }
 
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
     }
@@ -26,9 +29,12 @@ android {
 
     defaultConfig {
         minSdk = ConfigurationData.minSdk
-        targetSdk = ConfigurationData.targetSdk
 
         testInstrumentationRunner = ConfigurationData.testInstrumentationRunner
+    }
+
+    testOptions {
+        targetSdk = ConfigurationData.targetSdk
     }
 
     buildTypes {
@@ -58,23 +64,20 @@ android {
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = KotlinOptions.jvmTarget
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(KotlinOptions.jvmTarget))
         }
     }
 
     tasks.withType<Test> {
         useJUnitPlatform()
     }
-
-    ktlint {
-        disabledRules.value(mutableListOf("no-wildcard-imports"))
-    }
 }
 
 dependencies {
 
     api(project(path = ":compose:components"))
+    api(project(path = ":helper:extensions"))
 
     implementation(libs.navigation.compose)
     implementation(libs.androidx.material3)
@@ -86,6 +89,8 @@ dependencies {
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.android.junit5)
+
+    testImplementation(libs.mockk)
 
     testRuntimeOnly(libs.junit.jupiter.engine)
 }
