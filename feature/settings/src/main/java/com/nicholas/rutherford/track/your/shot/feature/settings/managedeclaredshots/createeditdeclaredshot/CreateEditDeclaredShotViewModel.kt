@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
@@ -17,7 +18,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotRea
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.extensions.normalizeSpaces
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
-import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -58,7 +58,7 @@ class CreateEditDeclaredShotViewModel(
     private val updateFirebaseUserInfo: UpdateFirebaseUserInfo,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val createSharedPreferences: CreateSharedPreferences,
-    private val readSharedPreferences: ReadSharedPreferences,
+    private val playerRepository: PlayerRepository,
     private val navigation: CreateEditDeclaredShotNavigation,
     private val scope: CoroutineScope,
 ) : BaseViewModel() {
@@ -78,7 +78,6 @@ class CreateEditDeclaredShotViewModel(
     internal val shotNameArgument: String = savedStateHandle.get<String>("shotName") ?: ""
 
     init {
-        println("here is the shot name argument $shotNameArgument")
         scope.launch { initializeDeclaredShotState() }
     }
 
@@ -93,7 +92,7 @@ class CreateEditDeclaredShotViewModel(
     internal suspend fun initializeDeclaredShotState() {
         allDeclaredShotNames = declaredShotRepository.fetchAllDeclaredShots().map { it.title }
 
-        val name = readSharedPreferences.declaredShotName()
+        val name = shotNameArgument
         if (name.isNotEmpty()) {
             attemptToUpdateDeclaredShotState(name = name)
         } else {
@@ -139,7 +138,6 @@ class CreateEditDeclaredShotViewModel(
     internal fun attemptToUpdateDeclaredShotState(name: String) {
         scope.launch {
             currentDeclaredShot = declaredShotRepository.fetchDeclaredShotFromName(name = name)
-            createSharedPreferences.createDeclaredShotName(value = "")
             currentDeclaredShot?.let { declaredShot ->
                 createEditDeclaredShotMutableStateFlow.update {
                     it.copy(
@@ -153,6 +151,8 @@ class CreateEditDeclaredShotViewModel(
 
     /**
      * Handles confirmation to delete a declared shot.
+     * Checks to see if the shot is being used by a player.
+     * If it is, it will not be deleted.
      *
      * @param shotName Name of the shot.
      * @param shotKey Firebase key if the shot exists in Firebase.
@@ -161,14 +161,26 @@ class CreateEditDeclaredShotViewModel(
     suspend fun onYesDeleteShot(shotName: String, shotKey: String, id: Int) {
         navigation.enableProgress(progress = Progress())
 
-        val updatedIgnoredShotIds = shotIgnoringRepository
-            .fetchAllIgnoringShots()
-            .map { it.shotId } + id
+        val loggedShotNames = playerRepository.fetchAllPlayers().flatMap { player -> player.shotsLoggedList.map { shotLogged -> shotLogged.shotName } }
 
-        if (shotKey.isEmpty()) {
-            handleIdOnlyDelete(shotName = shotName, id = id, ignoredIds = updatedIgnoredShotIds)
+        if (loggedShotNames.contains(shotName)) {
+            navigation.disableProgress()
+            navigation.alert(alert = buildCouldNotDeleteShotDueToItBeingUsedAlert(shotName = shotName))
         } else {
-            handleFullShotDelete(shotName = shotName, shotKey = shotKey, id = id, ignoredIds = updatedIgnoredShotIds)
+            val updatedIgnoredShotIds = shotIgnoringRepository
+                .fetchAllIgnoringShots()
+                .map { it.shotId } + id
+
+            if (shotKey.isEmpty()) {
+                handleIdOnlyDelete(shotName = shotName, id = id, ignoredIds = updatedIgnoredShotIds)
+            } else {
+                handleFullShotDelete(
+                    shotName = shotName,
+                    shotKey = shotKey,
+                    id = id,
+                    ignoredIds = updatedIgnoredShotIds
+                )
+            }
         }
     }
 
@@ -211,6 +223,17 @@ class CreateEditDeclaredShotViewModel(
 
     // ----------- Alert builders -----------
 
+    /** Builds alert when a declared shot could not be deleted due to it being used. */
+    internal fun buildCouldNotDeleteShotDueToItBeingUsedAlert(shotName: String): Alert {
+        return Alert(
+            title = "Cannot Delete $shotName",
+            description = "We cannot delete this shot because it is being used by a player. Please remove it from the player before deleting it.",
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
+            )
+        )
+    }
+
     /** Builds alert when a declared shot could not be deleted. */
     internal fun buildCouldNotDeleteShotAlert(shotName: String): Alert {
         return Alert(
@@ -233,6 +256,16 @@ class CreateEditDeclaredShotViewModel(
             ),
             dismissButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.no)
+            )
+        )
+    }
+
+    internal fun buildShotContentNotChangedAlert(): Alert {
+        return Alert(
+            title = "Shot Content Not Changed",
+            description = "The shot content has not been changed. Please change content and try again.",
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.gotIt)
             )
         )
     }
@@ -414,7 +447,7 @@ class CreateEditDeclaredShotViewModel(
             shot.title.isEmpty() -> buildShotNameNotAddedAlert()
             shot.shotCategory.isEmpty() -> buildShotCategoryNotAddedAlert()
             shot.description.isEmpty() -> buildShotDescriptionNotAddedAlert()
-            isExactShotNameMatchIgnoringSpaces -> buildShotDescriptionNotAddedAlert()
+            isExactShotNameMatchIgnoringSpaces -> buildShotContentNotChangedAlert()
             else -> null
         }
 
@@ -436,7 +469,9 @@ class CreateEditDeclaredShotViewModel(
                     )
                 )
             )
-        } ?:  submitShotToRepositoryAndFirebase(shot = shot, shouldDeleteShotById = true, hasShotBeenCreated = false)
+        } ?: run {
+            submitShotToRepositoryAndFirebase(shot = shot, shouldDeleteShotById = true, hasShotBeenCreated = false)
+        }
     }
 
     /**

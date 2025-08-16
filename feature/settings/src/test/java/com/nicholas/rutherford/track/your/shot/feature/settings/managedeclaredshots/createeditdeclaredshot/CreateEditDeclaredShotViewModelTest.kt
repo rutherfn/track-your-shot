@@ -93,7 +93,6 @@ class CreateEditDeclaredShotViewModelTest {
 
             Assertions.assertEquals(viewModel.currentDeclaredShot, null)
             Assertions.assertEquals(viewModel.createEditDeclaredShotMutableStateFlow.value, state.copy(declaredShotState = DeclaredShotState.CREATING))
-            verify { createSharedPreferences.createDeclaredShotName(value = "") }
         }
 
         @Test
@@ -115,7 +114,6 @@ class CreateEditDeclaredShotViewModelTest {
                     declaredShotState = DeclaredShotState.VIEWING
                 )
             )
-            verify { createSharedPreferences.createDeclaredShotName(value = "") }
         }
     }
 

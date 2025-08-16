@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations.SHOTS_LIST_SCREEN_WITH_PARAMS
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
 /**
@@ -18,7 +19,7 @@ class LogShotNavigationImpl(private val navigator: Navigator) : LogShotNavigatio
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
     override fun pop() = navigator.pop(popRouteAction = Constants.POP_DEFAULT_ACTION)
 
-    override fun popToShotList() = navigator.pop(popRouteAction = NavigationDestinations.SHOTS_LIST_SCREEN_WITH_PARAMS)
+    override fun popToShotList(shouldShowAllPlayersShots: Boolean) = navigator.navigate(navigationAction = NavigationActions.LogShot.shotList(shouldShowAllPlayersShots = shouldShowAllPlayersShots))
 
     override fun navigateToShotList(firstName: String?, lastName: String?) =
         navigator.navigate(navigationAction = NavigationActions.LogShot.createEditPlayer(firstName = firstName, lastName = lastName))

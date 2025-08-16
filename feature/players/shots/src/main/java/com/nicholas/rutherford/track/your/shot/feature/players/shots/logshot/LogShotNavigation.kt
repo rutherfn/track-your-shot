@@ -11,7 +11,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 interface LogShotNavigation {
     fun alert(alert: Alert)
     fun pop()
-    fun popToShotList()
+    fun popToShotList(shouldShowAllPlayersShots: Boolean)
     fun navigateToShotList(firstName: String?, lastName: String?)
     fun popToCreatePlayer()
     fun popToEditPlayer()

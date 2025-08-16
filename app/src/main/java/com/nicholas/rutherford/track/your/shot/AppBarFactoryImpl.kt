@@ -146,14 +146,13 @@ class AppBarFactoryImpl(
             secondaryImageVector = Icons.Default.Add
         )
 
-    override fun createCreateEditDeclaredShotAppBar(params: CreateEditDeclaredShotScreenParams): AppBar {
-        val declaredShotName = readSharedPreferences.declaredShotName()
+    override fun createCreateEditDeclaredShotAppBar(declaredShotName: String, params: CreateEditDeclaredShotScreenParams): AppBar {
         return AppBar(
             toolbarId = StringsIds.empty,
             toolbarTitle = if (declaredShotName.isEmpty()) {
                 application.getString(StringsIds.createShot)
             } else {
-                "My Shots"
+                declaredShotName
             },
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
             shouldShowSecondaryButton = true,

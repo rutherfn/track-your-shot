@@ -75,7 +75,6 @@ class AccountManagerImpl(
 
             existingUserFirebase.logout()
             createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
-            createSharedPreferences.createHasAuthenticatedAccount(value = false)
             createSharedPreferences.createIsLoggedIn(value = false)
             clearOutDatabase()
 
@@ -216,7 +215,6 @@ class AccountManagerImpl(
                             )
                         }
 
-                    createSharedPreferences.createShouldUpdateLoggedInPlayerListPreference(value = true)
                     playerRepository.createListOfPlayers(playerList = playerList)
                     collectReportList()
                 } else {
@@ -278,11 +276,9 @@ class AccountManagerImpl(
                         )
                     }
                 }
-                createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
                 declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = declaredShotIds)
                 hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
 
-                createSharedPreferences.createHasAuthenticatedAccount(value = true)
                 createSharedPreferences.createIsLoggedIn(value = true)
 
                 declaredShotIds = emptyList()

@@ -359,8 +359,6 @@ class AuthenticationViewModelTest {
                 )
             }
             verify { createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true) }
-            verify { createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true) }
-            verify { createSharedPreferences.createHasAuthenticatedAccount(value = true) }
             coVerify { declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList()) }
             verify { navigation.disableProgress() }
             verify { navigation.navigateToTermsAndConditions() }

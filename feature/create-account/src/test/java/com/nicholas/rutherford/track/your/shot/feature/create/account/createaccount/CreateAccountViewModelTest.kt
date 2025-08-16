@@ -660,8 +660,6 @@ class CreateAccountViewModelTest {
                 )
             }
             verify(exactly = 0) { createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true) }
-            verify(exactly = 0) { createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true) }
-            verify(exactly = 0) { createSharedPreferences.createHasAuthenticatedAccount(value = true) }
             coVerify(exactly = 0) { declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList()) }
             verify(exactly = 0) { navigation.navigateToTermsAndConditions() }
 
@@ -687,8 +685,6 @@ class CreateAccountViewModelTest {
                 )
             }
             verify(exactly = 1) { createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true) }
-            verify(exactly = 1) { createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true) }
-            verify(exactly = 1) { createSharedPreferences.createHasAuthenticatedAccount(value = true) }
             coVerify(exactly = 1) { declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList()) }
             verify(exactly = 1) { navigation.disableProgress() }
             verify(exactly = 1) { navigation.navigateToTermsAndConditions() }

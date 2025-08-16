@@ -89,7 +89,6 @@ class DeclaredShotsListViewModelTest {
        viewModel.onDeclaredShotClicked(title = title)
 
         verify { navigation.enableProgress(progress = any()) }
-        verify { createSharedPreferences.createDeclaredShotName(value = title) }
         verify { navigation.disableProgress() }
         verify { navigation.createEditDeclaredShot() }
     }

@@ -84,6 +84,10 @@ class LogShotViewModel(
 
     internal var initialShotLogged: ShotLogged? = null
 
+    internal var screenTriggered: ScreenTriggered = ScreenTriggered.UNKNOWN
+
+    internal var shouldShowTest: Boolean = false
+
     /**
      * Navigation arguments extracted from the saved state handle.
      */
@@ -94,9 +98,18 @@ class LogShotViewModel(
     internal val viewCurrentExistingShotArgument: Boolean = savedStateHandle.get<Boolean>("viewCurrentExistingShot") ?: false
     internal val viewCurrentPendingShotArgument: Boolean = savedStateHandle.get<Boolean>("viewCurrentPendingShot") ?: false
     internal val fromShotListArgument: Boolean = savedStateHandle.get<Boolean>("fromShotList") ?: false
+    internal val screenTriggeredIndexArgument: Int = savedStateHandle.get<Int>("screenTriggeredIndexArgument") ?: ScreenTriggered.INDEX_UNKNOWN
 
     init {
         updateIsExistingPlayerAndId()
+        screenTriggered = ScreenTriggered.fromIndex(screenTriggeredIndexArgument)
+        shouldShowTest = if (screenTriggered == ScreenTriggered.FROM_ALL_PLAYERS) {
+            true
+        } else if (screenTriggered == ScreenTriggered.FROM_FILTER_PLAYERS) {
+            false
+        } else {
+            false
+        }
     }
 
     /**
@@ -566,7 +579,7 @@ class LogShotViewModel(
             dataAdditionUpdates.updateShotHasBeenUpdatedSharedFlow(hasShotBeenUpdated = true)
 
             navigation.disableProgress()
-            navigation.popToShotList()
+            navigation.popToShotList(shouldShowAllPlayersShots = shouldShowTest)
             navigation.alert(alert = logShotViewModelExt.showUpdatedAlert())
         } else {
             navigation.disableProgress()
@@ -620,7 +633,7 @@ class LogShotViewModel(
             if (logShotViewModelExt.logShotInfo.fromShotList) {
                 dataAdditionUpdates.updateShotHasBeenUpdatedSharedFlow(hasShotBeenUpdated = true)
                 navigation.disableProgress()
-                navigation.popToShotList()
+                navigation.popToShotList(shouldShowAllPlayersShots = shouldShowTest)
             } else {
                 navigateToCreateOrEditPlayer()
             }

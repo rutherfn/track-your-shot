@@ -110,9 +110,7 @@ fun PositionChooserPreview() {
                 .padding(PaddingValues(16.dp))
         ) {
             PositionChooser(
-                onPlayerPositionStringChanged = { selectedPosition ->
-                    println("Selected Position: $selectedPosition")
-                }
+                onPlayerPositionStringChanged = { selectedPosition -> }
             )
         }
     }

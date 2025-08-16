@@ -424,7 +424,6 @@ object AppNavigationGraph {
             )
 
             ObserveLifecycle(viewModel = createEditPlayerViewModel)
-            println("call it here ")
             updateAppBar(
                 appBar = appBarFactory.createEditPlayerAppBar(
                     params = createEditPlayerParams,
@@ -594,8 +593,6 @@ object AppNavigationGraph {
 
             val shotName = entry.arguments?.getString(NamedArguments.SHOT_NAME) ?: ""
 
-            println("here is the passed in shot name $shotName")
-
             val createEditDeclaredShotParams = CreateEditDeclaredShotScreenParams(
                 state = createEditDeclaredShotViewModel.createEditDeclaredShotStateFlow.collectAsState().value,
                 onToolbarMenuClicked = { createEditDeclaredShotViewModel.onToolbarMenuClicked() },
@@ -639,7 +636,7 @@ object AppNavigationGraph {
             )
 
             ObserveLifecycle(viewModel = createEditDeclaredShotViewModel)
-            updateAppBar(appBar = appBarFactory.createCreateEditDeclaredShotAppBar(params = createEditDeclaredShotParams))
+            updateAppBar(appBar = appBarFactory.createCreateEditDeclaredShotAppBar(declaredShotName = shotName, params = createEditDeclaredShotParams))
 
             CreateEditDeclaredShotScreen(params = createEditDeclaredShotParams)
         }

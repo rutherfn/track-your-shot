@@ -175,6 +175,7 @@ fun PlayerReport(
 
                     DropdownMenu(
                         expanded = expanded,
+                        modifier = Modifier.background(AppColors.White),
                         onDismissRequest = { expanded = false }
                     ) {
                         DropdownMenuItem(

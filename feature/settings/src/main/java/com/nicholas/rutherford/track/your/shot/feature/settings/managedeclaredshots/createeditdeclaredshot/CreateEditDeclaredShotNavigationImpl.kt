@@ -17,5 +17,5 @@ class CreateEditDeclaredShotNavigationImpl(private val navigator: Navigator) : C
 
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
 
-    override fun pop() = navigator.pop(popRouteAction = NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN)
+    override fun pop() = navigator.navigate(navigationAction = NavigationActions.CreateEditDeclaredShot.declaredShotList())
 }

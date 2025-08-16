@@ -343,6 +343,11 @@ object NavigationActions {
 
     object LogShot {
 
+        fun shotList(shouldShowAllPlayersShots: Boolean) = object  : NavigationAction {
+            override val destination = NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots = shouldShowAllPlayersShots)
+            override val navOptions = NavOptions.Builder().build()
+        }
+
         fun createEditPlayer(firstName: String?, lastName: String?) = object : NavigationAction {
             override val destination: String = buildString {
                 append("createEditPlayerScreen")
@@ -375,6 +380,13 @@ object NavigationActions {
             override val navOptions = NavOptions.Builder()
                 .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
                 .build()
+        }
+    }
+
+    object CreateEditDeclaredShot {
+        fun declaredShotList() = object : NavigationAction {
+            override val destination: String = NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN
+            override val navOptions = NavOptions.Builder().build()
         }
     }
 

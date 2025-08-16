@@ -18,6 +18,7 @@ import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flowOf
 import timber.log.Timber
 import java.util.Date
 
@@ -293,24 +294,28 @@ class ReadFirebaseUserInfoImpl(
     }
 
     override fun isEmailVerifiedFlow(): Flow<Boolean> {
-        return callbackFlow {
-            firebaseAuth.currentUser?.let { firebaseUser ->
-                firebaseUser.reload()
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            trySend(element = firebaseUser.isEmailVerified)
-                        }
-                    }
-                    .addOnFailureListener { exception ->
-                        Timber.e(message = "Error(isEmailVerifiedFlow) -> We were not able to get info on if the email has been verified. Returned stack trace ${exception.stackTrace}")
-                        trySend(element = false)
-                    }
-            } ?: run {
-                Timber.e(message = "Error(isEmailVerifiedFlow) -> Current user is set to null")
-                trySend(element = false)
-            }
-            awaitClose()
-        }
+        return flowOf(true)
+
+        // todo -> Refactor this to go in and check to see if the user is authenticated.
+        // broken due to Firebase update
+//        return callbackFlow {
+//            firebaseAuth.currentUser?.let { firebaseUser ->
+//                firebaseUser.reload()
+//                    .addOnCompleteListener { task ->
+//                        if (task.isSuccessful) {
+//                            trySend(element = firebaseUser.isEmailVerified)
+//                        }
+//                    }
+//                    .addOnFailureListener { exception ->
+//                        Timber.e(message = "Error(isEmailVerifiedFlow) -> We were not able to get info on if the email has been verified. Returned stack trace ${exception.stackTrace}")
+//                        trySend(element = false)
+//                    }
+//            } ?: run {
+//                Timber.e(message = "Error(isEmailVerifiedFlow) -> Current user is set to null")
+//                trySend(element = false)
+//            }
+//            awaitClose()
+//        }
     }
 
     override fun isLoggedInFlow(): Flow<Boolean> {

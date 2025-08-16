@@ -505,7 +505,7 @@ class AppModule {
                 updateFirebaseUserInfo = get(),
                 deleteFirebaseUserInfo = get(),
                 createSharedPreferences = get(),
-                readSharedPreferences = get(),
+                playerRepository = get(),
                 navigation = get(),
                 scope = defaultCoroutineScope
             )

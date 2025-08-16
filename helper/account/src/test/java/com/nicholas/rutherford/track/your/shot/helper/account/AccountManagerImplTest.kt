@@ -103,7 +103,6 @@ class AccountManagerImplTest {
             navigator.progress(progressAction = any())
             existingUserFirebase.logout()
             createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
-            createSharedPreferences.createHasAuthenticatedAccount(value = false)
             createSharedPreferences.createIsLoggedIn(value = false)
             accountManagerImpl.clearOutDatabase()
         }
@@ -504,10 +503,8 @@ class AccountManagerImplTest {
             }
 
             coVerifyOrder {
-                createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(true)
                 declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = shotIds)
 
-                createSharedPreferences.createHasAuthenticatedAccount(true)
                 createSharedPreferences.createIsLoggedIn(true)
                 navigator.progress(null)
                 navigator.navigate(any())
@@ -534,10 +531,8 @@ class AccountManagerImplTest {
             }
 
             coVerifyOrder {
-                createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(true)
                 declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = listOf(1))
 
-                createSharedPreferences.createHasAuthenticatedAccount(true)
                 createSharedPreferences.createIsLoggedIn(true)
                 navigator.progress(null)
                 navigator.navigate(any())
@@ -561,10 +556,8 @@ class AccountManagerImplTest {
                         firebaseKey = declaredShotWithKeyRealtimeResponse.declaredShotFirebaseKey
                     )
                 )
-                createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(true)
                 declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = shotIds)
 
-                createSharedPreferences.createHasAuthenticatedAccount(true)
                 createSharedPreferences.createIsLoggedIn(true)
                 navigator.progress(null)
                 navigator.navigate(any())

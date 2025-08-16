@@ -11,7 +11,6 @@ object Constants {
         const val IS_LOGGED_IN = "isLoggedIn"
         const val HAS_AUTHENTICATED_ACCOUNT = "hasAuthenticatedAccount"
         const val SHOULD_SHOW_TERM_AND_CONDITIONS = "shouldShowTermsAndConditions"
-        const val SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST = "shouldUpdateLoggedInPlayerList"
         const val SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST = "shouldUpdateLoggedInDeclaredShotList"
         const val PLAYER_FILTER_NAME = "playerFilterName"
     }

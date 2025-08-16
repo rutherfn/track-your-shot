@@ -42,14 +42,12 @@ class DeclaredShotsListViewModel(
 
     /**
      * Initializes the Declared Shots List screen by:
-     * - Clearing the declared shot name in shared preferences.
      * - Updating the UI state with the current list of declared shots.
      *
      * This function is separated for testability.
      */
     internal fun initializeDeclaredShotsScreen() {
         updateDeclaredShotsListState()
-        createSharedPreferences.createDeclaredShotName(value = "")
     }
 
     /**
@@ -81,7 +79,6 @@ class DeclaredShotsListViewModel(
     fun onDeclaredShotClicked(title: String) {
         scope.launch {
             navigation.enableProgress(Progress())
-            createSharedPreferences.createDeclaredShotName(value = title)
             navigation.disableProgress()
             navigation.createEditDeclaredShot(shotName = title)
         }
@@ -89,10 +86,9 @@ class DeclaredShotsListViewModel(
 
     /**
      * Handles the action of adding a new declared shot.
-     * Clears the current shot name in preferences and navigates to the create screen.
+     * Navigates to the create screen.
      */
     fun onAddDeclaredShotClicked() {
-        createSharedPreferences.createDeclaredShotName(value = "")
         navigation.createEditDeclaredShot(shotName = "")
     }
 }

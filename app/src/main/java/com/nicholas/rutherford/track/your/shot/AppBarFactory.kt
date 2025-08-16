@@ -33,7 +33,7 @@ interface AppBarFactory {
     fun createOnboardingEducationAppBar(viewModel: OnboardingEducationViewModel, isFirstTimeLaunched: Boolean): AppBar
     fun createTermsAndConditionsAppBar(): AppBar
     fun createDeclaredShotsListAppBar(params: DeclaredShotsListScreenParams): AppBar
-    fun createCreateEditDeclaredShotAppBar(params: CreateEditDeclaredShotScreenParams): AppBar
+    fun createCreateEditDeclaredShotAppBar(declaredShotName: String, params: CreateEditDeclaredShotScreenParams): AppBar
     fun createAccountInfoAppBar(viewModel: AccountInfoViewModel): AppBar
     fun createEditPlayerAppBar(params: CreateEditPlayerParams, isEditable: Boolean): AppBar
     fun createLogShotAppBar(params: LogShotParams): AppBar
