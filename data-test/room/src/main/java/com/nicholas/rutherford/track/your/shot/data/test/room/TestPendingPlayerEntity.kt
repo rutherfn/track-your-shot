@@ -3,8 +3,20 @@ package com.nicholas.rutherford.track.your.shot.data.test.room
 import com.nicholas.rutherford.track.your.shot.data.room.entities.PendingPlayerEntity
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Utility object for creating test instances of [PendingPlayerEntity].
+ * Provides predefined values for testing pending player data.
+ */
 object TestPendingPlayerEntity {
 
+    /**
+     * Builds a test [PendingPlayerEntity] instance.
+     *
+     * @return a new [PendingPlayerEntity] with predefined test values,
+     * including a list with a single [TestShotLogged] entry.
+     */
     fun build(): PendingPlayerEntity {
         return PendingPlayerEntity(
             id = PENDING_PLAYER_ID,

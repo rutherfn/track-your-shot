@@ -11,7 +11,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toTimestampString
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
 import kotlinx.coroutines.CoroutineScope
@@ -23,12 +22,26 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 // todo -> Unit test this in a follow up PR
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * ViewModel for managing the report list screen. This ViewModel is responsible for
+ * retrieving and updating the list of individual player reports, handling navigation,
+ * displaying alerts, and performing operations like viewing, deleting, or downloading reports.
+ *
+ * @param application Application context used for accessing resources.
+ * @param navigation Handles navigation actions from the report list screen.
+ * @param playerRepository Repository for accessing player data.
+ * @param individualPlayerReportRepository Repository for managing individual player reports.
+ * @param deleteFirebaseUserInfo Handles deletion of reports from Firebase.
+ * @param pdfGenerator Utility for downloading reports as PDFs.
+ * @param scope Coroutine scope for launching asynchronous tasks.
+ */
 class ReportListViewModel(
     private val application: Application,
     private val navigation: ReportListNavigation,
     private val playerRepository: PlayerRepository,
     private val individualPlayerReportRepository: IndividualPlayerReportRepository,
-    private val dataAdditionUpdates: DataAdditionUpdates,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val pdfGenerator: PdfGenerator,
     private val scope: CoroutineScope
@@ -38,30 +51,26 @@ class ReportListViewModel(
     val reportListStateFlow = reportListMutableStateFlow.asStateFlow()
 
     init {
-        collectNewReportHasBeenAddedSharedFlow()
-    }
-
-    override fun onNavigatedTo() {
-        super.onNavigatedTo()
         updateReportListState()
     }
 
+    /**
+     * Handles the toolbar menu click by opening the navigation drawer.
+     */
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
 
-    fun collectNewReportHasBeenAddedSharedFlow() {
-        scope.launch {
-            dataAdditionUpdates.newReportHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
-                handleReportAdded(hasBeenAdded = hasBeenAdded)
-            }
-        }
-    }
-
+    /**
+     * Updates the UI state if a report has been added.
+     */
     fun handleReportAdded(hasBeenAdded: Boolean) {
         if (hasBeenAdded) {
             updateReportListState()
         }
     }
 
+    /**
+     * Fetches the latest list of reports and players, updating the screen state accordingly.
+     */
     fun updateReportListState() {
         scope.launch {
             val reports = individualPlayerReportRepository.fetchAllReports()
@@ -79,6 +88,9 @@ class ReportListViewModel(
         }
     }
 
+    /**
+     * Builds an alert informing the user no players have been added yet.
+     */
     fun noPlayersAddedAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.noPlayersCreated),
@@ -87,6 +99,9 @@ class ReportListViewModel(
         )
     }
 
+    /**
+     * Builds an alert informing the user no shots have been logged yet.
+     */
     fun noShotsAddedForPlayersAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.noShotsCreated),
@@ -95,6 +110,10 @@ class ReportListViewModel(
         )
     }
 
+    /**
+     * Called when the user attempts to create a new report. Displays alerts if there are
+     * no players or no shots logged. Otherwise, navigates to the report creation screen.
+     */
     fun onCreatePlayerReportClicked() {
         scope.launch {
             val players = playerRepository.fetchAllPlayers()
@@ -109,12 +128,16 @@ class ReportListViewModel(
         }
     }
 
+    /**
+     * Handles deletion of a report both in Firebase and local storage.
+     *
+     * @param reportKey Firebase key of the report to delete.
+     */
     private suspend fun onYesDeletePlayerReportClicked(reportKey: String) {
         navigation.enableProgress(progress = Progress())
         deleteFirebaseUserInfo.deleteReport(reportKey = reportKey)
             .collectLatest { isSuccessful ->
                 if (isSuccessful) {
-                    navigation.disableProgress()
                     navigation.disableProgress()
                     individualPlayerReportRepository.deleteReportByFirebaseKey(firebaseKey = reportKey)
                     updateReportListState()
@@ -125,6 +148,11 @@ class ReportListViewModel(
             }
     }
 
+    /**
+     * Builds a confirmation alert for deleting a report.
+     *
+     * @param individualPlayerReport The report to be deleted.
+     */
     private fun deleteReportAlert(individualPlayerReport: IndividualPlayerReport): Alert {
         return Alert(
             title = application.getString(StringsIds.deleteReport),
@@ -139,24 +167,46 @@ class ReportListViewModel(
         )
     }
 
+    /**
+     * Builds an error alert in case the report could not be deleted.
+     */
     private fun couldNotDeleteReportAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.couldNotDeleteReport),
             dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(
-                    StringsIds.gotIt
-                )
+                buttonText = application.getString(StringsIds.gotIt)
             ),
             description = application.getString(StringsIds.couldNotDeleteReportDescription)
         )
     }
 
+    /**
+     * Converts a timestamp to a human-readable date string.
+     *
+     * @param value Time in milliseconds.
+     */
     fun buildDateTimeStamp(value: Long): String = Date(value).toTimestampString()
 
+    /**
+     * Navigates to a web browser to view the given report PDF.
+     *
+     * @param url PDF URL to open.
+     */
     fun onViewReportClicked(url: String) = navigation.navigateToUrl(url = url)
 
-    fun onDeletePlayerReportClicked(individualPlayerReport: IndividualPlayerReport) = navigation.alert(alert = deleteReportAlert(individualPlayerReport = individualPlayerReport))
+    /**
+     * Shows the confirmation alert to delete a report.
+     *
+     * @param individualPlayerReport The report to be deleted.
+     */
+    fun onDeletePlayerReportClicked(individualPlayerReport: IndividualPlayerReport) =
+        navigation.alert(alert = deleteReportAlert(individualPlayerReport = individualPlayerReport))
 
+    /**
+     * Initiates downloading the given report as a PDF.
+     *
+     * @param individualPlayerReport The report whose PDF should be downloaded.
+     */
     fun onDownloadPlayerReportClicked(individualPlayerReport: IndividualPlayerReport) =
         pdfGenerator.downloadPdf(url = individualPlayerReport.pdfUrl)
 }

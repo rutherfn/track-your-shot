@@ -14,40 +14,43 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * The main screen composable for creating a new player report.
+ *
+ * Delegates UI rendering to [CreateReportContent] and passes the required params.
+ *
+ * @param params Contains UI state and event callbacks for this screen.
+ */
 @Composable
-fun CreateReportScreen(params: CreateReportParams) {
-    Content(
-        ui = {
-            CreateReportContent(params = params)
-        },
-        appBar = AppBar(
-            toolbarTitle = stringResource(id = StringsIds.createPlayerReport),
-            shouldShowMiddleContentAppBar = false,
-            shouldIncludeSpaceAfterDeclaration = false,
-            shouldShowSecondaryButton = false,
-            onIconButtonClicked = { params.onToolbarMenuClicked.invoke() }
-        )
-    )
-}
+fun CreateReportScreen(params: CreateReportParams) = CreateReportContent(params = params)
 
+/**
+ * UI content of the Create Report screen.
+ *
+ * Displays a player chooser and a generate report button.
+ * Handles runtime permission requests for storage or notifications depending on OS version.
+ *
+ * @param params Contains UI state and event callbacks for this screen.
+ */
 @Composable
 fun CreateReportContent(params: CreateReportParams) {
     val permissionsLauncher = rememberLauncherForActivityResult(
@@ -57,9 +60,10 @@ fun CreateReportContent(params: CreateReportParams) {
         if (allPermissionsGranted) {
             params.attemptToGeneratePlayerReport.invoke()
         } else {
-            // add something here come back to this
+            // TODO: Handle permission denial case (e.g., show rationale or message)
         }
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -93,17 +97,15 @@ fun CreateReportContent(params: CreateReportParams) {
                                     Manifest.permission.READ_EXTERNAL_STORAGE
                                 )
                             )
-                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            permissionsLauncher.launch(arrayOf(Manifest.permission.POST_NOTIFICATIONS))
                         } else {
-                            params.attemptToGeneratePlayerReport.invoke()
+                            permissionsLauncher.launch(arrayOf(Manifest.permission.POST_NOTIFICATIONS))
                         }
                     },
                     shape = RoundedCornerShape(size = 50.dp),
                     modifier = Modifier
                         .padding(vertical = Padding.twelve)
                         .fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Colors.secondaryColor)
+                    colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor)
                 ) {
                     Text(
                         text = stringResource(id = StringsIds.generateReport),
@@ -115,4 +117,22 @@ fun CreateReportContent(params: CreateReportParams) {
             }
         }
     }
+}
+
+/**
+ * Preview of the Create Report screen content.
+ *
+ * Uses mock parameters with empty callbacks and default state to display the UI for design inspection.
+ */
+@Preview(showBackground = true)
+@Composable
+fun CreateReportContentPreview() {
+    CreateReportContent(
+        params = CreateReportParams(
+            onToolbarMenuClicked = {},
+            attemptToGeneratePlayerReport = {},
+            onPlayerChanged = {},
+            state = CreateReportState()
+        )
+    )
 }

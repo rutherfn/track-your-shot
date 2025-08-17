@@ -2,13 +2,17 @@ package com.nicholas.rutherford.track.your.shot.feature.create.account.createacc
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.helper.extensions.UriEncoder
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.slot
+import io.mockk.unmockkObject
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -46,12 +50,32 @@ class CreateAccountNavigationImplTest {
 
         val argumentCapture: CapturingSlot<NavigationAction> = slot()
 
+        mockkObject(UriEncoder)
+
+        every { UriEncoder.encode(any()) } answers { firstArg() }
+
         createAccountNavigationImpl.navigateToAuthentication(username = username, email = email)
 
         verify { navigator.navigate(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
         val expectedAction = NavigationActions.CreateAccountScreen.authentication(username = username, email = email)
+
+        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
+
+        unmockkObject(UriEncoder)
+    }
+
+    @Test
+    fun `navigate to terms and conditions`() {
+        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+
+        createAccountNavigationImpl.navigateToTermsAndConditions()
+
+        verify { navigator.navigate(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+        val expectedAction = NavigationActions.CreateAccountScreen.termsConditions(shouldAcceptTerms = true)
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }

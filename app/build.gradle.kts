@@ -1,20 +1,27 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id(BuildIds.pluginId)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
     id(BuildIds.gmsGoogleServices)
     id(BuildIds.ksp)
     id(BuildIds.kover)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
+    namespace = "com.nicholas.rutherford.track.your.shot"
+
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
     buildFeatures {
         compose = ComposeData.Enabled.value
+        buildConfig = true
     }
 
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
     }
@@ -24,10 +31,6 @@ android {
             applicationIdSuffix = types.BuildTypes.UniqueBuilds.Release.applicationIdSuffix
             isMinifyEnabled = types.BuildTypes.UniqueBuilds.Release.isMinifyEnabled
             isDebuggable = types.BuildTypes.UniqueBuilds.Release.isDebuggable
-//            proguardFiles(
-//                getDefaultProguardFile(types.BuildTypes.proguardAndroidOptimizeTxt),
-//                types.BuildTypes.proguardRulesPro
-//            )
 
             manifestPlaceholders[types.BuildTypes.ManifiestOptions.appLabel] = types.BuildTypes.UniqueBuilds.Release.appName
             manifestPlaceholders[types.BuildTypes.ManifiestOptions.appIcon] = types.BuildTypes.UniqueBuilds.Release.appIconRoute
@@ -78,25 +81,24 @@ android {
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = KotlinOptions.jvmTarget
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(KotlinOptions.jvmTarget))
         }
     }
 
     tasks.withType<Test> {
         useJUnitPlatform()
     }
-
-    ktlint {
-        disabledRules.value(mutableListOf("no-wildcard-imports"))
-    }
 }
 
 dependencies {
-    androidTestImplementation(Dependencies.Android.testRules)
-    androidTestImplementation(Dependencies.Compose.uiTestJunit4)
-    androidTestImplementation(Dependencies.Espresso.core)
-    androidTestImplementation(Dependencies.Espresso.idilingResource)
+    implementation(libs.koin.androidx.navigation)
+
+    implementation(libs.protolite.well.known.types)
+    androidTestImplementation(libs.androidx.rules)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.idling.resource)
 
     api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
@@ -115,8 +117,8 @@ dependencies {
     api(project(path = ":helper:network"))
     api(project(path = ":helper:notifications"))
 
-    debugImplementation(Dependencies.Compose.uiTestManifest)
-    debugImplementation(Dependencies.Compose.uiTooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+    debugImplementation(libs.androidx.ui.tooling)
 
     kover(project(":build-type"))
     kover(project(":feature:create-account"))
@@ -129,43 +131,46 @@ dependencies {
     kover(project(":firebase:core"))
     kover(project(":helper:network"))
 
-    implementation(Dependencies.Android.appCompat)
-    implementation(Dependencies.Android.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
 
-    implementation(Dependencies.Compose.activity)
-    implementation(Dependencies.Compose.navigation)
-    implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.uiToolingPreview)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.material.icons.core)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.navigation.compose)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.tooling.preview)
 
-    implementation(Dependencies.Firebase.analytics)
-    implementation(Dependencies.Firebase.authKtx)
-    implementation(Dependencies.Firebase.bom)
-    implementation(Dependencies.Firebase.databaseKtx)
-    implementation(Dependencies.Firebase.storageKtx)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth.ktx)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.database.ktx)
+    implementation(libs.firebase.storage.ktx)
 
-    implementation(Dependencies.Koin.compose)
-    implementation(Dependencies.Koin.core)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.android)
 
-    implementation(Dependencies.Room.runtime)
-    implementation(Dependencies.Timber.core)
+    implementation(libs.room.runtime)
+    implementation(libs.timber)
 
-    implementation(Dependencies.Material.material)
+    implementation(libs.material)
 
-    ksp(Dependencies.Room.compiler)
+    ksp(libs.room.compiler)
 
-    testImplementation(Dependencies.Coroutine.test)
+    testImplementation(libs.kotlinx.coroutines.test)
 
-    testImplementation(Dependencies.Koin.koinTest)
-    testImplementation(Dependencies.Koin.test)
-    testImplementation(Dependencies.Koin.testJunit4)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.koin.core)
+    testImplementation(libs.koin.test.junit4)
 
-    testImplementation(Dependencies.Junit.Jupiter.api)
-    testImplementation(Dependencies.Junit.Jupiter.params)
-    testImplementation(Dependencies.Junit.junit)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.android.junit5)
 
-    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+    testRuntimeOnly(libs.junit.jupiter.engine)
 
-    testImplementation(Dependencies.Mockk.core)
+    testImplementation(libs.mockk)
 }
 
 koverReport {
@@ -173,18 +178,18 @@ koverReport {
     filters {
         excludes {
             classes(
-                "*ScreenKt\$*",
+                "*ScreenKt$*",
                 "*ScreenKt",
-                "*ScreenParams\$*",
+                "*ScreenParams$*",
                 "*ScreenParams",
-                "*Tags\$*",
+                "*Tags$*",
                 "*Tags",
                 "*.NavigationComponentKt",
-                "*NavigationComponentKt\$*",
+                "*NavigationComponentKt$*",
                 "*.ViewModels",
                 "*.MainActivityWrapper",
                 "*Activity",
-                "*Activity\$*",
+                "*Activity$*",
                 "*.BuildConfig"
             )
         }

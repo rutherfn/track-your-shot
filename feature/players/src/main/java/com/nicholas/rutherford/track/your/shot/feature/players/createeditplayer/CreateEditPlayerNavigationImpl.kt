@@ -6,7 +6,15 @@ import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
+/**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
+ * Implementation of [CreateEditPlayerNavigationImpl] using a [Navigator] to perform
+ * navigation via predefined [NavigationActions].
+ */
 class CreateEditPlayerNavigationImpl(private val navigator: Navigator) : CreateEditPlayerNavigation {
+    override fun navigateToPlayersList() = navigator.navigate(navigationAction = NavigationActions.CreateEditPlayer.playersList())
+
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
 
     override fun appSettings() = navigator.appSettings(appSettingsAction = true)
@@ -41,5 +49,7 @@ class CreateEditPlayerNavigationImpl(private val navigator: Navigator) : CreateE
     )
     override fun disableProgress() = navigator.progress(progressAction = null)
     override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
-    override fun pop() = navigator.pop(popRouteAction = NavigationDestinations.PLAYERS_LIST_SCREEN)
+    override fun pop() {
+        navigator.pop(popRouteAction = NavigationDestinations.PLAYERS_LIST_SCREEN)
+    }
 }

@@ -46,7 +46,7 @@ class TermsConditionsNavigationImplTest {
         verify { navigator.navigate(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationActions.TermsConditions.onboardingEducation()
+        val expectedAction = NavigationActions.TermsConditions.onboardingEducation(isFirstTimeLaunched = true)
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }

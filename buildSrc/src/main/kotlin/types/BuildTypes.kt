@@ -3,6 +3,8 @@ package types
 import org.gradle.api.JavaVersion
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * To define build types data */
 object BuildTypes {
     const val proguardAndroidOptimizeTxt = "proguard-android-optimize.txt"

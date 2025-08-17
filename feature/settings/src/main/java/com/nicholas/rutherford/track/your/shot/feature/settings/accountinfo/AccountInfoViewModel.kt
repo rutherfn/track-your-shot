@@ -1,8 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo
 
-import androidx.lifecycle.ViewModel
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 
-class AccountInfoViewModel(private val navigation: AccountInfoNavigation) : ViewModel() {
+class AccountInfoViewModel(private val navigation: AccountInfoNavigation) : BaseViewModel() {
 
     fun onToolbarMenuClicked() = navigation.pop()
 }

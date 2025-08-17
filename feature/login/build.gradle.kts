@@ -1,11 +1,16 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
     id(BuildIds.kover)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
+    namespace = "com.nicholas.rutherford.track.your.shot.feature.login"
+
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
@@ -13,6 +18,7 @@ android {
         compose = ComposeData.Enabled.value
     }
 
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
     }
@@ -24,9 +30,12 @@ android {
 
     defaultConfig {
         minSdk = ConfigurationData.minSdk
-        targetSdk = ConfigurationData.targetSdk
 
         testInstrumentationRunner = ConfigurationData.testInstrumentationRunner
+    }
+
+    testOptions {
+        targetSdk = ConfigurationData.targetSdk
     }
 
     buildTypes {
@@ -56,24 +65,21 @@ android {
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = KotlinOptions.jvmTarget
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(KotlinOptions.jvmTarget))
         }
     }
 
     tasks.withType<Test> {
         useJUnitPlatform()
     }
-
-    ktlint {
-        disabledRules.value(mutableListOf("no-wildcard-imports"))
-    }
 }
 
 dependencies {
-    androidTestImplementation(Dependencies.Compose.uiTestJunit4)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
 
     api(project(path = ":base-resources"))
+    api(project(path = ":base:vm"))
     api(project(path = ":build-type"))
     api(project(path = ":compose:components"))
     api(project(path = ":data:room"))
@@ -86,24 +92,24 @@ dependencies {
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
 
-    implementation(platform(Dependencies.Compose.bom))
+    implementation(platform(libs.androidx.compose.bom))
 
-    debugImplementation(Dependencies.Compose.uiTooling)
-    implementation(Dependencies.Compose.uiToolingPreview)
+    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.androidx.ui.tooling.preview)
 
-    implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.viewModel)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    testImplementation(Dependencies.Coroutine.test)
+    testImplementation(libs.kotlinx.coroutines.test)
 
-    testImplementation(Dependencies.Junit.Jupiter.api)
-    testImplementation(Dependencies.Junit.Jupiter.params)
-    testImplementation(Dependencies.Junit.junit)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.android.junit5)
 
-    testImplementation(Dependencies.Mockk.core)
+    testImplementation(libs.mockk)
     testImplementation(project(":data-test:firebase"))
 
     testImplementation(project(path = ":data-test:room"))
 
-    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+    testRuntimeOnly(libs.junit.jupiter.engine)
 }

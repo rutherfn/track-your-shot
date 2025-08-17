@@ -2,7 +2,8 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclareds
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationAction
+import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot
 import io.mockk.mockk
@@ -49,16 +50,16 @@ class CreateEditDeclaredShotNavigationImplTest {
     }
 
     @Test
-    fun `pop action`() {
-        val argumentCapture: CapturingSlot<String> = slot()
+    fun `navigate to declared shot list`() {
+        val argumentCapture: CapturingSlot<NavigationAction> = slot()
 
-        navigationImpl.pop()
+        navigationImpl.navigateToDeclaredShotList()
 
-        verify { navigator.pop(capture(argumentCapture)) }
+        verify { navigator.navigate(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN
+        val expectedAction = NavigationActions.CreateEditDeclaredShot.declaredShotList()
 
-        Assertions.assertEquals(expectedAction, capturedArgument)
+        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }
 }

@@ -1,11 +1,15 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
     id(BuildIds.kover)
 }
 
 android {
+    namespace = "com.nicholas.rutherford.track.your.shot.firebase.core"
+
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
@@ -16,9 +20,11 @@ android {
 
     defaultConfig {
         minSdk = ConfigurationData.minSdk
-        targetSdk = ConfigurationData.targetSdk
-
         testInstrumentationRunner = ConfigurationData.testInstrumentationRunner
+    }
+
+    testOptions {
+        targetSdk = ConfigurationData.targetSdk
     }
 
     buildTypes {
@@ -48,8 +54,8 @@ android {
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = KotlinOptions.jvmTarget
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(KotlinOptions.jvmTarget))
         }
     }
 
@@ -65,22 +71,22 @@ dependencies {
     api(project(path = ":helper:constants"))
     api(project(path = ":helper:extensions"))
 
-    implementation(Dependencies.Firebase.authKtx)
-    implementation(Dependencies.Firebase.bom)
-    implementation(Dependencies.Firebase.databaseKtx)
-    implementation(Dependencies.Firebase.storageKtx)
+    implementation(libs.firebase.auth.ktx)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.database.ktx)
+    implementation(libs.firebase.storage.ktx)
 
-    implementation(Dependencies.Timber.core)
+    implementation(libs.timber)
 
-    testImplementation(Dependencies.Coroutine.test)
+    testImplementation(libs.kotlinx.coroutines.test)
 
-    testImplementation(Dependencies.Junit.Jupiter.api)
-    testImplementation(Dependencies.Junit.Jupiter.params)
-    testImplementation(Dependencies.Junit.junit)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.android.junit5)
 
-    testImplementation(Dependencies.Mockk.core)
+    testImplementation(libs.mockk)
 
-    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+    testRuntimeOnly(libs.junit.jupiter.engine)
 
     testImplementation(project(":data-test:firebase"))
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="add_shot">Add Shot</string>
     <string name="acceptance_of_these_terms">Acceptance Of These Terms</string>
     <string name="acceptance_of_these_terms_description"><![CDATA[You acknowledge that you have read this Agreement and agree to all its terms and conditions. By accessing and using the Mobile Application and Services, you agree to be bound by this Agreement. If you do not agree to abide by the terms of this Agreement, you are not authorized to access or use the Mobile Application and Services.]]></string>
@@ -247,6 +247,7 @@
     <string name="splash_icon_description">This is a splash image for the splash screen that gets displayed before app is triggered</string>
     <string name="successfully_sent_email_verification">Successfully sent verification</string>
     <string name="take_a_picture">Take A Picture</string>
+    <string name="tap_for_more" tools:ignore="MissingTranslation">Tap for more</string>
     <string name="terms_conditions">Terms &amp; Conditions</string>
     <string name="terms_conditions_description">These terms and conditions (&quot;Agreement&quot;) set forth the general terms and conditions of your use of the &quot;Track Your Shot&quot; mobile application (&quot;Mobile Application&quot; or &quot;Service&quot;) and any of its related products and services (collectively, &quot;Services&quot;). This Agreement is legally binding between you (&quot;User&quot;, &quot;you&quot; or &quot;your&quot;) and Track Your Shot (&quot;Track Your Shot&quot;, &quot;we&quot;, &quot;us&quot; or &quot;our&quot;). If you are entering into this Agreement on behalf of a business or other legal entity, you represent that you have the authority to bind such entity to this Agreement, in which case the terms &quot;User&quot;, &quot;you&quot; or &quot;your&quot; shall refer to such entity. If you do not have such authority, or if you do not agree with the terms of this Agreement, you must not accept this Agreement and may not access and use the Mobile Application and Services. By accessing and using the Mobile Application and Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Agreement. You acknowledge that this Agreement is a contract between you and Track Your Shot, even though it is electronic and is not physically signed by you, and it governs your use of the Mobile Application and Services.</string>
     <string name="track_your_progress">Track Your Progress</string>
@@ -273,6 +274,7 @@
     <string name="unable_to_send_email_verification">Unable to send email verification</string>
     <string name="unable_to_upload_image">Unable to upload image</string>
     <string name="unsaved_player_changes">Unsaved Player Changes</string>
+    <string name="username_helper_text" tools:ignore="MissingTranslation">Username must be 8–30 characters long, contain only letters, numbers, underscores (_), and periods (.), start with a letter, and cannot have consecutive underscores or periods, or start/end with an underscore or period.</string>
     <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">We have detected a problem with your account. Please contact support to resolve issue.</string>
     <string name="we_have_detected_currently_not_connected_to_internet_description">We have detected currently not connected to internet. Please connect to service, and try again.</string>
     <string name="_no_shots_declared_description">No shots have been declared yet. Tap Add Shot to start adding your shots.</string>

@@ -1,10 +1,14 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
 }
 
 android {
+    namespace = "com.nicholas.rutherford.track.your.shot.compose.content.test.rule"
+
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
@@ -15,9 +19,11 @@ android {
 
     defaultConfig {
         minSdk = ConfigurationData.minSdk
-        targetSdk = ConfigurationData.targetSdk
-
         testInstrumentationRunner = ConfigurationData.testInstrumentationRunner
+    }
+
+    testOptions {
+        targetSdk = ConfigurationData.targetSdk
     }
 
     buildTypes {
@@ -47,8 +53,8 @@ android {
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = KotlinOptions.jvmTarget
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(KotlinOptions.jvmTarget))
         }
     }
 
@@ -57,12 +63,8 @@ android {
     }
 
     tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
-
-    ktlint {
-        disabledRules.value(mutableListOf("no-wildcard-imports"))
-    }
 }
 
 dependencies {
-    implementation(Dependencies.Compose.uiTestJunit4)
+    implementation(libs.androidx.ui.test.junit4)
 }

@@ -1,9 +1,5 @@
 package com.nicholas.rutherford.track.your.shot.firebase.core.read
 
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -12,14 +8,14 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestAccountInfoRealTimeResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestDeclaredShotRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestDeclaredShotWithKeyRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestPlayerInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestAccountInfoRealTimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestDeclaredShotRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestDeclaredShotWithKeyRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
@@ -181,30 +177,6 @@ class ReadFirebaseUserInfoImplTest {
 
             every { firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot)) } answers {
                 slot.captured.onCancelled(mockDatabaseError)
-            }
-
-            Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoKeyFlow().first())
-        }
-
-        @Test
-        fun `when onDataChange is called but snapshot does not exist should return null`() = runTest {
-            val uid = "uid"
-            val path = "${Constants.USERS_PATH}/$uid"
-
-            val mockDataSnapshot = mockk<DataSnapshot>()
-            val mockFirebaseUser = mockk<FirebaseUser>()
-            val slot = slot<ValueEventListener>()
-
-            every { mockDataSnapshot.exists() } returns false
-
-            mockkStatic(FirebaseUser::class)
-            mockkStatic(DataSnapshot::class)
-
-            every { mockFirebaseUser.uid } returns uid
-            every { firebaseAuth.currentUser } returns mockFirebaseUser
-
-            every { firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot)) } answers {
-                slot.captured.onDataChange(mockDataSnapshot)
             }
 
             Assertions.assertEquals(null, readFirebaseUserInfoImpl.getAccountInfoKeyFlow().first())
@@ -669,86 +641,6 @@ class ReadFirebaseUserInfoImplTest {
             }
 
             Assertions.assertEquals(playerInfoRealtimeWithKeyResponseList, readFirebaseUserInfoImpl.getPlayerInfoList().first())
-        }
-    }
-
-    @Nested
-    inner class IsEmailVerifiedFlow {
-
-        @Test
-        fun `when currentUser is set to null should set to false`() = runTest {
-            every { firebaseAuth.currentUser } returns null
-            readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
-
-            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
-        }
-
-        @Test
-        fun `when currentUser is not null and complete listener is successful with email verified set to false should be set to false`() = runTest {
-            val mockTaskReloadResult = mockk<Task<Void>>()
-            val completeListenerSlot = slot<OnCompleteListener<Void>>()
-            val failureListenerSlot = slot<OnFailureListener>()
-
-            every { firebaseAuth.currentUser!!.isEmailVerified } returns false
-            every { mockTaskReloadResult.isSuccessful } returns true
-
-            mockkStatic(Tasks::class)
-
-            every {
-                firebaseAuth.currentUser!!.reload()
-                    .addOnCompleteListener(capture(completeListenerSlot))
-                    .addOnFailureListener(capture(failureListenerSlot))
-            } answers {
-                completeListenerSlot.captured.onComplete(mockTaskReloadResult)
-                mockTaskReloadResult
-            }
-
-            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
-        }
-
-        @Test
-        fun `when currentUser is not null but complete listener is successful with email verified set to true should be set to true`() = runTest {
-            val mockTaskReloadResult = mockk<Task<Void>>()
-            val completeListenerSlot = slot<OnCompleteListener<Void>>()
-            val failureListenerSlot = slot<OnFailureListener>()
-
-            every { firebaseAuth.currentUser!!.isEmailVerified } returns true
-            every { mockTaskReloadResult.isSuccessful } returns true
-
-            mockkStatic(Tasks::class)
-
-            every {
-                firebaseAuth.currentUser!!.reload()
-                    .addOnCompleteListener(capture(completeListenerSlot))
-                    .addOnFailureListener(capture(failureListenerSlot))
-            } answers {
-                completeListenerSlot.captured.onComplete(mockTaskReloadResult)
-                mockTaskReloadResult
-            }
-
-            Assertions.assertEquals(true, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
-        }
-
-        @Test
-        fun `when currentUser is not null but failure listener is executed should return false`() = runTest {
-            val mockTaskReloadResult = mockk<Task<Void>>()
-            val completeListenerSlot = slot<OnCompleteListener<Void>>()
-            val failureListenerSlot = slot<OnFailureListener>()
-
-            val mockException = Exception("Simulated failure")
-
-            every { firebaseAuth.currentUser!!.isEmailVerified } returns true
-
-            every {
-                firebaseAuth.currentUser!!.reload()
-                    .addOnCompleteListener(capture(completeListenerSlot))
-                    .addOnFailureListener(capture(failureListenerSlot))
-            } answers {
-                failureListenerSlot.captured.onFailure(mockException)
-                mockTaskReloadResult
-            }
-
-            Assertions.assertEquals(false, readFirebaseUserInfoImpl.isEmailVerifiedFlow().first())
         }
     }
 

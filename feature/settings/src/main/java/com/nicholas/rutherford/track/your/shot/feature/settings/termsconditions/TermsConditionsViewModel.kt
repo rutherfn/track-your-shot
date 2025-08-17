@@ -1,8 +1,9 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -13,20 +14,43 @@ import kotlinx.coroutines.launch
 
 const val DELAY_BEFORE_ONBOARDING = 750L
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * ViewModel for managing the Terms & Conditions screen state and interactions.
+ *
+ * Responsibilities include:
+ * - Building and updating the list of terms sections displayed to the user.
+ * - Handling button text based on whether terms need to be accepted.
+ * - Navigating back, accepting terms, or sending user to the appropriate screens.
+ *
+ * @param savedStateHandle Used to retrieve arguments passed to the screen (e.g., `shouldAcceptTerms`).
+ * @param navigation Interface that defines navigation actions for this screen.
+ * @param application Provides access to localized string resources.
+ * @param createSharedPreferences Allows storing user's acknowledgement of terms.
+ * @param scope Coroutine scope for launching background tasks.
+ */
 class TermsConditionsViewModel(
+    savedStateHandle: SavedStateHandle,
     private val navigation: TermsConditionsNavigation,
     private val application: Application,
     private val createSharedPreferences: CreateSharedPreferences,
     private val scope: CoroutineScope
-) : ViewModel() {
+) : BaseViewModel() {
 
-    internal var termsConditionsMutableStateFlow = MutableStateFlow(value = TermsConditionsState())
+    private var termsConditionsMutableStateFlow = MutableStateFlow(value = TermsConditionsState())
     val termsConditionsStateFlow = termsConditionsMutableStateFlow.asStateFlow()
+
+    internal val shouldAcceptTermsParam: Boolean = savedStateHandle.get<Boolean>("shouldAcceptTerms") ?: false
 
     init {
         updateInfoListState()
+        updateButtonTextState()
     }
 
+    /**
+     * Builds and returns the list of terms and conditions sections.
+     */
     internal fun buildInfoList(): List<TermsConditionInfo> {
         return listOf(
             TermsConditionInfo(
@@ -52,6 +76,9 @@ class TermsConditionsViewModel(
         )
     }
 
+    /**
+     * Updates the state flow with the full list of terms and conditions sections.
+     */
     fun updateInfoListState() {
         termsConditionsMutableStateFlow.update {
             it.copy(
@@ -60,10 +87,14 @@ class TermsConditionsViewModel(
         }
     }
 
-    fun updateButtonTextState(isAcknowledgeConditions: Boolean) {
+    /**
+     * Updates the button text shown at the bottom of the screen,
+     * depending on whether the user is expected to accept terms.
+     */
+    fun updateButtonTextState() {
         termsConditionsMutableStateFlow.update {
             it.copy(
-                buttonText = if (isAcknowledgeConditions) {
+                buttonText = if (shouldAcceptTermsParam) {
                     application.getString(StringsIds.acknowledgeAndAgreeToTerms)
                 } else {
                     application.getString(StringsIds.close)
@@ -72,8 +103,27 @@ class TermsConditionsViewModel(
         }
     }
 
-    fun onCloseAcceptButtonClicked(isAcknowledgeConditions: Boolean) {
-        if (isAcknowledgeConditions) {
+    /**
+     * Called when the back button is pressed.
+     *
+     * Navigates to the appropriate screen based on whether terms need to be accepted.
+     */
+    fun onBackClicked() {
+        if (shouldAcceptTermsParam) {
+            navigation.finish()
+        } else {
+            navigation.navigateToSettings()
+        }
+    }
+
+    /**
+     * Called when the close/accept button is clicked.
+     *
+     * - If user must accept terms: saves acceptance to preferences and navigates to onboarding.
+     * - Otherwise, simply returns to the settings screen.
+     */
+    fun onCloseAcceptButtonClicked() {
+        if (shouldAcceptTermsParam) {
             scope.launch {
                 createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
                 navigation.navigateToPlayerList()
@@ -86,6 +136,10 @@ class TermsConditionsViewModel(
         }
     }
 
+    /**
+     * Called when the user taps the developer support email link.
+     * Navigates to the user's email client with pre-filled developer email.
+     */
     fun onDevEmailClicked() {
         navigation.navigateToDevEmail(email = application.getString(StringsIds.devEmail))
     }

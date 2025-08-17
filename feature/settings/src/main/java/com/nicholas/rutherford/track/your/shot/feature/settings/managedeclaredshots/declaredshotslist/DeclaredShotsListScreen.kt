@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,13 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,71 +28,87 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Composable screen that displays a list of declared shots.
+ * If no shots exist, it shows an empty state with an option to add a new shot.
+ *
+ * @param declaredShotsListScreenParams Parameters including state and callbacks for handling shot interactions.
+ */
 @Composable
 fun DeclaredShotsListScreen(declaredShotsListScreenParams: DeclaredShotsListScreenParams) {
-    val isDeclaredShotListEmpty = declaredShotsListScreenParams.state.declaredShotsList.isEmpty()
+    BackHandler(enabled = true) { declaredShotsListScreenParams.onToolbarMenuClicked.invoke() }
 
-    Content(
-        ui = {
-            if (!isDeclaredShotListEmpty) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize().padding(
-                        start = Padding.sixteen,
-                        end = Padding.sixteen,
-                        bottom = Padding.sixteen
-                    )
-                ) {
-                    items(declaredShotsListScreenParams.state.declaredShotsList) { declaredShot ->
-                        DeclaredShotItem(
-                            declaredShot = declaredShot,
-                            onDeclaredShotClicked = declaredShotsListScreenParams.onDeclaredShotClicked
-                        )
-                    }
-                }
-            } else {
-                DeclaredShotListEmptyState()
-            }
-        },
-        appBar = AppBar(
-            toolbarTitle = stringResource(id = StringsIds.manageDeclaredShots),
-            shouldShowMiddleContentAppBar = false,
-            shouldShowSecondaryButton = true,
-            onIconButtonClicked = { declaredShotsListScreenParams.onToolbarMenuClicked.invoke() },
-            onSecondaryIconButtonClicked = { declaredShotsListScreenParams.onAddDeclaredShotClicked.invoke() }
-        ),
-        secondaryImageVector = Icons.Filled.Add,
-        secondaryIconTint = AppColors.White
-    )
+    if (declaredShotsListScreenParams.state.declaredShotsList.isNotEmpty()) {
+        DeclaredShotListItems(declaredShotsListScreenParams = declaredShotsListScreenParams)
+    } else {
+        DeclaredShotListEmptyState()
+    }
 }
 
+/**
+ * Displays a LazyColumn of declared shot items.
+ *
+ * @param declaredShotsListScreenParams Parameters including state and click callbacks.
+ */
 @Composable
-private fun DeclaredShotItem(declaredShot: DeclaredShot, onDeclaredShotClicked: (id: Int) -> Unit) {
+private fun DeclaredShotListItems(declaredShotsListScreenParams: DeclaredShotsListScreenParams) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize().padding(
+            start = Padding.sixteen,
+            end = Padding.sixteen,
+            bottom = Padding.sixteen
+        )
+    ) {
+        items(declaredShotsListScreenParams.state.declaredShotsList) { declaredShot ->
+            DeclaredShotItem(
+                declaredShot = declaredShot,
+                onDeclaredShotClicked = declaredShotsListScreenParams.onDeclaredShotClicked
+            )
+        }
+    }
+}
+
+/**
+ * Represents a single declared shot item within the list.
+ *
+ * @param declaredShot The declared shot to display.
+ * @param onDeclaredShotClicked Callback invoked when the shot is clicked, passing the shot title.
+ */
+@Composable
+private fun DeclaredShotItem(declaredShot: DeclaredShot, onDeclaredShotClicked: (title: String) -> Unit) {
     Card(
         modifier = Modifier
             .background(AppColors.White)
             .fillMaxWidth()
             .padding(top = Padding.eight, bottom = Padding.eight),
-        elevation = 2.dp
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = AppColors.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
             BaseRow(
                 title = declaredShot.title,
                 titleStyle = TextStyles.bodyBold,
-                onClicked = { onDeclaredShotClicked.invoke(declaredShot.id) },
+                onClicked = { onDeclaredShotClicked.invoke(declaredShot.title) },
                 imageVector = Icons.Filled.ChevronRight
             )
         }
     }
 }
 
+/**
+ * Displays an empty state when no declared shots exist.
+ * Includes an illustration, description, and a button to add a new shot.
+ */
 @Composable
 private fun DeclaredShotListEmptyState() {
     Box(
@@ -105,7 +123,7 @@ private fun DeclaredShotListEmptyState() {
             modifier = Modifier.padding(16.dp)
         ) {
             Image(
-                painter = painterResource(id = com.nicholas.rutherford.track.your.shot.base.resources.R.drawable.ic_basketball_player_empty_state),
+                painter = painterResource(id = R.drawable.ic_basketball_player_empty_state),
                 contentDescription = null,
                 modifier = Modifier.size(120.dp)
             )

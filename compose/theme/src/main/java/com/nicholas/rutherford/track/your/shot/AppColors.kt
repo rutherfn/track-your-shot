@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.your.shot
 import androidx.compose.ui.graphics.Color
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Defined colors [Color] for Theming */
 
 object AppColors {
@@ -12,5 +14,6 @@ object AppColors {
     val Orange = Color(0xFFFB5C1C)
     val OrangeVariant = Color(0xFFFB5C1A)
     val Red = Color(0xFFC00000)
+    val OffWhite = Color(0xFFFAFAFA)
     val White = Color(0xFFFFFFFF)
 }

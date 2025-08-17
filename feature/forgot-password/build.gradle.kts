@@ -1,11 +1,16 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
     id(BuildIds.kover)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
+    namespace = "com.nicholas.rutherford.track.your.shot.feature.forgot.password"
+
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
@@ -13,6 +18,7 @@ android {
         compose = ComposeData.Enabled.value
     }
 
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
     }
@@ -24,9 +30,12 @@ android {
 
     defaultConfig {
         minSdk = ConfigurationData.minSdk
-        targetSdk = ConfigurationData.targetSdk
 
         testInstrumentationRunner = ConfigurationData.testInstrumentationRunner
+    }
+
+    testOptions {
+        targetSdk = ConfigurationData.targetSdk
     }
 
     buildTypes {
@@ -56,35 +65,37 @@ android {
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = KotlinOptions.jvmTarget
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(KotlinOptions.jvmTarget))
         }
     }
 
     tasks.withType<Test> {
         useJUnitPlatform()
     }
-
-    tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
 dependencies {
     api(project(path = ":base-resources"))
+    api(project(path = ":base:vm"))
     api(project(path = ":compose:components"))
     api(project(path = ":firebase:util"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
 
-    implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.viewModel)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.ui.tooling.preview)
 
-    testImplementation(Dependencies.Coroutine.test)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    testImplementation(Dependencies.Junit.Jupiter.api)
-    testImplementation(Dependencies.Junit.Jupiter.params)
-    testImplementation(Dependencies.Junit.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
 
-    testImplementation(Dependencies.Mockk.core)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.android.junit5)
 
-    testRuntimeOnly(Dependencies.Junit.Jupiter.engine)
+    testImplementation(libs.mockk)
+
+    testRuntimeOnly(libs.junit.jupiter.engine)
 }

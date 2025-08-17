@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,38 +14,49 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Entry point for the Terms & Conditions screen.
+ *
+ * @param params Container class holding all required state and callbacks.
+ */
 @Composable
 fun TermsConditionsScreen(params: TermsConditionsParams) {
-    LaunchedEffect(Unit) { params.updateButtonTextState.invoke() }
-
-    Content(
-        ui = {
-            TermsConditionsContent(params = params)
-        }
-    )
+    TermsConditionsContent(params = params)
 }
 
+/**
+ * Main content layout for displaying the Terms & Conditions screen.
+ *
+ * This composable includes:
+ * - A list of information sections (titles and descriptions).
+ * - A persistent bottom button (either "Acknowledge" or "Close").
+ * - A clickable email for contacting the developer.
+ *
+ * @param params [TermsConditionsParams] containing UI state and navigation callbacks.
+ */
 @Composable
 fun TermsConditionsContent(params: TermsConditionsParams) {
+    BackHandler(enabled = true) { params.onBackClicked.invoke() }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -73,7 +86,8 @@ fun TermsConditionsContent(params: TermsConditionsParams) {
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(Padding.sixteen)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor)
         ) {
             Text(
                 text = params.state.buttonText
@@ -82,6 +96,11 @@ fun TermsConditionsContent(params: TermsConditionsParams) {
     }
 }
 
+/**
+ * Renders a single section of the terms and conditions.
+ *
+ * @param info A [TermsConditionInfo] containing the title and description.
+ */
 @Composable
 fun TermsConditionsItem(info: TermsConditionInfo) {
     Spacer(modifier = Modifier.height(Padding.sixteen))
@@ -103,14 +122,23 @@ fun TermsConditionsItem(info: TermsConditionInfo) {
     Spacer(modifier = Modifier.height(Padding.twelve))
 }
 
+/**
+ * Renders the footer section of the terms and conditions.
+ *
+ * This includes:
+ * - A clickable developer email address.
+ * - A note indicating when the document was last updated.
+ *
+ * @param params [TermsConditionsParams] for handling click actions.
+ */
 @Composable
 fun TermsConditionFooterItem(params: TermsConditionsParams) {
     Spacer(modifier = Modifier.height(Padding.eight))
 
-    ClickableText(
-        text = AnnotatedString(stringResource(id = StringsIds.devEmail)),
+    Text(
+        text = stringResource(id = StringsIds.devEmail),
         style = TextStyles.hyperLink.copy(color = Color.Blue),
-        onClick = { params.onDevEmailClicked.invoke() }
+        modifier = Modifier.clickable { params.onDevEmailClicked.invoke() }
     )
 
     Spacer(modifier = Modifier.height(Padding.eight))
@@ -121,13 +149,16 @@ fun TermsConditionFooterItem(params: TermsConditionsParams) {
     )
 }
 
+/**
+ * Preview of the TermsConditionsScreen with mock content.
+ */
 @Preview
 @Composable
 fun TermsConditionsScreenPreview() {
     Column(modifier = Modifier.background(Color.White)) {
         TermsConditionsScreen(
             params = TermsConditionsParams(
-                updateButtonTextState = {},
+                onBackClicked = {},
                 onCloseAcceptButtonClicked = {},
                 onDevEmailClicked = {},
                 state = TermsConditionsState(
@@ -137,8 +168,7 @@ fun TermsConditionsScreenPreview() {
                             description = stringResource(StringsIds.termsConditionsDescription)
                         )
                     )
-                ),
-                isAcknowledgeConditions = false
+                )
             )
         )
     }

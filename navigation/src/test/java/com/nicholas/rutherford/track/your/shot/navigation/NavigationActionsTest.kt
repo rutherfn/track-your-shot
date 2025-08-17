@@ -1,6 +1,10 @@
 package com.nicholas.rutherford.track.your.shot.navigation
 
 import androidx.navigation.NavOptions
+import com.nicholas.rutherford.track.your.shot.helper.extensions.UriEncoder
+import io.mockk.every
+import io.mockk.mockkObject
+import io.mockk.unmockkObject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -8,8 +12,8 @@ import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions as A
 
 class NavigationActionsTest {
 
-    val testEmail = "testemail@yahoo.com"
-    val testUsername = "testUsername112"
+    private val testEmail = "testemail@yahoo.com"
+    private val testUsername = "testUsername112"
 
     @Nested
     inner class NavigationActions {
@@ -34,11 +38,13 @@ class NavigationActionsTest {
             @Test
             fun termsConditions() {
                 Assertions.assertEquals(
-                    Actions.SplashScreen.termsConditions(isAcknowledgeConditions = true).destination,
-                    NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = true)
+                    Actions.SplashScreen.termsConditions(shouldAcceptTerms = true).destination,
+                    NavigationDestinationsWithParams.buildTermsConditionsDestination(
+                        shouldAcceptTerms = true
+                    )
                 )
                 Assertions.assertEquals(
-                    Actions.SplashScreen.termsConditions(isAcknowledgeConditions = true).navOptions,
+                    Actions.SplashScreen.termsConditions(shouldAcceptTerms = true).navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
                         .setLaunchSingleTop(true)
@@ -62,22 +68,39 @@ class NavigationActionsTest {
 
             @Test
             fun authentication() {
+                mockkObject(UriEncoder)
+
+                every { UriEncoder.encode(any()) } answers { firstArg() }
+
                 Assertions.assertEquals(
-                    Actions.SplashScreen.authentication(email = testEmail, username = testUsername).destination,
-                    NavigationDestinationsWithParams.authenticationWithParams(username = testUsername, email = testEmail)
+                    Actions.SplashScreen.authentication(
+                        email = testEmail,
+                        username = testUsername
+                    ).destination,
+                    NavigationDestinationsWithParams.buildAuthenticationDestination(
+                        username = testUsername,
+                        email = testEmail
+                    )
                 )
                 Assertions.assertEquals(
-                    Actions.SplashScreen.authentication(email = testEmail, username = testUsername).navOptions,
+                    Actions.SplashScreen.authentication(
+                        email = testEmail,
+                        username = testUsername
+                    ).navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
                         .build()
                 )
+
+                unmockkObject(UriEncoder)
             }
         }
 
-        @Nested inner class LoginScreen {
+        @Nested
+        inner class LoginScreen {
 
-            @Test fun playersList() {
+            @Test
+            fun playersList() {
                 Assertions.assertEquals(
                     Actions.LoginScreen.playersList().destination,
                     NavigationDestinations.PLAYERS_LIST_SCREEN
@@ -91,7 +114,8 @@ class NavigationActionsTest {
                 )
             }
 
-            @Test fun createAccount() {
+            @Test
+            fun createAccount() {
                 Assertions.assertEquals(
                     Actions.LoginScreen.createAccount().destination,
                     NavigationDestinations.CREATE_ACCOUNT_SCREEN
@@ -103,7 +127,8 @@ class NavigationActionsTest {
                 )
             }
 
-            @Test fun forgot() {
+            @Test
+            fun forgot() {
                 Assertions.assertEquals(
                     Actions.LoginScreen.forgotPassword().destination,
                     NavigationDestinations.FORGOT_PASSWORD_SCREEN
@@ -121,35 +146,30 @@ class NavigationActionsTest {
 
             @Test
             fun authentication() {
+                mockkObject(UriEncoder)
+                every { UriEncoder.encode(any()) } answers { firstArg() }
+
                 Assertions.assertEquals(
-                    Actions.CreateAccountScreen.authentication(email = testEmail, username = testUsername).destination,
-                    NavigationDestinationsWithParams.authenticationWithParams(username = testUsername, email = testEmail)
+                    Actions.CreateAccountScreen.authentication(
+                        email = testEmail,
+                        username = testUsername
+                    ).destination,
+                    NavigationDestinationsWithParams.authenticationWithParams(
+                        username = testUsername,
+                        email = testEmail
+                    )
                 )
                 Assertions.assertEquals(
-                    Actions.CreateAccountScreen.authentication(email = testEmail, username = testUsername).navOptions,
+                    Actions.CreateAccountScreen.authentication(
+                        email = testEmail,
+                        username = testUsername
+                    ).navOptions,
                     NavOptions.Builder()
                         .setPopUpTo(0, true)
                         .build()
                 )
-            }
-        }
 
-        @Nested
-        inner class AuthenticationScreen {
-
-            @Test
-            fun termsConditions() {
-                Assertions.assertEquals(
-                    Actions.AuthenticationScreen.termsConditions(isAcknowledgeConditions = true).destination,
-                    NavigationDestinationsWithParams.termsConditionsWithParams(isAcknowledgeConditions = true)
-                )
-                Assertions.assertEquals(
-                    Actions.AuthenticationScreen.termsConditions(isAcknowledgeConditions = true).navOptions,
-                    NavOptions.Builder()
-                        .setPopUpTo(0, true)
-                        .setLaunchSingleTop(true)
-                        .build()
-                )
+                unmockkObject(UriEncoder)
             }
         }
 
@@ -191,18 +211,6 @@ class NavigationActionsTest {
         inner class PlayersList {
 
             @Test
-            fun createEditPlayer() {
-                Assertions.assertEquals(
-                    Actions.PlayersList.createEditPlayer().destination,
-                    NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN
-                )
-                Assertions.assertEquals(
-                    Actions.PlayersList.createEditPlayer().navOptions,
-                    NavOptions.Builder().build()
-                )
-            }
-
-            @Test
             fun createEditPlayerWithParams() {
                 val firstName = "firstName"
                 val lastName = "lastName"
@@ -212,7 +220,7 @@ class NavigationActionsTest {
                         firstName = firstName,
                         lastName = lastName
                     ).destination,
-                    NavigationDestinationsWithParams.createEditPlayerWithParams(firstName = firstName, lastName = lastName)
+                    "createEditPlayerScreen?firstName=firstName&lastName=lastName"
                 )
                 Assertions.assertEquals(
                     Actions.PlayersList.createEditPlayerWithParams(
@@ -227,75 +235,18 @@ class NavigationActionsTest {
             fun shotList() {
                 val shouldShowAllPlayerShots = true
 
-                val result = Actions.PlayersList.shotList(shouldShowAllPlayersShots = shouldShowAllPlayerShots)
+                val result =
+                    Actions.PlayersList.shotList(shouldShowAllPlayersShots = shouldShowAllPlayerShots)
 
                 Assertions.assertEquals(
                     result.destination,
-                    NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots = shouldShowAllPlayerShots)
+                    NavigationDestinationsWithParams.shotsListScreenWithParams(
+                        shouldShowAllPlayersShots = shouldShowAllPlayerShots
+                    )
                 )
                 Assertions.assertEquals(
                     result.navOptions,
                     NavOptions.Builder().build()
-                )
-            }
-        }
-
-        @Nested
-        inner class CreateEditPlayer {
-
-            @Test
-            fun selectShot() {
-                val isExistingPlayer = false
-                val playerId = 2
-                Assertions.assertEquals(
-                    Actions.CreateEditPlayer.selectShot(isExistingPlayer = isExistingPlayer, playerId = playerId).destination,
-                    NavigationDestinationsWithParams.selectShotWithParams(isExistingPlayer = isExistingPlayer, playerId = playerId)
-                )
-                Assertions.assertEquals(
-                    Actions.CreateEditPlayer.selectShot(isExistingPlayer = isExistingPlayer, playerId = playerId).navOptions,
-                    NavOptions.Builder().build()
-                )
-            }
-        }
-
-        @Nested
-        inner class SelectShot {
-
-            @Test
-            fun logShot() {
-                val isExistingPlayer = false
-                val playerId = 2
-                val shotType = 4
-                val shotId = 2
-                val viewCurrentExistingShot = false
-                val viewCurrentPendingShot = false
-                val fromShotList = false
-
-                Assertions.assertEquals(
-                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotType = shotType, shotId = shotId, viewCurrentExistingShot = viewCurrentExistingShot, viewCurrentPendingShot = viewCurrentPendingShot, fromShotList = fromShotList).destination,
-                    NavigationDestinationsWithParams.logShotWithParams(isExistingPlayer = isExistingPlayer, playerId = playerId, shotType = shotType, shotId = shotId, viewCurrentExistingShot = viewCurrentExistingShot, viewCurrentPendingShot = viewCurrentPendingShot, fromShotList = fromShotList)
-                )
-                Assertions.assertEquals(
-                    Actions.SelectShot.logShot(isExistingPlayer = isExistingPlayer, playerId = playerId, shotType = shotType, shotId = shotId, viewCurrentExistingShot = viewCurrentExistingShot, viewCurrentPendingShot = viewCurrentExistingShot, fromShotList = fromShotList).navOptions,
-                    NavOptions.Builder().build()
-                )
-            }
-        }
-
-        @Nested
-        inner class LogShot {
-
-            @Test
-            fun createEditPlayer() {
-                Assertions.assertEquals(
-                    Actions.LogShot.createEditPlayer().destination,
-                    NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN
-                )
-                Assertions.assertEquals(
-                    Actions.LogShot.createEditPlayer().navOptions,
-                    NavOptions.Builder()
-                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
-                        .build()
                 )
             }
         }
@@ -323,10 +274,21 @@ class NavigationActionsTest {
 
             @Test
             fun createEditDeclaredShot() {
-                val result = Actions.DeclaredShotsList.createEditDeclaredShot()
+                mockkObject(UriEncoder)
 
-                Assertions.assertEquals(result.destination, "createEditDeclaredShotsScreen")
+                every { UriEncoder.encode(any()) } answers { firstArg() }
+
+                val shotName = "shotName"
+
+                val result = Actions.DeclaredShotsList.createEditDeclaredShot(shotName = shotName)
+
+                Assertions.assertEquals(
+                    result.destination,
+                    "createEditDeclaredShotsScreen?shotName=shotName"
+                )
                 Assertions.assertEquals(result.navOptions, NavOptions.Builder().build())
+
+                unmockkObject(UriEncoder)
             }
         }
 
@@ -335,6 +297,9 @@ class NavigationActionsTest {
 
             @Test
             fun accountInfo() {
+                mockkObject(UriEncoder)
+                every { UriEncoder.encode(any()) } answers { firstArg() }
+
                 val username = "username"
                 val email = "email"
 
@@ -342,12 +307,17 @@ class NavigationActionsTest {
 
                 Assertions.assertEquals(
                     result.destination,
-                    NavigationDestinationsWithParams.accountInfoWithParams(username = username, email = email)
+                    NavigationDestinationsWithParams.accountInfoWithParams(
+                        username = username,
+                        email = email
+                    )
                 )
                 Assertions.assertEquals(
                     result.navOptions,
                     NavOptions.Builder().build()
                 )
+
+                unmockkObject(UriEncoder)
             }
 
             @Test
@@ -369,40 +339,6 @@ class NavigationActionsTest {
                 Assertions.assertEquals(
                     Actions.Settings.permissionEducation().destination,
                     NavigationDestinations.PERMISSION_EDUCATION_SCREEN
-                )
-                Assertions.assertEquals(
-                    Actions.Settings.permissionEducation().navOptions,
-                    NavOptions.Builder()
-                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
-                        .build()
-                )
-            }
-
-            @Test
-            fun onboardingEducation() {
-                Assertions.assertEquals(
-                    Actions.Settings.onboardingEducation().destination,
-                    NavigationDestinations.ONBOARDING_EDUCATION_SCREEN
-                )
-                Assertions.assertEquals(
-                    Actions.Settings.onboardingEducation().navOptions,
-                    NavOptions.Builder()
-                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
-                        .build()
-                )
-            }
-
-            @Test
-            fun termsConditions() {
-                Assertions.assertEquals(
-                    Actions.Settings.termsConditions(isAcknowledgeConditions = false).destination,
-                    "termsConditionsScreen/false"
-                )
-                Assertions.assertEquals(
-                    Actions.Settings.termsConditions(isAcknowledgeConditions = false).navOptions,
-                    NavOptions.Builder()
-                        .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
-                        .build()
                 )
             }
         }

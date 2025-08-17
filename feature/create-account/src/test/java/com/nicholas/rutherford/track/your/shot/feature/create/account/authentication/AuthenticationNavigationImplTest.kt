@@ -60,7 +60,7 @@ class AuthenticationNavigationImplTest {
         verify { navigator.navigate(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationActions.AuthenticationScreen.termsConditions(isAcknowledgeConditions = true)
+        val expectedAction = NavigationActions.AuthenticationScreen.termsConditions(shouldAcceptTerms = true)
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }

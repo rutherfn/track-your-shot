@@ -10,97 +10,104 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Help
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
-import com.nicholas.rutherford.track.your.shot.compose.components.SearchTextField
+import com.nicholas.rutherford.track.your.shot.compose.components.EnhancedSearchTextField
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
-import java.util.Locale
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Composable screen used to select a declared shot from a list, optionally filtered by a search query.
+ *
+ * Displays a search field, a list of declared shots, or an empty state if no results are found.
+ * Also handles system back button behavior and UI interactions via [SelectShotParams].
+ *
+ * @param selectShotParams All state and callback parameters required to drive the Select Shot screen.
+ */
 @Composable
 fun SelectShotScreen(selectShotParams: SelectShotParams) {
     var query by remember { mutableStateOf("") }
 
     BackHandler(true) {
-        selectShotParams.onBackButtonClicked.invoke()
+        selectShotParams.onBackButtonClicked()
     }
 
-    LaunchedEffect(Unit) {
-        selectShotParams.updateIsExistingPlayerAndPlayerId.invoke()
-    }
-
-    Content(
-        ui = {
-            SearchTextField(
-                value = query,
-                onValueChange = { newSearchQuery ->
-                    query = newSearchQuery
-                    selectShotParams.onSearchValueChanged.invoke(newSearchQuery)
-                },
-                onCancelIconClicked = {
-                    selectShotParams.onCancelIconClicked.invoke(query)
-                    query = ""
-                },
-                placeholderValue = stringResource(id = StringsIds.findShotsByName)
-            )
-            if (selectShotParams.state.declaredShotList.isNotEmpty()) {
-                LazyColumn {
-                    items(selectShotParams.state.declaredShotList) { declaredShot ->
-                        DeclaredShotItem(
-                            declaredShot = declaredShot,
-                            onItemClicked = { type ->
-                                selectShotParams.onItemClicked.invoke(type)
-                            }
-                        )
-                    }
-                }
-            } else {
-                SelectShotEmptyState()
-            }
-        },
-        appBar = AppBar(
-            toolbarTitle = stringResource(id = StringsIds.selectAShot),
-            shouldShowMiddleContentAppBar = false,
-            shouldIncludeSpaceAfterDeclaration = false,
-            shouldShowSecondaryButton = true,
-            onIconButtonClicked = {
-                selectShotParams.onBackButtonClicked.invoke()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppColors.White)
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+    ) {
+        EnhancedSearchTextField(
+            value = query,
+            onValueChange = { newSearchQuery ->
+                query = newSearchQuery
+                selectShotParams.onSearchValueChanged(newSearchQuery)
             },
-            onSecondaryIconButtonClicked = { selectShotParams.onHelpIconClicked.invoke() }
-        ),
-        secondaryImageVector = Icons.Filled.Help
-    )
+            onClearClick = {
+                selectShotParams.onCancelIconClicked(query)
+                query = ""
+            },
+            placeholderValue = stringResource(id = StringsIds.findShotsByName)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        if (selectShotParams.state.declaredShotList.isNotEmpty()) {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                items(selectShotParams.state.declaredShotList) { declaredShot ->
+                    DeclaredShotItem(
+                        declaredShot = declaredShot,
+                        onItemClicked = selectShotParams.onItemClicked
+                    )
+                }
+            }
+        } else {
+            SelectShotEmptyState(
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
 }
 
+/**
+ * Composable representing a single declared shot item in the list.
+ *
+ * Provides a clickable surface showing the shot's title. When expanded,
+ * it shows the shot's category and description. Users can toggle between
+ * collapsed and expanded states via clickable "Show more"/"Show less" text.
+ *
+ * @param declaredShot The declared shot item to display.
+ * @param onItemClicked Callback triggered when the card is clicked, passing the shot ID.
+ */
 @Composable
 fun DeclaredShotItem(
     declaredShot: DeclaredShot,
@@ -110,80 +117,79 @@ fun DeclaredShotItem(
 
     Card(
         modifier = Modifier
-            .background(AppColors.White)
             .fillMaxWidth()
-            .padding(16.dp)
-            .clickable {
-                onItemClicked.invoke(declaredShot.id)
-            },
-        elevation = 2.dp
+            .clickable { onItemClicked(declaredShot.id) },
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = AppColors.White)
     ) {
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = declaredShot.title,
                 style = TextStyles.smallBold,
-                textAlign = TextAlign.Start
+                color = AppColors.Black
             )
 
-            if (!isExpanded) {
-                ClickableText(
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = Color.Blue)) {
-                            append(stringResource(id = StringsIds.showMore))
-                        }
-                    },
-                    onClick = {
-                        isExpanded = !isExpanded
-                    }
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-            } else {
-                Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
+            if (!isExpanded) {
+                Text(
+                    text = stringResource(id = StringsIds.showMore),
+                    style = TextStyles.body.copy(
+                        color = AppColors.Orange,
+                        textDecoration = TextDecoration.Underline
+                    ),
+                    modifier = Modifier
+                        .clickable { isExpanded = true }
+                        .padding(vertical = 4.dp)
+                )
+            } else {
                 Text(
                     text = stringResource(
                         id = R.string.x_shot_category,
-                        declaredShot.shotCategory.replaceFirstChar { char ->
-                            if (char.isLowerCase()) {
-                                char.titlecase(Locale.getDefault())
-                            } else {
-                                char.toString()
-                            }
-                        }
+                        declaredShot.shotCategory.replaceFirstChar { it.uppercaseChar() }
                     ),
                     style = TextStyles.body,
-                    textAlign = TextAlign.Start
+                    color = AppColors.Black.copy(alpha = 0.8f)
                 )
 
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
                     text = declaredShot.description,
                     style = TextStyles.body,
-                    textAlign = TextAlign.Start
+                    color = AppColors.Black.copy(alpha = 0.7f)
                 )
 
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
-                ClickableText(
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = Color.Blue)) {
-                            append(stringResource(id = StringsIds.showLess))
-                        }
-                    },
-                    onClick = {
-                        isExpanded = !isExpanded
-                    }
+                Text(
+                    text = stringResource(id = StringsIds.showLess),
+                    style = TextStyles.body.copy(
+                        color = AppColors.Orange,
+                        textDecoration = TextDecoration.Underline
+                    ),
+                    modifier = Modifier
+                        .clickable { isExpanded = false }
+                        .padding(vertical = 4.dp)
                 )
             }
         }
     }
 }
 
+/**
+ * Composable displayed when there are no declared shots to show.
+ *
+ * Shows a centered image and text explaining that no results were found,
+ * providing feedback to the user in empty or no-match states.
+ *
+ * @param modifier Optional [Modifier] to control layout and size.
+ */
 @Composable
-fun SelectShotEmptyState() {
+fun SelectShotEmptyState(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(AppColors.White),
         contentAlignment = Alignment.Center
@@ -196,22 +202,62 @@ fun SelectShotEmptyState() {
             Image(
                 painter = painterResource(id = R.drawable.ic_basketball_log_shot_empty_state),
                 contentDescription = null,
-                modifier = Modifier.size(120.dp)
+                modifier = Modifier.size(140.dp)
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = stringResource(id = StringsIds.noShotsResultsFound),
                 style = TextStyles.medium,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(vertical = 4.dp)
+                color = AppColors.Black,
+                textAlign = TextAlign.Center
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = stringResource(id = StringsIds.noShotsResultsFoundDescription),
                 style = TextStyles.smallBold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(vertical = 4.dp)
+                color = AppColors.Black.copy(alpha = 0.7f),
+                textAlign = TextAlign.Center
             )
         }
     }
+}
+
+/**
+ * Preview of the SelectShotScreen with sample data to visualize the UI.
+ */
+@Preview(showBackground = true)
+@Composable
+fun SelectShotScreenPreview() {
+    SelectShotScreen(
+        selectShotParams = SelectShotParams(
+            state = SelectShotState(
+                declaredShotList = listOf(
+                    DeclaredShot(
+                        id = 1,
+                        title = "Three Pointer",
+                        shotCategory = "long range",
+                        description = "A shot taken from beyond the three-point line.",
+                        firebaseKey = "firebase"
+                    ),
+                    DeclaredShot(
+                        id = 2,
+                        title = "Free Throw",
+                        shotCategory = "penalty",
+                        description = "An unopposed shot taken from the free throw line.",
+                        firebaseKey = "firebase"
+                    )
+                )
+            ),
+            onBackButtonClicked = {},
+            onSearchValueChanged = {},
+            onCancelIconClicked = {},
+            onItemClicked = {},
+            onHelpIconClicked = {},
+            onnDeclaredShotItemClicked = {}
+        )
+    )
 }

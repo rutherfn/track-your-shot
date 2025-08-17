@@ -11,7 +11,6 @@ repositories {
 }
 
 dependencies {
-    val stdibVersion = "1.9.10"
-
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$stdibVersion")
+    //noinspection GradleDependency
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10")
 }

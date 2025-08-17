@@ -10,10 +10,10 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
-import com.nicholas.rutherford.track.your.shot.firebase.TestCreateAccountFirebaseAuthResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestCreateAccountFirebaseRealtimeDatabaseResult
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestIndividualPlayerReportRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.TestCreateAccountFirebaseAuthResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestCreateAccountFirebaseRealtimeDatabaseResult
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestIndividualPlayerReportRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestPlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk

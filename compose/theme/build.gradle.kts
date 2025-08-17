@@ -1,10 +1,15 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
+    namespace = "com.nicholas.rutherford.track.your.shot.compose.theme"
+
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
@@ -12,6 +17,7 @@ android {
         compose = ComposeData.Enabled.value
     }
 
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
     }
@@ -23,9 +29,12 @@ android {
 
     defaultConfig {
         minSdk = ConfigurationData.minSdk
-        targetSdk = ConfigurationData.targetSdk
 
         testInstrumentationRunner = ConfigurationData.testInstrumentationRunner
+    }
+
+    testOptions {
+        targetSdk = ConfigurationData.targetSdk
     }
 
     buildTypes {
@@ -55,8 +64,8 @@ android {
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = KotlinOptions.jvmTarget
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(KotlinOptions.jvmTarget))
         }
     }
 
@@ -64,16 +73,12 @@ android {
         useJUnitPlatform()
     }
 
-    ktlint {
-        disabledRules.value(mutableListOf("no-wildcard-imports"))
-    }
-
     tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
 dependencies {
-    implementation(Dependencies.Accompanist.systemUiController)
+    implementation(libs.accompanist.systemuicontroller)
 
-    implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.ui)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui)
 }

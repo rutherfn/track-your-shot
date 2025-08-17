@@ -25,13 +25,32 @@ import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Implementation of [AccountManager] that handles account creation, login, logout,
+ * and synchronization with Firebase and the local database.
+ *
+ * @param scope Coroutine scope used for launching asynchronous tasks.
+ * @param application Android application context.
+ * @param navigator Navigation controller to manage progress, alerts, and screen navigation.
+ * @param activeUserRepository Repository for active user data.
+ * @param declaredShotRepository Repository for declared shot data.
+ * @param playerRepository Repository for player data.
+ * @param individualPlayerReportRepository Repository for individual player reports.
+ * @param pendingPlayerRepository Repository for pending player data.
+ * @param shotIgnoringRepository Repository for ignored shots.
+ * @param userRepository Repository for user data.
+ * @param readFirebaseUserInfo Firebase helper to read user and player info.
+ * @param existingUserFirebase Firebase helper for login/logout.
+ * @param createSharedPreferences SharedPreferences helper for storing account flags.
+ *
+ * TODO: Come back and write unit tests for this implementation.
+ */
 class AccountManagerImpl(
     private val scope: CoroutineScope,
     private val application: Application,
@@ -48,19 +67,38 @@ class AccountManagerImpl(
     private val createSharedPreferences: CreateSharedPreferences
 ) : AccountManager {
 
-    private val hasLoggedInSuccessfulMutableSharedFlow = MutableSharedFlow<Boolean>(extraBufferCapacity = Channel.UNLIMITED)
-    override val hasLoggedInSuccessfulFlow: Flow<Boolean> = hasLoggedInSuccessfulMutableSharedFlow
-
+    /** Tracks declared shot IDs locally */
     internal var declaredShotIds: List<Int> = emptyList()
 
+    /**
+     * Creates a new active user in the local database.
+     *
+     * @param username The username of the new active user.
+     * @param email The email of the new active user.
+     */
+    override suspend fun createActiveUser(username: String, email: String) {
+        activeUserRepository.createActiveUser(
+            activeUser = ActiveUser(
+                id = Constants.ACTIVE_USER_ID,
+                accountHasBeenCreated = true,
+                username = username,
+                email = email,
+                firebaseAccountInfoKey = ""
+            )
+        )
+    }
+
+    /**
+     * Logs out the current user, clears the local database, resets shared preferences,
+     * and navigates back to the login screen.
+     */
     override fun logout() {
         scope.launch {
             navigator.progress(progressAction = Progress())
 
             existingUserFirebase.logout()
-            createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
-            createSharedPreferences.createHasAuthenticatedAccount(value = false)
-            createSharedPreferences.createIsLoggedIn(value = false)
+            createSharedPreferences.createShouldShowTermsAndConditionsPreference(false)
+            createSharedPreferences.createIsLoggedIn(false)
             clearOutDatabase()
 
             declaredShotIds = emptyList()
@@ -72,6 +110,10 @@ class AccountManagerImpl(
         }
     }
 
+    /**
+     * Logs in a user with [email] and [password], updates the local database
+     * with Firebase account and player data, and navigates to the player list.
+     */
     override fun login(email: String, password: String) {
         navigator.progress(progressAction = Progress())
 
@@ -81,11 +123,14 @@ class AccountManagerImpl(
                 password = password
             ).collectLatest { isSuccessful ->
                 if (isSuccessful) {
-                    createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
+                    createSharedPreferences.createShouldShowTermsAndConditionsPreference(false)
                     readFirebaseUserInfo.getAccountInfoFlow()
                         .collectLatest { accountInfoRealtimeResponse ->
                             accountInfoRealtimeResponse?.let { accountInfo ->
-                                updateActiveUserFromLoggedInUser(email = accountInfo.email, username = accountInfo.userName)
+                                updateActiveUserFromLoggedInUser(
+                                    email = accountInfo.email,
+                                    username = accountInfo.userName
+                                )
                             } ?: disableProgressAndShowUnableToLoginAlert(isLoggedIn = true)
                         }
                 } else {
@@ -95,6 +140,7 @@ class AccountManagerImpl(
         }
     }
 
+    /** Checks if the app should log out the user on launch */
     override fun checkIfWeNeedToLogoutOnLaunch() {
         if (existingUserFirebase.isLoggedIn()) {
             scope.launch {
@@ -104,6 +150,7 @@ class AccountManagerImpl(
         }
     }
 
+    /** Clears all relevant tables in the local database */
     internal suspend fun clearOutDatabase() {
         activeUserRepository.deleteActiveUser()
         playerRepository.deleteAllPlayers()
@@ -112,15 +159,10 @@ class AccountManagerImpl(
         individualPlayerReportRepository.deleteAllReports()
         declaredShotRepository.deleteAllDeclaredShots()
         shotIgnoringRepository.deleteAllShotsIgnoring()
-    }
-
-    override fun deleteAllPendingShotsAndPlayers() {
-        deleteAllPendingPlayers()
         deleteAllPendingShotsFromPlayers()
     }
 
-    internal fun deleteAllPendingPlayers() = scope.launch { pendingPlayerRepository.deleteAllPendingPlayers() }
-
+    /** Removes pending shots from all players in the database */
     internal fun deleteAllPendingShotsFromPlayers() {
         scope.launch {
             playerRepository.fetchAllPlayers().forEach { player ->
@@ -141,6 +183,7 @@ class AccountManagerImpl(
         }
     }
 
+    /** Checks for and deletes active user and players if they exist */
     internal suspend fun checkForActiveUserAndPlayers() {
         if (activeUserRepository.fetchActiveUser() != null) {
             activeUserRepository.deleteActiveUser()
@@ -150,6 +193,12 @@ class AccountManagerImpl(
         }
     }
 
+    /**
+     * Updates the active user in the local database from Firebase login info.
+     *
+     * @param email The logged-in user's email.
+     * @param username The logged-in user's username.
+     */
     internal suspend fun updateActiveUserFromLoggedInUser(email: String, username: String) {
         readFirebaseUserInfo.getAccountInfoKeyFlow().collectLatest { key ->
             key?.let { firebaseAccountInfoKey ->
@@ -170,6 +219,7 @@ class AccountManagerImpl(
         }
     }
 
+    /** Collects player info list from Firebase and updates the local database */
     internal suspend fun collectPlayerInfoList() {
         readFirebaseUserInfo.getPlayerInfoList()
             .collectLatest { playerInfoRealtimeWithKeyResponseList ->
@@ -200,7 +250,6 @@ class AccountManagerImpl(
                             )
                         }
 
-                    createSharedPreferences.createShouldUpdateLoggedInPlayerListPreference(value = true)
                     playerRepository.createListOfPlayers(playerList = playerList)
                     collectReportList()
                 } else {
@@ -209,6 +258,7 @@ class AccountManagerImpl(
             }
     }
 
+    /** Collects individual player reports from Firebase and updates local database */
     internal suspend fun collectReportList() {
         readFirebaseUserInfo.getReportList()
             .collectLatest { individualPlayerReportWithKeyRealtimeResponse ->
@@ -231,6 +281,7 @@ class AccountManagerImpl(
             }
     }
 
+    /** Collects deleted shot IDs from Firebase and updates local database */
     internal suspend fun collectDeletedShotIds() {
         readFirebaseUserInfo.getDeletedShotIdsFlow()
             .collectLatest { shotIds ->
@@ -246,6 +297,7 @@ class AccountManagerImpl(
             }
     }
 
+    /** Collects declared shots from Firebase and updates local database */
     internal suspend fun collectDeclaredShots() {
         readFirebaseUserInfo.getCreatedDeclaredShotsFlow()
             .collectLatest { declaredShots ->
@@ -262,11 +314,8 @@ class AccountManagerImpl(
                         )
                     }
                 }
-                createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
                 declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = declaredShotIds)
-                hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = true)
 
-                createSharedPreferences.createHasAuthenticatedAccount(value = true)
                 createSharedPreferences.createIsLoggedIn(value = true)
 
                 declaredShotIds = emptyList()
@@ -274,11 +323,17 @@ class AccountManagerImpl(
             }
     }
 
+    /** Disables progress indicator and navigates to players list */
     private fun disableProcessAndNavigateToPlayersList() {
         navigator.progress(progressAction = null)
         navigator.navigate(navigationAction = NavigationActions.DrawerScreen.playersList())
     }
 
+    /**
+     * Disables progress and shows an alert indicating that login failed.
+     *
+     * @param isLoggedIn Whether the user was partially logged in.
+     */
     suspend fun disableProgressAndShowUnableToLoginAlert(isLoggedIn: Boolean = false) {
         if (isLoggedIn) {
             existingUserFirebase.logout()
@@ -287,9 +342,9 @@ class AccountManagerImpl(
         navigator.progress(progressAction = null)
         navigator.alert(alertAction = null)
         navigator.alert(alertAction = unableToLoginToAccountAlert())
-        hasLoggedInSuccessfulMutableSharedFlow.tryEmit(value = false)
     }
 
+    /** Creates an alert for being unable to login to account */
     internal fun unableToLoginToAccountAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.unableToLoginToAccount),

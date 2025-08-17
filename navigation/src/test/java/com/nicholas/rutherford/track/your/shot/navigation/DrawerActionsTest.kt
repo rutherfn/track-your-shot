@@ -1,9 +1,9 @@
 package com.nicholas.rutherford.track.your.shot.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Analytics
 import androidx.compose.material.icons.filled.Compare
-import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
@@ -180,7 +180,7 @@ class DrawerActionsTest {
         )
         Assertions.assertEquals(
             LogoutAction.imageVector,
-            Icons.Filled.Logout
+            Icons.AutoMirrored.Filled.Logout
         )
         Assertions.assertEquals(
             LogoutAction.route,

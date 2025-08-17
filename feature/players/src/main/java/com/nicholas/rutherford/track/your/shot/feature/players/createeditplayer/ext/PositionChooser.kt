@@ -1,40 +1,49 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import android.content.res.Configuration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.TrackYourShotTheme
 import com.nicholas.rutherford.track.your.shot.base.resources.R
-import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
-import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
-import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
-import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
+ * A dropdown menu composable allowing the user to select a basketball player position.
+ *
+ * Displays a read-only [OutlinedTextField] that, when clicked, expands a dropdown
+ * menu with predefined player position options. Selecting an option updates the
+ * displayed value and invokes a callback to notify the parent of the new selection.
+ *
+ * @param onPlayerPositionStringChanged Callback invoked when the user selects a new position.
+ *        Receives the selected position as a [String].
+ */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PositionChooser(createEditPlayerParams: CreateEditPlayerParams) {
-    var selectedOption by remember { mutableStateOf(value = "") }
-    var isDropdownExpanded by remember { mutableStateOf(value = false) }
-
+fun PositionChooser(onPlayerPositionStringChanged: (newPosition: String) -> Unit) {
     val pointGuard = stringResource(id = R.string.point_guard)
     val shootingGuard = stringResource(id = R.string.shooting_guard)
     val smallForward = stringResource(id = R.string.small_forward)
@@ -43,63 +52,68 @@ fun PositionChooser(createEditPlayerParams: CreateEditPlayerParams) {
 
     val options = listOf(pointGuard, shootingGuard, smallForward, powerForward, center)
 
-    selectedOption = createEditPlayerParams.state.playerPositionString.ifEmpty { pointGuard }
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(pointGuard) }
 
-    Box {
-        Spacer(modifier = Modifier.height(Padding.sixteen))
-        DropdownMenu(
-            expanded = isDropdownExpanded,
-            onDismissRequest = { isDropdownExpanded = false }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = Modifier
+    ) {
+        OutlinedTextField(
+            value = selectedText,
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(text = stringResource(id = R.string.position)) },
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+            },
+            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryEditable).fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = AppColors.Orange,
+                unfocusedBorderColor = AppColors.Black,
+                cursorColor = AppColors.Orange,
+                focusedLabelColor = AppColors.Orange,
+                unfocusedLabelColor = AppColors.Black
+            )
+        )
+
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.background(color = AppColors.White)
         ) {
-            options.forEachIndexed { index, option ->
+            options.forEach { option ->
                 DropdownMenuItem(
+                    text = { Text(text = option) },
                     onClick = {
-                        selectedOption = option
-                        val newPosition = when (index) {
-                            PlayerPositions.PointGuard.value -> { pointGuard }
-                            PlayerPositions.ShootingGuard.value -> { shootingGuard }
-                            PlayerPositions.SmallForward.value -> { smallForward }
-                            PlayerPositions.PowerForward.value -> { powerForward }
-                            else -> { center }
-                        }
-                        createEditPlayerParams.onPlayerPositionStringChanged(newPosition)
-                        isDropdownExpanded = false
+                        onPlayerPositionStringChanged(option)
+                        selectedText = option
+                        expanded = false
                     }
-                ) {
-                    Text(
-                        text = option,
-                        style = TextStyles.body
-                    )
-                }
+                )
             }
         }
+    }
+}
 
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                text = stringResource(id = R.string.position),
-                modifier = Modifier.padding(start = Padding.four),
-                style = TextStyles.body
+@Preview(
+    name = "Position Chooser",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Composable
+fun PositionChooserPreview() {
+    TrackYourShotTheme {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(PaddingValues(16.dp))
+        ) {
+            PositionChooser(
+                onPlayerPositionStringChanged = { selectedPosition -> }
             )
-            Spacer(modifier = Modifier.height(Padding.eight))
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = selectedOption,
-                    modifier = Modifier
-                        .padding(start = Padding.four)
-                        .clickable { isDropdownExpanded = !isDropdownExpanded },
-                    style = TextStyles.body
-                )
-                Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = "2",
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .size(20.dp)
-                        .clickable { isDropdownExpanded = !isDropdownExpanded }
-                )
-            }
         }
     }
 }

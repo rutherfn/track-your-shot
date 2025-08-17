@@ -5,6 +5,12 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Implementation of [LoginNavigation] using a [Navigator] to perform
+ * navigation via predefined [NavigationActions].
+ */
 class LoginNavigationImpl(private val navigator: Navigator) : LoginNavigation {
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
 

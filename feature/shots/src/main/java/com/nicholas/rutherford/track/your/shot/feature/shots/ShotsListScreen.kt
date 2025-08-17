@@ -9,15 +9,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Help
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,49 +25,39 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toTimestampString
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import java.util.Date
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Displays the main screen for viewing a list of logged basketball shots.
+ * If the shot list is empty, an empty state is shown encouraging users to add shots.
+ *
+ * @param params Contains the state and callback handlers for this screen.
+ */
 @Composable
 fun ShotsListScreen(params: ShotsListScreenParams) {
     val isShotListEmpty = params.state.shotList.isEmpty()
-    val toolbarTitle = if (params.shouldShowAllPlayerShots) {
-        stringResource(id = R.string.shots)
-    } else {
-        stringResource(id = R.string.player_shots)
-    }
 
-    Content(
-        ui = {
-            if (!isShotListEmpty) {
-                ShotsList(params = params)
-            } else {
-                AddShotEmptyState()
-            }
-        },
-        appBar = AppBar(
-            toolbarTitle = toolbarTitle,
-            shouldShowMiddleContentAppBar = params.shouldShowAllPlayerShots,
-            onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
-            onSecondaryIconButtonClicked = {
-                params.onHelpClicked.invoke()
-//                    if (params.shouldShowAllPlayerShots) {
-//                        // todo user should be taken where they can filter there shots screen
-//                    }
-            }
-        ),
-        secondaryImageVector = Icons.Filled.Help,
-        secondaryImageEnabled = true
-    )
+    if (!isShotListEmpty) {
+        ShotsList(params = params)
+    } else {
+        AddShotEmptyState()
+    }
 }
 
+/**
+ * Displays an empty state UI when no shots have been added.
+ * Shows an image and messages encouraging the user to log a new shot.
+ */
 @Composable
 private fun AddShotEmptyState() {
     Box(
@@ -104,15 +94,33 @@ private fun AddShotEmptyState() {
     }
 }
 
+/**
+ * Displays the list of logged shots using a [LazyColumn].
+ *
+ * @param params Contains the list of shots and click callback.
+ */
 @Composable
 private fun ShotsList(params: ShotsListScreenParams) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = AppColors.White)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
         items(params.state.shotList) { shot ->
             ShotItem(shot = shot, onShotItemClicked = params.onShotItemClicked)
         }
     }
 }
 
+/**
+ * Displays a single shot entry in the list with basic information such as
+ * the shot name, the player who took the shot, and the timestamp.
+ *
+ * @param shot The shot data with player info.
+ * @param onShotItemClicked Callback triggered when the item is clicked.
+ */
 @Composable
 private fun ShotItem(
     shot: ShotLoggedWithPlayer,
@@ -120,15 +128,13 @@ private fun ShotItem(
 ) {
     Card(
         modifier = Modifier
-            .background(AppColors.White)
             .fillMaxWidth()
-            .padding(16.dp)
-            .clickable {
-                onShotItemClicked.invoke(shot)
-            },
-        elevation = 2.dp
+            .clickable { onShotItemClicked(shot) },
+        colors = CardDefaults.cardColors(containerColor = AppColors.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        shape = RoundedCornerShape(16.dp)
     ) {
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = shot.shotLogged.shotName,
                 style = TextStyles.bodyBold,
@@ -137,24 +143,75 @@ private fun ShotItem(
                 overflow = TextOverflow.Ellipsis
             )
 
+            Spacer(modifier = Modifier.height(height = 4.dp))
+
             Text(
                 text = stringResource(id = StringsIds.shotTakenByX, shot.playerName),
                 style = TextStyles.bodySmall,
-                modifier = Modifier.padding(top = 8.dp),
                 textAlign = TextAlign.Start,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
 
-            Spacer(modifier = Modifier.width(4.dp))
-
             Text(
-                text = stringResource(id = StringsIds.shotTakenOnX, Date(shot.shotLogged.shotsAttemptedMillisecondsValue).toTimestampString()),
+                text = stringResource(
+                    id = StringsIds.shotTakenOnX,
+                    Date(shot.shotLogged.shotsAttemptedMillisecondsValue).toTimestampString()
+                ),
                 style = TextStyles.bodySmall,
+                modifier = Modifier.padding(top = 4.dp),
                 textAlign = TextAlign.Start,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ShotListScreenEmptyStatePreview() {
+    ShotsListScreen(
+        params = ShotsListScreenParams(
+            state = ShotsListState(shotList = emptyList()),
+            onHelpClicked = {},
+            onToolbarMenuClicked = {},
+            onShotItemClicked = {},
+            shouldShowAllPlayerShots = false
+        )
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ShotListWithItemsPreview() {
+    ShotsListScreen(
+        params = ShotsListScreenParams(
+            state = ShotsListState(
+                shotList = listOf(
+                    ShotLoggedWithPlayer(
+                        shotLogged = ShotLogged(
+                            id = 22,
+                            shotName = "shot name",
+                            shotType = 1,
+                            shotsAttempted = 44,
+                            shotsMade = 4,
+                            shotsMissed = 40,
+                            shotsMadePercentValue = 22.2,
+                            shotsMissedPercentValue = 11.2,
+                            shotsAttemptedMillisecondsValue = 22L,
+                            shotsLoggedMillisecondsValue = 22L,
+                            isPending = false
+                        ),
+                        playerId = 11,
+                        playerName = "player name"
+                    )
+                )
+            ),
+            onHelpClicked = {},
+            onToolbarMenuClicked = {},
+            onShotItemClicked = {},
+            shouldShowAllPlayerShots = false
+        )
+    )
 }

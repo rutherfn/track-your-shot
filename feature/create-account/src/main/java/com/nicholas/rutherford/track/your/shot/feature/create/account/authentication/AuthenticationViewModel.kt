@@ -1,8 +1,10 @@
 package com.nicholas.rutherford.track.your.shot.feature.create.account.authentication
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
@@ -20,6 +22,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(
+    savedStateHandle: SavedStateHandle,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val navigation: AuthenticationNavigation,
     private val application: Application,
@@ -29,16 +32,28 @@ class AuthenticationViewModel(
     private val createSharedPreferences: CreateSharedPreferences,
     private val declaredShotRepository: DeclaredShotRepository,
     private val scope: CoroutineScope
-) : ViewModel() {
+) : BaseViewModel() {
 
     internal var username: String? = null
     internal var email: String? = null
 
-    suspend fun updateUsernameAndEmail(usernameArgument: String?, emailArgument: String?) {
-        this.username = usernameArgument
-        this.email = emailArgument
+    internal val usernameParam: String? = savedStateHandle.get<String>("username")
+    internal val emailParam: String? = savedStateHandle.get<String>("email")
 
-        safeLet(emailArgument, usernameArgument) { email, username ->
+    init {
+        scope.launch { updateUsernameAndEmail() }
+    }
+
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
+        scope.launch { collectIfUserIsVerifiedAndAttemptToCreateAccount(shouldShowAccountIsNotVerifiedAlert = false) }
+    }
+
+    suspend fun updateUsernameAndEmail() {
+        this.username = usernameParam
+        this.email = emailParam
+
+        safeLet(emailParam, usernameParam) { email, username ->
             attemptToCreateActiveUser(email = email, username = username)
         }
     }
@@ -59,7 +74,7 @@ class AuthenticationViewModel(
 
     internal suspend fun onCheckIfAccountHaBeenVerifiedClicked() = collectIfUserIsVerifiedAndAttemptToCreateAccount(shouldShowAccountIsNotVerifiedAlert = true)
 
-    internal fun onNavigateClose() {
+    fun onNavigateClose() {
         navigation.alert(
             alert = Alert(
                 title = application.getString(StringsIds.areYouSureYouWantLeaveTrackYourShot),
@@ -76,10 +91,6 @@ class AuthenticationViewModel(
     }
 
     internal fun onAlertConfirmButtonClicked() = navigation.finish()
-
-    internal suspend fun onResume() {
-        collectIfUserIsVerifiedAndAttemptToCreateAccount(shouldShowAccountIsNotVerifiedAlert = false)
-    }
 
     private suspend fun collectIfUserIsVerifiedAndAttemptToCreateAccount(shouldShowAccountIsNotVerifiedAlert: Boolean) {
         readFirebaseUserInfo.isEmailVerifiedFlow().collectLatest { isVerified ->
@@ -105,8 +116,6 @@ class AuthenticationViewModel(
                                 )
                             )
                             createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true)
-                            createSharedPreferences.createShouldUpdateLoggedInDeclaredShotListPreference(value = true)
-                            createSharedPreferences.createHasAuthenticatedAccount(value = true)
                             declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList())
                             navigation.disableProgress()
                             navigation.navigateToTermsAndConditions()
@@ -179,7 +188,7 @@ class AuthenticationViewModel(
         )
     }
 
-    internal fun errorDeletingPendingAccountAlert(): Alert {
+    private fun errorDeletingPendingAccountAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.errorDeletingPendingAccount),
             dismissButton = AlertConfirmAndDismissButton(

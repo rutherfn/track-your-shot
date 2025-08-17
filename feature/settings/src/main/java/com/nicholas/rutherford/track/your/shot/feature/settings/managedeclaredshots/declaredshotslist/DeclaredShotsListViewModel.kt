@@ -4,54 +4,90 @@ import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-const val CREATION_DECLARED_ID_DELAY_IN_MILLIS = 400L
-
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * ViewModel for the Declared Shots List screen, responsible for retrieving and presenting
+ * a list of declared shots. It manages interactions such as clicking on existing declared shots,
+ * adding new ones, and toolbar menu actions.
+ *
+ * @property declaredShotRepository Repository for accessing declared shot data from local storage.
+ * @property navigation Interface for managing navigation actions from the declared shots list screen.
+ * @property scope CoroutineScope used for launching asynchronous operations.
+ */
 class DeclaredShotsListViewModel(
     private val declaredShotRepository: DeclaredShotRepository,
-    private val createSharedPreferences: CreateSharedPreferences,
     private val navigation: DeclaredShotsListNavigation,
     private val scope: CoroutineScope
 ) : BaseViewModel() {
 
+    /** Holds the currently fetched list of declared shots. */
     internal var currentDeclaredShotArrayList: ArrayList<DeclaredShot> = arrayListOf()
 
     internal var declaredShotsListMutableStateFlow = MutableStateFlow(value = DeclaredShotsListState())
+
+    /** State flow representing the current UI state of the declared shots list screen. */
     val declaredShotsListStateFlow = declaredShotsListMutableStateFlow.asStateFlow()
 
-    override fun onNavigatedTo() {
-        super.onNavigatedTo()
+    init {
+        initializeDeclaredShotsScreen()
+    }
+
+    /**
+     * Initializes the Declared Shots List screen by:
+     * - Updating the UI state with the current list of declared shots.
+     *
+     * This function is separated for testability.
+     */
+    internal fun initializeDeclaredShotsScreen() {
         updateDeclaredShotsListState()
     }
 
+    /**
+     * Fetches all declared shots from the repository and updates the UI state accordingly.
+     */
     fun updateDeclaredShotsListState() {
         scope.launch {
             currentDeclaredShotArrayList.clear()
             declaredShotRepository.fetchAllDeclaredShots().forEach { declaredShot ->
                 currentDeclaredShotArrayList.add(declaredShot)
             }
-            declaredShotsListMutableStateFlow.update { state -> state.copy(declaredShotsList = currentDeclaredShotArrayList.toList()) }
+            declaredShotsListMutableStateFlow.update { state ->
+                state.copy(declaredShotsList = currentDeclaredShotArrayList.toList())
+            }
         }
     }
 
+    /**
+     * Handles the toolbar menu click event by navigating back.
+     */
     fun onToolbarMenuClicked() = navigation.pop()
 
-    fun onDeclaredShotClicked(id: Int) {
+    /**
+     * Handles the event when a declared shot item is clicked.
+     * Stores the selected shot title and then will navigate to the edit screen.
+     *
+     * @param title The title of the selected declared shot.
+     */
+    fun onDeclaredShotClicked(title: String) {
         scope.launch {
             navigation.enableProgress(Progress())
-            createSharedPreferences.createDeclaredShotId(value = id)
-            delay(CREATION_DECLARED_ID_DELAY_IN_MILLIS)
             navigation.disableProgress()
-            navigation.createEditDeclaredShot()
+            navigation.createEditDeclaredShot(shotName = title)
         }
     }
 
-    fun onAddDeclaredShotClicked() = navigation.createEditDeclaredShot()
+    /**
+     * Handles the action of adding a new declared shot.
+     * Navigates to the create screen.
+     */
+    fun onAddDeclaredShotClicked() {
+        navigation.createEditDeclaredShot(shotName = "")
+    }
 }

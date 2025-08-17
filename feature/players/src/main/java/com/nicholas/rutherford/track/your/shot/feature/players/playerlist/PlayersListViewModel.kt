@@ -12,7 +12,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -24,12 +23,28 @@ import kotlinx.coroutines.launch
 
 const val DELETE_PLAYER_DELAY_IN_MILLIS = 2000L
 
+/**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
+ * ViewModel for managing the state and business logic of the Players List screen.
+ *
+ * This ViewModel handles data operations related to the player list such as loading players,
+ * managing the selection of players, building sheet options for each player, handling deletion logic,
+ * and coordinating navigation to other screens like shot list and player creation/editing.
+ *
+ * @property application Provides access to application-level resources.
+ * @property scope The coroutine scope used for asynchronous operations.
+ * @property navigation Defines navigation actions for the Players List screen.
+ * @property deleteFirebaseUserInfo Handles deletion of player data from Firebase.
+ * @property playerRepository Repository for accessing and modifying player data.
+ * @property pendingPlayerRepository Repository for managing temporary/pending players.
+ * @property createSharedPreferences Used to store and retrieve shared preference values.
+ */
 class PlayersListViewModel(
     private val application: Application,
     private val scope: CoroutineScope,
     private val navigation: PlayersListNavigation,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
-    private val dataAdditionUpdates: DataAdditionUpdates,
     private val playerRepository: PlayerRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
     private val createSharedPreferences: CreateSharedPreferences
@@ -43,22 +58,19 @@ class PlayersListViewModel(
         imageUrl = "",
         shotsLoggedList = emptyList()
     )
+
     internal var currentPlayerArrayList: ArrayList<Player> = arrayListOf()
 
     internal val playerListMutableStateFlow = MutableStateFlow(value = PlayersListState())
-    val playerListStateFlow = playerListMutableStateFlow.asStateFlow()
 
-    override fun onNavigatedTo() {
-        super.onNavigatedTo()
-        updatePlayerListState()
-    }
+    val playerListStateFlow = playerListMutableStateFlow.asStateFlow()
 
     init {
         updatePlayerListState()
-        collectPlayerAdditionUpdates()
         deleteAllNonEmptyPendingPlayers()
     }
 
+    /** Loads all players from the repository and updates the state */
     fun updatePlayerListState() {
         scope.launch {
             currentPlayerArrayList.clear()
@@ -66,44 +78,34 @@ class PlayersListViewModel(
                 currentPlayerArrayList.add(player)
             }
             playerListMutableStateFlow.value =
-                PlayersListState(
-                    playerList = currentPlayerArrayList.toList()
-                )
+                PlayersListState(playerList = currentPlayerArrayList.toList())
         }
     }
 
+    /** Builds sheet options based on whether the selected player has logged shots or not */
     internal fun buildSheetOptions(selectedPlayer: Player): List<String> {
         val selectedPlayerFullName = selectedPlayer.fullName()
-        val baseSheetOptions = buildBaseSheetOptions(selectedPlayerFullName = selectedPlayerFullName)
+        val baseSheetOptions = buildBaseSheetOptions(selectedPlayerFullName)
 
         return if (selectedPlayer.shotsLoggedList.isEmpty()) {
             baseSheetOptions
         } else {
-            buildAddViewShotsOption(selectedPlayerFullName = selectedPlayerFullName)
+            buildAddViewShotsOption(selectedPlayerFullName)
         }
     }
 
+    /** Base edit/delete options for a player */
     private fun buildBaseSheetOptions(selectedPlayerFullName: String): List<String> = listOf(
         application.getString(StringsIds.editX, selectedPlayerFullName),
         application.getString(StringsIds.deleteX, selectedPlayerFullName)
     )
 
+    /** Adds the "View Shots" option if the player has logged any shots */
     private fun buildAddViewShotsOption(selectedPlayerFullName: String): List<String> =
-        listOf(application.getString(StringsIds.viewXShots, selectedPlayerFullName)) + buildBaseSheetOptions(selectedPlayerFullName = selectedPlayerFullName)
+        listOf(application.getString(StringsIds.viewXShots, selectedPlayerFullName)) +
+            buildBaseSheetOptions(selectedPlayerFullName)
 
-    private fun clearAndUpdatePlayerListState() {
-        currentPlayerArrayList.clear()
-        updatePlayerListState()
-    }
-
-    internal fun collectPlayerAdditionUpdates() {
-        scope.launch {
-            dataAdditionUpdates.newPlayerHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
-                handlePlayerAdded(hasBeenAdded = hasBeenAdded)
-            }
-        }
-    }
-
+    /** Deletes all non-empty pending players from local storage */
     internal fun deleteAllNonEmptyPendingPlayers() {
         scope.launch {
             if (pendingPlayerRepository.fetchAllPendingPlayers().isNotEmpty()) {
@@ -112,16 +114,15 @@ class PlayersListViewModel(
         }
     }
 
-    internal fun shouldUpdateFromUserLoggedIn(loggedInPlayerList: List<Player>, shouldUpdateLoggedInPlayerListState: Boolean): Boolean {
+    /** Checks whether to update the player list state from login */
+    internal fun shouldUpdateFromUserLoggedIn(
+        loggedInPlayerList: List<Player>,
+        shouldUpdateLoggedInPlayerListState: Boolean
+    ): Boolean {
         return loggedInPlayerList.isNotEmpty() && shouldUpdateLoggedInPlayerListState
     }
 
-    private fun handlePlayerAdded(hasBeenAdded: Boolean) {
-        if (hasBeenAdded) {
-            clearAndUpdatePlayerListState()
-        }
-    }
-
+    /** Updates the UI state with players from login */
     internal fun handleLoggedInPlayerList(playerList: List<Player>) {
         currentPlayerArrayList.clear()
         currentPlayerArrayList.addAll(playerList)
@@ -129,33 +130,32 @@ class PlayersListViewModel(
             PlayersListState(playerList = currentPlayerArrayList.toList())
     }
 
+    /** Navigation event to open the drawer menu */
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
 
+    /** Navigation event to open the create/edit player screen */
     fun onAddPlayerClicked() {
-        navigation.navigateToCreateEditPlayer(
-            firstName = null,
-            lastName = null
-        )
+        navigation.navigateToCreateEditPlayer(firstName = null, lastName = null)
     }
 
+    /** Deletes the player after confirming and showing progress */
     suspend fun onYesDeletePlayerClicked(isConnectedToInternet: Boolean, player: Player) {
         enableProgressAndDelay()
-        deletePlayer(isConnectedToInternet = isConnectedToInternet, player = player)
+        deletePlayer(isConnectedToInternet, player)
     }
 
+    /** Enables a progress indicator and waits before deletion */
     internal suspend fun enableProgressAndDelay() {
         navigation.enableProgress(progress = Progress())
         delay(DELETE_PLAYER_DELAY_IN_MILLIS)
     }
 
+    /** Deletes the player either locally or remotely depending on internet status */
     internal suspend fun deletePlayer(isConnectedToInternet: Boolean, player: Player) {
         if (isConnectedToInternet) {
-            deleteFirebaseUserInfo.deletePlayer(playerKey = player.firebaseKey).collectLatest { isSuccessful ->
+            deleteFirebaseUserInfo.deletePlayer(player.firebaseKey).collectLatest { isSuccessful ->
                 if (isSuccessful) {
-                    playerRepository.deletePlayerByName(
-                        firstName = player.firstName,
-                        lastName = player.lastName
-                    )
+                    playerRepository.deletePlayerByName(player.firstName, player.lastName)
                     currentPlayerArrayList.remove(player)
                     playerListMutableStateFlow.value = PlayersListState(playerList = currentPlayerArrayList.toList())
                     navigation.disableProgress()
@@ -170,90 +170,93 @@ class PlayersListViewModel(
         }
     }
 
+    /** Updates the selected player and shows sheet options */
     fun onPlayerClicked(player: Player) {
         selectedPlayer = player
         playerListMutableStateFlow.update {
             it.copy(
                 selectedPlayer = player,
-                sheetOptions = buildSheetOptions(selectedPlayer = player)
+                sheetOptions = buildSheetOptions(player)
             )
         }
     }
 
+    /** Handles sheet item actions based on index and player shot count */
     fun onSheetItemClicked(isConnectedToInternet: Boolean, index: Int) {
         if (selectedPlayer.shotsLoggedList.isEmpty()) {
-            handleSheetItemClickForEmptyPlayerList(isConnectedToInternet = isConnectedToInternet, index = index)
+            handleSheetItemClickForEmptyPlayerList(isConnectedToInternet, index)
         } else {
-            handleSheetItemClickForPlayerList(isConnectedToInternet = isConnectedToInternet, index = index)
+            handleSheetItemClickForPlayerList(isConnectedToInternet, index)
         }
     }
 
     private fun handleSheetItemClickForEmptyPlayerList(isConnectedToInternet: Boolean, index: Int) {
-        val editPlayerOptionIndex = 0
-
-        if (index == editPlayerOptionIndex) {
+        if (index == 0) {
             onEditPlayerClicked(player = selectedPlayer)
         } else {
-            onDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = selectedPlayer)
+            onDeletePlayerClicked(isConnectedToInternet, selectedPlayer)
         }
     }
 
     private fun handleSheetItemClickForPlayerList(isConnectedToInternet: Boolean, index: Int) {
-        val viewPlayerShotOptionIndex = 0
-        val editPlayerOptionIndex = 1
-
-        if (index == viewPlayerShotOptionIndex) {
-            onShotListClicked(playerName = selectedPlayer.fullName())
-        } else if (index == editPlayerOptionIndex) {
-            onEditPlayerClicked(player = selectedPlayer)
-        } else {
-            onDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = selectedPlayer)
+        when (index) {
+            0 -> onShotListClicked(selectedPlayer.fullName())
+            1 -> onEditPlayerClicked(selectedPlayer)
+            else -> onDeletePlayerClicked(isConnectedToInternet, selectedPlayer)
         }
     }
 
+    /** Navigates to shot list after saving selected player name */
     internal fun onShotListClicked(playerName: String) {
         createSharedPreferences.createPlayerFilterName(value = playerName)
         navigation.navigateToShotList()
     }
 
-    internal fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)
+    /** Navigates to the create/edit screen for the specified player */
+    internal fun onEditPlayerClicked(player: Player) {
+        navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)
+    }
 
-    internal fun onDeletePlayerClicked(isConnectedToInternet: Boolean, player: Player) = navigation.alert(alert = deletePlayerAlert(isConnectedToInternet = isConnectedToInternet, player = player))
+    /** Triggers alert before confirming deletion of player */
+    internal fun onDeletePlayerClicked(isConnectedToInternet: Boolean, player: Player) {
+        navigation.alert(alert = deletePlayerAlert(isConnectedToInternet, player))
+    }
 
+    /** Alert for confirming deletion of a player */
     private fun deletePlayerAlert(isConnectedToInternet: Boolean, player: Player): Alert {
         return Alert(
             title = application.getString(StringsIds.deleteX, player.fullName()),
             confirmButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.yes),
-                onButtonClicked = { scope.launch { onYesDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = player) } }
+                onButtonClicked = {
+                    scope.launch {
+                        onYesDeletePlayerClicked(isConnectedToInternet, player)
+                    }
+                }
             ),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.no)
-            ),
+            dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.no)),
             description = application.getString(StringsIds.areYouCertainYouWishToRemoveX, player.fullName())
         )
     }
 
+    /** Alert shown when not connected to the internet */
     private fun notConnectedToInternetAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.notConnectedToInternet),
             description = application.getString(StringsIds.weHaveDetectedCurrentlyNotConnectedToInternetDescription),
             dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(
-                    StringsIds.gotIt
-                )
+                buttonText = application.getString(StringsIds.gotIt)
             )
         )
     }
 
+    /** Alert shown when player deletion fails due to internal error */
     private fun unableToDeletePlayerAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.empty),
             description = application.getString(StringsIds.unableToDeletePlayerPleaseContactSupport),
             dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(
-                    StringsIds.gotIt
-                )
+                buttonText = application.getString(StringsIds.gotIt)
             )
         )
     }

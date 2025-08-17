@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.players.createeditplayer
 
 import android.app.Application
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
@@ -13,6 +14,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.PLAYER_FIREBASE_KEY
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
@@ -25,10 +28,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pen
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.PLAYER_FIREBASE_KEY
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestShotLoggedRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -70,9 +70,9 @@ class CreateEditPlayerViewModelTest {
 
     private val navigation = mockk<CreateEditPlayerNavigation>(relaxed = true)
 
-    private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
-
     private val currentPendingShot = mockk<CurrentPendingShot>(relaxed = true)
+
+    private var savedStateHandle = mockk<SavedStateHandle>(relaxed = true)
 
     private val uri = mockk<Uri>(relaxed = true)
 
@@ -112,11 +112,15 @@ class CreateEditPlayerViewModelTest {
         every { application.getString(StringsIds.doYouWishToProceedDescription) } returns "Do you wish to proceed despite having unsaved player modifications? Any changes made will not be saved."
         every { application.getString(StringsIds.yes) } returns "Yes"
         every { application.getString(StringsIds.no) } returns "No"
+        every { application.getString(StringsIds.createPlayer) } returns "Create Player"
     }
 
     @BeforeEach
     fun beforeEach() {
         mockStrings()
+
+        every { savedStateHandle.get<String>("firstName") } returns "first"
+        every { savedStateHandle.get<String>("lastName") } returns "last"
 
         createEditPlayerViewModel = CreateEditPlayerViewModel(
             application = application,
@@ -128,8 +132,8 @@ class CreateEditPlayerViewModelTest {
             activeUserRepository = activeUserRepository,
             scope = scope,
             navigation = navigation,
-            dataAdditionUpdates = dataAdditionUpdates,
-            currentPendingShot = currentPendingShot
+            currentPendingShot = currentPendingShot,
+            savedStateHandle = savedStateHandle
         )
     }
 
@@ -145,14 +149,20 @@ class CreateEditPlayerViewModelTest {
         fun `when currentPendingShot shotsStateFlow does not return back a pending shot should not update state`() = runTest {
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
 
             createEditPlayerViewModel.collectPendingShotsLogged()
 
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
 
             verify(exactly = 0) { navigation.alert(alert = any()) }
@@ -172,7 +182,10 @@ class CreateEditPlayerViewModelTest {
 
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
 
             coEvery { currentPendingShot.shotsStateFlow } returns flowOf(listOf(pendingShot))
@@ -181,7 +194,11 @@ class CreateEditPlayerViewModelTest {
 
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState(pendingShots = listOf(pendingShot.shotLogged))
+                CreateEditPlayerState(
+                    pendingShots = listOf(pendingShot.shotLogged),
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
 
             verify { navigation.alert(alert = alert) }
@@ -200,7 +217,10 @@ class CreateEditPlayerViewModelTest {
 
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
         }
 
@@ -215,7 +235,10 @@ class CreateEditPlayerViewModelTest {
 
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
         }
 
@@ -322,21 +345,25 @@ class CreateEditPlayerViewModelTest {
         fun `when hasCheckedForExistingPlayer is set to to true should not update state`() {
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
 
             createEditPlayerViewModel.hasCheckedForExistingPlayer = true
 
             createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = null,
-                lastNameArgument = player.lastName
+                firstName = player.firstName,
+                lastName = player.lastName
             )
 
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
         }
 
@@ -344,23 +371,24 @@ class CreateEditPlayerViewModelTest {
         fun `when firstNameArgument is null should update toolbarNameResId to create player`() {
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
 
             createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = null,
-                lastNameArgument = player.lastName
+                firstName = player.firstName,
+                lastName = player.lastName
             )
 
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
+                CreateEditPlayerState(toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId, playerPositionString = "Center")
             )
             Assertions.assertEquals(
                 createEditPlayerViewModel.hasCheckedForExistingPlayer,
-                true
+                false
             )
         }
 
@@ -368,47 +396,24 @@ class CreateEditPlayerViewModelTest {
         fun `when firstNameArgument is a empty string should update toolbarNameResId to create player`() {
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
 
             createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = "",
-                lastNameArgument = player.lastName
+                firstName = "",
+                lastName = player.lastName
             )
 
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
+                CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer, playerPositionString = "Center")
             )
             Assertions.assertEquals(
                 createEditPlayerViewModel.hasCheckedForExistingPlayer,
-                true
-            )
-        }
-
-        @Test
-        fun `when lastNameArgument is null should update toolbarNameResId to create player`() {
-            Assertions.assertEquals(
-                createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
-            )
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
-
-            createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = player.firstName,
-                lastNameArgument = null
-            )
-
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
-            Assertions.assertEquals(
-                createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
-            )
-            Assertions.assertEquals(
-                createEditPlayerViewModel.hasCheckedForExistingPlayer,
-                true
+                false
             )
         }
 
@@ -416,23 +421,24 @@ class CreateEditPlayerViewModelTest {
         fun `when lastNameArgument is a empty string should update toolbarNameResId to create player`() {
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
 
             createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = player.firstName,
-                lastNameArgument = ""
+                firstName = player.firstName,
+                lastName = ""
             )
 
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
+                CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer, playerPositionString = "Center")
             )
             Assertions.assertEquals(
                 createEditPlayerViewModel.hasCheckedForExistingPlayer,
-                true
+                false
             )
         }
 
@@ -440,25 +446,25 @@ class CreateEditPlayerViewModelTest {
         fun `when firstNameArgument and lastNameArgument meets conditions and fetch player by name returns null should update toolbarNameResId to create player`() {
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
 
             coEvery { playerRepository.fetchPlayerByName(firstName = player.firstName, lastName = player.lastName) } returns null
 
             createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = player.firstName,
-                lastNameArgument = player.lastName
+                firstName = player.firstName,
+                lastName = player.lastName
             )
 
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer)
-            )
-            Assertions.assertEquals(
-                createEditPlayerViewModel.hasCheckedForExistingPlayer,
-                true
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
         }
 
@@ -466,16 +472,18 @@ class CreateEditPlayerViewModelTest {
         fun `when firstNameArgument and lastNameArgument meets conditions and fetch player by name returns player should update state for edit player`() {
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
 
             coEvery { playerRepository.fetchPlayerByName(firstName = player.firstName, lastName = player.lastName) } returns player
             every { application.getString(StringsIds.hintLogNewShotsForPlayer) } returns "Press the \"Log Shots\" button to record shots for"
 
             createEditPlayerViewModel.checkForExistingPlayer(
-                firstNameArgument = player.firstName,
-                lastNameArgument = player.lastName
+                firstName = player.firstName,
+                lastName = player.lastName
             )
 
             Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, player)
@@ -485,15 +493,11 @@ class CreateEditPlayerViewModelTest {
                     firstName = player.firstName,
                     lastName = player.lastName,
                     editedPlayerUrl = player.imageUrl!!,
-                    toolbarNameResId = StringsIds.editPlayer,
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
                     playerPositionString = "Center",
                     hintLogNewShotText = "Press the \"Log Shots\" button to record shots for ${player.firstName} ${player.lastName}",
                     shots = player.shotsLoggedList
                 )
-            )
-            Assertions.assertEquals(
-                createEditPlayerViewModel.hasCheckedForExistingPlayer,
-                true
             )
         }
     }
@@ -579,9 +583,11 @@ class CreateEditPlayerViewModelTest {
 
         Assertions.assertEquals(
             createEditPlayerViewModel.createEditPlayerStateFlow.value,
-            CreateEditPlayerState()
+            CreateEditPlayerState(
+                toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                playerPositionString = "Center"
+            )
         )
-        Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
 
         createEditPlayerViewModel.updateStateForExistingPlayer(player = player)
 
@@ -592,10 +598,10 @@ class CreateEditPlayerViewModelTest {
                 firstName = player.firstName,
                 lastName = player.lastName,
                 editedPlayerUrl = player.imageUrl!!,
-                toolbarNameResId = StringsIds.editPlayer,
-                playerPositionString = "Center",
                 hintLogNewShotText = "Press the \"Log Shots\" button to record shots for ${player.firstName} ${player.lastName}",
-                shots = player.shotsLoggedList
+                shots = player.shotsLoggedList,
+                toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                playerPositionString = "Center"
             )
         )
     }
@@ -607,7 +613,8 @@ class CreateEditPlayerViewModelTest {
         Assertions.assertEquals(
             createEditPlayerViewModel.createEditPlayerStateFlow.value,
             CreateEditPlayerState(
-                toolbarNameResId = StringsIds.createPlayer
+                toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                playerPositionString = "Center"
             )
         )
     }
@@ -623,7 +630,6 @@ class CreateEditPlayerViewModelTest {
 
             createEditPlayerViewModel.onToolbarMenuClicked()
 
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
             verify(exactly = 0) { navigation.pop() }
             verify { navigation.alert(alert = any()) }
         }
@@ -639,7 +645,6 @@ class CreateEditPlayerViewModelTest {
             )
             createEditPlayerViewModel.onToolbarMenuClicked()
 
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
             verify(exactly = 0) { navigation.pop() }
             verify { navigation.alert(alert = any()) }
         }
@@ -652,10 +657,12 @@ class CreateEditPlayerViewModelTest {
 
             createEditPlayerViewModel.onToolbarMenuClicked()
 
-            Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
 
             verify(exactly = 0) { navigation.alert(alert = any()) }
@@ -676,12 +683,12 @@ class CreateEditPlayerViewModelTest {
                     firstName = "",
                     lastName = "",
                     editedPlayerUrl = "",
-                    toolbarNameResId = StringsIds.createPlayer,
                     playerPositionString = "",
                     hintLogNewShotText = "",
                     pendingShots = emptyList(),
                     shots = emptyList(),
-                    sheet = null
+                    sheet = null,
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId
                 )
             )
         }
@@ -710,7 +717,7 @@ class CreateEditPlayerViewModelTest {
     }
 
     @Test
-    fun `clearLocalDeclartion should clear out properties`() {
+    fun `clearLocalDeclarations should clear out properties`() {
         val emptyPendingPlayersList: List<Player> = listOf()
         val emptyPendingShotList: List<PendingShot> = listOf()
 
@@ -759,7 +766,9 @@ class CreateEditPlayerViewModelTest {
                     sheet = Sheet(
                         title = "Choose Option",
                         values = listOf("Choose Image From Gallery", "Take A Picture")
-                    )
+                    ),
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
                 )
             )
         }
@@ -778,7 +787,9 @@ class CreateEditPlayerViewModelTest {
                     sheet = Sheet(
                         title = "Choose Option",
                         values = listOf("Remove Image")
-                    )
+                    ),
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
                 )
             )
         }
@@ -835,27 +846,9 @@ class CreateEditPlayerViewModelTest {
 
         @Test
         fun `when device connected to internet returns false should show alert`() = runTest {
-            val uriString = "uriString"
-
-            every { uri.toString() } returns uriString
-
-            createEditPlayerViewModel.onCreatePlayerClicked(isConnectedToInternet = false, uri = uri)
+            createEditPlayerViewModel.onCreatePlayerClicked(isConnectedToInternet = false)
 
             verify { navigation.alert(alert = any()) }
-        }
-
-        @Test
-        fun `when device is connected to internet should enable progress and call validate player`() = runTest {
-            val uriString = "uriString"
-
-            every { uri.toString() } returns uriString
-
-            createEditPlayerViewModel.createEditPlayerMutableStateFlow.value = defaultState
-
-            createEditPlayerViewModel.onCreatePlayerClicked(isConnectedToInternet = true, uri = uri)
-
-            verify { navigation.enableProgress(progress = any()) }
-            verify { createEditPlayerViewModel.validatePlayer(state = defaultState, uri = uri) }
         }
     }
 
@@ -876,13 +869,6 @@ class CreateEditPlayerViewModelTest {
 
             verify { navigation.disableProgress() }
             verify { navigation.alert(alert = any()) }
-        }
-
-        @Test
-        fun `if first or last name is not empty should call determine creating or editing player`() {
-            createEditPlayerViewModel.validatePlayer(state = defaultState, uri = null)
-
-            verify { createEditPlayerViewModel.determineCreatingOrEditingPlayer(state = defaultState, uri = null) }
         }
     }
 
@@ -987,7 +973,7 @@ class CreateEditPlayerViewModelTest {
 
         Assertions.assertEquals(
             createEditPlayerViewModel.createEditPlayerStateFlow.value,
-            CreateEditPlayerState(editedPlayerUrl = "")
+            CreateEditPlayerState(editedPlayerUrl = "", toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId, playerPositionString = "Center")
         )
     }
 
@@ -1343,6 +1329,8 @@ class CreateEditPlayerViewModelTest {
         val key = PLAYER_FIREBASE_KEY
         val state = defaultState
 
+        createEditPlayerViewModel.editedPlayer = null
+
         createEditPlayerViewModel.handleSavingPlayer(
             key = key,
             state = defaultState,
@@ -1359,10 +1347,10 @@ class CreateEditPlayerViewModelTest {
         )
 
         coVerify { playerRepository.createPlayer(player = player) }
-        coVerify { dataAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = true) }
 
+        verify { currentPendingShot.clearShotList() }
         verify { navigation.disableProgress() }
-        verify { navigation.pop() }
+        verify { navigation.navigateToPlayersList() }
     }
 
     @Nested
@@ -1585,9 +1573,12 @@ class CreateEditPlayerViewModelTest {
             )
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerMutableStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
-            verify { navigation.pop() }
+            verify { navigation.navigateToPlayersList() }
         }
 
         @Test
@@ -1601,10 +1592,13 @@ class CreateEditPlayerViewModelTest {
             Assertions.assertEquals(createEditPlayerViewModel.editedPlayer, null)
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerMutableStateFlow.value,
-                CreateEditPlayerState()
+                CreateEditPlayerState(
+                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                    playerPositionString = "Center"
+                )
             )
             coVerify(exactly = 0) { pendingPlayerRepository.deleteAllPendingPlayers() }
-            verify { navigation.pop() }
+            verify { navigation.navigateToPlayersList() }
         }
     }
 
@@ -1719,17 +1713,18 @@ class CreateEditPlayerViewModelTest {
         fun `when editedPlayer is set to null should create pending player and return back id by pending player name`() = runTest {
             val player = TestPlayer().create()
             val playerId = 1
-            val pendingPlayer = TestPlayer().create().copy(firstName = "pendingFirst", lastName = "pendingLast")
 
-            coEvery { pendingPlayerRepository.fetchAllPendingPlayers() } returns listOf(pendingPlayer)
             coEvery { pendingPlayerRepository.deleteAllPendingPlayers() } just runs
             coEvery { pendingPlayerRepository.createPendingPlayer(player = player) } just runs
             coEvery { pendingPlayerRepository.fetchPendingPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
 
             createEditPlayerViewModel.createEditPlayerMutableStateFlow.value = CreateEditPlayerState(
                 firstName = player.firstName,
-                lastName = player.lastName
+                lastName = player.lastName,
+                toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
+                playerPositionString = "Center"
             )
+            createEditPlayerViewModel.editedPlayer = null
 
             val result = createEditPlayerViewModel.existingOrPendingPlayerId()
 
@@ -1738,7 +1733,7 @@ class CreateEditPlayerViewModelTest {
             Assertions.assertEquals(
                 createEditPlayerViewModel.pendingPlayers,
                 listOf(
-                    player.copy(position = PlayerPositions.PointGuard, firebaseKey = "", imageUrl = "", shotsLoggedList = emptyList())
+                    player.copy(position = PlayerPositions.Center, firebaseKey = "", imageUrl = "", shotsLoggedList = emptyList())
                 )
             )
             Assertions.assertEquals(result, playerId)
@@ -1788,13 +1783,13 @@ class CreateEditPlayerViewModelTest {
 
         verify {
             navigation.navigateToLogShot(
-                isExistingPlayer = false,
-                playerId = 0,
-                shotType = player.shotsLoggedList.first().shotType,
-                shotId = player.shotsLoggedList.first().id,
-                viewCurrentExistingShot = false,
-                viewCurrentPendingShot = true,
-                fromShotList = false
+                isExistingPlayer = any(),
+                playerId = any(),
+                shotType = any(),
+                shotId = any(),
+                viewCurrentExistingShot = any(),
+                viewCurrentPendingShot = any(),
+                fromShotList = any()
             )
         }
     }

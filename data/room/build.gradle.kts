@@ -1,12 +1,16 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id(BuildIds.androidLibrary)
     id(BuildIds.ksp)
     kotlin(BuildIds.pluginKotlin)
     kotlin(BuildIds.pluginKapt)
-    id(BuildIds.ktLintId) version Versions.Dependencies.KtLint.ktLint
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
 }
 
 android {
+    namespace = "com.nicholas.rutherford.track.your.shot.data.room"
+
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
 
@@ -17,13 +21,16 @@ android {
 
     defaultConfig {
         minSdk = ConfigurationData.minSdk
-        targetSdk = ConfigurationData.targetSdk
-
         testInstrumentationRunner = ConfigurationData.testInstrumentationRunner
 
+        //noinspection WrongGradleMethod
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
+    }
+
+    testOptions {
+        targetSdk = ConfigurationData.targetSdk
     }
 
     buildTypes {
@@ -53,8 +60,8 @@ android {
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = KotlinOptions.jvmTarget
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(KotlinOptions.jvmTarget))
         }
     }
 
@@ -69,19 +76,19 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":helper:constants"))
 
-    androidTestImplementation(Dependencies.Junit.ext)
-    androidTestImplementation(Dependencies.CoreTesting.core)
-    androidTestImplementation(Dependencies.Espresso.core)
-    androidTestImplementation(Dependencies.Truth.core)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.truth)
 
-    implementation(Dependencies.Gson.core)
-    implementation(Dependencies.Room.ktx)
-    implementation(Dependencies.Room.runtime)
-    implementation(Dependencies.Room.coroutines)
+    implementation(libs.gson)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.room.runtime)
+    implementation(libs.kotlinx.coroutines.android)
 
-    ksp(Dependencies.Room.compiler)
+    ksp(libs.room.compiler)
 
-    testImplementation(Dependencies.Junit.core)
+    testImplementation(libs.junit)
 
     androidTestImplementation(project(path = ":data-test:room"))
 }

@@ -1,8 +1,9 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
@@ -22,7 +23,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFireba
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.parseDateValueToString
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
@@ -36,40 +36,84 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * ViewModel responsible for managing the state and business logic for logging a basketball shot.
+ *
+ * Handles fetching existing shot data, updating shot information, saving new or updated shots,
+ * deleting shots, and synchronizing shot data with Firebase.
+ *
+ * @property savedStateHandle Used to retrieve navigation arguments passed to this ViewModel.
+ * @property application Provides access to application resources such as strings.
+ * @property scope Coroutine scope for launching asynchronous tasks.
+ * @property navigation Navigation handler interface for directing UI navigation events.
+ * @property declaredShotRepository Repository for fetching declared shot metadata.
+ * @property pendingPlayerRepository Repository for fetching pending players (not fully saved players).
+ * @property playerRepository Repository for fetching and updating player data.
+ * @property activeUserRepository Repository to access the current active user information.
+ * @property updateFirebaseUserInfo Use case to update player info and shots in Firebase.
+ * @property deleteFirebaseUserInfo Use case to delete shot data from Firebase.
+ * @property currentPendingShot Manager for handling pending shot data locally.
+ * @property logShotViewModelExt Extension class providing utility functions and alert builders for the ViewModel.
+ */
 class LogShotViewModel(
+    savedStateHandle: SavedStateHandle,
     private val application: Application,
     private val scope: CoroutineScope,
     private val navigation: LogShotNavigation,
     private val declaredShotRepository: DeclaredShotRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
-    private val dataAdditionUpdates: DataAdditionUpdates,
     private val playerRepository: PlayerRepository,
     private val activeUserRepository: ActiveUserRepository,
     private val updateFirebaseUserInfo: UpdateFirebaseUserInfo,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val currentPendingShot: CurrentPendingShot,
     private val logShotViewModelExt: LogShotViewModelExt
-) : ViewModel() {
+) : BaseViewModel() {
 
     val logShotMutableStateFlow = MutableStateFlow(value = LogShotState())
     val logShotStateFlow = logShotMutableStateFlow.asStateFlow()
 
     internal var currentPlayer: Player? = null
+
     internal var currentDeclaredShot: DeclaredShot? = null
 
     private var currentPlayerShotSize = 0
 
     internal var initialShotLogged: ShotLogged? = null
 
-    fun updateIsExistingPlayerAndId(
-        isExistingPlayerArgument: Boolean,
-        playerIdArgument: Int,
-        shotTypeArgument: Int,
-        shotIdArgument: Int,
-        viewCurrentExistingShotArgument: Boolean,
-        viewCurrentPendingShotArgument: Boolean,
-        fromShotListArgument: Boolean
-    ) {
+    internal var screenTriggered: ScreenTriggered = ScreenTriggered.UNKNOWN
+
+    internal var shouldShowAllPlayersShots: Boolean = false
+
+    /**
+     * Navigation arguments extracted from the saved state handle.
+     */
+    internal val isExistingPlayerArgument: Boolean = savedStateHandle.get<Boolean>("isExistingPlayer") ?: false
+    internal val playerIdArgument: Int = savedStateHandle.get<Int>("playerId") ?: 0
+    internal val shotTypeArgument: Int = savedStateHandle.get<Int>("shotType") ?: 0
+    internal val shotIdArgument: Int = savedStateHandle.get<Int>("shotId") ?: 0
+    internal val viewCurrentExistingShotArgument: Boolean = savedStateHandle.get<Boolean>("viewCurrentExistingShot") ?: false
+    internal val viewCurrentPendingShotArgument: Boolean = savedStateHandle.get<Boolean>("viewCurrentPendingShot") ?: false
+    internal val fromShotListArgument: Boolean = savedStateHandle.get<Boolean>("fromShotList") ?: false
+    internal val screenTriggeredIndexArgument: Int = savedStateHandle.get<Int>("screenTriggeredIndexArgument") ?: ScreenTriggered.INDEX_UNKNOWN
+
+    init {
+        updateIsExistingPlayerAndId()
+        screenTriggered = ScreenTriggered.fromIndex(screenTriggeredIndexArgument)
+        shouldShowAllPlayersShots = when (screenTriggered) {
+            ScreenTriggered.FROM_ALL_PLAYERS -> { true }
+            ScreenTriggered.FROM_FILTER_PLAYERS -> { false }
+            else -> { false }
+        }
+    }
+
+    /**
+     * Initializes and updates the ViewModel state based on the navigation arguments.
+     * Loads player and declared shot data asynchronously and updates the UI state.
+     */
+    fun updateIsExistingPlayerAndId() {
         resetState()
 
         logShotViewModelExt.setInitialInfo(
@@ -109,6 +153,9 @@ class LogShotViewModel(
         }
     }
 
+    /**
+     * Loads and updates the shot state if viewing an existing or pending shot.
+     */
     private suspend fun updateViewShotState() {
         logShotViewModelExt.logShotInfo.let { info ->
             if (info.viewCurrentExistingShot) {
@@ -121,6 +168,9 @@ class LogShotViewModel(
         initializeShotLogged()
     }
 
+    /**
+     * Updates the UI state from an existing shot loaded from player data.
+     */
     private fun updateShotStateFromExisting() {
         currentPlayer?.shotsLoggedList?.firstOrNull { it.id == logShotViewModelExt.logShotInfo.shotId }?.let { shot ->
             logShotMutableStateFlow.update { state ->
@@ -138,6 +188,9 @@ class LogShotViewModel(
         }
     }
 
+    /**
+     * Updates the UI state from a pending shot loaded from local pending shot storage.
+     */
     private suspend fun updateShotStateFromPending() {
         currentPendingShot.shotsStateFlow.firstOrNull()?.firstOrNull()?.shotLogged?.let { shot ->
             logShotMutableStateFlow.update { state ->
@@ -155,6 +208,13 @@ class LogShotViewModel(
         }
     }
 
+    /**
+     * Calculates the shot percentage as a formatted string for made or missed shots.
+     *
+     * @param shot The shot data.
+     * @param isShotsMade True to calculate percentage for made shots, false for missed shots.
+     * @return Formatted percentage string.
+     */
     private fun calculateShotPercentage(shot: ShotLogged, isShotsMade: Boolean): String {
         return logShotViewModelExt.percentageFormat(
             shotsMade = shot.shotsMade.toDouble(),
@@ -163,6 +223,9 @@ class LogShotViewModel(
         )
     }
 
+    /**
+     * Initializes the [initialShotLogged] property with the current state for change detection.
+     */
     private fun initializeShotLogged() {
         initialShotLogged = ShotLogged(
             id = 0, // Ignored field
@@ -179,6 +242,13 @@ class LogShotViewModel(
         )
     }
 
+    /**
+     * Fetches a player based on whether they are existing or pending.
+     *
+     * @param isExisting True if the player is an existing player; false if pending.
+     * @param playerId The ID of the player.
+     * @return The player or null if not found.
+     */
     private suspend fun getPlayer(isExisting: Boolean, playerId: Int): Player? {
         return if (isExisting) {
             playerRepository.fetchPlayerById(id = playerId)
@@ -187,6 +257,10 @@ class LogShotViewModel(
         }
     }
 
+    /**
+     * Handler when user clicks to select the date shots were taken.
+     * Opens a date picker and updates the UI state when a new date is selected.
+     */
     fun onDateShotsTakenClicked() {
         val dateValue = logShotMutableStateFlow.value.shotsTakenDateValue
 
@@ -201,6 +275,11 @@ class LogShotViewModel(
         navigation.datePicker(datePickerInfo = datePickerInfo)
     }
 
+    /**
+     * Updates the number of shots made and recalculates related UI state values.
+     *
+     * @param shots New shots made count.
+     */
     fun onShotsMadeUpwardOrDownwardClicked(shots: Int) {
         logShotMutableStateFlow.update { state ->
             state.copy(
@@ -220,6 +299,11 @@ class LogShotViewModel(
         }
     }
 
+    /**
+     * Updates the number of shots missed and recalculates related UI state values.
+     *
+     * @param shots New shots missed count.
+     */
     fun onShotsMissedUpwardOrDownwardClicked(shots: Int) {
         logShotMutableStateFlow.update { state ->
             state.copy(
@@ -239,11 +323,23 @@ class LogShotViewModel(
         }
     }
 
+    /**
+     * Disables any progress UI and shows an alert dialog with the provided alert information.
+     *
+     * @param alert Alert data to display.
+     */
     internal fun disableProgressAndShowAlert(alert: Alert) {
         navigation.disableProgress()
         navigation.alert(alert = alert)
     }
 
+    /**
+     * Constructs a [PendingShot] object based on the current player and UI state.
+     *
+     * @param player The player the shot is associated with.
+     * @param state Current UI state containing shot data.
+     * @return Constructed [PendingShot].
+     */
     private fun buildPendingShotOnSave(player: Player, state: LogShotState): PendingShot =
         PendingShot(
             player = player,
@@ -269,6 +365,12 @@ class LogShotViewModel(
             isPendingPlayer = logShotViewModelExt.logShotInfo.isExistingPlayer
         )
 
+    /**
+     * Handles saving a pending shot when editing an existing shot.
+     * Checks for changes and either shows an alert or creates/updates the shot.
+     *
+     * @param pendingShot The shot to save.
+     */
     private fun handleExistingShotSaveClicked(pendingShot: PendingShot) {
         logShotViewModelExt.noChangesForShotAlert(initialShotLogged = initialShotLogged, pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
             disableProgressAndShowAlert(alert = alert)
@@ -278,18 +380,32 @@ class LogShotViewModel(
         )
     }
 
+    /**
+     * Handles saving a pending shot when editing a pending shot.
+     *
+     * @param pendingShot The shot to update.
+     */
     private fun handlePendingShotSaveClicked(pendingShot: PendingShot) {
         logShotViewModelExt.noChangesForShotAlert(initialShotLogged = initialShotLogged, pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
             disableProgressAndShowAlert(alert = alert)
         } ?: updatePendingShot(pendingShot = pendingShot)
     }
 
+    /**
+     * Handles saving a pending shot when saving from the shot list view.
+     *
+     * @param pendingShot The shot to update.
+     */
     private suspend fun handleFromShotListSaveClicked(pendingShot: PendingShot) {
         logShotViewModelExt.noChangesForShotAlert(initialShotLogged = initialShotLogged, pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
             disableProgressAndShowAlert(alert = alert)
         } ?: updateCurrentShot(pendingShot = pendingShot)
     }
 
+    /**
+     * Called when the user clicks the save button.
+     * Validates input, builds the pending shot, and triggers the appropriate save flow.
+     */
     fun onSaveClicked() {
         scope.launch {
             val player = currentPlayer
@@ -319,6 +435,8 @@ class LogShotViewModel(
             val pendingShot = buildPendingShotOnSave(player = player, state = state)
             val shotInfo = logShotViewModelExt.logShotInfo
 
+            println("here is the full shot info $shotInfo")
+
             when {
                 shotInfo.viewCurrentExistingShot && shotInfo.fromShotList -> handleFromShotListSaveClicked(pendingShot)
                 shotInfo.viewCurrentPendingShot -> handlePendingShotSaveClicked(pendingShot)
@@ -328,6 +446,9 @@ class LogShotViewModel(
         }
     }
 
+    /**
+     * Resets the UI state to default empty values.
+     */
     private fun resetState() =
         logShotMutableStateFlow.update { state ->
             state.copy(
@@ -345,6 +466,11 @@ class LogShotViewModel(
             )
         }
 
+    /**
+     * Updates an existing pending shot in the local storage and navigates to the create or edit player screen.
+     *
+     * @param pendingShot The shot to update.
+     */
     private fun updatePendingShot(pendingShot: PendingShot) {
         val firstShotLogged = currentPendingShot.fetchPendingShots().first()
         currentPendingShot.deleteShot(shotLogged = firstShotLogged)
@@ -352,6 +478,12 @@ class LogShotViewModel(
         navigateToCreateOrEditPlayer()
     }
 
+    /**
+     * Updates the user’s player shot info in Firebase and handles the result.
+     *
+     * @param player The player whose info is being updated.
+     * @param shotLogged List of shots to upload.
+     */
     private suspend fun updateUserInFirebase(player: Player, shotLogged: List<ShotLogged>) {
         val key = activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey ?: ""
         val playerKey =
@@ -386,6 +518,12 @@ class LogShotViewModel(
         }
     }
 
+    /**
+     * Converts a list of [ShotLogged] to a list of Firebase response objects for upload.
+     *
+     * @param currentShotList List of shots to convert.
+     * @return List of [ShotLoggedRealtimeResponse].
+     */
     internal fun currentShotLoggedRealtimeResponseList(currentShotList: List<ShotLogged>): List<ShotLoggedRealtimeResponse> {
         if (currentShotList.isNotEmpty()) {
             val shotLoggedRealtimeResponseArrayList: ArrayList<ShotLoggedRealtimeResponse> = arrayListOf()
@@ -413,6 +551,13 @@ class LogShotViewModel(
         }
     }
 
+    /**
+     * Handles the result of attempting to update a shot in Firebase.
+     *
+     * @param isSuccessful Whether the update was successful.
+     * @param player Player whose shots were updated.
+     * @param shotLogged List of updated shots.
+     */
     private suspend fun handleUpdatedShot(
         isSuccessful: Boolean,
         player: Player,
@@ -430,10 +575,8 @@ class LogShotViewModel(
                     shotsLoggedList = shotLogged
                 )
             )
-            dataAdditionUpdates.updateShotHasBeenUpdatedSharedFlow(hasShotBeenUpdated = true)
-
             navigation.disableProgress()
-            navigation.popToShotList()
+            navigation.popToShotList(shouldShowAllPlayersShots = shouldShowAllPlayersShots)
             navigation.alert(alert = logShotViewModelExt.showUpdatedAlert())
         } else {
             navigation.disableProgress()
@@ -441,6 +584,11 @@ class LogShotViewModel(
         }
     }
 
+    /**
+     * Updates the current shot data in Firebase by combining existing shots with the pending shot.
+     *
+     * @param pendingShot Shot data to update.
+     */
     private suspend fun updateCurrentShot(pendingShot: PendingShot) {
         currentPlayer?.let { player ->
             updateUserInFirebase(
@@ -453,6 +601,12 @@ class LogShotViewModel(
         }
     }
 
+    /**
+     * Creates a new pending shot entry and navigates to the player creation or editing screen.
+     *
+     * @param isACurrentPlayerShot True if the shot belongs to an existing player, false if new.
+     * @param pendingShot The shot to create.
+     */
     internal fun createPendingShot(isACurrentPlayerShot: Boolean, pendingShot: PendingShot) {
         currentPendingShot.createShot(
             shotLogged = if (isACurrentPlayerShot) {
@@ -464,14 +618,18 @@ class LogShotViewModel(
         navigateToCreateOrEditPlayer()
     }
 
-    suspend fun handleHasDeleteShotFirebaseResponse(hasDeleted: Boolean) {
+    /**
+     * Handles the response from deleting a shot in Firebase.
+     *
+     * @param hasDeleted True if deletion was successful, false otherwise.
+     */
+    fun handleHasDeleteShotFirebaseResponse(hasDeleted: Boolean) {
         val shotName = logShotMutableStateFlow.value.shotName
 
         if (hasDeleted) {
             if (logShotViewModelExt.logShotInfo.fromShotList) {
-                dataAdditionUpdates.updateShotHasBeenUpdatedSharedFlow(hasShotBeenUpdated = true)
                 navigation.disableProgress()
-                navigation.popToShotList()
+                navigation.popToShotList(shouldShowAllPlayersShots = shouldShowAllPlayersShots)
             } else {
                 navigateToCreateOrEditPlayer()
             }
@@ -482,17 +640,22 @@ class LogShotViewModel(
         }
     }
 
+    /**
+     * Navigates to the player creation or editing screen depending on whether the player exists.
+     */
     fun navigateToCreateOrEditPlayer() {
         navigation.disableProgress()
-        if (logShotViewModelExt.logShotInfo.isExistingPlayer) {
-            navigation.popToEditPlayer()
-        } else {
-            navigation.popToCreatePlayer()
-        }
+        navigation.popToCreateOrEditPlayer()
     }
 
+    /**
+     * Navigates back in the navigation stack.
+     */
     fun onBackClicked() = navigation.pop()
 
+    /**
+     * Initiates the deletion of the current shot and handles updating data and UI accordingly.
+     */
     suspend fun onYesDeleteShot() {
         navigation.enableProgress(progress = Progress())
         currentPlayer?.let { player ->
@@ -517,5 +680,13 @@ class LogShotViewModel(
         } ?: navigation.disableProgress()
     }
 
-    fun onDeleteShotClicked() = navigation.alert(alert = logShotViewModelExt.deleteShotAlert(onYesDeleteShot = { onYesDeleteShot() }, shotName = logShotMutableStateFlow.value.shotName))
+    /**
+     * Shows the delete shot confirmation alert dialog.
+     */
+    fun onDeleteShotClicked() = navigation.alert(
+        alert = logShotViewModelExt.deleteShotAlert(
+            onYesDeleteShot = { onYesDeleteShot() },
+            shotName = logShotMutableStateFlow.value.shotName
+        )
+    )
 }

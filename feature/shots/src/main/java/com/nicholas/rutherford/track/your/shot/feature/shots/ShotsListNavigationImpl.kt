@@ -5,6 +5,12 @@ import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Implementation of [ShotsListNavigation] using a [Navigator] to perform
+ * navigation via predefined [NavigationActions].
+ */
 class ShotsListNavigationImpl(private val navigator: Navigator) : ShotsListNavigation {
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
     override fun navigateToLogShot(

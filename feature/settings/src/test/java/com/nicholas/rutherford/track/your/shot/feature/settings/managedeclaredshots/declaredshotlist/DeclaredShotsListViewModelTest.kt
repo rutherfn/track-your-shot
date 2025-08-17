@@ -6,7 +6,6 @@ import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListState
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListViewModel
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verify
@@ -25,8 +24,6 @@ class DeclaredShotsListViewModelTest {
     private lateinit var viewModel: DeclaredShotsListViewModel
 
     private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
-
-    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
     private val navigation = mockk<DeclaredShotsListNavigation>(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -40,7 +37,6 @@ class DeclaredShotsListViewModelTest {
     fun beforeEach() {
         viewModel = DeclaredShotsListViewModel(
             declaredShotRepository = declaredShotRepository,
-            createSharedPreferences = createSharedPreferences,
             navigation = navigation,
             scope = scope
         )
@@ -55,7 +51,7 @@ class DeclaredShotsListViewModelTest {
 
             coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns emptyList()
 
-            viewModel.onNavigatedTo()
+            viewModel.initializeDeclaredShotsScreen()
 
             Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, emptyDeclaredShotArrayList)
             Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state)
@@ -67,7 +63,7 @@ class DeclaredShotsListViewModelTest {
 
             coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotArrayList
 
-            viewModel.onNavigatedTo()
+            viewModel.initializeDeclaredShotsScreen()
 
             Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, declaredShotArrayList)
             Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state.copy(declaredShotsList = declaredShotArrayList.toList()))
@@ -83,20 +79,20 @@ class DeclaredShotsListViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `on declared shot clicked should create declared shot id and navigate to create edit declared shot`() = runTest {
-        val id = 2
+    fun `on declared shot clicked should create declared shot name and navigate to create edit declared shot`() = runTest {
+        val title = "title"
 
-        viewModel.onDeclaredShotClicked(id = id)
+        viewModel.onDeclaredShotClicked(title = title)
 
-        verify { createSharedPreferences.createDeclaredShotId(value = id) }
-        dispatcher.scheduler.apply { advanceTimeBy(9000); runCurrent() }
-        verify { navigation.createEditDeclaredShot() }
+        verify { navigation.enableProgress(progress = any()) }
+        verify { navigation.disableProgress() }
+        verify { navigation.createEditDeclaredShot(shotName = title) }
     }
 
     @Test
     fun `on add declared shot clicked should navigate to create edit declared shot`() {
         viewModel.onAddDeclaredShotClicked()
 
-        verify { navigation.createEditDeclaredShot() }
+        verify { navigation.createEditDeclaredShot(shotName = "") }
     }
 }

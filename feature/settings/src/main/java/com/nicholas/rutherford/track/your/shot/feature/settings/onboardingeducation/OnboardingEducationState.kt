@@ -2,6 +2,14 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeduca
 
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Represents the UI state for the Onboarding Education screen.
+ *
+ * @property educationInfoList The list of educational content pages to be displayed,
+ * each containing title, description, image, and optional button text.
+ */
 data class OnboardingEducationState(
     val educationInfoList: List<EducationInfo> = emptyList()
 )

@@ -7,37 +7,70 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.toDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.toDeclaredShotEntity
 
-// todo -> Unit tests this since now where grabbing natively in the app.
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Repository implementation for managing DeclaredShot data.
+ * Provides CRUD operations and additional helper functions for
+ * retrieving and storing DeclaredShot information, including
+ * reading from a built-in JSON source.
+ */
 class DeclaredShotRepositoryImpl(private val declaredShotDao: DeclaredShotDao) : DeclaredShotRepository {
 
-    override suspend fun createNewDeclaredShot(declaredShot: DeclaredShot) = declaredShotDao.insert(declaredShotEntity = declaredShot.toDeclaredShotEntity())
+    /** Inserts a new declared shot into the database. */
+    override suspend fun createNewDeclaredShot(declaredShot: DeclaredShot) =
+        declaredShotDao.insert(declaredShotEntity = declaredShot.toDeclaredShotEntity())
 
+    /**
+     * Creates multiple declared shots from a JSON source, excluding
+     * any IDs present in [shotIdsToFilterOut] or already in the database.
+     * todo -> Come back and properly test it
+     */
     override suspend fun createDeclaredShots(shotIdsToFilterOut: List<Int>) {
         val declaredShotIds = declaredShotDao.getAllDeclaredShots().map { it.id }
 
-        val shots = getDeclaredShotsFromJson().sortedBy { it.title }.map { it.toDeclaredShotEntity() }.filter { !shotIdsToFilterOut.contains(it.id) && !declaredShotIds.contains(it.id) }
+        val shots = getDeclaredShotsFromJson()
+            .sortedBy { it.title }
+            .map { it.toDeclaredShotEntity() }
+            .filter { !shotIdsToFilterOut.contains(it.id) && !declaredShotIds.contains(it.id) }
 
         declaredShotDao.insert(declaredShotEntities = shots)
     }
+
+    /** Updates an existing declared shot in the database. */
     override suspend fun updateDeclaredShot(declaredShot: DeclaredShot) =
         declaredShotDao.update(declaredShotEntity = declaredShot.toDeclaredShotEntity())
 
+    /** Retrieves all declared shots from the database. */
     override suspend fun fetchAllDeclaredShots(): List<DeclaredShot> =
         declaredShotDao.getAllDeclaredShots().map { it.toDeclaredShot() }
 
+    /** Deletes all declared shots from the database. */
     override suspend fun deleteAllDeclaredShots() = declaredShotDao.deleteAll()
 
+    /** Deletes a declared shot by its [id]. */
     override suspend fun deleteShotById(id: Int) = declaredShotDao.deleteDeclaredShotById(id = id)
 
+    /** Fetches a declared shot by its [id], returning null if not found. */
     override suspend fun fetchDeclaredShotFromId(id: Int): DeclaredShot? =
         declaredShotDao.getDeclaredShotFromId(id = id)?.toDeclaredShot()
 
+    /** Fetches a declared shot by its [name], returning null if not found. */
+    override suspend fun fetchDeclaredShotFromName(name: String): DeclaredShot? =
+        declaredShotDao.getDeclaredShotByTitle(title = name)?.toDeclaredShot()
+
+    /** Searches for declared shots containing [searchQuery] in their title. */
     override suspend fun fetchDeclaredShotsBySearchQuery(searchQuery: String): List<DeclaredShot> =
         declaredShotDao.getDeclaredShotsBySearchQuery(searchQuery = searchQuery).map { it.toDeclaredShot() }
 
+    /** Retrieves the maximum declared shot ID in the database, or a default value if empty. */
     override suspend fun fetchMaxId(): Int =
         declaredShotDao.getMaxIdOrDefault()
 
+    /**
+     * Returns a list of declared shots parsed from a hardcoded JSON string.
+     * This serves as the initial data source for the application.
+     */
     fun getDeclaredShotsFromJson(): List<DeclaredShot> {
         val json = """
 [

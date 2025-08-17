@@ -1,6 +1,8 @@
 package types
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * To define build type data */
 interface Build {
     var appName: String

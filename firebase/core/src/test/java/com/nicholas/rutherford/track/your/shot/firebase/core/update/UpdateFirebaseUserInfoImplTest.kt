@@ -7,8 +7,8 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestDeclaredShotWithKeyRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestDeclaredShotWithKeyRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk

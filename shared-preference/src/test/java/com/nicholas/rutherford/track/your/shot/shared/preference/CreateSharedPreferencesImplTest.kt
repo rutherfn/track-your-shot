@@ -50,48 +50,10 @@ class CreateSharedPreferencesImplTest {
 
                 createSharedPreferencesImpl.createAppHasLaunchedPreference(value = defaultValue)
 
-                verify {
-                    editor.putBoolean(Constants.Preferences.APP_HAS_LAUNCHED, defaultValue)
-                }
+                verify { editor.putBoolean(Constants.Preferences.APP_HAS_LAUNCHED, defaultValue) }
                 verify { editor.apply() }
             }
     }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `createShouldUpdateLoggedInPlayerListPreference should call editor putBoolean and apply`() =
-        runTest {
-            val defaultValue = true
-
-            coEvery { sharedPreferences.edit() } returns editor
-
-            init()
-
-            createSharedPreferencesImpl.createShouldUpdateLoggedInPlayerListPreference(value = defaultValue)
-
-            verify {
-                editor.putBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST, defaultValue)
-            }
-            verify { editor.apply() }
-        }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `createShouldUpdateLoggedInDeclaredShotListPreference should call editor putBoolean and apply`() =
-        runTest {
-            val defaultValue = true
-
-            coEvery { sharedPreferences.edit() } returns editor
-
-            init()
-
-            createSharedPreferencesImpl.createShouldUpdateLoggedInDeclaredShotListPreference(value = defaultValue)
-
-            verify {
-                editor.putBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST, defaultValue)
-            }
-            verify { editor.apply() }
-        }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
@@ -105,27 +67,7 @@ class CreateSharedPreferencesImplTest {
 
             createSharedPreferencesImpl.createShouldShowTermsAndConditionsPreference(value = defaultValue)
 
-            verify {
-                editor.putBoolean(Constants.Preferences.SHOULD_SHOW_TERM_AND_CONDITIONS, defaultValue)
-            }
-            verify { editor.apply() }
-        }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `createHasAccountAuthenticatedAccount should call editor putBoolean and apply`() =
-        runTest {
-            val defaultValue = true
-
-            coEvery { sharedPreferences.edit() } returns editor
-
-            init()
-
-            createSharedPreferencesImpl.createHasAuthenticatedAccount(value = defaultValue)
-
-            verify {
-                editor.putBoolean(Constants.Preferences.HAS_AUTHENTICATED_ACCOUNT, defaultValue)
-            }
+            verify { editor.putBoolean(Constants.Preferences.SHOULD_SHOW_TERM_AND_CONDITIONS, defaultValue) }
             verify { editor.apply() }
         }
 
@@ -141,9 +83,7 @@ class CreateSharedPreferencesImplTest {
 
             createSharedPreferencesImpl.createIsLoggedIn(value = defaultValue)
 
-            verify {
-                editor.putBoolean(Constants.Preferences.IS_LOGGED_IN, defaultValue)
-            }
+            verify { editor.putBoolean(Constants.Preferences.IS_LOGGED_IN, defaultValue) }
             verify { editor.apply() }
         }
 
@@ -159,27 +99,7 @@ class CreateSharedPreferencesImplTest {
 
             createSharedPreferencesImpl.createPlayerFilterName(value = defaultValue)
 
-            verify {
-                editor.putString(Constants.Preferences.PLAYER_FILTER_NAME, defaultValue)
-            }
-            verify { editor.apply() }
-        }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `createDeclaredShotId should call editor putInt and apply`() =
-        runTest {
-            val defaultValue = 2
-
-            coEvery { sharedPreferences.edit() } returns editor
-
-            init()
-
-            createSharedPreferencesImpl.createDeclaredShotId(value = defaultValue)
-
-            verify {
-                editor.putInt(Constants.Preferences.DECLARED_SHOT_ID, defaultValue)
-            }
+            verify { editor.putString(Constants.Preferences.PLAYER_FILTER_NAME, defaultValue) }
             verify { editor.apply() }
         }
 }

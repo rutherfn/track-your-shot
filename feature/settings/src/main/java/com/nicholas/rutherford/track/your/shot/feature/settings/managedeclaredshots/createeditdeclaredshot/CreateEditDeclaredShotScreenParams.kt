@@ -1,5 +1,22 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Parameters used to render the CreateEditDeclaredShotScreen UI.
+ *
+ * @property state The current state of the screen.
+ * @property onToolbarMenuClicked Callback function triggered when the user interacts with the toolbar menu.
+ * @property onDeleteShotClicked Callback function triggered when the user deletes a shot.
+ * @property onEditShotPencilClicked Callback function triggered when the user interacts with the pencil icon.
+ * @property onEditShotNameValueChanged Callback function triggered when the user updates the shot name.
+ * @property onEditShotDescriptionValueChanged Callback function triggered when the user updates the shot description.
+ * @property onEditShotCategoryValueChanged Callback function triggered when the user updates the shot category.
+ * @property onCreateShotNameValueChanged Callback function triggered when the user updates the shot name.
+ * @property onCreateShotDescriptionValueChanged Callback function triggered when the user updates the shot description.
+ * @property onCreateShotCategoryValueChanged Callback function triggered when the user updates the shot category.
+ * @property onEditOrCreateNewShot Callback function triggered when the user interacts with the pencil icon.
+ */
 data class CreateEditDeclaredShotScreenParams(
     val state: CreateEditDeclaredShotState,
     val onToolbarMenuClicked: () -> Unit,

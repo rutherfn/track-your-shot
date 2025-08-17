@@ -1,44 +1,57 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
-import com.nicholas.rutherford.track.your.shot.compose.components.Content
 import com.nicholas.rutherford.track.your.shot.compose.components.education.EducationPager
 import com.nicholas.rutherford.track.your.shot.compose.components.education.EducationScreen
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 
-@OptIn(ExperimentalFoundationApi::class)
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Displays the Permission Education screen, which presents a series of
+ * informational pages explaining the need for permissions.
+ *
+ * This screen uses a horizontal pager to allow users to swipe through
+ * the provided list of [EducationInfo] items.
+ *
+ * @param permissionEducationParams Contains the state and callbacks needed
+ * to render and interact with the screen.
+ */
 @Composable
 fun PermissionEducationScreen(permissionEducationParams: PermissionEducationParams) {
     val pagerState = rememberPagerState { permissionEducationParams.state.educationInfoList.size }
 
-    Content(
-        ui = {
-            EducationPager(
-                items = permissionEducationParams.state.educationInfoList,
+    BackHandler(enabled = true) { permissionEducationParams.onGotItButtonClicked.invoke() }
+
+    EducationPager(
+        items = permissionEducationParams.state.educationInfoList,
+        pagerState = pagerState,
+        pageContent = { page ->
+            EducationScreen(
+                educationInfo = page,
                 pagerState = pagerState,
-                pageContent = { page ->
-                    EducationScreen(
-                        educationInfo = page,
-                        pagerState = pagerState,
-                        nextPage = (pagerState.currentPage + 1).coerceAtMost(maximumValue = permissionEducationParams.state.educationInfoList.size - 1),
-                        onButtonClicked = if (pagerState.currentPage == 0) {
-                            permissionEducationParams.onGotItButtonClicked
-                        } else {
-                            null
-                        },
-                        onMoreInfoClicked = permissionEducationParams.onMoreInfoClicked,
-                        onCloseIconClicked = permissionEducationParams.onGotItButtonClicked
-                    )
-                }
+                nextPage = (pagerState.currentPage + 1).coerceAtMost(
+                    maximumValue = permissionEducationParams.state.educationInfoList.size - 1
+                ),
+                onButtonClicked = if (pagerState.currentPage == 0) {
+                    permissionEducationParams.onGotItButtonClicked
+                } else {
+                    null
+                },
+                onMoreInfoClicked = permissionEducationParams.onMoreInfoClicked,
+                onCloseIconClicked = permissionEducationParams.onGotItButtonClicked
             )
         }
     )
 }
 
+/**
+ * Preview of the [PermissionEducationScreen] with a single static education item.
+ */
 @Preview
 @Composable
 fun PermissionEducationScreenPreview() {

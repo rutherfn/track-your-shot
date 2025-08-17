@@ -21,6 +21,22 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.ShotIgnoringEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.UserEntity
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Room database definition for the app. Includes all entities and DAOs.
+ * Handles database migrations automatically through [AutoMigration].
+ * Uses [TypeConverters] for complex types like PlayerPositions and ShotLogged.
+ *
+ * Provides access to the following DAOs:
+ * - [ActiveUserDao]
+ * - [DeclaredShotDao]
+ * - [IndividualPlayerReportDao]
+ * - [PendingPlayerDao]
+ * - [PlayerDao]
+ * - [ShotIgnoringDao]
+ * - [UserDao]
+ */
 @Database(
     entities = [
         ActiveUserEntity::class,
@@ -42,24 +58,31 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.UserEntity
         AutoMigration(from = 8, to = 9),
         AutoMigration(from = 9, to = 10),
         AutoMigration(from = 10, to = 11)
-
     ],
     version = 11,
     exportSchema = true
 )
 @TypeConverters(PlayerPositionsConverter::class, ShotLoggedConverter::class)
 abstract class AppDatabase : RoomDatabase() {
+
+    /** Provides access to ActiveUser table operations. */
     abstract fun activeUserDao(): ActiveUserDao
 
+    /** Provides access to DeclaredShot table operations. */
     abstract fun declaredShotDao(): DeclaredShotDao
 
+    /** Provides access to IndividualPlayerReport table operations. */
     abstract fun individualPlayerReportDao(): IndividualPlayerReportDao
 
+    /** Provides access to PendingPlayer table operations. */
     abstract fun pendingPlayerDao(): PendingPlayerDao
 
+    /** Provides access to Player table operations. */
     abstract fun playerDao(): PlayerDao
 
+    /** Provides access to ShotIgnoring table operations. */
     abstract fun shotIgnoringDao(): ShotIgnoringDao
 
+    /** Provides access to User table operations. */
     abstract fun userDao(): UserDao
 }

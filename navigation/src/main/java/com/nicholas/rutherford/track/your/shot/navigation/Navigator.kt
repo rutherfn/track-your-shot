@@ -6,6 +6,13 @@ import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePicker
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import kotlinx.coroutines.flow.StateFlow
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16.
+ *
+ * Defines a interface for navigation actions.
+ * These actions are used to navigate to different screens in the app, and observed through a [StateFlow]
+ * With then extension functions to update those values.
+ */
 interface Navigator {
     val alertActions: StateFlow<Alert?>
     val appSettingsActions: StateFlow<Boolean?>

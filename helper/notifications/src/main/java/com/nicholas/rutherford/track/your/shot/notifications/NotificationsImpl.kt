@@ -10,11 +10,26 @@ import androidx.core.app.NotificationCompat
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import kotlin.random.Random
+const val DATA_TYPE = "application/pdg"
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16.
+ *
+ * Implementation of [Notifications] responsible for creating and displaying notifications
+ * related to player reports.
+ *
+ * @param application The application context used to create notifications.
+ */
 class NotificationsImpl(private val application: Application) : Notifications {
 
+    /** Notification manager retrieved from the system service. */
     private val manager = application.getSystemService(NotificationManager::class.java)
 
+    /**
+     * Sends a new notification through the [NotificationManager].
+     *
+     * @param notification The [Notification] to display.
+     */
     private fun notifyManagerWithNewNotification(notification: Notification) {
         manager.notify(
             Random.nextInt(),
@@ -22,9 +37,18 @@ class NotificationsImpl(private val application: Application) : Notifications {
         )
     }
 
+    /**
+     * Builds and displays a notification for a player report.
+     *
+     * The notification opens the provided [uri] when clicked, using a [PendingIntent].
+     *
+     * @param uri The URI of the report to view.
+     * @param title The title of the notification.
+     * @param description The description text of the notification.
+     */
     override fun buildPlayerReportNotification(uri: Uri, title: String, description: String) {
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(uri, "application/pdf")
+            setDataAndType(uri, DATA_TYPE)
             flags = Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_GRANT_READ_URI_PERMISSION
         }
 
@@ -34,6 +58,7 @@ class NotificationsImpl(private val application: Application) : Notifications {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+
         val notification = NotificationCompat.Builder(application, Constants.NOTIFICATION_CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(description)

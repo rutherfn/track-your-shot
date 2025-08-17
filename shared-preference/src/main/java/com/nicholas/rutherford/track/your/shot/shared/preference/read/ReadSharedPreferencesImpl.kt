@@ -3,21 +3,26 @@ package com.nicholas.rutherford.track.your.shot.shared.preference.read
 import android.content.SharedPreferences
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16.
+ *
+ * Implementation of [ReadSharedPreferences] responsible for reading from [SharedPreferences].
+ * This class reads various user-related flags and data into persistent storage.
+ * todo -> Want to switch over to DataStore in the future
+ *
+ * @param sharedPreferences The [SharedPreferences] instance to read from.
+ */
 class ReadSharedPreferencesImpl(private val sharedPreferences: SharedPreferences) : ReadSharedPreferences {
 
+    /** Reads whether the app has been launched before. */
     override fun appHasBeenLaunched(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.APP_HAS_LAUNCHED, false)
 
-    override fun shouldUpdateLoggedInPlayerListState(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_PLAYER_LIST, false)
-
-    override fun shouldUpdateLoggedInDeclaredShotListState(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST, false)
-
+    /** Reads whether the terms and conditions should be shown. */
     override fun shouldShowTermsAndConditions(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.SHOULD_SHOW_TERM_AND_CONDITIONS, false)
 
-    override fun hasAccountBeenAuthenticated(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.HAS_AUTHENTICATED_ACCOUNT, false)
-
+    /** Reads whether the user is logged in. */
     override fun isLoggedIn(): Boolean = sharedPreferences.getBoolean(Constants.Preferences.IS_LOGGED_IN, false)
 
+    /** Reads user player filtered by name. */
     override fun playerFilterName(): String = sharedPreferences.getString(Constants.Preferences.PLAYER_FILTER_NAME, "") ?: ""
-
-    override fun declaredShotId(): Int = sharedPreferences.getInt(Constants.Preferences.DECLARED_SHOT_ID, -1)
 }

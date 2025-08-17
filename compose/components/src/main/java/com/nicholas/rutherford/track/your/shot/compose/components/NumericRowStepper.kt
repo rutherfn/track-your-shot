@@ -9,18 +9,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -31,9 +30,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * A composable displaying a numeric stepper row with a title and increment/decrement buttons.
+ *
+ * @param title The title displayed on the left side of the row.
+ * @param onDownwardClicked Callback invoked when the decrement button is pressed with the new value.
+ * @param onUpwardClicked Callback invoked when the increment button is pressed with the new value.
+ * @param titleStyle Optional text style for the title, defaults to `TextStyles.smallBold`.
+ * @param shouldShowDivider Optional flag to show a horizontal divider below the row.
+ * @param defaultValue Initial value of the stepper, defaults to 0.
+ */
 @Composable
 fun NumericRowStepper(
     title: String,
@@ -67,18 +79,25 @@ fun NumericRowStepper(
         }
 
         if (shouldShowDivider) {
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
         }
     }
 }
 
+/**
+ * Internal composable for the numeric value display and increment/decrement buttons.
+ *
+ * @param defaultValue Initial value of the stepper.
+ * @param onDownwardClicked Callback invoked when decrementing the value.
+ * @param onUpwardClicked Callback invoked when incrementing the value.
+ */
 @Composable
 fun NumericRowStepperRightContent(
     defaultValue: Int,
     onDownwardClicked: ((value: Int) -> Unit),
     onUpwardClicked: ((value: Int) -> Unit)
 ) {
-    var value by remember { mutableStateOf(defaultValue) }
+    var value by remember { mutableIntStateOf(defaultValue) }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -100,7 +119,7 @@ fun NumericRowStepperRightContent(
             Icon(
                 imageVector = Icons.Default.ArrowDownward,
                 contentDescription = "Decrease Value",
-                tint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
+                tint = AppColors.Black,
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -127,15 +146,18 @@ fun NumericRowStepperRightContent(
             Icon(
                 imageVector = Icons.Default.ArrowUpward,
                 contentDescription = "Increase Value",
-                tint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
+                tint = AppColors.Black,
                 modifier = Modifier.size(24.dp)
             )
         }
     }
 }
 
+/**
+ * Preview of [NumericRowStepper] composable.
+ */
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun StepperRowPreview() {
     Column(modifier = Modifier.background(Color.White)) {
         NumericRowStepper(

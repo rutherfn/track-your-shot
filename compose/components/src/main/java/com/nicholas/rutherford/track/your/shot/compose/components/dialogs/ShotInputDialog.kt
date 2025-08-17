@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,19 +17,35 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.nicholas.rutherford.track.your.shot.TrackMyShotTheme
+import com.nicholas.rutherford.track.your.shot.TrackYourShotTheme
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Custom dialog used for entering a numeric shot input value.
+ * Displays a title, input field, confirm button, and dismiss button.
+ *
+ * @param inputInfo [InputInfo] containing all necessary data and callbacks for the dialog:
+ *  - [InputInfo.titleResId]: Resource ID for the dialog title
+ *  - [InputInfo.placeholderResId]: Resource ID for the input placeholder
+ *  - [InputInfo.startingInputAmount]: Optional initial input value
+ *  - [InputInfo.confirmButtonResId]: Resource ID for the confirm button text
+ *  - [InputInfo.dismissButtonResId]: Resource ID for the dismiss button text
+ *  - [InputInfo.onConfirmButtonClicked]: Callback invoked with the input value when confirmed
+ *  - [InputInfo.onDismissButtonClicked]: Callback invoked when the dialog is dismissed
+ */
 @Composable
 fun ShotInputDialog(inputInfo: InputInfo) {
     var numberText by remember { mutableStateOf(value = "") }
 
-    TrackMyShotTheme {
+    TrackYourShotTheme {
         Dialog(
             onDismissRequest = { inputInfo.onDismissButtonClicked?.invoke() },
             properties = DialogProperties()
@@ -39,9 +55,7 @@ fun ShotInputDialog(inputInfo: InputInfo) {
                 confirmButton = {
                     TextButton(
                         onClick = { inputInfo.onConfirmButtonClicked.invoke(numberText) },
-                        content = {
-                            Text(text = stringResource(id = inputInfo.confirmButtonResId))
-                        }
+                        content = { Text(text = stringResource(id = inputInfo.confirmButtonResId)) }
                     )
                 },
                 dismissButton = {
@@ -61,7 +75,6 @@ fun ShotInputDialog(inputInfo: InputInfo) {
                         stringResource(id = inputInfo.placeholderResId)
                     } else {
                         val inputAmount = inputInfo.startingInputAmount ?: 0
-
                         if (inputAmount <= 1) {
                             stringResource(id = StringsIds.xShot, inputAmount.toString())
                         } else {
@@ -72,20 +85,17 @@ fun ShotInputDialog(inputInfo: InputInfo) {
                         value = numberText,
                         onValueChange = { value ->
                             val shotInput = value.toIntOrNull() ?: 0
-                            numberText = if (shotInput <= 99) {
-                                value
-                            } else {
-                                numberText
-                            }
+                            numberText = if (shotInput <= 99) value else numberText
                         },
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                         keyboardActions = KeyboardActions(
-                            onDone = {
-                                inputInfo.onConfirmButtonClicked.invoke(numberText)
-                            }
+                            onDone = { inputInfo.onConfirmButtonClicked.invoke(numberText) }
                         ),
                         modifier = Modifier.fillMaxWidth(),
-                        colors = TextFieldDefaults.textFieldColors(backgroundColor = Colors.whiteColor),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Colors.whiteColor,
+                            unfocusedContainerColor = Colors.whiteColor
+                        ),
                         singleLine = true,
                         placeholder = { Text(text = placeholderText) }
                     )
@@ -94,4 +104,23 @@ fun ShotInputDialog(inputInfo: InputInfo) {
             )
         }
     }
+}
+
+/**
+ * Preview for [ShotInputDialog] showing the dialog with sample input data.
+ */
+@Preview(showBackground = true)
+@Composable
+fun ShotInputDialogPreview() {
+    val inputInfo = InputInfo(
+        titleResId = StringsIds.shots,
+        placeholderResId = StringsIds.enterShotName,
+        confirmButtonResId = StringsIds.gotIt,
+        dismissButtonResId = StringsIds.cancel,
+        startingInputAmount = 5,
+        onConfirmButtonClicked = {},
+        onDismissButtonClicked = {}
+    )
+
+    ShotInputDialog(inputInfo = inputInfo)
 }

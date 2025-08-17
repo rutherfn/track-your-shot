@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,65 +33,83 @@ import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
 import com.nicholas.rutherford.track.your.shot.navigation.ReportingAction
 import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Composable that displays the content of a navigation drawer.
+ *
+ * @param actions List of [DrawerAction] representing the menu items to display.
+ * @param modifier Optional [Modifier] to customize the layout of the drawer.
+ * @param onDestinationClicked Callback invoked when a menu item is clicked.
+ *        Provides the navigation route, [NavOptions], and the title resource ID of the clicked item.
+ */
 @Composable
 fun DrawerContent(
     actions: List<DrawerAction>,
     modifier: Modifier = Modifier,
     onDestinationClicked: (route: String, navOptions: NavOptions, titleId: Int) -> Unit?
 ) {
-    TrackMyShotTheme {
+    TrackYourShotTheme {
         Column(
-            modifier
+            modifier = modifier
                 .fillMaxSize()
-                .padding(start = 24.dp, top = 48.dp)
+                .background(AppColors.White)
+                .padding(horizontal = 24.dp, vertical = 32.dp)
         ) {
+            // App logo
             Image(
-                painterResource(R.mipmap.ic_launcher_round),
-                contentDescription = "",
-                contentScale = ContentScale.Fit
+                painter = painterResource(R.mipmap.ic_launcher_round),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .size(72.dp)
+                    .align(Alignment.Start)
             )
 
-            Spacer(Modifier.height(24.dp))
-            Divider()
+            Spacer(Modifier.height(16.dp))
+            HorizontalDivider()
+            Spacer(Modifier.height(16.dp))
 
+            // App name and author
             Text(
                 text = stringResource(id = R.string.track_your_shot),
-                style = TextStyles.subLarge,
-                modifier = Modifier.fillMaxWidth()
+                style = TextStyles.subLarge
             )
             Text(
                 text = stringResource(id = R.string.by_nicholas_rutherford),
-                style = TextStyles.smallBold,
-                modifier = Modifier.fillMaxWidth()
+                style = TextStyles.smallBold
+            )
+
+            Spacer(Modifier.height(24.dp))
+
+            // Menu section title
+            Text(
+                text = stringResource(id = R.string.menu),
+                style = TextStyles.subLarge
             )
 
             Spacer(Modifier.height(12.dp))
 
-            Text(
-                text = stringResource(id = R.string.menu),
-                style = TextStyles.subLarge,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(Modifier.height(4.dp))
-
+            // Menu items
             actions.forEach { action ->
-                Spacer(Modifier.height(12.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 8.dp, end = 8.dp, bottom = 8.dp)
                         .clickable {
+                            // Safely invoke callback with route, navOptions, and titleId
                             safeLet(action.route, action.navOptions, action.titleId) { route, navOptions, titleId ->
                                 onDestinationClicked(route, navOptions, titleId)
                             } ?: run {
                                 onDestinationClicked("", NavOptions.Builder().build(), action.titleId)
                             }
                         }
+                        .padding(vertical = 12.dp)
                 ) {
                     Icon(
                         imageVector = action.imageVector,
-                        contentDescription = "Icon"
+                        contentDescription = null,
+                        tint = LocalContentColor.current
                     )
                     Spacer(Modifier.width(16.dp))
                     Text(
@@ -102,6 +122,9 @@ fun DrawerContent(
     }
 }
 
+/**
+ * Preview of [DrawerContent] showing a sample drawer with three menu actions.
+ */
 @Preview
 @Composable
 fun DrawerContentPreview() {

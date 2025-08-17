@@ -2,10 +2,15 @@ package com.nicholas.rutherford.track.your.shot.feature.create.account.createacc
 
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.firebase.TestAuthenticateUserViaEmailFirebaseResponse
-import com.nicholas.rutherford.track.your.shot.firebase.TestCreateAccountFirebaseAuthResponse
+import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
+import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.TestAuthenticateUserViaEmailFirebaseResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -37,6 +42,11 @@ class CreateAccountViewModelTest {
     private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
     private val authenticationFirebase = mockk<AuthenticationFirebase>(relaxed = true)
 
+    private val accountManager = mockk<AccountManager>(relaxed = true)
+
+    private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
+    private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
+
     private val state = CreateAccountState(username = null, email = null, password = null)
 
     private val createAccountFirebaseAuthResponse = TestCreateAccountFirebaseAuthResponse().create()
@@ -57,6 +67,9 @@ class CreateAccountViewModelTest {
             createFirebaseUserInfo = createFirebaseUserInfo,
             createSharedPreferences = createSharedPreferences,
             authenticationFirebase = authenticationFirebase,
+            accountManager = accountManager,
+            activeUserRepository = activeUserRepository,
+            declaredShotRepository = declaredShotRepository,
             scope = scope
         )
     }
@@ -70,8 +83,14 @@ class CreateAccountViewModelTest {
     @Test
     fun constants() {
         Assertions.assertEquals(EMAIL_PATTERN, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
-        Assertions.assertEquals(PASSWORD_PATTERN, "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$")
-        Assertions.assertEquals(USERNAME_PATTERN, "^(?=[a-zA-Z\\d._]{8,20}\$)(?!.*[_.]{2})[^_.].*[^_.]\$")
+        Assertions.assertEquals(
+            PASSWORD_PATTERN,
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"
+        )
+        Assertions.assertEquals(
+            USERNAME_PATTERN,
+            "^(?=[a-zA-Z\\d._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$"
+        )
     }
 
     @Test
@@ -617,6 +636,64 @@ class CreateAccountViewModelTest {
     }
 
     @Nested
+    inner class AttemptToCreateAccount {
+
+        private val username = "username"
+        private val email = "testemail@gmail.com"
+        private val key = "ke"
+
+        @Test
+        fun `when attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow first value returns false should disable progress and show alert`() = runTest {
+            coEvery { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email) } returns flowOf(Pair(first = false, second = key))
+
+            viewModel.attemptToCreateAccount(username = username, email = email)
+
+            coVerify(exactly = 0) {
+                activeUserRepository.updateActiveUser(
+                    activeUser = ActiveUser(
+                        id = Constants.ACTIVE_USER_ID,
+                        accountHasBeenCreated = true,
+                        email = email,
+                        username = username,
+                        firebaseAccountInfoKey = key
+                    )
+                )
+            }
+            verify(exactly = 0) { createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true) }
+            coVerify(exactly = 0) { declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList()) }
+            verify(exactly = 0) { navigation.navigateToTermsAndConditions() }
+
+            verify { navigation.disableProgress() }
+            verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow first value returns true should disable progress and show terms and conditions`() = runTest {
+            coEvery { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email) } returns flowOf(Pair(first = true, second = key))
+
+            viewModel.attemptToCreateAccount(username = username, email = email)
+
+            coVerify {
+                activeUserRepository.updateActiveUser(
+                    activeUser = ActiveUser(
+                        id = Constants.ACTIVE_USER_ID,
+                        accountHasBeenCreated = true,
+                        email = email,
+                        username = username,
+                        firebaseAccountInfoKey = key
+                    )
+                )
+            }
+            verify(exactly = 1) { createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true) }
+            coVerify(exactly = 1) { declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList()) }
+            verify(exactly = 1) { navigation.disableProgress() }
+            verify(exactly = 1) { navigation.navigateToTermsAndConditions() }
+
+            verify(exactly = 0) { navigation.alert(alert = any()) }
+        }
+    }
+
+    @Nested
     inner class ValidateFieldsWithOptionalAlert {
 
         @Test
@@ -854,9 +931,9 @@ class CreateAccountViewModelTest {
                     username = testUsername
                 )
 
-                verify { navigation.disableProgress() }
                 verify { createSharedPreferences.createIsLoggedIn(value = true) }
-                verify { navigation.navigateToAuthentication(email = testEmail, username = testUsername) }
+                coVerify { accountManager.createActiveUser(username = testUsername, email = testEmail) }
+                //   coVerify { viewModel.attemptToCreateAccount(username = testUsername, email = testEmail) }
             }
     }
 
