@@ -21,7 +21,7 @@ class NavigationDestinationsTest {
     internal val comparePlayersScreen = "comparePlayersScreen"
     internal val shotsListScreen = "shotsListScreen"
     internal val settingsScreen = "settingsScreen"
-    internal val reportsListScreen = "reportsListScreen"
+    internal val reportsListScreen = "reportListScreen"
     internal val statsScreen = "statsScreen"
     internal val voiceCommandsScreen = "voiceCommandsScreen"
     internal val selectShotScreen = "selectShotScreen"
