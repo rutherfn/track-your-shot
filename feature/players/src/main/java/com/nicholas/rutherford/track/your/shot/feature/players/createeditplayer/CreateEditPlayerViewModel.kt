@@ -1118,7 +1118,7 @@ class CreateEditPlayerViewModel(
             pendingPlayerRepository.createPendingPlayer(player = pendingPlayer)
             pendingPlayers = listOf(pendingPlayer)
 
-                // Fetch ID of the pending player and return it
+            // Fetch ID of the pending player and return it
             pendingPlayerRepository.fetchPendingPlayerIdByName(
                 firstName = firstName,
                 lastName = lastName
