@@ -39,6 +39,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Displays the screen for creating, editing, or viewing a declared shot.
  * Depending on the state, it shows the appropriate UI for:
  * - Viewing a existing shot
@@ -432,4 +434,3 @@ fun ViewDeclaredShotPreview() {
         )
     )
 }
-

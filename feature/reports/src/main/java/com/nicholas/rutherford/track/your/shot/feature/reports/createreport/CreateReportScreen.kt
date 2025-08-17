@@ -32,6 +32,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * The main screen composable for creating a new player report.
  *
  * Delegates UI rendering to [CreateReportContent] and passes the required params.

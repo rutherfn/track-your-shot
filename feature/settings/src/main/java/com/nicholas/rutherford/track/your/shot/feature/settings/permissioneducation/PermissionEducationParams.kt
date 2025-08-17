@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Parameters used to render the PermissionEducationScreen UI.
  *
  * @property onGotItButtonClicked Callback function triggered when the user clicks the "Got It" button.
@@ -12,4 +14,3 @@ data class PermissionEducationParams(
     val onMoreInfoClicked: () -> Unit,
     val state: PermissionEducationState
 )
-

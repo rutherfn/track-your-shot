@@ -23,6 +23,8 @@ import kotlinx.coroutines.launch
 const val UPDATING_DECLARED_SHOT_LIST_DELAY = 400L
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * ViewModel responsible for managing the selection of a declared shot when logging a shot for a player.
  *
  * This ViewModel handles loading declared shots from the repository, filtering shots based on search input,

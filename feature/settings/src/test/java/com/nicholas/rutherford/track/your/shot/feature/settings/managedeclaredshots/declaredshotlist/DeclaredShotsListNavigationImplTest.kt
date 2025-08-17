@@ -1,14 +1,17 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotlist
 
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListNavigationImpl
-import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.extensions.UriEncoder
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.slot
+import io.mockk.unmockkObject
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -27,16 +30,23 @@ class DeclaredShotsListNavigationImplTest {
 
     @Test
     fun `create edit declared shot`() {
-        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+        val shotName = "shotName"
 
-        navigationImpl.createEditDeclaredShot()
+        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+        mockkObject(UriEncoder)
+
+        every { UriEncoder.encode(any()) } answers { firstArg() }
+
+        navigationImpl.createEditDeclaredShot(shotName = shotName)
 
         verify { navigator.navigate(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationActions.DeclaredShotsList.createEditDeclaredShot()
+        val expectedAction = NavigationActions.DeclaredShotsList.createEditDeclaredShot(shotName = shotName)
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
+
+        unmockkObject(UriEncoder)
     }
 
     @Test

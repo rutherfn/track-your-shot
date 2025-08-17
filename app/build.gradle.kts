@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id(BuildIds.pluginId)
     kotlin(BuildIds.pluginKotlin)
@@ -19,6 +21,7 @@ android {
         buildConfig = true
     }
 
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
     }
@@ -78,17 +81,13 @@ android {
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = KotlinOptions.jvmTarget
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(KotlinOptions.jvmTarget))
         }
     }
 
     tasks.withType<Test> {
         useJUnitPlatform()
-    }
-
-    ktlint {
-        disabledRules.value(mutableListOf("no-wildcard-imports"))
     }
 }
 
@@ -179,18 +178,18 @@ koverReport {
     filters {
         excludes {
             classes(
-                "*ScreenKt\$*",
+                "*ScreenKt$*",
                 "*ScreenKt",
-                "*ScreenParams\$*",
+                "*ScreenParams$*",
                 "*ScreenParams",
-                "*Tags\$*",
+                "*Tags$*",
                 "*Tags",
                 "*.NavigationComponentKt",
-                "*NavigationComponentKt\$*",
+                "*NavigationComponentKt$*",
                 "*.ViewModels",
                 "*.MainActivityWrapper",
                 "*Activity",
-                "*Activity\$*",
+                "*Activity$*",
                 "*.BuildConfig"
             )
         }

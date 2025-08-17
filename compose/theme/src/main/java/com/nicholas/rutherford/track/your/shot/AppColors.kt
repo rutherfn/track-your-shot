@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.your.shot
 import androidx.compose.ui.graphics.Color
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Defined colors [Color] for Theming */
 
 object AppColors {

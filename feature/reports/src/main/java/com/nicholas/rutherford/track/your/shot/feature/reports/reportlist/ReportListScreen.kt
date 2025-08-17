@@ -43,6 +43,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Main screen composable for displaying a list of player reports.
  *
  * Shows a list of player reports if reports exist; otherwise, displays an empty state

@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.compose.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
@@ -28,13 +31,15 @@ import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
- * Basic Material 3 [ModalBottomSheet] reused across the app to display sheet with options
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
  *
- * @param sheetState [SheetState] which contains the state of the bottom sheet
- * @param sheetInfo [Sheet] optional param that defines the data for each sheet option
- * @param onSheetItemClicked Callback invoked when a user clicks on a [Sheet] item
- * @param onCancelItemClicked Callback invoked when the cancel button is clicked
- * @param content Composable content displayed behind the bottom sheet
+ * Reusable bottom sheet component that displays a list of selectable options.
+ *
+ * @param sheetState The state of the bottom sheet controlling its visibility and expansion.
+ * @param sheetInfo Optional data for the sheet, including title and list of values.
+ * @param onSheetItemClicked Callback invoked when a sheet item is clicked, returning the value and index.
+ * @param onCancelItemClicked Callback invoked when the cancel button is clicked.
+ * @param content Composable content displayed behind the bottom sheet.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,8 +52,10 @@ fun BottomSheetWithOptions(
     onCancelItemClicked: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
+    // Content displayed behind the sheet
     content()
 
+    // Display sheet only if visible and data is provided
     if (sheetState.currentValue != SheetValue.Hidden && sheetInfo != null) {
         ModalBottomSheet(
             onDismissRequest = onCancelItemClicked,
@@ -68,6 +75,13 @@ fun BottomSheetWithOptions(
     }
 }
 
+/**
+ * Internal composable displaying the sheet content: title, options, and cancel button.
+ *
+ * @param sheet The sheet data containing title and list of options.
+ * @param onSheetItemClicked Callback invoked when an option is clicked.
+ * @param onCancelItemClicked Callback invoked when the cancel button is clicked.
+ */
 @Composable
 private fun SheetContent(
     sheet: Sheet?,
@@ -84,8 +98,7 @@ private fun SheetContent(
             Text(
                 text = it.title,
                 style = TextStyles.bodyBold,
-                modifier = Modifier
-                    .padding(bottom = 12.dp)
+                modifier = Modifier.padding(bottom = 12.dp)
             )
 
             HorizontalDivider()
@@ -119,6 +132,63 @@ private fun SheetContent(
                     .clickable { onCancelItemClicked() }
                     .padding(start = 4.dp)
                     .padding(vertical = 14.dp)
+            )
+        }
+    }
+}
+
+/** ------------------ PREVIEWS ------------------ **/
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun BottomSheetPreviewSample() {
+    val sheet = Sheet(
+        title = "Select Option",
+        values = listOf("Option 1", "Option 2", "Option 3")
+    )
+
+    BottomSheetWithOptions(
+        sheetState = rememberModalBottomSheetState(),
+        sheetInfo = sheet,
+        onSheetItemClicked = { value, index -> },
+        onCancelItemClicked = {}
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+                .background(AppColors.White),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Content Behind Sheet",
+                style = TextStyles.bodyBold,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun BottomSheetWithNoOptionsPreview() {
+    BottomSheetWithOptions(
+        sheetState = rememberModalBottomSheetState(),
+        sheetInfo = null
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+                .background(AppColors.White),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "No Sheet Visible",
+                style = TextStyles.bodyBold,
+                modifier = Modifier.padding(16.dp)
             )
         }
     }

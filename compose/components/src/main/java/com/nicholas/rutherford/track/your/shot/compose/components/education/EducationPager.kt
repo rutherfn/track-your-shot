@@ -14,6 +14,8 @@ import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Default [HorizontalPager] that load items from [EducationInfo]
  * used for Education screens found in the app
  *

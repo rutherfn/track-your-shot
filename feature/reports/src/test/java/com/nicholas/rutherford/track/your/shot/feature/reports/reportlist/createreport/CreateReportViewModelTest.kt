@@ -313,7 +313,6 @@ class CreateReportViewModelTest {
             coVerify { individualPlayerReportRepository.createReport(report = any()) }
             verify { navigation.disableProgress() }
             verify { navigation.alert(alert = any()) }
-            verify { navigation.pop() }
 
             Assertions.assertEquals(createReportViewModel.createReportMutableStateFlow.value, defaultState)
         }

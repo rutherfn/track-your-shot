@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.shots
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Parameters used to render the ShotsListScreen UI.
  *
  * @property state The current UI state, containing a list of all shots with their associated players.
@@ -18,4 +20,3 @@ data class ShotsListScreenParams(
     val onShotItemClicked: (ShotLoggedWithPlayer) -> Unit,
     val shouldShowAllPlayerShots: Boolean
 )
-

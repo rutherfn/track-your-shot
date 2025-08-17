@@ -33,6 +33,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Composable that displays a dropdown menu allowing the user to select a player.
  *
  * @param params Contains the state of the player selection and callbacks for player change.

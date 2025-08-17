@@ -16,4 +16,3 @@ enum class ScreenTriggered {
             entries.getOrNull(index) ?: UNKNOWN
     }
 }
-

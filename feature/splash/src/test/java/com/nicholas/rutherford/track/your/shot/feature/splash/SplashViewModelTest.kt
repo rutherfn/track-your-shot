@@ -69,8 +69,6 @@ class SplashViewModelTest {
         Dispatchers.resetMain()
     }
 
-
-
     @Nested
     inner class Init {
 
@@ -110,7 +108,6 @@ class SplashViewModelTest {
                     )
                     every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(false)
                     every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(false)
-                    every { readSharedPreferences.hasAccountBeenAuthenticated() } returns false
                     every { readSharedPreferences.shouldShowTermsAndConditions() } returns false
 
                     Dispatchers.setMain(dispatcher)
@@ -144,7 +141,6 @@ class SplashViewModelTest {
                     coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
                         accountHasBeenCreated = true
                     )
-                    every { readSharedPreferences.hasAccountBeenAuthenticated() } returns false
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
@@ -178,7 +174,6 @@ class SplashViewModelTest {
                         accountHasBeenCreated = true
                     )
                     every { readSharedPreferences.isLoggedIn() } returns true
-                    every { readSharedPreferences.hasAccountBeenAuthenticated() } returns false
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
@@ -211,7 +206,6 @@ class SplashViewModelTest {
                     coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
                         accountHasBeenCreated = true
                     )
-                    every { readSharedPreferences.hasAccountBeenAuthenticated() } returns true
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(

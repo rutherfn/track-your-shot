@@ -33,6 +33,16 @@ import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
 import com.nicholas.rutherford.track.your.shot.navigation.ReportingAction
 import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Composable that displays the content of a navigation drawer.
+ *
+ * @param actions List of [DrawerAction] representing the menu items to display.
+ * @param modifier Optional [Modifier] to customize the layout of the drawer.
+ * @param onDestinationClicked Callback invoked when a menu item is clicked.
+ *        Provides the navigation route, [NavOptions], and the title resource ID of the clicked item.
+ */
 @Composable
 fun DrawerContent(
     actions: List<DrawerAction>,
@@ -46,6 +56,7 @@ fun DrawerContent(
                 .background(AppColors.White)
                 .padding(horizontal = 24.dp, vertical = 32.dp)
         ) {
+            // App logo
             Image(
                 painter = painterResource(R.mipmap.ic_launcher_round),
                 contentDescription = null,
@@ -57,9 +68,9 @@ fun DrawerContent(
 
             Spacer(Modifier.height(16.dp))
             HorizontalDivider()
-
             Spacer(Modifier.height(16.dp))
 
+            // App name and author
             Text(
                 text = stringResource(id = R.string.track_your_shot),
                 style = TextStyles.subLarge
@@ -71,6 +82,7 @@ fun DrawerContent(
 
             Spacer(Modifier.height(24.dp))
 
+            // Menu section title
             Text(
                 text = stringResource(id = R.string.menu),
                 style = TextStyles.subLarge
@@ -78,12 +90,14 @@ fun DrawerContent(
 
             Spacer(Modifier.height(12.dp))
 
+            // Menu items
             actions.forEach { action ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
+                            // Safely invoke callback with route, navOptions, and titleId
                             safeLet(action.route, action.navOptions, action.titleId) { route, navOptions, titleId ->
                                 onDestinationClicked(route, navOptions, titleId)
                             } ?: run {
@@ -108,6 +122,9 @@ fun DrawerContent(
     }
 }
 
+/**
+ * Preview of [DrawerContent] showing a sample drawer with three menu actions.
+ */
 @Preview
 @Composable
 fun DrawerContentPreview() {

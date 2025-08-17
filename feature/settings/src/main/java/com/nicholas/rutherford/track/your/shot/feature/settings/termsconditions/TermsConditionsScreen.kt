@@ -3,7 +3,14 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,6 +32,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Entry point for the Terms & Conditions screen.
  *
  * @param params Container class holding all required state and callbacks.
@@ -78,7 +87,7 @@ fun TermsConditionsContent(params: TermsConditionsParams) {
                 .align(Alignment.BottomCenter)
                 .padding(Padding.sixteen)
                 .fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
+            colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor)
         ) {
             Text(
                 text = params.state.buttonText

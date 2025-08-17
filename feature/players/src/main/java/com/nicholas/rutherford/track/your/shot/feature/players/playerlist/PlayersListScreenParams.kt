@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.your.shot.feature.players.playerlist
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 
 /**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * Parameters for the `PlayersListScreen` composable.
  *
  * This data class encapsulates all the necessary state and callback functions required to
@@ -23,4 +25,3 @@ data class PlayersListScreenParams(
     val onPlayerClicked: (player: Player) -> Unit,
     val onSheetItemClicked: (index: Int) -> Unit
 )
-

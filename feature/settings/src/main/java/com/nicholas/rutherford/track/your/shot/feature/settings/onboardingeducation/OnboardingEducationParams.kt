@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Parameters used to render the OnboardingEducationScreen UI.
  *
  * @property onGotItButtonClicked Callback function triggered when the user clicks the "Got It" button.
@@ -10,4 +12,3 @@ data class OnboardingEducationParams(
     val onGotItButtonClicked: () -> Unit,
     val state: OnboardingEducationState
 )
-

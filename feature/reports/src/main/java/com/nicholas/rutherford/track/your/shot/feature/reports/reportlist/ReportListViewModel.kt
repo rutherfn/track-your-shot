@@ -23,6 +23,8 @@ import java.util.Date
 
 // todo -> Unit test this in a follow up PR
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * ViewModel for managing the report list screen. This ViewModel is responsible for
  * retrieving and updating the list of individual player reports, handling navigation,
  * displaying alerts, and performing operations like viewing, deleting, or downloading reports.

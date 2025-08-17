@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Parameters used to render the AccountInfoScreen UI.
  *
  * @property onToolbarMenuClicked Callback function triggered when the user interacts with the toolbar menu.

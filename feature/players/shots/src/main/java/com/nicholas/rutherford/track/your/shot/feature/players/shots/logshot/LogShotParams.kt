@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Defines all state and callback parameters required by the Log Shot screen.
  *
  * This class is passed down to composables to handle UI state, user interactions,
@@ -27,4 +29,3 @@ data class LogShotParams(
     val onSaveClicked: () -> Unit,
     val onDeleteShotClicked: () -> Unit
 )
-

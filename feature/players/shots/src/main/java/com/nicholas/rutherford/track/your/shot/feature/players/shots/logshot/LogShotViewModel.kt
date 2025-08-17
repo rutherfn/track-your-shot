@@ -37,6 +37,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * ViewModel responsible for managing the state and business logic for logging a basketball shot.
  *
  * Handles fetching existing shot data, updating shot information, saving new or updated shots,
@@ -83,7 +85,7 @@ class LogShotViewModel(
 
     internal var screenTriggered: ScreenTriggered = ScreenTriggered.UNKNOWN
 
-    internal var shouldShowTest: Boolean = false
+    internal var shouldShowAllPlayersShots: Boolean = false
 
     /**
      * Navigation arguments extracted from the saved state handle.
@@ -100,12 +102,10 @@ class LogShotViewModel(
     init {
         updateIsExistingPlayerAndId()
         screenTriggered = ScreenTriggered.fromIndex(screenTriggeredIndexArgument)
-        shouldShowTest = if (screenTriggered == ScreenTriggered.FROM_ALL_PLAYERS) {
-            true
-        } else if (screenTriggered == ScreenTriggered.FROM_FILTER_PLAYERS) {
-            false
-        } else {
-            false
+        shouldShowAllPlayersShots = when (screenTriggered) {
+            ScreenTriggered.FROM_ALL_PLAYERS -> { true }
+            ScreenTriggered.FROM_FILTER_PLAYERS -> { false }
+            else -> { false }
         }
     }
 
@@ -574,7 +574,7 @@ class LogShotViewModel(
                 )
             )
             navigation.disableProgress()
-            navigation.popToShotList(shouldShowAllPlayersShots = shouldShowTest)
+            navigation.popToShotList(shouldShowAllPlayersShots = shouldShowAllPlayersShots)
             navigation.alert(alert = logShotViewModelExt.showUpdatedAlert())
         } else {
             navigation.disableProgress()
@@ -627,7 +627,7 @@ class LogShotViewModel(
         if (hasDeleted) {
             if (logShotViewModelExt.logShotInfo.fromShotList) {
                 navigation.disableProgress()
-                navigation.popToShotList(shouldShowAllPlayersShots = shouldShowTest)
+                navigation.popToShotList(shouldShowAllPlayersShots = shouldShowAllPlayersShots)
             } else {
                 navigateToCreateOrEditPlayer()
             }
@@ -646,7 +646,7 @@ class LogShotViewModel(
         if (logShotViewModelExt.logShotInfo.isExistingPlayer) {
             navigation.popToEditPlayer()
         } else {
-            navigation.popToEditPlayer()
+            navigation.popToCreatePlayer()
         }
     }
 

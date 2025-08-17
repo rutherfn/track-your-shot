@@ -17,7 +17,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFireba
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.extensions.normalizeSpaces
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,6 +26,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * ViewModel responsible for handling creation, editing, viewing, and deletion of declared shots.
  * Manages UI state, validation, Firebase synchronization, and local persistence.
  *
@@ -44,8 +45,6 @@ import kotlinx.coroutines.launch
  * @property createFirebaseUserInfo Firebase helper for creating declared shots and ignored IDs.
  * @property updateFirebaseUserInfo Firebase helper for updating declared shots.
  * @property deleteFirebaseUserInfo Firebase helper for deleting declared shots.
- * @property createSharedPreferences SharedPreferences helper for writing temporary values.
- * @property readSharedPreferences SharedPreferences helper for reading temporary values.
  * @property navigation Navigation interface to handle screen transitions and UI events.
  * @property scope CoroutineScope for asynchronous tasks.
  */
@@ -57,10 +56,9 @@ class CreateEditDeclaredShotViewModel(
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val updateFirebaseUserInfo: UpdateFirebaseUserInfo,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
-    private val createSharedPreferences: CreateSharedPreferences,
     private val playerRepository: PlayerRepository,
     private val navigation: CreateEditDeclaredShotNavigation,
-    private val scope: CoroutineScope,
+    private val scope: CoroutineScope
 ) : BaseViewModel() {
 
     internal var allDeclaredShotNames: List<String> = emptyList()
@@ -109,7 +107,7 @@ class CreateEditDeclaredShotViewModel(
     /**
      * Handles toolbar back/menu click.
      * - If in editing mode, returns to viewing mode and resets changes.
-     * - Otherwise, resets state and navigates back.
+     * - Otherwise, resets state and navigates back to declared shot list.
      */
     fun onToolbarMenuClicked() {
         val declaredShotState = createEditDeclaredShotMutableStateFlow.value.declaredShotState
@@ -120,7 +118,7 @@ class CreateEditDeclaredShotViewModel(
             resetDeclaredShotValues()
         } else {
             resetDeclaredShotValues()
-            navigation.pop()
+            navigation.navigateToDeclaredShotList()
         }
     }
 
@@ -215,7 +213,7 @@ class CreateEditDeclaredShotViewModel(
         if (idsToIgnoreSuccess && deletedShotSuccess) {
             declaredShotRepository.deleteShotById(id)
             shotIgnoringRepository.createShotIgnoring(shotId = id)
-            navigation.pop()
+            navigation.navigateToDeclaredShotList()
         } else {
             navigation.alert(alert = buildCouldNotDeleteShotAlert(shotName))
         }
@@ -441,7 +439,7 @@ class CreateEditDeclaredShotViewModel(
         }
 
         val isExactShotNameMatchIgnoringSpaces = shot.title.isNotEmpty() &&
-                allDeclaredShotNames.any { it.normalizeSpaces() == shot.title.normalizeSpaces() }
+            allDeclaredShotNames.any { it.normalizeSpaces() == shot.title.normalizeSpaces() }
 
         val missingFieldAlert = when {
             shot.title.isEmpty() -> buildShotNameNotAddedAlert()
@@ -479,7 +477,7 @@ class CreateEditDeclaredShotViewModel(
      */
     private suspend fun handleShotCreation() {
         val isExactShotNameMatchIgnoringSpaces = createdShotInfo.name.isNotEmpty() &&
-                allDeclaredShotNames.any { it.normalizeSpaces() == createdShotInfo.name.normalizeSpaces() }
+            allDeclaredShotNames.any { it.normalizeSpaces() == createdShotInfo.name.normalizeSpaces() }
 
         val missingFieldAlert = when {
             createdShotInfo.name.isEmpty() -> buildShotNameNotAddedAlert()
@@ -523,7 +521,7 @@ class CreateEditDeclaredShotViewModel(
                 if (success) {
                     declaredShotRepository.updateDeclaredShot(newDeclaredShot)
                     navigation.disableProgress()
-                    navigation.pop()
+                    navigation.navigateToDeclaredShotList()
                     navigation.alert(buildSubmitShotAlert(hasShotBeenCreated = false, shotName = newDeclaredShot.title))
                 } else {
                     handleShotError(newDeclaredShot.title)
@@ -548,12 +546,11 @@ class CreateEditDeclaredShotViewModel(
                     }
                     declaredShotRepository.createNewDeclaredShot(shot.copy(firebaseKey = firebaseKey))
                     navigation.disableProgress()
-                    navigation.pop()
+                    navigation.navigateToDeclaredShotList()
                     navigation.alert(buildSubmitShotAlert(hasShotBeenCreated = hasShotBeenCreated, shotName = shot.title))
                 } else {
                     handleShotError(shot.title)
                 }
             }
     }
-
 }

@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Represents the UI state for the Create Account Screen
  *
  * @property username The entered username

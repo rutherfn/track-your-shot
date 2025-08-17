@@ -17,7 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import com.nicholas.rutherford.track.your.shot.base.resources.R
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -29,12 +28,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Composable screen that displays a list of declared shots.
+ * If no shots exist, it shows an empty state with an option to add a new shot.
+ *
+ * @param declaredShotsListScreenParams Parameters including state and callbacks for handling shot interactions.
+ */
 @Composable
 fun DeclaredShotsListScreen(declaredShotsListScreenParams: DeclaredShotsListScreenParams) {
     BackHandler(enabled = true) { declaredShotsListScreenParams.onToolbarMenuClicked.invoke() }
@@ -46,6 +54,11 @@ fun DeclaredShotsListScreen(declaredShotsListScreenParams: DeclaredShotsListScre
     }
 }
 
+/**
+ * Displays a LazyColumn of declared shot items.
+ *
+ * @param declaredShotsListScreenParams Parameters including state and click callbacks.
+ */
 @Composable
 private fun DeclaredShotListItems(declaredShotsListScreenParams: DeclaredShotsListScreenParams) {
     LazyColumn(
@@ -64,6 +77,12 @@ private fun DeclaredShotListItems(declaredShotsListScreenParams: DeclaredShotsLi
     }
 }
 
+/**
+ * Represents a single declared shot item within the list.
+ *
+ * @param declaredShot The declared shot to display.
+ * @param onDeclaredShotClicked Callback invoked when the shot is clicked, passing the shot title.
+ */
 @Composable
 private fun DeclaredShotItem(declaredShot: DeclaredShot, onDeclaredShotClicked: (title: String) -> Unit) {
     Card(
@@ -86,6 +105,10 @@ private fun DeclaredShotItem(declaredShot: DeclaredShot, onDeclaredShotClicked: 
     }
 }
 
+/**
+ * Displays an empty state when no declared shots exist.
+ * Includes an illustration, description, and a button to add a new shot.
+ */
 @Composable
 private fun DeclaredShotListEmptyState() {
     Box(

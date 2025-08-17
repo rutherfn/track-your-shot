@@ -7,6 +7,8 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * ViewModel for the Enabled Permissions screen, responsible for handling permission-related actions
  * and presenting alerts when permissions are not granted.
  *
@@ -55,4 +57,3 @@ class EnabledPermissionsViewModel(
      */
     fun permissionNotGrantedForCameraAlert() = navigation.alert(alert = cameraPermissionNotGrantedAlert())
 }
-

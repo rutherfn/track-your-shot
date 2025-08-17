@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.compose.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,20 +26,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import com.nicholas.rutherford.track.your.shot.AppColors
-import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Custom [TopAppBar] that will either draw a [ComplexTopAppBar] or [SimpleTopAppBar]
  *
  * @param appBar builds out the actual content for displaying [TopAppBar]
  */
 @Composable
-fun ConditionalTopAppBar(
-    appBar: com.nicholas.rutherford.track.your.shot.compose.components.AppBar
-) {
+fun ConditionalTopAppBar(appBar: AppBar) {
     if (appBar.shouldShowMiddleContentAppBar) {
         ComplexTopAppBar(
             appBar = appBar
@@ -52,13 +55,11 @@ fun ConditionalTopAppBar(
 /**
  * A simple top app bar with optional navigation and secondary icons.
  *
- * @param appBar [AppBar] data model containing title and callbacks
+ * @param appBar ]data model containing title and callbacks
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SimpleTopAppBar(
-    appBar: com.nicholas.rutherford.track.your.shot.compose.components.AppBar
-) {
+private fun SimpleTopAppBar(appBar: AppBar) {
     TopAppBar(
         title = {
             Text(
@@ -111,13 +112,11 @@ private fun SimpleTopAppBar(
 /**
  * A complex top app bar with a centered title and icons spaced on either side.
  *
- * @param appBar [AppBar] data model containing title and callbacks
+ *  @param appBar ]data model containing title and callbacks
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ComplexTopAppBar(
-    appBar: com.nicholas.rutherford.track.your.shot.compose.components.AppBar
-) {
+private fun ComplexTopAppBar(appBar: AppBar) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = AppColors.Orange
@@ -160,5 +159,72 @@ private fun ComplexTopAppBar(
     )
     if (appBar.shouldIncludeSpaceAfterDeclaration) {
         Spacer(modifier = Modifier.height(Padding.eight))
+    }
+}
+
+/**
+ * Preview for ConditionalTopAppBar showing the SimpleTopAppBar variant.
+ */
+@Preview(showBackground = true)
+@Composable
+fun SimpleTopAppBarPreview() {
+    Column(modifier = Modifier.background(Color.White)) {
+        ConditionalTopAppBar(
+            appBar = AppBar(
+                toolbarId = StringsIds.createPlayer,
+                toolbarTitle = "Simple Toolbar",
+                shouldShowMiddleContentAppBar = false,
+                shouldShowIcon = true,
+                shouldShowSecondaryButton = true
+            )
+        )
+    }
+}
+
+/**
+ * Preview for ConditionalTopAppBar showing the ComplexTopAppBar variant.
+ */
+@Preview(showBackground = true)
+@Composable
+fun ComplexTopAppBarPreview() {
+    Column(modifier = Modifier.background(Color.White)) {
+        ConditionalTopAppBar(
+            appBar = AppBar(
+                toolbarId = StringsIds.createPlayer,
+                toolbarTitle = "Complex Toolbar",
+                shouldShowMiddleContentAppBar = true,
+                shouldShowIcon = true,
+                shouldShowSecondaryButton = true
+            )
+        )
+    }
+}
+
+/**
+ * Combined preview showing multiple top app bars in one screen.
+ */
+@Preview(showBackground = true)
+@Composable
+fun CombinedTopAppBarPreview() {
+    Column(modifier = Modifier.background(Color.White)) {
+        ConditionalTopAppBar(
+            appBar = AppBar(
+                toolbarId = StringsIds.createPlayer,
+                toolbarTitle = "Simple Toolbar",
+                shouldShowMiddleContentAppBar = false,
+                shouldShowIcon = true,
+                shouldShowSecondaryButton = true
+            )
+        )
+
+        ConditionalTopAppBar(
+            appBar = AppBar(
+                toolbarId = StringsIds.createPlayer,
+                toolbarTitle = "Complex Toolbar",
+                shouldShowMiddleContentAppBar = true,
+                shouldShowIcon = true,
+                shouldShowSecondaryButton = true
+            )
+        )
     }
 }

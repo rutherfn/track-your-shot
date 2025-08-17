@@ -19,14 +19,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Default [TextField] with custom functionality to be reused
  * more specifically, allocating for more space for multiline [TextField]
  *
@@ -43,8 +45,6 @@ fun CoreMultilineTextField(
     var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
-
-    var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
 
     val color = if (isFocused) {
         AppColors.Orange
@@ -70,7 +70,6 @@ fun CoreMultilineTextField(
             keyboardActions = KeyboardActions(
                 onDone = { focusManager.clearFocus() }
             ),
-            // cursorBrush = SolidColor(AppColors.Black),
             interactionSource = interactionSource,
             singleLine = false,
             placeholder = {
@@ -93,5 +92,17 @@ fun CoreMultilineTextField(
             .fillMaxWidth()
             .height(2.dp),
         color = color
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CoreMultilineTextFieldPreview() {
+    var text = "Search term test search term testing multiline functionality to start now with so many words"
+
+    CoreMultilineTextField(
+        value = text,
+        onValueChange = { text = it },
+        placeholderValue = ""
     )
 }

@@ -17,7 +17,6 @@
 
     <application
         android:name=".MyApplication"
-        android:allowBackup="false"
         android:icon="${appIcon}"
         android:label="${appLabel}"
         android:roundIcon="${roundAppIcon}"

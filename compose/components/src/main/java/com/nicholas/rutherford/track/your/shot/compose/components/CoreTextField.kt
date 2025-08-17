@@ -13,11 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * A reusable [OutlinedTextField] with consistent styling and behavior for text input.
  *
  * This field includes a placeholder, handles the "Done" keyboard action by clearing focus,
@@ -66,5 +69,17 @@ fun CoreTextField(
             focusedLabelColor = AppColors.Orange,
             unfocusedLabelColor = AppColors.Black
         )
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CoreTextFieldPreview() {
+    var text = "Search term"
+
+    CoreTextField(
+        value = text,
+        onValueChange = { text = it },
+        placeholderValue = ""
     )
 }

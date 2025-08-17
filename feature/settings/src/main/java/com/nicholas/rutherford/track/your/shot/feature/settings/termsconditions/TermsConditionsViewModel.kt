@@ -15,6 +15,8 @@ import kotlinx.coroutines.launch
 const val DELAY_BEFORE_ONBOARDING = 750L
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * ViewModel for managing the Terms & Conditions screen state and interactions.
  *
  * Responsibilities include:
@@ -142,4 +144,3 @@ class TermsConditionsViewModel(
         navigation.navigateToDevEmail(email = application.getString(StringsIds.devEmail))
     }
 }
-

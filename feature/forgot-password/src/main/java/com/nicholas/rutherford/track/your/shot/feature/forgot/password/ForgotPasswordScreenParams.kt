@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.forgot.password
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Holds the UI state and event callbacks for the Forgot Password screen.
  *
  * @property state Current UI state including the email input.

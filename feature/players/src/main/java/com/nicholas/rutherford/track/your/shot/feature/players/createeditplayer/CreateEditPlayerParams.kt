@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 import android.net.Uri
 
 /**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * Defines all state and callback parameters required by the Create/Edit Player screen.
  *
  * This class is passed down to composables to handle UI state, user interactions,
@@ -39,4 +41,3 @@ data class CreateEditPlayerParams(
     val onViewShotClicked: (shotType: Int, shotId: Int) -> Unit,
     val onViewPendingShotClicked: (shotType: Int, shotId: Int) -> Unit
 )
-

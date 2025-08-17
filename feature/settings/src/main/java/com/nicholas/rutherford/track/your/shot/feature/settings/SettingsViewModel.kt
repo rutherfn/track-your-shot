@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * ViewModel responsible for managing and exposing the state and user interactions
  * for the Settings screen.
  *
@@ -67,7 +69,6 @@ class SettingsViewModel(
             application.getString(StringsIds.enabledPermissions),
             application.getString(StringsIds.viewMoreInfo)
         )
-
 
     /**
      * Fetches the active user and navigates to the Account Info screen.
@@ -124,4 +125,3 @@ class SettingsViewModel(
      */
     fun onHelpClicked() = navigation.alert(alert = settingsHelpAlert())
 }
-

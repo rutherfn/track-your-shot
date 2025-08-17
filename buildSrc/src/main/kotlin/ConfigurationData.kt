@@ -1,5 +1,7 @@
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * To define configuration data */
 object ConfigurationData {
     const val ktlintVersion = "11.5.0"

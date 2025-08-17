@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer
 
 /**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * Represents the available image options when editing or creating a player.
  *
  * Used to display image-related actions in a dialog or bottom sheet UI.
@@ -17,4 +19,3 @@ enum class CreateEditImageOption {
     REMOVE_IMAGE,
     CANCEL
 }
-

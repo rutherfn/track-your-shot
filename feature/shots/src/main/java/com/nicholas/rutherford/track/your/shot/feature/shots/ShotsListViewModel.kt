@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * ViewModel for the Shots List screen, responsible for managing and presenting the list of shots
  * logged by players. It handles filtering by player name, collecting updates, and navigating between screens.
  *
@@ -46,7 +48,6 @@ class ShotsListViewModel(
         checkToCreatePlayerFilterName()
         scope.launch { updateShotListState() }
     }
-
 
     /**
      * Checks to see if a player filter name exists.

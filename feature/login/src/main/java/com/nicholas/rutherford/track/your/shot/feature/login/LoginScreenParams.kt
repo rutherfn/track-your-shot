@@ -1,8 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.login
 
-import kotlinx.coroutines.CoroutineScope
-
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Parameters and callbacks needed by the login screen composable.
  *
  * @property state Current UI state including email, password, and launcher icon.
@@ -20,4 +20,3 @@ data class LoginScreenParams(
     val onForgotPasswordClicked: () -> Unit,
     val onCreateAccountClicked: () -> Unit
 )
-

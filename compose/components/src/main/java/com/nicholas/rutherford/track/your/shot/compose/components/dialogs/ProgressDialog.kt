@@ -24,6 +24,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Default [Dialog] with given params to build dialogs with [CircularProgressIndicator] used in content
  *
  * @param onDismissClicked optional param triggers whenever the user attempts to dismiss the [Dialog]

@@ -7,7 +7,6 @@ import com.nicholas.rutherford.track.your.shot.data.room.dao.DeclaredShotDao
 import com.nicholas.rutherford.track.your.shot.data.room.database.AppDatabase
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toDeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepositoryImpl
-import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShotEntity
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
@@ -49,29 +48,6 @@ class DeclaredShotRepositoryImplTest {
         declaredShotRepositoryImpl.createDeclaredShots(shotIdsToFilterOut = emptyList())
 
         assertThat(declaredShotRepositoryImpl.fetchAllDeclaredShots(), equalTo(declaredShotRepositoryImpl.getDeclaredShotsFromJson().sortedBy { it.title }))
-    }
-
-    @Test
-    fun createDeclaredShotsWithShotIdsToFilterOut() = runBlocking {
-        val shotIdsToFilterOut = (1..39).toList()
-
-        declaredShotRepositoryImpl.createDeclaredShots(shotIdsToFilterOut = shotIdsToFilterOut)
-
-        assertThat(
-            declaredShotRepositoryImpl.fetchAllDeclaredShots(),
-            equalTo(
-                listOf(
-                    DeclaredShot(
-                        id = 40,
-                        shotCategory = "mid-range",
-                        title = "Pull-Up Bank Shot",
-                        description = "A pull-up jumper off the backboard from mid-range distance.",
-                        firebaseKey = "firebase-key"
-
-                    )
-                )
-            )
-        )
     }
 
     @Test

@@ -4,7 +4,6 @@ import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,18 +11,18 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * ViewModel for the Declared Shots List screen, responsible for retrieving and presenting
  * a list of declared shots. It manages interactions such as clicking on existing declared shots,
  * adding new ones, and toolbar menu actions.
  *
  * @property declaredShotRepository Repository for accessing declared shot data from local storage.
- * @property createSharedPreferences Interface for writing shot-related values to shared preferences.
  * @property navigation Interface for managing navigation actions from the declared shots list screen.
  * @property scope CoroutineScope used for launching asynchronous operations.
  */
 class DeclaredShotsListViewModel(
     private val declaredShotRepository: DeclaredShotRepository,
-    private val createSharedPreferences: CreateSharedPreferences,
     private val navigation: DeclaredShotsListNavigation,
     private val scope: CoroutineScope
 ) : BaseViewModel() {
@@ -92,4 +91,3 @@ class DeclaredShotsListViewModel(
         navigation.createEditDeclaredShot(shotName = "")
     }
 }
-

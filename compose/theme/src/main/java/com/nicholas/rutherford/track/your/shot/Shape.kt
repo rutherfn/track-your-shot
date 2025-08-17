@@ -5,6 +5,8 @@ import androidx.compose.material3.Shapes
 import androidx.compose.ui.unit.dp
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Defined shapes set for theming
  */
 

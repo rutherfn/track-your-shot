@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * ViewModel for handling login screen state and logic.
  *
  * Responsibilities include:
@@ -171,4 +173,3 @@ class LoginViewModel(
         )
     }
 }
-

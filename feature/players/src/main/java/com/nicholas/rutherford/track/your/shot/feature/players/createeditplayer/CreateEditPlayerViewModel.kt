@@ -37,6 +37,8 @@ import kotlinx.coroutines.launch
 const val RESET_SCREEN_DELAY_IN_MILLIS = 500L
 
 /**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * ViewModel responsible for handling the create and edit player screen logic.
  *
  * Manages state for player details, image uploads, and shot logging.
@@ -590,7 +592,8 @@ class CreateEditPlayerViewModel(
      */
     internal fun currentShotLoggedRealtimeResponseList(currentShotList: List<ShotLoggedRealtimeResponse>): List<ShotLoggedRealtimeResponse> {
         if (pendingShotLoggedList.isNotEmpty()) {
-            val shotLoggedRealtimeResponseArrayList: ArrayList<ShotLoggedRealtimeResponse> = arrayListOf()
+            val shotLoggedRealtimeResponseArrayList: ArrayList<ShotLoggedRealtimeResponse> =
+                arrayListOf()
 
             pendingShotLoggedList.forEach { pendingShot ->
                 shotLoggedRealtimeResponseArrayList.add(
@@ -623,7 +626,11 @@ class CreateEditPlayerViewModel(
      */
     internal fun currentShotLoggedList(currentShotLoggedList: List<ShotLogged>): List<ShotLogged> {
         return if (pendingShotLoggedList.isNotEmpty()) {
-            currentShotLoggedList + pendingShotLoggedList.map { pendingShot -> pendingShot.shotLogged.copy(isPending = false) }
+            currentShotLoggedList + pendingShotLoggedList.map { pendingShot ->
+                pendingShot.shotLogged.copy(
+                    isPending = false
+                )
+            }
         } else {
             currentShotLoggedList
         }
@@ -1045,7 +1052,6 @@ class CreateEditPlayerViewModel(
         )
     }
 
-
     /**
      * Checks if the user has access to log shots.
      * Returns true if the user is an edited player or if the required information for creating a new player is provided.
@@ -1067,11 +1073,13 @@ class CreateEditPlayerViewModel(
                 navigation.alert(alert = firstNameEmptyAlert())
                 false
             }
+
             lastName.isEmpty() -> {
                 // Show alert for empty last name
                 navigation.alert(alert = lastNameEmptyAlert())
                 false
             }
+
             else -> true
         }
     }
@@ -1082,8 +1090,8 @@ class CreateEditPlayerViewModel(
      * Otherwise, creates a pending player and returns its ID.
      */
     internal suspend fun existingOrPendingPlayerId(): Int? {
-        editedPlayer?.let { player ->
-            return playerRepository.fetchPlayerIdByName(
+        return editedPlayer?.let { player ->
+            playerRepository.fetchPlayerIdByName(
                 firstName = player.firstName,
                 lastName = player.lastName
             )
@@ -1091,29 +1099,29 @@ class CreateEditPlayerViewModel(
             pendingPlayerRepository.fetchAllPendingPlayers().takeIf { it.isNotEmpty() }?.let {
                 pendingPlayers = emptyList()
                 pendingPlayerRepository.deleteAllPendingPlayers()
+
+                val firstName = createEditPlayerMutableStateFlow.value.firstName
+                val lastName = createEditPlayerMutableStateFlow.value.lastName
+                val pendingPlayer = Player(
+                    firstName = firstName,
+                    lastName = lastName,
+                    position = createEditPlayerMutableStateFlow.value.playerPositionString.toPlayerPosition(
+                        application = application
+                    ),
+                    firebaseKey = "",
+                    imageUrl = "",
+                    shotsLoggedList = emptyList()
+                )
+                pendingPlayerRepository.createPendingPlayer(player = pendingPlayer)
+
+                pendingPlayers = listOf(pendingPlayer)
+
+                // Fetch ID of the pending player and return it
+                pendingPlayerRepository.fetchPendingPlayerIdByName(
+                    firstName = firstName,
+                    lastName = lastName
+                )
             }
-
-            val firstName = createEditPlayerMutableStateFlow.value.firstName
-            val lastName = createEditPlayerMutableStateFlow.value.lastName
-            val pendingPlayer = Player(
-                firstName = firstName,
-                lastName = lastName,
-                position = createEditPlayerMutableStateFlow.value.playerPositionString.toPlayerPosition(
-                    application = application
-                ),
-                firebaseKey = "",
-                imageUrl = "",
-                shotsLoggedList = emptyList()
-            )
-            pendingPlayerRepository.createPendingPlayer(player = pendingPlayer)
-
-            pendingPlayers = listOf(pendingPlayer)
-
-            // Fetch ID of the pending player and return it
-            return pendingPlayerRepository.fetchPendingPlayerIdByName(
-                firstName = firstName,
-                lastName = lastName
-            )
         }
     }
 
@@ -1203,5 +1211,4 @@ class CreateEditPlayerViewModel(
             isPending = this.isPending
         )
     }
-
 }

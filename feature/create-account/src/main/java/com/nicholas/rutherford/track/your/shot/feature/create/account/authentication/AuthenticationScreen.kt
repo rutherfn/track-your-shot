@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.nicholas.rutherford.track.your.shot.feature.create.account.authentication
 
 import androidx.compose.foundation.Image

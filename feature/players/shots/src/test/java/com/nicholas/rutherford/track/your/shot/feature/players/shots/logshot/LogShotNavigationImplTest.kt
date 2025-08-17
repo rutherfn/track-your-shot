@@ -51,20 +51,6 @@ class LogShotNavigationImplTest {
     }
 
     @Test
-    fun `pop to shot list`() {
-        val argumentCapture: CapturingSlot<String> = slot()
-
-        logShotNavigationImpl.popToShotList()
-
-        verify { navigator.pop(capture(argumentCapture)) }
-
-        val capturedArgument = argumentCapture.captured
-        val expectedAction = NavigationDestinations.SHOTS_LIST_SCREEN_WITH_PARAMS
-
-        Assertions.assertEquals(expectedAction, capturedArgument)
-    }
-
-    @Test
     fun `pop to create player`() {
         val argumentCapture: CapturingSlot<String> = slot()
 

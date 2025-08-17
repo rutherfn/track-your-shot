@@ -28,31 +28,41 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredsh
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
-import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Implementation of [AppBarFactory] that provides pre-configured AppBar instances
+ * for various screens throughout the app
+ *
+ * @param application The Application instance used to fetch string resources.
+ */
 class AppBarFactoryImpl(
-    private val readSharedPreferences: ReadSharedPreferences,
     private val application: Application
 ) : AppBarFactory {
 
+    /** Creates AppBar for the login screen with no icon. */
     override fun createLoginAppBar(): AppBar =
         AppBar(
             toolbarId = StringsIds.trackYourShot,
             shouldShowIcon = false
         )
 
+    /** Creates AppBar for the create account screen with back button. */
     override fun createAccountAppBar(viewModel: CreateAccountViewModel): AppBar =
         AppBar(
             toolbarId = StringsIds.createAccount,
             onIconButtonClicked = { viewModel.onBackButtonClicked() }
         )
 
+    /** Creates AppBar for the forgot password screen with back button. */
     override fun createForgotPasswordAppBar(viewModel: ForgotPasswordViewModel): AppBar =
         AppBar(
             toolbarId = StringsIds.forgotPassword,
             onIconButtonClicked = { viewModel.onBackButtonClicked() }
         )
 
+    /** Creates AppBar for the authentication/verify account screen with close icon. */
     override fun createAuthenticationAppBar(viewModel: AuthenticationViewModel): AppBar =
         AppBar(
             toolbarId = StringsIds.verifyAccount,
@@ -60,6 +70,7 @@ class AppBarFactoryImpl(
             imageVector = Icons.Filled.Close
         )
 
+    /** Creates AppBar for the players list screen with menu and add player actions. */
     override fun createPlayersListAppBar(viewModel: PlayersListViewModel): AppBar =
         AppBar(
             toolbarId = StringsIds.players,
@@ -69,6 +80,7 @@ class AppBarFactoryImpl(
             shouldIncludeSpaceAfterDeclaration = false
         )
 
+    /** Creates AppBar for the shots list screen, optionally showing all player shots or a specific player’s shots. */
     override fun createShotsListAppBar(params: ShotsListScreenParams): AppBar =
         AppBar(
             toolbarId = if (params.shouldShowAllPlayerShots) {
@@ -88,6 +100,7 @@ class AppBarFactoryImpl(
             secondaryImageEnabled = true
         )
 
+    /** Creates AppBar for the report list screen with optional add report button. */
     override fun createReportListAppBar(params: ReportListParams): AppBar =
         AppBar(
             toolbarId = StringsIds.reports,
@@ -97,6 +110,7 @@ class AppBarFactoryImpl(
             onSecondaryIconButtonClicked = { params.onAddReportClicked.invoke() }
         )
 
+    /** Creates AppBar for the settings screen with help action. */
     override fun createSettingsAppBar(params: SettingsParams): AppBar =
         AppBar(
             toolbarId = StringsIds.settings,
@@ -106,6 +120,7 @@ class AppBarFactoryImpl(
             secondaryImageVector = Icons.AutoMirrored.Filled.Help
         )
 
+    /** Creates AppBar for the enabled permissions screen with back arrow. */
     override fun createEnabledPermissionsAppBar(params: EnabledPermissionsParams): AppBar =
         AppBar(
             toolbarId = StringsIds.enabledPermissions,
@@ -113,12 +128,14 @@ class AppBarFactoryImpl(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack
         )
 
+    /** Creates AppBar for permission education screen. */
     override fun createPermissionEducationAppBar(viewModel: PermissionEducationViewModel): AppBar =
         AppBar(
             toolbarId = StringsIds.moreInfo,
             onIconButtonClicked = { viewModel.onGotItButtonClicked() }
         )
 
+    /** Creates AppBar for onboarding education screen. */
     override fun createOnboardingEducationAppBar(
         viewModel: OnboardingEducationViewModel,
         isFirstTimeLaunched: Boolean
@@ -129,12 +146,14 @@ class AppBarFactoryImpl(
             shouldShowIcon = !isFirstTimeLaunched
         )
 
+    /** Creates AppBar for terms and conditions screen. */
     override fun createTermsAndConditionsAppBar(): AppBar =
         AppBar(
             toolbarId = StringsIds.termsConditions,
             shouldShowIcon = false
         )
 
+    /** Creates AppBar for the declared shots list screen with add declared shot button. */
     override fun createDeclaredShotsListAppBar(params: DeclaredShotsListScreenParams): AppBar =
         AppBar(
             toolbarId = StringsIds.manageDeclaredShots,
@@ -146,13 +165,15 @@ class AppBarFactoryImpl(
             secondaryImageVector = Icons.Default.Add
         )
 
-    override fun createCreateEditDeclaredShotAppBar(declaredShotName: String, params: CreateEditDeclaredShotScreenParams): AppBar {
+    /** Creates AppBar for creating or editing a declared shot. */
+    override fun createCreateEditDeclaredShotAppBar(
+        declaredShotName: String,
+        params: CreateEditDeclaredShotScreenParams
+    ): AppBar {
         return AppBar(
             toolbarId = StringsIds.empty,
-            toolbarTitle = if (declaredShotName.isEmpty()) {
+            toolbarTitle = declaredShotName.ifEmpty {
                 application.getString(StringsIds.createShot)
-            } else {
-                declaredShotName
             },
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
             shouldShowSecondaryButton = true,
@@ -173,25 +194,21 @@ class AppBarFactoryImpl(
         )
     }
 
+    /** Creates AppBar for account info screen. */
     override fun createAccountInfoAppBar(viewModel: AccountInfoViewModel): AppBar =
         AppBar(
             toolbarId = StringsIds.accountInfo,
             shouldShowMiddleContentAppBar = false,
-            onIconButtonClicked = {
-                viewModel.onToolbarMenuClicked()
-            }
+            onIconButtonClicked = { viewModel.onToolbarMenuClicked() }
         )
 
+    /** Creates AppBar for editing or creating a player. */
     override fun createEditPlayerAppBar(
         params: CreateEditPlayerParams,
         isEditable: Boolean
     ): AppBar =
         AppBar(
-            toolbarId = if (isEditable) {
-                StringsIds.editPlayer
-            } else {
-                StringsIds.createPlayer
-            },
+            toolbarId = if (isEditable) StringsIds.editPlayer else StringsIds.createPlayer,
             shouldShowMiddleContentAppBar = false,
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = true,
@@ -200,6 +217,7 @@ class AppBarFactoryImpl(
             secondaryIconTint = AppColors.White
         )
 
+    /** Creates AppBar for logging a shot. */
     override fun createLogShotAppBar(params: LogShotParams): AppBar =
         AppBar(
             toolbarId = StringsIds.logShot,
@@ -211,19 +229,19 @@ class AppBarFactoryImpl(
             secondaryIconTint = AppColors.White
         )
 
+    /** Creates AppBar for selecting a shot. */
     override fun createSelectShotAppBar(selectShotParams: SelectShotParams): AppBar =
         AppBar(
             toolbarId = StringsIds.selectAShot,
             shouldShowMiddleContentAppBar = false,
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = true,
-            onIconButtonClicked = {
-                selectShotParams.onBackButtonClicked.invoke()
-            },
+            onIconButtonClicked = { selectShotParams.onBackButtonClicked.invoke() },
             onSecondaryIconButtonClicked = { selectShotParams.onHelpIconClicked.invoke() },
             secondaryIconTint = AppColors.White
         )
 
+    /** Creates AppBar for creating a report screen. */
     override fun createReportScreenAppBar(params: CreateReportParams): AppBar =
         AppBar(
             toolbarId = StringsIds.createPlayerReport,
@@ -231,9 +249,9 @@ class AppBarFactoryImpl(
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = false,
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() }
-
         )
 
+    /** Creates a default AppBar that is hidden. */
     override fun createDefaultAppBar(): AppBar =
         AppBar(
             toolbarId = StringsIds.empty,

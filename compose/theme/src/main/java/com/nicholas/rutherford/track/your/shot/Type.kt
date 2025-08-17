@@ -7,6 +7,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 /**
+ *  * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Defined typography [Typography] set for Material 3 theming
  */
 val Typography = Typography(

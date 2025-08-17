@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -17,18 +20,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
- * Basic Row that is responsible for showing content shared inside [Row]
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
  *
- * @param title sets the [Text] of the [BaseRow]
- * @param onClicked triggers whenever [BaseRow] is clicked
- * @param subText sets the [Text] of a [BaseRow] to right of [title]
- * @param imageVector sets the [ImageVector] of the [Icon] to the right of [BaseRow] if not null
+ * BaseRow is a flexible and reusable row component to display a title along with optional
+ * subtext and/or icon. Can include click handling and divider display.
+ *
+ * @param title Main text of the row.
+ * @param onClicked Optional lambda invoked when the row is clicked.
+ * @param subTextColor Color of the optional subtext. Defaults to [Color.Unspecified].
+ * @param titleStyle Style of the title text. Defaults to [TextStyles.smallBold].
+ * @param iconTint Tint color of the optional icon. Defaults to MaterialTheme.colorScheme.onSurface with 60% alpha.
+ * @param subText Optional text displayed to the right of the title.
+ * @param imageVector Optional [ImageVector] displayed to the right of the title or subText.
+ * @param shouldShowDivider If true, a horizontal divider will be shown below the row.
  */
 @Composable
 fun BaseRow(
@@ -53,6 +64,7 @@ fun BaseRow(
             .fillMaxWidth()
             .padding(8.dp)
     }
+
     Row(
         modifier = rowModifier,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -125,4 +137,45 @@ private fun RightRowContent(
             }
         }
     }
+}
+
+/** ------------------- PREVIEWS ------------------- **/
+
+@Preview(showBackground = true)
+@Composable
+fun BaseRowPreview_TitleOnly() {
+    BaseRow(title = "Title Only")
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BaseRowPreview_TitleWithSubText() {
+    BaseRow(
+        title = "Title with SubText",
+        subText = "SubText",
+        subTextColor = AppColors.Orange
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BaseRowPreview_TitleWithIcon() {
+    BaseRow(
+        title = "Title with Icon",
+        imageVector = Icons.AutoMirrored.Filled.ArrowForward
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BaseRowPreview_TitleWithSubTextAndIcon() {
+    BaseRow(
+        title = "Full Row",
+        subText = "Details",
+        imageVector = Icons.Default.Info,
+        subTextColor = AppColors.Black,
+        iconTint = AppColors.Orange,
+        shouldShowDivider = true,
+        onClicked = { }
+    )
 }

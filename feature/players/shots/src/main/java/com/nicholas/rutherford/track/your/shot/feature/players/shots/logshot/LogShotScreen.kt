@@ -38,6 +38,8 @@ import com.nicholas.rutherford.track.your.shot.compose.components.NumericRowStep
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Entry point composable for the Log Shot screen.
  *
  * Wraps [LogShotContent] and intercepts the system back button to call the provided

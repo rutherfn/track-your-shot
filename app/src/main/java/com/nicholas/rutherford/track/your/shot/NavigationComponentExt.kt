@@ -3,8 +3,25 @@ package com.nicholas.rutherford.track.your.shot
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Provides extension functions for mapping navigation destinations to their corresponding ViewModels
+ * and determining UI behaviors related to navigation components.
+ */
 object NavigationComponentExt {
 
+    /**
+     * Returns the [BaseViewModel] associated with a given navigation [destination].
+     *
+     * This function checks the provided destination string against all known navigation destinations
+     * defined in [NavigationDestinations] and returns the corresponding ViewModel from [viewModels].
+     * If the destination does not match any known screen, it returns null.
+     *
+     * @param destination The string identifier of the navigation destination.
+     * @param viewModels The container holding all ViewModel instances for the app.
+     * @return The corresponding [BaseViewModel] for the destination, or null if none matches.
+     */
     fun findViewModelByDestination(destination: String, viewModels: ViewModels): BaseViewModel? {
         return when {
             destination.contains(NavigationDestinations.SPLASH_SCREEN) -> viewModels.splashViewModel
@@ -30,5 +47,19 @@ object NavigationComponentExt {
         }
     }
 
-    fun buildModalDrawerGesturesEnabled(viewModel: BaseViewModel, viewModels: ViewModels): Boolean = viewModel == viewModels.playersListViewModel || viewModel == viewModels.shotsListViewModel || viewModel == viewModels.reportListViewModel || viewModel == viewModels.settingsViewModel
+    /**
+     * Determines whether modal drawer gestures should be enabled for a given [viewModel].
+     *
+     * In this app, drawer gestures are only enabled on the main list or settings screens:
+     * - Players List
+     * - Shots List
+     * - Reports List
+     * - Settings
+     *
+     * @param viewModel The current [BaseViewModel] representing the active screen.
+     * @param viewModels The container holding all ViewModel instances for the app.
+     * @return `true` if drawer gestures should be enabled, `false` otherwise.
+     */
+    fun buildModalDrawerGesturesEnabled(viewModel: BaseViewModel, viewModels: ViewModels): Boolean =
+        viewModel == viewModels.playersListViewModel || viewModel == viewModels.shotsListViewModel || viewModel == viewModels.reportListViewModel || viewModel == viewModels.settingsViewModel
 }

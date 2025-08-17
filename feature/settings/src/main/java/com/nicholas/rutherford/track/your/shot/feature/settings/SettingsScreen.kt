@@ -29,6 +29,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Displays the Settings screen which includes general settings and permission settings categorized.
  *
  * @param params Contains the current settings state and click callbacks.
@@ -156,4 +158,3 @@ fun SettingsScreenPreview() {
         )
     }
 }
-

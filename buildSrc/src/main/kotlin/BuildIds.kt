@@ -1,5 +1,7 @@
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * To define build ids data */
 object BuildIds {
     const val androidLibrary = "com.android.library"

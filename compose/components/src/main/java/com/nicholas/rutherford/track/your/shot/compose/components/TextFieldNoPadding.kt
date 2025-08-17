@@ -34,6 +34,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Default lightweight TextField with no default start padding
  *
  * @param label defined label that is the title text inside the [TextField]

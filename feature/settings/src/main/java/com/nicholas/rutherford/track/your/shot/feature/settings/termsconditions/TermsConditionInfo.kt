@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * UI model representing a single section in the Terms & Conditions screen.
  *
  * This class is used to display individual terms items, each consisting of a title and
@@ -13,4 +15,3 @@ data class TermsConditionInfo(
     val title: String,
     val description: String
 )
-

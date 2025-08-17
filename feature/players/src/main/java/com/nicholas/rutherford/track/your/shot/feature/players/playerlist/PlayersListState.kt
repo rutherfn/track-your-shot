@@ -4,6 +4,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 
 /**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * UI state for the Players List screen.
  *
  * This data class holds all relevant UI-related data for rendering the list of players
@@ -26,4 +28,3 @@ data class PlayersListState(
     ),
     val sheetOptions: List<String> = emptyList()
 )
-

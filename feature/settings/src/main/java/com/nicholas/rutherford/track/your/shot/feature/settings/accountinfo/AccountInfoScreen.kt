@@ -19,6 +19,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Displays the account info screen for info that includes email and username.
  *
  * @param params Contains the state and callback handlers for this screen.

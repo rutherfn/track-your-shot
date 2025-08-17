@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Parameters used to render the CreateEditDeclaredShotScreen UI.
  *
  * @property state The current state of the screen.

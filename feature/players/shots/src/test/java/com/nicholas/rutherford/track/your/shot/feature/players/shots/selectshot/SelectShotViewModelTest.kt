@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
@@ -32,6 +33,8 @@ class SelectShotViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher = UnconfinedTestDispatcher()
 
+    private var savedStateHandle = mockk<SavedStateHandle>(relaxed = true)
+
     private val application = mockk<Application>(relaxed = true)
 
     private val scope = CoroutineScope(SupervisorJob() + testDispatcher)
@@ -45,7 +48,10 @@ class SelectShotViewModelTest {
 
     @BeforeEach
     fun beforeEach() {
+        every { savedStateHandle.get<Boolean>("isExistingPlayer") } returns true
+        every { savedStateHandle.get<Int>("playerId") } returns 1
         selectShotViewModel = SelectShotViewModel(
+            savedStateHandle = savedStateHandle,
             application = application,
             scope = scope,
             navigation = navigation,
@@ -57,13 +63,7 @@ class SelectShotViewModelTest {
 
     @Test
     fun `update is existing player and player id should update internal fields`() {
-        Assertions.assertEquals(selectShotViewModel.isExistingPlayer, null)
-        Assertions.assertEquals(selectShotViewModel.playerId, null)
-
-        selectShotViewModel.updateIsExistingPlayerAndPlayerId(
-            isExistingPlayerArgument = true,
-            playerIdArgument = 1
-        )
+        selectShotViewModel.updateIsExistingPlayerAndPlayerId()
 
         Assertions.assertEquals(selectShotViewModel.isExistingPlayer, true)
         Assertions.assertEquals(selectShotViewModel.playerId, 1)

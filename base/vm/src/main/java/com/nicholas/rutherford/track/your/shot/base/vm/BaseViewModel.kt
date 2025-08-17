@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import timber.log.Timber
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * A base `ViewModel` class that implements `DefaultLifecycleObserver` to provide logging
  * for lifecycle events. This class logs each lifecycle event (onCreate, onStart, onResume, etc.)
  * using Timber for debugging purposes.

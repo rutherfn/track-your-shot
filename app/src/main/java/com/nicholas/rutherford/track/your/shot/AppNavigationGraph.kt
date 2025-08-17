@@ -75,6 +75,8 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Defines navigation destinations and composable screens for the app.
  *
  * This object holds navigation functions used to add screens to the navigation graph.
@@ -366,6 +368,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Create Or Edit Player Screen destination to the NavGraph.
+     * Retrieves [CreateEditPlayerViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [CreateEditPlayerScreen].
+     * Displays the [CreateEditPlayerScreen] composable
+     */
     fun NavGraphBuilder.createOrEditPlayerScreen(isConnectedToInternet: Boolean) {
         composable(
             route = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS,
@@ -376,7 +384,6 @@ object AppNavigationGraph {
             val isEditable = firstName.isNotEmpty() && lastName.isNotEmpty()
             val createEditPlayerViewModel: CreateEditPlayerViewModel = koinViewModel()
             val appBarFactory: AppBarFactory = koinInject()
-
 
             val createEditPlayerParams = CreateEditPlayerParams(
                 state = createEditPlayerViewModel.createEditPlayerStateFlow.collectAsState().value,
@@ -435,6 +442,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Select Shot Screen destination to the NavGraph.
+     * Retrieves [SelectShotViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [SelectShotScreen].
+     * Displays the [SelectShotScreen] composable
+     */
     fun NavGraphBuilder.selectShotScreen() {
         composable(
             route = NavigationDestinations.SELECT_SHOT_SCREEN_WITH_PARAMS,
@@ -469,6 +482,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Log Shot Screen destination to the NavGraph.
+     * Retrieves [LogShotViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [LogShotScreen].
+     * Displays the [LogShotScreen] composable
+     */
     fun NavGraphBuilder.logShotScreen() {
         composable(
             route = NavigationDestinations.LOG_SHOT_WITH_PARAMS,
@@ -511,6 +530,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Report List Screen destination to the NavGraph.
+     * Retrieves [ReportListViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [ReportListScreen].
+     * Displays the [ReportListScreen] composable
+     */
     fun NavGraphBuilder.reportListScreen() {
         composable(
             route = NavigationDestinations.REPORTS_LIST_SCREEN
@@ -543,6 +568,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Permission Education Screen destination to the NavGraph.
+     * Retrieves [PermissionEducationViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [PermissionEducationScreen].
+     * Displays the [PermissionEducationScreen] composable
+     */
     fun NavGraphBuilder.permissionEducationScreen() {
         composable(
             route = NavigationDestinations.PERMISSION_EDUCATION_SCREEN
@@ -563,6 +594,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Enabled Permissions Screen destination to the NavGraph.
+     * Retrieves [EnabledPermissionsViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [EnabledPermissionsScreen].
+     * Displays the [EnabledPermissionsScreen] composable
+     */
     fun NavGraphBuilder.enabledPermissionScreen() {
         composable(
             route = NavigationDestinations.ENABLED_PERMISSIONS_SCREEN
@@ -583,6 +620,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Create Edit Declared Shot Screen destination to the NavGraph.
+     * Retrieves [CreateEditDeclaredShotViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [CreateEditDeclaredShotScreen].
+     * Displays the [CreateEditDeclaredShotScreen] composable
+     */
     fun NavGraphBuilder.createEditDeclaredScreen() {
         composable(
             route = NavigationDestinations.CREATE_EDIT_DECLARED_SHOTS_SCREEN_PARAMS,
@@ -642,6 +685,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Account Info Screen destination to the NavGraph.
+     * Retrieves [AccountInfoViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [AccountInfoScreen].
+     * Displays the [AccountInfoScreen] composable
+     */
     fun NavGraphBuilder.accountInfoScreen() {
         composable(
             route = NavigationDestinations.ACCOUNT_INFO_SCREEN_WITH_PARAMS,
@@ -665,6 +714,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Shots List Screen destination to the NavGraph.
+     * Retrieves [ShotsListViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [ShotsListScreen].
+     * Displays the [ShotsListScreen] composable
+     */
     fun NavGraphBuilder.shotListScreen() {
         composable(
             route = NavigationDestinations.SHOTS_LIST_SCREEN_WITH_PARAMS,
@@ -695,6 +750,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Create Report Screen destination to the NavGraph.
+     * Retrieves [CreateReportViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [CreateReportScreen].
+     * Displays the [CreateReportScreen] composable
+     */
     fun NavGraphBuilder.createReportScreen() {
         composable(
             route = NavigationDestinations.CREATE_REPORT_SCREEN
@@ -721,6 +782,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Settings Screen destination to the NavGraph.
+     * Retrieves [SettingsViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [SettingsScreen].
+     * Displays the [SettingsScreen] composable
+     */
     fun NavGraphBuilder.settingsScreen() {
         composable(
             route = NavigationDestinations.SETTINGS_SCREEN
@@ -749,6 +816,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Declared Shots List Screen destination to the NavGraph.
+     * Retrieves [DeclaredShotsListViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [DeclaredShotsListScreen].
+     * Displays the [DeclaredShotsListScreen] composable
+     */
     fun NavGraphBuilder.declaredShotsListScreen() {
         composable(
             route = NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN

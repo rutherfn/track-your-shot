@@ -6,7 +6,9 @@ import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
 /**
- * Implementation of [SelectShotnavigationImpl] using a [Navigator] to perform
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Implementation of [SelectShotNavigation] using a [Navigator] to perform
  * navigation via predefined [NavigationActions].
  */
 class SelectShotNavigationImpl(private val navigator: Navigator) : SelectShotNavigation {

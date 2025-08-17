@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * UI state for the Terms & Conditions screen.
  *
  * This class represents the visual state of the Terms & Conditions screen, including
@@ -13,4 +15,3 @@ data class TermsConditionsState(
     val infoList: List<TermsConditionInfo> = emptyList(),
     val buttonText: String = ""
 )
-

@@ -36,6 +36,8 @@ const val PASSWORD_PATTERN =
 const val USERNAME_PATTERN = "^(?=[a-zA-Z\\d._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$"
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * ViewModel responsible for managing the state and logic of the Create Account screen.
  *
  * Responsibilities include:

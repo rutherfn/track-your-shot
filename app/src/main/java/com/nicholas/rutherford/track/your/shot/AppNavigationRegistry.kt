@@ -23,6 +23,8 @@ import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.splashScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.termsAndConditionScreen
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Central registry for all navigation destinations in the app.
  *
  * Screens are grouped into two categories:

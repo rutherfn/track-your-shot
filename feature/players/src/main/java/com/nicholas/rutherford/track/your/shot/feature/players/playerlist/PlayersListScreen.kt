@@ -51,6 +51,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 /**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * Displays the main screen for the list of players.
  *
  * This composable shows either the list of players or an empty state UI if no players are available.

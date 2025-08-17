@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.your.shot.feature.reports.reportlist
 import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Holds the UI state for the Report List screen.
  *
  * @property reports A list of [IndividualPlayerReport] objects representing all player reports available to display. Defaults to an empty list.

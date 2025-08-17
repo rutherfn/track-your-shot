@@ -54,6 +54,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import com.nicholas.rutherford.track.yourshot.compose.content.test.rule.drawableId
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Top-level composable for the login screen. Delegates rendering to [LoginScreenContent].
  *
  * @param loginScreenParams UI state and callbacks for the screen.

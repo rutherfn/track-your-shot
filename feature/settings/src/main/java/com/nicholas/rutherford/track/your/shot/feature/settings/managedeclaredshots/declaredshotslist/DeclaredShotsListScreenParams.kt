@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Parameters used to render the DeclaredShotsListScreen UI.
  *
  * @property state The current state of the declared shots list screen.
@@ -14,4 +16,3 @@ data class DeclaredShotsListScreenParams(
     val onDeclaredShotClicked: (title: String) -> Unit,
     val onToolbarMenuClicked: () -> Unit
 )
-

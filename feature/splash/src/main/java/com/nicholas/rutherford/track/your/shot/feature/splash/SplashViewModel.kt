@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * ViewModel responsible for the splash screen logic and navigation flow based on
  * user state.
  *
@@ -84,7 +86,7 @@ class SplashViewModel(
                 if (isLoggedIn) {
                     navigatePostAuthDestination(isLoggedIn = true, email = activeUser?.email ?: "")
 
-                // TODO: Uncomment this block once Firebase Authentication issues are resolved
+                    // TODO: Uncomment this block once Firebase Authentication issues are resolved
                     /*
                     val isVerified = emailVerifiedValue || readSharedPreferences.hasAccountBeenAuthenticated()
                     if (isVerified && activeUser != null && activeUser.accountHasBeenCreated) {
@@ -124,4 +126,3 @@ class SplashViewModel(
         }
     }
 }
-

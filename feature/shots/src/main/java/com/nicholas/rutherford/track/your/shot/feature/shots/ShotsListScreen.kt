@@ -36,6 +36,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import java.util.Date
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Displays the main screen for viewing a list of logged basketball shots.
  * If the shot list is empty, an empty state is shown encouraging users to add shots.
  *
@@ -166,7 +168,6 @@ private fun ShotItem(
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 private fun ShotListScreenEmptyStatePreview() {
@@ -177,7 +178,7 @@ private fun ShotListScreenEmptyStatePreview() {
             onToolbarMenuClicked = {},
             onShotItemClicked = {},
             shouldShowAllPlayerShots = false
-           )
+        )
     )
 }
 
@@ -186,23 +187,27 @@ private fun ShotListScreenEmptyStatePreview() {
 private fun ShotListWithItemsPreview() {
     ShotsListScreen(
         params = ShotsListScreenParams(
-            state = ShotsListState(shotList = listOf(ShotLoggedWithPlayer(
-                shotLogged = ShotLogged(
-                    id = 22,
-                    shotName = "shot name",
-                    shotType = 1,
-                    shotsAttempted = 44,
-                    shotsMade = 4,
-                    shotsMissed = 40,
-                    shotsMadePercentValue = 22.2,
-                    shotsMissedPercentValue = 11.2,
-                    shotsAttemptedMillisecondsValue = 22L,
-                    shotsLoggedMillisecondsValue = 22L,
-                    isPending = false
-                ),
-                playerId = 11,
-                playerName = "player name"
-            ))),
+            state = ShotsListState(
+                shotList = listOf(
+                    ShotLoggedWithPlayer(
+                        shotLogged = ShotLogged(
+                            id = 22,
+                            shotName = "shot name",
+                            shotType = 1,
+                            shotsAttempted = 44,
+                            shotsMade = 4,
+                            shotsMissed = 40,
+                            shotsMadePercentValue = 22.2,
+                            shotsMissedPercentValue = 11.2,
+                            shotsAttemptedMillisecondsValue = 22L,
+                            shotsLoggedMillisecondsValue = 22L,
+                            isPending = false
+                        ),
+                        playerId = 11,
+                        playerName = "player name"
+                    )
+                )
+            ),
             onHelpClicked = {},
             onToolbarMenuClicked = {},
             onShotItemClicked = {},

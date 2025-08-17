@@ -6,6 +6,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * A Composable function that observes the lifecycle of a [BaseViewModel] and ensures that
  * the lifecycle is correctly managed during the lifecycle of the given [lifecycleOwner].
  *

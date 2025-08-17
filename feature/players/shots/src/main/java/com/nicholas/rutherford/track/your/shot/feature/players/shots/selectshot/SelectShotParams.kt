@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Defines all state and callback parameters required by the Select Shot screen.
  *
  * This class is passed to composables to centralize UI state handling and user interaction callbacks,
@@ -25,4 +27,3 @@ data class SelectShotParams(
     val onHelpIconClicked: () -> Unit,
     val onItemClicked: (shotType: Int) -> Unit
 )
-

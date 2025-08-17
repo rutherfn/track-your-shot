@@ -48,6 +48,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 /**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * Composable screen used to either create a new player or edit an existing player.
  *
  * It provides UI for inputting a player's general information, selecting their position, uploading
@@ -115,7 +117,6 @@ fun CreateEditPlayerContent(createEditPlayerParams: CreateEditPlayerParams) {
             shouldAskForCameraPermission = false
         }
     }
-
 
     BottomSheetWithOptions(
         sheetState = bottomState,
@@ -273,4 +274,3 @@ private fun CreateEditPlayerUi(
         )
     }
 }
-

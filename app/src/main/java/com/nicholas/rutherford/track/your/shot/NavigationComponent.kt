@@ -52,6 +52,20 @@ import com.nicholas.rutherford.track.your.shot.navigation.ShotsAction
 import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
 import kotlinx.coroutines.launch
 
+/**
+ * Root navigation component for the app.
+ *
+ * Handles:
+ * - Navigation between screens via [NavHostController].
+ * - Modal drawer gestures and drawer content.
+ * - Lifecycle-aware dialogs (alerts, progress dialogs, input dialogs, date pickers).
+ * - System actions like email, app settings, URL opening, and finishing the activity.
+ *
+ * @param activity The hosting [MainActivity], used for launching intents and finishing the activity.
+ * @param navHostController The [NavHostController] used to control navigation between screens.
+ * @param navigator The [Navigator] containing flows for navigation, alerts, progress, dialogs, and system actions.
+ * @param viewModels Container of all ViewModels used in the app, used to map destinations to their state.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationComponent(
@@ -65,6 +79,7 @@ fun NavigationComponent(
 
     val scope = rememberCoroutineScope()
 
+    // Lifecycle-aware state for alerts, dialogs, and navigation
     val alertState by navigator.alertActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
@@ -125,6 +140,7 @@ fun NavigationComponent(
 
     val isConnectedToInternet = mainActivityViewModel.isConnected.collectAsState().value
 
+    // Update UI state based on lifecycle-aware states
     LaunchedEffect(alertState) {
         alertState?.let { newAlert ->
             alert = newAlert
@@ -140,6 +156,7 @@ fun NavigationComponent(
             inputInfo = newInputInfo
         }
     }
+    // Open system app settings if requested
     LaunchedEffect(appSettingsState) {
         appSettingsState?.let { shouldOpenAppSettings ->
             if (shouldOpenAppSettings) {
@@ -155,6 +172,7 @@ fun NavigationComponent(
             }
         }
     }
+    // Open default email app if requested
     LaunchedEffect(emailState) {
         emailState?.let { shouldAttemptToOpenEmail ->
             if (shouldAttemptToOpenEmail) {
@@ -172,6 +190,7 @@ fun NavigationComponent(
             }
         }
     }
+    // Open developer email client if requested
     LaunchedEffect(emailDevState) {
         emailDevState?.let { devEmail ->
             try {
@@ -186,7 +205,7 @@ fun NavigationComponent(
             }
         }
     }
-
+    // Navigate to new destination
     LaunchedEffect(navigatorState) {
         navigatorState?.let { state ->
             navHostController.navigate(state.destination, state.navOptions)
@@ -197,7 +216,7 @@ fun NavigationComponent(
             }
         }
     }
-
+    // Finish activity if requested
     LaunchedEffect(finishState) {
         finishState?.let { shouldFinish ->
             if (shouldFinish) {
@@ -206,7 +225,7 @@ fun NavigationComponent(
             }
         }
     }
-
+    // Pop a route from the backstack
     LaunchedEffect(popRouteState) {
         popRouteState?.let { route ->
             if (route == Constants.POP_DEFAULT_ACTION) {
@@ -217,7 +236,7 @@ fun NavigationComponent(
             navigator.pop(popRouteAction = null)
         }
     }
-
+    // Show or hide progress dialog
     LaunchedEffect(progressState) {
         progressState?.let { newProgress ->
             progress = newProgress
@@ -225,7 +244,7 @@ fun NavigationComponent(
             progress = null
         }
     }
-
+    // Open or close navigation drawer
     LaunchedEffect(navigationDrawerState) {
         navigationDrawerState?.let { shouldOpenNavigationDrawer ->
             scope.launch {
@@ -238,7 +257,7 @@ fun NavigationComponent(
             }
         }
     }
-
+    // Open URL via intent
     LaunchedEffect(urlState) {
         urlState?.let { url ->
             val intent = Intent(Intent.ACTION_VIEW, url.toUri())
@@ -246,7 +265,7 @@ fun NavigationComponent(
             navigator.url(url = null)
         }
     }
-
+    // Main UI layout with modal navigation drawer and scaffold
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -335,6 +354,7 @@ fun NavigationComponent(
                 )
             }
 
+            // Render dialogs if state is present
             datePicker?.let { newDatePicker ->
                 TrackYourShotTheme {
                     CustomDatePickerDialog(

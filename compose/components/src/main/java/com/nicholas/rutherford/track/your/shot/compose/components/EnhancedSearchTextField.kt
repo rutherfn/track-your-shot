@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * A reusable search input field with built-in search and clear icons.
  *
  * @param value The current text input.

@@ -7,6 +7,8 @@ import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
 /**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * Implementation of [CreateEditPlayerNavigationImpl] using a [Navigator] to perform
  * navigation via predefined [NavigationActions].
  */

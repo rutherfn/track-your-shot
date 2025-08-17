@@ -8,6 +8,8 @@ import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
 /**
  * Represents the UI state for the Create/Edit Player screen.
  *
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * @property firstName The player's first name input by the user. Defaults to an empty string.
  * @property lastName The player's last name input by the user. Defaults to an empty string.
  * @property editedPlayerUrl The URL of the player's image when editing an existing player. Defaults to an empty string.
@@ -32,4 +34,3 @@ data class CreateEditPlayerState(
     val sheet: Sheet? = null,
     val imageUri: Uri? = null
 )
-

@@ -1,9 +1,11 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toShotIgnoring
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
@@ -13,8 +15,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFireba
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotWithKeyRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
-import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -36,6 +36,8 @@ class CreateEditDeclaredShotViewModelTest {
 
     private lateinit var viewModel: CreateEditDeclaredShotViewModel
 
+    private var savedStateHandle = mockk<SavedStateHandle>(relaxed = true)
+
     private var application = mockk<Application>(relaxed = true)
 
     private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
@@ -45,8 +47,7 @@ class CreateEditDeclaredShotViewModelTest {
     private val updateFirebaseUserInfo = mockk<UpdateFirebaseUserInfo>(relaxed = true)
     private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
 
-    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
-    private val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
+    private val playerRepository = mockk<PlayerRepository>(relaxed = true)
 
     private val navigation = mockk<CreateEditDeclaredShotNavigation>(relaxed = true)
 
@@ -59,15 +60,17 @@ class CreateEditDeclaredShotViewModelTest {
 
     @BeforeEach
     fun beforeEach() {
+        every { savedStateHandle.get<String>("shotName") } returns "shotName "
+
         viewModel = CreateEditDeclaredShotViewModel(
+            savedStateHandle = savedStateHandle,
             application = application,
             declaredShotRepository = declaredShotRepository,
             shotIgnoringRepository = shotIgnoringRepository,
             createFirebaseUserInfo = createFirebaseUserInfo,
             updateFirebaseUserInfo = updateFirebaseUserInfo,
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-            createSharedPreferences = createSharedPreferences,
-            readSharedPreferences = readSharedPreferences,
+            playerRepository = playerRepository,
             navigation = navigation,
             scope = scope
         )
@@ -77,7 +80,7 @@ class CreateEditDeclaredShotViewModelTest {
     fun `on toolbar menu clicked`() {
         viewModel.onToolbarMenuClicked()
 
-        verify { navigation.pop() }
+        verify { navigation.navigateToDeclaredShotList() }
     }
 
     @Nested
@@ -87,12 +90,27 @@ class CreateEditDeclaredShotViewModelTest {
         fun `when fetch declared shot from name returns null should not update state`() {
             val name = "name"
 
+            every { savedStateHandle.get<String>("shotName") } returns name
+
             coEvery { declaredShotRepository.fetchDeclaredShotFromName(name = name) } returns null
+
+            viewModel = CreateEditDeclaredShotViewModel(
+                savedStateHandle = savedStateHandle,
+                application = application,
+                declaredShotRepository = declaredShotRepository,
+                shotIgnoringRepository = shotIgnoringRepository,
+                createFirebaseUserInfo = createFirebaseUserInfo,
+                updateFirebaseUserInfo = updateFirebaseUserInfo,
+                deleteFirebaseUserInfo = deleteFirebaseUserInfo,
+                playerRepository = playerRepository,
+                navigation = navigation,
+                scope = scope
+            )
 
             viewModel.attemptToUpdateDeclaredShotState(name = name)
 
             Assertions.assertEquals(viewModel.currentDeclaredShot, null)
-            Assertions.assertEquals(viewModel.createEditDeclaredShotMutableStateFlow.value, state.copy(declaredShotState = DeclaredShotState.CREATING))
+            Assertions.assertEquals(viewModel.createEditDeclaredShotMutableStateFlow.value, state.copy(declaredShotState = DeclaredShotState.NONE))
         }
 
         @Test
@@ -133,7 +151,7 @@ class CreateEditDeclaredShotViewModelTest {
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(id = id) }
             coVerify(exactly = 0) { shotIgnoringRepository.createShotIgnoring(shotId = id) }
-            coVerify(exactly = 0) { navigation.pop() }
+            coVerify(exactly = 0) { navigation.navigateToDeclaredShotList() }
             verify { navigation.disableProgress() }
             verify { navigation.alert(alert = any()) }
         }
@@ -151,7 +169,7 @@ class CreateEditDeclaredShotViewModelTest {
 
             coVerify { declaredShotRepository.deleteShotById(id = id) }
             coVerify { shotIgnoringRepository.createShotIgnoring(shotId = id) }
-            verify { navigation.pop() }
+            verify { navigation.navigateToDeclaredShotList() }
             verify { navigation.disableProgress() }
         }
 
@@ -168,7 +186,7 @@ class CreateEditDeclaredShotViewModelTest {
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(id = id) }
             coVerify(exactly = 0) { shotIgnoringRepository.createShotIgnoring(shotId = id) }
-            coVerify(exactly = 0) { navigation.pop() }
+            coVerify(exactly = 0) { navigation.navigateToDeclaredShotList() }
 
             verify { navigation.disableProgress() }
             verify { navigation.alert(alert = any()) }
@@ -187,7 +205,7 @@ class CreateEditDeclaredShotViewModelTest {
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(id = id) }
             coVerify(exactly = 0) { shotIgnoringRepository.createShotIgnoring(shotId = id) }
-            coVerify(exactly = 0) { navigation.pop() }
+            coVerify(exactly = 0) { navigation.navigateToDeclaredShotList() }
 
             verify { navigation.disableProgress() }
             verify { navigation.alert(alert = any()) }
@@ -208,7 +226,7 @@ class CreateEditDeclaredShotViewModelTest {
 
             coVerify { declaredShotRepository.deleteShotById(id = id) }
             coVerify { shotIgnoringRepository.createShotIgnoring(shotId = id) }
-            verify { navigation.pop() }
+            verify { navigation.navigateToDeclaredShotList() }
             verify { navigation.disableProgress() }
         }
     }
@@ -575,7 +593,7 @@ class CreateEditDeclaredShotViewModelTest {
             verify { navigation.disableProgress() }
             verify { navigation.alert(alert = any()) }
 
-            verify(exactly = 0) { navigation.pop() }
+            verify(exactly = 0) { navigation.navigateToDeclaredShotList() }
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
         }
 
@@ -590,7 +608,7 @@ class CreateEditDeclaredShotViewModelTest {
             verify { navigation.disableProgress() }
             verify { navigation.alert(alert = any()) }
 
-            verify(exactly = 0) { navigation.pop() }
+            verify(exactly = 0) { navigation.navigateToDeclaredShotList() }
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
         }
 
@@ -610,7 +628,7 @@ class CreateEditDeclaredShotViewModelTest {
             verify { navigation.alert(alert = any()) }
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
-            verify(exactly = 0) { navigation.pop() }
+            verify(exactly = 0) { navigation.navigateToDeclaredShotList() }
         }
 
         @Test
@@ -639,7 +657,7 @@ class CreateEditDeclaredShotViewModelTest {
 
             coVerify(exactly = 0) { declaredShotRepository.updateDeclaredShot(declaredShot = declaredShot) }
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
-            verify(exactly = 0) { navigation.pop() }
+            verify(exactly = 0) { navigation.navigateToDeclaredShotList() }
         }
 
         @Test
@@ -665,7 +683,7 @@ class CreateEditDeclaredShotViewModelTest {
             verify { navigation.enableProgress(progress = any()) }
             coVerify { declaredShotRepository.updateDeclaredShot(declaredShot = declaredShot) }
             verify { navigation.disableProgress() }
-            verify { navigation.pop() }
+            verify { navigation.navigateToDeclaredShotList() }
             verify { navigation.alert(alert = any()) }
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
@@ -683,7 +701,7 @@ class CreateEditDeclaredShotViewModelTest {
             verify { navigation.alert(alert = any()) }
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
-            verify(exactly = 0) { navigation.pop() }
+            verify(exactly = 0) { navigation.navigateToDeclaredShotList() }
         }
 
         @Test
@@ -698,7 +716,7 @@ class CreateEditDeclaredShotViewModelTest {
             verify { navigation.alert(alert = any()) }
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
-            verify(exactly = 0) { navigation.pop() }
+            verify(exactly = 0) { navigation.navigateToDeclaredShotList() }
         }
 
         @Test
@@ -715,7 +733,7 @@ class CreateEditDeclaredShotViewModelTest {
             verify { navigation.alert(alert = any()) }
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
-            verify(exactly = 0) { navigation.pop() }
+            verify(exactly = 0) { navigation.navigateToDeclaredShotList() }
         }
 
         @Test
@@ -730,7 +748,7 @@ class CreateEditDeclaredShotViewModelTest {
             verify { navigation.alert(alert = any()) }
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
-            verify(exactly = 0) { navigation.pop() }
+            verify(exactly = 0) { navigation.navigateToDeclaredShotList() }
         }
 
         @Test
@@ -745,7 +763,7 @@ class CreateEditDeclaredShotViewModelTest {
             verify { navigation.alert(alert = any()) }
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
-            verify(exactly = 0) { navigation.pop() }
+            verify(exactly = 0) { navigation.navigateToDeclaredShotList() }
         }
 
         @Test
@@ -760,7 +778,7 @@ class CreateEditDeclaredShotViewModelTest {
             verify { navigation.alert(alert = any()) }
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
-            verify(exactly = 0) { navigation.pop() }
+            verify(exactly = 0) { navigation.navigateToDeclaredShotList() }
         }
 
         @Test
@@ -775,7 +793,7 @@ class CreateEditDeclaredShotViewModelTest {
             verify { navigation.alert(alert = any()) }
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
-            verify(exactly = 0) { navigation.pop() }
+            verify(exactly = 0) { navigation.navigateToDeclaredShotList() }
         }
 
         @Test
@@ -791,7 +809,7 @@ class CreateEditDeclaredShotViewModelTest {
             verify { navigation.alert(alert = any()) }
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
-            verify(exactly = 0) { navigation.pop() }
+            verify(exactly = 0) { navigation.navigateToDeclaredShotList() }
         }
 
         @Test
@@ -808,7 +826,7 @@ class CreateEditDeclaredShotViewModelTest {
             verify { navigation.alert(alert = any()) }
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(declaredShot.id) }
-            verify(exactly = 0) { navigation.pop() }
+            verify(exactly = 0) { navigation.navigateToDeclaredShotList() }
         }
 
         @Test
@@ -824,7 +842,7 @@ class CreateEditDeclaredShotViewModelTest {
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
-            verify { navigation.pop() }
+            verify { navigation.navigateToDeclaredShotList() }
             verify { navigation.alert(alert = any()) }
 
             coVerify { declaredShotRepository.deleteShotById(declaredShot.id) }
@@ -853,7 +871,7 @@ class CreateEditDeclaredShotViewModelTest {
             coVerify { declaredShotRepository.createNewDeclaredShot(newDeclaredShot.copy(id = 445, firebaseKey = newKey)) }
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
-            verify { navigation.pop() }
+            verify { navigation.navigateToDeclaredShotList() }
             verify { navigation.alert(alert = any()) }
 
             coVerify(exactly = 0) { declaredShotRepository.deleteShotById(445) }

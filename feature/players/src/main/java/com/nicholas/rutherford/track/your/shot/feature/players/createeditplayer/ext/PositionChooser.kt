@@ -30,6 +30,8 @@ import com.nicholas.rutherford.track.your.shot.TrackYourShotTheme
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 
 /**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * A dropdown menu composable allowing the user to select a basketball player position.
  *
  * Displays a read-only [OutlinedTextField] that, when clicked, expands a dropdown
@@ -51,7 +53,7 @@ fun PositionChooser(onPlayerPositionStringChanged: (newPosition: String) -> Unit
     val options = listOf(pointGuard, shootingGuard, smallForward, powerForward, center)
 
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(pointGuard)}
+    var selectedText by remember { mutableStateOf(pointGuard) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -115,5 +117,3 @@ fun PositionChooserPreview() {
         }
     }
 }
-
-

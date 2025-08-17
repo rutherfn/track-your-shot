@@ -24,6 +24,8 @@ import kotlinx.coroutines.launch
 const val DELETE_PLAYER_DELAY_IN_MILLIS = 2000L
 
 /**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * ViewModel for managing the state and business logic of the Players List screen.
  *
  * This ViewModel handles data operations related to the player list such as loading players,
@@ -101,7 +103,7 @@ class PlayersListViewModel(
     /** Adds the "View Shots" option if the player has logged any shots */
     private fun buildAddViewShotsOption(selectedPlayerFullName: String): List<String> =
         listOf(application.getString(StringsIds.viewXShots, selectedPlayerFullName)) +
-                buildBaseSheetOptions(selectedPlayerFullName)
+            buildBaseSheetOptions(selectedPlayerFullName)
 
     /** Deletes all non-empty pending players from local storage */
     internal fun deleteAllNonEmptyPendingPlayers() {

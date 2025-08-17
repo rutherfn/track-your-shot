@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Entry point composable for the splash screen UI.
  */
 @Composable

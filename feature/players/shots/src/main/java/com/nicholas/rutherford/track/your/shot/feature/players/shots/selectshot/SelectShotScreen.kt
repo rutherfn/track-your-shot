@@ -40,6 +40,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Composable screen used to select a declared shot from a list, optionally filtered by a search query.
  *
  * Displays a search field, a list of declared shots, or an empty state if no results are found.
@@ -230,29 +232,32 @@ fun SelectShotEmptyState(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun SelectShotScreenPreview() {
-    SelectShotScreen(selectShotParams = SelectShotParams(
-        state = SelectShotState(declaredShotList = listOf(
-            DeclaredShot(
-                id = 1,
-                title = "Three Pointer",
-                shotCategory = "long range",
-                description = "A shot taken from beyond the three-point line.",
-                firebaseKey = "firebase",
+    SelectShotScreen(
+        selectShotParams = SelectShotParams(
+            state = SelectShotState(
+                declaredShotList = listOf(
+                    DeclaredShot(
+                        id = 1,
+                        title = "Three Pointer",
+                        shotCategory = "long range",
+                        description = "A shot taken from beyond the three-point line.",
+                        firebaseKey = "firebase"
+                    ),
+                    DeclaredShot(
+                        id = 2,
+                        title = "Free Throw",
+                        shotCategory = "penalty",
+                        description = "An unopposed shot taken from the free throw line.",
+                        firebaseKey = "firebase"
+                    )
+                )
             ),
-            DeclaredShot(
-                id = 2,
-                title = "Free Throw",
-                shotCategory = "penalty",
-                description = "An unopposed shot taken from the free throw line.",
-                firebaseKey = "firebase"
-            )
-        )),
-        onBackButtonClicked = {},
-        onSearchValueChanged = {},
-        onCancelIconClicked = {},
-        onItemClicked = {},
-        onHelpIconClicked = {},
-        onnDeclaredShotItemClicked = {}
-    ))
+            onBackButtonClicked = {},
+            onSearchValueChanged = {},
+            onCancelIconClicked = {},
+            onItemClicked = {},
+            onHelpIconClicked = {},
+            onnDeclaredShotItemClicked = {}
+        )
+    )
 }
-

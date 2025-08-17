@@ -34,6 +34,18 @@ import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * A composable displaying a numeric stepper row with a title and increment/decrement buttons.
+ *
+ * @param title The title displayed on the left side of the row.
+ * @param onDownwardClicked Callback invoked when the decrement button is pressed with the new value.
+ * @param onUpwardClicked Callback invoked when the increment button is pressed with the new value.
+ * @param titleStyle Optional text style for the title, defaults to `TextStyles.smallBold`.
+ * @param shouldShowDivider Optional flag to show a horizontal divider below the row.
+ * @param defaultValue Initial value of the stepper, defaults to 0.
+ */
 @Composable
 fun NumericRowStepper(
     title: String,
@@ -72,6 +84,13 @@ fun NumericRowStepper(
     }
 }
 
+/**
+ * Internal composable for the numeric value display and increment/decrement buttons.
+ *
+ * @param defaultValue Initial value of the stepper.
+ * @param onDownwardClicked Callback invoked when decrementing the value.
+ * @param onUpwardClicked Callback invoked when incrementing the value.
+ */
 @Composable
 fun NumericRowStepperRightContent(
     defaultValue: Int,
@@ -134,8 +153,11 @@ fun NumericRowStepperRightContent(
     }
 }
 
+/**
+ * Preview of [NumericRowStepper] composable.
+ */
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun StepperRowPreview() {
     Column(modifier = Modifier.background(Color.White)) {
         NumericRowStepper(

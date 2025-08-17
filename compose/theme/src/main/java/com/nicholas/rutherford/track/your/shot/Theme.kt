@@ -7,6 +7,8 @@ import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Defined theme using Material 3
  */
 private val lightColorScheme = lightColorScheme(

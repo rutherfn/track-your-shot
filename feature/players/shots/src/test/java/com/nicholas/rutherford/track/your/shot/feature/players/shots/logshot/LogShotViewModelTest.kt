@@ -2,6 +2,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
@@ -49,6 +50,8 @@ class LogShotViewModelTest {
     private val datePattern = "MMMM dd, yyyy"
     private val dateFormat = SimpleDateFormat(datePattern, Locale.ENGLISH)
 
+    private var savedStateHandle = mockk<SavedStateHandle>(relaxed = true)
+
     private val application = mockk<Application>(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -73,7 +76,23 @@ class LogShotViewModelTest {
 
     @BeforeEach
     fun beforeEach() {
+        val playerId = 4
+        val shotType = 11
+        val viewCurrentExistingShot = false
+        val viewCurrentPendingShot = false
+        val fromShot = false
+
+        every { savedStateHandle.get<Boolean>("isExistingPlayer") } returns false
+        every { savedStateHandle.get<Int>("playerId") } returns playerId
+        every { savedStateHandle.get<Int>("shotType") } returns shotType
+        every { savedStateHandle.get<Int>("shotId") } returns 11
+        every { savedStateHandle.get<Boolean>("viewCurrentExistingShot") } returns viewCurrentExistingShot
+        every { savedStateHandle.get<Boolean>("viewCurrentPendingShot") } returns viewCurrentPendingShot
+        every { savedStateHandle.get<Boolean>("fromShotList") } returns fromShot
+        every { savedStateHandle.get<Int>("screenTriggeredIndexArgument") } returns 0
+
         logShotViewModel = LogShotViewModel(
+            savedStateHandle = savedStateHandle,
             application = application,
             scope = scope,
             navigation = navigation,
@@ -93,7 +112,6 @@ class LogShotViewModelTest {
 
         @Test
         fun `when declared shot returns null should not update state`() = runTest {
-            val shotId = 2
             val playerId = 4
             val shotType = 4
             val viewCurrentExistingShot = false
@@ -110,22 +128,13 @@ class LogShotViewModelTest {
             )
             coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotType) } returns null
 
-            logShotViewModel.updateIsExistingPlayerAndId(
-                isExistingPlayerArgument = false,
-                playerIdArgument = playerId,
-                shotTypeArgument = shotType,
-                shotIdArgument = shotId,
-                viewCurrentExistingShotArgument = viewCurrentExistingShot,
-                viewCurrentPendingShotArgument = viewCurrentPendingShot,
-                fromShotListArgument = fromShot
-            )
+            logShotViewModel.updateIsExistingPlayerAndId()
 
             Assertions.assertEquals(logShotViewModel.logShotMutableStateFlow.value, LogShotState())
         }
 
         @Test
         fun `when player returns null should not update state`() = runTest {
-            val shotId = 2
             val playerId = 4
             val shotType = 4
             val viewCurrentExistingShot = false
@@ -143,15 +152,7 @@ class LogShotViewModelTest {
             coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotType) } returns TestDeclaredShot.build()
             coEvery { playerRepository.fetchPlayerById(id = playerId) } returns null
 
-            logShotViewModel.updateIsExistingPlayerAndId(
-                isExistingPlayerArgument = true,
-                playerIdArgument = playerId,
-                shotTypeArgument = shotType,
-                shotIdArgument = shotId,
-                viewCurrentExistingShotArgument = viewCurrentExistingShot,
-                viewCurrentPendingShotArgument = viewCurrentPendingShot,
-                fromShotListArgument = fromShot
-            )
+            logShotViewModel.updateIsExistingPlayerAndId()
 
             Assertions.assertEquals(logShotViewModel.logShotMutableStateFlow.value, LogShotState())
         }
@@ -159,7 +160,6 @@ class LogShotViewModelTest {
         @Test
         fun `when declaredShot is not null and player from fetch player by id is not null should update state`() =
             runTest {
-                val shotId = 2
                 val playerId = 4
                 val shotType = 9
                 val viewCurrentExistingShot = false
@@ -177,15 +177,7 @@ class LogShotViewModelTest {
                 coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotType) } returns TestDeclaredShot.build()
                 coEvery { playerRepository.fetchPlayerById(id = playerId) } returns TestPlayer().create()
 
-                logShotViewModel.updateIsExistingPlayerAndId(
-                    isExistingPlayerArgument = true,
-                    playerIdArgument = playerId,
-                    shotTypeArgument = shotType,
-                    shotIdArgument = shotId,
-                    viewCurrentExistingShotArgument = viewCurrentExistingShot,
-                    viewCurrentPendingShotArgument = viewCurrentPendingShot,
-                    fromShotListArgument = fromShot
-                )
+                logShotViewModel.updateIsExistingPlayerAndId()
 
                 Assertions.assertEquals(
                     logShotViewModel.logShotMutableStateFlow.value,
@@ -207,7 +199,6 @@ class LogShotViewModelTest {
         @Test
         fun `when declaredShot is not null and player from fetch pending player by id is not null should update state`() =
             runTest {
-                val shotId = 2
                 val playerId = 4
                 val shotType = 11
                 val viewCurrentExistingShot = false
@@ -225,15 +216,7 @@ class LogShotViewModelTest {
                 coEvery { declaredShotRepository.fetchDeclaredShotFromId(id = shotType) } returns TestDeclaredShot.build()
                 coEvery { pendingPlayerRepository.fetchPlayerById(id = playerId) } returns TestPlayer().create()
 
-                logShotViewModel.updateIsExistingPlayerAndId(
-                    isExistingPlayerArgument = false,
-                    playerIdArgument = playerId,
-                    shotTypeArgument = shotType,
-                    shotIdArgument = shotId,
-                    viewCurrentExistingShotArgument = viewCurrentExistingShot,
-                    viewCurrentPendingShotArgument = viewCurrentPendingShot,
-                    fromShotListArgument = fromShot
-                )
+                logShotViewModel.updateIsExistingPlayerAndId()
 
                 Assertions.assertEquals(
                     logShotViewModel.logShotMutableStateFlow.value,
@@ -264,10 +247,9 @@ class LogShotViewModelTest {
         val state = logShotViewModel.logShotMutableStateFlow.value
         Assertions.assertEquals(
             state,
-            LogShotState(
+            state.copy(
                 shotName = "",
-                playerName = "",
-                shotsLoggedDateValue = "",
+                shotsLoggedDateValue = LocalDate.now().toDateValue() ?: "",
                 shotsTakenDateValue = "",
                 shotsMade = shots,
                 shotsAttempted = 2,
@@ -288,10 +270,10 @@ class LogShotViewModelTest {
         val state = logShotViewModel.logShotMutableStateFlow.value
         Assertions.assertEquals(
             state,
-            LogShotState(
+            state.copy(
                 shotName = "",
-                playerName = "",
-                shotsLoggedDateValue = "",
+                playerName = ", ",
+                shotsLoggedDateValue = LocalDate.now().toDateValue() ?: "",
                 shotsTakenDateValue = "",
                 shotsMissed = shots,
                 shotsAttempted = 2,
@@ -543,7 +525,7 @@ class LogShotViewModelTest {
             logShotViewModel.handleHasDeleteShotFirebaseResponse(hasDeleted = hasDeleted)
 
             verify { navigation.disableProgress() }
-            verify { navigation.popToShotList() }
+            verify { navigation.popToShotList(shouldShowAllPlayersShots = true) }
             verify { navigation.alert(alert = any()) }
         }
     }
@@ -576,7 +558,12 @@ class LogShotViewModelTest {
     fun `on back clicked should pop stack`() {
         logShotViewModel.onBackClicked()
 
-        Assertions.assertEquals(logShotViewModel.logShotMutableStateFlow.value, LogShotState())
+        Assertions.assertEquals(
+            logShotViewModel.logShotMutableStateFlow.value,
+            logShotViewModel.logShotMutableStateFlow.value.copy(
+                shotsLoggedDateValue = LocalDate.now().toDateValue() ?: ""
+            )
+        )
 
         verify { navigation.pop() }
     }

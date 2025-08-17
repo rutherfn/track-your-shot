@@ -43,6 +43,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import kotlinx.coroutines.launch
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Education screen gets used in [EducationPager] to load screen content for Pager.
  *
  * @param educationInfo [EducationInfo] info that gets loaded in the content for the given screen

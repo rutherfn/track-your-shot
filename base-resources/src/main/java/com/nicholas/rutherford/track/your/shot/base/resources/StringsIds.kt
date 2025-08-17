@@ -1,5 +1,11 @@
 package com.nicholas.rutherford.track.your.shot.base.resources
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * Centralized object holding references to String ids resources used across the app.
+ * This helps maintain consistency and makes it easier to reference StringIds programmatically.
+ */
 object StringsIds {
     val addShot = R.string.add_shot
     val acceptanceOfTheseTerms = R.string.acceptance_of_these_terms
@@ -27,8 +33,6 @@ object StringsIds {
     val cameraPermissionHasBeenDeniedDescription =
         R.string.camera_permission_has_been_denied_description
     val center = R.string.center
-    val changesAndAmendments = R.string.changes_and_amendments
-    val changesAndAmendmentsDescription = R.string.changes_and_amendments_description
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
     val chooseAShotToLogInfoDescription = R.string.choose_a_shot_to_log_info_description
     val chooseImageFromGallery = R.string.choose_image_from_gallery
@@ -83,8 +87,6 @@ object StringsIds {
     val emptyFields = R.string.empty_fields
     val emptyFieldsDescription = R.string.empty_fields_description
     val email = R.string.email
-    val emailInUse = R.string.email_in_use
-    val emailInUseDescription = R.string.email_in_use_description
     val emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat =
         R.string.email_is_not_in_correct_format_please_enter_email_in_correct_format
     val emailIsRequiredPleaseEnterAEmailToCreateAAccount =
@@ -96,7 +98,6 @@ object StringsIds {
     val emailRequired = R.string.email_required
     val enabledPermissions = R.string.enabled_permissions
     val enterShotsMade = R.string.enter_shots_made
-    val enterShotsMissed = R.string.enter_shots_missed
     val enterShotCategory = R.string.enter_shot_category
     val enterShotDescription = R.string.enter_shot_description
     val enterShotName = R.string.enter_shot_name
@@ -119,8 +120,6 @@ object StringsIds {
     val hintLogNewShots = R.string.hint_log_new_shots
     val hintLogNewShotsForPlayer = R.string.hint_log_new_shots_for_player
     val introduction = R.string.introduction
-    val invalidShotInput = R.string.invalid_shot_input
-    val invalidShotInputDescription = R.string.invalid_shot_input_description
     val issueOccurred = R.string.issue_occurred
     val lastName = R.string.last_name
     val leavingTheAppWillResultInYouNotFinishingTheAccountCreationProcessDescription =
@@ -210,7 +209,6 @@ object StringsIds {
     val shotCategory = R.string.shot_ceategory
     val shotDescription = R.string.shot_description
     val shotName = R.string.shot_name
-    val shotsMissedAccuracyX = R.string.shots_missed_accuracy_x
     val shotHasBeenDeleted = R.string.shot_has_been_deleted
     val shotHasNotBeenDeleted = R.string.shot_has_not_been_deleted
     val shotPercentage = R.string.shot_percentage
@@ -227,7 +225,6 @@ object StringsIds {
     val shotXHasBeenEdited = R.string.shot_x_has_been_edited
     val shotXHasBeenEditedDescription = R.string.shot_x_has_been_edited_description
     val shotsMade = R.string.shots_made
-    val shotsMadeX = R.string.shots_made_x
     val shotsMadeXSecondary = R.string.shots_made_x_secondary
     val shotsMadePercentage = R.string.shots_made_percentage
     val shotsMissedPercentage = R.string.shots_missed_percentage
@@ -251,7 +248,6 @@ object StringsIds {
     val shootingGuard = R.string.shooting_guard
     val sg = R.string.sg
     val stats = R.string.stats
-    val splashIconDescription = R.string.splash_icon_description
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
     val takeAPicture = R.string.take_a_picture
     val tapForMore = R.string.tap_for_more
@@ -278,15 +274,12 @@ object StringsIds {
     val username = R.string.username
     val usernameHelperText = R.string.username_helper_text
     val usernameRequired = R.string.username_required
-    val usernameInUse = R.string.username_in_use
-    val usernameInUseDescription = R.string.username_in_use_description
     val usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat =
         R.string.username_is_not_in_correct_format_please_enter_username_in_correct_format
     val usernameIsRequiredPleaseEnterAUsernameToCreateAAccount =
         R.string.username_is_required_please_enter_a_username_to_create_a_account
     val usingTheApp = R.string.using_the_app
     val verifyAccount = R.string.verify_account
-    val viewReports = R.string.view_reports
     val viewMoreInfo = R.string.view_more_info
     val viewX = R.string.view_x
     val viewXShots = R.string.view_x_shots

@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * UI parameters required for rendering and interacting with the Terms & Conditions screen.
  *
  * This class holds the current UI state and callback functions for user actions, allowing
@@ -17,4 +19,3 @@ data class TermsConditionsParams(
     val onDevEmailClicked: () -> Unit,
     val state: TermsConditionsState
 )
-

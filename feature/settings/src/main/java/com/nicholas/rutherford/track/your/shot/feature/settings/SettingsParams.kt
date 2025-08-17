@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Parameters used to render the Settings screen UI.
  *
  * @property onToolbarMenuClicked Callback triggered when the toolbar menu icon is clicked.
@@ -14,4 +16,3 @@ data class SettingsParams(
     val onSettingItemClicked: (value: String) -> Unit,
     val state: SettingsState
 )
-

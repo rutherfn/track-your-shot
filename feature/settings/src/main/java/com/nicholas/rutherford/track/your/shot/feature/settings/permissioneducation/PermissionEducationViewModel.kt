@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * ViewModel for the Permission Education screen.
  *
  * This ViewModel manages the state and behavior of the permission education flow,
@@ -74,4 +76,3 @@ class PermissionEducationViewModel(
         }
     }
 }
-

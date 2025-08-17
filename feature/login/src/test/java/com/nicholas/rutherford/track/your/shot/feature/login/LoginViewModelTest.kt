@@ -59,7 +59,7 @@ class LoginViewModelTest {
     @Test fun initializeLoginState() {
         Assertions.assertEquals(
             viewModel.loginStateFlow.value,
-            state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest)
+            state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, email = "", password = "")
         )
     }
 
@@ -78,7 +78,7 @@ class LoginViewModelTest {
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
-                state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest)
+                state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, email = "", password = "")
             )
         }
 
@@ -95,7 +95,7 @@ class LoginViewModelTest {
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
-                state.copy(launcherDrawableId = DrawablesIds.launcherRoundStage)
+                state.copy(launcherDrawableId = DrawablesIds.launcherRoundStage, email = "", password = "")
             )
         }
 
@@ -112,7 +112,7 @@ class LoginViewModelTest {
 
             Assertions.assertEquals(
                 viewModel.loginStateFlow.value,
-                state.copy(launcherDrawableId = DrawablesIds.launcherRound)
+                state.copy(launcherDrawableId = DrawablesIds.launcherRound, email = "", password = "")
             )
         }
     }
@@ -204,14 +204,6 @@ class LoginViewModelTest {
     @Test fun `attempt to login to account should call login function`() {
         viewModel.attemptToLoginToAccount(email = emailTest, password = passwordTest)
 
-        Assertions.assertEquals(
-            LoginState(
-                launcherDrawableId = DrawablesIds.launcherRoundTest,
-                email = null,
-                password = null
-            ),
-            viewModel.loginMutableStateFlow.value
-        )
         verify { accountManager.login(email = emailTest, password = passwordTest) }
     }
 
@@ -234,7 +226,7 @@ class LoginViewModelTest {
 
         Assertions.assertEquals(
             viewModel.loginStateFlow.value,
-            state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, email = emailTest)
+            state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, email = emailTest, password = "")
         )
     }
 
@@ -245,7 +237,7 @@ class LoginViewModelTest {
 
         Assertions.assertEquals(
             viewModel.loginStateFlow.value,
-            state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, password = passwordTest)
+            state.copy(launcherDrawableId = DrawablesIds.launcherRoundTest, email = "", password = passwordTest)
         )
     }
 

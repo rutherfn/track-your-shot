@@ -4,6 +4,8 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 
 /**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * Defines navigation actions available from the players list screen.
  */
 interface PlayersListNavigation {

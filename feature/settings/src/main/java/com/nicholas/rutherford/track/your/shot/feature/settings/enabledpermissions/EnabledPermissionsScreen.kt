@@ -29,6 +29,8 @@ import com.nicholas.rutherford.track.your.shot.helper.extensions.hasCameraPermis
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Displays the Enabled Permissions screen, where the user can enable or disable camera permission.
  *
  * @param params Contains the state and callback handlers for this screen.

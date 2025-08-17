@@ -10,6 +10,8 @@ import com.nicholas.rutherford.track.your.shot.compose.components.education.Educ
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Displays the Permission Education screen, which presents a series of
  * informational pages explaining the need for permissions.
  *
@@ -70,4 +72,3 @@ fun PermissionEducationScreenPreview() {
         )
     )
 }
-

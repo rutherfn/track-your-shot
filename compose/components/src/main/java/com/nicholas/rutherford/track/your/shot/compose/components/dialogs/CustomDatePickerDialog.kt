@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
@@ -34,6 +35,8 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Default [Dialog] with given params to build a custom date picker used for,
  * displaying in viewModel; whenever we want to select a new date
  *
@@ -141,4 +144,19 @@ fun CustomDatePickerDialog(datePickerInfo: DatePickerInfo) {
             }
         }
     }
+}
+
+/**
+ * Preview of [CustomDatePickerDialog] with example date and callbacks.
+ */
+@Preview(showBackground = true)
+@Composable
+fun CustomDatePickerDialogPreview() {
+    val datePickerInfo = DatePickerInfo(
+        dateValue = "Aug 16, 2023",
+        onDateOkClicked = {},
+        onDismissClicked = {}
+    )
+
+    CustomDatePickerDialog(datePickerInfo = datePickerInfo)
 }

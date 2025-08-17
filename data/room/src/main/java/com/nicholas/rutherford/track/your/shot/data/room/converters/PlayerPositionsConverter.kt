@@ -4,7 +4,20 @@ import androidx.room.TypeConverter
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
+ * A Room TypeConverter for converting between [PlayerPositions] enum instances
+ * and their corresponding integer representations for database storage.
+ */
 class PlayerPositionsConverter {
+
+    /**
+     * Converts an integer value from the database into a corresponding [PlayerPositions] enum.
+     *
+     * @param value The integer value representing a player position.
+     * @return The corresponding [PlayerPositions] enum.
+     */
     @TypeConverter
     fun fromValue(value: Int): PlayerPositions {
         return when (value) {
@@ -17,6 +30,13 @@ class PlayerPositionsConverter {
         }
     }
 
+    /**
+     * Converts a [PlayerPositions] enum to its corresponding integer representation
+     * for storing in the database.
+     *
+     * @param playerPosition The [PlayerPositions] enum to convert.
+     * @return The integer value corresponding to the player position.
+     */
     @TypeConverter
     fun toValue(playerPosition: PlayerPositions): Int {
         return when (playerPosition) {

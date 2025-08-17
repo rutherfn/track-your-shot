@@ -46,6 +46,8 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 /**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * Displays logged shots and pending shots in separate sections,
  * along with a button to log new shots.
  *

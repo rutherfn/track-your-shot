@@ -14,6 +14,8 @@ import com.nicholas.rutherford.track.your.shot.compose.components.education.Educ
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Displays the Onboarding Education screen, which walks the user through a multi-step
  * educational flow explaining features. The user can swipe between pages,
  * and dismiss the flow with the "Got It" button or system back press.

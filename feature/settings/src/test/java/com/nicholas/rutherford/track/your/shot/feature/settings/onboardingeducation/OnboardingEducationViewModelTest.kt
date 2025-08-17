@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.shared.EducationInfo
@@ -17,6 +18,8 @@ class OnboardingEducationViewModelTest {
 
     private val navigation = mockk<OnboardingEducationNavigation>(relaxed = true)
 
+    private var savedStateHandle = mockk<SavedStateHandle>(relaxed = true)
+
     private val application = mockk<Application>(relaxed = true)
 
     @BeforeEach
@@ -30,10 +33,13 @@ class OnboardingEducationViewModelTest {
         every { application.getString(StringsIds.gotIt) } returns "Got It"
         every { application.getString(StringsIds.next) } returns "Next"
 
-//        onboardingEducationViewModel = OnboardingEducationViewModel(
-//            navigation = navigation,
-//            application = application
-//        )
+        every { savedStateHandle.get<Boolean>("isFirstTimeLaunched") } returns false
+
+        onboardingEducationViewModel = OnboardingEducationViewModel(
+            savedStateHandle = savedStateHandle,
+            navigation = navigation,
+            application = application
+        )
     }
 
     @Test
@@ -98,6 +104,6 @@ class OnboardingEducationViewModelTest {
     fun `on got it button clicked should pop stack`() {
         onboardingEducationViewModel.onGotItButtonClicked()
 
-        //verify { navigation.pop() }
+        verify { navigation.pop(isFirstTimeLaunchedParam = false) }
     }
 }

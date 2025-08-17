@@ -15,6 +15,8 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAnd
 import java.util.Locale
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Default [AlertDialog] with given params to build alerts used in content
  *
  * @param title sets the [Text] for the [AlertDialog]

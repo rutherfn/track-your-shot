@@ -1,6 +1,8 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot
 
 /**
+ * Created by Nicholas Rutherford, last edited on 2025-08-16
+ *
  * Represents the UI state for the Log Shot screen.
  *
  * @property shotName The name of the shot being logged. Defaults to an empty string.
@@ -33,4 +35,3 @@ data class LogShotState(
     val shotsMissedPercentValue: String = "",
     val deleteShotButtonVisible: Boolean = false
 )
-

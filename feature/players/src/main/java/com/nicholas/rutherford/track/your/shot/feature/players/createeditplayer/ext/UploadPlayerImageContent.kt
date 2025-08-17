@@ -32,6 +32,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 /**
+ * Represents the UI state for the Create/Edit Player screen.
+ *
  * Composable for uploading and displaying a player's profile image.
  *
  * Displays a circular image area that either shows:
@@ -115,5 +117,3 @@ fun UploadPlayerImageContent(
         )
     }
 }
-
-
