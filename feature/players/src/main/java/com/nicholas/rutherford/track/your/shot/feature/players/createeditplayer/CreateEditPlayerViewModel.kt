@@ -1099,30 +1099,30 @@ class CreateEditPlayerViewModel(
                 lastName = player.lastName
             )
         } ?: run {
-                pendingPlayers = emptyList()
-                pendingPlayerRepository.deleteAllPendingPlayers()
+            pendingPlayers = emptyList()
+            pendingPlayerRepository.deleteAllPendingPlayers()
 
-                val firstName = createEditPlayerMutableStateFlow.value.firstName
-                val lastName = createEditPlayerMutableStateFlow.value.lastName
-                val pendingPlayer = Player(
-                    firstName = firstName,
-                    lastName = lastName,
-                    position = createEditPlayerMutableStateFlow.value.playerPositionString.toPlayerPosition(
-                        application = application
-                    ),
-                    firebaseKey = "",
-                    imageUrl = "",
-                    shotsLoggedList = emptyList()
-                )
-                pendingPlayerRepository.createPendingPlayer(player = pendingPlayer)
+            val firstName = createEditPlayerMutableStateFlow.value.firstName
+            val lastName = createEditPlayerMutableStateFlow.value.lastName
+            val pendingPlayer = Player(
+                firstName = firstName,
+                lastName = lastName,
+                position = createEditPlayerMutableStateFlow.value.playerPositionString.toPlayerPosition(
+                    application = application
+                ),
+                firebaseKey = "",
+                imageUrl = "",
+                shotsLoggedList = emptyList()
+            )
 
-                pendingPlayers = listOf(pendingPlayer)
+            pendingPlayerRepository.createPendingPlayer(player = pendingPlayer)
+            pendingPlayers = listOf(pendingPlayer)
 
                 // Fetch ID of the pending player and return it
-                pendingPlayerRepository.fetchPendingPlayerIdByName(
-                    firstName = firstName,
-                    lastName = lastName
-                )
+            pendingPlayerRepository.fetchPendingPlayerIdByName(
+                firstName = firstName,
+                lastName = lastName
+            )
         }
     }
 
