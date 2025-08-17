@@ -435,6 +435,8 @@ class LogShotViewModel(
             val pendingShot = buildPendingShotOnSave(player = player, state = state)
             val shotInfo = logShotViewModelExt.logShotInfo
 
+            println("here is the full shot info $shotInfo")
+
             when {
                 shotInfo.viewCurrentExistingShot && shotInfo.fromShotList -> handleFromShotListSaveClicked(pendingShot)
                 shotInfo.viewCurrentPendingShot -> handlePendingShotSaveClicked(pendingShot)
@@ -643,11 +645,7 @@ class LogShotViewModel(
      */
     fun navigateToCreateOrEditPlayer() {
         navigation.disableProgress()
-        if (logShotViewModelExt.logShotInfo.isExistingPlayer) {
-            navigation.popToEditPlayer()
-        } else {
-            navigation.popToCreatePlayer()
-        }
+        navigation.popToCreateOrEditPlayer()
     }
 
     /**

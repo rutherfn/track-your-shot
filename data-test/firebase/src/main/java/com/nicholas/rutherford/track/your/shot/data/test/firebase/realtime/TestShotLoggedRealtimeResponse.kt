@@ -1,20 +1,20 @@
-package com.nicholas.rutherford.track.your.shot.firebase.realtime
+package com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
  *
- * Utility object for creating test instances of [ShotLoggedRealtimeResponse].
+ * Utility object for creating test instances of [com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse].
  * Provides predefined test values for all shot properties.
  */
 object TestShotLoggedRealtimeResponse {
 
     /**
-     * Builds a test [ShotLoggedRealtimeResponse] instance with predefined values.
+     * Builds a test [com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse] instance with predefined values.
      *
-     * @return a [ShotLoggedRealtimeResponse] populated with test data.
+     * @return a [com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse] populated with test data.
      */
-    fun build(): ShotLoggedRealtimeResponse {
-        return ShotLoggedRealtimeResponse(
+    fun build(): com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse {
+        return _root_ide_package_.com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse(
             id = SHOT_ID,
             shotName = SHOT_NAME,
             shotType = SHOT_TYPE,

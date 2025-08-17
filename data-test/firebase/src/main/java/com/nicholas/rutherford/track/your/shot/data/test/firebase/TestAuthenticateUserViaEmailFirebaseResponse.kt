@@ -1,4 +1,6 @@
-package com.nicholas.rutherford.track.your.shot.firebase
+package com.nicholas.rutherford.track.your.shot.data.test.firebase
+
+import com.nicholas.rutherford.track.your.shot.firebase.AuthenticateUserViaEmailFirebaseResponse
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16

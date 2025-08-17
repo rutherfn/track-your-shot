@@ -1,20 +1,20 @@
-package com.nicholas.rutherford.track.your.shot.firebase
+package com.nicholas.rutherford.track.your.shot.data.test.firebase
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
  *
- * Utility class for creating test instances of [CreateAccountFirebaseAuthResponse].
+ * Utility class for creating test instances of [com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAuthResponse].
  * Provides predefined test values for account creation results.
  */
 class TestCreateAccountFirebaseAuthResponse {
 
     /**
-     * Creates a test [CreateAccountFirebaseAuthResponse] instance with predefined values.
+     * Creates a test [com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAuthResponse] instance with predefined values.
      *
-     * @return a [CreateAccountFirebaseAuthResponse] populated with test account creation data.
+     * @return a [com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAuthResponse] populated with test account creation data.
      */
-    fun create(): CreateAccountFirebaseAuthResponse {
-        return CreateAccountFirebaseAuthResponse(
+    fun create(): com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAuthResponse {
+        return _root_ide_package_.com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAuthResponse(
             isSuccessful = IS_SUCCESSFUL,
             username = USERNAME,
             isNewUser = IS_NEW_USER,

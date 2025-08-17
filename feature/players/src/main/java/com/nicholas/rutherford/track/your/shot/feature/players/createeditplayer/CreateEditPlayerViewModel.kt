@@ -1060,6 +1060,7 @@ class CreateEditPlayerViewModel(
     internal fun hasLogShotsAccess(): Boolean {
         // If an edited player exists, return true
         editedPlayer?.let {
+            println("get here test")
             return true
         }
 
@@ -1069,12 +1070,14 @@ class CreateEditPlayerViewModel(
 
         return when {
             firstName.isEmpty() -> {
+                println("get here test12121")
                 // Show alert for empty first name
                 navigation.alert(alert = firstNameEmptyAlert())
                 false
             }
 
             lastName.isEmpty() -> {
+                println("get here test1212131212")
                 // Show alert for empty last name
                 navigation.alert(alert = lastNameEmptyAlert())
                 false
@@ -1096,7 +1099,6 @@ class CreateEditPlayerViewModel(
                 lastName = player.lastName
             )
         } ?: run {
-            pendingPlayerRepository.fetchAllPendingPlayers().takeIf { it.isNotEmpty() }?.let {
                 pendingPlayers = emptyList()
                 pendingPlayerRepository.deleteAllPendingPlayers()
 
@@ -1121,7 +1123,6 @@ class CreateEditPlayerViewModel(
                     firstName = firstName,
                     lastName = lastName
                 )
-            }
         }
     }
 
@@ -1134,7 +1135,9 @@ class CreateEditPlayerViewModel(
     fun onLogShotsClicked() {
         if (hasLogShotsAccess()) {
             scope.launch {
+                println("gdsdsds")
                 existingOrPendingPlayerId()?.let { playerId ->
+                    println("get here player id")
                     navigation.navigateToSelectShot(
                         isExistingPlayer = editedPlayer != null,
                         playerId = playerId

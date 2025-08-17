@@ -25,9 +25,7 @@ class LogShotNavigationImpl(private val navigator: Navigator) : LogShotNavigatio
     override fun navigateToShotList(firstName: String?, lastName: String?) =
         navigator.navigate(navigationAction = NavigationActions.LogShot.createEditPlayer(firstName = firstName, lastName = lastName))
 
-    override fun popToCreatePlayer() = navigator.pop(popRouteAction = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN)
-
-    override fun popToEditPlayer() = navigator.pop(popRouteAction = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS)
+    override fun popToCreateOrEditPlayer() = navigator.pop(popRouteAction = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS)
 
     override fun datePicker(datePickerInfo: DatePickerInfo) = navigator.datePicker(datePickerAction = datePickerInfo)
 

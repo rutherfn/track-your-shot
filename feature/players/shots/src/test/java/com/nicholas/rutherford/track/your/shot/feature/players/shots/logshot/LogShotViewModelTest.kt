@@ -380,7 +380,7 @@ class LogShotViewModelTest {
             verify { navigation.enableProgress(progress = any()) }
             verify { currentPendingShot.createShot(shotLogged = any()) }
             verify { navigation.disableProgress() }
-            verify { navigation.popToCreatePlayer() }
+            verify { navigation.popToCreateOrEditPlayer() }
         }
 
         @Test
@@ -434,7 +434,7 @@ class LogShotViewModelTest {
             coVerify { currentPendingShot.deleteShot(pendingShot) }
             coVerify { currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = pendingShot.shotLogged.id))) }
             verify { navigation.disableProgress() }
-            verify { navigation.popToCreatePlayer() }
+            verify { navigation.popToCreateOrEditPlayer() }
         }
 
         @Test
@@ -512,7 +512,7 @@ class LogShotViewModelTest {
             logShotViewModel.handleHasDeleteShotFirebaseResponse(hasDeleted = hasDeleted)
 
             verify { navigation.disableProgress() }
-            verify { navigation.popToCreatePlayer() }
+            verify { navigation.popToCreateOrEditPlayer() }
             verify { navigation.alert(alert = any()) }
         }
 
@@ -530,28 +530,12 @@ class LogShotViewModelTest {
         }
     }
 
-    @Nested
-    inner class NavigateToCreateOrEditPlayer {
+    @Test
+    fun `navigate to create or edit player should pop to one of them`() {
+        logShotViewModel.navigateToCreateOrEditPlayer()
 
-        @Test
-        fun `when isExistingPlayer is set to true should call navigateToCreateEditPlayer`() {
-            every { logShotViewModelExt.logShotInfo } returns LogShotInfo(isExistingPlayer = true)
-
-            logShotViewModel.navigateToCreateOrEditPlayer()
-
-            verify { navigation.disableProgress() }
-            verify { navigation.popToEditPlayer() }
-        }
-
-        @Test
-        fun `when isExistingPlayer is set to false should call pop to create player`() {
-            every { logShotViewModelExt.logShotInfo } returns LogShotInfo(isExistingPlayer = false)
-
-            logShotViewModel.navigateToCreateOrEditPlayer()
-
-            verify { navigation.disableProgress() }
-            verify { navigation.popToCreatePlayer() }
-        }
+        verify { navigation.disableProgress() }
+        verify { navigation.popToCreateOrEditPlayer() }
     }
 
     @Test
@@ -632,7 +616,7 @@ class LogShotViewModelTest {
             logShotViewModel.onYesDeleteShot()
 
             verify { navigation.disableProgress() }
-            verify { navigation.popToEditPlayer() }
+            verify { navigation.popToCreateOrEditPlayer() }
             verify { navigation.alert(alert = any()) }
         }
     }

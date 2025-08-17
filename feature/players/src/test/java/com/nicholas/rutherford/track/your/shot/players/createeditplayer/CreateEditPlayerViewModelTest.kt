@@ -14,6 +14,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.PLAYER_FIREBASE_KEY
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
@@ -26,9 +28,7 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pen
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.PLAYER_FIREBASE_KEY
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestShotLoggedRealtimeResponse
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -1713,9 +1713,7 @@ class CreateEditPlayerViewModelTest {
         fun `when editedPlayer is set to null should create pending player and return back id by pending player name`() = runTest {
             val player = TestPlayer().create()
             val playerId = 1
-            val pendingPlayer = TestPlayer().create().copy(firstName = "pendingFirst", lastName = "pendingLast")
 
-            coEvery { pendingPlayerRepository.fetchAllPendingPlayers() } returns listOf(pendingPlayer)
             coEvery { pendingPlayerRepository.deleteAllPendingPlayers() } just runs
             coEvery { pendingPlayerRepository.createPendingPlayer(player = player) } just runs
             coEvery { pendingPlayerRepository.fetchPendingPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
