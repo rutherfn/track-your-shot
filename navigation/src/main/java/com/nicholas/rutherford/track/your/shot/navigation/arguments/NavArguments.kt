@@ -73,7 +73,7 @@ object NavArguments {
      * Includes hasNewReportBeenAdded flag for indicating if we need to update data set when coming to screen
      */
     val reportList = listOf(
-        navArgument(NamedArguments.HAS_NEW_REPORT_BEEN_ADDED) { type = NavType.StringType}
+        navArgument(NamedArguments.HAS_NEW_REPORT_BEEN_ADDED) { type = NavType.StringType }
     )
 
     /** Argument for onboarding education (first-time launch flag). */

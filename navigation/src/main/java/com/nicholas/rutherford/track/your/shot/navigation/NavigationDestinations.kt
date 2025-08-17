@@ -22,7 +22,7 @@ object NavigationDestinations {
     const val TERMS_CONDITIONS_WITH_PARAMS = "termsConditionsScreen?shouldAcceptTerms={shouldAcceptTerms}"
     const val SELECT_SHOT_SCREEN = "selectShotScreen"
     const val REPORT_LIST_SCREEN = "reportListScreen"
-    const val REPORT_LIST_SCREEN_WITH_PARAMS ="reportListScreen?hasNewReportBeenAdded={hasNewReportBeenAdded}"
+    const val REPORT_LIST_SCREEN_WITH_PARAMS = "reportListScreen?hasNewReportBeenAdded={hasNewReportBeenAdded}"
     const val SELECT_SHOT_SCREEN_WITH_PARAMS = "selectShotScreen?isExistingPlayer={isExistingPlayer}&playerId={playerId}"
     const val PLAYERS_LIST_SCREEN = "playersListScreen"
     const val REPORTS_LIST_SCREEN = "reportListScreen"
