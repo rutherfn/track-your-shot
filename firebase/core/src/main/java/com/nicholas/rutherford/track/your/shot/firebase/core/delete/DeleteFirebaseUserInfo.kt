@@ -58,4 +58,3 @@ interface DeleteFirebaseUserInfo {
      */
     fun deleteReport(reportKey: String): Flow<Boolean>
 }
-

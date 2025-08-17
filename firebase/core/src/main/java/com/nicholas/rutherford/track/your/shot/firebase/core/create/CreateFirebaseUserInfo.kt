@@ -95,4 +95,3 @@ interface CreateFirebaseUserInfo {
      */
     fun attemptToCreatePdfFirebaseStorageResponseFlow(uri: Uri): Flow<String?>
 }
-

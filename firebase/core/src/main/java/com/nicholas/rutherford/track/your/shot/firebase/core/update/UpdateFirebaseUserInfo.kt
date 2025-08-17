@@ -28,4 +28,3 @@ interface UpdateFirebaseUserInfo {
      */
     fun updateDeclaredShot(declaredShotWithKeyRealtimeResponse: DeclaredShotWithKeyRealtimeResponse): Flow<Boolean>
 }
-

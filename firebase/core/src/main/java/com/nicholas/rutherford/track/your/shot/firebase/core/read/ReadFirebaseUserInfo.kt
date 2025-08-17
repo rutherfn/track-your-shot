@@ -86,4 +86,3 @@ interface ReadFirebaseUserInfo {
      */
     fun isLoggedInFlow(): Flow<Boolean>
 }
-
