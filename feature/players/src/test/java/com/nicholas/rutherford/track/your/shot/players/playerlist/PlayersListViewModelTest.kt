@@ -16,7 +16,6 @@ import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.Player
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListState
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -26,7 +25,6 @@ import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -51,8 +49,6 @@ class PlayersListViewModelTest {
 
     private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
 
-    private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
-
     private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
 
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
@@ -69,7 +65,6 @@ class PlayersListViewModelTest {
             scope = scope,
             navigation = navigation,
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
-            dataAdditionUpdates = dataAdditionUpdates,
             playerRepository = playerRepository,
             pendingPlayerRepository = pendingPlayerRepository,
             createSharedPreferences = createSharedPreferences
@@ -132,55 +127,6 @@ class PlayersListViewModelTest {
             val result = playersListViewModel.buildSheetOptions(selectedPlayer = player)
 
             Assertions.assertEquals(result, listOf(viewShotsOption, editPlayerOption, deletePlayerOption))
-        }
-    }
-
-    @Nested
-    inner class CollectPlayerAdditionUpdates {
-
-        @Test
-        fun `when newPlayerHasBeenAddedSharedFlow emits a false value should not update state`() = runTest {
-            val playerList = listOf(TestPlayer().create())
-            val currentPlayerArrayList: ArrayList<Player> = arrayListOf()
-
-            val newPlayerHasBeenAddedSharedFlow = MutableSharedFlow<Boolean>(replay = Int.MAX_VALUE)
-            newPlayerHasBeenAddedSharedFlow.emit(value = false)
-
-            coEvery { playerRepository.fetchAllPlayers() } returns playerList
-            every { dataAdditionUpdates.newPlayerHasBeenAddedSharedFlow } returns newPlayerHasBeenAddedSharedFlow
-
-            playersListViewModel.collectPlayerAdditionUpdates()
-
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = emptyList())
-            )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                currentPlayerArrayList
-            )
-        }
-
-        @Test
-        fun `when newPlayerHasBeenAddedSharedFlow emits a true value should update state`() = runTest {
-            val playerList = listOf(TestPlayer().create())
-
-            val newPlayerHasBeenAddedSharedFlow = MutableSharedFlow<Boolean>(replay = Int.MAX_VALUE)
-            newPlayerHasBeenAddedSharedFlow.emit(value = true)
-
-            coEvery { playerRepository.fetchAllPlayers() } returns playerList
-            every { dataAdditionUpdates.newPlayerHasBeenAddedSharedFlow } returns newPlayerHasBeenAddedSharedFlow
-
-            playersListViewModel.collectPlayerAdditionUpdates()
-
-            Assertions.assertEquals(
-                playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = playerList)
-            )
-            Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
-                playerList
-            )
         }
     }
 

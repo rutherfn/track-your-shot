@@ -7,7 +7,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
-import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations.SHOTS_LIST_SCREEN_WITH_PARAMS
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
 /**

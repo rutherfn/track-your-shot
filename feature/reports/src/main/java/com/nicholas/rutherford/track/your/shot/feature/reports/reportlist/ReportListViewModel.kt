@@ -11,7 +11,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toTimestampString
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +31,6 @@ import java.util.Date
  * @param navigation Handles navigation actions from the report list screen.
  * @param playerRepository Repository for accessing player data.
  * @param individualPlayerReportRepository Repository for managing individual player reports.
- * @param dataAdditionUpdates Shared flow to listen for new report additions.
  * @param deleteFirebaseUserInfo Handles deletion of reports from Firebase.
  * @param pdfGenerator Utility for downloading reports as PDFs.
  * @param scope Coroutine scope for launching asynchronous tasks.
@@ -42,7 +40,6 @@ class ReportListViewModel(
     private val navigation: ReportListNavigation,
     private val playerRepository: PlayerRepository,
     private val individualPlayerReportRepository: IndividualPlayerReportRepository,
-    private val dataAdditionUpdates: DataAdditionUpdates,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val pdfGenerator: PdfGenerator,
     private val scope: CoroutineScope
@@ -52,7 +49,6 @@ class ReportListViewModel(
     val reportListStateFlow = reportListMutableStateFlow.asStateFlow()
 
     init {
-        collectNewReportHasBeenAddedSharedFlow()
         updateReportListState()
     }
 
@@ -60,17 +56,6 @@ class ReportListViewModel(
      * Handles the toolbar menu click by opening the navigation drawer.
      */
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
-
-    /**
-     * Collects shared flow events indicating that a new report has been added.
-     */
-    fun collectNewReportHasBeenAddedSharedFlow() {
-        scope.launch {
-            dataAdditionUpdates.newReportHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
-                handleReportAdded(hasBeenAdded = hasBeenAdded)
-            }
-        }
-    }
 
     /**
      * Updates the UI state if a report has been added.

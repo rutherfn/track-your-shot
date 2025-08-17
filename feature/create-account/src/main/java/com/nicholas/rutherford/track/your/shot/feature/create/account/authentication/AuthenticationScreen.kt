@@ -35,7 +35,6 @@ import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
-import com.nicholas.rutherford.track.your.shot.helper.ui.Shared
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 import com.nicholas.rutherford.track.yourshot.compose.content.test.rule.drawableId
 import kotlinx.coroutines.CoroutineScope
@@ -101,7 +100,7 @@ fun AuthenticationScreenContent(
 
         Button(
             onClick = { viewModel.onOpenEmailClicked() },
-            shape = RoundedCornerShape(size = Shared.buttonDefaultShapeSize),
+            shape = RoundedCornerShape(size = 50.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Padding.eight)
@@ -122,7 +121,7 @@ fun AuthenticationScreenContent(
                     viewModel.onResendEmailClicked()
                 }
             },
-            shape = RoundedCornerShape(size = Shared.buttonDefaultShapeSize),
+            shape = RoundedCornerShape(size = 50.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Padding.eight)
@@ -143,7 +142,7 @@ fun AuthenticationScreenContent(
                     viewModel.onDeletePendingAccountClicked()
                 }
             },
-            shape = RoundedCornerShape(size = Shared.buttonDefaultShapeSize),
+            shape = RoundedCornerShape(size = 50.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Padding.eight),

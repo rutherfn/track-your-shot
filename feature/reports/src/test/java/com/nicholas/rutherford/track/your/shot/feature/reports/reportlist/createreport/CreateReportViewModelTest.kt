@@ -12,7 +12,6 @@ import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.Crea
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.date.DateExt
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
 import com.nicholas.rutherford.track.your.shot.notifications.Notifications
@@ -53,7 +52,6 @@ class CreateReportViewModelTest {
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
 
     private val individualPlayerReportRepository = mockk<IndividualPlayerReportRepository>(relaxed = true)
-    private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
     private val dateExt = mockk<DateExt>(relaxed = true)
 
     private val uri = mockk<Uri>(relaxed = true)
@@ -70,7 +68,6 @@ class CreateReportViewModelTest {
             pdfGenerator = pdfGenerator,
             createFirebaseUserInfo = createFirebaseUserInfo,
             individualPlayerReportRepository = individualPlayerReportRepository,
-            dataAdditionUpdates = dataAdditionUpdates,
             dateExt = dateExt
         )
     }
@@ -90,7 +87,7 @@ class CreateReportViewModelTest {
     }
 
     @Nested
-    inner class `update players state` {
+    inner class UpdatePlayersState {
 
         @Test
         fun `when player options returns empty should not update state`() = runTest {
@@ -222,7 +219,7 @@ class CreateReportViewModelTest {
         coVerify { individualPlayerReportRepository.createReport(report = any()) }
         verify { navigation.disableProgress() }
         verify { navigation.alert(alert = any()) }
-        verify { navigation.pop() }
+        verify { navigation.navigateToReportList() }
 
         Assertions.assertEquals(createReportViewModel.createReportMutableStateFlow.value, defaultState)
     }

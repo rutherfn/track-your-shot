@@ -17,4 +17,5 @@ object NamedArguments {
     const val VIEW_CURRENT_EXISTING_SHOT = "viewCurrentExistingShot"
     const val VIEW_CURRENT_PENDING_SHOT = "viewCurrentPendingShot"
     const val FROM_SHOT_LIST = "fromShotList"
+    const val HAS_NEW_REPORT_BEEN_ADDED = "hasNewReportBeenAdded"
 }

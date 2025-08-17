@@ -106,8 +106,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.Existi
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManagerImpl
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdatesImpl
 import com.nicholas.rutherford.track.your.shot.helper.extensions.date.DateExt
 import com.nicholas.rutherford.track.your.shot.helper.extensions.date.DateExtImpl
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
@@ -259,9 +257,6 @@ class AppModule {
                 createSharedPreferences = get()
             )
         }
-        single<DataAdditionUpdates> {
-            DataAdditionUpdatesImpl()
-        }
         single<Notifications> {
             NotificationsImpl(application = androidApplication())
         }
@@ -366,7 +361,6 @@ class AppModule {
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 deleteFirebaseUserInfo = get(),
-                dataAdditionUpdates = get(),
                 playerRepository = get(),
                 pendingPlayerRepository = get(),
                 createSharedPreferences = get()
@@ -384,7 +378,6 @@ class AppModule {
                 activeUserRepository = get(),
                 scope = defaultCoroutineScope,
                 navigation = get(),
-                dataAdditionUpdates = get(),
                 currentPendingShot = get()
             )
         }
@@ -407,13 +400,23 @@ class AppModule {
                 navigation = get(),
                 declaredShotRepository = get(),
                 pendingPlayerRepository = get(),
-                dataAdditionUpdates = get(),
                 playerRepository = get(),
                 activeUserRepository = get(),
                 updateFirebaseUserInfo = get(),
                 deleteFirebaseUserInfo = get(),
                 currentPendingShot = get(),
                 logShotViewModelExt = get()
+            )
+        }
+        viewModel { (stateHandle: SavedStateHandle) ->
+            ReportListViewModel(
+                application = androidApplication(),
+                navigation = get(),
+                playerRepository = get(),
+                individualPlayerReportRepository = get(),
+                deleteFirebaseUserInfo = get(),
+                pdfGenerator = get(),
+                scope = defaultCoroutineScope
             )
         }
         viewModel {
@@ -514,18 +517,6 @@ class AppModule {
             AccountInfoViewModel(navigation = get())
         }
         viewModel {
-            ReportListViewModel(
-                application = androidApplication(),
-                navigation = get(),
-                playerRepository = get(),
-                individualPlayerReportRepository = get(),
-                dataAdditionUpdates = get(),
-                deleteFirebaseUserInfo = get(),
-                pdfGenerator = get(),
-                scope = defaultCoroutineScope
-            )
-        }
-        viewModel {
             CreateReportViewModel(
                 application = androidApplication(),
                 navigation = get(),
@@ -535,8 +526,7 @@ class AppModule {
                 pdfGenerator = get(),
                 createFirebaseUserInfo = get(),
                 individualPlayerReportRepository = get(),
-                dateExt = get(),
-                dataAdditionUpdates = get()
+                dateExt = get()
             )
         }
         viewModel {

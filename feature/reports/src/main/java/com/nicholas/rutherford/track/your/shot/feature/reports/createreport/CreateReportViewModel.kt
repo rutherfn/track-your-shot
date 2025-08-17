@@ -17,7 +17,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.date.DateExt
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerator
 import com.nicholas.rutherford.track.your.shot.notifications.Notifications
@@ -42,7 +41,6 @@ import kotlinx.coroutines.launch
  * @param pdfGenerator Utility to generate player shot reports as PDFs.
  * @param createFirebaseUserInfo Handles Firebase interactions for storing report data.
  * @param individualPlayerReportRepository Repository for saving report data locally.
- * @param dataAdditionUpdates Shared flow to notify other components about new report additions.
  * @param dateExt Utility for fetching the current date/time.
  */
 class CreateReportViewModel(
@@ -54,7 +52,6 @@ class CreateReportViewModel(
     private val pdfGenerator: PdfGenerator,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val individualPlayerReportRepository: IndividualPlayerReportRepository,
-    private val dataAdditionUpdates: DataAdditionUpdates,
     private val dateExt: DateExt
 ) : BaseViewModel() {
 
@@ -185,11 +182,10 @@ class CreateReportViewModel(
             )
         )
         navigation.disableProgress()
-        dataAdditionUpdates.updateNewReportHasBeenAddedSharedFlow(hasBeenAdded = true)
 
         navigation.alert(alert = reportGeneratedForPlayer(playerName = playerName))
         resetState()
-        navigation.pop()
+        navigation.navigateToReportList()
     }
 
     /**

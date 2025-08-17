@@ -29,7 +29,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFireba
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PLAYER_FIREBASE_KEY
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.TestShotLoggedRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -70,8 +69,6 @@ class CreateEditPlayerViewModelTest {
     private val scope = CoroutineScope(SupervisorJob() + testDispatcher)
 
     private val navigation = mockk<CreateEditPlayerNavigation>(relaxed = true)
-
-    private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
 
     private val currentPendingShot = mockk<CurrentPendingShot>(relaxed = true)
 
@@ -134,7 +131,6 @@ class CreateEditPlayerViewModelTest {
             activeUserRepository = activeUserRepository,
             scope = scope,
             navigation = navigation,
-            dataAdditionUpdates = dataAdditionUpdates,
             currentPendingShot = currentPendingShot,
             savedStateHandle = savedStateHandle
         )
@@ -1334,7 +1330,6 @@ class CreateEditPlayerViewModelTest {
         )
 
         coVerify { playerRepository.createPlayer(player = player) }
-        coVerify { dataAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = true) }
 
         verify { navigation.disableProgress() }
         verify { navigation.pop() }

@@ -9,6 +9,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 interface CreateReportNavigation {
     fun alert(alert: Alert)
     fun pop()
+    fun navigateToReportList()
     fun disableProgress()
     fun enableProgress(progress: Progress)
 }

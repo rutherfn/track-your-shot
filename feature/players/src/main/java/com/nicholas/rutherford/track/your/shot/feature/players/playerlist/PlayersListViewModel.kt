@@ -12,7 +12,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -35,7 +34,6 @@ const val DELETE_PLAYER_DELAY_IN_MILLIS = 2000L
  * @property scope The coroutine scope used for asynchronous operations.
  * @property navigation Defines navigation actions for the Players List screen.
  * @property deleteFirebaseUserInfo Handles deletion of player data from Firebase.
- * @property dataAdditionUpdates Shared flow for observing new player additions.
  * @property playerRepository Repository for accessing and modifying player data.
  * @property pendingPlayerRepository Repository for managing temporary/pending players.
  * @property createSharedPreferences Used to store and retrieve shared preference values.
@@ -45,7 +43,6 @@ class PlayersListViewModel(
     private val scope: CoroutineScope,
     private val navigation: PlayersListNavigation,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
-    private val dataAdditionUpdates: DataAdditionUpdates,
     private val playerRepository: PlayerRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
     private val createSharedPreferences: CreateSharedPreferences
@@ -106,24 +103,6 @@ class PlayersListViewModel(
         listOf(application.getString(StringsIds.viewXShots, selectedPlayerFullName)) +
                 buildBaseSheetOptions(selectedPlayerFullName)
 
-    /** Refreshes the player list by clearing and reloading it */
-    private fun clearAndUpdatePlayerListState() {
-        scope.launch {
-            currentPlayerArrayList.clear()
-            updatePlayerListState()
-            dataAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = false)
-        }
-    }
-
-    /** Collects shared flow events when new players are added */
-    internal fun collectPlayerAdditionUpdates() {
-        scope.launch {
-            dataAdditionUpdates.newPlayerHasBeenAddedSharedFlow.collectLatest { hasBeenAdded ->
-                handlePlayerAdded(hasBeenAdded = hasBeenAdded)
-            }
-        }
-    }
-
     /** Deletes all non-empty pending players from local storage */
     internal fun deleteAllNonEmptyPendingPlayers() {
         scope.launch {
@@ -139,13 +118,6 @@ class PlayersListViewModel(
         shouldUpdateLoggedInPlayerListState: Boolean
     ): Boolean {
         return loggedInPlayerList.isNotEmpty() && shouldUpdateLoggedInPlayerListState
-    }
-
-    /** Handles player addition by reloading the player list */
-    private fun handlePlayerAdded(hasBeenAdded: Boolean) {
-        if (hasBeenAdded) {
-            clearAndUpdatePlayerListState()
-        }
     }
 
     /** Updates the UI state with players from login */

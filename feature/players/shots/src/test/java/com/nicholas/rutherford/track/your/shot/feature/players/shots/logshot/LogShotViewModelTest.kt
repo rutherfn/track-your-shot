@@ -19,7 +19,6 @@ import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pen
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -62,7 +61,6 @@ class LogShotViewModelTest {
     private val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
-    private val dataAdditionUpdates = mockk<DataAdditionUpdates>(relaxed = true)
 
     private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
     private val updateFirebaseUserInfo = mockk<UpdateFirebaseUserInfo>(relaxed = true)
@@ -81,7 +79,6 @@ class LogShotViewModelTest {
             navigation = navigation,
             declaredShotRepository = declaredShotRepository,
             pendingPlayerRepository = pendingPlayerRepository,
-            dataAdditionUpdates = dataAdditionUpdates,
             playerRepository = playerRepository,
             activeUserRepository = activeUserRepository,
             updateFirebaseUserInfo = updateFirebaseUserInfo,
@@ -515,7 +512,7 @@ class LogShotViewModelTest {
     inner class HandleHasDeleteShotFirebaseResponse {
 
         @Test
-        fun `when hasDeleted is set to false should show alert`() = runTest {
+        fun `when hasDeleted is set to false should show alert`() {
             val hasDeleted = false
 
             logShotViewModel.handleHasDeleteShotFirebaseResponse(hasDeleted = hasDeleted)
@@ -525,7 +522,7 @@ class LogShotViewModelTest {
         }
 
         @Test
-        fun `when hasDeleted is set to true and fromShotList is set to false should pop to create player`() = runTest {
+        fun `when hasDeleted is set to true and fromShotList is set to false should pop to create player`() {
             val hasDeleted = true
 
             every { logShotViewModelExt.logShotInfo } returns LogShotInfo(fromShotList = false, isExistingPlayer = false)
@@ -538,7 +535,7 @@ class LogShotViewModelTest {
         }
 
         @Test
-        fun `when hasDeleted is set to true and fromShotList is set to true should pop and show alert`() = runTest {
+        fun `when hasDeleted is set to true and fromShotList is set to true should pop and show alert`() {
             val hasDeleted = true
 
             every { logShotViewModelExt.logShotInfo } returns LogShotInfo(fromShotList = true)

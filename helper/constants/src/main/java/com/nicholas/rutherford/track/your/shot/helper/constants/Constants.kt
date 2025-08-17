@@ -6,16 +6,11 @@ object Constants {
         const val TRACK_MY_SHOT_PREFERENCES = "TRACK_MY_SHOT_PREFERENCES"
 
         const val APP_HAS_LAUNCHED = "appHasLaunched"
-        const val DECLARED_SHOT_NAME = "declaredShotName"
-        const val DECLARED_SHOT_ID = "declaredShotId"
         const val IS_LOGGED_IN = "isLoggedIn"
-        const val HAS_AUTHENTICATED_ACCOUNT = "hasAuthenticatedAccount"
         const val SHOULD_SHOW_TERM_AND_CONDITIONS = "shouldShowTermsAndConditions"
-        const val SHOULD_UPDATE_LOGGED_IN_DECLARED_SHOT_LIST = "shouldUpdateLoggedInDeclaredShotList"
         const val PLAYER_FILTER_NAME = "playerFilterName"
     }
     const val CREATED_SHOTS = "createdShots"
-    const val CREATE_REPORT_INDEX = 0
     const val APP_DATABASE_NAME = "app_database.db"
     const val ACTIVE_USER_ID = 1
     const val SHOT_IDS_TO_IGNORE = "shotIdsToIgnore"
@@ -23,16 +18,13 @@ object Constants {
     const val CONTENT_LAST_UPDATED_PATH = "contentLastUpdated"
     const val DATE_PATTERN = "MMMM dd, yyyy"
     const val DEFAULT_SHOT_ID = 0
-    const val DELAY_IN_MILLISECONDS_BEFORE_LOGGING_OUT = 1000L
     const val DELAY_IN_MILLISECONDS_TO_SHOW_PROGRESS_MASK_ON_LOG_OUT = 3000L
     const val DESCRIPTION = "description"
     const val EMAIL = "email"
     const val FIREBASE_CHILDREN_COUNT_ZERO = 0L
     const val FIRST_NAME = "firstName"
     const val ID = "id"
-    const val IMAGE = "image/*"
     const val IMAGES = "images"
-    const val IMAGES_DIR = "/images/"
     const val IMAGE_URL = "imageUrl"
     const val LAST_NAME = "lastName"
     const val LAST_UPDATED = "lastUpdated"

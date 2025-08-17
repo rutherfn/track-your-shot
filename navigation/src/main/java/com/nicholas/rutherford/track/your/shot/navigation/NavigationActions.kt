@@ -246,6 +246,22 @@ object NavigationActions {
     }
 
     /**
+     * Navigation actions originating from the Create Report screen.
+     */
+    object CreateReport {
+        /**
+         * Navigate to the report list screen, clearing the back stack.
+         */
+        fun reportList() = object : NavigationAction {
+            override val destination = NavigationDestinations.REPORT_LIST_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .setLaunchSingleTop(true)
+                .build()
+        }
+    }
+
+    /**
      * Navigation actions originating from the Create/Edit Player screen.
      */
     object CreateEditPlayer {

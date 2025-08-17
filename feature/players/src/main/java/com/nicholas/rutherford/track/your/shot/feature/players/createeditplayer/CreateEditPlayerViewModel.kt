@@ -24,7 +24,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealt
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
 import kotlinx.coroutines.CoroutineScope
@@ -54,7 +53,6 @@ const val RESET_SCREEN_DELAY_IN_MILLIS = 500L
  * @param activeUserRepository Repository to access active user data.
  * @param scope CoroutineScope for launching asynchronous tasks.
  * @param navigation Interface to perform navigation and UI alert actions.
- * @param dataAdditionUpdates Shared flow to signal when new player data is added.
  * @param currentPendingShot Tracks the current pending shots logged.
  */
 class CreateEditPlayerViewModel(
@@ -68,7 +66,6 @@ class CreateEditPlayerViewModel(
     private val activeUserRepository: ActiveUserRepository,
     private val scope: CoroutineScope,
     private val navigation: CreateEditPlayerNavigation,
-    private val dataAdditionUpdates: DataAdditionUpdates,
     private val currentPendingShot: CurrentPendingShot
 ) : BaseViewModel() {
 
@@ -723,7 +720,6 @@ class CreateEditPlayerViewModel(
                 )
             }
         }
-        dataAdditionUpdates.updateNewPlayerHasBeenAddedSharedFlow(hasBeenAdded = true)
     }
 
     /**

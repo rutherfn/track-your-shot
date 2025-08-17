@@ -23,7 +23,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFireba
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.helper.extensions.dataadditionupdates.DataAdditionUpdates
 import com.nicholas.rutherford.track.your.shot.helper.extensions.parseDateValueToString
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toDateValue
@@ -49,7 +48,6 @@ import java.time.LocalDate
  * @property navigation Navigation handler interface for directing UI navigation events.
  * @property declaredShotRepository Repository for fetching declared shot metadata.
  * @property pendingPlayerRepository Repository for fetching pending players (not fully saved players).
- * @property dataAdditionUpdates Shared flow to notify about updates in shot data.
  * @property playerRepository Repository for fetching and updating player data.
  * @property activeUserRepository Repository to access the current active user information.
  * @property updateFirebaseUserInfo Use case to update player info and shots in Firebase.
@@ -64,7 +62,6 @@ class LogShotViewModel(
     private val navigation: LogShotNavigation,
     private val declaredShotRepository: DeclaredShotRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
-    private val dataAdditionUpdates: DataAdditionUpdates,
     private val playerRepository: PlayerRepository,
     private val activeUserRepository: ActiveUserRepository,
     private val updateFirebaseUserInfo: UpdateFirebaseUserInfo,
@@ -576,8 +573,6 @@ class LogShotViewModel(
                     shotsLoggedList = shotLogged
                 )
             )
-            dataAdditionUpdates.updateShotHasBeenUpdatedSharedFlow(hasShotBeenUpdated = true)
-
             navigation.disableProgress()
             navigation.popToShotList(shouldShowAllPlayersShots = shouldShowTest)
             navigation.alert(alert = logShotViewModelExt.showUpdatedAlert())
@@ -626,12 +621,11 @@ class LogShotViewModel(
      *
      * @param hasDeleted True if deletion was successful, false otherwise.
      */
-    suspend fun handleHasDeleteShotFirebaseResponse(hasDeleted: Boolean) {
+    fun handleHasDeleteShotFirebaseResponse(hasDeleted: Boolean) {
         val shotName = logShotMutableStateFlow.value.shotName
 
         if (hasDeleted) {
             if (logShotViewModelExt.logShotInfo.fromShotList) {
-                dataAdditionUpdates.updateShotHasBeenUpdatedSharedFlow(hasShotBeenUpdated = true)
                 navigation.disableProgress()
                 navigation.popToShotList(shouldShowAllPlayersShots = shouldShowTest)
             } else {

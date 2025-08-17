@@ -68,6 +68,14 @@ object NavArguments {
         navArgument(NamedArguments.FROM_SHOT_LIST) { type = NavType.BoolType }
     )
 
+    /**
+     * Arguments for report list.
+     * Includes hasNewReportBeenAdded flag for indicating if we need to update data set when coming to screen
+     */
+    val reportList = listOf(
+        navArgument(NamedArguments.HAS_NEW_REPORT_BEEN_ADDED) { type = NavType.StringType}
+    )
+
     /** Argument for onboarding education (first-time launch flag). */
     val onBoardingEducation = listOf(
         navArgument(NamedArguments.IS_FIRST_TIME_LAUNCHED) { type = NavType.BoolType }
