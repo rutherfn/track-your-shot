@@ -7,7 +7,6 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRe
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
-import com.nicholas.rutherford.track.your.shot.firebase.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
@@ -362,34 +361,6 @@ class AuthenticationViewModelTest {
             coVerify { declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList()) }
             verify { navigation.disableProgress() }
             verify { navigation.navigateToTermsAndConditions() }
-        }
-    }
-
-    @Nested
-    inner class OnResendEmailClicked {
-
-        private val authenticateViaEmailFirebaseResponse = TestAuthenticateUserViaEmailFirebaseResponse().create()
-
-        @Test
-        fun `when attemptToSendEmailVerificationForCurrentUser returns back not successful should call unsuccessfullySendEmailVerificationAlert`() = runTest {
-            coEvery {
-                authenticationFirebase.attemptToSendEmailVerificationForCurrentUser()
-            } returns flowOf(value = authenticateViaEmailFirebaseResponse.copy(isSuccessful = false))
-
-            viewModel.onResendEmailClicked()
-
-            verify { navigation.alert(alert = viewModel.unsuccessfullySendEmailVerificationAlert()) }
-        }
-
-        @Test
-        fun `when attemptToSendEmailVerificationForCurrentUser returns back successful should call successfullySentEmailVerificationAlert`() = runTest {
-            coEvery {
-                authenticationFirebase.attemptToSendEmailVerificationForCurrentUser()
-            } returns flowOf(value = authenticateViaEmailFirebaseResponse.copy(isSuccessful = true))
-
-            viewModel.onResendEmailClicked()
-
-            verify { navigation.alert(alert = viewModel.successfullySentEmailVerificationAlert()) }
         }
     }
 
