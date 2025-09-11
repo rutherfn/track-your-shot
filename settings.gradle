@@ -11,6 +11,22 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        
+        // Load GitHub credentials from properties file
+        def credentialsFile = file('credentials.properties')
+        if (credentialsFile.exists()) {
+            def props = new Properties()
+            props.load(new FileInputStream(credentialsFile))
+            
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/rutherfn/voice-flow")
+                credentials {
+                    username = props.getProperty('github.username')
+                    password = props.getProperty('github.password')
+                }
+            }
+        }
     }
 }
 rootProject.name = "TrackYourShot"

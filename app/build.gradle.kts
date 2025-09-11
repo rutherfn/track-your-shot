@@ -21,7 +21,6 @@ android {
         buildConfig = true
     }
 
-    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
     }
@@ -92,6 +91,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.voice.flow)
     implementation(libs.koin.androidx.navigation)
 
     implementation(libs.protolite.well.known.types)
