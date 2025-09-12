@@ -86,8 +86,6 @@ interface PlayerDao {
     /**
      * Retrieves a player by their first name
      *
-     * This should grab the first one it finds when it has a match
-     *
      * @param firstName The player's first name.
      * @return The player entity or null if not found.
      */

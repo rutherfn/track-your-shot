@@ -219,8 +219,8 @@ class CreateEditPlayerViewModel(
                     firstName = firstName,
                     lastName = lastName
                 )?.let { player ->
-                        updateStateForExistingPlayer(player = player)
-                    } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
+                    updateStateForExistingPlayer(player = player)
+                } ?: run { updateToolbarNameResIdStateToCreatePlayer() }
             } else {
                 updateToolbarNameResIdStateToCreatePlayer()
             }
@@ -258,7 +258,6 @@ class CreateEditPlayerViewModel(
      * Updates the UI state for an existing player loaded from the repository.
      */
     internal fun updateStateForExistingPlayer(player: Player) {
-        println("edited existing")
         editedPlayer = player
         createEditPlayerMutableStateFlow.value =
             createEditPlayerMutableStateFlow.value.copy(
@@ -279,7 +278,6 @@ class CreateEditPlayerViewModel(
      * Updates the toolbar title and hint text to "Create Player" state.
      */
     fun updateToolbarNameResIdStateToCreatePlayer() {
-        println()
         createEditPlayerMutableStateFlow.update { state ->
             state.copy(
                 toolbarNameResId = StringsIds.createPlayer,
@@ -305,7 +303,6 @@ class CreateEditPlayerViewModel(
      * Clears the UI state depending on whether editing an existing player or creating new.
      */
     internal fun clearState() {
-        println("clear state")
         if (editedPlayer == null) {
             createEditPlayerMutableStateFlow.update { state ->
                 state.copy(
