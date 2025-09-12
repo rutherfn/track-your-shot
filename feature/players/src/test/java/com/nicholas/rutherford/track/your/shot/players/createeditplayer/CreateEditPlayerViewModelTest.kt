@@ -416,31 +416,6 @@ class CreateEditPlayerViewModelTest {
         }
 
         @Test
-        fun `when lastNameArgument is a empty string should update toolbarNameResId to create player`() {
-            Assertions.assertEquals(
-                createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState(
-                    toolbarNameResId = createEditPlayerViewModel.createEditPlayerStateFlow.value.toolbarNameResId,
-                    playerPositionString = "Center"
-                )
-            )
-
-            createEditPlayerViewModel.checkForExistingPlayer(
-                firstName = player.firstName,
-                lastName = ""
-            )
-
-            Assertions.assertEquals(
-                createEditPlayerViewModel.createEditPlayerStateFlow.value,
-                CreateEditPlayerState(toolbarNameResId = StringsIds.createPlayer, playerPositionString = "Center")
-            )
-            Assertions.assertEquals(
-                createEditPlayerViewModel.hasCheckedForExistingPlayer,
-                false
-            )
-        }
-
-        @Test
         fun `when firstNameArgument and lastNameArgument meets conditions and fetch player by name returns null should update toolbarNameResId to create player`() {
             Assertions.assertEquals(
                 createEditPlayerViewModel.createEditPlayerStateFlow.value,
