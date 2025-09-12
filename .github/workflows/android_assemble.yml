@@ -9,3 +9,6 @@ jobs:
 
       - name: Assemble the app
         run: ./gradlew assemble
+        env:
+          GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}

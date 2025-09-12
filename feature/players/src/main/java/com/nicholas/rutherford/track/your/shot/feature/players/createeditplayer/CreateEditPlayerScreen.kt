@@ -58,7 +58,6 @@ import kotlinx.coroutines.launch
  *
  * @param createEditPlayerParams All state and callback parameters required to drive the screen.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
     BackHandler(true) {

@@ -256,7 +256,7 @@ object AppNavigationGraph {
         composable(
             route = NavigationDestinations.AUTHENTICATION_SCREEN_WITH_PARAMS,
             arguments = NavArguments.authentication
-        ) { entry ->
+        ) {
             val authenticationScreenViewModel: AuthenticationViewModel = koinViewModel()
             val appBarFactory: AppBarFactory = koinInject()
 
@@ -278,7 +278,7 @@ object AppNavigationGraph {
         composable(
             route = NavigationDestinations.TERMS_CONDITIONS_WITH_PARAMS,
             arguments = NavArguments.termsConditions
-        ) { entry ->
+        ) {
             val termsConditionsViewModel: TermsConditionsViewModel = koinViewModel()
             val appBarFactory: AppBarFactory = koinInject()
 
@@ -380,8 +380,7 @@ object AppNavigationGraph {
             arguments = NavArguments.createEditPlayer
         ) { entry ->
             val firstName = entry.arguments?.getString(NamedArguments.FIRST_NAME) ?: ""
-            val lastName = entry.arguments?.getString(NamedArguments.LAST_NAME) ?: ""
-            val isEditable = firstName.isNotEmpty() && lastName.isNotEmpty()
+            val isEditable = firstName.isNotEmpty()
             val createEditPlayerViewModel: CreateEditPlayerViewModel = koinViewModel()
             val appBarFactory: AppBarFactory = koinInject()
 
@@ -645,9 +644,9 @@ object AppNavigationGraph {
                     )
                 },
                 onEditShotPencilClicked = { createEditDeclaredShotViewModel.onEditShotPencilClicked() },
-                onEditShotNameValueChanged = { shotName ->
+                onEditShotNameValueChanged = { name ->
                     createEditDeclaredShotViewModel.onEditShotNameValueChanged(
-                        shotName = shotName
+                        shotName = name
                     )
                 },
                 onEditShotCategoryValueChanged = { shotCategory ->
@@ -660,9 +659,9 @@ object AppNavigationGraph {
                         description = description
                     )
                 },
-                onCreateShotNameValueChanged = { shotName ->
+                onCreateShotNameValueChanged = { name ->
                     createEditDeclaredShotViewModel.onCreateShotNameValueChanged(
-                        shotName = shotName
+                        shotName = name
                     )
                 },
                 onCreateShotDescriptionValueChanged = { shotDescription ->

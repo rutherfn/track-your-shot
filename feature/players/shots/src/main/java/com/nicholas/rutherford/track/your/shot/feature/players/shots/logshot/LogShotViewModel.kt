@@ -58,7 +58,7 @@ import java.time.LocalDate
  * @property logShotViewModelExt Extension class providing utility functions and alert builders for the ViewModel.
  */
 class LogShotViewModel(
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val application: Application,
     private val scope: CoroutineScope,
     private val navigation: LogShotNavigation,
@@ -83,21 +83,21 @@ class LogShotViewModel(
 
     internal var initialShotLogged: ShotLogged? = null
 
-    internal var screenTriggered: ScreenTriggered = ScreenTriggered.UNKNOWN
+    private var screenTriggered: ScreenTriggered = ScreenTriggered.UNKNOWN
 
-    internal var shouldShowAllPlayersShots: Boolean = false
+    private var shouldShowAllPlayersShots: Boolean = false
 
     /**
      * Navigation arguments extracted from the saved state handle.
      */
-    internal val isExistingPlayerArgument: Boolean = savedStateHandle.get<Boolean>("isExistingPlayer") ?: false
-    internal val playerIdArgument: Int = savedStateHandle.get<Int>("playerId") ?: 0
-    internal val shotTypeArgument: Int = savedStateHandle.get<Int>("shotType") ?: 0
-    internal val shotIdArgument: Int = savedStateHandle.get<Int>("shotId") ?: 0
-    internal val viewCurrentExistingShotArgument: Boolean = savedStateHandle.get<Boolean>("viewCurrentExistingShot") ?: false
-    internal val viewCurrentPendingShotArgument: Boolean = savedStateHandle.get<Boolean>("viewCurrentPendingShot") ?: false
-    internal val fromShotListArgument: Boolean = savedStateHandle.get<Boolean>("fromShotList") ?: false
-    internal val screenTriggeredIndexArgument: Int = savedStateHandle.get<Int>("screenTriggeredIndexArgument") ?: ScreenTriggered.INDEX_UNKNOWN
+    private val isExistingPlayerArgument: Boolean = savedStateHandle.get<Boolean>("isExistingPlayer") ?: false
+    private val playerIdArgument: Int = savedStateHandle.get<Int>("playerId") ?: 0
+    private val shotTypeArgument: Int = savedStateHandle.get<Int>("shotType") ?: 0
+    private val shotIdArgument: Int = savedStateHandle.get<Int>("shotId") ?: 0
+    private val viewCurrentExistingShotArgument: Boolean = savedStateHandle.get<Boolean>("viewCurrentExistingShot") ?: false
+    private val viewCurrentPendingShotArgument: Boolean = savedStateHandle.get<Boolean>("viewCurrentPendingShot") ?: false
+    private val fromShotListArgument: Boolean = savedStateHandle.get<Boolean>("fromShotList") ?: false
+    private val screenTriggeredIndexArgument: Int = savedStateHandle.get<Int>("screenTriggeredIndexArgument") ?: ScreenTriggered.INDEX_UNKNOWN
 
     init {
         updateIsExistingPlayerAndId()
@@ -435,8 +435,6 @@ class LogShotViewModel(
             val pendingShot = buildPendingShotOnSave(player = player, state = state)
             val shotInfo = logShotViewModelExt.logShotInfo
 
-            println("here is the full shot info $shotInfo")
-
             when {
                 shotInfo.viewCurrentExistingShot && shotInfo.fromShotList -> handleFromShotListSaveClicked(pendingShot)
                 shotInfo.viewCurrentPendingShot -> handlePendingShotSaveClicked(pendingShot)
@@ -524,7 +522,7 @@ class LogShotViewModel(
      * @param currentShotList List of shots to convert.
      * @return List of [ShotLoggedRealtimeResponse].
      */
-    internal fun currentShotLoggedRealtimeResponseList(currentShotList: List<ShotLogged>): List<ShotLoggedRealtimeResponse> {
+    private fun currentShotLoggedRealtimeResponseList(currentShotList: List<ShotLogged>): List<ShotLoggedRealtimeResponse> {
         if (currentShotList.isNotEmpty()) {
             val shotLoggedRealtimeResponseArrayList: ArrayList<ShotLoggedRealtimeResponse> = arrayListOf()
 

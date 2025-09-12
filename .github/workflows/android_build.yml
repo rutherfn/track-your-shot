@@ -9,3 +9,6 @@ jobs:
         
       - name: Build the app
         run: ./gradlew build
+        env:
+          GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}

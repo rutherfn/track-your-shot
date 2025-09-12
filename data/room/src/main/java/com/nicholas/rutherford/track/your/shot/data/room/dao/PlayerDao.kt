@@ -84,6 +84,15 @@ interface PlayerDao {
     suspend fun getPlayersByName(firstName: String, lastName: String): PlayerEntity?
 
     /**
+     * Retrieves a player by their first name
+     *
+     * @param firstName The player's first name.
+     * @return The player entity or null if not found.
+     */
+    @Query("SELECT * FROM players WHERE firstName = :firstName")
+    suspend fun getPlayerByFirstName(firstName: String): PlayerEntity?
+
+    /**
      * Retrieves all players from the database.
      *
      * @return A list of all players or null if none exist.
