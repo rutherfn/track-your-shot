@@ -256,7 +256,7 @@ object AppNavigationGraph {
         composable(
             route = NavigationDestinations.AUTHENTICATION_SCREEN_WITH_PARAMS,
             arguments = NavArguments.authentication
-        ) { _ ->
+        ) {
             val authenticationScreenViewModel: AuthenticationViewModel = koinViewModel()
             val appBarFactory: AppBarFactory = koinInject()
 
