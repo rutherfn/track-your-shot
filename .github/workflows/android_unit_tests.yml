@@ -9,3 +9,6 @@ jobs:
 
       - name: Run All Unit Tests in the app
         run: ./gradlew test
+        env:
+          GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}

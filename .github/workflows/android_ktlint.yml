@@ -9,3 +9,6 @@ jobs:
 
       - name: KtLint format app
         run:  ./gradlew ktlintCheck
+        env:
+          GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
