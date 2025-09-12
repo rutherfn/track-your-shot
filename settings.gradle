@@ -12,18 +12,35 @@ dependencyResolutionManagement {
         mavenCentral()
         gradlePluginPortal()
         
-        // Load GitHub credentials from properties file
+        // Load GitHub credentials from properties file or environment variables
+        def githubUsername = null
+        def githubPassword = null
+        
+        // First try to load from credentials.properties file (for local development)
         def credentialsFile = file('credentials.properties')
         if (credentialsFile.exists()) {
             def props = new Properties()
             props.load(new FileInputStream(credentialsFile))
-            
+            githubUsername = props.getProperty('github.username')
+            githubPassword = props.getProperty('github.password')
+        }
+        
+        // If not found in file, try environment variables (for CI/CD)
+        if (!githubUsername) {
+            githubUsername = System.getenv('GITHUB_USERNAME')
+        }
+        if (!githubPassword) {
+            githubPassword = System.getenv('GITHUB_PASSWORD')
+        }
+        
+        // Only add the repository if we have credentials
+        if (githubUsername && githubPassword) {
             maven {
                 name = "GitHubPackages"
                 url = uri("https://maven.pkg.github.com/rutherfn/voice-flow")
                 credentials {
-                    username = props.getProperty('github.username')
-                    password = props.getProperty('github.password')
+                    username = githubUsername
+                    password = githubPassword
                 }
             }
         }

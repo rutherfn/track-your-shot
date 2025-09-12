@@ -91,6 +91,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.voice.flow)
     implementation(libs.koin.androidx.navigation)
 
     implementation(libs.protolite.well.known.types)
