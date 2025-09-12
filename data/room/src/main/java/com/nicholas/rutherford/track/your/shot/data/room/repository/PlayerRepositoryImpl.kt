@@ -64,7 +64,8 @@ class PlayerRepositoryImpl(private val playerDao: PlayerDao) : PlayerRepository 
         playerDao.getPlayerById(id = id).toPlayer()
 
     /**
-     * Fetches a [Player] by first and last name.
+     * Fetches a [Player] by first or last name.
+     * If last name passed in is empty; it should grab the player by the firstName.
      *
      * @param firstName The first name of the player.
      * @param lastName The last name of the player.
@@ -73,6 +74,8 @@ class PlayerRepositoryImpl(private val playerDao: PlayerDao) : PlayerRepository 
     override suspend fun fetchPlayerByName(firstName: String, lastName: String): Player? {
         return if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
             playerDao.getPlayersByName(firstName = firstName, lastName = lastName)?.toPlayer()
+        } else if (firstName.isNotEmpty()) {
+            playerDao.getPlayerByFirstName(firstName = firstName)?.toPlayer()
         } else {
             null
         }
