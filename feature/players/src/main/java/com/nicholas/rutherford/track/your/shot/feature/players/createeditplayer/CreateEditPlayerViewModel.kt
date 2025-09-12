@@ -91,10 +91,10 @@ class CreateEditPlayerViewModel(
     internal var hasCheckedForExistingPlayer = false
 
     /** Initial first name from saved state, if any. */
-    internal val firstNameParam: String = savedStateHandle.get<String>("firstName") ?: ""
+    private val firstNameParam: String = savedStateHandle.get<String>("firstName") ?: ""
 
     /** Initial last name from saved state, if any. */
-    internal val lastNameParam: String = savedStateHandle.get<String>("lastName") ?: ""
+    private val lastNameParam: String = savedStateHandle.get<String>("lastName") ?: ""
 
     init {
         checkForExistingPlayer(firstName = firstNameParam, lastName = lastNameParam)
@@ -439,9 +439,6 @@ class CreateEditPlayerViewModel(
         if (state.firstName.isEmpty()) {
             navigation.disableProgress()
             navigation.alert(alert = firstNameEmptyAlert())
-        } else if (state.lastName.isEmpty()) {
-            navigation.disableProgress()
-            navigation.alert(alert = lastNameEmptyAlert())
         } else {
             determineCreatingOrEditingPlayer(state = state, uri = uri)
         }
@@ -841,23 +838,6 @@ class CreateEditPlayerViewModel(
     }
 
     /**
-     * Creates an alert dialog indicating that no last name has been entered.
-     *
-     * Provides a dismiss button.
-     *
-     * @return Alert for empty last name input.
-     */
-    internal fun lastNameEmptyAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.noLastNameEntered),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.gotIt)
-            ),
-            description = application.getString(StringsIds.playersLastNameEmptyDescription)
-        )
-    }
-
-    /**
      * Creates an alert dialog informing the user that no changes have been made to the current player.
      *
      * Provides a dismiss button.
@@ -1060,26 +1040,16 @@ class CreateEditPlayerViewModel(
     internal fun hasLogShotsAccess(): Boolean {
         // If an edited player exists, return true
         editedPlayer?.let {
-            println("get here test")
             return true
         }
 
-        // If creating a new player, validate first and last names
+        // If creating a new player, validate first name and make sure its not empty
         val firstName = createEditPlayerMutableStateFlow.value.firstName
-        val lastName = createEditPlayerMutableStateFlow.value.lastName
 
         return when {
             firstName.isEmpty() -> {
-                println("get here test12121")
                 // Show alert for empty first name
                 navigation.alert(alert = firstNameEmptyAlert())
-                false
-            }
-
-            lastName.isEmpty() -> {
-                println("get here test1212131212")
-                // Show alert for empty last name
-                navigation.alert(alert = lastNameEmptyAlert())
                 false
             }
 
@@ -1092,7 +1062,7 @@ class CreateEditPlayerViewModel(
      * If an edited player exists, fetches the ID from the repository.
      * Otherwise, creates a pending player and returns its ID.
      */
-    internal suspend fun existingOrPendingPlayerId(): Int? {
+    internal suspend fun existingOrPendingPlayerId(): Int {
         return editedPlayer?.let { player ->
             playerRepository.fetchPlayerIdByName(
                 firstName = player.firstName,
@@ -1135,9 +1105,7 @@ class CreateEditPlayerViewModel(
     fun onLogShotsClicked() {
         if (hasLogShotsAccess()) {
             scope.launch {
-                println("gdsdsds")
-                existingOrPendingPlayerId()?.let { playerId ->
-                    println("get here player id")
+                existingOrPendingPlayerId().let { playerId ->
                     navigation.navigateToSelectShot(
                         isExistingPlayer = editedPlayer != null,
                         playerId = playerId
@@ -1159,7 +1127,7 @@ class CreateEditPlayerViewModel(
         scope.launch {
             navigation.navigateToLogShot(
                 isExistingPlayer = editedPlayer != null,
-                playerId = existingOrPendingPlayerId() ?: 0,
+                playerId = existingOrPendingPlayerId(),
                 shotType = shotType,
                 shotId = shotId,
                 viewCurrentExistingShot = false,
@@ -1181,7 +1149,7 @@ class CreateEditPlayerViewModel(
         scope.launch {
             navigation.navigateToLogShot(
                 isExistingPlayer = true,
-                playerId = existingOrPendingPlayerId() ?: 0,
+                playerId = existingOrPendingPlayerId(),
                 shotType = shotType,
                 shotId = shotId,
                 viewCurrentExistingShot = true,

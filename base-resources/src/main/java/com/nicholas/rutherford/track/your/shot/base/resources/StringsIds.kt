@@ -145,7 +145,6 @@ object StringsIds {
     val noReportsGenerated = R.string.no_reports_generated
     val noCurrentShotsLoggedForPlayer = R.string.no_current_shots_logged_for_player
     val noFirstNameEntered = R.string.no_first_name_entered
-    val noLastNameEntered = R.string.no_last_name_entered
     val noShotsCreated = R.string.no_shots_created
     val noShotsCreatedDescription = R.string.no_shots_created_descriipton
     val noShotsDeclaredDescription = R.string._no_shots_declared_description

@@ -92,9 +92,7 @@ class CreateEditPlayerViewModelTest {
         every { application.getString(StringsIds.weHaveDetectedCurrentlyNotConnectedToInternetDescription) } returns "We have detected currently not connected to internet. Please connect to service, and try again."
         every { application.getString(StringsIds.notConnectedToInternet) } returns "Not connected to internet"
         every { application.getString(StringsIds.noFirstNameEntered) } returns "No First Name Entered"
-        every { application.getString(StringsIds.noLastNameEntered) } returns "No Last Name Entered"
         every { application.getString(StringsIds.playersFirstNameEmptyDescription) } returns "The player\\'s first name is missing. Kindly provide a first name to proceed."
-        every { application.getString(StringsIds.playersLastNameEmptyDescription) } returns "The player\\'s last name is missing. Kindly provide a first name to proceed."
         every { application.getString(StringsIds.readMediaImagesDescription) } returns "Permission to read external storage has been declined. To manually enable the \"Read External Storage\" permission and select an image from the gallery for the Player, please navigate to settings."
         every { application.getString(StringsIds.readExternalStorageDescription) } returns "Permission to read external storage has been declined. To manually enable the \"Read External Storage\" permission and select an image from the gallery for the Player, please navigate to settings."
         every { application.getString(StringsIds.permissionHasBeenDeclined) } returns "Permission has been declined"
@@ -1447,17 +1445,6 @@ class CreateEditPlayerViewModelTest {
     }
 
     @Test
-    fun `last name empty alert`() {
-        every { application.getString(StringsIds.gotIt) } returns "Got It"
-
-        val alert = createEditPlayerViewModel.lastNameEmptyAlert()
-
-        Assertions.assertEquals(alert.title, "No Last Name Entered")
-        Assertions.assertEquals(alert.dismissButton!!.buttonText, "Got It")
-        Assertions.assertEquals(alert.description, "The player\\'s last name is missing. Kindly provide a first name to proceed.")
-    }
-
-    @Test
     fun `no changes have been made alert`() {
         every { application.getString(StringsIds.gotIt) } returns "Got It"
         every { application.getString(StringsIds.noChangesMade) } returns "No Changes Made"
@@ -1646,22 +1633,6 @@ class CreateEditPlayerViewModelTest {
             createEditPlayerViewModel.createEditPlayerMutableStateFlow.value = CreateEditPlayerState(
                 firstName = "",
                 lastName = "lastName"
-            )
-
-            val result = createEditPlayerViewModel.hasLogShotsAccess()
-
-            verify(exactly = 1) { navigation.alert(alert = any()) }
-
-            Assertions.assertEquals(result, false)
-        }
-
-        @Test
-        fun `when editedPlayer is null and lastName is empty should show alert and return false`() {
-            createEditPlayerViewModel.editedPlayer = null
-
-            createEditPlayerViewModel.createEditPlayerMutableStateFlow.value = CreateEditPlayerState(
-                firstName = "firstName",
-                lastName = ""
             )
 
             val result = createEditPlayerViewModel.hasLogShotsAccess()
