@@ -297,13 +297,13 @@
     <string name="x_shot_report_created">%s shot report created</string>
     <string name="x_shot_report_created_description">Shot report for %s has been generated. Tap to view the file.</string>
     <string name="x_player_shot_report">%sshotreport.pdf</string>
-    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_position_x_player_name" formatted="false">%s , %s</string>
     <string name="x_shot">%s Shot</string>
     <string name="x_shot_has_been_removed_description">%s has been removed from this player\'s shot history.</string>
     <string name="x_shot_has_not_been_removed_description">%s Shot has not been removed from this player\'s shot history. Please try again to remove shot.</string>
     <string name="x_shots">%s Shots</string>
     <string name="x_shot_category">Category - %s</string>
-    <string name="x_x">%s - %s</string>
+    <string name="x_x" formatted="false">%s - %s</string>
     <string name="yes">Yes</string>
     <string name="your_player_could_not_be_retrieved_description">Your player could not be retrieved. Please try again.</string>
 </resources>
