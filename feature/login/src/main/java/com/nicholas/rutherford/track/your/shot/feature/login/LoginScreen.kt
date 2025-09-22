@@ -38,6 +38,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -151,8 +152,8 @@ private fun LoginScreenContent(loginScreenParams: LoginScreenParams) {
                 modifier = Modifier
                     .scale(2.0f)
                     .padding(bottom = 20.dp)
-                    .testTag(LoginTags.LOGIN_APP_IMAGE)
                     .semantics { this.drawableId = drawableId }
+                    .testTag(LoginTags.LOGIN_APP_IMAGE)
             )
         }
 

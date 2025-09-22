@@ -1,0 +1,59 @@
+appId: com.nicholas.rutherford.track.your.shot.debug
+
+---
+# Unable to Login to Account Test
+# This test verifies the error handling flow when invalid login credentials are used
+
+# Launch the app
+- launchApp
+
+# Verify initial login screen elements
+- assertVisible: "Track Your Shot"
+- assertVisible: "Proceed With Your Account"
+- assertVisible:
+      text: "Login"
+      index: 0
+- assertVisible:
+      text: "Email"
+      label: "Email"
+- assertVisible:
+      text: "Password"
+      label: "Password"
+- assertVisible:
+      text: "Login"
+      index: 1
+- assertVisible: "Click me to create account"
+
+# Fill in email field
+- tapOn: "Email"
+- inputText: "test@gmail.com"
+- pressKey: Enter
+
+# Fill in password field
+- tapOn: "Password"
+- inputText: "PasswordTest121"
+- pressKey: Enter
+
+# Verify form is populated correctly
+- assertVisible:
+    text: "test@gmail.com"
+    label: "Email"
+- assertVisible:
+    text: "..............."
+    label: "Password"
+
+# Attempt to login with invalid credentials
+- tapOn:
+    text: "Login"
+    index: 1
+
+# Wait for error dialog to appear
+- waitForAnimationToEnd
+
+# Verify error dialog content
+- assertVisible: "Unable to login to account"
+- assertVisible: "Having trouble logging into your account. Please try again and or ensure credentials exist and are valid."
+- assertVisible: "GOT IT"
+
+# Dismiss the error dialog
+- tapOn: "GOT IT"

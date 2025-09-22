@@ -1,0 +1,18 @@
+# Shared script to verify login screen elements
+# This can be reused across multiple test files
+
+- assertVisible: "Track Your Shot"
+- assertVisible: "Proceed With Your Account"
+- assertVisible:
+      text: "Login"
+      index: 0
+- assertVisible:
+    text: "Email"
+    label: "Email"
+- assertVisible:
+    text: "Password"
+    label: "Password"
+- assertVisible:
+      text: "Login"
+      index: 1
+- assertVisible: "Click me to create account"
