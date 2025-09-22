@@ -12,3 +12,5 @@ interface AuthenticationNavigation {
     fun openEmail()
     fun finish()
 }
+
+// test
