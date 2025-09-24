@@ -47,9 +47,19 @@ echo "✅ Debug app found"
 echo "🚀 Starting Track Your Shot app..."
 adb shell am start -n com.nicholas.rutherford.track.your.shot.debug/com.nicholas.rutherford.track.your.shot.MainActivity
 
-# Wait for app to load
+# Wait for app to load and verify it started
 echo "⏳ Waiting for app to load..."
 sleep 10
+
+# Verify the app is running
+echo "🔍 Verifying app is running..."
+if ! adb shell dumpsys activity activities | grep -q "com.nicholas.rutherford.track.your.shot.debug"; then
+    echo "❌ App failed to start properly"
+    echo "📱 Current running activities:"
+    adb shell dumpsys activity activities | grep "mResumedActivity"
+    exit 1
+fi
+echo "✅ App is running successfully"
 
 # Change to project root directory
 cd "$(dirname "$0")/.."
@@ -67,8 +77,9 @@ TEST_FAILED=false
 for test_file in maestro-tests/login/*.yaml; do
     if [ -f "$test_file" ]; then
         echo "📋 Running test: $(basename "$test_file")"
-        if ! maestro test "$test_file" --format junit --output "maestro-tests/results/$(basename "$test_file" .yaml)-results.xml"; then
-            echo "❌ Test failed: $(basename "$test_file")"
+        # Add timeout to prevent hanging (10 minutes per test)
+        if ! timeout 600 maestro test "$test_file" --format junit --output "maestro-tests/results/$(basename "$test_file" .yaml)-results.xml"; then
+            echo "❌ Test failed or timed out: $(basename "$test_file")"
             TEST_FAILED=true
         else
             echo "✅ Test passed: $(basename "$test_file")"
