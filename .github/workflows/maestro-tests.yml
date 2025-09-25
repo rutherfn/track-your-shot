@@ -3,7 +3,7 @@ on: [pull_request]
 
 jobs:
   maestro-tests:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     
     steps:
       - name: Checkout the code
@@ -47,7 +47,8 @@ jobs:
       - name: Start emulator
         run: |
           echo "Starting emulator..."
-          emulator -avd test_emulator -no-window -no-audio -no-boot-anim &
+          # Start emulator with stable options for Ubuntu
+          $ANDROID_HOME/emulator/emulator -avd test_emulator -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect -memory 2048 -cores 2 &
           
           echo "Waiting for emulator to boot..."
           adb wait-for-device
