@@ -36,11 +36,16 @@ jobs:
           curl -Ls "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> $GITHUB_PATH
           
-      - name: Create AVD and start emulator
+      - name: Install system image and create AVD
         run: |
+          echo "Installing system image..."
+          sdkmanager "system-images;android-29;google_apis;x86_64"
+          
           echo "Creating AVD..."
           echo "no" | avdmanager create avd -n test_emulator -k "system-images;android-29;google_apis;x86_64" --force
           
+      - name: Start emulator
+        run: |
           echo "Starting emulator..."
           emulator -avd test_emulator -no-window -no-audio -no-boot-anim &
           
