@@ -3,7 +3,7 @@ on: [pull_request]
 
 jobs:
   maestro-tests:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     
     steps:
       - name: Checkout the code
@@ -31,34 +31,46 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
         
-      - name: Set up Android Emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 30
-          target: google_apis
-          arch: x86_64
-          profile: Pixel_3a
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -no-audio -no-boot-anim
-          script: |
-            # Make the CI test script executable
-            chmod +x ./scripts/run-maestro-tests-ci.sh
-            
-            # Wait for emulator to be fully ready
-            echo "⏳ Waiting for emulator to be fully ready..."
-            adb wait-for-device
-            adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done'
-            echo "✅ Emulator is ready"
-            
-            # Run the Maestro tests using the CI-optimized script
-            echo "🧪 Running Maestro tests using CI script..."
-            ./scripts/run-maestro-tests-ci.sh
-            
-            # The script will exit with non-zero code if tests fail
-            # This will cause the CI to fail automatically
+      - name: Install Maestro
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+          
+      - name: Create AVD and start emulator
+        run: |
+          echo "Creating AVD..."
+          echo "no" | avdmanager create avd -n test_emulator -k "system-images;android-29;google_apis;x86_64" --force
+          
+          echo "Starting emulator..."
+          emulator -avd test_emulator -no-window -no-audio -no-boot-anim &
+          
+          echo "Waiting for emulator to boot..."
+          adb wait-for-device
+          adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done'
+          echo "✅ Emulator is ready"
+          
+      - name: Build and install app
+        run: |
+          ./gradlew assembleDebug
+          adb install app/build/outputs/apk/debug/app-debug.apk
+          
+      - name: Run Maestro Tests
+        run: |
+          # Make the CI test script executable
+          chmod +x ./scripts/run-maestro-tests-ci.sh
+          
+          # Run the Maestro tests using the CI-optimized script
+          echo "🧪 Running Maestro tests using CI script..."
+          ./scripts/run-maestro-tests-ci.sh
         env:
           GITHUB_USERNAME: ${{ github.actor }}
           GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
             
+      - name: Stop emulator
+        if: always()
+        run: |
+          adb emu kill
+          
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
