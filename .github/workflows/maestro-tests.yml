@@ -43,10 +43,10 @@ jobs:
           export ANDROID_SDK_HOME="$HOME/.config/.android"
           
           echo "Installing system image..."
-          yes | sdkmanager "system-images;android-29;google_apis;x86_64"
+          yes | sdkmanager "system-images;android-29;google_apis;arm64-v8a"
           
           echo "Creating AVD..."
-          echo "no" | avdmanager create avd -n test_emulator -k "system-images;android-29;google_apis;x86_64" --force
+          echo "no" | avdmanager create avd -n test_emulator -k "system-images;android-29;google_apis;arm64-v8a" --force
           
           echo "Verifying AVD creation..."
           avdmanager list avd
@@ -63,8 +63,8 @@ jobs:
           echo "Available AVDs:"
           avdmanager list avd
           
-          # Start emulator with stable options for Ubuntu
-          $ANDROID_HOME/emulator/emulator -avd test_emulator -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect -memory 2048 -cores 2 &
+          # Start emulator with ARM emulation (no hardware acceleration needed)
+          $ANDROID_HOME/emulator/emulator -avd test_emulator -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect -memory 2048 -cores 2 -no-snapshot -no-metrics &
           
           echo "Waiting for emulator to boot..."
           adb wait-for-device
