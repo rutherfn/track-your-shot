@@ -22,15 +22,33 @@ if ! command -v maestro &> /dev/null; then
     export PATH="$PATH:$HOME/.maestro/bin"
 fi
 
-# Check if device is connected
+# Check if device is connected and wait for it to be ready
 echo "📱 Checking for connected devices..."
-if ! adb devices | grep -q "device$"; then
-    echo "❌ No Android device or emulator found."
-    echo "💡 This script is designed to run in CI with an emulator"
+max_attempts=30
+attempt=0
+
+while [ $attempt -lt $max_attempts ]; do
+    if adb devices | grep -q "device$"; then
+        echo "✅ Device found"
+        break
+    fi
+    echo "⏳ Waiting for device... (attempt $((attempt + 1))/$max_attempts)"
+    sleep 2
+    attempt=$((attempt + 1))
+done
+
+if [ $attempt -eq $max_attempts ]; then
+    echo "❌ No Android device or emulator found after $max_attempts attempts"
+    echo "📱 Current device status:"
+    adb devices
     exit 1
 fi
 
-echo "✅ Device found"
+# Wait for device to be fully ready
+echo "⏳ Waiting for device to be fully ready..."
+adb wait-for-device
+adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done'
+echo "✅ Device is fully ready"
 
 # Check if debug app is installed
 echo "🔍 Checking if debug app is installed..."
@@ -73,14 +91,42 @@ echo "🧪 Running Maestro tests..."
 # Initialize test result tracking
 TEST_FAILED=false
 
+# Function to check if device is still connected
+check_device_connection() {
+    if ! adb devices | grep -q "device$"; then
+        echo "⚠️ Device disconnected, attempting to reconnect..."
+        sleep 5
+        if ! adb devices | grep -q "device$"; then
+            echo "❌ Device still disconnected after retry"
+            return 1
+        fi
+        echo "✅ Device reconnected"
+    fi
+    return 0
+}
+
 # Run each test file individually to get better error reporting
 for test_file in maestro-tests/login/*.yaml; do
     if [ -f "$test_file" ]; then
         echo "📋 Running test: $(basename "$test_file")"
+        
+        # Check device connection before each test
+        if ! check_device_connection; then
+            echo "❌ Device connection lost, skipping remaining tests"
+            TEST_FAILED=true
+            break
+        fi
+        
         # Add timeout to prevent hanging (10 minutes per test)
         if ! timeout 600 maestro test "$test_file" --format junit --output "maestro-tests/results/$(basename "$test_file" .yaml)-results.xml"; then
             echo "❌ Test failed or timed out: $(basename "$test_file")"
             TEST_FAILED=true
+            
+            # Check if failure was due to device disconnection
+            if ! check_device_connection; then
+                echo "❌ Device disconnected during test, stopping test execution"
+                break
+            fi
         else
             echo "✅ Test passed: $(basename "$test_file")"
         fi

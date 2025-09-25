@@ -34,13 +34,20 @@ jobs:
       - name: Set up Android Emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
+          api-level: 30
           target: google_apis
           arch: x86_64
-          profile: Nexus 6
+          profile: Pixel_3a
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -no-audio -no-boot-anim
           script: |
             # Make the CI test script executable
             chmod +x ./scripts/run-maestro-tests-ci.sh
+            
+            # Wait for emulator to be fully ready
+            echo "⏳ Waiting for emulator to be fully ready..."
+            adb wait-for-device
+            adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done'
+            echo "✅ Emulator is ready"
             
             # Run the Maestro tests using the CI-optimized script
             echo "🧪 Running Maestro tests using CI script..."
