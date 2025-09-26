@@ -77,6 +77,7 @@ android {
 
         versionCode = ConfigurationData.versionCode
         versionName = ConfigurationData.versionName
+        multiDexEnabled = true
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -133,6 +134,7 @@ dependencies {
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.multidex)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.activity.ktx)
