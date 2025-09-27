@@ -70,8 +70,6 @@ helper/ui/build
 
 navigation/build
 
-shared-preference/build
-
 # Local configuration file (sdk path, etc)
 local.properties
 

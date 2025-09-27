@@ -3,10 +3,10 @@ package com.nicholas.rutherford.track.your.shot.feature.splash
 import androidx.lifecycle.LifecycleOwner
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePreferencesReader
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
-import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
@@ -29,8 +29,8 @@ import kotlinx.coroutines.launch
  * @param readFirebaseUserInfo Provides Firebase authentication state.
  * @param activeUserRepository Interface for accessing locally stored active user data.
  * @param accountManager Handles app-level account management logic (e.g., forced logout).
- * @param readSharedPreferences Interface for reading app preferences.
- * @param createSharedPreferences Interface for writing app preferences.
+ * @param dataStorePreferencesReader Reads data store preferences.
+ * @param dataStorePreferencesWriter Writes to data store preferences.
  * @param scope Coroutine scope used for background operations.
  */
 class SplashViewModel(
@@ -38,8 +38,8 @@ class SplashViewModel(
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val activeUserRepository: ActiveUserRepository,
     private val accountManager: AccountManager,
-    private val readSharedPreferences: ReadSharedPreferences,
-    private val createSharedPreferences: CreateSharedPreferences,
+    private val dataStorePreferencesReader: DataStorePreferencesReader,
+    private val dataStorePreferencesWriter: DataStorePreferencesWriter,
     private val scope: CoroutineScope
 ) : BaseViewModel() {
 
@@ -56,10 +56,10 @@ class SplashViewModel(
      * Checks whether this is the first app launch.
      * If so, initiates any required logout and updates the flag.
      */
-    internal fun checkIfAppHasBeenLaunchedBefore() {
-        if (!readSharedPreferences.appHasBeenLaunched()) {
+    internal suspend fun checkIfAppHasBeenLaunchedBefore(appHasBeenLaunched: Boolean ) {
+        if (!appHasBeenLaunched) {
             accountManager.checkIfWeNeedToLogoutOnLaunch()
-            createSharedPreferences.createAppHasLaunchedPreference(value = true)
+            dataStorePreferencesWriter.saveAppHasLaunched(value = true)
         }
     }
 
@@ -73,18 +73,25 @@ class SplashViewModel(
      * - Using stored preferences as fallback to determine authentication state.
      */
     internal fun navigateToPlayersListLoginOrAuthentication() {
-        checkIfAppHasBeenLaunchedBefore()
-
         scope.launch {
             combine(
-                readFirebaseUserInfo.isEmailVerifiedFlow(),
-                readFirebaseUserInfo.isLoggedInFlow()
-            ) { emailVerifiedValue, loggedInValue ->
+                readFirebaseUserInfo.isLoggedInFlow(),
+                dataStorePreferencesReader.readAppHasBeenLaunchedFlow(),
+                dataStorePreferencesReader.readIsLoggedInFlow(),
+                dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow()
+            ) { loggedInValue, appHasBeenLaunched , userLoggedInLocally, shouldShowTermsAndConditions ->
+
+                checkIfAppHasBeenLaunchedBefore(appHasBeenLaunched = appHasBeenLaunched)
+
                 val activeUser = activeUserRepository.fetchActiveUser()
-                val isLoggedIn = loggedInValue || readSharedPreferences.isLoggedIn()
+                val isLoggedIn = loggedInValue || userLoggedInLocally
 
                 if (isLoggedIn) {
-                    navigatePostAuthDestination(isLoggedIn = true, email = activeUser?.email ?: "")
+                    navigatePostAuthDestination(
+                        shouldShowTermAndConditions = shouldShowTermsAndConditions,
+                        isLoggedIn = true,
+                        email = activeUser?.email ?: ""
+                    )
 
                     // TODO: Uncomment this block once Firebase Authentication issues are resolved
                     /*
@@ -101,7 +108,11 @@ class SplashViewModel(
                     }
                     */
                 } else {
-                    navigatePostAuthDestination(isLoggedIn = false, email = activeUser?.email)
+                    navigatePostAuthDestination(
+                        shouldShowTermAndConditions = shouldShowTermsAndConditions,
+                        isLoggedIn = false,
+                        email = activeUser?.email
+                    )
                 }
             }.collectLatest { }
         }
@@ -111,11 +122,12 @@ class SplashViewModel(
      * Navigates to either the players list, login screen, or terms and conditions
      * depending on login state and app preferences.
      *
+     * @param shouldShowTermAndConditions Whether to show the terms and conditions screen.
      * @param isLoggedIn Whether the user is considered logged in.
      * @param email Optional email address of the logged-in user.
      */
-    internal fun navigatePostAuthDestination(isLoggedIn: Boolean, email: String?) {
-        if (readSharedPreferences.shouldShowTermsAndConditions() && isLoggedIn) {
+    internal fun navigatePostAuthDestination(shouldShowTermAndConditions: Boolean, isLoggedIn: Boolean, email: String?) {
+        if (shouldShowTermAndConditions && isLoggedIn) {
             navigation.navigateToTermsAndConditions()
         } else if (isLoggedIn) {
             email?.let {

@@ -91,7 +91,6 @@ dependencies {
     api(project(path = ":helper:extensions"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
-    api(project(path = ":shared-preference"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui.tooling.preview)

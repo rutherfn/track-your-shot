@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,14 +27,14 @@ const val DELAY_BEFORE_ONBOARDING = 750L
  * @param savedStateHandle Used to retrieve arguments passed to the screen (e.g., `shouldAcceptTerms`).
  * @param navigation Interface that defines navigation actions for this screen.
  * @param application Provides access to localized string resources.
- * @param createSharedPreferences Allows storing user's acknowledgement of terms.
+ * @param dataStorePreferencesWriter Handles writing to the DataStore preferences.
  * @param scope Coroutine scope for launching background tasks.
  */
 class TermsConditionsViewModel(
     savedStateHandle: SavedStateHandle,
     private val navigation: TermsConditionsNavigation,
     private val application: Application,
-    private val createSharedPreferences: CreateSharedPreferences,
+    private val dataStorePreferencesWriter: DataStorePreferencesWriter,
     private val scope: CoroutineScope
 ) : BaseViewModel() {
 
@@ -125,7 +125,7 @@ class TermsConditionsViewModel(
     fun onCloseAcceptButtonClicked() {
         if (shouldAcceptTermsParam) {
             scope.launch {
-                createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false)
+                dataStorePreferencesWriter.saveShouldShowTermsAndConditions(value = false)
                 navigation.navigateToPlayerList()
 
                 delay(DELAY_BEFORE_ONBOARDING)

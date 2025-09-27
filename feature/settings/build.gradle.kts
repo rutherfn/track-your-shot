@@ -80,10 +80,10 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
     api(project(path = ":compose:components"))
+    api(project(path = ":data-store"))
     api(project(path = ":firebase:core"))
     api(project(path = ":helper:extensions"))
     api(project(path = ":navigation"))
-    api(project(path = ":shared-preference"))
 
     debugImplementation(libs.androidx.ui.tooling.preview)
 

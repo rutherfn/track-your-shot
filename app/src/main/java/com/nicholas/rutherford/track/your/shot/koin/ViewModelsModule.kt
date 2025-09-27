@@ -60,8 +60,8 @@ object ViewModelsModule {
                 readFirebaseUserInfo = get(),
                 activeUserRepository = get(),
                 accountManager = get(),
-                readSharedPreferences = get(),
-                createSharedPreferences = get(),
+                dataStorePreferencesReader = get(),
+                dataStorePreferencesWriter = get(),
                 scope = defaultCoroutineScope
             )
         }
@@ -86,7 +86,7 @@ object ViewModelsModule {
                 deleteFirebaseUserInfo = get(),
                 playerRepository = get(),
                 pendingPlayerRepository = get(),
-                createSharedPreferences = get()
+                databaseStorePreferenceWriter = get()
             )
         }
 
@@ -138,8 +138,9 @@ object ViewModelsModule {
             )
         }
 
+
         /** Report List screen ViewModel */
-        viewModel { (stateHandle: SavedStateHandle) ->
+        viewModel {
             ReportListViewModel(
                 application = androidApplication(),
                 navigation = get(),
@@ -167,7 +168,7 @@ object ViewModelsModule {
                 navigation = get(),
                 application = androidApplication(),
                 createFirebaseUserInfo = get(),
-                createSharedPreferences = get(),
+                dataStorePreferencesWriter = get(),
                 authenticationFirebase = get(),
                 accountManager = get(),
                 activeUserRepository = get(),
@@ -186,7 +187,7 @@ object ViewModelsModule {
                 authenticationFirebase = get(),
                 createFirebaseUserInfo = get(),
                 activeUserRepository = get(),
-                createSharedPreferences = get(),
+                dataStorePreferencesWriter = get(),
                 declaredShotRepository = get(),
                 scope = defaultCoroutineScope
             )
@@ -226,7 +227,7 @@ object ViewModelsModule {
                 savedStateHandle = stateHandle,
                 navigation = get(),
                 application = androidApplication(),
-                createSharedPreferences = get(),
+                dataStorePreferencesWriter = get(),
                 scope = defaultCoroutineScope
             )
         }
@@ -290,8 +291,8 @@ object ViewModelsModule {
                 scope = defaultCoroutineScope,
                 navigation = get(),
                 playerRepository = get(),
-                createSharedPreferences = get(),
-                readSharedPreferences = get()
+                dataStorePreferencesWriter = get(),
+                dataStorePreferencesReader = get()
             )
         }
     }

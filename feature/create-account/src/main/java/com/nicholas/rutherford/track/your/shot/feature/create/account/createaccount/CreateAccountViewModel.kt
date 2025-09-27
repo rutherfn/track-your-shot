@@ -9,13 +9,13 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.RESET_SCREEN_DELAY_IN_MILLIS
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,7 +50,7 @@ const val USERNAME_PATTERN = "^(?=[a-zA-Z\\d._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]
  * @param navigation Interface to handle navigation events and alerts.
  * @param application Provides access to string resources.
  * @param createFirebaseUserInfo Handles Firebase user creation logic.
- * @param createSharedPreferences Manages shared preferences related to user state.
+ * @param dataStorePreferencesWriter Manages data store preferences.
  * @param authenticationFirebase Handles Firebase authentication operations.
  * @param accountManager Handles account-related operations.
  * @param activeUserRepository Manages active user data store in Room
@@ -61,7 +61,7 @@ class CreateAccountViewModel(
     private val navigation: CreateAccountNavigation,
     private val application: Application,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
-    private val createSharedPreferences: CreateSharedPreferences,
+    private val dataStorePreferencesWriter: DataStorePreferencesWriter,
     private val authenticationFirebase: AuthenticationFirebase,
     private val accountManager: AccountManager,
     private val activeUserRepository: ActiveUserRepository,
@@ -228,7 +228,7 @@ class CreateAccountViewModel(
                     authenticationFirebase.attemptToSendEmailVerificationForCurrentUser()
                         .collectLatest { authenticatedUserViaEmailFirebaseResponse ->
                             if (authenticatedUserViaEmailFirebaseResponse.isSuccessful) {
-                                createSharedPreferences.createIsLoggedIn(value = true)
+                                dataStorePreferencesWriter.saveIsLoggedIn(value = true)
                                 accountManager.createActiveUser(username = username, email = email)
                                 attemptToCreateAccount(email = email, username = username)
                             } else {
@@ -267,7 +267,7 @@ class CreateAccountViewModel(
                         firebaseAccountInfoKey = firebaseAccountInfoKey
                     )
                 )
-                createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true)
+                dataStorePreferencesWriter.saveShouldShowTermsAndConditions(value = true)
                 declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList())
                 navigation.disableProgress()
                 navigation.navigateToTermsAndConditions()

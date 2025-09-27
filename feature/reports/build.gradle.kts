@@ -81,12 +81,12 @@ dependencies {
     api(project(path = ":base:vm"))
     api(project(path = ":base-resources"))
     api(project(path = ":compose:components"))
+    api(project(path = ":data-store"))
     api(project(path = ":firebase:core"))
     api(project(path = ":helper:account"))
     api(project(path = ":helper:file-generator"))
     api(project(path = ":helper:notifications"))
     api(project(path = ":navigation"))
-    api(project(path = ":shared-preference"))
 
     debugImplementation(libs.androidx.ui.tooling.preview)
 

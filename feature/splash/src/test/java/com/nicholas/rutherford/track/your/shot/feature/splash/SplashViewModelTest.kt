@@ -4,8 +4,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRe
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
-import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
+import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePreferencesReader
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -36,8 +36,8 @@ class SplashViewModelTest {
     internal var activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
     internal val accountManager = mockk<AccountManager>(relaxed = true)
 
-    internal val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
-    internal val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
+    internal val dataStorePreferencesReader = mockk<DataStorePreferencesReader>(relaxed = true)
+    internal val dataStorePreferencesWriter = mockk<DataStorePreferencesWriter>(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -57,8 +57,8 @@ class SplashViewModelTest {
             readFirebaseUserInfo = readFirebaseUserInfo,
             activeUserRepository = activeUserRepository,
             accountManager = accountManager,
-            readSharedPreferences = readSharedPreferences,
-            createSharedPreferences = createSharedPreferences,
+            dataStorePreferencesReader = dataStorePreferencesReader,
+            dataStorePreferencesWriter = dataStorePreferencesWriter,
             scope = scope
         )
     }
@@ -76,23 +76,19 @@ class SplashViewModelTest {
         inner class CheckIfAppHasBeenLaunchedBefore {
 
             @Test
-            fun `when appHasBeenLaunched returns false should call expected functions`() {
-                every { readSharedPreferences.appHasBeenLaunched() } returns false
-
-                viewModel.checkIfAppHasBeenLaunchedBefore()
+            fun `when appHasBeenLaunched returns false should call expected functions`() = runTest {
+                viewModel.checkIfAppHasBeenLaunchedBefore(appHasBeenLaunched = false)
 
                 verify { accountManager.checkIfWeNeedToLogoutOnLaunch() }
-                verify { createSharedPreferences.createAppHasLaunchedPreference(value = true) }
+                coVerify { dataStorePreferencesWriter.saveAppHasLaunched(value = true) }
             }
 
             @Test
-            fun `when appHasBeenLaunched returns true should not call expected functions`() {
-                every { readSharedPreferences.appHasBeenLaunched() } returns true
-
-                viewModel.checkIfAppHasBeenLaunchedBefore()
+            fun `when appHasBeenLaunched returns true should not call expected functions`() = runTest {
+                viewModel.checkIfAppHasBeenLaunchedBefore(appHasBeenLaunched = true)
 
                 verify(exactly = 0) { accountManager.checkIfWeNeedToLogoutOnLaunch() }
-                verify(exactly = 0) { createSharedPreferences.createAppHasLaunchedPreference(value = true) }
+                coVerify(exactly = 0) { dataStorePreferencesWriter.saveAppHasLaunched(value = true) }
             }
         }
 
@@ -108,7 +104,9 @@ class SplashViewModelTest {
                     )
                     every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(false)
                     every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(false)
-                    every { readSharedPreferences.shouldShowTermsAndConditions() } returns false
+                    every { dataStorePreferencesReader.readAppHasBeenLaunchedFlow() } returns flowOf(true)
+                    every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(false)
+                    every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
@@ -116,8 +114,8 @@ class SplashViewModelTest {
                         readFirebaseUserInfo = readFirebaseUserInfo,
                         activeUserRepository = activeUserRepository,
                         accountManager = accountManager,
-                        readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences,
+                        dataStorePreferencesReader = dataStorePreferencesReader,
+                        dataStorePreferencesWriter = dataStorePreferencesWriter,
                         scope = scope
                     )
 
@@ -141,6 +139,9 @@ class SplashViewModelTest {
                     coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
                         accountHasBeenCreated = true
                     )
+                    every { dataStorePreferencesReader.readAppHasBeenLaunchedFlow() } returns flowOf(true)
+                    every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(false)
+                    every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
@@ -148,8 +149,8 @@ class SplashViewModelTest {
                         readFirebaseUserInfo = readFirebaseUserInfo,
                         activeUserRepository = activeUserRepository,
                         accountManager = accountManager,
-                        readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences,
+                        dataStorePreferencesReader = dataStorePreferencesReader,
+                        dataStorePreferencesWriter = dataStorePreferencesWriter,
                         scope = scope
                     )
 
@@ -161,7 +162,7 @@ class SplashViewModelTest {
                             email = any()
                         )
                     }
-                    verify { viewModel.navigatePostAuthDestination(isLoggedIn = true, email = activeUser.email) }
+                    verify { navigation.navigateToPlayersList() }
                 }
 
             @OptIn(ExperimentalCoroutinesApi::class)
@@ -173,7 +174,9 @@ class SplashViewModelTest {
                     coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
                         accountHasBeenCreated = true
                     )
-                    every { readSharedPreferences.isLoggedIn() } returns true
+                    every { dataStorePreferencesReader.readAppHasBeenLaunchedFlow() } returns flowOf(true)
+                    every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(true)
+                    every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
@@ -181,8 +184,8 @@ class SplashViewModelTest {
                         readFirebaseUserInfo = readFirebaseUserInfo,
                         activeUserRepository = activeUserRepository,
                         accountManager = accountManager,
-                        readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences,
+                        dataStorePreferencesReader = dataStorePreferencesReader,
+                        dataStorePreferencesWriter = dataStorePreferencesWriter,
                         scope = scope
                     )
 
@@ -194,7 +197,7 @@ class SplashViewModelTest {
                             email = any()
                         )
                     }
-                    verify { viewModel.navigatePostAuthDestination(isLoggedIn = true, email = activeUser.email) }
+                    verify { navigation.navigateToPlayersList() }
                 }
 
             @OptIn(ExperimentalCoroutinesApi::class)
@@ -206,6 +209,9 @@ class SplashViewModelTest {
                     coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
                         accountHasBeenCreated = true
                     )
+                    every { dataStorePreferencesReader.readAppHasBeenLaunchedFlow() } returns flowOf(true)
+                    every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(false)
+                    every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
 
                     Dispatchers.setMain(dispatcher)
                     viewModel = SplashViewModel(
@@ -213,8 +219,8 @@ class SplashViewModelTest {
                         readFirebaseUserInfo = readFirebaseUserInfo,
                         activeUserRepository = activeUserRepository,
                         accountManager = accountManager,
-                        readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences,
+                        dataStorePreferencesReader = dataStorePreferencesReader,
+                        dataStorePreferencesWriter = dataStorePreferencesWriter,
                         scope = scope
                     )
 
@@ -242,6 +248,9 @@ class SplashViewModelTest {
                     coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
                         accountHasBeenCreated = false
                     )
+                    every { dataStorePreferencesReader.readAppHasBeenLaunchedFlow() } returns flowOf(true)
+                    every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(false)
+                    every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
 
                     Dispatchers.setMain(dispatcher)
 
@@ -250,8 +259,8 @@ class SplashViewModelTest {
                         readFirebaseUserInfo = readFirebaseUserInfo,
                         activeUserRepository = activeUserRepository,
                         accountManager = accountManager,
-                        readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences,
+                        dataStorePreferencesReader = dataStorePreferencesReader,
+                        dataStorePreferencesWriter = dataStorePreferencesWriter,
                         scope = scope
                     )
 
@@ -269,6 +278,9 @@ class SplashViewModelTest {
                     coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
                         accountHasBeenCreated = true
                     )
+                    every { dataStorePreferencesReader.readAppHasBeenLaunchedFlow() } returns flowOf(true)
+                    every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(false)
+                    every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
 
                     Dispatchers.setMain(dispatcher)
 
@@ -277,8 +289,8 @@ class SplashViewModelTest {
                         readFirebaseUserInfo = readFirebaseUserInfo,
                         activeUserRepository = activeUserRepository,
                         accountManager = accountManager,
-                        readSharedPreferences = readSharedPreferences,
-                        createSharedPreferences = createSharedPreferences,
+                        dataStorePreferencesReader = dataStorePreferencesReader,
+                        dataStorePreferencesWriter = dataStorePreferencesWriter,
                         scope = scope
                     )
 
@@ -296,9 +308,7 @@ class SplashViewModelTest {
                 val isLoggedIn = true
                 val email = "emailtest@gmail.com"
 
-                every { readSharedPreferences.shouldShowTermsAndConditions() } returns true
-
-                viewModel.navigatePostAuthDestination(isLoggedIn = isLoggedIn, email = email)
+                viewModel.navigatePostAuthDestination(shouldShowTermAndConditions = true, isLoggedIn = isLoggedIn, email = email)
 
                 verify { navigation.navigateToTermsAndConditions() }
 
@@ -310,9 +320,7 @@ class SplashViewModelTest {
             fun `when shouldShowTermsAndConditions is set to false, isLoggedIn set to true, end email is null should navigate to login`() {
                 val isLoggedIn = true
 
-                every { readSharedPreferences.shouldShowTermsAndConditions() } returns false
-
-                viewModel.navigatePostAuthDestination(isLoggedIn = isLoggedIn, email = null)
+                viewModel.navigatePostAuthDestination(shouldShowTermAndConditions = false, isLoggedIn = isLoggedIn, email = null)
 
                 verify { navigation.navigateToLogin() }
 
@@ -325,9 +333,7 @@ class SplashViewModelTest {
                 val isLoggedIn = true
                 val email = "emailtest@gmail.com"
 
-                every { readSharedPreferences.shouldShowTermsAndConditions() } returns false
-
-                viewModel.navigatePostAuthDestination(isLoggedIn = isLoggedIn, email = email)
+                viewModel.navigatePostAuthDestination(shouldShowTermAndConditions = false, isLoggedIn = isLoggedIn, email = email)
 
                 verify { navigation.navigateToPlayersList() }
 
@@ -339,9 +345,7 @@ class SplashViewModelTest {
             fun `when shouldShowTermsAndConditions is set to false and isLoggedIn set to false should navigate to login`() {
                 val isLoggedIn = false
 
-                every { readSharedPreferences.shouldShowTermsAndConditions() } returns false
-
-                viewModel.navigatePostAuthDestination(isLoggedIn = isLoggedIn, email = null)
+                viewModel.navigatePostAuthDestination(shouldShowTermAndConditions = false, isLoggedIn = isLoggedIn, email = null)
 
                 verify { navigation.navigateToLogin() }
 

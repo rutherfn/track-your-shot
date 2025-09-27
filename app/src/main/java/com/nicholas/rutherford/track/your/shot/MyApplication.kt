@@ -10,7 +10,6 @@ import com.nicholas.rutherford.track.your.shot.koin.ExtensionLogicModule
 import com.nicholas.rutherford.track.your.shot.koin.FirebaseModule
 import com.nicholas.rutherford.track.your.shot.koin.NavigationModule
 import com.nicholas.rutherford.track.your.shot.koin.RepositoryDataModule
-import com.nicholas.rutherford.track.your.shot.koin.SharedPreferenceModule
 import com.nicholas.rutherford.track.your.shot.koin.ViewModelsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -71,7 +70,6 @@ open class MyApplication : Application() {
             modules(
                 listOf(
                     DataStoreModule.modules,
-                    SharedPreferenceModule.modules,
                     DatabaseModule.modules,
                     RepositoryDataModule.modules,
                     FirebaseModule.modules,

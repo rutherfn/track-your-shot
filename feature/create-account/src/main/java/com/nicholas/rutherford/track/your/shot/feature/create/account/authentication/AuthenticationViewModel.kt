@@ -11,16 +11,39 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-10-27
+ *
+ * ViewModel responsible for managing the email verification process during account creation.
+ *
+ * This ViewModel handles:
+ * - Email verification status monitoring for newly created accounts.
+ * - Account creation completion after successful email verification.
+ * - Resending email verification links.
+ * - Deleting pending accounts if user chooses to cancel.
+ * - Navigation flow management during the authentication process.
+ *
+ * @param savedStateHandle Contains navigation parameters (username, email) passed from previous screen.
+ * @param readFirebaseUserInfo Provides Firebase authentication state and email verification status.
+ * @param navigation Interface to handle navigation events and alerts.
+ * @param application Provides access to string resources.
+ * @param authenticationFirebase Handles Firebase authentication operations (email verification, account deletion).
+ * @param createFirebaseUserInfo Handles Firebase user creation and database operations.
+ * @param activeUserRepository Manages active user data store in Room.
+ * @param dataStorePreferencesWriter Manages data store preferences.
+ * @param declaredShotRepository Manages declared shot data store in Room.
+ * @param scope CoroutineScope for asynchronous operations.
+ */
 class AuthenticationViewModel(
     savedStateHandle: SavedStateHandle,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
@@ -29,7 +52,7 @@ class AuthenticationViewModel(
     private val authenticationFirebase: AuthenticationFirebase,
     private val createFirebaseUserInfo: CreateFirebaseUserInfo,
     private val activeUserRepository: ActiveUserRepository,
-    private val createSharedPreferences: CreateSharedPreferences,
+    private val dataStorePreferencesWriter: DataStorePreferencesWriter,
     private val declaredShotRepository: DeclaredShotRepository,
     private val scope: CoroutineScope
 ) : BaseViewModel() {
@@ -115,7 +138,7 @@ class AuthenticationViewModel(
                                     firebaseAccountInfoKey = firebaseAccountInfoKey
                                 )
                             )
-                            createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true)
+                            dataStorePreferencesWriter.saveShouldShowTermsAndConditions(value = true)
                             declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList())
                             navigation.disableProgress()
                             navigation.navigateToTermsAndConditions()

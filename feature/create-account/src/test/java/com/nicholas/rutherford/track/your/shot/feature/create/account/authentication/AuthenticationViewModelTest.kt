@@ -1,17 +1,18 @@
 package com.nicholas.rutherford.track.your.shot.feature.create.account.authentication
 
 import android.app.Application
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -30,16 +31,15 @@ import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-@Disabled("Authentication workflow needs to be updated to re enable it")
 class AuthenticationViewModelTest {
 
     lateinit var viewModel: AuthenticationViewModel
 
     private var savedStateHandle = mockk<SavedStateHandle>(relaxed = true)
+    private var lifecycleOwner = mockk<LifecycleOwner>(relaxed = true)
 
     private var readFirebaseUserInfo = mockk<ReadFirebaseUserInfo>(relaxed = true)
     private var navigation = mockk<AuthenticationNavigation>(relaxed = true)
@@ -52,7 +52,7 @@ class AuthenticationViewModelTest {
 
     private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
 
-    internal val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
+    internal val dataStorePreferencesWriter = mockk<DataStorePreferencesWriter>(relaxed = true)
 
     internal val declaredShotRepository = mockk<DeclaredShotRepository>(relaxed = true)
 
@@ -73,6 +73,10 @@ class AuthenticationViewModelTest {
     @BeforeEach
     fun beforeEach() {
         Dispatchers.setMain(dispatcher)
+
+        every { savedStateHandle.get<String>("username") } returns username
+        every { savedStateHandle.get<String>("email") } returns email
+
         viewModel = AuthenticationViewModel(
             savedStateHandle = savedStateHandle,
             readFirebaseUserInfo = readFirebaseUserInfo,
@@ -81,7 +85,7 @@ class AuthenticationViewModelTest {
             authenticationFirebase = authenticationFirebase,
             createFirebaseUserInfo = createFirebaseUserInfo,
             activeUserRepository = activeUserRepository,
-            createSharedPreferences = createSharedPreferences,
+            dataStorePreferencesWriter = dataStorePreferencesWriter,
             declaredShotRepository = declaredShotRepository,
             scope = scope
         )
@@ -95,9 +99,6 @@ class AuthenticationViewModelTest {
 
     @Test
     fun `updateUsernameAndEmail should update local username and email and call createSharedPreferencesForUnAuthenticatedUser`() = runTest {
-        Assertions.assertEquals(null, viewModel.username)
-        Assertions.assertEquals(null, viewModel.email)
-
         viewModel.updateUsernameAndEmail()
 
         Assertions.assertEquals(username, viewModel.username)
@@ -180,6 +181,9 @@ class AuthenticationViewModelTest {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
             } returns flowOf(value = Pair(first = false, second = null))
 
+            every { savedStateHandle.get<String>("username") } returns username
+            every { savedStateHandle.get<String>("email") } returns email
+
             viewModel = AuthenticationViewModel(
                 savedStateHandle = savedStateHandle,
                 readFirebaseUserInfo = readFirebaseUserInfo,
@@ -188,7 +192,7 @@ class AuthenticationViewModelTest {
                 authenticationFirebase = authenticationFirebase,
                 createFirebaseUserInfo = createFirebaseUserInfo,
                 activeUserRepository = activeUserRepository,
-                createSharedPreferences = createSharedPreferences,
+                dataStorePreferencesWriter = dataStorePreferencesWriter,
                 declaredShotRepository = declaredShotRepository,
                 scope = scope
             )
@@ -210,6 +214,9 @@ class AuthenticationViewModelTest {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
             } returns flowOf(value = Pair(first = true, second = activeUser.firebaseAccountInfoKey))
 
+            every { savedStateHandle.get<String>("username") } returns username
+            every { savedStateHandle.get<String>("email") } returns email
+
             viewModel = AuthenticationViewModel(
                 savedStateHandle = savedStateHandle,
                 readFirebaseUserInfo = readFirebaseUserInfo,
@@ -218,7 +225,7 @@ class AuthenticationViewModelTest {
                 authenticationFirebase = authenticationFirebase,
                 createFirebaseUserInfo = createFirebaseUserInfo,
                 activeUserRepository = activeUserRepository,
-                createSharedPreferences = createSharedPreferences,
+                dataStorePreferencesWriter = dataStorePreferencesWriter,
                 declaredShotRepository = declaredShotRepository,
                 scope = scope
             )
@@ -260,7 +267,7 @@ class AuthenticationViewModelTest {
             viewModel.username = username
             viewModel.email = email
 
-            // viewModel.onResume()
+            viewModel.onResume(lifecycleOwner)
 
             verify(exactly = 0) { navigation.alert(alert = viewModel.errorVerifyingAccount()) }
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
@@ -273,7 +280,7 @@ class AuthenticationViewModelTest {
             viewModel.username = null
             viewModel.email = email
 
-            // viewModel.onResume()
+            viewModel.onResume(lifecycleOwner)
 
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
         }
@@ -285,7 +292,7 @@ class AuthenticationViewModelTest {
             viewModel.username = username
             viewModel.email = null
 
-            // viewModel.onResume()
+            viewModel.onResume(lifecycleOwner)
 
             verify(exactly = 0) { createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = any(), email = any()) }
         }
@@ -297,6 +304,9 @@ class AuthenticationViewModelTest {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
             } returns flowOf(value = Pair(first = false, second = null))
 
+            every { savedStateHandle.get<String>("username") } returns username
+            every { savedStateHandle.get<String>("email") } returns email
+
             viewModel = AuthenticationViewModel(
                 savedStateHandle = savedStateHandle,
                 readFirebaseUserInfo = readFirebaseUserInfo,
@@ -305,7 +315,7 @@ class AuthenticationViewModelTest {
                 authenticationFirebase = authenticationFirebase,
                 createFirebaseUserInfo = createFirebaseUserInfo,
                 activeUserRepository = activeUserRepository,
-                createSharedPreferences = createSharedPreferences,
+                dataStorePreferencesWriter = dataStorePreferencesWriter,
                 declaredShotRepository = declaredShotRepository,
                 scope = scope
             )
@@ -313,7 +323,7 @@ class AuthenticationViewModelTest {
             viewModel.username = username
             viewModel.email = email
 
-            // viewModel.onResume()
+            viewModel.onResume(lifecycleOwner)
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
@@ -327,6 +337,9 @@ class AuthenticationViewModelTest {
                 createFirebaseUserInfo.attemptToCreateAccountFirebaseRealTimeDatabaseResponseFlow(userName = username, email = email)
             } returns flowOf(value = Pair(first = true, second = activeUser.firebaseAccountInfoKey))
 
+            every { savedStateHandle.get<String>("username") } returns username
+            every { savedStateHandle.get<String>("email") } returns email
+
             viewModel = AuthenticationViewModel(
                 savedStateHandle = savedStateHandle,
                 readFirebaseUserInfo = readFirebaseUserInfo,
@@ -335,7 +348,7 @@ class AuthenticationViewModelTest {
                 authenticationFirebase = authenticationFirebase,
                 createFirebaseUserInfo = createFirebaseUserInfo,
                 activeUserRepository = activeUserRepository,
-                createSharedPreferences = createSharedPreferences,
+                dataStorePreferencesWriter = dataStorePreferencesWriter,
                 declaredShotRepository = declaredShotRepository,
                 scope = scope
             )
@@ -343,7 +356,7 @@ class AuthenticationViewModelTest {
             viewModel.username = username
             viewModel.email = email
 
-            // viewModel.onResume()
+            viewModel.onResume(lifecycleOwner)
 
             verify { navigation.enableProgress(progress = any()) }
             coVerify {
@@ -357,7 +370,7 @@ class AuthenticationViewModelTest {
                     )
                 )
             }
-            verify { createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true) }
+            coVerify { dataStorePreferencesWriter.saveShouldShowTermsAndConditions(value = true) }
             coVerify { declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList()) }
             verify { navigation.disableProgress() }
             verify { navigation.navigateToTermsAndConditions() }

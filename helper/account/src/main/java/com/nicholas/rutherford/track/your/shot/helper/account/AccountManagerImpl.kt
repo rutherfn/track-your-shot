@@ -18,12 +18,12 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.existinguser.ExistingUserFirebase
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -47,7 +47,7 @@ import kotlinx.coroutines.launch
  * @param userRepository Repository for user data.
  * @param readFirebaseUserInfo Firebase helper to read user and player info.
  * @param existingUserFirebase Firebase helper for login/logout.
- * @param createSharedPreferences SharedPreferences helper for storing account flags.
+ * @param dataStorePreferencesWriter Writer for DataStore preferences.
  *
  * TODO: Come back and write unit tests for this implementation.
  */
@@ -64,11 +64,11 @@ class AccountManagerImpl(
     private val userRepository: UserRepository,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val existingUserFirebase: ExistingUserFirebase,
-    private val createSharedPreferences: CreateSharedPreferences
+    private val dataStorePreferencesWriter: DataStorePreferencesWriter
 ) : AccountManager {
 
     /** Tracks declared shot IDs locally */
-    internal var declaredShotIds: List<Int> = emptyList()
+    private var declaredShotIds: List<Int> = emptyList()
 
     /**
      * Creates a new active user in the local database.
@@ -97,8 +97,9 @@ class AccountManagerImpl(
             navigator.progress(progressAction = Progress())
 
             existingUserFirebase.logout()
-            createSharedPreferences.createShouldShowTermsAndConditionsPreference(false)
-            createSharedPreferences.createIsLoggedIn(false)
+
+            dataStorePreferencesWriter.saveShouldShowTermsAndConditions(value = false)
+            dataStorePreferencesWriter.saveIsLoggedIn(value = false)
             clearOutDatabase()
 
             declaredShotIds = emptyList()
@@ -123,7 +124,7 @@ class AccountManagerImpl(
                 password = password
             ).collectLatest { isSuccessful ->
                 if (isSuccessful) {
-                    createSharedPreferences.createShouldShowTermsAndConditionsPreference(false)
+                    dataStorePreferencesWriter.saveShouldShowTermsAndConditions(value = false)
                     readFirebaseUserInfo.getAccountInfoFlow()
                         .collectLatest { accountInfoRealtimeResponse ->
                             accountInfoRealtimeResponse?.let { accountInfo ->
@@ -151,7 +152,7 @@ class AccountManagerImpl(
     }
 
     /** Clears all relevant tables in the local database */
-    internal suspend fun clearOutDatabase() {
+    private suspend fun clearOutDatabase() {
         activeUserRepository.deleteActiveUser()
         playerRepository.deleteAllPlayers()
         pendingPlayerRepository.deleteAllPendingPlayers()
@@ -163,7 +164,7 @@ class AccountManagerImpl(
     }
 
     /** Removes pending shots from all players in the database */
-    internal fun deleteAllPendingShotsFromPlayers() {
+    private fun deleteAllPendingShotsFromPlayers() {
         scope.launch {
             playerRepository.fetchAllPlayers().forEach { player ->
                 val pendingShots = player.shotsLoggedList.filter { shot -> shot.isPending }
@@ -184,7 +185,7 @@ class AccountManagerImpl(
     }
 
     /** Checks for and deletes active user and players if they exist */
-    internal suspend fun checkForActiveUserAndPlayers() {
+    private suspend fun checkForActiveUserAndPlayers() {
         if (activeUserRepository.fetchActiveUser() != null) {
             activeUserRepository.deleteActiveUser()
         }
@@ -199,7 +200,7 @@ class AccountManagerImpl(
      * @param email The logged-in user's email.
      * @param username The logged-in user's username.
      */
-    internal suspend fun updateActiveUserFromLoggedInUser(email: String, username: String) {
+    private suspend fun updateActiveUserFromLoggedInUser(email: String, username: String) {
         readFirebaseUserInfo.getAccountInfoKeyFlow().collectLatest { key ->
             key?.let { firebaseAccountInfoKey ->
                 checkForActiveUserAndPlayers()
@@ -220,7 +221,7 @@ class AccountManagerImpl(
     }
 
     /** Collects player info list from Firebase and updates the local database */
-    internal suspend fun collectPlayerInfoList() {
+    private suspend fun collectPlayerInfoList() {
         readFirebaseUserInfo.getPlayerInfoList()
             .collectLatest { playerInfoRealtimeWithKeyResponseList ->
                 if (playerInfoRealtimeWithKeyResponseList.isNotEmpty()) {
@@ -259,7 +260,7 @@ class AccountManagerImpl(
     }
 
     /** Collects individual player reports from Firebase and updates local database */
-    internal suspend fun collectReportList() {
+    private suspend fun collectReportList() {
         readFirebaseUserInfo.getReportList()
             .collectLatest { individualPlayerReportWithKeyRealtimeResponse ->
                 if (individualPlayerReportWithKeyRealtimeResponse.isNotEmpty()) {
@@ -282,7 +283,7 @@ class AccountManagerImpl(
     }
 
     /** Collects deleted shot IDs from Firebase and updates local database */
-    internal suspend fun collectDeletedShotIds() {
+    private suspend fun collectDeletedShotIds() {
         readFirebaseUserInfo.getDeletedShotIdsFlow()
             .collectLatest { shotIds ->
                 if (shotIds.isNotEmpty()) {
@@ -298,7 +299,7 @@ class AccountManagerImpl(
     }
 
     /** Collects declared shots from Firebase and updates local database */
-    internal suspend fun collectDeclaredShots() {
+    private suspend fun collectDeclaredShots() {
         readFirebaseUserInfo.getCreatedDeclaredShotsFlow()
             .collectLatest { declaredShots ->
                 declaredShots.forEach { shot ->
@@ -316,7 +317,7 @@ class AccountManagerImpl(
                 }
                 declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = declaredShotIds)
 
-                createSharedPreferences.createIsLoggedIn(value = true)
+                dataStorePreferencesWriter.saveIsLoggedIn(value = true)
 
                 declaredShotIds = emptyList()
                 disableProcessAndNavigateToPlayersList()
@@ -334,7 +335,7 @@ class AccountManagerImpl(
      *
      * @param isLoggedIn Whether the user was partially logged in.
      */
-    suspend fun disableProgressAndShowUnableToLoginAlert(isLoggedIn: Boolean = false) {
+    private suspend fun disableProgressAndShowUnableToLoginAlert(isLoggedIn: Boolean = false) {
         if (isLoggedIn) {
             existingUserFirebase.logout()
             clearOutDatabase()
@@ -345,7 +346,7 @@ class AccountManagerImpl(
     }
 
     /** Creates an alert for being unable to login to account */
-    internal fun unableToLoginToAccountAlert(): Alert {
+    private fun unableToLoginToAccountAlert(): Alert {
         return Alert(
             title = application.getString(StringsIds.unableToLoginToAccount),
             dismissButton = AlertConfirmAndDismissButton(

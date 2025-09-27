@@ -11,8 +11,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,7 +47,7 @@ class PlayersListViewModel(
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
     private val playerRepository: PlayerRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
-    private val createSharedPreferences: CreateSharedPreferences
+    private val databaseStorePreferenceWriter: DataStorePreferencesWriter
 ) : BaseViewModel() {
 
     internal var selectedPlayer: Player = Player(
@@ -208,8 +208,10 @@ class PlayersListViewModel(
 
     /** Navigates to shot list after saving selected player name */
     internal fun onShotListClicked(playerName: String) {
-        createSharedPreferences.createPlayerFilterName(value = playerName)
-        navigation.navigateToShotList()
+        scope.launch {
+            databaseStorePreferenceWriter.savePlayerFilterName(value = playerName)
+            navigation.navigateToShotList()
+        }
     }
 
     /** Navigates to the create/edit screen for the specified player */
