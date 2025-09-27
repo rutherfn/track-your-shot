@@ -198,6 +198,7 @@ object ViewModelsModule {
                 navigation = get(),
                 application = androidApplication(),
                 scope = defaultCoroutineScope,
+                buildType = get(),
                 activeUserRepository = get()
             )
         }

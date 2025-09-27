@@ -40,6 +40,7 @@ fun SettingsScreen(params: SettingsParams) {
     SettingsContent(
         settingGeneralValues = params.state.generalSettings,
         settingPermissionsValues = params.state.permissionSettings,
+        debugSettingsValues = params.state.debugSettings,
         onSettingItemClicked = params.onSettingItemClicked
     )
 }
@@ -49,12 +50,14 @@ fun SettingsScreen(params: SettingsParams) {
  *
  * @param settingGeneralValues List of general setting labels.
  * @param settingPermissionsValues List of permission setting labels.
+ * @param debugSettingsValues List of debug setting labels
  * @param onSettingItemClicked Callback invoked when a setting item is clicked.
  */
 @Composable
 private fun SettingsContent(
     settingGeneralValues: List<String>,
     settingPermissionsValues: List<String>,
+    debugSettingsValues: List<String>,
     onSettingItemClicked: (value: String) -> Unit
 ) {
     Column(
@@ -68,34 +71,55 @@ private fun SettingsContent(
             ),
         horizontalAlignment = Alignment.Start
     ) {
-        Spacer(modifier = Modifier.height(Padding.sixteen))
-
-        Text(
-            text = stringResource(id = StringsIds.general),
-            style = TextStyles.smallBold
-        )
-
-        Spacer(modifier = Modifier.height(Padding.eight))
-
-        SettingsRowCard(
+        SettingsSectionContent(
             values = settingGeneralValues,
-            onSettingItemClicked = onSettingItemClicked
+            textResId = StringsIds.general,
+            onItemClicked = onSettingItemClicked
         )
 
-        Spacer(modifier = Modifier.height(Padding.sixteen))
-
-        Text(
-            text = stringResource(id = StringsIds.permissions),
-            style = TextStyles.smallBold
-        )
-
-        Spacer(modifier = Modifier.height(Padding.eight))
-
-        SettingsRowCard(
+        SettingsSectionContent(
             values = settingPermissionsValues,
-            onSettingItemClicked = onSettingItemClicked
+            textResId = StringsIds.permissions,
+            onItemClicked = onSettingItemClicked
         )
+
+        if (debugSettingsValues.isNotEmpty()) {
+            SettingsSectionContent(
+                values = debugSettingsValues,
+                textResId = StringsIds.debug,
+                onItemClicked = onSettingItemClicked
+            )
+        }
     }
+}
+
+/**
+ * Displays content that is specific to the general sections wrapped in Settings.
+ *
+ * @param values List of setting labels, that get applied to [SettingsRowCard]
+ * @param textResId The string resource ID for the section title.
+ * @param onItemClicked Callback invoked when a setting item is clicked. Gets applied to [SettingsRowCard]
+ */
+
+@Composable
+private fun SettingsSectionContent(
+    values: List<String>,
+    textResId: Int,
+    onItemClicked: (value: String) -> Unit
+) {
+    Spacer(modifier = Modifier.height(Padding.sixteen))
+
+    Text(
+        text =  stringResource(textResId),
+        style = TextStyles.smallBold
+    )
+
+    Spacer(modifier = Modifier.height(Padding.eight))
+
+    SettingsRowCard(
+        values = values,
+        onSettingItemClicked = onItemClicked
+    )
 }
 
 /**

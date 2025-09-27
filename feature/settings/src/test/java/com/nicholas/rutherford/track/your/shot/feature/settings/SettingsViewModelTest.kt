@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.feature.settings
 
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
@@ -30,6 +31,15 @@ class SettingsViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val dispatcher = UnconfinedTestDispatcher()
 
+    private val sdkValue = 2
+    private val debugVersionName = "debug"
+    private val releaseVersionName = "release"
+    private val stageVersionName = "stage"
+
+    private val buildTypeDebug = BuildTypeImpl(sdkValue = sdkValue, buildTypeValue = debugVersionName)
+    private val buildTypeRelease = BuildTypeImpl(sdkValue = sdkValue, buildTypeValue = releaseVersionName)
+    private val buildTypeStage = BuildTypeImpl(sdkValue = sdkValue, buildTypeValue = stageVersionName)
+
     private val scope = CoroutineScope(SupervisorJob() + dispatcher)
 
     private val activeUserRepository = mockk<ActiveUserRepository>(relaxed = true)
@@ -45,11 +55,16 @@ class SettingsViewModelTest {
         every { application.getString(StringsIds.enabledPermissions) } returns "Enabled Permissions"
         every { application.getString(StringsIds.viewMoreInfo) } returns "View More Info"
         every { application.getString(StringsIds.settingsHelpDescription) } returns "On the settings page, you can view your account information, review terms and conditions, access app usage details, and learn about the permissions we request and why we need them."
+        every { application.getString(StringsIds.debug) } returns "Debug"
+        every { application.getString(StringsIds.deleteAccount) } returns "Delete Account"
+        every { application.getString(StringsIds.inAppFirebaseViewer) } returns "In-App Firebase Viewer"
+        every { application.getString(StringsIds.toggles) } returns "Toggles"
 
         settingsViewModel = SettingsViewModel(
             navigation = navigation,
             application = application,
             scope = scope,
+            buildType = buildTypeDebug,
             activeUserRepository = activeUserRepository
         )
     }
@@ -60,7 +75,8 @@ class SettingsViewModelTest {
             settingsViewModel.settingsMutableStateFlow.value,
             SettingsState(
                 generalSettings = listOf("Account Info", "Manage Declared Shots", "Terms & Conditions", "Using The App"),
-                permissionSettings = listOf("Enabled Permissions", "View More Info")
+                permissionSettings = listOf("Enabled Permissions", "View More Info"),
+                debugSettings = listOf("Delete Account", "In-App Firebase Viewer", "Toggles")
             )
         )
     }
@@ -79,6 +95,101 @@ class SettingsViewModelTest {
             settingsViewModel.permissionsSettings(),
             listOf("Enabled Permissions", "View More Info")
         )
+    }
+
+    @Nested
+    inner class DebugSettings {
+
+        @Test
+        fun `when build type is debug should return expected list`() {
+            every { application.getString(StringsIds.manageDeclaredShots) } returns "Manage Declared Shots"
+            every { application.getString(StringsIds.gotIt) } returns "Got It"
+            every { application.getString(StringsIds.settings) } returns "Settings"
+            every { application.getString(StringsIds.accountInfo) } returns "Account Info"
+            every { application.getString(StringsIds.termsConditions) } returns "Terms & Conditions"
+            every { application.getString(StringsIds.usingTheApp) } returns "Using The App"
+            every { application.getString(StringsIds.enabledPermissions) } returns "Enabled Permissions"
+            every { application.getString(StringsIds.viewMoreInfo) } returns "View More Info"
+            every { application.getString(StringsIds.settingsHelpDescription) } returns "On the settings page, you can view your account information, review terms and conditions, access app usage details, and learn about the permissions we request and why we need them."
+            every { application.getString(StringsIds.debug) } returns "Debug"
+            every { application.getString(StringsIds.deleteAccount) } returns "Delete Account"
+            every { application.getString(StringsIds.inAppFirebaseViewer) } returns "In-App Firebase Viewer"
+            every { application.getString(StringsIds.toggles) } returns "Toggles"
+
+            settingsViewModel = SettingsViewModel(
+                navigation = navigation,
+                application = application,
+                scope = scope,
+                buildType = buildTypeDebug,
+                activeUserRepository = activeUserRepository
+            )
+
+            val result = settingsViewModel.debugSettings()
+
+            Assertions.assertEquals(result, listOf("Delete Account", "In-App Firebase Viewer", "Toggles"))
+        }
+
+        @Test
+        fun `when build type is stage should return empty list`() {
+            val emptyListStrings: List<String> = emptyList()
+
+            every { application.getString(StringsIds.manageDeclaredShots) } returns "Manage Declared Shots"
+            every { application.getString(StringsIds.gotIt) } returns "Got It"
+            every { application.getString(StringsIds.settings) } returns "Settings"
+            every { application.getString(StringsIds.accountInfo) } returns "Account Info"
+            every { application.getString(StringsIds.termsConditions) } returns "Terms & Conditions"
+            every { application.getString(StringsIds.usingTheApp) } returns "Using The App"
+            every { application.getString(StringsIds.enabledPermissions) } returns "Enabled Permissions"
+            every { application.getString(StringsIds.viewMoreInfo) } returns "View More Info"
+            every { application.getString(StringsIds.settingsHelpDescription) } returns "On the settings page, you can view your account information, review terms and conditions, access app usage details, and learn about the permissions we request and why we need them."
+            every { application.getString(StringsIds.debug) } returns "Debug"
+            every { application.getString(StringsIds.deleteAccount) } returns "Delete Account"
+            every { application.getString(StringsIds.inAppFirebaseViewer) } returns "In-App Firebase Viewer"
+            every { application.getString(StringsIds.toggles) } returns "Toggles"
+
+            settingsViewModel = SettingsViewModel(
+                navigation = navigation,
+                application = application,
+                scope = scope,
+                buildType = buildTypeStage,
+                activeUserRepository = activeUserRepository
+            )
+
+            val result = settingsViewModel.debugSettings()
+
+            Assertions.assertEquals(result, emptyListStrings)
+        }
+
+        @Test
+        fun `when build type is release should return empty list`() {
+            val emptyListStrings: List<String> = emptyList()
+
+            every { application.getString(StringsIds.manageDeclaredShots) } returns "Manage Declared Shots"
+            every { application.getString(StringsIds.gotIt) } returns "Got It"
+            every { application.getString(StringsIds.settings) } returns "Settings"
+            every { application.getString(StringsIds.accountInfo) } returns "Account Info"
+            every { application.getString(StringsIds.termsConditions) } returns "Terms & Conditions"
+            every { application.getString(StringsIds.usingTheApp) } returns "Using The App"
+            every { application.getString(StringsIds.enabledPermissions) } returns "Enabled Permissions"
+            every { application.getString(StringsIds.viewMoreInfo) } returns "View More Info"
+            every { application.getString(StringsIds.settingsHelpDescription) } returns "On the settings page, you can view your account information, review terms and conditions, access app usage details, and learn about the permissions we request and why we need them."
+            every { application.getString(StringsIds.debug) } returns "Debug"
+            every { application.getString(StringsIds.deleteAccount) } returns "Delete Account"
+            every { application.getString(StringsIds.inAppFirebaseViewer) } returns "In-App Firebase Viewer"
+            every { application.getString(StringsIds.toggles) } returns "Toggles"
+
+            settingsViewModel = SettingsViewModel(
+                navigation = navigation,
+                application = application,
+                scope = scope,
+                buildType = buildTypeRelease,
+                activeUserRepository = activeUserRepository
+            )
+
+            val result = settingsViewModel.debugSettings()
+
+            Assertions.assertEquals(result, emptyListStrings)
+        }
     }
 
     @Test

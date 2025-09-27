@@ -286,6 +286,7 @@
     <string name="we_were_unable_to_set_new_username_since_the_username_is_empty_please_click_try_again_to_set_new_username">We were unable to set new username since the username is empty. Please click try again to set new username</string>
     <string name="we_were_unable_to_set_new_username_since_the_username_is_the_same_as_the_current_username_please_click_try_again_to_set_new_username">We were unable to set new username since the username is the same as the current username. Please click try again to set new username</string>
     <string name="verify_account">Verify Account</string>
+    <string name="view_debug_toggles">View Debug Toggles</string>
     <string name="view_report">View Report</string>
     <string name="view_reports">View Reports</string>
     <string name="view_more_info">View More Info</string>

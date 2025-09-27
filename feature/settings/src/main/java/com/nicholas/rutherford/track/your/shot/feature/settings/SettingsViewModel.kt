@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.feature.settings
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
+import com.nicholas.rutherford.track.your.shot.build.type.BuildType
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
@@ -21,12 +22,14 @@ import kotlinx.coroutines.launch
  * @property navigation Used to navigate to different screens based on user interactions.
  * @property application Application context used to access string resources.
  * @property scope Coroutine scope used to launch background operations.
+ * @property buildType Represents the current build type (e.g., debug, release).
  * @property activeUserRepository Repository used to fetch the active user's data.
  */
 class SettingsViewModel(
     private val navigation: SettingsNavigation,
     private val application: Application,
     private val scope: CoroutineScope,
+    private val buildType: BuildType,
     private val activeUserRepository: ActiveUserRepository
 ) : BaseViewModel() {
 
@@ -45,7 +48,8 @@ class SettingsViewModel(
         settingsMutableStateFlow.update { settingsState ->
             settingsState.copy(
                 generalSettings = generalSettings(),
-                permissionSettings = permissionsSettings()
+                permissionSettings = permissionsSettings(),
+                debugSettings = debugSettings()
             )
         }
     }
@@ -69,6 +73,21 @@ class SettingsViewModel(
             application.getString(StringsIds.enabledPermissions),
             application.getString(StringsIds.viewMoreInfo)
         )
+
+    /**
+     * Returns a list of localized strings for debug settings if build is debug.
+     */
+    internal fun debugSettings(): List<String> {
+        return if (buildType.isDebug()) {
+            listOf(
+                application.getString(StringsIds.deleteAccount),
+                application.getString(StringsIds.inAppFirebaseViewer),
+                application.getString(StringsIds.toggles)
+            )
+        } else {
+            emptyList()
+        }
+    }
 
     /**
      * Fetches the active user and navigates to the Account Info screen.
