@@ -4,24 +4,13 @@ plugins {
     id(BuildIds.androidLibrary)
     kotlin(BuildIds.pluginKotlin)
     id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
-    id(BuildIds.kover)
-    alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace = "com.nicholas.rutherford.track.your.shot.feature.create.account"
+    namespace = "com.nicholas.rutherford.track.your.shot.data.store"
 
     buildToolsVersion = ConfigurationData.buildToolsVersion
     compileSdk = ConfigurationData.compileSdk
-
-    buildFeatures {
-        compose = ComposeData.Enabled.value
-    }
-
-    @Suppress("UnstableApiUsage")
-    composeOptions {
-        kotlinCompilerExtensionVersion = ComposeData.KotlinCompiler.extensionVersion
-    }
 
     compileOptions {
         sourceCompatibility = types.BuildTypes.CompileOptions.sourceCompatibility
@@ -73,39 +62,15 @@ android {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
-
-    tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
 dependencies {
-    api(project(path = ":base-resources"))
-    api(project(path = ":compose:components"))
-    api(project(path = ":data:room"))
-    api(project(path = ":data-store"))
-    api(project(path = ":feature:players"))
-    api(project(path = ":firebase:core"))
-    api(project(path = ":firebase:util"))
-    api(project(path = ":helper:account"))
-    api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:constants"))
-    api(project(path = ":helper:extensions"))
-    api(project(path = ":helper:ui"))
-    api(project(path = ":navigation"))
-    api(project(path = ":shared-preference"))
 
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.data.store)
 
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.params)
-    testImplementation(libs.android.junit5)
-    testImplementation(libs.mockk)
-
-    testRuntimeOnly(libs.junit.jupiter.engine)
-
-    testImplementation(project(path = ":data-test:firebase"))
-    testImplementation(project(path = ":data-test:room"))
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.truth)
 }

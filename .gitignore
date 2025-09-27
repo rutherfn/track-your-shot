@@ -39,6 +39,8 @@ data/room/build
 data/shared/build
 data/user/build
 
+data-store/build
+
 data-test/firebase/build
 data-test/room/build
 data-test/user/build

@@ -4,6 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.koin.DataStoreModule
 import com.nicholas.rutherford.track.your.shot.koin.DatabaseModule
 import com.nicholas.rutherford.track.your.shot.koin.ExtensionLogicModule
 import com.nicholas.rutherford.track.your.shot.koin.FirebaseModule
@@ -69,6 +70,7 @@ open class MyApplication : Application() {
             androidContext(this@MyApplication)
             modules(
                 listOf(
+                    DataStoreModule.modules,
                     SharedPreferenceModule.modules,
                     DatabaseModule.modules,
                     RepositoryDataModule.modules,
