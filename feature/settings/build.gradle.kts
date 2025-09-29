@@ -82,6 +82,7 @@ dependencies {
     api(project(path = ":compose:components"))
     api(project(path = ":data-store"))
     api(project(path = ":firebase:core"))
+    api(project(path = ":helper:account"))
     api(project(path = ":helper:extensions"))
     api(project(path = ":navigation"))
 
@@ -93,6 +94,7 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.firebase.auth.ktx)
 
     testImplementation(libs.kotlinx.coroutines.test)
 

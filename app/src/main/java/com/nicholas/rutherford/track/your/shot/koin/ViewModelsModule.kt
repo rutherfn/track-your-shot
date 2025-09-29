@@ -200,7 +200,12 @@ object ViewModelsModule {
                 application = androidApplication(),
                 scope = defaultCoroutineScope,
                 buildType = get(),
-                activeUserRepository = get()
+                activeUserRepository = get(),
+                deleteFirebaseUserInfo = get(),
+                accountManager = get(),
+                authenticationFirebase = get(),
+                firebaseAuth = get(),
+
             )
         }
 

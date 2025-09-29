@@ -38,7 +38,7 @@ const val DELETE_PLAYER_DELAY_IN_MILLIS = 2000L
  * @property deleteFirebaseUserInfo Handles deletion of player data from Firebase.
  * @property playerRepository Repository for accessing and modifying player data.
  * @property pendingPlayerRepository Repository for managing temporary/pending players.
- * @property createSharedPreferences Used to store and retrieve shared preference values.
+ * @property databaseStorePreferenceWriter Writes data to the local database.
  */
 class PlayersListViewModel(
     private val application: Application,
@@ -207,7 +207,7 @@ class PlayersListViewModel(
     }
 
     /** Navigates to shot list after saving selected player name */
-    internal fun onShotListClicked(playerName: String) {
+    private fun onShotListClicked(playerName: String) {
         scope.launch {
             databaseStorePreferenceWriter.savePlayerFilterName(value = playerName)
             navigation.navigateToShotList()

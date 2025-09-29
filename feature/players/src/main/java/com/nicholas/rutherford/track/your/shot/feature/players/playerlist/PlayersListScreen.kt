@@ -253,7 +253,6 @@ private fun PlayersListScreenWithItemsPreview() {
                 )
             ),
             onToolbarMenuClicked = {},
-            updatePlayerListState = {},
             onAddPlayerClicked = {},
             onPlayerClicked = {},
             onSheetItemClicked = {}
@@ -271,7 +270,6 @@ fun PlayerListScreenEmptyStatePreview() {
         playerListScreenParams = PlayersListScreenParams(
             state = PlayersListState(playerList = emptyList()),
             onToolbarMenuClicked = {},
-            updatePlayerListState = {},
             onAddPlayerClicked = {},
             onPlayerClicked = {},
             onSheetItemClicked = {}

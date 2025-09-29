@@ -19,6 +19,8 @@ object StringsIds {
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
     val areYouSureYouWantToDeleteXShot =
         R.string.are_you_sure_you_want_to_delete_x_shot
+    val areYouSureYouWantToDeleteYourAccount =
+        R.string.are_you_sure_you_want_to_delete_your_account
     val areYouSureYouWantLeaveTrackYourShot =
         R.string.are_you_sure_you_want_to_leave_track_your_shot
     val areYouSureYouWantToDeletePendingAccountDescription =

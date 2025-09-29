@@ -10,7 +10,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.slot
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -34,7 +33,6 @@ class AuthenticationFirebaseImplTest {
     @Nested
     inner class AttemptToDeleteCurrentUserFlow {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when current user is set to null should set flow to true`() = runTest {
             every { firebaseAuth.currentUser } returns null
@@ -44,7 +42,6 @@ class AuthenticationFirebaseImplTest {
             Assertions.assertEquals(result, true)
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when current user is not set to null and delete calls on complete listener but isSuccessful returns false should set flow to false`() = runTest {
             val mockFirebaseUser = mockk<FirebaseUser>()
@@ -70,7 +67,6 @@ class AuthenticationFirebaseImplTest {
             Assertions.assertEquals(result, false)
         }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when current user is not set to null and delete calls on complete listener but isSuccessful returns true should set flow to true`() = runTest {
             val mockFirebaseUser = mockk<FirebaseUser>()
@@ -98,9 +94,60 @@ class AuthenticationFirebaseImplTest {
     }
 
     @Nested
+    inner class AttemptToDeleteCurrentUserFlowWithParameter {
+
+        @Test
+        fun `when delete calls on complete listener and isSuccessful returns true should set flow to true`() = runTest {
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val slot = slot<OnCompleteListener<Void>>()
+            val isSuccessful = true
+
+            every { mockTaskVoidResult.isSuccessful } returns isSuccessful
+
+            mockkStatic(Tasks::class)
+
+            every {
+                mockFirebaseUser.delete()
+                    .addOnCompleteListener(capture(slot))
+            } answers {
+                slot.captured.onComplete(mockTaskVoidResult)
+                mockTaskVoidResult
+            }
+
+            val result = authenticationFirebaseImpl.attemptToDeleteCurrentUserFlow(currentUser = mockFirebaseUser).first()
+
+            Assertions.assertEquals(result, true)
+        }
+
+        @Test
+        fun `when delete calls on complete listener and isSuccessful returns false should set flow to false`() = runTest {
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val slot = slot<OnCompleteListener<Void>>()
+            val isSuccessful = false
+
+            every { mockTaskVoidResult.isSuccessful } returns isSuccessful
+
+            mockkStatic(Tasks::class)
+
+            every {
+                mockFirebaseUser.delete()
+                    .addOnCompleteListener(capture(slot))
+            } answers {
+                slot.captured.onComplete(mockTaskVoidResult)
+                mockTaskVoidResult
+            }
+
+            val result = authenticationFirebaseImpl.attemptToDeleteCurrentUserFlow(currentUser = mockFirebaseUser).first()
+
+            Assertions.assertEquals(result, false)
+        }
+    }
+
+    @Nested
     inner class AttemptToSendEmailVerificationForCurrentUser {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when firebaseAuth createUser is set to null should set flow to valid authenticate user via email response flow`() =
             runTest {
@@ -120,7 +167,6 @@ class AuthenticationFirebaseImplTest {
                 )
             }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when firebaseAuth createUser is not set to null and isEmailVerified set to true should set flow to valid authenticate user via email response floe`() =
             runTest {
@@ -143,7 +189,6 @@ class AuthenticationFirebaseImplTest {
                 )
             }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when firebaseAuth createUser is not set to null and isEmailVerified is set to false should set flow to valid authenticate user via email response floe`() =
             runTest {
@@ -187,7 +232,6 @@ class AuthenticationFirebaseImplTest {
 
         private val testEmail = "test@email.com"
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when add on complete listener is executed should set flow to true when isSuccessful returns back true`() =
             runTest {
@@ -206,7 +250,6 @@ class AuthenticationFirebaseImplTest {
                 Assertions.assertEquals(true, value)
             }
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when add on complete listener is executed should set flow to false when isSuccessful returns back false`() =
             runTest {

@@ -12,6 +12,8 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
@@ -74,6 +76,7 @@ fun NavigationComponent(
     navigator: Navigator,
     viewModels: ViewModels
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
     val lifecycleOwner = LocalLifecycleOwner.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
@@ -149,6 +152,7 @@ fun NavigationComponent(
     LaunchedEffect(datePickerState) {
         datePickerState?.let { newDatePicker ->
             datePicker = newDatePicker
+            snackbarHostState.showSnackbar("")
         }
     }
     LaunchedEffect(inputInfoState) {
@@ -298,6 +302,7 @@ fun NavigationComponent(
         content = {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
+                snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                 topBar = {
                     appBar?.let { bar ->
                         if (bar.shouldShow) {

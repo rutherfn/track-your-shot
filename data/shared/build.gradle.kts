@@ -65,4 +65,6 @@ android {
     tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
-dependencies {}
+dependencies {
+    implementation(libs.androidx.material3)
+}

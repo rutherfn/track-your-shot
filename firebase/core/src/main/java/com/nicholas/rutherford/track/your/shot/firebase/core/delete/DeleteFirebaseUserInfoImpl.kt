@@ -159,4 +159,35 @@ class DeleteFirebaseUserInfoImpl(
             awaitClose()
         }
     }
+
+    /**
+     * Deletes a user from Firebase Realtime Database by their unique user ID.
+     * This method is useful for deleting user data after account deletion.
+     *
+     * @param uid The unique identifier of the user to delete from the database.
+     * @return [Flow] emitting true if deletion succeeded, false otherwise.
+     */
+    override fun deleteUser(uid: String): Flow<Boolean> {
+        return callbackFlow {
+            val path = "${Constants.USERS}/$uid"
+
+            println("here is the path $path")
+
+            firebaseDatabase.getReference(path)
+                .removeValue()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        trySend(element = true)
+                    } else {
+                        Timber.w(message = "Error(deleteUser) -> Was not able to delete current user from given account.")
+                        trySend(element = false)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(deleteUser) -> Was not able to delete current user from given account. With following stack trace $exception")
+                    trySend(element = false)
+                }
+            awaitClose()
+        }
+    }
 }

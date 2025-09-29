@@ -1,15 +1,21 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings
 
 import android.app.Application
+import com.google.firebase.auth.FirebaseAuth
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.build.type.BuildType
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
+import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
+import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,13 +30,20 @@ import kotlinx.coroutines.launch
  * @property scope Coroutine scope used to launch background operations.
  * @property buildType Represents the current build type (e.g., debug, release).
  * @property activeUserRepository Repository used to fetch the active user's data.
+ * @property deleteFirebaseUserInfo Use case for deleting user information from Firebase.
+ * @property accountManager AccountManager instance for managing user accounts.
+ * @property firebaseAuth Firebase authentication instance.
  */
 class SettingsViewModel(
     private val navigation: SettingsNavigation,
     private val application: Application,
     private val scope: CoroutineScope,
     private val buildType: BuildType,
-    private val activeUserRepository: ActiveUserRepository
+    private val activeUserRepository: ActiveUserRepository,
+    private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
+    private val accountManager: AccountManager,
+    private val authenticationFirebase: AuthenticationFirebase,
+    private val firebaseAuth: FirebaseAuth
 ) : BaseViewModel() {
 
     internal val settingsMutableStateFlow = MutableStateFlow(value = SettingsState())
@@ -103,6 +116,40 @@ class SettingsViewModel(
         }
     }
 
+    suspend fun onDeleteAccountYesClicked() {
+        firebaseAuth.currentUser?.let { currentUser ->
+            accountManager.logout()
+
+            combine(
+                authenticationFirebase.attemptToDeleteCurrentUserFlow(currentUser = currentUser),
+                deleteFirebaseUserInfo.deleteUser(uid = currentUser.uid)
+            ) { authDeleted, dataDeleted ->
+                Pair(authDeleted, dataDeleted)
+            }.collectLatest { (authDeleted, dataDeleted) ->
+                when {
+                    authDeleted && dataDeleted -> {
+                        // Both operations succeeded - show success alert
+                        // do some shit
+                    }
+                    authDeleted && !dataDeleted -> {
+                        // Auth deleted but data deletion failed - show partial success alert
+                        // show some sort of alert because where good now
+                    }
+                    !authDeleted && dataDeleted -> {
+
+                    }
+                    else -> {
+                        // Auth deletion failed - show error alert
+                        // show some sort of alert because we fucked up
+                    }
+                }
+            }
+        } ?: run {
+            // No current user - bail out and show alert
+            // bail out and show some sort of alert to notify
+        }
+    }
+
     /**
      * Handles logic when a settings item is clicked, navigating to the appropriate screen.
      *
@@ -115,6 +162,7 @@ class SettingsViewModel(
             application.getString(StringsIds.manageDeclaredShots) -> navigation.navigateToDeclaredShotsList()
             application.getString(StringsIds.accountInfo) -> fetchActiveUserAndNavigateToAccountInfo()
             application.getString(StringsIds.enabledPermissions) -> navigation.navigateToEnabledPermissions()
+            application.getString(StringsIds.deleteAccount) -> navigation.alert(alert = deleteAccountAlert())
             else -> navigation.navigateToPermissionEducationScreen()
         }
     }
@@ -134,6 +182,20 @@ class SettingsViewModel(
             description = application.getString(StringsIds.settingsHelpDescription),
             confirmButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.gotIt)
+            )
+        )
+    }
+
+    fun deleteAccountAlert(): Alert {
+        return Alert(
+            title = application.getString(StringsIds.deleteAccount),
+            description = application.getString(StringsIds.areYouSureYouWantToDeleteYourAccount),
+            confirmButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.yes),
+                onButtonClicked = { scope.launch { onDeleteAccountYesClicked() } }
+            ),
+            dismissButton = AlertConfirmAndDismissButton(
+                buttonText = application.getString(StringsIds.no)
             )
         )
     }

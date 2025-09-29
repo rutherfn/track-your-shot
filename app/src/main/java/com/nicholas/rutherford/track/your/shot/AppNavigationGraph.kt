@@ -350,7 +350,6 @@ object AppNavigationGraph {
                 playerListScreenParams = PlayersListScreenParams(
                     state = playersListViewModel.playerListStateFlow.collectAsState().value,
                     onToolbarMenuClicked = { playersListViewModel.onToolbarMenuClicked() },
-                    updatePlayerListState = { playersListViewModel.updatePlayerListState() },
                     onAddPlayerClicked = { playersListViewModel.onAddPlayerClicked() },
                     onPlayerClicked = { player ->
                         playersListViewModel.onPlayerClicked(

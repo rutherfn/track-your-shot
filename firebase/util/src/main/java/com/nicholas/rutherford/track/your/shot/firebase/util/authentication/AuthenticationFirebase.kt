@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.firebase.util.authentication
 
+import com.google.firebase.auth.FirebaseUser
 import com.nicholas.rutherford.track.your.shot.firebase.AuthenticateUserViaEmailFirebaseResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -17,6 +18,16 @@ interface AuthenticationFirebase {
      * @return A [Flow] emitting true if deletion succeeded or no user exists, false otherwise.
      */
     fun attemptToDeleteCurrentUserFlow(): Flow<Boolean>
+
+    /**
+     * Attempts to delete a specific Firebase user.
+     * This method is useful for deleting a user after account deletion or when you have
+     * a specific user instance to delete.
+     *
+     * @param currentUser The Firebase user to delete.
+     * @return A [Flow] emitting true if deletion succeeded, false otherwise.
+     */
+    fun attemptToDeleteCurrentUserFlow(currentUser: FirebaseUser): Flow<Boolean>
 
     /**
      * Attempts to send an email verification to the currently authenticated user.

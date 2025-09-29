@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 
@@ -26,4 +27,8 @@ class SettingsNavigationImpl(private val navigator: Navigator) : SettingsNavigat
     override fun navigateToOnboardingEducationScreen() = navigator.navigate(navigationAction = NavigationActions.Settings.onboardingEducation(isFirstTimeLaunched = false))
 
     override fun navigateToTermsConditions() = navigator.navigate(navigationAction = NavigationActions.Settings.termsConditions(shouldAcceptTerms = false))
+
+    override fun enableProgress(progress: Progress) = navigator.progress(progressAction = progress)
+
+    override fun disableProgress() = navigator.progress(progressAction = null)
 }
