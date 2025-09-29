@@ -46,4 +46,18 @@ class DataStorePreferencesWriterImpl(private val application: Application) :
             preference[stringPreferencesKey(Constants.Preferences.PLAYER_FILTER_NAME)] = value
         }
     }
+
+    /** Saves the voice toggled debug enabled state of the user. */
+    override suspend fun saveVoiceToggledDebugEnabled(value: Boolean) {
+        application.dataStore.edit { preference ->
+            preference[booleanPreferencesKey(Constants.Preferences.VOICE_TOGGLED_DEBUG_ENABLED)] = value
+        }
+    }
+
+    /** Saves the upload video toggled debug enabled state of the user. */
+    override suspend fun saveUploadVideoToggledDebugEnabled(value: Boolean) {
+        application.dataStore.edit { preference ->
+            preference[booleanPreferencesKey(Constants.Preferences.UPLOAD_VIDEO_TOGGLED_DEBUG_ENABLED)] = value
+        }
+    }
 }

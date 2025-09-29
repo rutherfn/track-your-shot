@@ -46,4 +46,18 @@ class DataStorePreferencesReaderImpl(private val application: Application) : Dat
             preferences[stringPreferencesKey(Constants.Preferences.PLAYER_FILTER_NAME)] ?: ""
         }
     }
+
+    /** Reads the voice toggled debug enabled value. */
+    override fun readVoiceToggledDebugEnabledFlow(): Flow<Boolean> {
+        return application.dataStore.data.map { preferences ->
+            preferences[booleanPreferencesKey(Constants.Preferences.VOICE_TOGGLED_DEBUG_ENABLED)] ?: false
+        }
+    }
+
+    /** Reads the upload video toggled debug enabled value. */
+    override fun readUploadVideoToggledDebugEnabled(): Flow<Boolean> {
+        return application.dataStore.data.map { preferences ->
+            preferences[booleanPreferencesKey(Constants.Preferences.UPLOAD_VIDEO_TOGGLED_DEBUG_ENABLED)] ?: false
+        }
+    }
 }

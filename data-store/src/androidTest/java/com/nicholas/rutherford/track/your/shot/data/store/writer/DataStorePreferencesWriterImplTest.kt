@@ -32,7 +32,7 @@ class DataStorePreferencesWriterImplTest {
         val expectedValue = true
         val appHasLaunchedKey = booleanPreferencesKey(Constants.Preferences.APP_HAS_LAUNCHED)
 
-        writer.saveAppHasLaunched(expectedValue)
+        writer.saveAppHasLaunched(value = expectedValue)
 
         assertEquals(expectedValue, context.dataStore.data.first()[appHasLaunchedKey])
     }
@@ -48,11 +48,11 @@ class DataStorePreferencesWriterImplTest {
     }
 
     @Test
-    fun aveIsLoggedIn() = runBlocking {
+    fun saveIsLoggedIn() = runBlocking {
         val expectedValue = true
         val isLoggedInKey = booleanPreferencesKey(Constants.Preferences.IS_LOGGED_IN)
 
-        writer.saveIsLoggedIn(expectedValue)
+        writer.saveIsLoggedIn(value = expectedValue)
 
         assertEquals(expectedValue, context.dataStore.data.first()[isLoggedInKey])
     }
@@ -62,8 +62,28 @@ class DataStorePreferencesWriterImplTest {
         val expectedValue = "filterName"
         val playerFilterNameKey = stringPreferencesKey(Constants.Preferences.PLAYER_FILTER_NAME)
 
-        writer.savePlayerFilterName(expectedValue)
+        writer.savePlayerFilterName(value = expectedValue)
 
         assertEquals(expectedValue, context.dataStore.data.first()[playerFilterNameKey])
+    }
+
+    @Test
+    fun saveVoiceToggledDebugEnabled() = runBlocking {
+        val expectedValue = true
+        val voiceToggledDebugEnabledKey = booleanPreferencesKey(Constants.Preferences.VOICE_TOGGLED_DEBUG_ENABLED)
+
+        writer.saveVoiceToggledDebugEnabled(value = expectedValue)
+
+        assertEquals(expectedValue, context.dataStore.data.first()[voiceToggledDebugEnabledKey])
+    }
+
+    @Test
+    fun saveUploadVideoToggledDebugEnabled() = runBlocking {
+        val expectedValue = true
+        val uploadVideoToggledDebugEnabledKey = booleanPreferencesKey(Constants.Preferences.UPLOAD_VIDEO_TOGGLED_DEBUG_ENABLED)
+
+        writer.saveUploadVideoToggledDebugEnabled(value = expectedValue)
+
+        assertEquals(expectedValue, context.dataStore.data.first()[uploadVideoToggledDebugEnabledKey])
     }
 }

@@ -9,6 +9,8 @@ object Constants {
         const val IS_LOGGED_IN = "isLoggedIn"
         const val SHOULD_SHOW_TERM_AND_CONDITIONS = "shouldShowTermsAndConditions"
         const val PLAYER_FILTER_NAME = "playerFilterName"
+        const val VOICE_TOGGLED_DEBUG_ENABLED = "voiceToggledDebugEnabled"
+        const val UPLOAD_VIDEO_TOGGLED_DEBUG_ENABLED = "uploadVideoToggledDebugEnabled"
     }
     const val CREATED_SHOTS = "createdShots"
     const val APP_DATABASE_NAME = "app_database.db"

@@ -14,4 +14,6 @@ interface DataStorePreferencesReader {
     fun readShouldShowTermsAndConditionsFlow(): Flow<Boolean>
     fun readIsLoggedInFlow(): Flow<Boolean>
     fun readPlayerFilterNameFlow(): Flow<String>
+    fun readVoiceToggledDebugEnabledFlow(): Flow<Boolean>
+    fun readUploadVideoToggledDebugEnabled(): Flow<Boolean>
 }

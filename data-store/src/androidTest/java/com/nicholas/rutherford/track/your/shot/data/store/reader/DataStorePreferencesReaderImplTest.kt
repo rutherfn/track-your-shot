@@ -75,4 +75,28 @@ class DataStorePreferencesReaderImplTest {
 
         assertEquals(expectedValue, reader.readPlayerFilterNameFlow().first())
     }
+
+    @Test
+    fun readVoiceToggledDebugEnabledFlow() = runBlocking {
+        val expectedValue = true
+        val voiceToggledDebugEnabledKey = booleanPreferencesKey(Constants.Preferences.VOICE_TOGGLED_DEBUG_ENABLED)
+
+        context.dataStore.edit { preferences ->
+            preferences[voiceToggledDebugEnabledKey] = expectedValue
+        }
+
+        assertEquals(expectedValue, reader.readVoiceToggledDebugEnabledFlow().first())
+    }
+
+    @Test
+    fun readUploadVideoToggledDebugEnabled() = runBlocking {
+        val expectedValue = true
+        val uploadVideoToggledDebugEnabledKey = booleanPreferencesKey(Constants.Preferences.UPLOAD_VIDEO_TOGGLED_DEBUG_ENABLED)
+
+        context.dataStore.edit { preferences ->
+            preferences[uploadVideoToggledDebugEnabledKey] = expectedValue
+        }
+
+        assertEquals(expectedValue, reader.readUploadVideoToggledDebugEnabled().first())
+    }
 }
