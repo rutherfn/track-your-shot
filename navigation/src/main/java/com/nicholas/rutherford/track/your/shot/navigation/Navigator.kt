@@ -4,6 +4,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.data.shared.snackbar.SnackBarInfo
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -25,6 +26,7 @@ interface Navigator {
     val popRouteActions: StateFlow<String?>
     val progressActions: StateFlow<Progress?>
     val navigationDrawerAction: StateFlow<Boolean?>
+    val snackBarAction: StateFlow<SnackBarInfo>
     val urlAction: StateFlow<String?>
 
     fun alert(alertAction: Alert?)

@@ -7,9 +7,7 @@ import androidx.compose.material3.SnackbarDuration
  *
  * Data class representing the configuration for a snack bar UI component.
  *
- * @property onDateOkClicked Callback invoked when the user confirms a selected date. Provides the selected date as a String.
- * @property onDismissClicked Optional callback invoked when the date picker is dismissed without selecting a date.
- * @property dateValue Optional preselected date value to display in the date picker.
+ * @property
  */
 data class SnackBarInfo(
     val message: String,
