@@ -47,7 +47,7 @@ class ShotsListViewModelTest {
             navigation = navigation,
             playerRepository = playerRepository,
             dataStorePreferencesWriter = dataStorePreferencesWriter,
-            dataStorePreferencesReader =  dataStorePreferencesReader
+            dataStorePreferencesReader = dataStorePreferencesReader
         )
     }
 

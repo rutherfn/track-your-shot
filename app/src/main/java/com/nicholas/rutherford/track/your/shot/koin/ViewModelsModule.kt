@@ -138,7 +138,6 @@ object ViewModelsModule {
             )
         }
 
-
         /** Report List screen ViewModel */
         viewModel {
             ReportListViewModel(
@@ -204,7 +203,7 @@ object ViewModelsModule {
                 deleteFirebaseUserInfo = get(),
                 accountManager = get(),
                 authenticationFirebase = get(),
-                firebaseAuth = get(),
+                firebaseAuth = get()
 
             )
         }

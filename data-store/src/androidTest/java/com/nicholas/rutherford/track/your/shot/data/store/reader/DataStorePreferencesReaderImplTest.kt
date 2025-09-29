@@ -44,7 +44,7 @@ class DataStorePreferencesReaderImplTest {
     fun readShouldShowTermsAndConditionsFlow() = runBlocking {
         val expectedValue = true
         val shouldShowTermsAndConditionsKey = booleanPreferencesKey(Constants.Preferences.SHOULD_SHOW_TERM_AND_CONDITIONS)
-        
+
         context.dataStore.edit { preferences ->
             preferences[shouldShowTermsAndConditionsKey] = expectedValue
         }
@@ -56,7 +56,7 @@ class DataStorePreferencesReaderImplTest {
     fun readIsLoggedInFlow() = runBlocking {
         val expectedValue = true
         val isLoggedInKey = booleanPreferencesKey(Constants.Preferences.IS_LOGGED_IN)
-        
+
         context.dataStore.edit { preferences ->
             preferences[isLoggedInKey] = expectedValue
         }
@@ -68,7 +68,7 @@ class DataStorePreferencesReaderImplTest {
     fun readPlayerFilterNameFlow() = runBlocking {
         val expectedValue = "filterName"
         val playerFilterNameKey = stringPreferencesKey(Constants.Preferences.PLAYER_FILTER_NAME)
-        
+
         context.dataStore.edit { preferences ->
             preferences[playerFilterNameKey] = expectedValue
         }

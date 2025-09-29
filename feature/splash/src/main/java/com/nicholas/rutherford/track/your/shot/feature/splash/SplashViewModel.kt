@@ -56,7 +56,7 @@ class SplashViewModel(
      * Checks whether this is the first app launch.
      * If so, initiates any required logout and updates the flag.
      */
-    internal suspend fun checkIfAppHasBeenLaunchedBefore(appHasBeenLaunched: Boolean ) {
+    internal suspend fun checkIfAppHasBeenLaunchedBefore(appHasBeenLaunched: Boolean) {
         if (!appHasBeenLaunched) {
             accountManager.checkIfWeNeedToLogoutOnLaunch()
             dataStorePreferencesWriter.saveAppHasLaunched(value = true)
@@ -79,7 +79,7 @@ class SplashViewModel(
                 dataStorePreferencesReader.readAppHasBeenLaunchedFlow(),
                 dataStorePreferencesReader.readIsLoggedInFlow(),
                 dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow()
-            ) { loggedInValue, appHasBeenLaunched , userLoggedInLocally, shouldShowTermsAndConditions ->
+            ) { loggedInValue, appHasBeenLaunched, userLoggedInLocally, shouldShowTermsAndConditions ->
 
                 checkIfAppHasBeenLaunchedBefore(appHasBeenLaunched = appHasBeenLaunched)
 

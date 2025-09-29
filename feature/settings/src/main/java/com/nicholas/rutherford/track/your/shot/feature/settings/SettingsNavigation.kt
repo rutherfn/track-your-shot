@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.feature.settings
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.data.shared.snackbar.SnackBarInfo
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -19,4 +20,5 @@ interface SettingsNavigation {
     fun navigateToTermsConditions()
     fun enableProgress(progress: Progress)
     fun disableProgress()
+    fun snackBar(snackBarInfo: SnackBarInfo)
 }

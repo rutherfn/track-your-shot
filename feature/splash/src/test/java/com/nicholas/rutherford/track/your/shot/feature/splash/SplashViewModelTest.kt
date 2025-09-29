@@ -1,11 +1,11 @@
 package com.nicholas.rutherford.track.your.shot.feature.splash
 
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePreferencesReader
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestActiveUser
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
-import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePreferencesReader
-import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

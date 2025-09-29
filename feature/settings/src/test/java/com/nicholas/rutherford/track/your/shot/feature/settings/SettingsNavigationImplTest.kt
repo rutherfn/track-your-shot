@@ -1,12 +1,18 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.data.shared.snackbar.SnackBarInfo
+import com.nicholas.rutherford.track.your.shot.helper.extensions.UriEncoder
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.CapturingSlot
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.slot
+import io.mockk.unmockkObject
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -107,5 +113,51 @@ class SettingsNavigationImplTest {
         val expectedAction = NavigationActions.Settings.termsConditions(shouldAcceptTerms = false)
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
+    }
+
+    @Test
+    fun `navigate to account info screen`() {
+        mockkObject(UriEncoder)
+        every { UriEncoder.encode(any()) } answers { firstArg() }
+
+        val username = "testUser"
+        val email = "test@email.com"
+        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+
+        settingsNavigationImpl.navigateToAccountInfoScreen(username = username, email = email)
+
+        verify { navigator.navigate(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+        val expectedAction = NavigationActions.Settings.accountInfo(username = username, email = email)
+
+        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
+
+        unmockkObject(UriEncoder)
+    }
+
+    @Test
+    fun `enable progress`() {
+        val progress = Progress(title = "Loading...")
+
+        settingsNavigationImpl.enableProgress(progress = progress)
+
+        verify { navigator.progress(progressAction = progress) }
+    }
+
+    @Test
+    fun `disable progress`() {
+        settingsNavigationImpl.disableProgress()
+
+        verify { navigator.progress(progressAction = null) }
+    }
+
+    @Test
+    fun `snackbar`() {
+        val snackBarInfo = SnackBarInfo(message = "Test message")
+
+        settingsNavigationImpl.snackBar(snackBarInfo = snackBarInfo)
+
+        verify { navigator.snackBar(snackBarInfo = snackBarInfo) }
     }
 }

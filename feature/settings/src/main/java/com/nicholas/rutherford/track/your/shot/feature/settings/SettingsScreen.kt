@@ -110,7 +110,7 @@ private fun SettingsSectionContent(
     Spacer(modifier = Modifier.height(Padding.sixteen))
 
     Text(
-        text =  stringResource(textResId),
+        text = stringResource(textResId),
         style = TextStyles.smallBold
     )
 
