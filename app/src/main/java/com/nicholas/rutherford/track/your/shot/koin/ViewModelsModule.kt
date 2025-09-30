@@ -245,6 +245,7 @@ object ViewModelsModule {
             )
         }
 
+        /** Debug Toggle screen ViewModel */
         viewModel {
             DebugToggleViewModel(
                 dataStorePreferencesReader = get(),

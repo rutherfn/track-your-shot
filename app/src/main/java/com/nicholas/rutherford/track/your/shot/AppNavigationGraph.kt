@@ -645,7 +645,6 @@ object AppNavigationGraph {
             updateAppBar(appBar = appBarFactory.createDebugToggleAppBar(params = debugToggleParams))
 
             DebugToggleScreen(params = debugToggleParams)
-
         }
     }
 

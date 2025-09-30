@@ -7,8 +7,6 @@ import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePrefer
 import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collectLatest
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -88,7 +86,7 @@ class SplashViewModel(
                     email = activeUser?.email ?: ""
                 )
 
-                    // TODO: Uncomment this block once Firebase Authentication issues are resolved
+                // TODO: Uncomment this block once Firebase Authentication issues are resolved
                     /*
                     val isVerified = emailVerifiedValue || readSharedPreferences.hasAccountBeenAuthenticated()
                     if (isVerified && activeUser != null && activeUser.accountHasBeenCreated) {
@@ -102,14 +100,14 @@ class SplashViewModel(
                         }
                     }
                     */
-                } else {
-                    navigatePostAuthDestination(
-                        shouldShowTermAndConditions = shouldShowTermsAndConditions,
-                        isLoggedIn = false,
-                        email = activeUser?.email
-                    )
-                }
+            } else {
+                navigatePostAuthDestination(
+                    shouldShowTermAndConditions = shouldShowTermsAndConditions,
+                    isLoggedIn = false,
+                    email = activeUser?.email
+                )
             }
+        }
     }
 
     /**

@@ -53,7 +53,7 @@ class SplashViewModelTest {
         every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(false)
         every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
         coEvery { activeUserRepository.fetchActiveUser() } returns activeUser
-        
+
         viewModel = SplashViewModel(
             navigation = navigation,
             readFirebaseUserInfo = readFirebaseUserInfo,

@@ -159,7 +159,6 @@ fun NavigationComponent(
     LaunchedEffect(datePickerState) {
         datePickerState?.let { newDatePicker ->
             datePicker = newDatePicker
-            snackBarHostState.showSnackbar("")
         }
     }
     LaunchedEffect(inputInfoState) {
@@ -221,8 +220,6 @@ fun NavigationComponent(
         navigatorState?.let { state ->
             navHostController.navigate(state.destination, state.navOptions)
             val viewModel = findViewModelByDestination(destination = state.destination, viewModels = viewModels)
-
-            println("navigating called ${state.destination} and nav options ${state.navOptions}")
 
             if (viewModel != null) {
                 modalDrawerGesturesEnabled = buildModalDrawerGesturesEnabled(viewModel = viewModel, viewModels = viewModels)

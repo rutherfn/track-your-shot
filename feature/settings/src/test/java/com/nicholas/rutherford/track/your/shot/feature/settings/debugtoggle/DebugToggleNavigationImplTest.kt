@@ -23,6 +23,5 @@ class DebugToggleNavigationImplTest {
         debugToggleNavigationImpl.pop()
 
         verify { navigator.pop(popRouteAction = Constants.POP_DEFAULT_ACTION) }
-
     }
 }

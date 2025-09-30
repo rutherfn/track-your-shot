@@ -1,6 +1,5 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle
 
-import androidx.lifecycle.LifecycleOwner
 import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePreferencesReader
 import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import io.mockk.coEvery
@@ -29,7 +28,6 @@ class DebugToggleViewModelTest {
 
     private val dataStorePreferencesReader = mockk<DataStorePreferencesReader>(relaxed = true)
     private val dataStoreWriterPreferencesWriter = mockk<DataStorePreferencesWriter>(relaxed = true)
-    private val lifecycleOwner = mockk<LifecycleOwner>(relaxed = true)
 
     private var navigation = mockk<DebugToggleNavigation>(relaxed = true)
 
@@ -42,7 +40,7 @@ class DebugToggleViewModelTest {
     @BeforeEach()
     fun beforeEach() {
         Dispatchers.setMain(dispatcher)
-        
+
         every { dataStorePreferencesReader.readVoiceToggledDebugEnabledFlow() } returns flowOf(false)
         every { dataStorePreferencesReader.readUploadVideoToggledDebugEnabled() } returns flowOf(false)
 
@@ -52,8 +50,6 @@ class DebugToggleViewModelTest {
             navigation = navigation,
             scope = scope
         )
-        
-        debugToggleViewModel.onResume(lifecycleOwner)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -65,7 +61,7 @@ class DebugToggleViewModelTest {
     @Test
     fun `init should set initial state`() {
         dispatcher.scheduler.advanceUntilIdle()
-        
+
         Assertions.assertEquals(
             debugToggleViewModel.debugToggleMutableStateFlow.value,
             DebugToggleState(
@@ -78,7 +74,7 @@ class DebugToggleViewModelTest {
     @Test
     fun `onBackClicked should call navigation pop`() {
         debugToggleViewModel.onBackClicked()
-        
+
         verify { navigation.pop() }
     }
 
@@ -139,48 +135,48 @@ class DebugToggleViewModelTest {
 
     @Nested
     inner class OnVoiceDebugToggled {
-        
+
         @Test
         fun `should save voice debug toggle state to dataStore`() = runTest {
             coEvery { dataStoreWriterPreferencesWriter.saveVoiceToggledDebugEnabled(any()) } returns Unit
-            
+
             debugToggleViewModel.onVoiceDebugToggled(true)
             dispatcher.scheduler.advanceUntilIdle()
 
             coVerify { dataStoreWriterPreferencesWriter.saveVoiceToggledDebugEnabled(value = true) }
         }
-        
+
         @Test
         fun `should save false voice debug toggle state to dataStore`() = runTest {
             coEvery { dataStoreWriterPreferencesWriter.saveVoiceToggledDebugEnabled(any()) } returns Unit
-            
+
             debugToggleViewModel.onVoiceDebugToggled(false)
             dispatcher.scheduler.advanceUntilIdle()
-            
+
             coVerify { dataStoreWriterPreferencesWriter.saveVoiceToggledDebugEnabled(value = false) }
         }
     }
 
     @Nested
     inner class OnVideoUploadDebugToggled {
-        
+
         @Test
         fun `should save video upload debug toggle state to dataStore`() = runTest {
             coEvery { dataStoreWriterPreferencesWriter.saveUploadVideoToggledDebugEnabled(any()) } returns Unit
-            
+
             debugToggleViewModel.onVideoUploadDebugToggled(true)
             dispatcher.scheduler.advanceUntilIdle()
-            
-            coVerify{ dataStoreWriterPreferencesWriter.saveUploadVideoToggledDebugEnabled(value = true) }
+
+            coVerify { dataStoreWriterPreferencesWriter.saveUploadVideoToggledDebugEnabled(value = true) }
         }
-        
+
         @Test
         fun `should save false video upload debug toggle state to dataStore`() = runTest {
             coEvery { dataStoreWriterPreferencesWriter.saveUploadVideoToggledDebugEnabled(any()) } returns Unit
-            
+
             debugToggleViewModel.onVideoUploadDebugToggled(false)
             dispatcher.scheduler.advanceUntilIdle()
-            
+
             coVerify { dataStoreWriterPreferencesWriter.saveUploadVideoToggledDebugEnabled(value = false) }
         }
     }

@@ -127,8 +127,7 @@ class SettingsViewModel(
 
     /**
      * Handles the account deletion process when user confirms deletion.
-     * 
-     * This function:
+     * * This function:
      * - Logs out the current user from the account manager.
      * - Combines Firebase authentication deletion and database cleanup operations.
      * - Provides appropriate feedback via snackBar messages based on operation results.
@@ -142,7 +141,8 @@ class SettingsViewModel(
                 authenticationFirebase.attemptToDeleteCurrentUserFlow(currentUser = currentUser),
                 deleteFirebaseUserInfo.deleteUser(uid = currentUser.uid)
             ) { authDeleted, dataDeleted ->
-                Pair(authDeleted, dataDeleted)}.collectLatest { (authDeleted, dataDeleted) ->
+                Pair(authDeleted, dataDeleted)
+            }.collectLatest { (authDeleted, dataDeleted) ->
                 when {
                     authDeleted && dataDeleted -> navigation.snackBar(snackBarInfo = SnackBarInfo(message = "Account has been deleted."))
                     authDeleted && !dataDeleted -> navigation.snackBar(snackBarInfo = SnackBarInfo(message = "Account has been deleted, but realtime database record could not be deleted."))
@@ -168,7 +168,7 @@ class SettingsViewModel(
             application.getString(StringsIds.viewMoreInfo) -> navigation.navigateToPermissionEducationScreen()
             application.getString(StringsIds.deleteAccount) -> navigation.alert(alert = deleteAccountAlert())
             application.getString(StringsIds.inAppFirebaseViewer) -> {
-                //todo -> add functionality for in app firebase viewer that will be a debug feature only
+                // todo -> add functionality for in app firebase viewer that will be a debug feature only
             }
             else -> navigation.navigateToDebugToggles()
         }
@@ -195,8 +195,7 @@ class SettingsViewModel(
 
     /**
      * Creates and returns an alert dialog for confirming account deletion.
-     * 
-     * @return Alert dialog with confirmation and dismissal options for account deletion.
+     * * @return Alert dialog with confirmation and dismissal options for account deletion.
      */
     fun deleteAccountAlert(): Alert {
         return Alert(
@@ -214,8 +213,7 @@ class SettingsViewModel(
 
     /**
      * Creates and returns an alert dialog shown when account deletion fails due to missing user.
-     * 
-     * @return Alert dialog informing the user that account deletion failed because the user doesn't exist.
+     * * @return Alert dialog informing the user that account deletion failed because the user doesn't exist.
      */
     fun userDoesNotExistAlert(): Alert {
         return Alert(

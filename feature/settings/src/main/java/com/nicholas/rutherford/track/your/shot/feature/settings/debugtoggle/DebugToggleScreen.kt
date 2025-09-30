@@ -20,8 +20,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
  *
  * Main composable screen for debug toggle settings. This screen provides a user interface
  * for toggling debug-related features such as voice commands and video upload functionality.
- * 
- * The screen includes back button handling and displays two toggle switches for:
+ * * The screen includes back button handling and displays two toggle switches for:
  * - Voice command debugging
  * - Video upload debugging
  *

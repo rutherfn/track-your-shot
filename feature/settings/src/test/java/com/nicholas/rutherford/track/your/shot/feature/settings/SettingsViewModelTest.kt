@@ -17,7 +17,6 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,7 +38,6 @@ class SettingsViewModelTest {
 
     private var navigation = mockk<SettingsNavigation>(relaxed = true)
     private val application = mockk<Application>(relaxed = true)
-    private val lifecycleOwner = mockk<LifecycleOwner>(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val dispatcher = StandardTestDispatcher()
@@ -65,7 +63,7 @@ class SettingsViewModelTest {
     @BeforeEach
     fun beforeEach() {
         Dispatchers.setMain(dispatcher)
-        
+
         every { application.getString(StringsIds.manageDeclaredShots) } returns "Manage Declared Shots"
         every { application.getString(StringsIds.gotIt) } returns "Got It"
         every { application.getString(StringsIds.settings) } returns "Settings"
@@ -95,8 +93,6 @@ class SettingsViewModelTest {
             authenticationFirebase = authenticationFirebase,
             firebaseAuth = firebaseAuth
         )
-        
-        settingsViewModel.onResume(lifecycleOwner)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -108,7 +104,7 @@ class SettingsViewModelTest {
     @Test
     fun `init should initial state`() {
         dispatcher.scheduler.advanceUntilIdle()
-        
+
         Assertions.assertEquals(
             settingsViewModel.settingsMutableStateFlow.value,
             SettingsState(
@@ -305,7 +301,7 @@ class SettingsViewModelTest {
             )
 
             settingsViewModel.onSettingItemClicked(value = "Account Info")
-            
+
             dispatcher.scheduler.advanceUntilIdle()
 
             verify { navigation.navigateToAccountInfoScreen(username = "username", email = "email") }
@@ -356,7 +352,7 @@ class SettingsViewModelTest {
             coEvery { activeUserRepository.fetchActiveUser() } returns activeUser
 
             settingsViewModel.fetchActiveUserAndNavigateToAccountInfo()
-            
+
             dispatcher.scheduler.advanceUntilIdle()
 
             verify { navigation.navigateToAccountInfoScreen(username = "testUser", email = "test@email.com") }
@@ -367,7 +363,7 @@ class SettingsViewModelTest {
             coEvery { activeUserRepository.fetchActiveUser() } returns null
 
             settingsViewModel.fetchActiveUserAndNavigateToAccountInfo()
-            
+
             dispatcher.scheduler.advanceUntilIdle()
 
             verify { navigation.navigateToAccountInfoScreen(username = "", email = "") }
@@ -388,10 +384,10 @@ class SettingsViewModelTest {
             settingsViewModel.onDeleteAccountYesClicked()
 
             verify { accountManager.logout() }
-            verify { 
+            verify {
                 navigation.snackBar(
                     snackBarInfo = SnackBarInfo(message = "Account has been deleted.")
-                ) 
+                )
             }
         }
 
@@ -406,10 +402,10 @@ class SettingsViewModelTest {
             settingsViewModel.onDeleteAccountYesClicked()
 
             verify { accountManager.logout() }
-            verify { 
+            verify {
                 navigation.snackBar(
                     snackBarInfo = SnackBarInfo(message = "Account has been deleted, but realtime database record could not be deleted.")
-                ) 
+                )
             }
         }
 
@@ -424,10 +420,10 @@ class SettingsViewModelTest {
             settingsViewModel.onDeleteAccountYesClicked()
 
             verify { accountManager.logout() }
-            verify { 
+            verify {
                 navigation.snackBar(
                     snackBarInfo = SnackBarInfo(message = "Account has not been deleted, but realtime database record got deleted.")
-                ) 
+                )
             }
         }
 
@@ -442,10 +438,10 @@ class SettingsViewModelTest {
             settingsViewModel.onDeleteAccountYesClicked()
 
             verify { accountManager.logout() }
-            verify { 
+            verify {
                 navigation.snackBar(
                     snackBarInfo = SnackBarInfo(message = "No data was actually deleted")
-                ) 
+                )
             }
         }
 
