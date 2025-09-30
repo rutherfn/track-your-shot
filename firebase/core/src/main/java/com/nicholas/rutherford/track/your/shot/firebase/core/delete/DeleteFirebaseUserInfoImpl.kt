@@ -171,8 +171,6 @@ class DeleteFirebaseUserInfoImpl(
         return callbackFlow {
             val path = "${Constants.USERS}/$uid"
 
-            println("here is the path $path")
-
             firebaseDatabase.getReference(path)
                 .removeValue()
                 .addOnCompleteListener { task ->
