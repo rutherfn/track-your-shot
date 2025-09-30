@@ -66,6 +66,7 @@ object StringsIds {
     val dateShotsLogged = R.string.date_shots_logged
     val dateShotsTaken = R.string.date_shots_taken
     val debug = R.string.debug
+    val debugToggles = R.string.debug_toggles
     val deleteAccount = R.string.delete_account
     val inAppFirebaseViewer = R.string.in_app_firebase_viewer
     val deletePendingAccount = R.string.delete_pending_account

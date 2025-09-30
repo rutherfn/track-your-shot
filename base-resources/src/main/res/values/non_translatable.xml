@@ -2,6 +2,7 @@
 <resources>
     <string name="are_you_sure_you_want_to_delete_your_account" translatable="false">Are you sure you want to delete your account?</string>
     <string name="debug" translatable="false">Debug</string>
+    <string name="debug_toggles" translatable="false">Debug Toggles</string>
     <string name="delete_account" translatable="false">Delete Account</string>
     <string name="in_app_firebase_viewer" translatable="false">In App Firebase Viewer</string>
     <string name="toggles" translatable="false">Toggles</string>

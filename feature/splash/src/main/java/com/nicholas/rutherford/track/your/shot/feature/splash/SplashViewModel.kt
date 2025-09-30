@@ -9,8 +9,6 @@ import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUs
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -31,7 +29,6 @@ import kotlinx.coroutines.launch
  * @param accountManager Handles app-level account management logic (e.g., forced logout).
  * @param dataStorePreferencesReader Reads data store preferences.
  * @param dataStorePreferencesWriter Writes to data store preferences.
- * @param scope Coroutine scope used for background operations.
  */
 class SplashViewModel(
     private val navigation: SplashNavigation,
@@ -39,8 +36,7 @@ class SplashViewModel(
     private val activeUserRepository: ActiveUserRepository,
     private val accountManager: AccountManager,
     private val dataStorePreferencesReader: DataStorePreferencesReader,
-    private val dataStorePreferencesWriter: DataStorePreferencesWriter,
-    private val scope: CoroutineScope
+    private val dataStorePreferencesWriter: DataStorePreferencesWriter
 ) : BaseViewModel() {
 
     /**
@@ -73,25 +69,24 @@ class SplashViewModel(
      * - Using stored preferences as fallback to determine authentication state.
      */
     internal fun navigateToPlayersListLoginOrAuthentication() {
-        scope.launch {
-            combine(
-                readFirebaseUserInfo.isLoggedInFlow(),
-                dataStorePreferencesReader.readAppHasBeenLaunchedFlow(),
-                dataStorePreferencesReader.readIsLoggedInFlow(),
-                dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow()
-            ) { loggedInValue, appHasBeenLaunched, userLoggedInLocally, shouldShowTermsAndConditions ->
+        collectFlows(
+            flow1 = readFirebaseUserInfo.isLoggedInFlow(),
+            flow2 = dataStorePreferencesReader.readAppHasBeenLaunchedFlow(),
+            flow3 = dataStorePreferencesReader.readIsLoggedInFlow(),
+            flow4 = dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow()
+        ) { loggedInValue, appHasBeenLaunched, userLoggedInLocally, shouldShowTermsAndConditions ->
 
-                checkIfAppHasBeenLaunchedBefore(appHasBeenLaunched = appHasBeenLaunched)
+            checkIfAppHasBeenLaunchedBefore(appHasBeenLaunched = appHasBeenLaunched)
 
-                val activeUser = activeUserRepository.fetchActiveUser()
-                val isLoggedIn = loggedInValue || userLoggedInLocally
+            val activeUser = activeUserRepository.fetchActiveUser()
+            val isLoggedIn = loggedInValue || userLoggedInLocally
 
-                if (isLoggedIn) {
-                    navigatePostAuthDestination(
-                        shouldShowTermAndConditions = shouldShowTermsAndConditions,
-                        isLoggedIn = true,
-                        email = activeUser?.email ?: ""
-                    )
+            if (isLoggedIn) {
+                navigatePostAuthDestination(
+                    shouldShowTermAndConditions = shouldShowTermsAndConditions,
+                    isLoggedIn = true,
+                    email = activeUser?.email ?: ""
+                )
 
                     // TODO: Uncomment this block once Firebase Authentication issues are resolved
                     /*
@@ -114,8 +109,7 @@ class SplashViewModel(
                         email = activeUser?.email
                     )
                 }
-            }.collectLatest { }
-        }
+            }
     }
 
     /**

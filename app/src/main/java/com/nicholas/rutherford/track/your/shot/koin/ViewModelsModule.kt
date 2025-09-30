@@ -14,6 +14,8 @@ import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.Crea
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle.DebugToggleNavigation
+import com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle.DebugToggleViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListViewModel
@@ -61,8 +63,7 @@ object ViewModelsModule {
                 activeUserRepository = get(),
                 accountManager = get(),
                 dataStorePreferencesReader = get(),
-                dataStorePreferencesWriter = get(),
-                scope = defaultCoroutineScope
+                dataStorePreferencesWriter = get()
             )
         }
 
@@ -241,6 +242,15 @@ object ViewModelsModule {
             EnabledPermissionsViewModel(
                 navigation = get(),
                 application = androidApplication()
+            )
+        }
+
+        viewModel {
+            DebugToggleViewModel(
+                dataStorePreferencesReader = get(),
+                dataStoreWriterPreferencesWriter = get(),
+                navigation = get<DebugToggleNavigation>(),
+                scope = defaultCoroutineScope
             )
         }
 

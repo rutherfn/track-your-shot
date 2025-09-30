@@ -153,11 +153,25 @@ class SettingsNavigationImplTest {
     }
 
     @Test
-    fun `snackbar`() {
+    fun snackBar() {
         val snackBarInfo = SnackBarInfo(message = "Test message")
 
         settingsNavigationImpl.snackBar(snackBarInfo = snackBarInfo)
 
         verify { navigator.snackBar(snackBarInfo = snackBarInfo) }
+    }
+
+    @Test
+    fun `navigate to debug toggles`() {
+        val argumentCapture: CapturingSlot<NavigationAction> = slot()
+
+        settingsNavigationImpl.navigateToDebugToggles()
+
+        verify { navigator.navigate(capture(argumentCapture)) }
+
+        val capturedArgument = argumentCapture.captured
+        val expectedAction = NavigationActions.Settings.debugToggle()
+
+        Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }
 }

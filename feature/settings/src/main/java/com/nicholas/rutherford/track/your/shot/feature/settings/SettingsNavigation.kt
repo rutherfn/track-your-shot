@@ -14,6 +14,7 @@ interface SettingsNavigation {
     fun navigateToDeclaredShotsList()
     fun openNavigationDrawer()
     fun navigateToAccountInfoScreen(username: String, email: String)
+    fun navigateToDebugToggles()
     fun navigateToEnabledPermissions()
     fun navigateToPermissionEducationScreen()
     fun navigateToOnboardingEducationScreen()

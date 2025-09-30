@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.splash
 
+import androidx.lifecycle.LifecycleOwner
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePreferencesReader
 import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
@@ -11,13 +12,10 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -38,11 +36,7 @@ class SplashViewModelTest {
 
     internal val dataStorePreferencesReader = mockk<DataStorePreferencesReader>(relaxed = true)
     internal val dataStorePreferencesWriter = mockk<DataStorePreferencesWriter>(relaxed = true)
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private val testDispatcher = UnconfinedTestDispatcher()
-
-    private val scope = CoroutineScope(SupervisorJob() + testDispatcher)
+    internal val lifecycleOwner = mockk<LifecycleOwner>(relaxed = true)
 
     internal val activeUser = TestActiveUser().create()
 
@@ -52,15 +46,24 @@ class SplashViewModelTest {
     @BeforeEach
     fun beforeEach() {
         Dispatchers.setMain(dispatcher)
+
+        every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(false)
+        every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(false)
+        every { dataStorePreferencesReader.readAppHasBeenLaunchedFlow() } returns flowOf(true)
+        every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(false)
+        every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
+        coEvery { activeUserRepository.fetchActiveUser() } returns activeUser
+        
         viewModel = SplashViewModel(
             navigation = navigation,
             readFirebaseUserInfo = readFirebaseUserInfo,
             activeUserRepository = activeUserRepository,
             accountManager = accountManager,
             dataStorePreferencesReader = dataStorePreferencesReader,
-            dataStorePreferencesWriter = dataStorePreferencesWriter,
-            scope = scope
+            dataStorePreferencesWriter = dataStorePreferencesWriter
         )
+
+        viewModel.onResume(lifecycleOwner)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -103,23 +106,11 @@ class SplashViewModelTest {
                         accountHasBeenCreated = false
                     )
                     every { readFirebaseUserInfo.isLoggedInFlow() } returns flowOf(false)
-                    every { readFirebaseUserInfo.isEmailVerifiedFlow() } returns flowOf(false)
-                    every { dataStorePreferencesReader.readAppHasBeenLaunchedFlow() } returns flowOf(true)
                     every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(false)
-                    every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
 
-                    Dispatchers.setMain(dispatcher)
-                    viewModel = SplashViewModel(
-                        navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        accountManager = accountManager,
-                        dataStorePreferencesReader = dataStorePreferencesReader,
-                        dataStorePreferencesWriter = dataStorePreferencesWriter,
-                        scope = scope
-                    )
+                    viewModel.onStart(lifecycleOwner)
 
-                    viewModel.navigateToPlayersListLoginOrAuthentication()
+                    dispatcher.scheduler.advanceUntilIdle()
 
                     coVerify(exactly = 0) {
                         navigation.navigateToAuthentication(
@@ -139,22 +130,11 @@ class SplashViewModelTest {
                     coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
                         accountHasBeenCreated = true
                     )
-                    every { dataStorePreferencesReader.readAppHasBeenLaunchedFlow() } returns flowOf(true)
                     every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(false)
-                    every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
 
-                    Dispatchers.setMain(dispatcher)
-                    viewModel = SplashViewModel(
-                        navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        accountManager = accountManager,
-                        dataStorePreferencesReader = dataStorePreferencesReader,
-                        dataStorePreferencesWriter = dataStorePreferencesWriter,
-                        scope = scope
-                    )
+                    viewModel.onStart(lifecycleOwner)
 
-                    viewModel.navigateToPlayersListLoginOrAuthentication()
+                    dispatcher.scheduler.advanceUntilIdle()
 
                     coVerify(exactly = 0) {
                         navigation.navigateToAuthentication(
@@ -174,22 +154,11 @@ class SplashViewModelTest {
                     coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
                         accountHasBeenCreated = true
                     )
-                    every { dataStorePreferencesReader.readAppHasBeenLaunchedFlow() } returns flowOf(true)
                     every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(true)
-                    every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
 
-                    Dispatchers.setMain(dispatcher)
-                    viewModel = SplashViewModel(
-                        navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        accountManager = accountManager,
-                        dataStorePreferencesReader = dataStorePreferencesReader,
-                        dataStorePreferencesWriter = dataStorePreferencesWriter,
-                        scope = scope
-                    )
+                    viewModel.onStart(lifecycleOwner)
 
-                    viewModel.navigateToPlayersListLoginOrAuthentication()
+                    dispatcher.scheduler.advanceUntilIdle()
 
                     coVerify(exactly = 0) {
                         navigation.navigateToAuthentication(
@@ -209,22 +178,11 @@ class SplashViewModelTest {
                     coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
                         accountHasBeenCreated = true
                     )
-                    every { dataStorePreferencesReader.readAppHasBeenLaunchedFlow() } returns flowOf(true)
                     every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(false)
-                    every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
 
-                    Dispatchers.setMain(dispatcher)
-                    viewModel = SplashViewModel(
-                        navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        accountManager = accountManager,
-                        dataStorePreferencesReader = dataStorePreferencesReader,
-                        dataStorePreferencesWriter = dataStorePreferencesWriter,
-                        scope = scope
-                    )
+                    viewModel.onStart(lifecycleOwner)
 
-                    viewModel.navigateToPlayersListLoginOrAuthentication()
+                    dispatcher.scheduler.advanceUntilIdle()
 
                     coVerify(exactly = 0) {
                         navigation.navigateToAuthentication(
@@ -248,23 +206,11 @@ class SplashViewModelTest {
                     coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
                         accountHasBeenCreated = false
                     )
-                    every { dataStorePreferencesReader.readAppHasBeenLaunchedFlow() } returns flowOf(true)
                     every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(false)
-                    every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
 
-                    Dispatchers.setMain(dispatcher)
+                    viewModel.onStart(lifecycleOwner)
 
-                    viewModel = SplashViewModel(
-                        navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        accountManager = accountManager,
-                        dataStorePreferencesReader = dataStorePreferencesReader,
-                        dataStorePreferencesWriter = dataStorePreferencesWriter,
-                        scope = scope
-                    )
-
-                    viewModel.navigateToPlayersListLoginOrAuthentication()
+                    dispatcher.scheduler.advanceUntilIdle()
 
                     coVerify { navigation.navigateToLogin() }
                 }
@@ -278,23 +224,11 @@ class SplashViewModelTest {
                     coEvery { activeUserRepository.fetchActiveUser() } returns activeUser.copy(
                         accountHasBeenCreated = true
                     )
-                    every { dataStorePreferencesReader.readAppHasBeenLaunchedFlow() } returns flowOf(true)
                     every { dataStorePreferencesReader.readIsLoggedInFlow() } returns flowOf(false)
-                    every { dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow() } returns flowOf(false)
 
-                    Dispatchers.setMain(dispatcher)
+                    viewModel.onStart(lifecycleOwner)
 
-                    viewModel = SplashViewModel(
-                        navigation = navigation,
-                        readFirebaseUserInfo = readFirebaseUserInfo,
-                        activeUserRepository = activeUserRepository,
-                        accountManager = accountManager,
-                        dataStorePreferencesReader = dataStorePreferencesReader,
-                        dataStorePreferencesWriter = dataStorePreferencesWriter,
-                        scope = scope
-                    )
-
-                    viewModel.navigateToPlayersListLoginOrAuthentication()
+                    dispatcher.scheduler.advanceUntilIdle()
 
                     coVerify { navigation.navigateToPlayersList() }
                 }

@@ -14,7 +14,7 @@ import com.nicholas.rutherford.track.your.shot.navigation.Navigator
  *
  * This class handles all navigation actions from the Settings screen, including
  * navigation to various settings sub-screens, displaying alerts, progress indicators,
- * and snackbar messages.
+ * and snackBar messages.
  *
  * @param navigator The [Navigator] instance used to perform navigation actions.
  */
@@ -31,6 +31,9 @@ class SettingsNavigationImpl(private val navigator: Navigator) : SettingsNavigat
 
     /** Navigates to the account info screen with user details. */
     override fun navigateToAccountInfoScreen(username: String, email: String) = navigator.navigate(navigationAction = NavigationActions.Settings.accountInfo(username = username, email = email))
+
+    /** Navigates to the debug toggles screen. */
+    override fun navigateToDebugToggles() = navigator.navigate(navigationAction = NavigationActions.Settings.debugToggle())
 
     /** Navigates to the enabled permissions screen. */
     override fun navigateToEnabledPermissions() = navigator.navigate(navigationAction = NavigationActions.Settings.enabledPermissions())
@@ -50,6 +53,6 @@ class SettingsNavigationImpl(private val navigator: Navigator) : SettingsNavigat
     /** Disables and hides the progress indicator. */
     override fun disableProgress() = navigator.progress(progressAction = null)
 
-    /** Displays a snackbar with the specified information. */
+    /** Displays a snackBar with the specified information. */
     override fun snackBar(snackBarInfo: SnackBarInfo) = navigator.snackBar(snackBarInfo = snackBarInfo)
 }

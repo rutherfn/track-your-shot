@@ -10,6 +10,7 @@ object NavigationDestinations {
     const val CREATE_EDIT_DECLARED_SHOTS_SCREEN_PARAMS = "createEditDeclaredShotsScreen?shotName={shotName}"
     const val CREATE_EDIT_PLAYER_SCREEN = "createEditPlayerScreen"
     const val CREATE_EDIT_PLAYER_SCREEN_WITH_PARAMS = "createEditPlayerScreen?firstName={firstName}&lastName={lastName}"
+    const val DEBUG_TOGGLE_SCREEN = "debugToggleScreen"
     const val DECLARED_SHOTS_LIST_SCREEN = "declaredShotsListScreen"
     const val FORGOT_PASSWORD_SCREEN = "forgotPasswordScreen"
     const val LOG_SHOT_WITH_PARAMS = "logShotScreen?isExistingPlayer={isExistingPlayer}&playerId={playerId}&shotType={shotType}&shotId={shotId}&viewCurrentExistingShot={viewCurrentExistingShot}&viewCurrentPendingShot={viewCurrentPendingShot}&fromShotList={fromShotList}"

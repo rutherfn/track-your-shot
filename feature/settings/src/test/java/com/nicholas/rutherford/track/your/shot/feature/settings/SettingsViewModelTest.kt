@@ -17,12 +17,17 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -34,9 +39,10 @@ class SettingsViewModelTest {
 
     private var navigation = mockk<SettingsNavigation>(relaxed = true)
     private val application = mockk<Application>(relaxed = true)
+    private val lifecycleOwner = mockk<LifecycleOwner>(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val dispatcher = UnconfinedTestDispatcher()
+    private val dispatcher = StandardTestDispatcher()
 
     private val sdkValue = 2
     private val debugVersionName = "debug"
@@ -55,8 +61,11 @@ class SettingsViewModelTest {
     private val authenticationFirebase = mockk<AuthenticationFirebase>(relaxed = true)
     private val firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
     fun beforeEach() {
+        Dispatchers.setMain(dispatcher)
+        
         every { application.getString(StringsIds.manageDeclaredShots) } returns "Manage Declared Shots"
         every { application.getString(StringsIds.gotIt) } returns "Got It"
         every { application.getString(StringsIds.settings) } returns "Settings"
@@ -86,10 +95,20 @@ class SettingsViewModelTest {
             authenticationFirebase = authenticationFirebase,
             firebaseAuth = firebaseAuth
         )
+        
+        settingsViewModel.onResume(lifecycleOwner)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @AfterEach
+    fun afterEach() {
+        Dispatchers.resetMain()
     }
 
     @Test
     fun `init should initial state`() {
+        dispatcher.scheduler.advanceUntilIdle()
+        
         Assertions.assertEquals(
             settingsViewModel.settingsMutableStateFlow.value,
             SettingsState(
@@ -286,6 +305,8 @@ class SettingsViewModelTest {
             )
 
             settingsViewModel.onSettingItemClicked(value = "Account Info")
+            
+            dispatcher.scheduler.advanceUntilIdle()
 
             verify { navigation.navigateToAccountInfoScreen(username = "username", email = "email") }
         }
@@ -299,7 +320,7 @@ class SettingsViewModelTest {
 
         @Test
         fun `when value passed in does not meet any conditions should navigate to permission education screen`() {
-            settingsViewModel.onSettingItemClicked(value = "View Mode Info")
+            settingsViewModel.onSettingItemClicked(value = "View More Info")
 
             verify { navigation.navigateToPermissionEducationScreen() }
         }
@@ -309,6 +330,13 @@ class SettingsViewModelTest {
             settingsViewModel.onSettingItemClicked(value = "Delete Account")
 
             verify { navigation.alert(alert = any()) }
+        }
+
+        @Test
+        fun `when value is passed in is toggles should show toggle screen`() {
+            settingsViewModel.onSettingItemClicked(value = "Toggles")
+
+            verify { navigation.navigateToDebugToggles() }
         }
     }
 
@@ -328,6 +356,8 @@ class SettingsViewModelTest {
             coEvery { activeUserRepository.fetchActiveUser() } returns activeUser
 
             settingsViewModel.fetchActiveUserAndNavigateToAccountInfo()
+            
+            dispatcher.scheduler.advanceUntilIdle()
 
             verify { navigation.navigateToAccountInfoScreen(username = "testUser", email = "test@email.com") }
         }
@@ -337,6 +367,8 @@ class SettingsViewModelTest {
             coEvery { activeUserRepository.fetchActiveUser() } returns null
 
             settingsViewModel.fetchActiveUserAndNavigateToAccountInfo()
+            
+            dispatcher.scheduler.advanceUntilIdle()
 
             verify { navigation.navigateToAccountInfoScreen(username = "", email = "") }
         }

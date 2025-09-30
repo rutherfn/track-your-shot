@@ -12,12 +12,9 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
@@ -224,6 +221,8 @@ fun NavigationComponent(
         navigatorState?.let { state ->
             navHostController.navigate(state.destination, state.navOptions)
             val viewModel = findViewModelByDestination(destination = state.destination, viewModels = viewModels)
+
+            println("navigating called ${state.destination} and nav options ${state.navOptions}")
 
             if (viewModel != null) {
                 modalDrawerGesturesEnabled = buildModalDrawerGesturesEnabled(viewModel = viewModel, viewModels = viewModels)

@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
  * - Navigation to various settings sub-screens and external actions.
  * - Account management operations including account deletion.
  * - User authentication state management and logout operations.
- * - Alert and snackbar message display for user feedback.
+ * - Alert and snackBar message display for user feedback.
  *
  * @param navigation Interface to handle navigation events and alerts.
  * @param application Application context used to access string resources.
@@ -131,7 +131,7 @@ class SettingsViewModel(
      * This function:
      * - Logs out the current user from the account manager.
      * - Combines Firebase authentication deletion and database cleanup operations.
-     * - Provides appropriate feedback via snackbar messages based on operation results.
+     * - Provides appropriate feedback via snackBar messages based on operation results.
      * - Shows an alert if no current user exists.
      */
     suspend fun onDeleteAccountYesClicked() {
@@ -165,8 +165,12 @@ class SettingsViewModel(
             application.getString(StringsIds.manageDeclaredShots) -> navigation.navigateToDeclaredShotsList()
             application.getString(StringsIds.accountInfo) -> fetchActiveUserAndNavigateToAccountInfo()
             application.getString(StringsIds.enabledPermissions) -> navigation.navigateToEnabledPermissions()
+            application.getString(StringsIds.viewMoreInfo) -> navigation.navigateToPermissionEducationScreen()
             application.getString(StringsIds.deleteAccount) -> navigation.alert(alert = deleteAccountAlert())
-            else -> navigation.navigateToPermissionEducationScreen()
+            application.getString(StringsIds.inAppFirebaseViewer) -> {
+                //todo -> add functionality for in app firebase viewer that will be a debug feature only
+            }
+            else -> navigation.navigateToDebugToggles()
         }
     }
 

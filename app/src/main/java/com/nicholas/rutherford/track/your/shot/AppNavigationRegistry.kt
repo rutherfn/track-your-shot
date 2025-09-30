@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createAccountS
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createEditDeclaredScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createOrEditPlayerScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createReportScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.debugToggleScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.declaredShotsListScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.enabledPermissionScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.forgotPasswordScreen
@@ -70,6 +71,7 @@ object AppNavigationRegistry {
         Screen.StaticScreen { accountInfoScreen() },
         Screen.StaticScreen { permissionEducationScreen() },
         Screen.StaticScreen { enabledPermissionScreen() },
+        Screen.StaticScreen { debugToggleScreen() },
         Screen.StaticScreen { createEditDeclaredScreen() },
         Screen.StaticScreen { declaredShotsListScreen() }
     )
