@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle
 
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
+import com.nicholas.rutherford.track.your.shot.base.vm.FlowCollectionTrigger
 import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePreferencesReader
 import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import kotlinx.coroutines.CoroutineScope

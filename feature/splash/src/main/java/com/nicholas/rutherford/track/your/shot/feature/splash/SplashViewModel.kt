@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.feature.splash
 
 import androidx.lifecycle.LifecycleOwner
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
+import com.nicholas.rutherford.track.your.shot.base.vm.FlowCollectionTrigger
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePreferencesReader
 import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter

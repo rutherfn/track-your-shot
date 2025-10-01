@@ -12,8 +12,10 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -42,6 +44,8 @@ class SplashViewModelTest {
 
     val dispatcher = StandardTestDispatcher()
 
+    private val scope = CoroutineScope(SupervisorJob() + dispatcher)
+
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
     fun beforeEach() {
@@ -60,7 +64,8 @@ class SplashViewModelTest {
             activeUserRepository = activeUserRepository,
             accountManager = accountManager,
             dataStorePreferencesReader = dataStorePreferencesReader,
-            dataStorePreferencesWriter = dataStorePreferencesWriter
+            dataStorePreferencesWriter = dataStorePreferencesWriter,
+            scope = scope
         )
 
         viewModel.onResume(lifecycleOwner)
