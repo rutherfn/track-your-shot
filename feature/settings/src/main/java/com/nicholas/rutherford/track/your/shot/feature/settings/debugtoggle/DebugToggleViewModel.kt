@@ -34,6 +34,12 @@ class DebugToggleViewModel(
     private val scope: CoroutineScope
 ) : BaseViewModel() {
 
+    // Override to provide the injected scope
+    override fun getScope(): CoroutineScope? = scope
+
+    // Override to start collecting flows immediately in init
+    override fun getFlowCollectionTrigger(): FlowCollectionTrigger = FlowCollectionTrigger.INIT
+
     /**
      * Internal mutable state flow for debug toggle states.
      * This holds the current state of all debug-related toggles.
@@ -47,7 +53,6 @@ class DebugToggleViewModel(
     val debugToggleStateFlow = debugToggleMutableStateFlow.asStateFlow()
 
     init {
-        setInitFlowCollection(initFlowCollection = true)
         collectToggleFlows()
     }
 
@@ -63,8 +68,8 @@ class DebugToggleViewModel(
      */
     fun collectToggleFlows() {
         collectFlows(
-            dataStorePreferencesReader.readVoiceToggledDebugEnabledFlow(),
-            dataStorePreferencesReader.readUploadVideoToggledDebugEnabled()
+            flow1 = dataStorePreferencesReader.readVoiceToggledDebugEnabledFlow(),
+            flow2 = dataStorePreferencesReader.readUploadVideoToggledDebugEnabled()
         ) { voiceToggled, uploadVideoToggled ->
             debugToggleMutableStateFlow.update { state ->
                 state.copy(

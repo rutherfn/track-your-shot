@@ -4,10 +4,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -31,10 +28,22 @@ import timber.log.Timber
  */
 abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
 
-    private val viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val activeFlowCollections = mutableListOf<Job>()
     private var isResumed = false
-    private var isInit = false
+    private var isStart = false
+
+    /**
+     * Optional method for subclasses to provide their own scope.
+     * If not overridden, returns null and flow collection will be skipped.
+     * This prevents breaking existing unit tests that don't mock BaseViewModel.
+     */
+    protected open fun getScope(): CoroutineScope? = null
+
+    /**
+     * Optional method for subclasses to specify when flow collection should start.
+     * If not overridden, defaults to RESUME (traditional behavior).
+     */
+    protected open fun getFlowCollectionTrigger(): FlowCollectionTrigger = FlowCollectionTrigger.RESUME
 
     /**
      * Collects a Flow in a lifecycle-aware manner.
@@ -48,14 +57,16 @@ abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
         flow: Flow<T>,
         onCollect: suspend (T) -> Unit
     ) {
-        val job = viewModelScope.launch {
-            flow.collectLatest { value ->
-                if (isResumed || isInit) {
-                    onCollect(value)
+        getScope()?.let { scope ->
+            val job = scope.launch {
+                flow.collectLatest { value ->
+                    if (shouldCollectFlow()) {
+                        onCollect(value)
+                    }
                 }
             }
+            activeFlowCollections.add(job)
         }
-        activeFlowCollections.add(job)
     }
 
     /**
@@ -71,14 +82,16 @@ abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
         flow2: Flow<T2>,
         onCollect: suspend (T1, T2) -> Unit
     ) {
-        val job = viewModelScope.launch {
-            kotlinx.coroutines.flow.combine(flow1, flow2) { t1, t2 ->
-                if (isResumed || isInit) {
-                    onCollect(t1, t2)
-                }
-            }.collectLatest {}
+        getScope()?.let { scope ->
+            val job = scope.launch {
+                kotlinx.coroutines.flow.combine(flow1, flow2) { t1, t2 ->
+                    if (shouldCollectFlow()) {
+                        onCollect(t1, t2)
+                    }
+                }.collectLatest {}
+            }
+            activeFlowCollections.add(job)
         }
-        activeFlowCollections.add(job)
     }
 
     /**
@@ -98,24 +111,27 @@ abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
         flow4: Flow<T4>,
         onCollect: suspend (T1, T2, T3, T4) -> Unit
     ) {
-        val job = viewModelScope.launch {
-            kotlinx.coroutines.flow.combine(flow1, flow2, flow3, flow4) { t1, t2, t3, t4 ->
-                if (isResumed || isInit) {
-                    onCollect(t1, t2, t3, t4)
-                }
-            }.collectLatest {}
+        getScope()?.let { scope ->
+            val job = scope.launch {
+                kotlinx.coroutines.flow.combine(flow1, flow2, flow3, flow4) { t1, t2, t3, t4 ->
+                    if (shouldCollectFlow()) {
+                        onCollect(t1, t2, t3, t4)
+                    }
+                }.collectLatest {}
+            }
+            activeFlowCollections.add(job)
         }
-        activeFlowCollections.add(job)
     }
 
     /**
-     * Sets the init flow collection state of the ViewModel.
-     * This allows child ViewModels to enable flow collection immediately during initialization.
-     *
-     * @param initFlowCollection Whether the ViewModel should collect flows during initialization
+     * Determines if flow collection should happen based on the current lifecycle state and trigger.
      */
-    protected fun setInitFlowCollection(initFlowCollection: Boolean) {
-        isInit = initFlowCollection
+    private fun shouldCollectFlow(): Boolean {
+        return when (getFlowCollectionTrigger()) {
+            FlowCollectionTrigger.INIT -> true
+            FlowCollectionTrigger.START -> isStart
+            FlowCollectionTrigger.RESUME -> isResumed
+        }
     }
 
     /**
@@ -137,6 +153,7 @@ abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
      */
     override fun onStart(owner: LifecycleOwner) {
         super.onStart(owner)
+        isStart = true
         Timber.d("${this::class.simpleName} → onStart")
     }
 
@@ -172,6 +189,7 @@ abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
      */
     override fun onStop(owner: LifecycleOwner) {
         super.onStop(owner)
+        isStart = false
         Timber.d("${this::class.simpleName} → onStop")
     }
 
@@ -194,7 +212,6 @@ abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
         super.onCleared()
         activeFlowCollections.forEach { it.cancel() }
         activeFlowCollections.clear()
-        viewModelScope.cancel()
         Timber.d("${this::class.simpleName} → onCleared")
     }
 }

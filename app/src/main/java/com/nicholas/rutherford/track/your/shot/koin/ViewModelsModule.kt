@@ -40,9 +40,6 @@ import org.koin.dsl.module
  */
 object ViewModelsModule {
 
-    /** Default coroutine scope used for ViewModel operations */
-    private val defaultCoroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-
     /** Koin module definitions for all ViewModels */
     val modules = module {
 
@@ -50,7 +47,7 @@ object ViewModelsModule {
         viewModel {
             MainActivityViewModel(
                 accountManager = get(),
-                scope = defaultCoroutineScope,
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
                 network = get()
             )
         }
@@ -63,7 +60,8 @@ object ViewModelsModule {
                 activeUserRepository = get(),
                 accountManager = get(),
                 dataStorePreferencesReader = get(),
-                dataStorePreferencesWriter = get()
+                dataStorePreferencesWriter = get(),
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
             )
         }
 
@@ -74,7 +72,7 @@ object ViewModelsModule {
                 navigation = get(),
                 buildType = get(),
                 accountManager = get(),
-                scope = defaultCoroutineScope
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
             )
         }
 
@@ -82,7 +80,7 @@ object ViewModelsModule {
         viewModel {
             PlayersListViewModel(
                 application = androidApplication(),
-                scope = defaultCoroutineScope,
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
                 navigation = get(),
                 deleteFirebaseUserInfo = get(),
                 playerRepository = get(),
@@ -102,7 +100,7 @@ object ViewModelsModule {
                 playerRepository = get(),
                 pendingPlayerRepository = get(),
                 activeUserRepository = get(),
-                scope = defaultCoroutineScope,
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
                 navigation = get(),
                 currentPendingShot = get()
             )
@@ -113,7 +111,7 @@ object ViewModelsModule {
             SelectShotViewModel(
                 savedStateHandle = stateHandle,
                 application = get(),
-                scope = defaultCoroutineScope,
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
                 navigation = get(),
                 declaredShotRepository = get(),
                 playerRepository = get(),
@@ -126,7 +124,7 @@ object ViewModelsModule {
             LogShotViewModel(
                 savedStateHandle = stateHandle,
                 application = androidApplication(),
-                scope = defaultCoroutineScope,
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
                 navigation = get(),
                 declaredShotRepository = get(),
                 pendingPlayerRepository = get(),
@@ -148,7 +146,7 @@ object ViewModelsModule {
                 individualPlayerReportRepository = get(),
                 deleteFirebaseUserInfo = get(),
                 pdfGenerator = get(),
-                scope = defaultCoroutineScope
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
             )
         }
 
@@ -158,7 +156,7 @@ object ViewModelsModule {
                 application = androidApplication(),
                 authenticationFirebase = get(),
                 navigation = get(),
-                scope = defaultCoroutineScope
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
             )
         }
 
@@ -173,7 +171,7 @@ object ViewModelsModule {
                 accountManager = get(),
                 activeUserRepository = get(),
                 declaredShotRepository = get(),
-                scope = defaultCoroutineScope
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
             )
         }
 
@@ -189,7 +187,7 @@ object ViewModelsModule {
                 activeUserRepository = get(),
                 dataStorePreferencesWriter = get(),
                 declaredShotRepository = get(),
-                scope = defaultCoroutineScope
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
             )
         }
 
@@ -198,7 +196,7 @@ object ViewModelsModule {
             SettingsViewModel(
                 navigation = get(),
                 application = androidApplication(),
-                scope = defaultCoroutineScope,
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
                 buildType = get(),
                 activeUserRepository = get(),
                 deleteFirebaseUserInfo = get(),
@@ -233,7 +231,7 @@ object ViewModelsModule {
                 navigation = get(),
                 application = androidApplication(),
                 dataStorePreferencesWriter = get(),
-                scope = defaultCoroutineScope
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
             )
         }
 
@@ -251,7 +249,7 @@ object ViewModelsModule {
                 dataStorePreferencesReader = get(),
                 dataStoreWriterPreferencesWriter = get(),
                 navigation = get<DebugToggleNavigation>(),
-                scope = defaultCoroutineScope
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
             )
         }
 
@@ -260,7 +258,7 @@ object ViewModelsModule {
             DeclaredShotsListViewModel(
                 declaredShotRepository = get(),
                 navigation = get(),
-                scope = defaultCoroutineScope
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
             )
         }
 
@@ -276,7 +274,7 @@ object ViewModelsModule {
                 deleteFirebaseUserInfo = get(),
                 playerRepository = get(),
                 navigation = get(),
-                scope = defaultCoroutineScope
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
             )
         }
 
@@ -291,7 +289,7 @@ object ViewModelsModule {
                 application = androidApplication(),
                 navigation = get(),
                 playerRepository = get(),
-                scope = defaultCoroutineScope,
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
                 notifications = get(),
                 pdfGenerator = get(),
                 createFirebaseUserInfo = get(),
@@ -303,7 +301,7 @@ object ViewModelsModule {
         /** Shots List screen ViewModel */
         viewModel {
             ShotsListViewModel(
-                scope = defaultCoroutineScope,
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
                 navigation = get(),
                 playerRepository = get(),
                 dataStorePreferencesWriter = get(),

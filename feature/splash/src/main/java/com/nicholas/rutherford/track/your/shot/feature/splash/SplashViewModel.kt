@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePrefer
 import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
+import kotlinx.coroutines.CoroutineScope
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -34,8 +35,15 @@ class SplashViewModel(
     private val activeUserRepository: ActiveUserRepository,
     private val accountManager: AccountManager,
     private val dataStorePreferencesReader: DataStorePreferencesReader,
-    private val dataStorePreferencesWriter: DataStorePreferencesWriter
+    private val dataStorePreferencesWriter: DataStorePreferencesWriter,
+    private val scope: CoroutineScope
 ) : BaseViewModel() {
+
+    // Override to provide the injected scope
+    override fun getScope(): CoroutineScope? = scope
+
+    // Override to start collecting flows in onStart
+    override fun getFlowCollectionTrigger(): FlowCollectionTrigger = FlowCollectionTrigger.START
 
     /**
      * Called when the lifecycle owner's `onStart()` is triggered.
