@@ -2,15 +2,13 @@ package com.nicholas.rutherford.track.your.shot.feature.splash
 
 import androidx.lifecycle.LifecycleOwner
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
+import com.nicholas.rutherford.track.your.shot.base.vm.FlowCollectionTrigger
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
+import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePreferencesReader
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.firebase.core.read.ReadFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
-import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -29,19 +27,24 @@ import kotlinx.coroutines.launch
  * @param readFirebaseUserInfo Provides Firebase authentication state.
  * @param activeUserRepository Interface for accessing locally stored active user data.
  * @param accountManager Handles app-level account management logic (e.g., forced logout).
- * @param readSharedPreferences Interface for reading app preferences.
- * @param createSharedPreferences Interface for writing app preferences.
- * @param scope Coroutine scope used for background operations.
+ * @param dataStorePreferencesReader Reads data store preferences.
+ * @param dataStorePreferencesWriter Writes to data store preferences.
  */
 class SplashViewModel(
     private val navigation: SplashNavigation,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val activeUserRepository: ActiveUserRepository,
     private val accountManager: AccountManager,
-    private val readSharedPreferences: ReadSharedPreferences,
-    private val createSharedPreferences: CreateSharedPreferences,
+    private val dataStorePreferencesReader: DataStorePreferencesReader,
+    private val dataStorePreferencesWriter: DataStorePreferencesWriter,
     private val scope: CoroutineScope
 ) : BaseViewModel() {
+
+    // Override to provide the injected scope
+    override fun getScope(): CoroutineScope? = scope
+
+    // Override to start collecting flows in onStart
+    override fun getFlowCollectionTrigger(): FlowCollectionTrigger = FlowCollectionTrigger.START
 
     /**
      * Called when the lifecycle owner's `onStart()` is triggered.
@@ -56,10 +59,10 @@ class SplashViewModel(
      * Checks whether this is the first app launch.
      * If so, initiates any required logout and updates the flag.
      */
-    internal fun checkIfAppHasBeenLaunchedBefore() {
-        if (!readSharedPreferences.appHasBeenLaunched()) {
+    internal suspend fun checkIfAppHasBeenLaunchedBefore(appHasBeenLaunched: Boolean) {
+        if (!appHasBeenLaunched) {
             accountManager.checkIfWeNeedToLogoutOnLaunch()
-            createSharedPreferences.createAppHasLaunchedPreference(value = true)
+            dataStorePreferencesWriter.saveAppHasLaunched(value = true)
         }
     }
 
@@ -73,20 +76,26 @@ class SplashViewModel(
      * - Using stored preferences as fallback to determine authentication state.
      */
     internal fun navigateToPlayersListLoginOrAuthentication() {
-        checkIfAppHasBeenLaunchedBefore()
+        collectFlows(
+            flow1 = readFirebaseUserInfo.isLoggedInFlow(),
+            flow2 = dataStorePreferencesReader.readAppHasBeenLaunchedFlow(),
+            flow3 = dataStorePreferencesReader.readIsLoggedInFlow(),
+            flow4 = dataStorePreferencesReader.readShouldShowTermsAndConditionsFlow()
+        ) { loggedInValue, appHasBeenLaunched, userLoggedInLocally, shouldShowTermsAndConditions ->
 
-        scope.launch {
-            combine(
-                readFirebaseUserInfo.isEmailVerifiedFlow(),
-                readFirebaseUserInfo.isLoggedInFlow()
-            ) { emailVerifiedValue, loggedInValue ->
-                val activeUser = activeUserRepository.fetchActiveUser()
-                val isLoggedIn = loggedInValue || readSharedPreferences.isLoggedIn()
+            checkIfAppHasBeenLaunchedBefore(appHasBeenLaunched = appHasBeenLaunched)
 
-                if (isLoggedIn) {
-                    navigatePostAuthDestination(isLoggedIn = true, email = activeUser?.email ?: "")
+            val activeUser = activeUserRepository.fetchActiveUser()
+            val isLoggedIn = loggedInValue || userLoggedInLocally
 
-                    // TODO: Uncomment this block once Firebase Authentication issues are resolved
+            if (isLoggedIn) {
+                navigatePostAuthDestination(
+                    shouldShowTermAndConditions = shouldShowTermsAndConditions,
+                    isLoggedIn = true,
+                    email = activeUser?.email ?: ""
+                )
+
+                // TODO: Uncomment this block once Firebase Authentication issues are resolved
                     /*
                     val isVerified = emailVerifiedValue || readSharedPreferences.hasAccountBeenAuthenticated()
                     if (isVerified && activeUser != null && activeUser.accountHasBeenCreated) {
@@ -100,10 +109,13 @@ class SplashViewModel(
                         }
                     }
                     */
-                } else {
-                    navigatePostAuthDestination(isLoggedIn = false, email = activeUser?.email)
-                }
-            }.collectLatest { }
+            } else {
+                navigatePostAuthDestination(
+                    shouldShowTermAndConditions = shouldShowTermsAndConditions,
+                    isLoggedIn = false,
+                    email = activeUser?.email
+                )
+            }
         }
     }
 
@@ -111,11 +123,12 @@ class SplashViewModel(
      * Navigates to either the players list, login screen, or terms and conditions
      * depending on login state and app preferences.
      *
+     * @param shouldShowTermAndConditions Whether to show the terms and conditions screen.
      * @param isLoggedIn Whether the user is considered logged in.
      * @param email Optional email address of the logged-in user.
      */
-    internal fun navigatePostAuthDestination(isLoggedIn: Boolean, email: String?) {
-        if (readSharedPreferences.shouldShowTermsAndConditions() && isLoggedIn) {
+    internal fun navigatePostAuthDestination(shouldShowTermAndConditions: Boolean, isLoggedIn: Boolean, email: String?) {
+        if (shouldShowTermAndConditions && isLoggedIn) {
             navigation.navigateToTermsAndConditions()
         } else if (isLoggedIn) {
             email?.let {

@@ -7,11 +7,15 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -29,18 +33,27 @@ class ForgotPasswordViewModelTest {
     private var state = ForgotPasswordState(email = null)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val dispatcher = UnconfinedTestDispatcher()
+    private val dispatcher = StandardTestDispatcher()
 
     private val scope = CoroutineScope(SupervisorJob() + dispatcher)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
     fun beforeEach() {
+        Dispatchers.setMain(dispatcher)
+
         viewModel = ForgotPasswordViewModel(
             application = application,
             authenticationFirebase = authenticationFirebase,
             navigation = navigation,
             scope = scope
         )
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @AfterEach
+    fun afterEach() {
+        Dispatchers.resetMain()
     }
 
     @Test
@@ -67,12 +80,16 @@ class ForgotPasswordViewModelTest {
         fun `when newEmail is set to null should show email empty alert`() = runTest {
             viewModel.onSendPasswordResetButtonClicked(newEmail = null)
 
+            dispatcher.scheduler.advanceUntilIdle()
+
             verify { navigation.alert(alert = viewModel.emailEmptyAlert()) }
         }
 
         @Test
         fun `when newEmail is set to empty should show email empty alert`() = runTest {
             viewModel.onSendPasswordResetButtonClicked(newEmail = "")
+
+            dispatcher.scheduler.advanceUntilIdle()
 
             verify { navigation.alert(alert = viewModel.emailEmptyAlert()) }
         }
@@ -82,6 +99,8 @@ class ForgotPasswordViewModelTest {
             coEvery { authenticationFirebase.attemptToSendPasswordResetFlow(email = emailTest) } returns flowOf(value = false)
 
             viewModel.onSendPasswordResetButtonClicked(newEmail = emailTest)
+
+            dispatcher.scheduler.advanceUntilIdle()
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }
@@ -93,6 +112,8 @@ class ForgotPasswordViewModelTest {
             coEvery { authenticationFirebase.attemptToSendPasswordResetFlow(email = emailTest) } returns flowOf(value = true)
 
             viewModel.onSendPasswordResetButtonClicked(newEmail = emailTest)
+
+            dispatcher.scheduler.advanceUntilIdle()
 
             verify { navigation.enableProgress(progress = any()) }
             verify { navigation.disableProgress() }

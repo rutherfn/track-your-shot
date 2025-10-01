@@ -9,6 +9,8 @@ object Constants {
         const val IS_LOGGED_IN = "isLoggedIn"
         const val SHOULD_SHOW_TERM_AND_CONDITIONS = "shouldShowTermsAndConditions"
         const val PLAYER_FILTER_NAME = "playerFilterName"
+        const val VOICE_TOGGLED_DEBUG_ENABLED = "voiceToggledDebugEnabled"
+        const val UPLOAD_VIDEO_TOGGLED_DEBUG_ENABLED = "uploadVideoToggledDebugEnabled"
     }
     const val CREATED_SHOTS = "createdShots"
     const val APP_DATABASE_NAME = "app_database.db"
@@ -18,7 +20,7 @@ object Constants {
     const val CONTENT_LAST_UPDATED_PATH = "contentLastUpdated"
     const val DATE_PATTERN = "MMMM dd, yyyy"
     const val DEFAULT_SHOT_ID = 0
-    const val DELAY_IN_MILLISECONDS_TO_SHOW_PROGRESS_MASK_ON_LOG_OUT = 3000L
+    const val DELAY_IN_MILLISECONDS_TO_SHOW_PROGRESS_MASK_ON_LOG_OUT = 2000L
     const val DESCRIPTION = "description"
     const val EMAIL = "email"
     const val FIREBASE_CHILDREN_COUNT_ZERO = 0L

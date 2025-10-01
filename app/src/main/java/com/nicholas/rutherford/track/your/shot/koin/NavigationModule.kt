@@ -24,6 +24,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigati
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle.DebugToggleNavigation
+import com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle.DebugToggleNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotNavigation
@@ -118,6 +120,11 @@ object NavigationModule {
         /** Navigation for Enabled Permissions screen. */
         single<EnabledPermissionsNavigation> {
             EnabledPermissionsNavigationImpl(navigator = get())
+        }
+
+        /** Navigation for Debug Toggle screen. */
+        single<DebugToggleNavigation> {
+            DebugToggleNavigationImpl(navigator = get())
         }
 
         /** Navigation for Onboarding Education screen. */

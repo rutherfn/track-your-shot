@@ -9,6 +9,7 @@ coilCompose = "2.5.0"
 composeBom = "2025.06.01"
 coreKtx = "1.16.0"
 coreTesting = "2.2.0"
+dataStore = "1.1.7"
 espressoCore = "3.3.0"
 firebaseAnalytics = "22.4.0"
 firebaseAuthKtx = "21.1.0"
@@ -39,6 +40,7 @@ truth = "1.4.4"
 uiTestManifest = "1.8.3"
 protoliteWellKnownTypes = "18.0.1"
 voiceFlow = "1.0.0"
+agp = "8.9.3"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -68,6 +70,7 @@ androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", v
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+data-store = { module ="androidx.datastore:datastore-preferences", version.ref = "dataStore"}
 firebase-analytics = { module = "com.google.firebase:firebase-analytics", version.ref = "firebaseAnalytics" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -100,4 +103,6 @@ voice-flow = { module = "com.nicholas.rutherford:voice-flow", version.ref = "voi
 
 [plugins]
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 

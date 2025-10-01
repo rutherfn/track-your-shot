@@ -47,7 +47,7 @@ android {
     sourceSets {
         getByName("main") {
             java {
-                srcDirs("src/main/java", "src/main/test")
+                srcDirs("src/main/java")
             }
         }
     }
@@ -65,4 +65,6 @@ android {
     tasks.getByPath(TaskOptions.preBuildPath).dependsOn(TaskOptions.ktlintFormatPath)
 }
 
-dependencies {}
+dependencies {
+    implementation(libs.androidx.material3)
+}

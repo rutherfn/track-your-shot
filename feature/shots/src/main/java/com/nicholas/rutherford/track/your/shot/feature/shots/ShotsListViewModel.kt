@@ -5,11 +5,12 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerReposi
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
-import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
+import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePreferencesReader
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -22,15 +23,15 @@ import kotlinx.coroutines.launch
  * @property scope CoroutineScope used for asynchronous operations.
  * @property navigation Interface for handling navigation events from the Shots List screen.
  * @property playerRepository Repository used to fetch player and shot information from local storage.
- * @property createSharedPreferences Interface for writing to shared preferences.
- * @property readSharedPreferences Interface for reading from shared preferences.
+ * @property dataStorePreferencesWriter Writer for writing data to DataStore preferences.
+ * @property dataStorePreferencesReader Reader for reading data from DataStore preferences.
  */
 class ShotsListViewModel(
     private val scope: CoroutineScope,
     private val navigation: ShotsListNavigation,
     private val playerRepository: PlayerRepository,
-    private val createSharedPreferences: CreateSharedPreferences,
-    private val readSharedPreferences: ReadSharedPreferences
+    private val dataStorePreferencesWriter: DataStorePreferencesWriter,
+    private val dataStorePreferencesReader: DataStorePreferencesReader
 ) : BaseViewModel() {
 
     /** Name of the player currently being filtered. */
@@ -45,7 +46,7 @@ class ShotsListViewModel(
     val shotListStateFlow = shotListMutableStateFlow.asStateFlow()
 
     init {
-        checkToCreatePlayerFilterName()
+        scope.launch { checkToCreatePlayerFilterName() }
         scope.launch { updateShotListState() }
     }
 
@@ -53,10 +54,12 @@ class ShotsListViewModel(
      * Checks to see if a player filter name exists.
      * If it does, it creates a new one.
      */
-    internal fun checkToCreatePlayerFilterName() {
-        playerFilteredName = readSharedPreferences.playerFilterName()
-        if (playerFilteredName.isNotEmpty()) {
-            createSharedPreferences.createPlayerFilterName(value = "")
+    internal suspend fun checkToCreatePlayerFilterName() {
+        dataStorePreferencesReader.readPlayerFilterNameFlow().collectLatest { filterName ->
+            playerFilteredName = filterName
+            if (playerFilteredName.isNotEmpty()) {
+                dataStorePreferencesWriter.savePlayerFilterName(value = "")
+            }
         }
     }
 
@@ -137,7 +140,7 @@ class ShotsListViewModel(
      *
      * Not testing since it will be removed in the future once we add filter functionality
      */
-    fun buildHelpAlert(): Alert {
+    private fun buildHelpAlert(): Alert {
         return Alert(
             title = "View Shots",
             description = "Access and manage player shot logs with options to create, edit, or delete entries.",

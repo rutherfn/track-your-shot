@@ -59,7 +59,7 @@ android {
     sourceSets {
         getByName("main") {
             java {
-                srcDirs("src/main/java", "src/main/test")
+                srcDirs("src/main/java")
             }
         }
     }
@@ -80,10 +80,11 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":build-type"))
     api(project(path = ":compose:components"))
+    api(project(path = ":data-store"))
     api(project(path = ":firebase:core"))
+    api(project(path = ":helper:account"))
     api(project(path = ":helper:extensions"))
     api(project(path = ":navigation"))
-    api(project(path = ":shared-preference"))
 
     debugImplementation(libs.androidx.ui.tooling.preview)
 
@@ -93,6 +94,7 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.firebase.auth.ktx)
 
     testImplementation(libs.kotlinx.coroutines.test)
 

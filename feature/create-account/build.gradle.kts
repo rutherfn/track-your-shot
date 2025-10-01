@@ -59,7 +59,7 @@ android {
     sourceSets {
         getByName("main") {
             java {
-                srcDirs("src/main/java", "src/main/test")
+                srcDirs("src/main/java")
             }
         }
     }
@@ -81,6 +81,7 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":compose:components"))
     api(project(path = ":data:room"))
+    api(project(path = ":data-store"))
     api(project(path = ":feature:players"))
     api(project(path = ":firebase:core"))
     api(project(path = ":firebase:util"))
@@ -90,7 +91,6 @@ dependencies {
     api(project(path = ":helper:extensions"))
     api(project(path = ":helper:ui"))
     api(project(path = ":navigation"))
-    api(project(path = ":shared-preference"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui.tooling.preview)

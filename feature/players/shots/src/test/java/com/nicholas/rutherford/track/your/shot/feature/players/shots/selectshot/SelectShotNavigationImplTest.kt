@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot
 
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationActions
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
@@ -32,7 +33,7 @@ class SelectShotNavigationImplTest {
         verify { navigator.pop(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
-        val expected = NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN
+        val expected = Constants.POP_DEFAULT_ACTION
 
         Assertions.assertEquals(expected, capturedArgument)
     }

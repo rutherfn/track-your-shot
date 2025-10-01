@@ -19,6 +19,8 @@ object StringsIds {
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
     val areYouSureYouWantToDeleteXShot =
         R.string.are_you_sure_you_want_to_delete_x_shot
+    val areYouSureYouWantToDeleteYourAccount =
+        R.string.are_you_sure_you_want_to_delete_your_account
     val areYouSureYouWantLeaveTrackYourShot =
         R.string.are_you_sure_you_want_to_leave_track_your_shot
     val areYouSureYouWantToDeletePendingAccountDescription =
@@ -63,6 +65,10 @@ object StringsIds {
     val currentShotHasNoChangesDescription = R.string.current_shot_has_no_changes_description
     val dateShotsLogged = R.string.date_shots_logged
     val dateShotsTaken = R.string.date_shots_taken
+    val debug = R.string.debug
+    val debugToggles = R.string.debug_toggles
+    val deleteAccount = R.string.delete_account
+    val inAppFirebaseViewer = R.string.in_app_firebase_viewer
     val deletePendingAccount = R.string.delete_pending_account
     val deletingPendingAccount = R.string.deleting_pending_account
     val deleteReport = R.string.delete_report
@@ -252,6 +258,7 @@ object StringsIds {
     val tapForMore = R.string.tap_for_more
     val termsConditions = R.string.terms_conditions
     val termsConditionsDescription = R.string.terms_conditions_description
+    val toggles = R.string.toggles
     val trackYourProgress = R.string.track_your_progress
     val trackYourProgressDescription = R.string.track_your_progress_description
     val trackYourShot = R.string.track_your_shot
@@ -279,6 +286,7 @@ object StringsIds {
         R.string.username_is_required_please_enter_a_username_to_create_a_account
     val usingTheApp = R.string.using_the_app
     val verifyAccount = R.string.verify_account
+    val viewDebugToggles = R.string.view_debug_toggles
     val viewMoreInfo = R.string.view_more_info
     val viewX = R.string.view_x
     val viewXShots = R.string.view_x_shots

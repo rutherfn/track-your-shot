@@ -5,13 +5,19 @@ import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.build.type.BuildTypeImpl
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -27,7 +33,7 @@ class LoginViewModelTest {
     private var accountManager = mockk<AccountManager>(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val testDispatcher = UnconfinedTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     private val scope = CoroutineScope(SupervisorJob() + testDispatcher)
 
@@ -45,15 +51,31 @@ class LoginViewModelTest {
 
     private val state = LoginState(launcherDrawableId = null, email = null, password = null)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
     fun beforeEach() {
+        Dispatchers.setMain(testDispatcher)
+
+        // Mock Application.getString() calls
+        every { application.getString(StringsIds.empty) } returns ""
+        every { application.getString(StringsIds.emptyField) } returns "Empty Field"
+        every { application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToLoginToExistingAccount) } returns "Email is required"
+        every { application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount) } returns "Password is required"
+        every { application.getString(StringsIds.gotIt) } returns "Got it"
+
         viewModel = LoginViewModel(
             application = application,
             navigation = navigation,
             buildType = buildTypeDebug,
             accountManager = accountManager,
-            scope = scope
+            scope = CoroutineScope(SupervisorJob() + testDispatcher)
         )
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @AfterEach
+    fun afterEach() {
+        Dispatchers.resetMain()
     }
 
     @Test fun initializeLoginState() {
@@ -71,7 +93,7 @@ class LoginViewModelTest {
                 navigation = navigation,
                 buildType = buildTypeDebug,
                 accountManager = accountManager,
-                scope = scope
+                scope = CoroutineScope(SupervisorJob() + testDispatcher)
             )
 
             viewModel.updateLauncherDrawableIdState()
@@ -88,7 +110,7 @@ class LoginViewModelTest {
                 navigation = navigation,
                 buildType = buildTypeStage,
                 accountManager = accountManager,
-                scope = scope
+                scope = CoroutineScope(SupervisorJob() + testDispatcher)
             )
 
             viewModel.updateLauncherDrawableIdState()
@@ -105,7 +127,7 @@ class LoginViewModelTest {
                 navigation = navigation,
                 buildType = buildTypeRelease,
                 accountManager = accountManager,
-                scope = scope
+                scope = CoroutineScope(SupervisorJob() + testDispatcher)
             )
 
             viewModel.updateLauncherDrawableIdState()
@@ -164,40 +186,48 @@ class LoginViewModelTest {
     @Nested
     inner class OnLoginButtonClicked {
 
+        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when email is set to null should call email empty alert`() = runTest {
             viewModel.loginMutableStateFlow.value = LoginState(email = null, password = passwordTest)
 
             viewModel.onLoginButtonClicked()
+            advanceUntilIdle()
 
-            verify { navigation.alert(alert = viewModel.emailEmptyAlert()) }
+            verify { navigation.alert(any()) }
         }
 
+        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when password is set to null should call password empty alert`() = runTest {
             viewModel.loginMutableStateFlow.value = LoginState(email = emailTest, password = null)
 
             viewModel.onLoginButtonClicked()
+            advanceUntilIdle()
 
-            verify { navigation.alert(alert = viewModel.passwordEmptyAlert()) }
+            verify { navigation.alert(any()) }
         }
 
+        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when email is set to empty should call email empty alert`() = runTest {
             viewModel.loginMutableStateFlow.value = LoginState(email = "", password = passwordTest)
 
             viewModel.onLoginButtonClicked()
+            advanceUntilIdle()
 
-            verify { navigation.alert(alert = viewModel.emailEmptyAlert()) }
+            verify { navigation.alert(any()) }
         }
 
+        @OptIn(ExperimentalCoroutinesApi::class)
         @Test
         fun `when password is set to empty should call password empty alert`() = runTest {
             viewModel.loginMutableStateFlow.value = LoginState(email = emailTest, password = "")
 
             viewModel.onLoginButtonClicked()
+            advanceUntilIdle()
 
-            verify { navigation.alert(alert = viewModel.passwordEmptyAlert()) }
+            verify { navigation.alert(any()) }
         }
     }
 

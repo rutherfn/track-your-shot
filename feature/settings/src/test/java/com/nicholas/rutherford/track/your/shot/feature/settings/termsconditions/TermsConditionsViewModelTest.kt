@@ -3,7 +3,8 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions
 import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -32,7 +33,7 @@ class TermsConditionsViewModelTest {
 
     private val application = mockk<Application>(relaxed = true)
 
-    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
+    private val dataStorePreferencesWriter = mockk<DataStorePreferencesWriter>(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val dispatcher = UnconfinedTestDispatcher()
@@ -65,7 +66,7 @@ class TermsConditionsViewModelTest {
             savedStateHandle = savedStateHandle,
             navigation = navigation,
             application = application,
-            createSharedPreferences = createSharedPreferences,
+            dataStorePreferencesWriter = dataStorePreferencesWriter,
             scope = scope
         )
     }
@@ -120,7 +121,7 @@ class TermsConditionsViewModelTest {
             savedStateHandle = savedStateHandle,
             navigation = navigation,
             application = application,
-            createSharedPreferences = createSharedPreferences,
+            dataStorePreferencesWriter = dataStorePreferencesWriter,
             scope = scope
         )
 
@@ -169,7 +170,7 @@ class TermsConditionsViewModelTest {
                 savedStateHandle = savedStateHandle,
                 navigation = navigation,
                 application = application,
-                createSharedPreferences = createSharedPreferences,
+                dataStorePreferencesWriter = dataStorePreferencesWriter,
                 scope = scope
             )
 
@@ -255,7 +256,7 @@ class TermsConditionsViewModelTest {
                 savedStateHandle = savedStateHandle,
                 navigation = navigation,
                 application = application,
-                createSharedPreferences = createSharedPreferences,
+                dataStorePreferencesWriter = dataStorePreferencesWriter,
                 scope = scope
             )
 
@@ -273,7 +274,7 @@ class TermsConditionsViewModelTest {
                 savedStateHandle = savedStateHandle,
                 navigation = navigation,
                 application = application,
-                createSharedPreferences = createSharedPreferences,
+                dataStorePreferencesWriter = dataStorePreferencesWriter,
                 scope = scope
             )
 
@@ -298,7 +299,7 @@ class TermsConditionsViewModelTest {
                 savedStateHandle = savedStateHandle,
                 navigation = navigation,
                 application = application,
-                createSharedPreferences = createSharedPreferences,
+                dataStorePreferencesWriter = dataStorePreferencesWriter,
                 scope = scope
             )
 
@@ -306,7 +307,8 @@ class TermsConditionsViewModelTest {
 
             delay(750L)
 
-            verify { createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = false) }
+            coVerify { dataStorePreferencesWriter.saveShouldShowTermsAndConditions(value = false) }
+
             verify { navigation.navigateToPlayerList() }
             verify { navigation.navigateToOnboarding() }
         }

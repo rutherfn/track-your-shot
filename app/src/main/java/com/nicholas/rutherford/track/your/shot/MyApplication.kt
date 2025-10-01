@@ -4,12 +4,12 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.koin.DataStoreModule
 import com.nicholas.rutherford.track.your.shot.koin.DatabaseModule
 import com.nicholas.rutherford.track.your.shot.koin.ExtensionLogicModule
 import com.nicholas.rutherford.track.your.shot.koin.FirebaseModule
 import com.nicholas.rutherford.track.your.shot.koin.NavigationModule
 import com.nicholas.rutherford.track.your.shot.koin.RepositoryDataModule
-import com.nicholas.rutherford.track.your.shot.koin.SharedPreferenceModule
 import com.nicholas.rutherford.track.your.shot.koin.ViewModelsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -69,7 +69,7 @@ open class MyApplication : Application() {
             androidContext(this@MyApplication)
             modules(
                 listOf(
-                    SharedPreferenceModule.modules,
+                    DataStoreModule.modules,
                     DatabaseModule.modules,
                     RepositoryDataModule.modules,
                     FirebaseModule.modules,

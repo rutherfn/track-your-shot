@@ -5,13 +5,13 @@ import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.data.test.firebase.TestAuthenticateUserViaEmailFirebaseResponse
 import com.nicholas.rutherford.track.your.shot.data.test.firebase.TestCreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.util.authentication.AuthenticationFirebase
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -39,7 +39,7 @@ class CreateAccountViewModelTest {
     private val application = mockk<Application>(relaxed = true)
 
     private val createFirebaseUserInfo = mockk<CreateFirebaseUserInfo>(relaxed = true)
-    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
+    private val dataStorePreferencesWriter = mockk<DataStorePreferencesWriter>(relaxed = true)
     private val authenticationFirebase = mockk<AuthenticationFirebase>(relaxed = true)
 
     private val accountManager = mockk<AccountManager>(relaxed = true)
@@ -65,7 +65,7 @@ class CreateAccountViewModelTest {
             navigation = navigation,
             application = application,
             createFirebaseUserInfo = createFirebaseUserInfo,
-            createSharedPreferences = createSharedPreferences,
+            dataStorePreferencesWriter = dataStorePreferencesWriter,
             authenticationFirebase = authenticationFirebase,
             accountManager = accountManager,
             activeUserRepository = activeUserRepository,
@@ -659,7 +659,7 @@ class CreateAccountViewModelTest {
                     )
                 )
             }
-            verify(exactly = 0) { createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true) }
+            coVerify(exactly = 0) { dataStorePreferencesWriter.saveShouldShowTermsAndConditions(value = true) }
             coVerify(exactly = 0) { declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList()) }
             verify(exactly = 0) { navigation.navigateToTermsAndConditions() }
 
@@ -684,7 +684,7 @@ class CreateAccountViewModelTest {
                     )
                 )
             }
-            verify(exactly = 1) { createSharedPreferences.createShouldShowTermsAndConditionsPreference(value = true) }
+            coVerify(exactly = 1) { dataStorePreferencesWriter.saveShouldShowTermsAndConditions(value = true) }
             coVerify(exactly = 1) { declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = emptyList()) }
             verify(exactly = 1) { navigation.disableProgress() }
             verify(exactly = 1) { navigation.navigateToTermsAndConditions() }
@@ -931,7 +931,7 @@ class CreateAccountViewModelTest {
                     username = testUsername
                 )
 
-                verify { createSharedPreferences.createIsLoggedIn(value = true) }
+                coVerify { dataStorePreferencesWriter.saveIsLoggedIn(value = true) }
                 coVerify { accountManager.createActiveUser(username = testUsername, email = testEmail) }
                 //   coVerify { viewModel.attemptToCreateAccount(username = testUsername, email = testEmail) }
             }

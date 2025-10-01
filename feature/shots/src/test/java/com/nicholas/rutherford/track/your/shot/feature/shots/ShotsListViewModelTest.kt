@@ -2,17 +2,19 @@ package com.nicholas.rutherford.track.your.shot.feature.shots
 
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
+import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePreferencesReader
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
-import com.nicholas.rutherford.track.your.shot.shared.preference.read.ReadSharedPreferences
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -33,8 +35,8 @@ class ShotsListViewModelTest {
 
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
 
-    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
-    private val readSharedPreferences = mockk<ReadSharedPreferences>(relaxed = true)
+    private val dataStorePreferencesWriter = mockk<DataStorePreferencesWriter>(relaxed = true)
+    private val dataStorePreferencesReader = mockk<DataStorePreferencesReader>(relaxed = true)
 
     private val emptyShotList: List<ShotLoggedWithPlayer> = listOf()
 
@@ -44,8 +46,8 @@ class ShotsListViewModelTest {
             scope = scope,
             navigation = navigation,
             playerRepository = playerRepository,
-            createSharedPreferences = createSharedPreferences,
-            readSharedPreferences = readSharedPreferences
+            dataStorePreferencesWriter = dataStorePreferencesWriter,
+            dataStorePreferencesReader = dataStorePreferencesReader
         )
     }
 
@@ -60,7 +62,7 @@ class ShotsListViewModelTest {
             viewModel.checkToCreatePlayerFilterName()
 
             Assertions.assertEquals("", viewModel.playerFilteredName)
-            verify(exactly = 0) { createSharedPreferences.createPlayerFilterName(value = "") }
+            coVerify(exactly = 0) { dataStorePreferencesWriter.savePlayerFilterName(value = "") }
             Assertions.assertEquals(
                 viewModel.shotListMutableStateFlow.value,
                 ShotsListState(shotList = emptyList())
@@ -83,7 +85,7 @@ class ShotsListViewModelTest {
             viewModel.checkToCreatePlayerFilterName()
 
             Assertions.assertEquals("", viewModel.playerFilteredName)
-            verify(exactly = 0) { createSharedPreferences.createPlayerFilterName(value = "") }
+            coVerify(exactly = 0) { dataStorePreferencesWriter.savePlayerFilterName(value = "") }
             Assertions.assertEquals(
                 viewModel.shotListMutableStateFlow.value,
                 ShotsListState(shotList = listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName())))
@@ -99,13 +101,13 @@ class ShotsListViewModelTest {
             val playerFilteredName = "playerFilteredName"
 
             coEvery { playerRepository.fetchAllPlayers() } returns emptyList()
-            every { readSharedPreferences.playerFilterName() } returns playerFilteredName
+            every { dataStorePreferencesReader.readPlayerFilterNameFlow() } returns flow { emit(playerFilteredName) }
 
             viewModel.updateShotListState()
             viewModel.checkToCreatePlayerFilterName()
 
             Assertions.assertEquals(playerFilteredName, viewModel.playerFilteredName)
-            verify { createSharedPreferences.createPlayerFilterName(value = "") }
+            coVerify { dataStorePreferencesWriter.savePlayerFilterName(value = "") }
             Assertions.assertEquals(
                 viewModel.shotListMutableStateFlow.value,
                 ShotsListState(shotList = emptyList())

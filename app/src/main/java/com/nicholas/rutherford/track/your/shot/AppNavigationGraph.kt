@@ -45,6 +45,9 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsViewMode
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle.DebugToggleParams
+import com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle.DebugToggleScreen
+import com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle.DebugToggleViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsViewModel
@@ -350,7 +353,6 @@ object AppNavigationGraph {
                 playerListScreenParams = PlayersListScreenParams(
                     state = playersListViewModel.playerListStateFlow.collectAsState().value,
                     onToolbarMenuClicked = { playersListViewModel.onToolbarMenuClicked() },
-                    updatePlayerListState = { playersListViewModel.updatePlayerListState() },
                     onAddPlayerClicked = { playersListViewModel.onAddPlayerClicked() },
                     onPlayerClicked = { player ->
                         playersListViewModel.onPlayerClicked(
@@ -616,6 +618,33 @@ object AppNavigationGraph {
             updateAppBar(appBar = appBarFactory.createEnabledPermissionsAppBar(params = enabledPermissionsParams))
 
             EnabledPermissionsScreen(params = enabledPermissionsParams)
+        }
+    }
+
+    /**
+     * Adds the Debug Toggle Screen destination to the NavGraph.
+     * Retrieves [DebugToggleViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [DebugToggleScreen].
+     * Displays the [DebugToggleScreen] composable
+     */
+    fun NavGraphBuilder.debugToggleScreen() {
+        composable(
+            route = NavigationDestinations.DEBUG_TOGGLE_SCREEN
+        ) {
+            val debugToggleViewModel: DebugToggleViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
+
+            val debugToggleParams = DebugToggleParams(
+                state = debugToggleViewModel.debugToggleStateFlow.collectAsState().value,
+                onToolbarMenuClicked = { debugToggleViewModel.onBackClicked() },
+                onVoiceDebugToggled = { value -> debugToggleViewModel.onVoiceDebugToggled(value = value) },
+                onVideoUploadDebugToggled = { value -> debugToggleViewModel.onVideoUploadDebugToggled(value = value) }
+            )
+
+            ObserveLifecycle(viewModel = debugToggleViewModel)
+            updateAppBar(appBar = appBarFactory.createDebugToggleAppBar(params = debugToggleParams))
+
+            DebugToggleScreen(params = debugToggleParams)
         }
     }
 

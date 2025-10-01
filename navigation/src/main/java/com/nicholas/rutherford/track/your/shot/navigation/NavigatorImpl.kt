@@ -4,6 +4,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.InputInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.data.shared.snackbar.SnackBarInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,18 +22,19 @@ import kotlinx.coroutines.flow.update
 class NavigatorImpl : Navigator {
 
     // Internal mutable state flows
-    private val _alertActions = MutableStateFlow<Alert?>(null)
-    private val _appSettingsActions = MutableStateFlow<Boolean?>(null)
-    private val _datePickerActions = MutableStateFlow<DatePickerInfo?>(null)
-    private val _emailActions = MutableStateFlow<Boolean?>(null)
-    private val _emailDevActions = MutableStateFlow<String?>(null)
-    private val _finishActions = MutableStateFlow<Boolean?>(null)
-    private val _inputInfoActions = MutableStateFlow<InputInfo?>(null)
-    private val _navActions = MutableStateFlow<NavigationAction?>(null)
-    private val _popRouteActions = MutableStateFlow<String?>(null)
-    private val _progressActions = MutableStateFlow<Progress?>(null)
-    private val _navigationDrawerAction = MutableStateFlow<Boolean?>(null)
-    private val _urlAction = MutableStateFlow<String?>(null)
+    private val _alertActions = MutableStateFlow<Alert?>(value = null)
+    private val _appSettingsActions = MutableStateFlow<Boolean?>(value = null)
+    private val _datePickerActions = MutableStateFlow<DatePickerInfo?>(value = null)
+    private val _emailActions = MutableStateFlow<Boolean?>(value = null)
+    private val _emailDevActions = MutableStateFlow<String?>(value = null)
+    private val _finishActions = MutableStateFlow<Boolean?>(value = null)
+    private val _inputInfoActions = MutableStateFlow<InputInfo?>(value = null)
+    private val _navActions = MutableStateFlow<NavigationAction?>(value = null)
+    private val _popRouteActions = MutableStateFlow<String?>(value = null)
+    private val _progressActions = MutableStateFlow<Progress?>(value = null)
+    private val _snackBarActions = MutableStateFlow<SnackBarInfo?>(value = null)
+    private val _navigationDrawerAction = MutableStateFlow<Boolean?>(value = null)
+    private val _urlAction = MutableStateFlow<String?>(value = null)
 
     // Exposed read-only flows for observers (e.g., UI)
     override val alertActions: StateFlow<Alert?> = _alertActions.asStateFlow()
@@ -46,6 +48,7 @@ class NavigatorImpl : Navigator {
     override val popRouteActions: StateFlow<String?> = _popRouteActions.asStateFlow()
     override val progressActions: StateFlow<Progress?> = _progressActions.asStateFlow()
     override val navigationDrawerAction: StateFlow<Boolean?> = _navigationDrawerAction.asStateFlow()
+    override val snackBarActions: StateFlow<SnackBarInfo?> = _snackBarActions.asStateFlow()
     override val urlAction: StateFlow<String?> = _urlAction.asStateFlow()
 
     /** Triggers an alert dialog with the given [alertAction]. */
@@ -80,6 +83,9 @@ class NavigatorImpl : Navigator {
 
     /** Opens or closes the navigation drawer. */
     override fun showNavigationDrawer(navigationDrawerAction: Boolean?) = _navigationDrawerAction.update { navigationDrawerAction }
+
+    /** Displays a snack bar with the given [snackBarInfo] data. */
+    override fun snackBar(snackBarInfo: SnackBarInfo?) = _snackBarActions.update { snackBarInfo }
 
     /** Opens a given [url] in the user's browser. */
     override fun url(url: String?) = _urlAction.update { url }

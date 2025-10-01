@@ -426,6 +426,13 @@ object NavigationActions {
             override val navOptions = NavOptions.Builder().build()
         }
 
+        fun debugToggle() = object : NavigationAction {
+            override val destination = NavigationDestinations.DEBUG_TOGGLE_SCREEN
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(NavigationDestinations.PLAYERS_LIST_SCREEN, true)
+                .build()
+        }
+
         /** Navigate to the declared shots list screen. */
         fun declaredShotsList() = object : NavigationAction {
             override val destination = NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN

@@ -94,7 +94,7 @@ object ExtensionLogicModule {
                 userRepository = get(),
                 readFirebaseUserInfo = get(),
                 existingUserFirebase = get(),
-                createSharedPreferences = get()
+                dataStorePreferencesWriter = get()
             )
         }
 

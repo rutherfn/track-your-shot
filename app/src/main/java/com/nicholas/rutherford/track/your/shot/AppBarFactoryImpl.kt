@@ -21,6 +21,7 @@ import com.nicholas.rutherford.track.your.shot.feature.reports.createreport.Crea
 import com.nicholas.rutherford.track.your.shot.feature.reports.reportlist.ReportListParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.SettingsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.accountinfo.AccountInfoViewModel
+import com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle.DebugToggleParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.DeclaredShotState
@@ -124,6 +125,14 @@ class AppBarFactoryImpl(
     override fun createEnabledPermissionsAppBar(params: EnabledPermissionsParams): AppBar =
         AppBar(
             toolbarId = StringsIds.enabledPermissions,
+            onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack
+        )
+
+    /** Creates an AppBar for the debug toggle screen with back navigation. */
+    override fun createDebugToggleAppBar(params: DebugToggleParams): AppBar =
+        AppBar(
+            toolbarId = StringsIds.debugToggles,
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
             imageVector = Icons.AutoMirrored.Filled.ArrowBack
         )

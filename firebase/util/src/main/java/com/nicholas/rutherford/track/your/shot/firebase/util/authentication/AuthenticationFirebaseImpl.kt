@@ -2,6 +2,7 @@ package com.nicholas.rutherford.track.your.shot.firebase.util.authentication
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.nicholas.rutherford.track.your.shot.firebase.AuthenticateUserViaEmailFirebaseResponse
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +27,24 @@ class AuthenticationFirebaseImpl(private val firebaseAuth: FirebaseAuth) : Authe
                 currentUser.delete()
                     .addOnCompleteListener { trySend(element = it.isSuccessful) }
             } ?: run { trySend(element = true) }
+            awaitClose()
+        }
+    }
+
+    /**
+     * Attempts to delete a specific Firebase user.
+     * This method is useful for deleting a user after account deletion or when you have
+     * a specific user instance to delete.
+     *
+     * @param currentUser The Firebase user to delete.
+     * @return A [Flow] emitting true if deletion succeeded, false otherwise.
+     */
+    override fun attemptToDeleteCurrentUserFlow(currentUser: FirebaseUser): Flow<Boolean> {
+        return callbackFlow {
+            currentUser.delete()
+                .addOnCompleteListener { task ->
+                    trySend(element = task.isSuccessful)
+                }
             awaitClose()
         }
     }

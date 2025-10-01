@@ -9,6 +9,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPosition
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.DELETE_PLAYER_DELAY_IN_MILLIS
@@ -16,7 +17,6 @@ import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.Player
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListState
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.shared.preference.create.CreateSharedPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -49,7 +49,7 @@ class PlayersListViewModelTest {
 
     private val deleteFirebaseUserInfo = mockk<DeleteFirebaseUserInfo>(relaxed = true)
 
-    private val createSharedPreferences = mockk<CreateSharedPreferences>(relaxed = true)
+    private val databaseStorePreferenceWriter = mockk<DataStorePreferencesWriter>(relaxed = true)
 
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
@@ -67,7 +67,7 @@ class PlayersListViewModelTest {
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
             playerRepository = playerRepository,
             pendingPlayerRepository = pendingPlayerRepository,
-            createSharedPreferences = createSharedPreferences
+            databaseStorePreferenceWriter = databaseStorePreferenceWriter
         )
     }
 
@@ -439,7 +439,7 @@ class PlayersListViewModelTest {
 
             playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
 
-            verify { createSharedPreferences.createPlayerFilterName(value = player.fullName()) }
+            coVerify { databaseStorePreferenceWriter.savePlayerFilterName(value = player.fullName()) }
             verify { navigation.navigateToShotList() }
         }
 

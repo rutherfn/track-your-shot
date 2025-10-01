@@ -12,6 +12,9 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
@@ -41,6 +44,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
+import com.nicholas.rutherford.track.your.shot.data.shared.snackbar.SnackBarInfo
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
@@ -74,6 +78,7 @@ fun NavigationComponent(
     navigator: Navigator,
     viewModels: ViewModels
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
     val lifecycleOwner = LocalLifecycleOwner.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
@@ -120,6 +125,10 @@ fun NavigationComponent(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
+    val snackBarState by navigator.snackBarActions.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
     val navigationDrawerState by navigator.navigationDrawerAction.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
@@ -133,6 +142,7 @@ fun NavigationComponent(
     var datePicker: DatePickerInfo? by remember { mutableStateOf(value = null) }
     var inputInfo: InputInfo? by remember { mutableStateOf(value = null) }
     var progress: Progress? by remember { mutableStateOf(value = null) }
+    var snackBarInfo: SnackBarInfo? by remember { mutableStateOf(value = null) }
     var modalDrawerGesturesEnabled: Boolean by remember { mutableStateOf(value = false) }
     val appBar = AppNavigationGraph.currentAppBar
 
@@ -244,6 +254,16 @@ fun NavigationComponent(
             progress = null
         }
     }
+    // Show or hide snackBar
+    LaunchedEffect(snackBarState) {
+        snackBarState?.let { state ->
+            snackBarInfo = state
+            navigator.snackBar(snackBarInfo = null)
+        } ?: run {
+            snackBarInfo = null
+            navigator.snackBar(snackBarInfo = null)
+        }
+    }
     // Open or close navigation drawer
     LaunchedEffect(navigationDrawerState) {
         navigationDrawerState?.let { shouldOpenNavigationDrawer ->
@@ -298,6 +318,7 @@ fun NavigationComponent(
         content = {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
+                snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
                 topBar = {
                     appBar?.let { bar ->
                         if (bar.shouldShow) {
@@ -418,6 +439,17 @@ fun NavigationComponent(
                     },
                     title = newProgress.title
                 )
+            }
+
+            snackBarInfo?.let { newSnackBarInfo ->
+                scope.launch {
+                    snackBarHostState.showSnackbar(
+                        message = newSnackBarInfo.message,
+                        actionLabel = newSnackBarInfo.actionLabel,
+                        withDismissAction = newSnackBarInfo.withDismissAction,
+                        duration = SnackbarDuration.Short
+                    )
+                }
             }
         },
         gesturesEnabled = modalDrawerGesturesEnabled

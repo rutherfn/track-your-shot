@@ -39,6 +39,8 @@ data/room/build
 data/shared/build
 data/user/build
 
+data-store/build
+
 data-test/firebase/build
 data-test/room/build
 data-test/user/build
@@ -67,8 +69,6 @@ helper/notifications/build
 helper/ui/build
 
 navigation/build
-
-shared-preference/build
 
 # Local configuration file (sdk path, etc)
 local.properties

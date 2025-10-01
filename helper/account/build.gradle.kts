@@ -48,7 +48,7 @@ android {
     sourceSets {
         getByName("main") {
             java {
-                srcDirs("src/main/java", "src/main/test")
+                srcDirs("src/main/java")
             }
         }
     }
@@ -66,12 +66,12 @@ android {
 
 dependencies {
     api(project(path = ":data:room"))
+    api(project(path = ":data-store"))
     api(project(path = ":helper:constants"))
     api(project(path = ":helper:extensions"))
     api(project(path = ":firebase:core"))
     api(project(path = ":firebase:util"))
     api(project(path = ":navigation"))
-    api(project(path = ":shared-preference"))
 
     implementation(libs.kotlinx.coroutines.core.jvm)
 

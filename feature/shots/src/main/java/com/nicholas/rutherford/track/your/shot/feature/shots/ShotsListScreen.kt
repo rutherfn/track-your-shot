@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.shots
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,6 +47,10 @@ import java.util.Date
 @Composable
 fun ShotsListScreen(params: ShotsListScreenParams) {
     val isShotListEmpty = params.state.shotList.isEmpty()
+
+    BackHandler {
+        params.onToolbarMenuClicked.invoke()
+    }
 
     if (!isShotListEmpty) {
         ShotsList(params = params)

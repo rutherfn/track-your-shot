@@ -57,4 +57,12 @@ interface DeleteFirebaseUserInfo {
      * @return [Flow] emitting true if the deletion was successful, false otherwise.
      */
     fun deleteReport(reportKey: String): Flow<Boolean>
+
+    /**
+     * Deletes a user from Firebase Realtime Database by their unique user ID.
+     *
+     * @param uid The unique identifier of the user to delete from the database.
+     * @return [Flow] emitting true if deletion succeeded, false otherwise.
+     */
+    fun deleteUser(uid: String): Flow<Boolean>
 }

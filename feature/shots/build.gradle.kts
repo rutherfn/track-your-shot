@@ -59,7 +59,7 @@ android {
     sourceSets {
         getByName("main") {
             java {
-                srcDirs("src/main/java", "src/main/test")
+                srcDirs("src/main/java")
             }
         }
     }
@@ -77,9 +77,9 @@ android {
 
 dependencies {
     api(project(path = ":base:vm"))
+    api(project(path = ":data-store"))
     api(project(path = ":compose:components"))
     api(project(path = ":navigation"))
-    api(project(path = ":shared-preference"))
 
     debugImplementation(libs.androidx.ui.tooling.preview)
 
