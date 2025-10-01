@@ -6,4 +6,5 @@
     <string name="delete_account" translatable="false">Delete Account</string>
     <string name="in_app_firebase_viewer" translatable="false">In App Firebase Viewer</string>
     <string name="toggles" translatable="false">Toggles</string>
+    <string name="view_debug_toggles" translatable="false">View Debug Toggles</string>
 </resources>
