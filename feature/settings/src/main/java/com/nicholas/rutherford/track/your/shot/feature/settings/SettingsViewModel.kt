@@ -167,9 +167,6 @@ class SettingsViewModel(
             application.getString(StringsIds.enabledPermissions) -> navigation.navigateToEnabledPermissions()
             application.getString(StringsIds.viewMoreInfo) -> navigation.navigateToPermissionEducationScreen()
             application.getString(StringsIds.deleteAccount) -> navigation.alert(alert = deleteAccountAlert())
-            application.getString(StringsIds.inAppFirebaseViewer) -> {
-                // todo -> add functionality for in app firebase viewer that will be a debug feature only
-            }
             else -> navigation.navigateToDebugToggles()
         }
     }
