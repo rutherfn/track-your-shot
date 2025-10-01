@@ -70,6 +70,8 @@ helper/ui/build
 
 navigation/build
 
+voice-commands/build
+
 # Local configuration file (sdk path, etc)
 local.properties
 
