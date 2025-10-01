@@ -55,14 +55,14 @@ class LoginViewModelTest {
     @BeforeEach
     fun beforeEach() {
         Dispatchers.setMain(testDispatcher)
-        
+
         // Mock Application.getString() calls
         every { application.getString(StringsIds.empty) } returns ""
         every { application.getString(StringsIds.emptyField) } returns "Empty Field"
         every { application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToLoginToExistingAccount) } returns "Email is required"
         every { application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount) } returns "Password is required"
         every { application.getString(StringsIds.gotIt) } returns "Got it"
-        
+
         viewModel = LoginViewModel(
             application = application,
             navigation = navigation,
