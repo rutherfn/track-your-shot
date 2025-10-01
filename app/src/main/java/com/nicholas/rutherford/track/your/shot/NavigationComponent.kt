@@ -53,6 +53,7 @@ import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
 import com.nicholas.rutherford.track.your.shot.navigation.ReportingAction
 import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
 import com.nicholas.rutherford.track.your.shot.navigation.ShotsAction
+import com.nicholas.rutherford.track.your.shot.navigation.VoiceCommandsAction
 import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
 import kotlinx.coroutines.launch
 
@@ -290,13 +291,7 @@ fun NavigationComponent(
         drawerState = drawerState,
         drawerContent = {
             DrawerContent(
-                actions = listOf(
-                    PlayersListAction,
-                    ShotsAction,
-                    ReportingAction,
-                    SettingsAction,
-                    LogoutAction
-                ),
+                actions = mainActivityViewModel.buildDrawerActions(),
                 onDestinationClicked = { route, navOptions, titleId ->
                     scope.launch { drawerState.close() }
                     if (route.isEmpty()) {

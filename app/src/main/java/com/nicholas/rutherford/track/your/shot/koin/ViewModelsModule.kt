@@ -48,7 +48,8 @@ object ViewModelsModule {
             MainActivityViewModel(
                 accountManager = get(),
                 scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
-                network = get()
+                network = get(),
+                dataStorePreferenceReader = get()
             )
         }
 
