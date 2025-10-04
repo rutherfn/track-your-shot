@@ -57,4 +57,9 @@ object Constants {
     const val TITLE = "title"
     const val USERNAME = "userName"
     const val USERS = "users"
+    const val VOICE_COMMAND_START_VALUE = 0
+    const val VOICE_COMMAND_STOP_VALUE = 1
+    const val VOICE_COMMAND_MAKE_VALUE = 2
+    const val VOICE_COMMAND_MISS_VALUE = 3
+    const val VOICE_COMMAND_NONE_VALUE = 3
 }

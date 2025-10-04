@@ -71,6 +71,9 @@ import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenPara
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsParams
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsScreen
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsViewModel
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArguments
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
@@ -807,6 +810,31 @@ object AppNavigationGraph {
             updateAppBar(appBar = appBarFactory.createReportScreenAppBar(params = createReportParams))
 
             CreateReportScreen(params = createReportParams)
+        }
+    }
+
+    /**
+     * Adds the VoiceCommands destination to the NavGraph.
+     * Retrieves [VoiceCommandsViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [VoiceCommandsScreen].
+     * Displays the [VoiceCommandsScreen] composable
+     */
+    fun NavGraphBuilder.voiceCommandsScreen() {
+        composable(
+            route = NavigationDestinations.VOICE_COMMANDS_SCREEN
+        ) {
+            val voiceCommandsViewModel: VoiceCommandsViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
+
+            val params = VoiceCommandsParams(
+                state = voiceCommandsViewModel.voiceCommandsStateFlow.collectAsState().value
+            )
+
+            ObserveLifecycle(viewModel = voiceCommandsViewModel)
+
+            updateAppBar(appBar = appBarFactory.createVoiceCommandScreenAppBar(voiceCommandsViewModel = voiceCommandsViewModel))
+
+            VoiceCommandsScreen(params = params)
         }
     }
 

@@ -42,6 +42,8 @@ import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsNavigation
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsNavigationImpl
 import org.koin.dsl.module
 
 /**
@@ -160,6 +162,10 @@ object NavigationModule {
         /** Navigation for Create/Edit Declared Shot screen. */
         single<CreateEditDeclaredShotNavigation> {
             CreateEditDeclaredShotNavigationImpl(navigator = get())
+        }
+
+        single<VoiceCommandsNavigation> {
+            VoiceCommandsNavigationImpl(navigator = get())
         }
     }
 }

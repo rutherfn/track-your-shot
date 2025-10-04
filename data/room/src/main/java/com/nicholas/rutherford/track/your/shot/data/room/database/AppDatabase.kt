@@ -6,11 +6,13 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.nicholas.rutherford.track.your.shot.data.room.converters.PlayerPositionsConverter
 import com.nicholas.rutherford.track.your.shot.data.room.converters.ShotLoggedConverter
+import com.nicholas.rutherford.track.your.shot.data.room.converters.VoiceCommandTypesConverter
 import com.nicholas.rutherford.track.your.shot.data.room.dao.ActiveUserDao
 import com.nicholas.rutherford.track.your.shot.data.room.dao.DeclaredShotDao
 import com.nicholas.rutherford.track.your.shot.data.room.dao.IndividualPlayerReportDao
 import com.nicholas.rutherford.track.your.shot.data.room.dao.PendingPlayerDao
 import com.nicholas.rutherford.track.your.shot.data.room.dao.PlayerDao
+import com.nicholas.rutherford.track.your.shot.data.room.dao.SavedVoiceCommandDao
 import com.nicholas.rutherford.track.your.shot.data.room.dao.ShotIgnoringDao
 import com.nicholas.rutherford.track.your.shot.data.room.dao.UserDao
 import com.nicholas.rutherford.track.your.shot.data.room.entities.ActiveUserEntity
@@ -18,6 +20,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.DeclaredShotEn
 import com.nicholas.rutherford.track.your.shot.data.room.entities.IndividualPlayerReportEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.PendingPlayerEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerEntity
+import com.nicholas.rutherford.track.your.shot.data.room.entities.SavedVoiceCommandEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.ShotIgnoringEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.UserEntity
 
@@ -33,6 +36,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.UserEntity
  * - [DeclaredShotDao]
  * - [IndividualPlayerReportDao]
  * - [PendingPlayerDao]
+ * - [SavedVoiceCommandDao]
  * - [PlayerDao]
  * - [ShotIgnoringDao]
  * - [UserDao]
@@ -44,6 +48,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.UserEntity
         IndividualPlayerReportEntity::class,
         PendingPlayerEntity::class,
         PlayerEntity::class,
+        SavedVoiceCommandEntity::class,
         ShotIgnoringEntity::class,
         UserEntity::class
     ],
@@ -57,12 +62,13 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.UserEntity
         AutoMigration(from = 7, to = 8),
         AutoMigration(from = 8, to = 9),
         AutoMigration(from = 9, to = 10),
-        AutoMigration(from = 10, to = 11)
+        AutoMigration(from = 10, to = 11),
+        AutoMigration(from = 11, to = 12)
     ],
-    version = 11,
+    version = 12,
     exportSchema = true
 )
-@TypeConverters(PlayerPositionsConverter::class, ShotLoggedConverter::class)
+@TypeConverters(PlayerPositionsConverter::class, ShotLoggedConverter::class, VoiceCommandTypesConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     /** Provides access to ActiveUser table operations. */
@@ -79,6 +85,9 @@ abstract class AppDatabase : RoomDatabase() {
 
     /** Provides access to Player table operations. */
     abstract fun playerDao(): PlayerDao
+
+    /** Provides access to SavedVoiceCommand table operations. */
+    abstract fun savedVoiceCommandsDao(): SavedVoiceCommandDao
 
     /** Provides access to ShotIgnoring table operations. */
     abstract fun shotIgnoringDao(): ShotIgnoringDao

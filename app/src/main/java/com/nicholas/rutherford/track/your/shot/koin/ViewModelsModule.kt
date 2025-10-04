@@ -24,6 +24,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -307,6 +308,14 @@ object ViewModelsModule {
                 playerRepository = get(),
                 dataStorePreferencesWriter = get(),
                 dataStorePreferencesReader = get()
+            )
+        }
+
+        viewModel {
+            VoiceCommandsViewModel(
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
+                navigation = get(),
+                savedVoiceCommandRepository = get()
             )
         }
     }

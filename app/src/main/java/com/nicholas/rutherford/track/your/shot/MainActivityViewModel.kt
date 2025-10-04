@@ -65,7 +65,7 @@ class MainActivityViewModel(
     }
 
     /**
-     * Collects
+     * Collects the read voice toggled debug enabled flow from the [dataStorePreferenceReader]
      */
     fun collectReadVoiceToggledDebugEnabledFlow() {
         collectFlow(flow = dataStorePreferenceReader.readVoiceToggledDebugEnabledFlow()) { enabled ->
@@ -73,6 +73,11 @@ class MainActivityViewModel(
         }
     }
 
+    /**
+     * Builds a list of [DrawerAction] for the drawer menu.
+     *
+     * @return A list of [DrawerAction].
+     */
     fun buildDrawerActions(): List<DrawerAction> {
         val drawerActions: ArrayList<DrawerAction> = arrayListOf()
 

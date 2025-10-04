@@ -136,7 +136,9 @@ object StringsIds {
     val logShot = R.string.log_shot
     val logYourShotsDescription = R.string.log_your_shots_description
     val logYourShots = R.string.log_your_shots
+    val make = R.string.make
     val manageDeclaredShots = R.string.manage_declared_shots
+    val miss = R.string.miss
     val moreInfo = R.string.more_info
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
@@ -150,6 +152,7 @@ object StringsIds {
     val noPlayersCreatedDescription = R.string.no_players_created_description
     val noReportsGenerated = R.string.no_reports_generated
     val noCurrentShotsLoggedForPlayer = R.string.no_current_shots_logged_for_player
+    val none = R.string.none
     val noFirstNameEntered = R.string.no_first_name_entered
     val noShotsCreated = R.string.no_shots_created
     val noShotsCreatedDescription = R.string.no_shots_created_descriipton
@@ -252,7 +255,9 @@ object StringsIds {
     val sf = R.string.sf
     val shootingGuard = R.string.shooting_guard
     val sg = R.string.sg
+    val start = R.string.start
     val stats = R.string.stats
+    val stop = R.string.stop
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
     val takeAPicture = R.string.take_a_picture
     val tapForMore = R.string.tap_for_more

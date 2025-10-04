@@ -29,6 +29,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredsh
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsParams
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsViewModel
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -258,6 +260,16 @@ class AppBarFactoryImpl(
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = false,
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() }
+        )
+
+    /** Creates AppBar for voice command screen. */
+    override fun createVoiceCommandScreenAppBar(voiceCommandsViewModel: VoiceCommandsViewModel): AppBar =
+        AppBar(
+            toolbarId = StringsIds.voiceCommands,
+            shouldShowMiddleContentAppBar = true,
+            onIconButtonClicked = { voiceCommandsViewModel.onToolbarMenuClicked() },
+            onSecondaryIconButtonClicked = {  },
+            shouldIncludeSpaceAfterDeclaration = false
         )
 
     /** Creates a default AppBar that is hidden. */

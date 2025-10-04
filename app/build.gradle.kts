@@ -112,6 +112,7 @@ dependencies {
     api(project(path = ":feature:settings"))
     api(project(path = ":feature:shots"))
     api(project(path = ":feature:splash"))
+    api(project(path = ":feature:voice-commands"))
     api(project(path = ":helper:account"))
     api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:file-generator"))

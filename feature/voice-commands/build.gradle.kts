@@ -76,10 +76,19 @@ android {
 }
 
 dependencies {
+    api(project(path = ":base:vm"))
+    api(project(path = ":data:room"))
+    api(project(path = ":firebase:core"))
+    api(project(path = ":navigation"))
+
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.androidx.material3)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.voice.flow)
 
     implementation(libs.androidx.ui.tooling.preview)
+
+    testImplementation(project(path = ":data-test:firebase"))
+    testImplementation(project(path = ":data-test:room"))
 }
