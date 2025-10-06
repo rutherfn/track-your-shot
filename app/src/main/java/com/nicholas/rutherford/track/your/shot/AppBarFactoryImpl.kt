@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Help
+import androidx.compose.material.icons.automirrored.filled.LiveHelp
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
@@ -30,6 +31,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandViewModel
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -268,6 +270,16 @@ class AppBarFactoryImpl(
             shouldShowMiddleContentAppBar = true,
             onIconButtonClicked = { voiceCommandsViewModel.onToolbarMenuClicked() },
             onSecondaryIconButtonClicked = {  },
+            shouldIncludeSpaceAfterDeclaration = false,
+            secondaryImageVector = Icons.AutoMirrored.Filled.LiveHelp
+        )
+
+    override fun createVoiceCommandCreateScreenAppBar(createVoiceCommandViewModel: CreateVoiceCommandViewModel): AppBar =
+        AppBar(
+            toolbarId = StringsIds.createVoiceCommands,
+            shouldShowMiddleContentAppBar = false,
+            onIconButtonClicked = { createVoiceCommandViewModel.onToolbarMenuClicked() },
+            onSecondaryIconButtonClicked = {},
             shouldIncludeSpaceAfterDeclaration = false
         )
 

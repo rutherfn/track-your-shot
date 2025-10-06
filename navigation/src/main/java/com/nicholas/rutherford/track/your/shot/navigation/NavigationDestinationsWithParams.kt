@@ -89,6 +89,15 @@ object NavigationDestinationsWithParams {
             "${NavigationDestinations.PARAM_SHOULD_SHOW_ALL_PLAYERS_SHOTS}=$shouldShowAllPlayersShots"
     }
 
+    fun createVoiceCommandCreateScreenWitParams(type: Int?, phrase: String?): String {
+        val typeParam = type ?: -1
+        val phraseParam = phrase ?: ""
+
+        return "${NavigationDestinations.CREATE_VOICE_COMMANDS_SCREEN}?" +
+                "${NavigationDestinations.VOICE_COMMAND_TYPE_VALUE_PARAM}=$typeParam&" +
+                "${NavigationDestinations.RECORDED_PHRASE_PARAM}=$phraseParam"
+    }
+
     /**
      * Builds the create/edit declared shot screen route with a shot name.
      *

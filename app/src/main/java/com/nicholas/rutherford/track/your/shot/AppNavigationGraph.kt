@@ -74,6 +74,9 @@ import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsParams
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsScreen
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandParams
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandScreen
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandViewModel
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArguments
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
@@ -828,7 +831,9 @@ object AppNavigationGraph {
 
             val params = VoiceCommandsParams(
                 state = voiceCommandsViewModel.voiceCommandsStateFlow.collectAsState().value,
+                onToolbarMenuClicked = { voiceCommandsViewModel.onToolbarMenuClicked() },
                 onFilterSelected = { filter -> voiceCommandsViewModel.onFilterSelected(filter) },
+                onCreateCommandTypeClicked = { type, phrase -> voiceCommandsViewModel.onCreateCommandTypeClicked(type = type, phrase = phrase) }
             )
 
             ObserveLifecycle(viewModel = voiceCommandsViewModel)
@@ -836,6 +841,29 @@ object AppNavigationGraph {
             updateAppBar(appBar = appBarFactory.createVoiceCommandScreenAppBar(voiceCommandsViewModel = voiceCommandsViewModel))
 
             VoiceCommandsScreen(params = params)
+        }
+    }
+
+    fun NavGraphBuilder.createVoiceCommandScreen() {
+        composable(
+            route = NavigationDestinations.CREATE_VOICE_COMMAND_SCREEN_WITH_PARAMS,
+            arguments = NavArguments.createVoiceCommand
+        ) { entry ->
+            val createVoiceCommandViewModel: CreateVoiceCommandViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
+
+            val params = CreateVoiceCommandParams(
+                state = createVoiceCommandViewModel.createVoiceCommandStateFlow.collectAsState().value,
+                onRecordClicked = {},
+                onSaveClicked = {},
+                onToolbarMenuClicked = {}
+            )
+
+            ObserveLifecycle(viewModel = createVoiceCommandViewModel)
+
+            updateAppBar(appBar = appBarFactory.createVoiceCommandCreateScreenAppBar(createVoiceCommandViewModel = createVoiceCommandViewModel))
+
+            CreateVoiceCommandScreen(params = params)
         }
     }
 

@@ -50,6 +50,7 @@
     <string name="create_shot">Create Shot</string>
     <string name="create_your_players_profile">Create Your Players Profile</string>
     <string name="create_your_player_profile_description">Begin by creating a player profile, including details like first name, last name, position, and a player image.</string>
+    <string name="create_voice_commands">Create Voice Commands</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
     <string name="current_players_has_no_changes_description">There haven\'t been any recent updates or modifications to the current player. Please make adjustments to the existing player to proceed.</string>
     <string name="current_shot_has_been_updated_description">The current shot has been updated. To see the latest information, click on the shot to view the updates.</string>

@@ -44,6 +44,9 @@ import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsNavigation
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandNavigation
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandState
 import org.koin.dsl.module
 
 /**
@@ -60,112 +63,73 @@ object NavigationModule {
     val modules = module {
 
         /** Navigation for the Splash screen. */
-        single<SplashNavigation> {
-            SplashNavigationImpl(navigator = get())
-        }
+        single<SplashNavigation> { SplashNavigationImpl(navigator = get()) }
 
         /** Navigation for the Login screen. */
-        single<LoginNavigation> {
-            LoginNavigationImpl(navigator = get())
-        }
+        single<LoginNavigation> { LoginNavigationImpl(navigator = get()) }
 
         /** Navigation for the Forgot Password screen. */
-        single<ForgotPasswordNavigation> {
-            ForgotPasswordNavigationImpl(navigator = get())
-        }
+        single<ForgotPasswordNavigation> { ForgotPasswordNavigationImpl(navigator = get()) }
 
         /** Navigation for the Create Account screen. */
-        single<CreateAccountNavigation> {
-            CreateAccountNavigationImpl(navigator = get())
-        }
+        single<CreateAccountNavigation> { CreateAccountNavigationImpl(navigator = get()) }
 
         /** Navigation for the Authentication screen. */
-        single<AuthenticationNavigation> {
-            AuthenticationNavigationImpl(navigator = get())
-        }
+        single<AuthenticationNavigation> { AuthenticationNavigationImpl(navigator = get()) }
 
         /** Navigation for the Players List screen. */
-        single<PlayersListNavigation> {
-            PlayersListNavigationImpl(navigator = get())
-        }
+        single<PlayersListNavigation> { PlayersListNavigationImpl(navigator = get()) }
 
         /** Navigation for Create/Edit Player screen. */
-        single<CreateEditPlayerNavigation> {
-            CreateEditPlayerNavigationImpl(navigator = get())
-        }
+        single<CreateEditPlayerNavigation> { CreateEditPlayerNavigationImpl(navigator = get()) }
 
         /** Navigation for Select Shot screen. */
-        single<SelectShotNavigation> {
-            SelectShotNavigationImpl(navigator = get())
-        }
+        single<SelectShotNavigation> { SelectShotNavigationImpl(navigator = get()) }
 
         /** Navigation for Log Shot screen. */
-        single<LogShotNavigation> {
-            LogShotNavigationImpl(navigator = get())
-        }
+        single<LogShotNavigation> { LogShotNavigationImpl(navigator = get()) }
 
         /** Navigation for Settings screen. */
-        single<SettingsNavigation> {
-            SettingsNavigationImpl(navigator = get())
-        }
+        single<SettingsNavigation> { SettingsNavigationImpl(navigator = get()) }
 
         /** Navigation for Permission Education screen. */
-        single<PermissionEducationNavigation> {
-            PermissionEducationNavigationImpl(navigator = get())
-        }
+        single<PermissionEducationNavigation> { PermissionEducationNavigationImpl(navigator = get()) }
 
         /** Navigation for Terms and Conditions screen. */
-        single<TermsConditionsNavigation> {
-            TermsConditionsNavigationImpl(navigator = get())
-        }
+        single<TermsConditionsNavigation> { TermsConditionsNavigationImpl(navigator = get()) }
 
         /** Navigation for Enabled Permissions screen. */
-        single<EnabledPermissionsNavigation> {
-            EnabledPermissionsNavigationImpl(navigator = get())
-        }
+        single<EnabledPermissionsNavigation> { EnabledPermissionsNavigationImpl(navigator = get()) }
 
         /** Navigation for Debug Toggle screen. */
-        single<DebugToggleNavigation> {
-            DebugToggleNavigationImpl(navigator = get())
-        }
+        single<DebugToggleNavigation> { DebugToggleNavigationImpl(navigator = get()) }
 
         /** Navigation for Onboarding Education screen. */
-        single<OnboardingEducationNavigation> {
-            OnboardingEducationNavigationImpl(navigator = get())
-        }
+        single<OnboardingEducationNavigation> { OnboardingEducationNavigationImpl(navigator = get()) }
 
         /** Navigation for Account Info screen. */
-        single<AccountInfoNavigation> {
-            AccountInfoNavigationImpl(navigator = get())
-        }
+        single<AccountInfoNavigation> { AccountInfoNavigationImpl(navigator = get()) }
 
         /** Navigation for Report List screen. */
-        single<ReportListNavigation> {
-            ReportListNavigationImpl(navigator = get())
-        }
+        single<ReportListNavigation> { ReportListNavigationImpl(navigator = get()) }
 
         /** Navigation for Create Report screen. */
-        single<CreateReportNavigation> {
-            CreateReportNavigationImpl(navigator = get())
-        }
+        single<CreateReportNavigation> { CreateReportNavigationImpl(navigator = get()) }
 
         /** Navigation for Shots List screen. */
-        single<ShotsListNavigation> {
-            ShotsListNavigationImpl(navigator = get())
-        }
+        single<ShotsListNavigation> { ShotsListNavigationImpl(navigator = get()) }
 
         /** Navigation for Declared Shots List screen. */
-        single<DeclaredShotsListNavigation> {
-            DeclaredShotsListNavigationImpl(navigator = get())
-        }
+        single<DeclaredShotsListNavigation> { DeclaredShotsListNavigationImpl(navigator = get()) }
 
         /** Navigation for Create/Edit Declared Shot screen. */
-        single<CreateEditDeclaredShotNavigation> {
-            CreateEditDeclaredShotNavigationImpl(navigator = get())
-        }
+        single<CreateEditDeclaredShotNavigation> { CreateEditDeclaredShotNavigationImpl(navigator = get()) }
 
-        single<VoiceCommandsNavigation> {
-            VoiceCommandsNavigationImpl(navigator = get())
-        }
+        /** Navigation for Voice Commands screen. */
+        single<VoiceCommandsNavigation> { VoiceCommandsNavigationImpl(navigator = get()) }
+
+        /** Navigation for Create Voice Command screen. */
+        single<CreateVoiceCommandNavigation> { CreateVoiceCommandNavigationImpl(navigator = get()) }
+
     }
 }

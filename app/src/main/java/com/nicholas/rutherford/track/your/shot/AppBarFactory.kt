@@ -20,6 +20,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandViewModel
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -100,6 +101,8 @@ interface AppBarFactory {
 
     /** Creates an AppBar for voice command screen. */
     fun createVoiceCommandScreenAppBar(voiceCommandsViewModel: VoiceCommandsViewModel): AppBar
+
+    fun createVoiceCommandCreateScreenAppBar(createVoiceCommandViewModel: CreateVoiceCommandViewModel): AppBar
 
     /** Creates a default, hidden AppBar. */
     fun createDefaultAppBar(): AppBar

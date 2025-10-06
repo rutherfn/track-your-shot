@@ -58,4 +58,6 @@ class VoiceCommandsViewModel(
             else -> state.missCommands
         }
     }
+
+    fun onCreateCommandTypeClicked(type: Int?, phrase: String?) = navigation.navigateToCreateVoiceCommand(type = type, phrase = phrase)
 }

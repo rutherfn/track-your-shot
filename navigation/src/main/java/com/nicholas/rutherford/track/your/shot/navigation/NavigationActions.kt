@@ -508,4 +508,16 @@ object NavigationActions {
                 .build()
         }
     }
+
+    object VoiceCommands {
+
+        fun createVoiceCommandsWithParams(type: Int?, phrase: String?) = object : NavigationAction {
+            override val destination: String = NavigationDestinationsWithParams.createVoiceCommandCreateScreenWitParams(type = type, phrase = phrase)
+
+            override val navOptions = NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .setLaunchSingleTop(true)
+                .build()
+        }
+    }
 }

@@ -56,6 +56,7 @@ object StringsIds {
     val createPlayer = R.string.create_player
     val createShot = R.string.create_shot
     val createPlayerReport = R.string.create_player_report
+    val createVoiceCommands = R.string.create_voice_commands
     val createYourPlayersProfile = R.string.create_your_players_profile
     val createYourPlayerProfileDescription = R.string.create_your_player_profile_description
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount =

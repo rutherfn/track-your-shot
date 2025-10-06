@@ -36,9 +36,13 @@ object NavigationDestinations {
     const val ACCOUNT_INFO_SCREEN_WITH_PARAMS = "accountInfoScreen?username={username}&email={email}"
     const val SETTINGS_SCREEN = "settingsScreen"
     const val STATS_SCREEN = "statsScreen"
+    const val CREATE_VOICE_COMMANDS_SCREEN = "createVoiceCommandScreen"
+    const val CREATE_VOICE_COMMAND_SCREEN_WITH_PARAMS = "createVoiceCommandScreen?voiceCommandTypeValueParam={voiceCommandTypeValueParam}&recordedPhraseParam={recordedPhraseParam}"
     const val VOICE_COMMANDS_SCREEN = "voiceCommandsScreen"
 
     // Param keys
+    const val VOICE_COMMAND_TYPE_VALUE_PARAM = "voiceCommandTypeValueParam"
+    const val RECORDED_PHRASE_PARAM = "recordedPhraseParam"
     const val PARAM_USERNAME = "username"
     const val PARAM_EMAIL = "email"
     const val PARAM_SHOT_NAME = "shotName"

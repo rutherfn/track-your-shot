@@ -25,6 +25,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandScreen
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -311,11 +313,20 @@ object ViewModelsModule {
             )
         }
 
+        /** Voice Commands screen ViewModel */
         viewModel {
             VoiceCommandsViewModel(
                 scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
                 navigation = get(),
                 savedVoiceCommandRepository = get()
+            )
+        }
+
+        /** Create Voice Commands Screen ViewModel */
+        viewModel { (stateHandle: SavedStateHandle) ->
+            CreateVoiceCommandViewModel(
+                savedStateHandle = stateHandle,
+                navigation = get()
             )
         }
     }
