@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nicholas.rutherford.track.your.shot.feature.voice.commands" >
-
-    <uses-sdk android:minSdkVersion="26" />
-
-</manifest>
