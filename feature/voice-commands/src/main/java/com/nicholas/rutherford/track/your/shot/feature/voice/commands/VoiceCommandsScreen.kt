@@ -37,6 +37,15 @@ fun VoiceCommandsScreen(params: VoiceCommandsParams) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
+        
+        Text(
+            text = "Set up voice commands to quickly log your shots while playing. Say your custom words to automatically track makes and misses without stopping your game.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -64,50 +73,5 @@ fun VoiceCommandsScreen(params: VoiceCommandsParams) {
         }
         
         Spacer(modifier = Modifier.height(16.dp))
-
-
-        if (state.filteredCommands.isEmpty()) {
-            Text(
-                text = "No voice commands found for this filter",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        } else {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                state.filteredCommands.forEach { command ->
-                    VoiceCommandCard(command = command)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun VoiceCommandCard(command: SavedVoiceCommand) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = command.name,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.weight(1f)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = command.type.toDisplayLabel(),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
     }
 }

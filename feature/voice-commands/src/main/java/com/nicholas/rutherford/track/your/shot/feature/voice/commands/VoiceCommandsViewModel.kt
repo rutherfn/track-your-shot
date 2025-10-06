@@ -52,13 +52,10 @@ class VoiceCommandsViewModel(
 
     private fun buildFilteredSavedCommands(state: VoiceCommandsState): List<SavedVoiceCommand> {
         return when (state.selectedFilter) {
-            VoiceCommandFilter.VIEW_ALL -> getAllCommands(state = state)
             VoiceCommandFilter.START -> state.startCommands
             VoiceCommandFilter.STOP -> state.stopCommands
             VoiceCommandFilter.MAKE -> state.makeCommands
-            VoiceCommandFilter.MISS -> state.missCommands
+            else -> state.missCommands
         }
     }
-
-    private fun getAllCommands(state: VoiceCommandsState): List<SavedVoiceCommand> = state.startCommands + state.stopCommands + state.makeCommands + state.missCommands + state.noneCommands
 }
