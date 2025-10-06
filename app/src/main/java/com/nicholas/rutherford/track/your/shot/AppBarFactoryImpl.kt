@@ -29,7 +29,6 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredsh
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsParams
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsViewModel
 
 /**

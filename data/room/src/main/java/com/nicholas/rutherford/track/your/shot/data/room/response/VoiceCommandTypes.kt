@@ -47,6 +47,16 @@ sealed class VoiceCommandTypes(val value: Int) {
             }
         }
 
+        fun VoiceCommandTypes.toDisplayLabel(): String {
+            return when (this) {
+                VoiceCommandTypes.Start -> "Start"
+                VoiceCommandTypes.Stop -> "Stop"
+                VoiceCommandTypes.Make -> "Make"
+                VoiceCommandTypes.Miss -> "Miss"
+                VoiceCommandTypes.None -> "None"
+            }
+        }
+
         /**
          * Converts a [VoiceCommandTypes] instance to a localized string representing the voice command.
          *

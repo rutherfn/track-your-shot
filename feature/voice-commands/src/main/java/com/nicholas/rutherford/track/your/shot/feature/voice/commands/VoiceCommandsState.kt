@@ -7,5 +7,7 @@ data class VoiceCommandsState(
     val stopCommands: List<SavedVoiceCommand> = emptyList(),
     val makeCommands: List<SavedVoiceCommand> = emptyList(),
     val missCommands: List<SavedVoiceCommand> = emptyList(),
-    val noneCommands: List<SavedVoiceCommand> = emptyList()
+    val noneCommands: List<SavedVoiceCommand> = emptyList(),
+    val selectedFilter: VoiceCommandFilter = VoiceCommandFilter.VIEW_ALL,
+    val filteredCommands: List<SavedVoiceCommand> = emptyList()
 )

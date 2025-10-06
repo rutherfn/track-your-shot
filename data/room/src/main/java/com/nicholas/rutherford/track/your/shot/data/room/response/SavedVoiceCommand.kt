@@ -8,6 +8,9 @@ data class SavedVoiceCommand(
     val type: VoiceCommandTypes
 )
 
+fun List<SavedVoiceCommand>.filterBy(type: VoiceCommandTypes) =
+    this.filter { command -> command.type == type }
+
 fun SavedVoiceCommand.toSavedVoiceCommandEntity(): SavedVoiceCommandEntity {
     return SavedVoiceCommandEntity(
         id = id,

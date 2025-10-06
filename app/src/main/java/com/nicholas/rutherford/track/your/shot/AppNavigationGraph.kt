@@ -827,7 +827,8 @@ object AppNavigationGraph {
             val appBarFactory: AppBarFactory = koinInject()
 
             val params = VoiceCommandsParams(
-                state = voiceCommandsViewModel.voiceCommandsStateFlow.collectAsState().value
+                state = voiceCommandsViewModel.voiceCommandsStateFlow.collectAsState().value,
+                onFilterSelected = { filter -> voiceCommandsViewModel.onFilterSelected(filter) },
             )
 
             ObserveLifecycle(viewModel = voiceCommandsViewModel)
