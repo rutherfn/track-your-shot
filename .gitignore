@@ -56,6 +56,8 @@ feature/reports/build
 feature/settings/build
 feature/splash/build
 
+feature/voice-commands/build
+
 firebase/core/build
 firebase/util/build
 
@@ -69,8 +71,6 @@ helper/notifications/build
 helper/ui/build
 
 navigation/build
-
-voice-commands/build
 
 # Local configuration file (sdk path, etc)
 local.properties

@@ -28,5 +28,8 @@ class CreateVoiceCommandViewModel(
         phrase = recordedPhraseParam
     }
 
-    fun onToolbarMenuClicked() = navigation.pop()
+    fun onToolbarMenuClicked() {
+        println("test")
+        navigation.pop()
+    }
 }

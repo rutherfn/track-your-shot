@@ -856,7 +856,7 @@ object AppNavigationGraph {
                 state = createVoiceCommandViewModel.createVoiceCommandStateFlow.collectAsState().value,
                 onRecordClicked = {},
                 onSaveClicked = {},
-                onToolbarMenuClicked = {}
+                onToolbarMenuClicked = { createVoiceCommandViewModel.onToolbarMenuClicked() }
             )
 
             ObserveLifecycle(viewModel = createVoiceCommandViewModel)

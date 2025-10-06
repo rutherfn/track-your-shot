@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,9 +36,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTy
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
-fun CreateVoiceCommandScreen(
-    params: CreateVoiceCommandParams
-) {
+fun CreateVoiceCommandScreen(params: CreateVoiceCommandParams) {
+    BackHandler(enabled = true) { params.onToolbarMenuClicked.invoke() }
     val state = params.state
     
     Column(

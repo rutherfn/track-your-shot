@@ -70,6 +70,7 @@ data object VoiceCommandsAction : DrawerAction(
     route = NavigationDestinations.VOICE_COMMANDS_SCREEN,
     navOptions = NavOptions.Builder()
         .setPopUpTo(0, true)
+        .setLaunchSingleTop(true)
         .build()
 )
 

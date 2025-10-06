@@ -36,8 +36,6 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
 fun VoiceCommandsScreen(params: VoiceCommandsParams) {
-    BackHandler(true) { params.onToolbarMenuClicked() }
-
     val state = params.state
     
     Column(

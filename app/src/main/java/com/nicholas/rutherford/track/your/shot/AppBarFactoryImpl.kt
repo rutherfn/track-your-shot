@@ -278,9 +278,7 @@ class AppBarFactoryImpl(
         AppBar(
             toolbarId = StringsIds.createVoiceCommands,
             shouldShowMiddleContentAppBar = false,
-            onIconButtonClicked = { createVoiceCommandViewModel.onToolbarMenuClicked() },
-            onSecondaryIconButtonClicked = {},
-            shouldIncludeSpaceAfterDeclaration = false
+            onIconButtonClicked = { createVoiceCommandViewModel.onToolbarMenuClicked() }
         )
 
     /** Creates a default AppBar that is hidden. */
