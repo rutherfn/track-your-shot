@@ -92,7 +92,6 @@ android {
 }
 
 dependencies {
-    implementation(files("../libs/voice-flow-core.aar"))
     implementation(libs.koin.androidx.navigation)
 
     implementation(libs.protolite.well.known.types)

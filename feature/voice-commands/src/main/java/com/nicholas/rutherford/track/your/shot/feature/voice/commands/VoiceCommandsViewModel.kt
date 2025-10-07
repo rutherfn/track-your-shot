@@ -11,6 +11,21 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-10-06
+ *
+ * ViewModel for seeing a list of your current voice commands saved from
+ * following categories: Start, Stop, Make, and Miss
+ *
+ * Responsibilities include:
+ * - Ability to manage voice commands tied to Start, Stop, Make, and Miss
+ * - Create new commands tied to Start, Stop, Make, and Miss
+ *
+ * @param application Provides access to string resources.
+ * @param authenticationFirebase Provides Firebase authentication functions.
+ * @param navigation Handles navigation and alert display.
+ * @param scope CoroutineScope for launching asynchronous tasks.
+ */
 class VoiceCommandsViewModel(
     scope: CoroutineScope,
     private val navigation: VoiceCommandsNavigation,

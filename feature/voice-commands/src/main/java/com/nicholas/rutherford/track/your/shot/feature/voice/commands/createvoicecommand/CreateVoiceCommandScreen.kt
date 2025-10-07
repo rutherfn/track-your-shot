@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes
-import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes.Companion.toDisplayLabel
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable

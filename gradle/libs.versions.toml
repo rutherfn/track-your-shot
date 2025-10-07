@@ -40,7 +40,6 @@ timber = "5.0.1"
 truth = "1.4.4"
 uiTestManifest = "1.8.3"
 protoliteWellKnownTypes = "18.0.1"
-voiceFlow = "master-SNAPSHOT"
 agp = "8.9.3"
 
 [libraries]
@@ -101,10 +100,7 @@ room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 protolite-well-known-types = { group = "com.google.firebase", name = "protolite-well-known-types", version.ref = "protoliteWellKnownTypes" }
-# voice-flow = { module = "com.github.rutherfn:core", version = "b97866c" } # Using local AAR instead
 
 [plugins]
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-android-library = { id = "com.android.library", version.ref = "agp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 

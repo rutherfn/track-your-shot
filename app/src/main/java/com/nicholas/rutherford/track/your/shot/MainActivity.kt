@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import com.nicholas.rutherford.voice.flow.core.VoiceCommand
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,8 +39,6 @@ open class MainActivity : ComponentActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        VoiceCommand
 
         // Allows the app to draw behind system bars for edge-to-edge experience
         WindowCompat.setDecorFitsSystemWindows(window, false)
