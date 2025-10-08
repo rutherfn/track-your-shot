@@ -30,7 +30,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredsh
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandViewModel
 
 /**
@@ -263,12 +263,12 @@ class AppBarFactoryImpl(
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() }
         )
 
-    /** Creates AppBar for voice command screen. */
-    override fun createVoiceCommandScreenAppBar(voiceCommandsViewModel: VoiceCommandsViewModel): AppBar =
+    /** Creates AppBar for voice command list screen. */
+    override fun createVoiceCommandListScreenAppBar(voiceCommandListViewModel: VoiceCommandListViewModel): AppBar =
         AppBar(
             toolbarId = StringsIds.voiceCommands,
             shouldShowMiddleContentAppBar = true,
-            onIconButtonClicked = { voiceCommandsViewModel.onToolbarMenuClicked() },
+            onIconButtonClicked = { voiceCommandListViewModel.onToolbarMenuClicked() },
             onSecondaryIconButtonClicked = {  },
             shouldIncludeSpaceAfterDeclaration = false,
             secondaryImageVector = Icons.AutoMirrored.Filled.LiveHelp

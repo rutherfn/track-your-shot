@@ -1,6 +1,5 @@
 package com.nicholas.rutherford.track.your.shot.feature.voice.commands
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,10 +31,12 @@ import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListParams
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListState
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
-fun VoiceCommandsScreen(params: VoiceCommandsParams) {
+fun VoiceCommandListScreen(params: VoiceCommandListParams) {
     val state = params.state
     
     Column(
@@ -62,7 +63,7 @@ fun VoiceCommandsScreen(params: VoiceCommandsParams) {
 
 @Composable
 private fun VoiceFilters(
-    state: VoiceCommandsState,
+    state: VoiceCommandListState,
     onFilterSelected: (filter: VoiceCommandFilter) -> Unit
 ) {
     Spacer(modifier = Modifier.height(16.dp))
@@ -102,7 +103,7 @@ private fun VoiceFilters(
 
 @Composable
 private fun VoiceCommandsEmptyStateContent(
-    state: VoiceCommandsState,
+    state: VoiceCommandListState,
     onCreateCommandTypeClicked: (type: Int?, phrase: String?) -> Unit
 ) {
     Card(
@@ -151,7 +152,7 @@ private fun VoiceCommandsEmptyStateContent(
 }
 
 @Composable
-private fun VoiceCommandTypeListContent(state: VoiceCommandsState) {
+private fun VoiceCommandTypeListContent(state: VoiceCommandListState) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {

@@ -1,8 +1,9 @@
-package com.nicholas.rutherford.track.your.shot.feature.voice.commands
+package com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist
 
 import com.nicholas.rutherford.track.your.shot.data.room.response.SavedVoiceCommand
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandFilter
 
-data class VoiceCommandsState(
+data class VoiceCommandListState(
     val startCommands: List<SavedVoiceCommand> = emptyList(),
     val stopCommands: List<SavedVoiceCommand> = emptyList(),
     val makeCommands: List<SavedVoiceCommand> = emptyList(),

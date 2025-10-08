@@ -71,9 +71,9 @@ import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenPara
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsParams
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsScreen
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListParams
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandListScreen
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandParams
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandScreen
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandViewModel
@@ -817,30 +817,30 @@ object AppNavigationGraph {
     }
 
     /**
-     * Adds the VoiceCommands destination to the NavGraph.
-     * Retrieves [VoiceCommandsViewModel] via Koin and observes its lifecycle.
-     * Collects UI state from the ViewModel and passes event callbacks to [VoiceCommandsScreen].
-     * Displays the [VoiceCommandsScreen] composable
+     * Adds the Voice Command List Screen destination to the NavGraph.
+     * Retrieves [VoiceCommandListViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [VoiceCommandListScreen].
+     * Displays the [VoiceCommandListScreen] composable
      */
-    fun NavGraphBuilder.voiceCommandsScreen() {
+    fun NavGraphBuilder.voiceCommandListScreen() {
         composable(
             route = NavigationDestinations.VOICE_COMMANDS_SCREEN
         ) {
-            val voiceCommandsViewModel: VoiceCommandsViewModel = koinViewModel()
+            val voiceCommandListViewModel: VoiceCommandListViewModel = koinViewModel()
             val appBarFactory: AppBarFactory = koinInject()
 
-            val params = VoiceCommandsParams(
-                state = voiceCommandsViewModel.voiceCommandsStateFlow.collectAsState().value,
-                onToolbarMenuClicked = { voiceCommandsViewModel.onToolbarMenuClicked() },
-                onFilterSelected = { filter -> voiceCommandsViewModel.onFilterSelected(filter) },
-                onCreateCommandTypeClicked = { type, phrase -> voiceCommandsViewModel.onCreateCommandTypeClicked(type = type, phrase = phrase) }
+            val params = VoiceCommandListParams(
+                state = voiceCommandListViewModel.voiceCommandsStateFlow.collectAsState().value,
+                onToolbarMenuClicked = { voiceCommandListViewModel.onToolbarMenuClicked() },
+                onFilterSelected = { filter -> voiceCommandListViewModel.onFilterSelected(filter) },
+                onCreateCommandTypeClicked = { type, phrase -> voiceCommandListViewModel.onCreateCommandTypeClicked(type = type, phrase = phrase) }
             )
 
-            ObserveLifecycle(viewModel = voiceCommandsViewModel)
+            ObserveLifecycle(viewModel = voiceCommandListViewModel)
 
-            updateAppBar(appBar = appBarFactory.createVoiceCommandScreenAppBar(voiceCommandsViewModel = voiceCommandsViewModel))
+            updateAppBar(appBar = appBarFactory.createVoiceCommandListScreenAppBar(voiceCommandListViewModel = voiceCommandListViewModel))
 
-            VoiceCommandsScreen(params = params)
+            VoiceCommandListScreen(params = params)
         }
     }
 

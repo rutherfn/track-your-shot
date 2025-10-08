@@ -42,11 +42,10 @@ import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsNavigation
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListNavigation
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandNavigation
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandNavigationImpl
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandState
 import org.koin.dsl.module
 
 /**
@@ -125,8 +124,8 @@ object NavigationModule {
         /** Navigation for Create/Edit Declared Shot screen. */
         single<CreateEditDeclaredShotNavigation> { CreateEditDeclaredShotNavigationImpl(navigator = get()) }
 
-        /** Navigation for Voice Commands screen. */
-        single<VoiceCommandsNavigation> { VoiceCommandsNavigationImpl(navigator = get()) }
+        /** Navigation for Voice Command List screen. */
+        single<VoiceCommandListNavigation> { VoiceCommandListNavigationImpl(navigator = get()) }
 
         /** Navigation for Create Voice Command screen. */
         single<CreateVoiceCommandNavigation> { CreateVoiceCommandNavigationImpl(navigator = get()) }

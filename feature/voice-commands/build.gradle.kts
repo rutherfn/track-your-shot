@@ -93,4 +93,14 @@ dependencies {
 
     testImplementation(project(path = ":data-test:firebase"))
     testImplementation(project(path = ":data-test:room"))
+
+    testImplementation(libs.kotlinx.coroutines.test)
+
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.android.junit5)
+
+    testImplementation(libs.mockk)
+
+    testRuntimeOnly(libs.junit.jupiter.engine)
 }

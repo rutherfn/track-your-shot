@@ -19,7 +19,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredsh
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandViewModel
 
 /**
@@ -99,8 +99,8 @@ interface AppBarFactory {
     /** Creates an AppBar for creating a report screen. */
     fun createReportScreenAppBar(params: CreateReportParams): AppBar
 
-    /** Creates an AppBar for voice command screen. */
-    fun createVoiceCommandScreenAppBar(voiceCommandsViewModel: VoiceCommandsViewModel): AppBar
+    /** Creates an AppBar for voice command list screen. */
+    fun createVoiceCommandListScreenAppBar(voiceCommandListViewModel: VoiceCommandListViewModel): AppBar
 
     fun createVoiceCommandCreateScreenAppBar(createVoiceCommandViewModel: CreateVoiceCommandViewModel): AppBar
 
