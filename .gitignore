@@ -16,6 +16,9 @@
 bin/
 gen/
 
+# Kotlin folder
+.kotlin
+
 # Ignore gradle files
 .gradle/
 build/kotlin
