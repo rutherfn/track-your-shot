@@ -277,7 +277,7 @@ class AppBarFactoryImpl(
     /** Creates AppBar for create edit voice command screen. */
     override fun createEditVoiceCommandCreateScreenAppBar(createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel): AppBar =
         AppBar(
-            toolbarId = StringsIds.createVoiceCommands,
+            toolbarId = StringsIds.empty,
             shouldShowMiddleContentAppBar = false,
             onIconButtonClicked = { createEditVoiceCommandViewModel.onToolbarMenuClicked() }
         )

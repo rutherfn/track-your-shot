@@ -50,7 +50,6 @@
     <string name="create_shot">Create Shot</string>
     <string name="create_your_players_profile">Create Your Players Profile</string>
     <string name="create_your_player_profile_description">Begin by creating a player profile, including details like first name, last name, position, and a player image.</string>
-    <string name="create_voice_commands">Create Voice Commands</string>
     <string name="current_account_has_not_been_verified_please_open_email_to_verify_account">Current account has not been verified please open email to verify account.</string>
     <string name="current_players_has_no_changes_description">There haven\'t been any recent updates or modifications to the current player. Please make adjustments to the existing player to proceed.</string>
     <string name="current_shot_has_been_updated_description">The current shot has been updated. To see the latest information, click on the shot to view the updates.</string>
@@ -124,10 +123,8 @@
     <string name="log_your_shots">Log Your Shots</string>
     <string name="log_your_shots_description">Choose the type of shot you want to record and input the makes and misses for the day the player took them.</string>
     <string name="made_shots_x">Made Shots: %s</string>
-    <string name="make">Make</string>
     <string name="manage_declared_shots">Manage Declared Shots</string>
     <string name="menu">Menu</string>
-    <string name="miss">Miss</string>
     <string name="more_info">More Info</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Multiple fields are required that are not entered. Please enter all fields.</string>
     <string name="name_x">Name: %s</string>
@@ -148,7 +145,6 @@
     <string name="no_players_created_description">No players have been created for your account yet. Please create at least one player and record at least one shot to generate a report of shots taken by the player.</string>
     <string name="no_reports_generated">No Reports Generated</string>
     <string name="no_current_shots_logged_for_player">No Current Shots Logged For Player</string>
-    <string name="none">None</string>
     <string name="open_email">Open Email</string>
     <string name="ok">OK</string>
     <string name="other_resources">Other Resources</string>
@@ -249,8 +245,6 @@
     <string name="shots_made_percentage_x">\nShots Made Percentage: %s</string>
     <string name="stats">Stats</string>
     <string name="splash_icon_description">This is a splash image for the splash screen that gets displayed before app is triggered</string>
-    <string name="start">Start</string>
-    <string name="stop">Stop</string>
     <string name="successfully_sent_email_verification">Successfully sent verification</string>
     <string name="take_a_picture">Take A Picture</string>
     <string name="tap_for_more" tools:ignore="MissingTranslation">Tap for more</string>

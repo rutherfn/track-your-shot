@@ -47,13 +47,17 @@ sealed class VoiceCommandTypes(val value: Int) {
             }
         }
 
+        /**
+         * Converts an string value to its corresponding [VoiceCommandTypes] instance.
+         * Defaults to [None] if the value does not match any known voice commands.
+         */
         fun VoiceCommandTypes.toDisplayLabel(): String {
             return when (this) {
-                VoiceCommandTypes.Start -> "Start"
-                VoiceCommandTypes.Stop -> "Stop"
-                VoiceCommandTypes.Make -> "Make"
-                VoiceCommandTypes.Miss -> "Miss"
-                VoiceCommandTypes.None -> "None"
+                Start -> "Start"
+                Stop -> "Stop"
+                Make -> "Make"
+                Miss -> "Miss"
+                None -> "None"
             }
         }
 

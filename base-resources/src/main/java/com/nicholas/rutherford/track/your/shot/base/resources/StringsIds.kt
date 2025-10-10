@@ -56,7 +56,6 @@ object StringsIds {
     val createPlayer = R.string.create_player
     val createShot = R.string.create_shot
     val createPlayerReport = R.string.create_player_report
-    val createVoiceCommands = R.string.create_voice_commands
     val createYourPlayersProfile = R.string.create_your_players_profile
     val createYourPlayerProfileDescription = R.string.create_your_player_profile_description
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount =
@@ -192,7 +191,6 @@ object StringsIds {
     val playerShots = R.string.player_shots
     val players = R.string.players
     val playersFirstNameEmptyDescription = R.string.players_first_name_empty_description
-    val playersLastNameEmptyDescription = R.string.players_last_name_empty_description
     val proceedWithYourAccount = R.string.proceed_with_your_account
     val readExternalStoragePermissionExplanation =
         R.string.read_external_storage_permission_explanation
@@ -292,7 +290,6 @@ object StringsIds {
         R.string.username_is_required_please_enter_a_username_to_create_a_account
     val usingTheApp = R.string.using_the_app
     val verifyAccount = R.string.verify_account
-    val viewDebugToggles = R.string.view_debug_toggles
     val viewMoreInfo = R.string.view_more_info
     val viewX = R.string.view_x
     val viewXShots = R.string.view_x_shots

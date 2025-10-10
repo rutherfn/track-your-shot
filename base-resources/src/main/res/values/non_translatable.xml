@@ -7,4 +7,9 @@
     <string name="in_app_firebase_viewer" translatable="false">In App Firebase Viewer</string>
     <string name="toggles" translatable="false">Toggles</string>
     <string name="view_debug_toggles" translatable="false">View Debug Toggles</string>
+    <string name="make" translatable="false">Make</string>
+    <string name="miss" translatable="false">Miss</string>
+    <string name="none" translatable="false">None</string>
+    <string name="start" translatable="false">Start</string>
+    <string name="stop" translatable="false">Stop</string>
 </resources>
