@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.voice.commands
 
 import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes
-import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes.None
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-10-01
@@ -34,11 +33,11 @@ fun VoiceCommandFilter.toDisplayLabel(): String {
  *
  * @return [VoiceCommandTypes]
  */
-    fun VoiceCommandFilter.toType(): VoiceCommandTypes {
-        return when (this) {
-            VoiceCommandFilter.START -> VoiceCommandTypes.Start
-            VoiceCommandFilter.STOP -> VoiceCommandTypes.Stop
-            VoiceCommandFilter.MAKE -> VoiceCommandTypes.Make
-            VoiceCommandFilter.MISS -> VoiceCommandTypes.Miss
-        }
+fun VoiceCommandFilter.toType(): VoiceCommandTypes {
+    return when (this) {
+        VoiceCommandFilter.START -> VoiceCommandTypes.Start
+        VoiceCommandFilter.STOP -> VoiceCommandTypes.Stop
+        VoiceCommandFilter.MAKE -> VoiceCommandTypes.Make
+        VoiceCommandFilter.MISS -> VoiceCommandTypes.Miss
     }
+}

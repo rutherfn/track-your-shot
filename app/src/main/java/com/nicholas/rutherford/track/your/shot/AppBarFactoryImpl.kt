@@ -269,7 +269,7 @@ class AppBarFactoryImpl(
             toolbarId = StringsIds.voiceCommands,
             shouldShowMiddleContentAppBar = true,
             onIconButtonClicked = { voiceCommandListViewModel.onToolbarMenuClicked() },
-            onSecondaryIconButtonClicked = {  },
+            onSecondaryIconButtonClicked = { },
             shouldIncludeSpaceAfterDeclaration = false,
             secondaryImageVector = Icons.AutoMirrored.Filled.LiveHelp
         )

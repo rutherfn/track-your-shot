@@ -76,7 +76,7 @@ class VoiceCommandListViewModelTest {
                 makeCommands = emptySavedVoiceCommandList,
                 missCommands = emptySavedVoiceCommandList,
                 selectedFilter = VoiceCommandFilter.START,
-                filteredCommands = emptySavedVoiceCommandList,
+                filteredCommands = emptySavedVoiceCommandList
             )
 
             Assertions.assertEquals(expectedState, state)
@@ -136,11 +136,14 @@ class VoiceCommandListViewModelTest {
 
         val state = viewModel.voiceCommandMutableStateFlow.value
 
-        Assertions.assertEquals(state, VoiceCommandListState(
-            selectedFilter = VoiceCommandFilter.START,
-            startCommands = listOf(SavedVoiceCommand(id = 0, name = "Start", type = VoiceCommandTypes.Start)),
-            filteredCommands = listOf(SavedVoiceCommand(id = 0, name = "Start", type = VoiceCommandTypes.Start))
-        ))
+        Assertions.assertEquals(
+            state,
+            VoiceCommandListState(
+                selectedFilter = VoiceCommandFilter.START,
+                startCommands = listOf(SavedVoiceCommand(id = 0, name = "Start", type = VoiceCommandTypes.Start)),
+                filteredCommands = listOf(SavedVoiceCommand(id = 0, name = "Start", type = VoiceCommandTypes.Start))
+            )
+        )
     }
 
     @Nested
@@ -282,7 +285,6 @@ class VoiceCommandListViewModelTest {
 
             Assertions.assertEquals(missCommands, result)
         }
-
 
         @Test
         fun `when only startCommands has items should return only startCommands for START filter`() {

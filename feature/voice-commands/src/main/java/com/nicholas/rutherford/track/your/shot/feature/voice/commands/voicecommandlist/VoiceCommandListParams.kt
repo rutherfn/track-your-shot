@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist
 
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandFilter
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListState
 
 data class VoiceCommandListParams(
     val state: VoiceCommandListState,

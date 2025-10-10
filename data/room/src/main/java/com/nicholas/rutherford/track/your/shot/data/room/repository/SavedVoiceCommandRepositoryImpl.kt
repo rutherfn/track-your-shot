@@ -60,5 +60,4 @@ class SavedVoiceCommandRepositoryImpl(private val savedVoiceCommandDao: SavedVoi
      * @return A list of all saved voice commands.
      */
     override suspend fun getAllVoiceCommands(): List<SavedVoiceCommand> = savedVoiceCommandDao.getAllSavedVoiceCommands().map { command -> command.toSavedVoiceCommand() }
-
 }

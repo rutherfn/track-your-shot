@@ -38,7 +38,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
     BackHandler(enabled = true) { params.onToolbarMenuClicked.invoke() }
     val state = params.state
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -46,7 +46,6 @@ fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        
         // Large mic icon
         Box(
             modifier = Modifier
@@ -62,18 +61,18 @@ fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
                 tint = Colors.secondaryColor
             )
         }
-        
+
         Spacer(modifier = Modifier.height(32.dp))
-        
+
         // Instructions
         Text(
             text = "Tap to record your voice command phrase",
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         // Example
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -89,9 +88,9 @@ fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
                     style = TextStyles.smallBold,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                
+
                 Spacer(modifier = Modifier.height(8.dp))
-                
+
                 Text(
                     text = getExamplePhrase(state.type),
                     style = MaterialTheme.typography.bodyMedium,
@@ -100,13 +99,12 @@ fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
                 )
             }
         }
-        
+
         Spacer(modifier = Modifier.height(32.dp))
-        
+
         // Record button
         Button(
-            onClick = { 
-                // Handle record action
+            onClick = { // Handle record action
             },
             modifier = Modifier
                 .fillMaxWidth()

@@ -42,10 +42,10 @@ import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListNavigation
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandNavigation
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListNavigation
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListNavigationImpl
 import org.koin.dsl.module
 
 /**
@@ -129,6 +129,5 @@ object NavigationModule {
 
         /** Navigation for Create Voice Command screen. */
         single<CreateEditVoiceCommandNavigation> { CreateEditVoiceCommandNavigationImpl(navigator = get()) }
-
     }
 }

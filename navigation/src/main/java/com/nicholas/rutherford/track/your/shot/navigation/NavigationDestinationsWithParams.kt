@@ -94,8 +94,8 @@ object NavigationDestinationsWithParams {
         val phraseParam = phrase ?: ""
 
         return "${NavigationDestinations.CREATE_EDIT_VOICE_COMMANDS_SCREEN}?" +
-                "${NavigationDestinations.VOICE_COMMAND_TYPE_VALUE_PARAM}=$typeParam&" +
-                "${NavigationDestinations.RECORDED_PHRASE_PARAM}=$phraseParam"
+            "${NavigationDestinations.VOICE_COMMAND_TYPE_VALUE_PARAM}=$typeParam&" +
+            "${NavigationDestinations.RECORDED_PHRASE_PARAM}=$phraseParam"
     }
 
     /**

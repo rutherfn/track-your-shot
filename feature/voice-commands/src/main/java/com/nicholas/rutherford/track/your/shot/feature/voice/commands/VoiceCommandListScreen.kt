@@ -38,13 +38,12 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 @Composable
 fun VoiceCommandListScreen(params: VoiceCommandListParams) {
     val state = params.state
-    
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
-        
         Text(
             text = "Set up voice commands to easily log your shots while playing. Use your custom phrases to automatically start or stop a voice session, and to record made or missed shots.",
             style = MaterialTheme.typography.bodyMedium,
@@ -78,10 +77,12 @@ private fun VoiceFilters(
         VoiceCommandFilter.entries.forEach { filter ->
             FilterChip(
                 onClick = { onFilterSelected.invoke(filter) },
-                label = { Text(
-                    text = filter.toDisplayLabel(),
-                    style = TextStyles.bodyBold
-                ) },
+                label = {
+                    Text(
+                        text = filter.toDisplayLabel(),
+                        style = TextStyles.bodyBold
+                    )
+                },
                 selected = state.selectedFilter == filter,
                 leadingIcon = if (state.selectedFilter == filter) {
                     {

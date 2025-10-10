@@ -27,6 +27,7 @@ interface SavedVoiceCommandRepository {
 
     /** Retrieves a single [SavedVoiceCommand] by its name from the database. */
     suspend fun getVoiceCommandByName(name: String): SavedVoiceCommand?
+
     /** Retrieves all [SavedVoiceCommand]s from the database. */
     suspend fun getAllVoiceCommands(): List<SavedVoiceCommand>
 }

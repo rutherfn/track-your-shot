@@ -4,6 +4,7 @@ import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.base.vm.FlowCollectionTrigger
 import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePreferencesReader
+import com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle.DebugToggleScreen
 import com.nicholas.rutherford.track.your.shot.helper.account.AccountManager
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.navigation.DrawerAction
@@ -16,7 +17,6 @@ import com.nicholas.rutherford.track.your.shot.navigation.VoiceCommandsAction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
-import com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle.DebugToggleScreen
 
 /**
  * Timeout for how long the connectivity state is considered active when there are no subscribers.
