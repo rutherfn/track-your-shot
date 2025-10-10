@@ -844,6 +844,12 @@ object AppNavigationGraph {
         }
     }
 
+    /**
+     * Adds the Create Voice Command Screen destination to the NavGraph.
+     * Retrieves [CreateVoiceCommandViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [CreateVoiceCommandScreen].
+     * Displays the [CreateVoiceCommandScreen] composable
+     */
     fun NavGraphBuilder.createVoiceCommandScreen() {
         composable(
             route = NavigationDestinations.CREATE_VOICE_COMMAND_SCREEN_WITH_PARAMS,

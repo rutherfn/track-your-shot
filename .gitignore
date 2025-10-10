@@ -33,6 +33,7 @@ base-resources/build
 
 buildSrc/.gradle
 buildSrc/build
+buildSrc/.kotlin
 
 compose/components/build
 compose/theme/build

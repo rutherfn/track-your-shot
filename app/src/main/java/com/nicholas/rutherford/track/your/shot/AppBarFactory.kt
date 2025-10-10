@@ -102,6 +102,7 @@ interface AppBarFactory {
     /** Creates an AppBar for voice command list screen. */
     fun createVoiceCommandListScreenAppBar(voiceCommandListViewModel: VoiceCommandListViewModel): AppBar
 
+    /** Creates an AppBar for create voice create screen. */
     fun createVoiceCommandCreateScreenAppBar(createVoiceCommandViewModel: CreateVoiceCommandViewModel): AppBar
 
     /** Creates a default, hidden AppBar. */

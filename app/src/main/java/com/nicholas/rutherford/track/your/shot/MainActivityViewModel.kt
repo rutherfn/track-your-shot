@@ -16,6 +16,7 @@ import com.nicholas.rutherford.track.your.shot.navigation.VoiceCommandsAction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
+import com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle.DebugToggleScreen
 
 /**
  * Timeout for how long the connectivity state is considered active when there are no subscribers.
@@ -28,9 +29,12 @@ const val IS_CONNECTED_TIMEOUT_MILLIS = 5000L
  * ViewModel for the [MainActivity] that manages network connectivity status
  * and user account actions such as logout.
  *
- * @property scope The coroutine scope used for managing coroutines.
+ * It also goes ina nd collects feature toggles that get set from the [DebugToggleScreen]
+ *
  * @property network Handles network-related operations like connectivity status.
+ * @property scope The coroutine scope used for managing coroutines.
  * @property accountManager Handles account-related actions like logout.
+ * @property dataStorePreferenceReader Reads data store preferences collected values
  */
 class MainActivityViewModel(
     network: Network,

@@ -10,6 +10,7 @@ import com.nicholas.rutherford.track.your.shot.navigation.ReportingAction
 import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
 import com.nicholas.rutherford.track.your.shot.navigation.ShotsAction
 import com.nicholas.rutherford.track.your.shot.navigation.VoiceCommandsAction
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -20,6 +21,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
@@ -60,6 +62,22 @@ class MainActivityViewModelTest {
     @AfterEach
     fun afterEach() {
         Dispatchers.resetMain()
+    }
+
+    @Test
+    fun `init should update state property when collectReadVoiceToggledDebugEnabledFlow returns back a value`() = runTest {
+        coEvery { dataStorePreferencesReader.readVoiceToggledDebugEnabledFlow() } returns flowOf(value = true)
+
+        mainActivityViewModel = MainActivityViewModel(
+            network = network,
+            scope = scope,
+            accountManager = accountManager,
+            dataStorePreferenceReader = dataStorePreferencesReader
+        )
+
+        dispatcher.scheduler.advanceUntilIdle()
+
+        Assertions.assertEquals(mainActivityViewModel.isVoiceToggleEnabled, true)
     }
 
     @Nested

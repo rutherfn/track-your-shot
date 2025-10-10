@@ -274,6 +274,7 @@ class AppBarFactoryImpl(
             secondaryImageVector = Icons.AutoMirrored.Filled.LiveHelp
         )
 
+    /** Creates AppBar for create voice command screen. */
     override fun createVoiceCommandCreateScreenAppBar(createVoiceCommandViewModel: CreateVoiceCommandViewModel): AppBar =
         AppBar(
             toolbarId = StringsIds.createVoiceCommands,
