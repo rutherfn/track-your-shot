@@ -74,9 +74,9 @@ import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListParams
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandListScreen
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandParams
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandScreen
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandParams
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandScreen
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArguments
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
@@ -845,31 +845,31 @@ object AppNavigationGraph {
     }
 
     /**
-     * Adds the Create Voice Command Screen destination to the NavGraph.
-     * Retrieves [CreateVoiceCommandViewModel] via Koin and observes its lifecycle.
-     * Collects UI state from the ViewModel and passes event callbacks to [CreateVoiceCommandScreen].
-     * Displays the [CreateVoiceCommandScreen] composable
+     * Adds the Create Edit Voice Command Screen destination to the NavGraph.
+     * Retrieves [CreateEditVoiceCommandViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [CreateEditVoiceCommandScreen].
+     * Displays the [CreateEditVoiceCommandScreen] composable
      */
-    fun NavGraphBuilder.createVoiceCommandScreen() {
+    fun NavGraphBuilder.createEditVoiceCommandScreen() {
         composable(
-            route = NavigationDestinations.CREATE_VOICE_COMMAND_SCREEN_WITH_PARAMS,
-            arguments = NavArguments.createVoiceCommand
+            route = NavigationDestinations.CREATE_EDIT_VOICE_COMMAND_SCREEN_WITH_PARAMS,
+            arguments = NavArguments.createEditVoiceCommand
         ) { entry ->
-            val createVoiceCommandViewModel: CreateVoiceCommandViewModel = koinViewModel()
+            val createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel = koinViewModel()
             val appBarFactory: AppBarFactory = koinInject()
 
-            val params = CreateVoiceCommandParams(
-                state = createVoiceCommandViewModel.createVoiceCommandStateFlow.collectAsState().value,
+            val params = CreateEditVoiceCommandParams(
+                state = createEditVoiceCommandViewModel.createEditVoiceCommandStateFlow.collectAsState().value,
                 onRecordClicked = {},
                 onSaveClicked = {},
-                onToolbarMenuClicked = { createVoiceCommandViewModel.onToolbarMenuClicked() }
+                onToolbarMenuClicked = { createEditVoiceCommandViewModel.onToolbarMenuClicked() }
             )
 
-            ObserveLifecycle(viewModel = createVoiceCommandViewModel)
+            ObserveLifecycle(viewModel = createEditVoiceCommandViewModel)
 
-            updateAppBar(appBar = appBarFactory.createVoiceCommandCreateScreenAppBar(createVoiceCommandViewModel = createVoiceCommandViewModel))
+            updateAppBar(appBar = appBarFactory.createEditVoiceCommandCreateScreenAppBar(createEditVoiceCommandViewModel = createEditVoiceCommandViewModel))
 
-            CreateVoiceCommandScreen(params = params)
+            CreateEditVoiceCommandScreen(params = params)
         }
     }
 

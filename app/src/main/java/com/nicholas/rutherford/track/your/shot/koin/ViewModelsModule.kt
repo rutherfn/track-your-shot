@@ -24,8 +24,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -321,9 +321,9 @@ object ViewModelsModule {
             )
         }
 
-        /** Create Voice Commands Screen ViewModel */
+        /** Create eDIT Voice Commands Screen ViewModel */
         viewModel { (stateHandle: SavedStateHandle) ->
-            CreateVoiceCommandViewModel(
+            CreateEditVoiceCommandViewModel(
                 savedStateHandle = stateHandle,
                 navigation = get()
             )

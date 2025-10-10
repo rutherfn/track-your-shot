@@ -7,5 +7,5 @@ class VoiceCommandListNavigationImpl(private val navigator: Navigator) :
     VoiceCommandListNavigation {
     override fun openNavigationDrawer() = navigator.showNavigationDrawer(navigationDrawerAction = true)
 
-    override fun navigateToCreateVoiceCommand(type: Int?, phrase: String?) = navigator.navigate(navigationAction = NavigationActions.VoiceCommands.createVoiceCommandsWithParams(type = type, phrase = phrase))
+    override fun navigateToCreateVoiceCommand(type: Int?, phrase: String?) = navigator.navigate(navigationAction = NavigationActions.VoiceCommands.createEditVoiceCommandsWithParams(type = type, phrase = phrase))
 }

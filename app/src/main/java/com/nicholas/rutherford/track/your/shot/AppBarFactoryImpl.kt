@@ -30,8 +30,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredsh
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandViewModel
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -274,12 +274,12 @@ class AppBarFactoryImpl(
             secondaryImageVector = Icons.AutoMirrored.Filled.LiveHelp
         )
 
-    /** Creates AppBar for create voice command screen. */
-    override fun createVoiceCommandCreateScreenAppBar(createVoiceCommandViewModel: CreateVoiceCommandViewModel): AppBar =
+    /** Creates AppBar for create edit voice command screen. */
+    override fun createEditVoiceCommandCreateScreenAppBar(createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel): AppBar =
         AppBar(
             toolbarId = StringsIds.createVoiceCommands,
             shouldShowMiddleContentAppBar = false,
-            onIconButtonClicked = { createVoiceCommandViewModel.onToolbarMenuClicked() }
+            onIconButtonClicked = { createEditVoiceCommandViewModel.onToolbarMenuClicked() }
         )
 
     /** Creates a default AppBar that is hidden. */

@@ -44,8 +44,8 @@ import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListNavigationImpl
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandNavigation
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandNavigation
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandNavigationImpl
 import org.koin.dsl.module
 
 /**
@@ -128,7 +128,7 @@ object NavigationModule {
         single<VoiceCommandListNavigation> { VoiceCommandListNavigationImpl(navigator = get()) }
 
         /** Navigation for Create Voice Command screen. */
-        single<CreateVoiceCommandNavigation> { CreateVoiceCommandNavigationImpl(navigator = get()) }
+        single<CreateEditVoiceCommandNavigation> { CreateEditVoiceCommandNavigationImpl(navigator = get()) }
 
     }
 }

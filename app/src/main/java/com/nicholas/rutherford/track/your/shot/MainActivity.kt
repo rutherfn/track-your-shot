@@ -74,7 +74,7 @@ open class MainActivity : ComponentActivity() {
                     shotsListViewModel = getViewModel(),
                     declaredShotsListViewModel = getViewModel(),
                     createEditDeclaredShotsViewModel = getViewModel(),
-                    createVoiceCommandViewModel = getViewModel()
+                    createEditVoiceCommandViewModel = getViewModel()
                 )
             )
         }

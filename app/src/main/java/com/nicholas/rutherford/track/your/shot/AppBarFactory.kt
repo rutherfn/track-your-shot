@@ -19,8 +19,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredsh
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandViewModel
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -102,8 +102,8 @@ interface AppBarFactory {
     /** Creates an AppBar for voice command list screen. */
     fun createVoiceCommandListScreenAppBar(voiceCommandListViewModel: VoiceCommandListViewModel): AppBar
 
-    /** Creates an AppBar for create voice create screen. */
-    fun createVoiceCommandCreateScreenAppBar(createVoiceCommandViewModel: CreateVoiceCommandViewModel): AppBar
+    /** Creates an AppBar for create edit voice create screen. */
+    fun createEditVoiceCommandCreateScreenAppBar(createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel): AppBar
 
     /** Creates a default, hidden AppBar. */
     fun createDefaultAppBar(): AppBar

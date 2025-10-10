@@ -20,7 +20,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand.CreateVoiceCommandViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -77,5 +77,5 @@ data class ViewModels(
     val shotsListViewModel: ShotsListViewModel,
     val declaredShotsListViewModel: DeclaredShotsListViewModel,
     val createEditDeclaredShotsViewModel: CreateEditDeclaredShotViewModel,
-    val createVoiceCommandViewModel: CreateVoiceCommandViewModel
+    val createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel
 )

@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand
+package com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -35,7 +35,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTy
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
 @Composable
-fun CreateVoiceCommandScreen(params: CreateVoiceCommandParams) {
+fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
     BackHandler(enabled = true) { params.onToolbarMenuClicked.invoke() }
     val state = params.state
     
@@ -142,10 +142,10 @@ private fun getExamplePhrase(type: VoiceCommandTypes?): String {
 // Preview
 @Preview(showBackground = true)
 @Composable
-fun CreateVoiceCommandScreenPreview() {
-    CreateVoiceCommandScreen(
-        params = CreateVoiceCommandParams(
-            state = CreateVoiceCommandState(
+fun CreateEditVoiceCommandScreenPreview() {
+    CreateEditVoiceCommandScreen(
+        params = CreateEditVoiceCommandParams(
+            state = CreateEditVoiceCommandState(
                 type = VoiceCommandTypes.Make,
                 recordedPhrase = null
             ),

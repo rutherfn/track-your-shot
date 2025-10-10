@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.voice.commands.createvoicecommand
+package com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand
 
 import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
@@ -6,9 +6,9 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTy
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class CreateVoiceCommandViewModel(
+class CreateEditVoiceCommandViewModel(
     savedStateHandle: SavedStateHandle,
-    private val navigation: CreateVoiceCommandNavigation
+    private val navigation: CreateEditVoiceCommandNavigation
 ) : BaseViewModel() {
 
     private var type: VoiceCommandTypes? = null
@@ -16,10 +16,10 @@ class CreateVoiceCommandViewModel(
     private val voiceCommandTypeValueParam: Int? = savedStateHandle.get<Int>("voiceCommandTypeValueParam")
     private val recordedPhraseParam: String? = savedStateHandle.get<String>("recordedPhraseParam")
 
-    internal val createVoiceCommandMutableStateFlow =
-        MutableStateFlow(value = CreateVoiceCommandState())
+    internal val createEditVoiceCommandMutableStateFlow =
+        MutableStateFlow(value = CreateEditVoiceCommandState())
 
-    val createVoiceCommandStateFlow = createVoiceCommandMutableStateFlow.asStateFlow()
+    val createEditVoiceCommandStateFlow = createEditVoiceCommandMutableStateFlow.asStateFlow()
 
     init {
         voiceCommandTypeValueParam?.let { value ->

@@ -511,8 +511,8 @@ object NavigationActions {
 
     object VoiceCommands {
 
-        fun createVoiceCommandsWithParams(type: Int?, phrase: String?) = object : NavigationAction {
-            override val destination: String = NavigationDestinationsWithParams.createVoiceCommandCreateScreenWitParams(type = type, phrase = phrase)
+        fun createEditVoiceCommandsWithParams(type: Int?, phrase: String?) = object : NavigationAction {
+            override val destination: String = NavigationDestinationsWithParams.createEditVoiceCommandCreateEditScreenWitParams(type = type, phrase = phrase)
             override val navOptions = NavOptions.Builder().build()
         }
     }
