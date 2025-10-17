@@ -5,6 +5,7 @@ import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class CreateEditVoiceCommandViewModel(
     savedStateHandle: SavedStateHandle,
@@ -26,10 +27,16 @@ class CreateEditVoiceCommandViewModel(
             type = VoiceCommandTypes.fromValue(value = value)
         }
         phrase = recordedPhraseParam
+
+        createEditVoiceCommandMutableStateFlow.update { state ->
+            state.copy(
+                type = type ?: VoiceCommandTypes.None,
+                recordedPhrase = phrase
+            )
+        }
     }
 
     fun onToolbarMenuClicked() {
-        println("test")
         navigation.pop()
     }
 }

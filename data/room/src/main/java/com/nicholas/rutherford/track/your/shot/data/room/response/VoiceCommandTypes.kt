@@ -62,6 +62,34 @@ sealed class VoiceCommandTypes(val value: Int) {
         }
 
         /**
+         * Converts an string value to a create command label.
+         * Defaults to [None] if the value does not match any known voice commands.
+         */
+        fun VoiceCommandTypes.toCreateCommandLabel(): String {
+            return when (this) {
+                Start -> "Start Voice Command"
+                Stop -> "Stop Voice Command"
+                Make -> "Make Voice Command"
+                Miss -> "Miss Voice Command"
+                None -> "None"
+            }
+        }
+
+        /**
+         * Converts an string value to a edit command label.
+         * Defaults to [None] if the value does not match any known voice commands.
+         */
+        fun VoiceCommandTypes.toEditVoiceCommandLabel(): String {
+            return when (this) {
+                Start -> "Edit Start Voice Command"
+                Stop -> "Edit Stop Voice Command"
+                Make -> "Edit Make Voice Command"
+                Miss -> "Edit Miss Voice Command"
+                None -> "None"
+            }
+        }
+
+        /**
          * Converts a [VoiceCommandTypes] instance to a localized string representing the voice command.
          *
          * @param application Application context for accessing string resources.

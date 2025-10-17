@@ -61,5 +61,5 @@ object Constants {
     const val VOICE_COMMAND_STOP_VALUE = 1
     const val VOICE_COMMAND_MAKE_VALUE = 2
     const val VOICE_COMMAND_MISS_VALUE = 3
-    const val VOICE_COMMAND_NONE_VALUE = 3
+    const val VOICE_COMMAND_NONE_VALUE = 4
 }
