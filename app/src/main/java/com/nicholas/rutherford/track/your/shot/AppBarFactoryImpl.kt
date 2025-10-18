@@ -11,6 +11,8 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.AppBar
+import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes
+import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes.Companion.toDisplayLabel
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordViewModel
@@ -220,7 +222,11 @@ class AppBarFactoryImpl(
         isEditable: Boolean
     ): AppBar =
         AppBar(
-            toolbarId = if (isEditable) StringsIds.editPlayer else StringsIds.createPlayer,
+            toolbarId = if (isEditable) {
+                StringsIds.editPlayer
+            } else {
+                StringsIds.createPlayer
+            },
             shouldShowMiddleContentAppBar = false,
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = true,
@@ -275,9 +281,18 @@ class AppBarFactoryImpl(
         )
 
     /** Creates AppBar for create edit voice command screen. */
-    override fun createEditVoiceCommandCreateScreenAppBar(createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel): AppBar =
+    override fun createEditVoiceCommandCreateScreenAppBar(
+        createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel,
+        type: VoiceCommandTypes,
+        isCreating: Boolean
+    ): AppBar =
         AppBar(
             toolbarId = StringsIds.empty,
+            toolbarTitle = if (isCreating) {
+                application.getString(StringsIds.createXCommand, type.toDisplayLabel())
+            } else {
+                application.getString(StringsIds.editXCommand, type.toDisplayLabel())
+            },
             shouldShowMiddleContentAppBar = false,
             onIconButtonClicked = { createEditVoiceCommandViewModel.onToolbarMenuClicked() }
         )

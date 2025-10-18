@@ -220,7 +220,7 @@
     <string name="view_more_info">Zobacz więcej informacji</string>
     <string name="view_x">Pogląd%s</string>
     <string name="voice_commands">Polecenia głosowe</string>
-    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_position_x_player_name">%1$s , %2$s</string>
     <string name="x_shot">%s Strzał</string>
     <string name="x_shot_has_been_removed_description">%s został usunięty z historii strzałów tego zawodnika.</string>
     <string name="x_shot_has_not_been_removed_description">%s Strzał nie został usunięty z historii strzałów tego zawodnika. Spróbuj ponownie usunąć ujęcie.</string>

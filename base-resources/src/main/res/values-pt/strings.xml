@@ -220,13 +220,13 @@
     <string name="view_more_info">Ver mais informações</string>
     <string name="view_x">Ver %s</string>
     <string name="voice_commands">Comandos de voz</string>
-    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_position_x_player_name">%1$s , %2$s</string>
     <string name="x_shot">%s Tiro</string>
     <string name="x_shot_has_been_removed_description">%s foi removido do histórico de chutes deste jogador.</string>
     <string name="x_shot_has_not_been_removed_description">%s O chute não foi removido do histórico de chutes deste jogador. Tente remover a foto novamente.</string>
     <string name="x_shots">%s Fotos</string>
     <string name="x_shot_category">Categoria - %s</string>
-    <string name="x_x">%s - %s</string>
+    <string name="x_x">%1$s - %2$s</string>
     <string name="yes">Sim</string>
     <string name="your_player_could_not_be_retrieved_description">Não foi possível recuperar seu player. Por favor, tente novamente.</string>
     <string name="at_least_one_player_description">Pelo menos um jogador com pelo menos um tiro registrado é necessário para gerar um relatório. Certifique-se de que isso esteja concluído para prosseguir.</string>

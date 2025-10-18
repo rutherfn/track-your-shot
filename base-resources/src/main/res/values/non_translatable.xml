@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="are_you_sure_you_want_to_delete_your_account" translatable="false">Are you sure you want to delete your account?</string>
+    <string name="create_your_first_x_command_description" translatable="false">Create your first %s command to start logging shots with your voice</string>
+    <string name="create_x_command" translatable="false">Create %s Command</string>
+    <string name="edit_x_command" translatable="false">Edit %s Command</string>
     <string name="debug" translatable="false">Debug</string>
     <string name="debug_toggles" translatable="false">Debug Toggles</string>
     <string name="delete_account" translatable="false">Delete Account</string>
     <string name="in_app_firebase_viewer" translatable="false">In App Firebase Viewer</string>
     <string name="toggles" translatable="false">Toggles</string>
     <string name="view_debug_toggles" translatable="false">View Debug Toggles</string>
+    <string name="no_x_commands_yet" translatable="false">No %s Commands Yet</string>
     <string name="make" translatable="false">Make</string>
     <string name="miss" translatable="false">Miss</string>
     <string name="none" translatable="false">None</string>
+    <string name="setup_voice_commands_description" translatable="false">Set up voice commands to easily log your shots while playing. Use your custom phrases to automatically start or stop a voice session, and to record made or missed shots.</string>
     <string name="start" translatable="false">Start</string>
     <string name="stop" translatable="false">Stop</string>
+    <string name="listening_dots" translatable="false">Listening...</string>
+    <string name="record_the_phrase_youd_like_text" translatable="false">Record the phrase you\'d like to use for this command</string>
+    <string name="example_phrases" translatable="false">Example Phrases</string>
+    <string name="your_recorded_phrase" translatable="false">Your recorded phrase</string>
+    <string name="recorded_phrase" translatable="false">Recorded Phrase</string>
+    <string name="no_phrase_recorded_uet" translatable="false">No phrase recorded yet</string>
+    <string name="stop_recording" translatable="false">Stop Recording</string>
+    <string name="record_again" translatable="false">Record Again</string>
+    <string name="save_voice_command" translatable="false">Save Voice Command</string>
+    <string name="error_occurred" translatable="false">Error Occurred</string>
+    <string name="record_phrase" translatable="false">Record Phrase</string>
+    <string name="dismiss" translatable="false">Dismiss</string>
 </resources>

@@ -325,6 +325,7 @@ object ViewModelsModule {
         viewModel { (stateHandle: SavedStateHandle) ->
             CreateEditVoiceCommandViewModel(
                 savedStateHandle = stateHandle,
+                application = androidApplication(),
                 navigation = get()
             )
         }

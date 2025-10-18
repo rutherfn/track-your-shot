@@ -2,7 +2,10 @@ package com.nicholas.rutherford.track.your.shot.feature.voice.commands.createedi
 
 data class CreateEditVoiceCommandParams(
     val state: CreateEditVoiceCommandState,
-    val onRecordClicked: () -> Unit,
-    val onSaveClicked: () -> Unit,
-    val onToolbarMenuClicked: () -> Unit
+    val onRecordPhraseClicked: () -> Unit,
+    val onSaveNewVoiceCommandClicked: () -> Unit,
+    val onToolbarMenuClicked: () -> Unit,
+    val onDismissErrorClicked: () -> Unit,
+    val onTryAgainClicked: () -> Unit,
+    val onRecordAgainClicked: () -> Unit
 )

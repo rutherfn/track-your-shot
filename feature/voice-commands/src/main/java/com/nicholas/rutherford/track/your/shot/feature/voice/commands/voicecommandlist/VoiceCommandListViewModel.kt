@@ -15,16 +15,19 @@ import kotlinx.coroutines.launch
 /**
  * Created by Nicholas Rutherford, last edited on 2025-10-06
  *
- * ViewModel for seeing a list of your current voice commands saved from
- * following categories: Start, Stop, Make, and Miss
+ * ViewModel for managing the voice command list screen state and interactions.
+ * Handles fetching, filtering, and displaying voice commands by category (Start, Stop, Make, Miss).
  *
  * Responsibilities include:
- * - Ability to manage voice commands tied to Start, Stop, Make, and  Miss
- * - Create new commands tied to Start, Stop, Make, and Miss
+ * - Fetching all saved voice commands from the repository
+ * - Categorizing commands by type (Start, Stop, Make, Miss)
+ * - Filtering commands based on selected filter
+ * - Managing navigation to create new voice commands
+ * - Updating state when commands are added, edited, or deleted
  *
- * @param authenticationFirebase Provides Firebase authentication functions.
- * @param navigation Handles navigation and alert display.
- * @param scope CoroutineScope for launching asynchronous tasks.
+ * @param scope CoroutineScope for launching asynchronous tasks
+ * @param navigation Handles navigation to create/edit voice command screens
+ * @param savedVoiceCommandRepository Repository for voice command data operations
  */
 class VoiceCommandListViewModel(
     scope: CoroutineScope,
@@ -39,8 +42,18 @@ class VoiceCommandListViewModel(
         scope.launch { fetchVoiceCommandsAndUpdateState() }
     }
 
+    /**
+     * Handles toolbar menu click events.
+     * Opens the navigation drawer when the toolbar menu is tapped.
+     */
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
 
+    /**
+     * Handles voice command filter selection.
+     * Updates the selected filter and rebuilds the filtered commands list.
+     * 
+     * @param filter The selected voice command filter (Start, Stop, Make, Miss)
+     */
     fun onFilterSelected(filter: VoiceCommandFilter) {
         voiceCommandMutableStateFlow.update { state ->
             state.copy(
@@ -56,6 +69,10 @@ class VoiceCommandListViewModel(
         }
     }
 
+    /**
+     * Fetches all voice commands from the repository and updates the state.
+     * Categorizes commands by type and sets the default filter to START.
+     */
     private suspend fun fetchVoiceCommandsAndUpdateState() {
         val voiceCommands = savedVoiceCommandRepository.getAllVoiceCommands()
 
@@ -85,6 +102,17 @@ class VoiceCommandListViewModel(
         }
     }
 
+    /**
+     * Builds a filtered list of voice commands based on the selected filter.
+     * Returns the appropriate command list for the given filter type.
+     * 
+     * @param selectedFilter The currently selected filter type
+     * @param startCommands List of START type commands
+     * @param stopCommands List of STOP type commands  
+     * @param makeCommands List of MAKE type commands
+     * @param missCommands List of MISS type commands
+     * @return Filtered list of commands matching the selected filter
+     */
     internal fun buildFilteredSavedCommands(
         selectedFilter: VoiceCommandFilter,
         startCommands: List<SavedVoiceCommand>,
@@ -100,5 +128,12 @@ class VoiceCommandListViewModel(
         }
     }
 
-    fun onCreateCommandTypeClicked(type: Int?, phrase: String?) = navigation.navigateToCreateVoiceCommand(type = type, phrase = phrase)
+    /**
+     * Handles navigation to the create edit voice command screen.
+     * Passes the selected command type and optional phrase to the create screen.
+     * 
+     * @param type The voice command type value (Start, Stop, Make, Miss)
+     * @param phrase Optional pre-filled phrase for the command
+     */
+    fun onCreateEditCommandTypeClicked(type: Int?, phrase: String?) = navigation.navigateToCreateEditVoiceCommand(type = type, phrase = phrase)
 }

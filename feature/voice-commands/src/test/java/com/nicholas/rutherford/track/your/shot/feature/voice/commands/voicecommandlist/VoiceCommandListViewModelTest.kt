@@ -360,12 +360,12 @@ class VoiceCommandListViewModelTest {
     }
 
     @Test
-    fun `on create command type clicked should call navigateToCreateEditVoiceCommand`() = runTest {
+    fun `on create edit command type clicked should call navigateToCreateEditVoiceCommand`() = runTest {
         val type = 2
         val phrase = "Hello World"
 
-        viewModel.onCreateCommandTypeClicked(type = type, phrase = phrase)
+        viewModel.onCreateEditCommandTypeClicked(type = type, phrase = phrase)
 
-        verify { navigation.navigateToCreateVoiceCommand(type = type, phrase = phrase) }
+        verify { navigation.navigateToCreateEditVoiceCommand(type = type, phrase = phrase) }
     }
 }

@@ -30,19 +30,19 @@ class VoiceCommandListNavigationImplTest {
     }
 
     @Test
-    fun `navigate to create voice command`() {
+    fun `navigate to create edit voice command`() {
         val type = 2
         val phrase = "Start"
 
         val argumentCapture: CapturingSlot<NavigationAction> = slot()
 
-        voiceCommandListNavigationImpl.navigateToCreateVoiceCommand(type = type, phrase = phrase)
+        voiceCommandListNavigationImpl.navigateToCreateEditVoiceCommand(type = type, phrase = phrase)
 
         verify { navigator.navigate(capture(argumentCapture)) }
 
         val capturedArgument = argumentCapture.captured
 
-        val expectedAction = NavigationActions.VoiceCommands.createVoiceCommandsWithParams(type = type, phrase = phrase)
+        val expectedAction = NavigationActions.VoiceCommands.createEditVoiceCommandsWithParams(type = type, phrase = phrase)
 
         Assertions.assertEquals(expectedAction.destination, capturedArgument.destination)
     }

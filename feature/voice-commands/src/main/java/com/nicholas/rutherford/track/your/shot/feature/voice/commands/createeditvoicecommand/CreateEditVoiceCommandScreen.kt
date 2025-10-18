@@ -1,24 +1,19 @@
 package com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand
 
+import android.Manifest
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
@@ -32,23 +27,35 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.compose.components.RecordingIndicator
 import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes
+import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes.Companion.examplePhrases
 import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes.Companion.toCreateCommandLabel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandState
+import com.nicholas.rutherford.track.your.shot.helper.extensions.hasRecordAudioPermissionEnabled
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 
 @Composable
 fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
+    val context = LocalContext.current
+    var hasRecordAudioPermission by remember { mutableStateOf(value = hasRecordAudioPermissionEnabled(context = context)) }
+
     BackHandler(enabled = true) { params.onToolbarMenuClicked.invoke() }
 
     Column(
@@ -63,70 +70,20 @@ fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
                 .padding(top = Padding.forty),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = params.state.type.toCreateCommandLabel(),
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+            CommandScreenHeaderInfo(
+                type = params.state.type,
+                isRecording = params.state.isRecording
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = if (params.state.isRecording) {
-                    "Listening..."
-                } else {
-                    "Record the phrase you'd like to use for this command"
-                },
-                style = MaterialTheme.typography.bodyMedium,
-                color = if (params.state.isRecording) {
-                    Colors.secondaryColor
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
-                textAlign = TextAlign.Center,
-                fontWeight = if (params.state.isRecording) {
-                    FontWeight.SemiBold
-                } else {
-                    FontWeight.Normal
-                }
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppColors.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp),
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        text = "Example phrases",
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontWeight = FontWeight.SemiBold
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Text(
-                        text = getExamplePhrase(params.state.type),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Colors.secondaryColor,
-                        fontWeight = FontWeight.Medium,
-                        lineHeight = MaterialTheme.typography.bodyLarge.lineHeight
-                    )
-                }
-            }
+            ExamplePhraseCard(type = params.state.type)
 
             Spacer(modifier = Modifier.height(16.dp))
 
             RecordedPhraseCard(
                 isRecording = params.state.isRecording,
-                recordedPhrase = params.state.recordedPhrase
+                recordedPhrase = params.state.recordedPhrase,
+                voiceCommandState = params.state.voiceCommandState,
+                voiceCapturedErrorDescription = params.state.voiceCapturedErrorDescription
             )
         }
 
@@ -137,86 +94,96 @@ fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             when {
-                params.state.isRecording -> {
-                    Button(
-                        onClick = params.onRecordClicked,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = "Stop",
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.size(8.dp))
-                        Text(
-                            text = "Stop Recording",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.White
-                        )
-                    }
-                }
-                params.state.recordedPhrase != null -> {
-                    // Re-record button
-                    OutlinedButton(
-                        onClick = params.onRecordClicked,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp),
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp)
-                    ) {
-                        Text(
-                            text = "Record Again",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Colors.secondaryColor
-                        )
-                    }
+                params.state.isRecording -> RecordingPhraseButtonContent(
+                    hasRecordAudioPermission = hasRecordAudioPermission,
+                    onRecordPhraseClicked = params.onRecordPhraseClicked
+                )
+                params.state.voiceCapturedErrorDescription != null && params.state.voiceCommandState == VoiceCommandState.RECORDING_ERROR -> ErrorPhraseCaptureButtonContent(
+                    hasRecordAudioPermission = hasRecordAudioPermission,
+                    onTryAgainClicked = params.onTryAgainClicked,
+                    onDismissErrorClicked = params.onDismissErrorClicked,
+                    )
+                !params.state.recordedPhrase.isNullOrEmpty() -> PhraseCaptureButtonContent(
+                    hasRecordAudioPermission = hasRecordAudioPermission,
+                    onRecordAgainClicked = params.onRecordAgainClicked,
+                    onSaveNewVoiceCommandClicked = params.onSaveNewVoiceCommandClicked
+                )
+                else -> NoPhraseCaptureButtonContent(
+                    hasRecordAudioPermission = hasRecordAudioPermission,
+                    onRecordPhraseClicked = params.onRecordPhraseClicked
+                )
 
-                    Button(
-                        onClick = params.onSaveClicked,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = "Save",
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.size(8.dp))
-                        Text(
-                            text = "Save Voice Command",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.White
-                        )
-                    }
-                }
-                else -> {
-                    Button(
-                        onClick = params.onRecordClicked,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp)
-                    ) {
-                        Text(
-                            text = "Record Phrase",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.White
-                        )
-                    }
-                }
             }
+        }
+    }
+}
+
+@Composable
+private fun CommandScreenHeaderInfo(
+    type: VoiceCommandTypes,
+    isRecording: Boolean
+) {
+    val headerInfo = if (isRecording) {
+        Triple(
+            first = stringResource(id = StringsIds.listeningDots),
+            second = Colors.secondaryColor,
+            third = FontWeight.SemiBold
+        )
+    } else {
+        Triple(
+            first = stringResource(id = StringsIds.recordThePhraseYouWouldLikeText),
+            second = MaterialTheme.colorScheme.onSurfaceVariant,
+            third = FontWeight.Normal
+        )
+    }
+
+    Text(
+        text = type.toCreateCommandLabel(),
+        style = MaterialTheme.typography.headlineMedium,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
+    Spacer(modifier = Modifier.height(12.dp))
+
+    Text(
+        text = headerInfo.first,
+        style = MaterialTheme.typography.bodyMedium,
+        color = headerInfo.second,
+        textAlign = TextAlign.Center,
+        fontWeight = headerInfo.third
+    )
+
+    Spacer(modifier = Modifier.height(32.dp))
+}
+
+@Composable
+private fun ExamplePhraseCard(type: VoiceCommandTypes) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = AppColors.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = stringResource(id = StringsIds.examplePhrases),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontWeight = FontWeight.SemiBold
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = type.examplePhrases(),
+                style = MaterialTheme.typography.bodyLarge,
+                color = Colors.secondaryColor,
+                fontWeight = FontWeight.Medium,
+                lineHeight = MaterialTheme.typography.bodyLarge.lineHeight
+            )
         }
     }
 }
@@ -224,7 +191,9 @@ fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
 @Composable
 private fun RecordedPhraseCard(
     isRecording: Boolean,
-    recordedPhrase: String?
+    recordedPhrase: String?,
+    voiceCommandState: VoiceCommandState,
+    voiceCapturedErrorDescription: String?
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -235,7 +204,7 @@ private fun RecordedPhraseCard(
                 else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
             }
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = if (recordedPhrase != null) 0.dp else 0.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Box(
             modifier = Modifier
@@ -244,151 +213,282 @@ private fun RecordedPhraseCard(
             contentAlignment = Alignment.Center
         ) {
             when {
-                isRecording -> {
-                    // Recording animation
-                    RecordingIndicator()
-                }
-                recordedPhrase != null -> {
-                    // Recorded phrase display
-                    Column(
-                        horizontalAlignment = Alignment.Start,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "Your recorded phrase",
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            fontWeight = FontWeight.SemiBold
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        Text(
-                            text = "\"$recordedPhrase\"",
-                            style = MaterialTheme.typography.headlineSmall,
-                            color = Colors.secondaryColor,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-                else -> {
-                    // Empty state
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "Recorded phrase",
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                            fontWeight = FontWeight.SemiBold
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        Text(
-                            text = "No phrase recorded yet",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
-                            fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
-                        )
-                    }
-                }
+                isRecording -> RecordingIndicator()
+                voiceCommandState == VoiceCommandState.RECORDING_ERROR && !voiceCapturedErrorDescription.isNullOrEmpty() -> ErrorPhraseContent(voiceCapturedErrorDescription = voiceCapturedErrorDescription)
+                !recordedPhrase.isNullOrEmpty() -> RecordedPhraseContent(recordedPhrase = recordedPhrase)
+                else -> NoPhraseRecordedContent()
             }
         }
     }
 }
 
 @Composable
-private fun RecordingIndicator() {
-    val infiniteTransition = rememberInfiniteTransition(label = "recording")
-    
-    val scale by infiniteTransition.animateFloat(
-        initialValue = 0.8f,
-        targetValue = 1.2f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(800, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "scale"
-    )
-    
-    val alpha by infiniteTransition.animateFloat(
-        initialValue = 0.3f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(800, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "alpha"
-    )
+private fun ErrorPhraseContent(voiceCapturedErrorDescription: String) {
+    Column(
+        horizontalAlignment = Alignment.Start,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = stringResource(id = StringsIds.errorOccurred),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.error,
+            fontWeight = FontWeight.SemiBold
+        )
 
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = voiceCapturedErrorDescription,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            lineHeight = MaterialTheme.typography.bodyMedium.lineHeight
+        )
+    }
+}
+
+@Composable
+private fun RecordedPhraseContent(recordedPhrase: String) {
+    Column(
+        horizontalAlignment = Alignment.Start,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = stringResource(id = StringsIds.yourRecordedPhrase),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.SemiBold
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = "\"$recordedPhrase\"",
+            style = MaterialTheme.typography.headlineSmall,
+            color = Colors.secondaryColor,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+private fun NoPhraseRecordedContent() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
-        // Pulsing circle animation
-        Box(
-            modifier = Modifier
-                .size(80.dp)
-                .scale(scale)
-                .alpha(alpha)
-                .background(Colors.secondaryColor.copy(alpha = 0.3f), CircleShape)
-        )
-        
-        Spacer(modifier = Modifier.height(16.dp))
-        
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Animated dots
-            repeat(3) { index ->
-                val dotAlpha by infiniteTransition.animateFloat(
-                    initialValue = 0.3f,
-                    targetValue = 1f,
-                    animationSpec = infiniteRepeatable(
-                        animation = tween(600, delayMillis = index * 200, easing = LinearEasing),
-                        repeatMode = RepeatMode.Reverse
-                    ),
-                    label = "dot$index"
-                )
-                
-                Box(
-                    modifier = Modifier
-                        .size(8.dp)
-                        .alpha(dotAlpha)
-                        .background(Colors.secondaryColor, CircleShape)
-                )
-                
-                if (index < 2) {
-                    Spacer(modifier = Modifier.size(8.dp))
-                }
-            }
-        }
-        
-        Spacer(modifier = Modifier.height(8.dp))
-        
         Text(
-            text = "Recording in progress",
+            text = stringResource(id = StringsIds.recordedPhrase),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+            fontWeight = FontWeight.SemiBold
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = stringResource(id = StringsIds.noPhraseRecordedYet),
             style = MaterialTheme.typography.bodyMedium,
-            color = Colors.secondaryColor,
-            fontWeight = FontWeight.Medium
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+            fontStyle = FontStyle.Italic
         )
     }
 }
 
-private fun getExamplePhrase(type: VoiceCommandTypes?): String {
-    return when (type) {
-        VoiceCommandTypes.Start -> "\"start\", \"begin\", \"go\""
-        VoiceCommandTypes.Stop -> "\"stop\", \"end\", \"done\""
-        VoiceCommandTypes.Make -> "\"swish\", \"money\", \"bucket\""
-        VoiceCommandTypes.Miss -> "\"brick\", \"airball\", \"clank\""
-        else -> "\"swish\", \"brick\", \"start\", \"stop\""
+@Composable
+private fun RecordingPhraseButtonContent(
+    hasRecordAudioPermission: Boolean,
+    onRecordPhraseClicked: () -> Unit
+) {
+    val recordAudioPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            onRecordPhraseClicked.invoke()
+        }
+    }
+    Button(
+        onClick = {
+            if (hasRecordAudioPermission) {
+                onRecordPhraseClicked.invoke()
+            } else {
+                recordAudioPermissionLauncher.launch(input = Manifest.permission.RECORD_AUDIO)
+            }
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Close,
+            contentDescription = "Stop",
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        Text(
+            text = stringResource(id = StringsIds.noPhraseRecordedYet),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = Color.White
+        )
+    }
+}
+@Composable
+private fun PhraseCaptureButtonContent(
+    hasRecordAudioPermission: Boolean,
+    onRecordAgainClicked: () -> Unit,
+    onSaveNewVoiceCommandClicked: () -> Unit
+) {
+    val recordAudioPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            onRecordAgainClicked.invoke()
+        }
+    }
+
+    OutlinedButton(
+        onClick = {
+            if (hasRecordAudioPermission) {
+                onRecordAgainClicked.invoke()
+            } else {
+                recordAudioPermissionLauncher.launch(input = Manifest.permission.RECORD_AUDIO)
+            }
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Text(
+            text = stringResource(id = StringsIds.recordAgain),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = Colors.secondaryColor
+        )
+    }
+
+    Button(
+        onClick = onSaveNewVoiceCommandClicked,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Check,
+            contentDescription = "Save",
+            modifier = Modifier.size(20.dp)
+        )
+
+        Spacer(modifier = Modifier.size(8.dp))
+
+        Text(
+            text = stringResource(id = StringsIds.saveVoiceCommand),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = Color.White
+        )
     }
 }
 
-// Preview - Initial state
+@Composable
+private fun NoPhraseCaptureButtonContent(
+    hasRecordAudioPermission: Boolean,
+    onRecordPhraseClicked: () -> Unit
+) {
+    val recordAudioPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            onRecordPhraseClicked.invoke()
+        }
+    }
+
+    Button(
+        onClick = {
+            if (hasRecordAudioPermission) {
+                onRecordPhraseClicked.invoke()
+            } else {
+                recordAudioPermissionLauncher.launch(input = Manifest.permission.RECORD_AUDIO)
+            }
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp)
+    ) {
+        Text(
+            text = stringResource(id = StringsIds.recordPhrase),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = Color.White
+        )
+    }
+}
+
+@Composable
+private fun ErrorPhraseCaptureButtonContent(
+    hasRecordAudioPermission: Boolean,
+    onDismissErrorClicked: () -> Unit,
+    onTryAgainClicked: () -> Unit
+) {
+    val recordAudioPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            onTryAgainClicked.invoke()
+        }
+    }
+    OutlinedButton(
+        onClick = {
+            if (hasRecordAudioPermission) {
+                onTryAgainClicked.invoke()
+            } else {
+                recordAudioPermissionLauncher.launch(input = Manifest.permission.RECORD_AUDIO)
+            }
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Text(
+            text = stringResource(id = StringsIds.tryAgain),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = Colors.secondaryColor
+        )
+    }
+
+    Button(
+        onClick = onDismissErrorClicked,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Close,
+            contentDescription = "Dismiss",
+            modifier = Modifier.size(20.dp)
+        )
+
+        Spacer(modifier = Modifier.size(8.dp))
+
+        Text(
+            text = stringResource(id = StringsIds.dismiss),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = Color.White
+        )
+    }
+}
+
 @Preview(name = "Initial State", showBackground = true)
 @Composable
 fun CreateEditVoiceCommandScreenPreview() {
@@ -399,14 +499,16 @@ fun CreateEditVoiceCommandScreenPreview() {
                 recordedPhrase = null,
                 isRecording = false
             ),
-            onRecordClicked = { },
-            onSaveClicked = { },
-            onToolbarMenuClicked = { }
+            onRecordPhraseClicked = { },
+            onSaveNewVoiceCommandClicked = { },
+            onToolbarMenuClicked = { },
+            onDismissErrorClicked = { },
+            onTryAgainClicked = { },
+            onRecordAgainClicked = { }
         )
     )
 }
 
-// Preview - Recording state
 @Preview(name = "Recording State", showBackground = true)
 @Composable
 fun CreateEditVoiceCommandScreenRecordingPreview() {
@@ -417,14 +519,16 @@ fun CreateEditVoiceCommandScreenRecordingPreview() {
                 recordedPhrase = null,
                 isRecording = true
             ),
-            onRecordClicked = { },
-            onSaveClicked = { },
-            onToolbarMenuClicked = { }
+            onRecordPhraseClicked = { },
+            onSaveNewVoiceCommandClicked = { },
+            onToolbarMenuClicked = { },
+            onDismissErrorClicked = { },
+            onTryAgainClicked = { },
+            onRecordAgainClicked = { }
         )
     )
 }
 
-// Preview - Recorded state
 @Preview(name = "Recorded State", showBackground = true)
 @Composable
 fun CreateEditVoiceCommandScreenRecordedPreview() {
@@ -435,9 +539,34 @@ fun CreateEditVoiceCommandScreenRecordedPreview() {
                 recordedPhrase = "Let's go",
                 isRecording = false
             ),
-            onRecordClicked = { },
-            onSaveClicked = { },
-            onToolbarMenuClicked = { }
+            onRecordPhraseClicked = { },
+            onSaveNewVoiceCommandClicked = { },
+            onToolbarMenuClicked = { },
+            onDismissErrorClicked = { },
+            onTryAgainClicked = { },
+            onRecordAgainClicked = { }
+        )
+    )
+}
+
+@Preview(name = "Error State", showBackground = true)
+@Composable
+fun CreateEditVoiceCommandScreenErrorPreview() {
+    CreateEditVoiceCommandScreen(
+        params = CreateEditVoiceCommandParams(
+            state = CreateEditVoiceCommandState(
+                type = VoiceCommandTypes.Make,
+                recordedPhrase = null,
+                isRecording = false,
+                voiceCommandState = VoiceCommandState.RECORDING_ERROR,
+                voiceCapturedErrorDescription = "Unable to process audio. Please try speaking more clearly and ensure you're in a quiet environment."
+            ),
+            onRecordPhraseClicked = { },
+            onSaveNewVoiceCommandClicked = { },
+            onToolbarMenuClicked = { },
+            onDismissErrorClicked = { },
+            onTryAgainClicked = { },
+            onRecordAgainClicked = { }
         )
     )
 }

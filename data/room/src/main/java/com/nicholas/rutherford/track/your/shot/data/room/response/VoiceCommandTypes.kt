@@ -121,5 +121,21 @@ sealed class VoiceCommandTypes(val value: Int) {
                 else -> None
             }
         }
+
+        /**
+         * Returns example phrases for each voice command type to help users understand
+         * what kind of phrases they can use for recording their voice commands.
+         * * @return A comma-separated string of example phrases in quotes for the specific voice command type.
+         * Returns empty string for None or unknown types.
+         */
+        fun VoiceCommandTypes.examplePhrases(): String {
+            return when (this) {
+                Start -> "\"start\", \"begin\", \"go\""
+                Stop -> "\"stop\", \"end\", \"done\""
+                Make -> "\"swish\", \"money\", \"bucket\""
+                Miss -> "\"brick\", \"airball\", \"miss\""
+                else -> ""
+            }
+        }
     }
 }

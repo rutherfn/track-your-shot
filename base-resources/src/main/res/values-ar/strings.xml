@@ -220,7 +220,7 @@
     <string name="view_more_info">عرض المزيد من المعلومات</string>
     <string name="view_x">منظر%s</string>
     <string name="voice_commands">الأوامر الصوتية</string>
-    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_position_x_player_name">%1$s , %2$s</string>
     <string name="x_shot">%sطلقة</string>
     <string name="x_shot_has_been_removed_description">تمت إزالة %s من سجل تسديدات هذا اللاعب.</string>
     <string name="x_shot_has_not_been_removed_description">%sلم يتم إزالة هذه التسديدة من سجل تسديدات هذا اللاعب. يرجى المحاولة مرة أخرى لإزالة اللقطة.</string>

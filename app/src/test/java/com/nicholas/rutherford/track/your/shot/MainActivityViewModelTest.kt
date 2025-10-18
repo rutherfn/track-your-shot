@@ -18,7 +18,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -62,6 +64,109 @@ class MainActivityViewModelTest {
     @AfterEach
     fun afterEach() {
         Dispatchers.resetMain()
+    }
+
+    @Test
+    fun constants() {
+        Assertions.assertEquals(IS_CONNECTED_TIMEOUT_MILLIS, 5000L)
+    }
+
+    @Nested
+    inner class IsConnectedStateFlow {
+
+        @Test
+        fun `isConnected should have initial value of false`() = runTest {
+            every { network.isConnected } returns flowOf(true)
+
+            val viewModel = MainActivityViewModel(
+                network = network,
+                scope = scope,
+                accountManager = accountManager,
+                dataStorePreferenceReader = dataStorePreferencesReader
+            )
+
+            Assertions.assertEquals(false, viewModel.isConnected.value)
+        }
+
+        @Test
+        fun `isConnected should update when network flow emits true`() = runTest {
+            val networkFlow = MutableSharedFlow<Boolean>()
+
+            every { network.isConnected } returns networkFlow
+
+            val viewModel = MainActivityViewModel(
+                network = network,
+                scope = scope,
+                accountManager = accountManager,
+                dataStorePreferenceReader = dataStorePreferencesReader
+            )
+
+            val stateFlowJob = launch { viewModel.isConnected.collect { } }
+
+            dispatcher.scheduler.advanceUntilIdle()
+
+            networkFlow.emit(true)
+            dispatcher.scheduler.advanceUntilIdle()
+
+            Assertions.assertEquals(true, viewModel.isConnected.value)
+
+            stateFlowJob.cancel()
+        }
+
+        @Test
+        fun `isConnected should update when network flow emits false`() = runTest {
+            val networkFlow = MutableSharedFlow<Boolean>()
+            every { network.isConnected } returns networkFlow
+
+            val viewModel = MainActivityViewModel(
+                network = network,
+                scope = scope,
+                accountManager = accountManager,
+                dataStorePreferenceReader = dataStorePreferencesReader
+            )
+
+            val stateFlowJob = launch { viewModel.isConnected.collect { } }
+
+            networkFlow.emit(false)
+            dispatcher.scheduler.advanceUntilIdle()
+
+            Assertions.assertEquals(false, viewModel.isConnected.value)
+
+            stateFlowJob.cancel()
+        }
+
+        @Test
+        fun `isConnected should handle multiple emissions correctly`() = runTest {
+            val networkFlow = MutableSharedFlow<Boolean>()
+
+            every { network.isConnected } returns networkFlow
+
+            val viewModel = MainActivityViewModel(
+                network = network,
+                scope = scope,
+                accountManager = accountManager,
+                dataStorePreferenceReader = dataStorePreferencesReader
+            )
+
+            val stateFlowJob = launch { viewModel.isConnected.collect { } }
+
+            dispatcher.scheduler.advanceUntilIdle()
+
+            networkFlow.emit(true)
+            dispatcher.scheduler.advanceUntilIdle()
+            Assertions.assertEquals(true, viewModel.isConnected.value)
+
+            networkFlow.emit(false)
+            dispatcher.scheduler.advanceUntilIdle()
+            Assertions.assertEquals(false, viewModel.isConnected.value)
+
+            networkFlow.emit(true)
+            dispatcher.scheduler.advanceUntilIdle()
+
+            Assertions.assertEquals(true, viewModel.isConnected.value)
+
+            stateFlowJob.cancel()
+        }
     }
 
     @Test

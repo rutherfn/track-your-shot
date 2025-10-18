@@ -56,6 +56,8 @@ object StringsIds {
     val createPlayer = R.string.create_player
     val createShot = R.string.create_shot
     val createPlayerReport = R.string.create_player_report
+    val createYourFirstXCommandDescription = R.string.create_your_first_x_command_description
+    val createXCommand = R.string.create_x_command
     val createYourPlayersProfile = R.string.create_your_players_profile
     val createYourPlayerProfileDescription = R.string.create_your_player_profile_description
     val currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount =
@@ -68,6 +70,8 @@ object StringsIds {
     val debug = R.string.debug
     val debugToggles = R.string.debug_toggles
     val deleteAccount = R.string.delete_account
+    val dismiss = R.string.dismiss
+    val editXCommand = R.string.edit_x_command
     val inAppFirebaseViewer = R.string.in_app_firebase_viewer
     val deletePendingAccount = R.string.delete_pending_account
     val deletingPendingAccount = R.string.deleting_pending_account
@@ -110,6 +114,8 @@ object StringsIds {
     val error = R.string.error
     val errorCreatingAccount = R.string.error_creating_account
     val errorDeletingPendingAccount = R.string.error_deleting_pending_account
+    val errorOccurred = R.string.error_occurred
+    val examplePhrases = R.string.example_phrases
     val findShotsByName = R.string.find_shots_by_name
     val general = R.string.general
     val generateReport = R.string.generate_report
@@ -130,6 +136,7 @@ object StringsIds {
     val lastName = R.string.last_name
     val leavingTheAppWillResultInYouNotFinishingTheAccountCreationProcessDescription =
         R.string.leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description
+    val listeningDots = R.string.listening_dots
     val login = R.string.login
     val loginIconDescription = R.string.login_icon_description
     val logout = R.string.logout
@@ -148,6 +155,7 @@ object StringsIds {
     val noChangesMade = R.string.no_changes_made
     val noCurrentPlayersAdded = R.string.no_current_players_added
     val noCurrentShotsAdded = R.string.no_current_shots_added
+    val noPhraseRecordedYet = R.string.no_phrase_recorded_uet
     val noPlayersCreated = R.string.no_players_created
     val noPlayersCreatedDescription = R.string.no_players_created_description
     val noReportsGenerated = R.string.no_reports_generated
@@ -159,6 +167,7 @@ object StringsIds {
     val noShotsDeclaredDescription = R.string._no_shots_declared_description
     val noShotsResultsFound = R.string.no_shots_results_found
     val noShotsResultsFoundDescription = R.string.no_shots_results_found_description
+    val noXCommandsYet = R.string.no_x_commands_yet
     val notConnectedToInternet = R.string.not_connected_to_internet
     val notNow = R.string.not_now
     val openEmail = R.string.open_email
@@ -200,6 +209,10 @@ object StringsIds {
     val readMediaStorage = R.string.read_media_images
     val readExternalStorageDescription = R.string.read_external_storage_description
     val readMediaImagesDescription = R.string.read_media_images_description
+    val recordPhrase = R.string.record_phrase
+    val recordedPhrase = R.string.recorded_phrase
+    val recordAgain = R.string.record_again
+    val recordThePhraseYouWouldLikeText = R.string.record_the_phrase_youd_like_text
     val removeImage = R.string.remove_image
     val reports = R.string.reports
     val resetPassword = R.string.reset_password
@@ -210,6 +223,7 @@ object StringsIds {
     val selectDate = R.string.select_date
     val settings = R.string.settings
     val settingsHelpDescription = R.string.settings_help_description
+    val saveVoiceCommand = R.string.save_voice_command
     val shotsAttemptedDateX = R.string.shots_attempted_date_x
     val shotsLoggedDateX = R.string.shots_logged_date_x
     val shotsMadeAccuracyX = R.string.shots_made_accuracy_x
@@ -248,6 +262,7 @@ object StringsIds {
     val shotsNotRecordedDescription = R.string.shots_not_recorded_description
     val missedShotsNotRecordedDescription = R.string.missed_shots_not_recorded_description
     val dateShotWasTakenDescription = R.string.date_shot_was_taken_description
+    val setupVoiceCommandDescription = R.string.setup_voice_commands_description
     val showLess = R.string.show_less
     val showMore = R.string.show_more
     val smallForward = R.string.small_forward
@@ -257,6 +272,7 @@ object StringsIds {
     val start = R.string.start
     val stats = R.string.stats
     val stop = R.string.stop
+    val stopRecording = R.string.stop_recording
     val successfullySendEmailVerification = R.string.successfully_sent_email_verification
     val takeAPicture = R.string.take_a_picture
     val tapForMore = R.string.tap_for_more
@@ -266,6 +282,7 @@ object StringsIds {
     val trackYourProgress = R.string.track_your_progress
     val trackYourProgressDescription = R.string.track_your_progress_description
     val trackYourShot = R.string.track_your_shot
+    val tryAgain = R.string.try_again
     val theImageUploadWasUnsuccessful = R.string.the_image_upload_was_unsuccessful
     val thereWasAErrorCreatingYourAccountPleaseTryAgain =
         R.string.there_was_a_error_creating_your_account_please_try_again
@@ -315,4 +332,5 @@ object StringsIds {
     val yes = R.string.yes
     val yourPlayerCouldNotBeRetrievedDescription =
         R.string.your_player_could_not_be_retrieved_description
+    val yourRecordedPhrase = R.string.your_recorded_phrase
 }

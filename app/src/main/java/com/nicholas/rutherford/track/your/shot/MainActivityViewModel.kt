@@ -71,7 +71,7 @@ class MainActivityViewModel(
     /**
      * Collects the read voice toggled debug enabled flow from the [dataStorePreferenceReader]
      */
-    fun collectReadVoiceToggledDebugEnabledFlow() {
+    private fun collectReadVoiceToggledDebugEnabledFlow() {
         collectFlow(flow = dataStorePreferenceReader.readVoiceToggledDebugEnabledFlow()) { enabled ->
             isVoiceToggleEnabled = enabled
         }

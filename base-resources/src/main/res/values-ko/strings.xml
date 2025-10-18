@@ -220,7 +220,7 @@
     <string name="view_more_info">더 많은 정보 보기</string>
     <string name="view_x">보다%s</string>
     <string name="voice_commands">음성 명령</string>
-    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_position_x_player_name">%1$s , %2$s</string>
     <string name="x_shot">%s발사</string>
     <string name="x_shot_has_been_removed_description">%s이 플레이어의 샷 기록에서 제거되었습니다.</string>
     <string name="x_shot_has_not_been_removed_description">%s이 플레이어의 슛 기록에서 슛이 삭제되지 않았습니다. 다시 시도하여 샷을 제거하세요.</string>

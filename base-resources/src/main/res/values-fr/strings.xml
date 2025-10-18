@@ -221,7 +221,7 @@
     <string name="view_more_info">Voir plus d\'informations</string>
     <string name="view_x">Voir %s</string>
     <string name="voice_commands">Commandes vocales</string>
-    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_position_x_player_name">%1$s , %2$s</string>
     <string name="x_shot">%s Tir</string>
     <string name="x_shot_has_been_removed_description">%s a été supprimé de l\'historique des tirs de ce joueur.</string>
     <string name="x_shot_has_not_been_removed_description">%s Le tir n\'a pas été supprimé de l\'historique des tirs de ce joueur. Veuillez réessayer pour supprimer la photo.</string>

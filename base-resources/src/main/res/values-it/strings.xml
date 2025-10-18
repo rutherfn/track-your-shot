@@ -220,7 +220,7 @@
     <string name="view_more_info">Visualizza maggiori informazioni</string>
     <string name="view_x">Visualizza %s</string>
     <string name="voice_commands">Comandi vocali</string>
-    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_position_x_player_name">%1$s , %2$s</string>
     <string name="x_shot">%s Tiro</string>
     <string name="x_shot_has_been_removed_description">%s è stato rimosso dalla cronologia dei tiri di questo giocatore.</string>
     <string name="x_shot_has_not_been_removed_description">%s Il tiro non è stato rimosso dalla cronologia dei tiri di questo giocatore. Riprova per rimuovere lo scatto.</string>

@@ -220,7 +220,7 @@
     <string name="view_more_info">Xem thêm thông tin</string>
     <string name="view_x">Xem %s</string>
     <string name="voice_commands">Lệnh bằng giọng nói</string>
-    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_position_x_player_name">%1$s , %2$s</string>
     <string name="x_shot">%s Bắn</string>
     <string name="x_shot_has_been_removed_description">%s đã bị xóa khỏi lịch sử cú đánh của người chơi này.</string>
     <string name="x_shot_has_not_been_removed_description">%s Cú đánh chưa bị xóa khỏi lịch sử cú đánh của người chơi này. Vui lòng thử lại để xóa ảnh.</string>

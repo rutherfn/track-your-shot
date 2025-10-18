@@ -1,8 +1,9 @@
-package com.nicholas.rutherford.track.your.shot.room
+package com.nicholas.rutherford.track.your.shot.room.response
 
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes
+import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes.Companion.examplePhrases
 import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes.Companion.toCreateCommandLabel
 import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes.Companion.toDisplayLabel
 import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes.Companion.toEditVoiceCommandLabel
@@ -69,35 +70,35 @@ class VoiceCommandTypesTest {
 
         @Test
         fun `when value passed in is start value should return start`() {
-            val value = VoiceCommandTypes.fromValue(value = Constants.VOICE_COMMAND_START_VALUE)
+            val value = VoiceCommandTypes.Companion.fromValue(value = Constants.VOICE_COMMAND_START_VALUE)
 
             Assertions.assertEquals(value, VoiceCommandTypes.Start)
         }
 
         @Test
         fun `when value passed in is stop value should return stop`() {
-            val value = VoiceCommandTypes.fromValue(value = Constants.VOICE_COMMAND_STOP_VALUE)
+            val value = VoiceCommandTypes.Companion.fromValue(value = Constants.VOICE_COMMAND_STOP_VALUE)
 
             Assertions.assertEquals(value, VoiceCommandTypes.Stop)
         }
 
         @Test
         fun `when value passed in is make value should return make`() {
-            val value = VoiceCommandTypes.fromValue(value = Constants.VOICE_COMMAND_MAKE_VALUE)
+            val value = VoiceCommandTypes.Companion.fromValue(value = Constants.VOICE_COMMAND_MAKE_VALUE)
 
             Assertions.assertEquals(value, VoiceCommandTypes.Make)
         }
 
         @Test
         fun `when value passed in is miss value should return miss`() {
-            val value = VoiceCommandTypes.fromValue(value = Constants.VOICE_COMMAND_MISS_VALUE)
+            val value = VoiceCommandTypes.Companion.fromValue(value = Constants.VOICE_COMMAND_MISS_VALUE)
 
             Assertions.assertEquals(value, VoiceCommandTypes.Miss)
         }
 
         @Test
         fun `when value passed in is not any of the default type values should return none`() {
-            val value = VoiceCommandTypes.fromValue(value = Constants.VOICE_COMMAND_NONE_VALUE)
+            val value = VoiceCommandTypes.Companion.fromValue(value = Constants.VOICE_COMMAND_NONE_VALUE)
 
             Assertions.assertEquals(value, VoiceCommandTypes.None)
         }
@@ -313,6 +314,45 @@ class VoiceCommandTypesTest {
             val result = "None".toPlayVoiceCommandsTypes(application = application)
 
             Assertions.assertEquals(result, VoiceCommandTypes.None)
+        }
+    }
+
+    @Nested
+    inner class ExamplePhrases {
+
+        @Test
+        fun `when voice command type is start should return start example phrases`() {
+            val result = VoiceCommandTypes.Start.examplePhrases()
+
+            Assertions.assertEquals(result, "\"start\", \"begin\", \"go\"")
+        }
+
+        @Test
+        fun `when voice command type is stop should return stop example phrases`() {
+            val result = VoiceCommandTypes.Stop.examplePhrases()
+
+            Assertions.assertEquals(result, "\"stop\", \"end\", \"done\"")
+        }
+
+        @Test
+        fun `when voice command type is make should return make example phrases`() {
+            val result = VoiceCommandTypes.Make.examplePhrases()
+
+            Assertions.assertEquals(result, "\"swish\", \"money\", \"bucket\"")
+        }
+
+        @Test
+        fun `when voice command type is miss should return miss example phrases`() {
+            val result = VoiceCommandTypes.Miss.examplePhrases()
+
+            Assertions.assertEquals(result, "\"brick\", \"airball\", \"miss\"")
+        }
+
+        @Test
+        fun `when voice command type is none should return empty string`() {
+            val result = VoiceCommandTypes.None.examplePhrases()
+
+            Assertions.assertEquals(result, "")
         }
     }
 }

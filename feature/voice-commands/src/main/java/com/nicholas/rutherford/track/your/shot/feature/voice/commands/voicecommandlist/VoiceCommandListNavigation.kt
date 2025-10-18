@@ -2,5 +2,5 @@ package com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecomm
 
 interface VoiceCommandListNavigation {
     fun openNavigationDrawer()
-    fun navigateToCreateVoiceCommand(type: Int?, phrase: String?)
+    fun navigateToCreateEditVoiceCommand(type: Int?, phrase: String?)
 }

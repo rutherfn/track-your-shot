@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot
 
 import com.nicholas.rutherford.track.your.shot.compose.components.AppBar
+import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordViewModel
@@ -19,6 +20,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredsh
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandFilter
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
 
@@ -103,7 +105,7 @@ interface AppBarFactory {
     fun createVoiceCommandListScreenAppBar(voiceCommandListViewModel: VoiceCommandListViewModel): AppBar
 
     /** Creates an AppBar for create edit voice create screen. */
-    fun createEditVoiceCommandCreateScreenAppBar(createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel): AppBar
+    fun createEditVoiceCommandCreateScreenAppBar(createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel, type: VoiceCommandTypes, isCreating: Boolean): AppBar
 
     /** Creates a default, hidden AppBar. */
     fun createDefaultAppBar(): AppBar

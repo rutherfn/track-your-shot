@@ -220,7 +220,7 @@
     <string name="view_more_info">अधिक जानकारी देखें</string>
     <string name="view_x">%s देखें</string>
     <string name="voice_commands">ध्वनि आदेश</string>
-    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_position_x_player_name">%1$s , %2$s</string>
     <string name="x_shot">%s शॉट</string>
     <string name="x_shot_has_been_removed_description">%s को इस खिलाड़ी के शॉट इतिहास से हटा दिया गया है.</string>
     <string name="x_shot_has_not_been_removed_description">%s शॉट को इस खिलाड़ी के शॉट इतिहास से हटाया नहीं गया है. कृपया शॉट हटाने के लिए पुनः प्रयास करें.</string>

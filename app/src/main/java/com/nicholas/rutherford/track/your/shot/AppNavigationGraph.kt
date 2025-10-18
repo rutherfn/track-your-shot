@@ -71,7 +71,8 @@ import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenPara
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
-import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandListScreen
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandState
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListScreen
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandParams
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandScreen
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
@@ -833,7 +834,7 @@ object AppNavigationGraph {
                 state = voiceCommandListViewModel.voiceCommandsStateFlow.collectAsState().value,
                 onToolbarMenuClicked = { voiceCommandListViewModel.onToolbarMenuClicked() },
                 onFilterSelected = { filter -> voiceCommandListViewModel.onFilterSelected(filter) },
-                onCreateCommandTypeClicked = { type, phrase -> voiceCommandListViewModel.onCreateCommandTypeClicked(type = type, phrase = phrase) }
+                onCreateEditCommandTypeClicked = { type, phrase -> voiceCommandListViewModel.onCreateEditCommandTypeClicked(type = type, phrase = phrase) }
             )
 
             ObserveLifecycle(viewModel = voiceCommandListViewModel)
@@ -858,16 +859,21 @@ object AppNavigationGraph {
             val createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel = koinViewModel()
             val appBarFactory: AppBarFactory = koinInject()
 
+            val state = createEditVoiceCommandViewModel.createEditVoiceCommandStateFlow.collectAsState().value
+
             val params = CreateEditVoiceCommandParams(
-                state = createEditVoiceCommandViewModel.createEditVoiceCommandStateFlow.collectAsState().value,
-                onRecordClicked = {},
-                onSaveClicked = {},
-                onToolbarMenuClicked = { createEditVoiceCommandViewModel.onToolbarMenuClicked() }
+                state = state,
+                onRecordPhraseClicked = { createEditVoiceCommandViewModel.onRecordPhraseClicked() },
+                onSaveNewVoiceCommandClicked = { createEditVoiceCommandViewModel.onSaveNewVoiceCommand() },
+                onToolbarMenuClicked = { createEditVoiceCommandViewModel.onToolbarMenuClicked() },
+                onDismissErrorClicked = { createEditVoiceCommandViewModel.onDismissErrorClicked() },
+                onTryAgainClicked = { createEditVoiceCommandViewModel.onTryAgainClicked() },
+                onRecordAgainClicked = { createEditVoiceCommandViewModel.onRecordAgainClicked() }
             )
 
             ObserveLifecycle(viewModel = createEditVoiceCommandViewModel)
 
-            updateAppBar(appBar = appBarFactory.createEditVoiceCommandCreateScreenAppBar(createEditVoiceCommandViewModel = createEditVoiceCommandViewModel))
+            updateAppBar(appBar = appBarFactory.createEditVoiceCommandCreateScreenAppBar(createEditVoiceCommandViewModel = createEditVoiceCommandViewModel, type = state.type, isCreating = state.voiceCommandState == VoiceCommandState.CREATING || state.voiceCommandState == VoiceCommandState.RECORDING_NEW || state.voiceCommandState == VoiceCommandState.RECORDING_ERROR))
 
             CreateEditVoiceCommandScreen(params = params)
         }
