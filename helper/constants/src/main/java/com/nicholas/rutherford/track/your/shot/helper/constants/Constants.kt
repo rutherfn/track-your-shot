@@ -42,9 +42,12 @@ object Constants {
     const val PENDING_PLAYERS_EXPECTED_SIZE = 1
     const val PLAYER_NAME = "playerName"
     const val PLAYERS = "players"
+    const val SAVED_VOICE_COMMANDS = "savedVoiceCommands"
     const val PLAYERS_INDIVIDUAL_REPORTS = "playersIndividualReports"
     const val POP_DEFAULT_ACTION = "pop"
     const val POSITION_VALUE = "positionValue"
+    const val NAME = "name"
+    const val TYPE_VALUE = "typeValue"
     const val POSITION_NA = 5
     const val SHOT_ZERO_VALUE = 0.0
     const val USERS_PATH = "users"

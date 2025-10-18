@@ -9,6 +9,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAut
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.CreateAccountFirebaseRealtimeDatabaseResult
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.SavedVoiceCommandRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -221,6 +222,44 @@ class CreateFirebaseUserInfoImpl(
                     )
                     trySend(element = Pair(false, null))
                 }
+            awaitClose()
+        }
+    }
+
+    /**
+     * Adds a saved voice command to Firebase Realtime Database.
+     *
+     * @param savedVoiceCommandRealtimeResponse Voice Command information.
+     * @return [Flow] emitting a [Pair] of success status and the Firebase key.
+     */
+    override fun attemptToCreateSavedVoiceCommandFirebaseRealtimeDatabaseResponseFlow(
+        savedVoiceCommandRealtimeResponse: SavedVoiceCommandRealtimeResponse
+    ): Flow<Pair<Boolean, String?>> {
+        return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val reference = firebaseDatabase.getReference("${Constants.USERS_PATH}/$uid/${Constants.SAVED_VOICE_COMMANDS}")
+            val values = hashMapOf<String, Any>()
+            val key = reference.push().key ?: ""
+
+            values[Constants.NAME] = savedVoiceCommandRealtimeResponse.name
+            values[Constants.TYPE_VALUE] = savedVoiceCommandRealtimeResponse.typeValue
+
+            reference.child(key).setValue(values)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        trySend(element = Pair(true, key))
+                    } else {
+                        Timber.w(message = "Error(attemptToCreateVoiceCommandFirebaseRealtimeDatabaseResponseFlow) -> Creating saved voice command failed to create in Firebase Realtime Database with because it was not successful at uploading")
+                        trySend(element = Pair(false, null))
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(
+                        message = "Error(attemptToCreateVoiceCommandFirebaseRealtimeDatabaseResponseFlow) -> Creating saved voice command failed to create in Firebase Realtime Database with following stack trace - ${exception.stackTrace}"
+                    )
+                    trySend(element = Pair(false, null))
+                }
+
             awaitClose()
         }
     }

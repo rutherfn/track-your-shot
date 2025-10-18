@@ -5,6 +5,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.firebase.CreateAccountFirebaseAuthResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.SavedVoiceCommandRealtimeResponse
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -67,6 +68,16 @@ interface CreateFirebaseUserInfo {
      */
     fun attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
         playerInfoRealtimeResponse: PlayerInfoRealtimeResponse
+    ): Flow<Pair<Boolean, String?>>
+
+    /**
+     * Adds a saved voice command to Firebase Realtime Database.
+     *
+     * @param savedVoiceCommandRealtimeResponse Voice command information including name and type.
+     * @return [Flow] emitting a [Pair] of success status and the Firebase key (nullable if failed).
+     */
+    fun attemptToCreateSavedVoiceCommandFirebaseRealtimeDatabaseResponseFlow(
+        savedVoiceCommandRealtimeResponse: SavedVoiceCommandRealtimeResponse
     ): Flow<Pair<Boolean, String?>>
 
     /**
