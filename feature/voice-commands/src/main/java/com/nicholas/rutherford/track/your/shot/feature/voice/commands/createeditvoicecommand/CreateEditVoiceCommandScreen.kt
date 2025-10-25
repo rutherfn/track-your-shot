@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -71,8 +72,10 @@ fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CommandScreenHeaderInfo(
+                name = params.state.recordedPhrase ?: stringResource(id = StringsIds.empty),
                 type = params.state.type,
-                isRecording = params.state.isRecording
+                isRecording = params.state.isRecording,
+                voiceCommandState = params.state.voiceCommandState
             )
 
             ExamplePhraseCard(type = params.state.type)
@@ -104,8 +107,13 @@ fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
                     onDismissErrorClicked = params.onDismissErrorClicked,
                     )
                 !params.state.recordedPhrase.isNullOrEmpty() -> PhraseCaptureButtonContent(
+                    state = params.state,
                     hasRecordAudioPermission = hasRecordAudioPermission,
+                    isCommandAlreadyCreated = params.state.isCommandAlreadyCreated,
+                    hasOverriddenExistingCommand = params.state.hasOverriddenExistingCommand,
                     onRecordAgainClicked = params.onRecordAgainClicked,
+                    onEditVoiceCommandClicked = params.onEditVoiceCommandClicked,
+                    onDeleteVoiceCommandClicked = params.onDeleteVoiceCommandClicked,
                     onSaveNewVoiceCommandClicked = params.onSaveNewVoiceCommandClicked
                 )
                 else -> NoPhraseCaptureButtonContent(
@@ -120,14 +128,22 @@ fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
 
 @Composable
 private fun CommandScreenHeaderInfo(
+    name: String,
     type: VoiceCommandTypes,
-    isRecording: Boolean
+    isRecording: Boolean,
+    voiceCommandState: VoiceCommandState
 ) {
     val headerInfo = if (isRecording) {
         Triple(
             first = stringResource(id = StringsIds.listeningDots),
             second = Colors.secondaryColor,
             third = FontWeight.SemiBold
+        )
+    } else if (voiceCommandState == VoiceCommandState.EDITING_EXISTING && name.isNotEmpty()) {
+        Triple(
+            first = stringResource(id = StringsIds.editPhraseXToUseThisCommand, name),
+            second = MaterialTheme.colorScheme.onSurfaceVariant,
+            third = FontWeight.Normal
         )
     } else {
         Triple(
@@ -336,8 +352,13 @@ private fun RecordingPhraseButtonContent(
 }
 @Composable
 private fun PhraseCaptureButtonContent(
+    state: CreateEditVoiceCommandState,
     hasRecordAudioPermission: Boolean,
+    isCommandAlreadyCreated: Boolean,
+    hasOverriddenExistingCommand: Boolean,
     onRecordAgainClicked: () -> Unit,
+    onEditVoiceCommandClicked: (String, VoiceCommandTypes) -> Unit,
+    onDeleteVoiceCommandClicked: () -> Unit,
     onSaveNewVoiceCommandClicked: () -> Unit
 ) {
     val recordAudioPermissionLauncher = rememberLauncherForActivityResult(
@@ -370,7 +391,13 @@ private fun PhraseCaptureButtonContent(
     }
 
     Button(
-        onClick = onSaveNewVoiceCommandClicked,
+        onClick = {
+            if (isCommandAlreadyCreated) {
+                onEditVoiceCommandClicked(state.recordedPhrase ?: "", state.type)
+            } else {
+                onSaveNewVoiceCommandClicked()
+            }
+        },
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp),
@@ -386,11 +413,39 @@ private fun PhraseCaptureButtonContent(
         Spacer(modifier = Modifier.size(8.dp))
 
         Text(
-            text = stringResource(id = StringsIds.saveVoiceCommand),
+            text = if (isCommandAlreadyCreated) {
+                stringResource(id = StringsIds.editVoiceCommand)
+            } else {
+                stringResource(id = StringsIds.saveVoiceCommand)
+            },
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = Color.White
         )
+    }
+
+    if (isCommandAlreadyCreated && !hasOverriddenExistingCommand) {
+        Button(
+            onClick = onDeleteVoiceCommandClicked,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = "Delete",
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.size(8.dp))
+            Text(
+                text = stringResource(id = StringsIds.deleteCommand),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White
+            )
+        }
     }
 }
 
@@ -501,6 +556,8 @@ fun CreateEditVoiceCommandScreenPreview() {
             ),
             onRecordPhraseClicked = { },
             onSaveNewVoiceCommandClicked = { },
+            onEditVoiceCommandClicked = { phrase, type -> },
+            onDeleteVoiceCommandClicked = { },
             onToolbarMenuClicked = { },
             onDismissErrorClicked = { },
             onTryAgainClicked = { },
@@ -521,6 +578,31 @@ fun CreateEditVoiceCommandScreenRecordingPreview() {
             ),
             onRecordPhraseClicked = { },
             onSaveNewVoiceCommandClicked = { },
+            onEditVoiceCommandClicked = { phrase, type -> },
+            onDeleteVoiceCommandClicked = { },
+            onToolbarMenuClicked = { },
+            onDismissErrorClicked = { },
+            onTryAgainClicked = { },
+            onRecordAgainClicked = { }
+        )
+    )
+}
+
+@Preview(name = "Editing from Existing State", showBackground = true)
+@Composable
+fun EditVoiceCommandScreenRecordingPreview() {
+    CreateEditVoiceCommandScreen(
+        params = CreateEditVoiceCommandParams(
+            state = CreateEditVoiceCommandState(
+                type = VoiceCommandTypes.Make,
+                recordedPhrase = "Phrase",
+                isRecording = false,
+                voiceCommandState = VoiceCommandState.EDITING_EXISTING
+            ),
+            onRecordPhraseClicked = { },
+            onSaveNewVoiceCommandClicked = { },
+            onEditVoiceCommandClicked = { phrase, type -> },
+            onDeleteVoiceCommandClicked = { },
             onToolbarMenuClicked = { },
             onDismissErrorClicked = { },
             onTryAgainClicked = { },
@@ -541,6 +623,8 @@ fun CreateEditVoiceCommandScreenRecordedPreview() {
             ),
             onRecordPhraseClicked = { },
             onSaveNewVoiceCommandClicked = { },
+            onEditVoiceCommandClicked = { phrase, type -> },
+            onDeleteVoiceCommandClicked = { },
             onToolbarMenuClicked = { },
             onDismissErrorClicked = { },
             onTryAgainClicked = { },
@@ -563,6 +647,8 @@ fun CreateEditVoiceCommandScreenErrorPreview() {
             ),
             onRecordPhraseClicked = { },
             onSaveNewVoiceCommandClicked = { },
+            onEditVoiceCommandClicked = { phrase, type -> },
+            onDeleteVoiceCommandClicked = { },
             onToolbarMenuClicked = { },
             onDismissErrorClicked = { },
             onTryAgainClicked = { },

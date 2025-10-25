@@ -48,7 +48,7 @@ class DeleteFirebaseUserInfoImpl(
     override fun deleteSavedVoiceCommand(savedVoiceCommandKey: String): Flow<Boolean> {
         return callbackFlow {
             val uid = firebaseAuth.currentUser?.uid ?: ""
-            val path = "${Constants.USERS}/$uid/${Constants.SAVED_VOICE_COMMANDS}/$savedVoiceCommandKey"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.SAVED_VOICE_COMMANDS}/$savedVoiceCommandKey"
 
             firebaseDatabase.getReference(path)
                 .removeValue()

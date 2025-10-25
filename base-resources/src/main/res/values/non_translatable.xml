@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="are_you_sure_you_want_to_delete_your_account" translatable="false">Are you sure you want to delete your account?</string>
+    <string name="cannot_edit_voice_command" translatable="false">Cannot Edit Voice Command</string>
+    <string name="cannot_save_voice_command" translatable="false">Cannot Save Voice Command</string>
     <string name="create_your_first_x_command_description" translatable="false">Create your first %s command to start logging shots with your voice</string>
     <string name="create_x_command" translatable="false">Create %s Command</string>
     <string name="edit_x_command" translatable="false">Edit %s Command</string>
+    <string name="error_voice_command_edit_failed_with_same_name" translatable="false">We couldn’t edit your voice command due to the phrase is the same. Please enter a new phrase in order to continue.</string>
+    <string name="error_voice_command_edit_failed" translatable="false">We couldn’t edit your voice command. Please try again or contact support.</string>
+    <string name="error_voice_command_save_failed" translatable="false">We couldn’t save your voice command. Please try again or contact support.</string>
     <string name="debug" translatable="false">Debug</string>
     <string name="debug_toggles" translatable="false">Debug Toggles</string>
     <string name="delete_account" translatable="false">Delete Account</string>
@@ -14,8 +19,9 @@
     <string name="make" translatable="false">Make</string>
     <string name="miss" translatable="false">Miss</string>
     <string name="none" translatable="false">None</string>
-    <string name="setup_voice_commands_description" translatable="false">Set up voice commands to easily log your shots while playing. Use your custom phrases to automatically start or stop a voice session, and to record made or missed shots.</string>
+    <string name="setup_voice_commands_description" translatable="false">Set up voice commands to easily log your shots while playing. Use your custom phrases to automatically start or stop a voice session, and to record make or miss shots.</string>
     <string name="start" translatable="false">Start</string>
+    <string name="edit_phrase_x_to_use_for_this_command" translatable="false">Edit phrase %s to use for this command</string>
     <string name="stop" translatable="false">Stop</string>
     <string name="listening_dots" translatable="false">Listening...</string>
     <string name="record_the_phrase_youd_like_text" translatable="false">Record the phrase you\'d like to use for this command</string>
@@ -29,4 +35,24 @@
     <string name="error_occurred" translatable="false">Error Occurred</string>
     <string name="record_phrase" translatable="false">Record Phrase</string>
     <string name="dismiss" translatable="false">Dismiss</string>
+    <string name="edit_voice_command" translatable="false">Edit Voice Command</string>
+    <string name="delete_command" translatable="false">Delete Command</string>
+    <string name="no_command_entered" translatable="false">No Command Entered</string>
+    <string name="no_command_entered_description" translatable="false">No command has been entered for this type. Please record a command to continue, or contact support.</string>
+    <string name="new_command_saved_successfully" translatable="false">New Command Saved Successfully</string>
+    <string name="edit_command_successfully" translatable="false">Edit Command Successfully</string>
+    <string name="delete_command_successfully" translatable="false">Delete Command Successfully</string>
+    <string name="delete_command_successfully_description" translatable="false">The %s command has successfully deleted.</string>
+    <string name="saved_new_start_voice_command_description" translatable="false">We have saved your new start voice command. Please use this command to start a voice logging session.</string>
+    <string name="saved_new_stop_voice_command_description" translatable="false">We have saved your new stop voice command. Please use this command to stop a voice logging session.</string>
+    <string name="saved_new_make_voice_command_description" translatable="false">We have saved your new make voice command. Please use this command to record made shots during your voice logging session.</string>
+    <string name="saved_new_miss_voice_command_description" translatable="false">We have saved your new miss voice command. Please use this command to record missed shots during your voice logging session.</string>
+    <string name="edited_new_start_voice_command_description" translatable="false">We have edited your new start voice command. Please use this command to start a voice logging session.</string>
+    <string name="edited_new_stop_voice_command_description" translatable="false">We have edited your new stop voice command. Please use this command to stop a voice logging session.</string>
+    <string name="edited_new_make_voice_command_description" translatable="false">We have edited your new make voice command. Please use this command to record made shots during your voice logging session.</string>
+    <string name="edited_new_miss_voice_command_description" translatable="false">We have edited your new miss voice command. Please use this command to record missed shots during your voice logging session.</string>
+    <string name="could_not_delete_command" translatable="false">Could Not Delete Command</string>
+    <string name="could_not_delete_command_description" translatable="false">We could not delete command description. Please try again or contact support.</string>
+    <string name="deleting_command" translatable="false">Deleting Command</string>
+    <string name="are_you_sure_you_want_to_delete_command" translatable="false">Are you sure you want to delete command?</string>
 </resources>

@@ -60,4 +60,11 @@ class SavedVoiceCommandRepositoryImpl(private val savedVoiceCommandDao: SavedVoi
      * @return A list of all saved voice commands.
      */
     override suspend fun getAllVoiceCommands(): List<SavedVoiceCommand> = savedVoiceCommandDao.getAllSavedVoiceCommands().map { command -> command.toSavedVoiceCommand() }
+
+    /**
+     * Fetches the size of the saved voice commands from the database.
+     *
+     * @return A size of all saved voice commands
+     */
+    override suspend fun getVoiceCommandSize(): Int = savedVoiceCommandDao.getSavedVoiceCommandsSize()
 }

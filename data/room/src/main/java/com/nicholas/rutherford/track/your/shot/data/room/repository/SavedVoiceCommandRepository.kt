@@ -30,4 +30,7 @@ interface SavedVoiceCommandRepository {
 
     /** Retrieves all [SavedVoiceCommand]s from the database. */
     suspend fun getAllVoiceCommands(): List<SavedVoiceCommand>
+
+    /** Retrieves the size of the [SavedVoiceCommand]s from the database. */
+    suspend fun getVoiceCommandSize(): Int
 }

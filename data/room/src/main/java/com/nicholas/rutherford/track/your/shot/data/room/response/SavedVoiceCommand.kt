@@ -10,11 +10,13 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.SavedVoiceComm
  *
  * @property id Auto-generated unique identifier for the player.
  * @property name [String] Saved value for the user command
+ * @property firebaseKey Firebase identifier for this saved voice command.
  * @property type [VoiceCommandTypes] type of command that the saved command is of
  */
 data class SavedVoiceCommand(
     val id: Int,
     val name: String,
+    val firebaseKey: String,
     val type: VoiceCommandTypes
 )
 
@@ -31,6 +33,7 @@ fun SavedVoiceCommand.toSavedVoiceCommandEntity(): SavedVoiceCommandEntity {
     return SavedVoiceCommandEntity(
         id = id,
         name = name,
+        firebaseKey = firebaseKey,
         type = type
     )
 }

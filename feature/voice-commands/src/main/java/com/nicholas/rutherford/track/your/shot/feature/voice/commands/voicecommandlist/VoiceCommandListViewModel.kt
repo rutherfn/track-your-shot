@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist
 
+import androidx.lifecycle.LifecycleOwner
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.SavedVoiceCommandRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.SavedVoiceCommand
@@ -16,7 +17,6 @@ import kotlinx.coroutines.launch
  * Created by Nicholas Rutherford, last edited on 2025-10-06
  *
  * ViewModel for managing the voice command list screen state and interactions.
- * Handles fetching, filtering, and displaying voice commands by category (Start, Stop, Make, Miss).
  *
  * Responsibilities include:
  * - Fetching all saved voice commands from the repository
@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
  * @param savedVoiceCommandRepository Repository for voice command data operations
  */
 class VoiceCommandListViewModel(
-    scope: CoroutineScope,
+    private val scope: CoroutineScope,
     private val navigation: VoiceCommandListNavigation,
     private val savedVoiceCommandRepository: SavedVoiceCommandRepository
 ) : BaseViewModel() {
@@ -38,7 +38,12 @@ class VoiceCommandListViewModel(
     internal val voiceCommandMutableStateFlow = MutableStateFlow(value = VoiceCommandListState())
     val voiceCommandsStateFlow = voiceCommandMutableStateFlow.asStateFlow()
 
-    init {
+    /**
+     * [onCreate] function block that gets called when the view model gets created.
+     * Fetches all voice commands from the repository and updates the state.
+     */
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
         scope.launch { fetchVoiceCommandsAndUpdateState() }
     }
 
@@ -75,6 +80,8 @@ class VoiceCommandListViewModel(
      */
     private suspend fun fetchVoiceCommandsAndUpdateState() {
         val voiceCommands = savedVoiceCommandRepository.getAllVoiceCommands()
+
+        println("all commands $voiceCommands")
 
         val startCommands = voiceCommands.filterBy(type = VoiceCommandTypes.Start)
         val stopCommands = voiceCommands.filterBy(type = VoiceCommandTypes.Stop)

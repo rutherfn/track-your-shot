@@ -8,5 +8,7 @@ data class CreateEditVoiceCommandState(
     val voiceCapturedErrorDescription: String? = null,
     val recordedPhrase: String? = null,
     val isRecording: Boolean = false,
+    val isCommandAlreadyCreated: Boolean = false,
+    val hasOverriddenExistingCommand: Boolean = false,
     val voiceCommandState: VoiceCommandState = VoiceCommandState.CREATING
 )

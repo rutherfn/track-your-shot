@@ -32,7 +32,7 @@ class UpdateFirebaseUserInfoImpl(
     override fun updateSavedVoiceCommand(savedVoiceCommandRealtimeWithKeyResponse: SavedVoiceCommandRealtimeWithKeyResponse): Flow<Boolean> {
         return callbackFlow {
             val uid = firebaseAuth.currentUser?.uid ?: ""
-            val path = "${Constants.USERS}/$uid/${Constants.SAVED_VOICE_COMMANDS}/${savedVoiceCommandRealtimeWithKeyResponse.savedVoiceCommandKey}"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.SAVED_VOICE_COMMANDS}/${savedVoiceCommandRealtimeWithKeyResponse.savedVoiceCommandKey}"
 
             val savedVoiceCommandDataToUpdate = mapOf(
                 Constants.NAME to savedVoiceCommandRealtimeWithKeyResponse.savedVoiceCommandInfo.name,

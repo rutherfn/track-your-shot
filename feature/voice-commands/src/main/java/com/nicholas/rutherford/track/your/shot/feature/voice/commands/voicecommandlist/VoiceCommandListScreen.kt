@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -64,9 +65,15 @@ fun VoiceCommandListScreen(params: VoiceCommandListParams) {
         VoiceFilters(state = params.state, onFilterSelected = params.onFilterSelected)
 
         if (params.state.filteredCommands.isEmpty()) {
-            VoiceCommandsEmptyStateContent(state = params.state, onCreateEditCommandTypeClicked = params.onCreateEditCommandTypeClicked)
+            VoiceCommandsEmptyStateContent(
+                state = params.state,
+                onCreateCommandTypeClicked = params.onCreateEditCommandTypeClicked
+            )
         } else {
-            VoiceCommandTypeListContent(state = params.state)
+            VoiceCommandTypeListContent(
+                state = params.state,
+                onEditCommandTypeClicked = params.onCreateEditCommandTypeClicked
+            )
         }
     }
 }
@@ -125,12 +132,12 @@ private fun VoiceFilters(
  * Shows a card with instructions and a button to create the voice command.
  * 
  * @param state Current state containing the selected filter information
- * @param onCreateEditCommandTypeClicked Callback when the create edit command button is clicked
+ * @param onCreateCommandTypeClicked Callback when the create command button is clicked
  */
 @Composable
 private fun VoiceCommandsEmptyStateContent(
     state: VoiceCommandListState,
-    onCreateEditCommandTypeClicked: (type: Int?, phrase: String?) -> Unit
+    onCreateCommandTypeClicked: (type: Int?, phrase: String?) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -163,7 +170,7 @@ private fun VoiceCommandsEmptyStateContent(
                 colors = ButtonDefaults.buttonColors(containerColor = Colors.secondaryColor),
                 shape = RoundedCornerShape(50.dp),
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { onCreateEditCommandTypeClicked.invoke(state.selectedFilter.toType().value, null) }
+                onClick = { onCreateCommandTypeClicked.invoke(state.selectedFilter.toType().value, null) }
             ) {
                 Text(
                     text = stringResource(StringsIds.createXCommand, state.selectedFilter.toDisplayLabel()),
@@ -180,9 +187,13 @@ private fun VoiceCommandsEmptyStateContent(
  * Shows filtered voice commands with basketball icons and command names.
  * 
  * @param state Current state containing the filtered commands to display
+ * @param onEditCommandTypeClicked Callback when the edit command button is clicked
  */
 @Composable
-private fun VoiceCommandTypeListContent(state: VoiceCommandListState) {
+private fun VoiceCommandTypeListContent(
+    state: VoiceCommandListState,
+    onEditCommandTypeClicked: (type: Int?, phrase: String?) -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -190,7 +201,8 @@ private fun VoiceCommandTypeListContent(state: VoiceCommandListState) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 4.dp),
+                    .padding(vertical = 4.dp)
+                    .clickable { onEditCommandTypeClicked.invoke(command.type.value, command.name) },
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
                 ),
@@ -242,28 +254,28 @@ fun VoiceCommandListScreenWithDataPreview() {
     val params = VoiceCommandListParams(
         state = VoiceCommandListState(
             startCommands = listOf(
-                SavedVoiceCommand(id = 1, name = "Begin Session", type = VoiceCommandTypes.Start),
-                SavedVoiceCommand(id = 2, name = "Start Recording", type = VoiceCommandTypes.Start),
-                SavedVoiceCommand(id = 3, name = "Let's Go", type = VoiceCommandTypes.Start)
+                SavedVoiceCommand(id = 1, name = "Begin Session", firebaseKey = "key", type = VoiceCommandTypes.Start),
+                SavedVoiceCommand(id = 2, name = "Start Recording", firebaseKey = "key", type = VoiceCommandTypes.Start),
+                SavedVoiceCommand(id = 3, name = "Let's Go", firebaseKey = "key", type = VoiceCommandTypes.Start)
             ),
             stopCommands = listOf(
-                SavedVoiceCommand(id = 4, name = "End Session", type = VoiceCommandTypes.Stop),
-                SavedVoiceCommand(id = 5, name = "Stop Recording", type = VoiceCommandTypes.Stop)
+                SavedVoiceCommand(id = 4, name = "End Session", firebaseKey = "key", type = VoiceCommandTypes.Stop),
+                SavedVoiceCommand(id = 5, name = "Stop Recording", firebaseKey = "key", type = VoiceCommandTypes.Stop)
             ),
             makeCommands = listOf(
-                SavedVoiceCommand(id = 6, name = "Made It", type = VoiceCommandTypes.Make),
-                SavedVoiceCommand(id = 7, name = "Good Shot", type = VoiceCommandTypes.Make),
-                SavedVoiceCommand(id = 8, name = "Perfect", type = VoiceCommandTypes.Make)
+                SavedVoiceCommand(id = 6, name = "Made It", firebaseKey = "key", type = VoiceCommandTypes.Make),
+                SavedVoiceCommand(id = 7, name = "Good Shot", firebaseKey = "key", type = VoiceCommandTypes.Make),
+                SavedVoiceCommand(id = 8, name = "Perfect", firebaseKey = "key", type = VoiceCommandTypes.Make)
             ),
             missCommands = listOf(
-                SavedVoiceCommand(id = 9, name = "Missed It", type = VoiceCommandTypes.Miss),
-                SavedVoiceCommand(id = 10, name = "Bad Shot", type = VoiceCommandTypes.Miss)
+                SavedVoiceCommand(id = 9, name = "Missed It", firebaseKey = "key", type = VoiceCommandTypes.Miss),
+                SavedVoiceCommand(id = 10, name = "Bad Shot", firebaseKey = "key", type = VoiceCommandTypes.Miss)
             ),
             selectedFilter = VoiceCommandFilter.START,
             filteredCommands = listOf(
-                SavedVoiceCommand(id = 1, name = "Begin Session", type = VoiceCommandTypes.Start),
-                SavedVoiceCommand(id = 2, name = "Start Recording", type = VoiceCommandTypes.Start),
-                SavedVoiceCommand(id = 3, name = "Let's Go", type = VoiceCommandTypes.Start)
+                SavedVoiceCommand(id = 1, name = "Begin Session", firebaseKey = "key", type = VoiceCommandTypes.Start),
+                SavedVoiceCommand(id = 2, name = "Start Recording", firebaseKey = "key", type = VoiceCommandTypes.Start),
+                SavedVoiceCommand(id = 3, name = "Let's Go", firebaseKey = "key", type = VoiceCommandTypes.Start)
             )
         ),
         onToolbarMenuClicked = {},

@@ -272,7 +272,7 @@ class ReadFirebaseUserInfoImpl(
     override fun getSavedVoiceCommandList(): Flow<List<SavedVoiceCommandRealtimeWithKeyResponse>> {
         return callbackFlow {
             val uid = firebaseAuth.currentUser?.uid ?: ""
-            val path = "${Constants.USERS}/$uid/${Constants.SAVED_VOICE_COMMANDS}"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.SAVED_VOICE_COMMANDS}"
             val savedVoiceCommandList = arrayListOf<SavedVoiceCommandRealtimeWithKeyResponse>()
 
             firebaseDatabase.getReference(path)

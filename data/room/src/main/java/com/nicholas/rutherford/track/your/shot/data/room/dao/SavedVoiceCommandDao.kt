@@ -70,4 +70,12 @@ interface SavedVoiceCommandDao {
      */
     @Query("SELECT * FROM savedVoiceCommands")
     suspend fun getAllSavedVoiceCommands(): List<SavedVoiceCommandEntity>
+
+    /**
+     * Retrieves the size of the saved voice commands
+     *t
+     * @return Saved voice commands size
+     */
+    @Query("SELECT COUNT(*) FROM savedVoiceCommands")
+    suspend fun getSavedVoiceCommandsSize(): Int
 }

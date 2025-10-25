@@ -865,6 +865,8 @@ object AppNavigationGraph {
                 state = state,
                 onRecordPhraseClicked = { createEditVoiceCommandViewModel.onRecordPhraseClicked() },
                 onSaveNewVoiceCommandClicked = { createEditVoiceCommandViewModel.onSaveNewVoiceCommand() },
+                onEditVoiceCommandClicked = { phrase, type -> createEditVoiceCommandViewModel.onEditVoiceCommand(phrase = phrase, type = type) },
+                onDeleteVoiceCommandClicked = { createEditVoiceCommandViewModel.onDeleteVoiceCommand() },
                 onToolbarMenuClicked = { createEditVoiceCommandViewModel.onToolbarMenuClicked() },
                 onDismissErrorClicked = { createEditVoiceCommandViewModel.onDismissErrorClicked() },
                 onTryAgainClicked = { createEditVoiceCommandViewModel.onTryAgainClicked() },

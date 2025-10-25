@@ -326,6 +326,11 @@ object ViewModelsModule {
             CreateEditVoiceCommandViewModel(
                 savedStateHandle = stateHandle,
                 application = androidApplication(),
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
+                createFirebaseUserInfo = get(),
+                updateFirebaseUserInfo = get(),
+                deleteFirebaseUserInfo = get(),
+                savedVoiceCommandRepository = get(),
                 navigation = get()
             )
         }
