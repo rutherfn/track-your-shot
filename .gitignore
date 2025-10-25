@@ -29,6 +29,7 @@ build-type/build
 
 # Ignore module build gradles files
 base/vm/build
+base/test-ext/build
 base-resources/build
 
 buildSrc/.gradle

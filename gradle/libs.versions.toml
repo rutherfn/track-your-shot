@@ -41,6 +41,7 @@ truth = "1.4.4"
 uiTestManifest = "1.8.3"
 protoliteWellKnownTypes = "18.0.1"
 agp = "8.9.3"
+agpVersion = "8.9.3"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -103,4 +104,6 @@ protolite-well-known-types = { group = "com.google.firebase", name = "protolite-
 
 [plugins]
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agpVersion" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 

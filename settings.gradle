@@ -19,6 +19,7 @@ rootProject.name = "TrackYourShot"
 include ':app'
 include ':base-resources'
 include ':base:vm'
+include ':base:test-ext'
 include ':build-type'
 include ':compose:components'
 include ':compose:theme'

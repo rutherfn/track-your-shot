@@ -20,3 +20,6 @@ plugins {
 tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
+
+// Apply the string mock generation task
+apply from: 'scripts/generateMocks.gradle'
