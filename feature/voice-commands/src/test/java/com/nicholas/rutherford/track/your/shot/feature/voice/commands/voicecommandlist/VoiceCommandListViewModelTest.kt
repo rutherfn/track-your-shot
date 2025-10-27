@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist
 
 import androidx.lifecycle.LifecycleOwner
+import com.nicholas.rutherford.track.your.shot.base.test.BaseTest
 import com.nicholas.rutherford.track.your.shot.data.room.repository.SavedVoiceCommandRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.SavedVoiceCommand
 import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes
@@ -22,7 +23,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-class VoiceCommandListViewModelTest {
+class VoiceCommandListViewModelTest : BaseTest() {
 
     private lateinit var viewModel: VoiceCommandListViewModel
 

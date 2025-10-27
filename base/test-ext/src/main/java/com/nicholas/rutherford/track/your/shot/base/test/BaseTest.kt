@@ -8,11 +8,9 @@ import org.junit.jupiter.api.BeforeEach
 
 /**
  * Base test class that provides common test utilities and mocks all StringsIds.
- * 
- * This class automatically mocks an Application instance and provides access to
+ * * This class automatically mocks an Application instance and provides access to
  * string resources through application.getString() method.
- * 
- * Usage:
+ * * Usage:
  * ```kotlin
  * class MyViewModelTest : BaseTest() {
  *     @Test

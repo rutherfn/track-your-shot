@@ -303,9 +303,6 @@ class AccountManagerImpl(
 
                     val currentSavedCommands = savedVoiceCommandRepository.getAllVoiceCommands()
 
-                    println("full list of commands $commands")
-                    println("commands saved in the db $currentSavedCommands")
-
                     savedVoiceCommandRepository.createAllSavedVoiceCommands(commands = commands)
                     collectDeclaredShots()
                 } else {

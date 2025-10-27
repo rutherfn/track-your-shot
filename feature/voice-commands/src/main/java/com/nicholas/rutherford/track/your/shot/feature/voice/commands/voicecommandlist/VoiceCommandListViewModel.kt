@@ -81,8 +81,6 @@ class VoiceCommandListViewModel(
     private suspend fun fetchVoiceCommandsAndUpdateState() {
         val voiceCommands = savedVoiceCommandRepository.getAllVoiceCommands()
 
-        println("all commands $voiceCommands")
-
         val startCommands = voiceCommands.filterBy(type = VoiceCommandTypes.Start)
         val stopCommands = voiceCommands.filterBy(type = VoiceCommandTypes.Stop)
         val makeCommands = voiceCommands.filterBy(type = VoiceCommandTypes.Make)

@@ -74,7 +74,7 @@ class CreateEditVoiceCommandViewModel(
      * Creates a instance to capture phrases; and goes ahead and captures the phrase
      *
      */
-    private val voicePhraseCapture = VoicePhraseCapture(
+    internal val voicePhraseCapture = VoicePhraseCapture(
         context = application,
         onPhraseCaptured = { phrase -> onPhraseCaptured(phrase = phrase) },
         onError = { error -> onErrorPhraseCaptured(error = error) },

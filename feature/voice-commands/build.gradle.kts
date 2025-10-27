@@ -76,6 +76,7 @@ android {
 }
 
 dependencies {
+    api(project(path = ":base:test-ext"))
     api(project(path = ":base:vm"))
     api(project(path = ":data:room"))
     api(project(path = ":firebase:core"))
