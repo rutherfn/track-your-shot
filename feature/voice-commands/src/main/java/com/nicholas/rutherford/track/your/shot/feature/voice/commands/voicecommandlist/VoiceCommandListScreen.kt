@@ -46,8 +46,7 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
  * Shows a list of saved voice commands with filtering capabilities by command type.
  * If the user does mot have any saved voice command for that type, display a empty state
  * that will allow the user to go and save a new voice command
- * 
- * @param params Contains the state and callback functions for the screen
+ * * @param params Contains the state and callback functions for the screen
  */
 @Composable
 fun VoiceCommandListScreen(params: VoiceCommandListParams) {
@@ -69,10 +68,16 @@ fun VoiceCommandListScreen(params: VoiceCommandListParams) {
                 state = params.state,
                 onCreateCommandTypeClicked = params.onCreateEditCommandTypeClicked
             )
-        } else {
+        } else if (params.state.hasSingleCommandForSelectedFilter && params.state.filteredCommands.isNotEmpty()) {
             VoiceCommandTypeListContent(
                 state = params.state,
+                command = params.state.filteredCommands.first(),
                 onEditCommandTypeClicked = params.onCreateEditCommandTypeClicked
+            )
+        } else {
+            VoiceCommandsEmptyStateContent(
+                state = params.state,
+                onCreateCommandTypeClicked = params.onCreateEditCommandTypeClicked
             )
         }
     }
@@ -81,8 +86,7 @@ fun VoiceCommandListScreen(params: VoiceCommandListParams) {
 /**
  * Composable that displays horizontal filter chips for voice command types.
  * Allows users to filter voice commands by Start, Stop, Make, and Miss categories.
- * 
- * @param state Current state containing the selected filter
+ * * @param state Current state containing the selected filter
  * @param onFilterSelected Callback when a filter chip is selected
  */
 @Composable
@@ -130,8 +134,7 @@ private fun VoiceFilters(
 /**
  * Composable that displays an empty state when no voice commands exist for the selected filter.
  * Shows a card with instructions and a button to create the voice command.
- * 
- * @param state Current state containing the selected filter information
+ * * @param state Current state containing the selected filter information
  * @param onCreateCommandTypeClicked Callback when the create command button is clicked
  */
 @Composable
@@ -183,52 +186,75 @@ private fun VoiceCommandsEmptyStateContent(
 }
 
 /**
- * Composable that displays a list of voice commands as cards.
- * Shows filtered voice commands with basketball icons and command names.
- * 
- * @param state Current state containing the filtered commands to display
+ * Composable that displays a single voice command in a beautiful, prominent card.
+ * Shows the voice command with an elegant design that emphasizes the command phrase.
+ * * @param state Current state containing the filtered commands to display
  * @param onEditCommandTypeClicked Callback when the edit command button is clicked
  */
 @Composable
 private fun VoiceCommandTypeListContent(
     state: VoiceCommandListState,
+    command: SavedVoiceCommand,
     onEditCommandTypeClicked: (type: Int?, phrase: String?) -> Unit
 ) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        state.filteredCommands.forEach { command ->
-            Card(
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onEditCommandTypeClicked.invoke(command.type.value, command.name) },
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = AppColors.White),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        ) {
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 4.dp)
-                    .clickable { onEditCommandTypeClicked.invoke(command.type.value, command.name) },
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                    .padding(32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                Card(
+                    modifier = Modifier.size(80.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
+                    shape = RoundedCornerShape(40.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Filled.SportsBasketball,
                         contentDescription = "Voice Command",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    
-                    Spacer(modifier = Modifier.size(12.dp))
-                    
-                    Text(
-                        text = command.name,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(20.dp)
                     )
                 }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = "${state.selectedFilter.toDisplayLabel()} Command",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "\"${command.name}\"",
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = "Tap to edit or delete",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
             }
         }
     }
@@ -254,13 +280,13 @@ fun VoiceCommandListScreenWithDataPreview() {
     val params = VoiceCommandListParams(
         state = VoiceCommandListState(
             startCommands = listOf(
-                SavedVoiceCommand(id = 1, name = "Begin Session", firebaseKey = "key", type = VoiceCommandTypes.Start),
-                SavedVoiceCommand(id = 2, name = "Start Recording", firebaseKey = "key", type = VoiceCommandTypes.Start),
-                SavedVoiceCommand(id = 3, name = "Let's Go", firebaseKey = "key", type = VoiceCommandTypes.Start)
+                SavedVoiceCommand(id = 1, name = "Let's Go", firebaseKey = "key", type = VoiceCommandTypes.Start),
+                SavedVoiceCommand(id = 2, name = "Start Shooting", firebaseKey = "key", type = VoiceCommandTypes.Start),
+                SavedVoiceCommand(id = 3, name = "Begin Practice", firebaseKey = "key", type = VoiceCommandTypes.Start)
             ),
             stopCommands = listOf(
-                SavedVoiceCommand(id = 4, name = "End Session", firebaseKey = "key", type = VoiceCommandTypes.Stop),
-                SavedVoiceCommand(id = 5, name = "Stop Recording", firebaseKey = "key", type = VoiceCommandTypes.Stop)
+                SavedVoiceCommand(id = 4, name = "That's It", firebaseKey = "key", type = VoiceCommandTypes.Stop),
+                SavedVoiceCommand(id = 5, name = "All Done", firebaseKey = "key", type = VoiceCommandTypes.Stop)
             ),
             makeCommands = listOf(
                 SavedVoiceCommand(id = 6, name = "Made It", firebaseKey = "key", type = VoiceCommandTypes.Make),
@@ -273,9 +299,9 @@ fun VoiceCommandListScreenWithDataPreview() {
             ),
             selectedFilter = VoiceCommandFilter.START,
             filteredCommands = listOf(
-                SavedVoiceCommand(id = 1, name = "Begin Session", firebaseKey = "key", type = VoiceCommandTypes.Start),
-                SavedVoiceCommand(id = 2, name = "Start Recording", firebaseKey = "key", type = VoiceCommandTypes.Start),
-                SavedVoiceCommand(id = 3, name = "Let's Go", firebaseKey = "key", type = VoiceCommandTypes.Start)
+                SavedVoiceCommand(id = 1, name = "Let's Go", firebaseKey = "key", type = VoiceCommandTypes.Start),
+                SavedVoiceCommand(id = 2, name = "Start Shooting", firebaseKey = "key", type = VoiceCommandTypes.Start),
+                SavedVoiceCommand(id = 3, name = "Begin Practice", firebaseKey = "key", type = VoiceCommandTypes.Start)
             )
         ),
         onToolbarMenuClicked = {},
@@ -285,5 +311,69 @@ fun VoiceCommandListScreenWithDataPreview() {
 
     Column(modifier = Modifier.background(AppColors.White)) {
         VoiceCommandListScreen(params = params)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun VoiceCommandTypeListContentPreview() {
+    val state = VoiceCommandListState(
+        startCommands = listOf(
+            SavedVoiceCommand(id = 1, name = "Let's Go", firebaseKey = "key", type = VoiceCommandTypes.Start)
+        ),
+        selectedFilter = VoiceCommandFilter.START,
+        filteredCommands = listOf(
+            SavedVoiceCommand(id = 1, name = "Let's Go", firebaseKey = "key", type = VoiceCommandTypes.Start)
+        )
+    )
+
+    Column(
+        modifier = Modifier
+            .background(AppColors.White)
+            .padding(16.dp)
+    ) {
+        VoiceCommandTypeListContent(
+            state = state,
+            command = SavedVoiceCommand(
+                id = 1,
+                name = "voiceCommandName",
+                firebaseKey = "firebaseKey",
+                type = VoiceCommandTypes.Start
+            ),
+            onEditCommandTypeClicked = { _, _ -> }
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun VoiceCommandTypeListContentMultiplePreview() {
+    val state = VoiceCommandListState(
+        startCommands = listOf(
+            SavedVoiceCommand(id = 1, name = "Let's Go", firebaseKey = "key", type = VoiceCommandTypes.Start),
+            SavedVoiceCommand(id = 2, name = "Start Shooting", firebaseKey = "key", type = VoiceCommandTypes.Start)
+        ),
+        selectedFilter = VoiceCommandFilter.START,
+        filteredCommands = listOf(
+            SavedVoiceCommand(id = 1, name = "Let's Go", firebaseKey = "key", type = VoiceCommandTypes.Start),
+            SavedVoiceCommand(id = 2, name = "Start Shooting", firebaseKey = "key", type = VoiceCommandTypes.Start)
+        )
+    )
+
+    Column(
+        modifier = Modifier
+            .background(AppColors.White)
+            .padding(16.dp)
+    ) {
+        VoiceCommandTypeListContent(
+            state = state,
+            command = SavedVoiceCommand(
+                id = 1,
+                name = "voiceCommandName",
+                firebaseKey = "firebaseKey",
+                type = VoiceCommandTypes.Start
+            ),
+            onEditCommandTypeClicked = { _, _ -> }
+        )
     }
 }

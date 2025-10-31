@@ -2,7 +2,7 @@
 accompanistPermissions = "0.23.1"
 accompanistSystemuicontroller = "0.27.0"
 activityKtx = "1.10.1"
-androidJunit5 = "1.8.2.1"
+androidJunit5 = "1.10.0.0"
 annotationJvm = "1.9.1"
 appCompat = "1.7.1"
 coilCompose = "2.5.0"

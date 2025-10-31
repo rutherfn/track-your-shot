@@ -89,6 +89,7 @@ class CreateEditVoiceCommandViewModel(
         super.onCreate(owner)
         scope.launch { setInfoFromParamsAndUpdateState() }
     }
+
     /**
      * [onCleared] function block that gets called when the view model is cleared.
      * Stops listening for voice commands.
@@ -112,10 +113,10 @@ class CreateEditVoiceCommandViewModel(
      * [onCreate] function block that gets called when the view model gets created.
      * Updates the state set from the [savedStateHandle] parameters.
      */
-    private suspend fun setInfoFromParamsAndUpdateState() {
+    internal suspend fun setInfoFromParamsAndUpdateState() {
         voiceCommandTypeValueParam?.let { value -> type = VoiceCommandTypes.fromValue(value = value) }
         phrase = recordedPhraseParam
-        isCommandAlreadyCreated = safeLet(phrase, type) { voicePhrase, voiceType -> buildIsCommandAlreadyCreated(voicePhrase = voicePhrase, voiceType = voiceType)} ?: false
+        isCommandAlreadyCreated = safeLet(phrase, type) { voicePhrase, voiceType -> buildIsCommandAlreadyCreated(voicePhrase = voicePhrase, voiceType = voiceType) } ?: false
 
         val isEditingShot = isCurrentlyEditingSavedVoiceCommand(phrase = phrase, type = type)
 
@@ -133,19 +134,19 @@ class CreateEditVoiceCommandViewModel(
         }
     }
 
-    private suspend fun buildIsCommandAlreadyCreated(voicePhrase: String, voiceType: VoiceCommandTypes): Boolean {
+    internal suspend fun buildIsCommandAlreadyCreated(voicePhrase: String, voiceType: VoiceCommandTypes): Boolean {
         return savedVoiceCommandRepository.getVoiceCommandByName(name = voicePhrase)?.let { savedVoiceCommand ->
             savedVoiceCommand.type == voiceType
         } ?: false
     }
 
-    private fun buildHasOverriddenExistingCommand(phrase: String) : Boolean {
+    internal fun buildHasOverriddenExistingCommand(phrase: String): Boolean {
         return recordedPhraseParam?.let { existingPhrase ->
             existingPhrase != phrase
         } ?: false
     }
 
-    private fun buildSavedNewCommandDescriptionAlert(type: VoiceCommandTypes): String {
+    internal fun buildSavedNewCommandDescriptionAlert(type: VoiceCommandTypes): String {
         return when (type) {
             is VoiceCommandTypes.Start -> application.getString(StringsIds.savedNewStartCommandDescription)
             is VoiceCommandTypes.Stop -> application.getString(StringsIds.savedNewStopCommandDescription)
@@ -154,7 +155,7 @@ class CreateEditVoiceCommandViewModel(
         }
     }
 
-    private fun buildEditCommandDescriptionAlert(type: VoiceCommandTypes): String {
+    internal fun buildEditCommandDescriptionAlert(type: VoiceCommandTypes): String {
         return when (type) {
             is VoiceCommandTypes.Start -> application.getString(StringsIds.editedNewStartCommandDescription)
             is VoiceCommandTypes.Stop -> application.getString(StringsIds.editedNewStopCommandDescription)
@@ -252,7 +253,7 @@ class CreateEditVoiceCommandViewModel(
             dismissButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.no)
             ),
-            description =  application.getString(StringsIds.areYouSureYouWantToDeleteCommand)
+            description = application.getString(StringsIds.areYouSureYouWantToDeleteCommand)
         )
     }
 
@@ -260,7 +261,7 @@ class CreateEditVoiceCommandViewModel(
         return Alert(
             title = application.getString(StringsIds.newCommandSavedSuccessfully),
             dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt)),
-            description =  buildSavedNewCommandDescriptionAlert(type = type)
+            description = buildSavedNewCommandDescriptionAlert(type = type)
         )
     }
 
@@ -300,7 +301,7 @@ class CreateEditVoiceCommandViewModel(
         return Alert(
             title = application.getString(StringsIds.cannotEditVoiceCommand),
             dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.gotIt)),
-            description = application.getString(StringsIds.errorVoiceCommandEditFailure),
+            description = application.getString(StringsIds.errorVoiceCommandEditFailure)
         )
     }
 
@@ -342,7 +343,6 @@ class CreateEditVoiceCommandViewModel(
                                 dismissProgressAndShowCouldNotDeleteCommandAlert()
                             }
                         }
-
                     } ?: dismissProgressAndShowCouldNotDeleteCommandAlert()
             } ?: dismissProgressAndShowNoCommandEnteredAlert()
         }
@@ -390,7 +390,7 @@ class CreateEditVoiceCommandViewModel(
                                     navigation.alert(alert = errorEditingExistingVoiceCommandAlert())
                                 }
                             }
-                        }
+                        } ?: dismissProgressAndShowNoCommandEnteredAlert()
                 }
             } ?: dismissProgressAndShowNoCommandEnteredAlert()
         }
@@ -407,7 +407,9 @@ class CreateEditVoiceCommandViewModel(
                         typeValue = type?.value ?: VoiceCommandTypes.None.value
                     )
                 ).collectLatest { result ->
-                    if (result.first || !result.second.isNullOrEmpty()) {
+                    println("get here test2")
+                    if (result.first && !result.second.isNullOrEmpty()) {
+                        println("get here test")
                         val currentSavedCommandSize = savedVoiceCommandRepository.getVoiceCommandSize()
 
                         savedVoiceCommandRepository.createSavedVoiceCommand(
@@ -422,6 +424,7 @@ class CreateEditVoiceCommandViewModel(
                         navigation.pop()
                         navigation.alert(alert = savedNewCommandAlert(type = type ?: VoiceCommandTypes.None))
                     } else {
+                        println("get here test444")
                         navigation.disableProgress()
                         navigation.alert(alert = errorSavingNewVoiceCommandAlert())
                     }

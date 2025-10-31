@@ -104,8 +104,8 @@ fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
                 params.state.voiceCapturedErrorDescription != null && params.state.voiceCommandState == VoiceCommandState.RECORDING_ERROR -> ErrorPhraseCaptureButtonContent(
                     hasRecordAudioPermission = hasRecordAudioPermission,
                     onTryAgainClicked = params.onTryAgainClicked,
-                    onDismissErrorClicked = params.onDismissErrorClicked,
-                    )
+                    onDismissErrorClicked = params.onDismissErrorClicked
+                )
                 !params.state.recordedPhrase.isNullOrEmpty() -> PhraseCaptureButtonContent(
                     state = params.state,
                     hasRecordAudioPermission = hasRecordAudioPermission,
@@ -120,7 +120,6 @@ fun CreateEditVoiceCommandScreen(params: CreateEditVoiceCommandParams) {
                     hasRecordAudioPermission = hasRecordAudioPermission,
                     onRecordPhraseClicked = params.onRecordPhraseClicked
                 )
-
             }
         }
     }
@@ -350,6 +349,7 @@ private fun RecordingPhraseButtonContent(
         )
     }
 }
+
 @Composable
 private fun PhraseCaptureButtonContent(
     state: CreateEditVoiceCommandState,

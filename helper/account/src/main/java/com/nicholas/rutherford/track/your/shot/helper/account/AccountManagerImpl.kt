@@ -11,7 +11,6 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.SavedVoiceCo
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
-import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
@@ -331,7 +330,7 @@ class AccountManagerImpl(
     private suspend fun collectDeclaredShots() {
         readFirebaseUserInfo.getCreatedDeclaredShotsFlow()
             .collectLatest { declaredShots ->
-                //todo comeback and fix this logic trello link: https://trello.com/c/io2ILw2m/271-bug-look-into-ability-to-edit-updating-existing-shots-with-logging-into-a-account
+                // todo comeback and fix this logic trello link: https://trello.com/c/io2ILw2m/271-bug-look-into-ability-to-edit-updating-existing-shots-with-logging-into-a-account
 //                declaredShots.forEach { shot ->
 //                    if (!declaredShotIds.contains(shot.declaredShotRealtimeResponse.id)) {
 //                        declaredShotRepository.createNewDeclaredShot(

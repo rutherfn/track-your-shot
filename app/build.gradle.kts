@@ -89,6 +89,13 @@ android {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
+        }
+    }
 }
 
 dependencies {

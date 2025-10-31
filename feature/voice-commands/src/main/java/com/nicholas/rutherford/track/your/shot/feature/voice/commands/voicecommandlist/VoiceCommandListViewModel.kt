@@ -56,8 +56,7 @@ class VoiceCommandListViewModel(
     /**
      * Handles voice command filter selection.
      * Updates the selected filter and rebuilds the filtered commands list.
-     * 
-     * @param filter The selected voice command filter (Start, Stop, Make, Miss)
+     * * @param filter The selected voice command filter (Start, Stop, Make, Miss)
      */
     fun onFilterSelected(filter: VoiceCommandFilter) {
         voiceCommandMutableStateFlow.update { state ->
@@ -110,11 +109,9 @@ class VoiceCommandListViewModel(
     /**
      * Builds a filtered list of voice commands based on the selected filter.
      * Returns the appropriate command list for the given filter type.
-     * 
-     * @param selectedFilter The currently selected filter type
+     * * @param selectedFilter The currently selected filter type
      * @param startCommands List of START type commands
-     * @param stopCommands List of STOP type commands  
-     * @param makeCommands List of MAKE type commands
+     * @param stopCommands List of STOP type commands * @param makeCommands List of MAKE type commands
      * @param missCommands List of MISS type commands
      * @return Filtered list of commands matching the selected filter
      */
@@ -136,8 +133,7 @@ class VoiceCommandListViewModel(
     /**
      * Handles navigation to the create edit voice command screen.
      * Passes the selected command type and optional phrase to the create screen.
-     * 
-     * @param type The voice command type value (Start, Stop, Make, Miss)
+     * * @param type The voice command type value (Start, Stop, Make, Miss)
      * @param phrase Optional pre-filled phrase for the command
      */
     fun onCreateEditCommandTypeClicked(type: Int?, phrase: String?) = navigation.navigateToCreateEditVoiceCommand(type = type, phrase = phrase)
