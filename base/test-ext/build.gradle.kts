@@ -70,9 +70,11 @@ android {
 dependencies {
     api(project(path = ":base-resources"))
 
-    implementation(libs.kotlinx.coroutines.test)
-    implementation(libs.junit.jupiter.api)
-    implementation(libs.junit.jupiter.params)
-    implementation(libs.android.junit5)
-    implementation(libs.mockk)
+    // Use compileOnly for test dependencies to prevent them from leaking into runtime classpath
+    // Consuming modules should add these to their testImplementation/testRuntimeOnly
+    compileOnly(libs.kotlinx.coroutines.test)
+    compileOnly(libs.junit.jupiter.api)
+    compileOnly(libs.junit.jupiter.params)
+    compileOnly(libs.android.junit5)
+    compileOnly(libs.mockk)
 }
