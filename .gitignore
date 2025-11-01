@@ -75,6 +75,8 @@ helper/network/build
 helper/notifications/build
 helper/ui/build
 
+libs/voice-flow-core/build
+
 navigation/build
 
 # Local configuration file (sdk path, etc)

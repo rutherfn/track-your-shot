@@ -80,6 +80,7 @@ dependencies {
     api(project(path = ":base:vm"))
     api(project(path = ":data:room"))
     api(project(path = ":firebase:core"))
+    api(project(path = ":libs:voice-flow-core"))
     api(project(path = ":navigation"))
 
     debugImplementation(libs.androidx.ui.test.manifest)
@@ -88,8 +89,6 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-
-    implementation(files("../../libs/voice-flow-core.aar"))
 
     implementation(libs.androidx.ui.tooling.preview)
 
