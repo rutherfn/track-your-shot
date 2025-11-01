@@ -133,7 +133,8 @@ class VoiceCommandListStateTest : BaseTest() {
         fun `when voice filter type is start should return false if hasSingleStartCommand returns false`() {
             state = state.copy(
                 selectedFilter = VoiceCommandFilter.START,
-                startCommands = emptyList())
+                startCommands = emptyList()
+            )
 
             Assertions.assertEquals(state.hasSingleCommandForSelectedFilter, false)
         }
@@ -159,7 +160,8 @@ class VoiceCommandListStateTest : BaseTest() {
         fun `when voice filter type is stop should return false if hasSingleStopCommand returns false`() {
             state = state.copy(
                 selectedFilter = VoiceCommandFilter.STOP,
-                stopCommands = emptyList())
+                stopCommands = emptyList()
+            )
 
             Assertions.assertEquals(state.hasSingleCommandForSelectedFilter, false)
         }
@@ -185,7 +187,8 @@ class VoiceCommandListStateTest : BaseTest() {
         fun `when voice filter type is make should return false if hasSingleMakeCommand returns false`() {
             state = state.copy(
                 selectedFilter = VoiceCommandFilter.MAKE,
-                makeCommands = emptyList())
+                makeCommands = emptyList()
+            )
 
             Assertions.assertEquals(state.hasSingleCommandForSelectedFilter, false)
         }
@@ -211,7 +214,8 @@ class VoiceCommandListStateTest : BaseTest() {
         fun `when voice filter type is miss should return false if hasSingleMissCommand returns false`() {
             state = state.copy(
                 selectedFilter = VoiceCommandFilter.MISS,
-                missCommands = emptyList())
+                missCommands = emptyList()
+            )
 
             Assertions.assertEquals(state.hasSingleCommandForSelectedFilter, false)
         }

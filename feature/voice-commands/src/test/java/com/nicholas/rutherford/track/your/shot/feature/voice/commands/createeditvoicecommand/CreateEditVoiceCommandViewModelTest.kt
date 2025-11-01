@@ -1220,14 +1220,15 @@ class CreateEditVoiceCommandViewModelTest : BaseTest() {
 
             viewModel.onSaveNewVoiceCommand()
 
-            coVerify { savedVoiceCommandRepository.createSavedVoiceCommand(
-                savedVoiceCommand = SavedVoiceCommand(
-                    id = 3,
-                    name = recordedPhraseParam,
-                    firebaseKey = "firebasekey",
-                    type = VoiceCommandTypes.None
+            coVerify {
+                savedVoiceCommandRepository.createSavedVoiceCommand(
+                    savedVoiceCommand = SavedVoiceCommand(
+                        id = 3,
+                        name = recordedPhraseParam,
+                        firebaseKey = "firebasekey",
+                        type = VoiceCommandTypes.None
+                    )
                 )
-            )
             }
             verify { navigation.pop() }
             verify { navigation.enableProgress(progress = any()) }
