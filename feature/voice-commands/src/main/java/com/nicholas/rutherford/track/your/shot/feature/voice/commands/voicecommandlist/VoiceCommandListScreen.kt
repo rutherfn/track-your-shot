@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.compose.components.BasketballIcon
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.response.SavedVoiceCommand
@@ -212,32 +213,9 @@ private fun VoiceCommandTypeListContent(
                     .padding(32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Card(
-                    modifier = Modifier.size(80.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
-                    shape = RoundedCornerShape(40.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.SportsBasketball,
-                        contentDescription = "Voice Command",
-                        tint = Color.White,
-                        modifier = Modifier
-                            .size(40.dp)
-                            .padding(20.dp)
-                    )
-                }
+                BasketballIcon(size = 80.dp)
 
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Text(
-                    text = "${state.selectedFilter.toDisplayLabel()} Command",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
                 Text(
                     text = "\"${command.name}\"",

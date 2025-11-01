@@ -29,6 +29,9 @@ object DrawablesIds {
     /** Drawable representing basketball statistics. */
     val statisticBasketball = R.drawable.ic_statistic_basketball
 
+    /** Drawable representing a basketball icon. */
+    val sportsBasketball = R.drawable.ic_sports_basketball
+
     /** Mipmap used for the app's round launcher icon. */
     val launcherRound = R.mipmap.ic_launcher_round
 
