@@ -24,10 +24,38 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.padding
+import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.Colors
 
+/**
+ * Created by Nicholas Rutherford, last edited on 2025-10-31
+ *
+ * A visual indicator component that displays an animated recording status.
+ *
+ * This component provides visual feedback to users that a recording is currently in progress.
+ * It features:
+ * - A pulsing circular indicator that scales and fades to draw attention
+ * - Three animated dots below the circle with staggered pulse animations
+ * - Text label indicating "Recording in progress"
+ *
+ * All animations use infinite repeating transitions with reverse mode to create a smooth,
+ * continuous pulsing effect that clearly communicates the active recording state.
+ *
+ * The component uses the app's secondary color theme for consistent branding.
+ *
+ * **Usage:**
+ * ```
+ * RecordingIndicator()
+ * ```
+ *
+ * The component is centered and fills the available width. It's typically used in voice
+ * command or recording screens to indicate when audio capture is active.
+ */
 @Composable
 fun RecordingIndicator() {
     val infiniteTransition = rememberInfiniteTransition(label = "recording")
@@ -56,7 +84,6 @@ fun RecordingIndicator() {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
-        // Pulsing circle animation
         Box(
             modifier = Modifier
                 .size(80.dp)
@@ -71,7 +98,6 @@ fun RecordingIndicator() {
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Animated dots
             repeat(3) { index ->
                 val dotAlpha by infiniteTransition.animateFloat(
                     initialValue = 0.3f,
@@ -104,5 +130,31 @@ fun RecordingIndicator() {
             color = Colors.secondaryColor,
             fontWeight = FontWeight.Medium
         )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+private fun RecordingIndicatorPreview() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(AppColors.White)
+            .padding(32.dp)
+    ) {
+        RecordingIndicator()
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFF5F5F5)
+@Composable
+private fun RecordingIndicatorDarkBackgroundPreview() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFF5F5F5))
+            .padding(32.dp)
+    ) {
+        RecordingIndicator()
     }
 }

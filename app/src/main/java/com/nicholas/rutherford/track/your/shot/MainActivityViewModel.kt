@@ -29,7 +29,7 @@ const val IS_CONNECTED_TIMEOUT_MILLIS = 5000L
  * ViewModel for the [MainActivity] that manages network connectivity status
  * and user account actions such as logout.
  *
- * It also goes ina nd collects feature toggles that get set from the [DebugToggleScreen]
+ * It also goes in And collects feature toggles that get set from the [DebugToggleScreen]
  *
  * @property network Handles network-related operations like connectivity status.
  * @property scope The coroutine scope used for managing coroutines.

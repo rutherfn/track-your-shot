@@ -16,16 +16,14 @@ import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 
 /**
- * Created by Nicholas Rutherford, last edited on 2025-01-XX
+ * Created by Nicholas Rutherford, last edited on 2025-10-31
  *
  * A basketball icon component that displays a basketball image in a circular frame.
  * Uses an actual basketball image from drawable resources for a realistic appearance.
  *
  * @param size The size of the basketball icon (default: 80.dp)
  * @param modifier Optional modifier to apply to the basketball
- * @param drawableId Optional drawable resource ID for the basketball image.
- *                   Defaults to [DrawablesIds.sportsBasketball].
- *                   You can add a real basketball PNG image to drawables and pass its ID here.
+ * @param drawableId Optional drawable resource ID for the basketball image. Defaults to [DrawablesIds.sportsBasketball].
  */
 @Composable
 fun BasketballIcon(

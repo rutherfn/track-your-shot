@@ -91,7 +91,7 @@ dependencies {
 
     implementation(libs.androidx.ui.tooling.preview)
 
-    implementation(files("../../libs/voice-flow-core.aar"))
+    compileOnly(files("../../libs/voice-flow-core.aar"))
 
     testImplementation(project(path = ":data-test:firebase"))
     testImplementation(project(path = ":data-test:room"))
