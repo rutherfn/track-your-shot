@@ -123,6 +123,7 @@ class DrawerActionsTest {
             VoiceCommandsAction.navOptions,
             NavOptions.Builder()
                 .setPopUpTo(0, true)
+                .setLaunchSingleTop(true)
                 .build()
         )
     }
@@ -142,7 +143,7 @@ class DrawerActionsTest {
             NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots = true)
         )
         Assertions.assertEquals(
-            VoiceCommandsAction.navOptions,
+            ShotsAction.navOptions,
             NavOptions.Builder()
                 .setPopUpTo(0, true)
                 .build()

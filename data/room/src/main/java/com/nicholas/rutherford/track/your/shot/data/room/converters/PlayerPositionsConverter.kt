@@ -7,7 +7,7 @@ import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
  *
- * A Room TypeConverter for converting between [PlayerPositions] enum instances
+ * A Room TypeConverter for converting between [PlayerPositions] sealed class instances
  * and their corresponding integer representations for database storage.
  */
 class PlayerPositionsConverter {

@@ -34,6 +34,7 @@ object NavigationComponentExt {
             destination.contains(NavigationDestinations.PLAYERS_LIST_SCREEN) -> viewModels.playersListViewModel
             destination.contains(NavigationDestinations.SELECT_SHOT_SCREEN) -> viewModels.selectShotViewModel
             destination.contains(NavigationDestinations.SHOTS_LIST_SCREEN) -> viewModels.shotsListViewModel
+            destination.contains(NavigationDestinations.CREATE_EDIT_VOICE_COMMANDS_SCREEN) -> viewModels.createEditVoiceCommandViewModel
             destination.contains(NavigationDestinations.DECLARED_SHOTS_LIST_SCREEN) -> viewModels.declaredShotsListViewModel
             destination.contains(NavigationDestinations.CREATE_EDIT_DECLARED_SHOTS_SCREEN) -> viewModels.createEditDeclaredShotsViewModel
             destination.contains(NavigationDestinations.SETTINGS_SCREEN) -> viewModels.settingsViewModel

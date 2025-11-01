@@ -4,12 +4,15 @@ import android.app.Application
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Help
+import androidx.compose.material.icons.automirrored.filled.LiveHelp
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.AppBar
+import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes
+import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes.Companion.toDisplayLabel
 import com.nicholas.rutherford.track.your.shot.feature.create.account.authentication.AuthenticationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordViewModel
@@ -29,6 +32,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredsh
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -217,7 +222,11 @@ class AppBarFactoryImpl(
         isEditable: Boolean
     ): AppBar =
         AppBar(
-            toolbarId = if (isEditable) StringsIds.editPlayer else StringsIds.createPlayer,
+            toolbarId = if (isEditable) {
+                StringsIds.editPlayer
+            } else {
+                StringsIds.createPlayer
+            },
             shouldShowMiddleContentAppBar = false,
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = true,
@@ -258,6 +267,34 @@ class AppBarFactoryImpl(
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = false,
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() }
+        )
+
+    /** Creates AppBar for voice command list screen. */
+    override fun createVoiceCommandListScreenAppBar(voiceCommandListViewModel: VoiceCommandListViewModel): AppBar =
+        AppBar(
+            toolbarId = StringsIds.voiceCommands,
+            shouldShowMiddleContentAppBar = true,
+            onIconButtonClicked = { voiceCommandListViewModel.onToolbarMenuClicked() },
+            onSecondaryIconButtonClicked = { },
+            shouldIncludeSpaceAfterDeclaration = false,
+            secondaryImageVector = Icons.AutoMirrored.Filled.LiveHelp
+        )
+
+    /** Creates AppBar for create edit voice command screen. */
+    override fun createEditVoiceCommandCreateScreenAppBar(
+        createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel,
+        type: VoiceCommandTypes,
+        isCreating: Boolean
+    ): AppBar =
+        AppBar(
+            toolbarId = StringsIds.empty,
+            toolbarTitle = if (isCreating) {
+                application.getString(StringsIds.createXCommand, type.toDisplayLabel())
+            } else {
+                application.getString(StringsIds.editXCommand, type.toDisplayLabel())
+            },
+            shouldShowMiddleContentAppBar = false,
+            onIconButtonClicked = { createEditVoiceCommandViewModel.onToolbarMenuClicked() }
         )
 
     /** Creates a default AppBar that is hidden. */

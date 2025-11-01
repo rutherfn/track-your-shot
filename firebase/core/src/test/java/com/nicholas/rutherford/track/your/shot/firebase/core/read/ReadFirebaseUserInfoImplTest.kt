@@ -13,9 +13,13 @@ import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestD
 import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestDeclaredShotWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestPlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestSavedVoiceCommandRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestSavedVoiceCommandWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.SavedVoiceCommandRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.SavedVoiceCommandRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
@@ -660,6 +664,135 @@ class ReadFirebaseUserInfoImplTest {
             readFirebaseUserInfoImpl = ReadFirebaseUserInfoImpl(firebaseAuth = firebaseAuth, firebaseDatabase = firebaseDatabase)
 
             Assertions.assertEquals(true, readFirebaseUserInfoImpl.isLoggedInFlow().first())
+        }
+    }
+
+    @Nested
+    inner class GetSavedVoiceCommandList {
+
+        @Test
+        fun `when onCancelled is called should return empty list`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS}/$uid/${Constants.SAVED_VOICE_COMMANDS}"
+
+            val emptySavedVoiceCommandList: List<SavedVoiceCommandRealtimeWithKeyResponse> = emptyList()
+
+            val mockDatabaseError = mockk<DatabaseError>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<ValueEventListener>()
+
+            mockkStatic(FirebaseUser::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onCancelled(mockDatabaseError)
+            }
+
+            Assertions.assertEquals(emptySavedVoiceCommandList, readFirebaseUserInfoImpl.getSavedVoiceCommandList().first())
+        }
+
+        @Test
+        fun `when onDataChange is called but snapshot does not exist should return empty list`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS}/$uid/${Constants.SAVED_VOICE_COMMANDS}"
+
+            val emptySavedVoiceCommandList: List<SavedVoiceCommandRealtimeWithKeyResponse> = emptyList()
+
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns false
+
+            mockkStatic(FirebaseUser::class)
+            mockkStatic(DataSnapshot::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(emptySavedVoiceCommandList, readFirebaseUserInfoImpl.getSavedVoiceCommandList().first())
+        }
+
+        @Test
+        fun `when snapshot exists but children count is zero should return empty list`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS}/$uid/${Constants.SAVED_VOICE_COMMANDS}"
+
+            val emptySavedVoiceCommandList: List<SavedVoiceCommandRealtimeWithKeyResponse> = emptyList()
+
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<ValueEventListener>()
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.childrenCount } returns Constants.FIREBASE_CHILDREN_COUNT_ZERO
+            every { mockDataSnapshot.children } returns emptyList<DataSnapshot>()
+
+            mockkStatic(FirebaseUser::class)
+            mockkStatic(DataSnapshot::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(emptySavedVoiceCommandList, readFirebaseUserInfoImpl.getSavedVoiceCommandList().first())
+        }
+
+        @Test
+        fun `when snapshot exists and has children should return list of saved voice commands`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS}/$uid/${Constants.SAVED_VOICE_COMMANDS}"
+
+            val mockDataSnapshot = mockk<DataSnapshot>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val slot = slot<ValueEventListener>()
+
+            val savedVoiceCommandWithKeyRealtimeResponseList = listOf(
+                TestSavedVoiceCommandWithKeyRealtimeResponse.create(),
+                TestSavedVoiceCommandWithKeyRealtimeResponse.create().copy(
+                    savedVoiceCommandKey = "-voiceCommand456",
+                    savedVoiceCommandInfo = TestSavedVoiceCommandRealtimeResponse.create().copy(name = "voiceCommand2")
+                )
+            )
+
+            every { mockDataSnapshot.exists() } returns true
+            every { mockDataSnapshot.childrenCount } returns savedVoiceCommandWithKeyRealtimeResponseList.size.toLong()
+
+            every { mockDataSnapshot.children } returns savedVoiceCommandWithKeyRealtimeResponseList.map { savedVoiceCommandWithKey ->
+                val mockChildSnapshot = mockk<DataSnapshot>()
+                every { mockChildSnapshot.key } returns savedVoiceCommandWithKey.savedVoiceCommandKey
+                every { mockChildSnapshot.getValue(SavedVoiceCommandRealtimeResponse::class.java) } returns savedVoiceCommandWithKey.savedVoiceCommandInfo
+                mockChildSnapshot
+            }
+
+            mockkStatic(FirebaseUser::class)
+            mockkStatic(DataSnapshot::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path).addListenerForSingleValueEvent(capture(slot))
+            } answers {
+                slot.captured.onDataChange(mockDataSnapshot)
+            }
+
+            Assertions.assertEquals(savedVoiceCommandWithKeyRealtimeResponseList, readFirebaseUserInfoImpl.getSavedVoiceCommandList().first())
         }
     }
 }

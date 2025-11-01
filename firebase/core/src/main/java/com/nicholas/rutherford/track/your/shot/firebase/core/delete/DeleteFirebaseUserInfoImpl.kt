@@ -40,6 +40,35 @@ class DeleteFirebaseUserInfoImpl(
     }
 
     /**
+     * Deletes a saved voice command from Firebase Realtime Database by saved voice command key.
+     *
+     * @param savedVoiceCommandKey The key of the saved voice command to delete.
+     * @return [Flow] emitting true if deletion succeeded, false otherwise.
+     */
+    override fun deleteSavedVoiceCommand(savedVoiceCommandKey: String): Flow<Boolean> {
+        return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.SAVED_VOICE_COMMANDS}/$savedVoiceCommandKey"
+
+            firebaseDatabase.getReference(path)
+                .removeValue()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        trySend(element = true)
+                    } else {
+                        Timber.w(message = "Error(deleteSavedVoiceCommand) -> Was not able to delete saved voice command from given account.")
+                        trySend(element = false)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Timber.e(message = "Error(deleteSavedVoiceCommand) -> Was not able to delete saved voice command from given account. With following stack trace $exception")
+                    trySend(element = false)
+                }
+            awaitClose()
+        }
+    }
+
+    /**
      * Deletes a player from Firebase Realtime Database by player key.
      *
      * @param playerKey The key of the player to delete.

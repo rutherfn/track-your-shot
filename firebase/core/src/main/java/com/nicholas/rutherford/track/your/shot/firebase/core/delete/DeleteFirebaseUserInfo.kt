@@ -33,6 +33,14 @@ interface DeleteFirebaseUserInfo {
     fun deletePlayer(playerKey: String): Flow<Boolean>
 
     /**
+     * Deletes a saved voice commands from Firebase Realtime Database by their unique saved voice command key.
+     *
+     * @param savedVoiceCommandKey The unique key of the saved voice command to delete.
+     * @return [Flow] emitting true if the deletion was successful, false otherwise.
+     */
+    fun deleteSavedVoiceCommand(savedVoiceCommandKey: String): Flow<Boolean>
+
+    /**
      * Deletes a specific shot for a given player in Firebase Realtime Database.
      * Updates [hasDeletedShotFlow] to reflect the deletion state.
      *

@@ -89,10 +89,16 @@ android {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
+        }
+    }
 }
 
 dependencies {
-    implementation(libs.voice.flow)
     implementation(libs.koin.androidx.navigation)
 
     implementation(libs.protolite.well.known.types)
@@ -112,6 +118,7 @@ dependencies {
     api(project(path = ":feature:settings"))
     api(project(path = ":feature:shots"))
     api(project(path = ":feature:splash"))
+    api(project(path = ":feature:voice-commands"))
     api(project(path = ":helper:account"))
     api(project(path = ":helper:compose-content-test-rule"))
     api(project(path = ":helper:file-generator"))

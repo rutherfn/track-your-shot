@@ -91,6 +91,7 @@ object ExtensionLogicModule {
                 individualPlayerReportRepository = get(),
                 pendingPlayerRepository = get(),
                 shotIgnoringRepository = get(),
+                savedVoiceCommandRepository = get(),
                 userRepository = get(),
                 readFirebaseUserInfo = get(),
                 existingUserFirebase = get(),

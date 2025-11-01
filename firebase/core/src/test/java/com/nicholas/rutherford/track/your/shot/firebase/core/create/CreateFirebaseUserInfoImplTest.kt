@@ -14,6 +14,7 @@ import com.nicholas.rutherford.track.your.shot.data.test.firebase.TestCreateAcco
 import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestCreateAccountFirebaseRealtimeDatabaseResult
 import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestIndividualPlayerReportRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestPlayerInfoRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestSavedVoiceCommandRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
@@ -38,6 +39,7 @@ class CreateFirebaseUserInfoImplTest {
     private val createAccountResult = TestCreateAccountFirebaseRealtimeDatabaseResult().create()
     private val playerInfoRealtimeResponse = TestPlayerInfoRealtimeResponse().create()
     private val individualPlayerReportRealtimeResponse = TestIndividualPlayerReportRealtimeResponse.create()
+    private val savedVoiceCommandResponse = TestSavedVoiceCommandRealtimeResponse.create()
 
     private val testEmail = "testemail@yahoo.com"
     private val testPassword = "passwordTest112"
@@ -322,7 +324,7 @@ class CreateFirebaseUserInfoImplTest {
                     shotCategory = "category",
                     title = "title",
                     description = "description",
-                    firebaseKey = "firebasekey"
+                    firebaseKey = "firebaseKey"
                 )
                 val uid = "uid"
                 val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
@@ -379,7 +381,7 @@ class CreateFirebaseUserInfoImplTest {
                 shotCategory = "category",
                 title = "title",
                 description = "description",
-                firebaseKey = "firebasekey"
+                firebaseKey = "firebaseKey"
             )
             val uid = "uid"
             val path = "${Constants.USERS_PATH}/$uid/${Constants.CREATED_SHOTS}"
@@ -745,6 +747,144 @@ class CreateFirebaseUserInfoImplTest {
 
             val value = createFirebaseUserInfoImpl.attemptToCreateIndividualPlayerReportFirebaseRealtimeDatabaseResponseFlow(individualPlayerReportRealtimeResponse)
                 .first()
+
+            Assertions.assertEquals(Pair(false, null), value)
+        }
+    }
+
+    @Nested
+    inner class AttemptToCreateSavedVoiceCommandFirebaseRealtimeDatabaseResponseFlow {
+
+        @Test
+        fun `when add on complete listener is executed should set flow to true and value Pair of key when isSuccessful returns back true`() =
+            runTest {
+                val uid = "uid"
+                val path = "${Constants.USERS_PATH}/$uid/${Constants.SAVED_VOICE_COMMANDS}"
+
+                val mockTaskVoidResult = mockk<Task<Void>>()
+                val mockFirebaseUser = mockk<FirebaseUser>()
+                val onCompleteListenerSlot = slot<OnCompleteListener<Void>>()
+                val failureListenerSlot = slot<OnFailureListener>()
+
+                val values = hashMapOf<String, Any>()
+
+                val reference = firebaseDatabase.getReference(path)
+
+                values[Constants.NAME] = savedVoiceCommandResponse.name
+                values[Constants.TYPE_VALUE] = savedVoiceCommandResponse.typeValue
+
+                mockkStatic(Tasks::class)
+                mockkStatic(FirebaseUser::class)
+
+                every { mockTaskVoidResult.isSuccessful } returns true
+
+                every { mockFirebaseUser.uid } returns uid
+                every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+                every { reference.push().key } returns key
+
+                every {
+                    reference.child(key).setValue(values)
+                        .addOnCompleteListener(capture(onCompleteListenerSlot))
+                        .addOnFailureListener(capture(failureListenerSlot))
+                } answers {
+                    onCompleteListenerSlot.captured.onComplete(mockTaskVoidResult)
+                    mockTaskVoidResult
+                }
+
+                val value =
+                    createFirebaseUserInfoImpl.attemptToCreateSavedVoiceCommandFirebaseRealtimeDatabaseResponseFlow(
+                        savedVoiceCommandRealtimeResponse = savedVoiceCommandResponse
+                    ).first()
+
+                Assertions.assertEquals(Pair(true, key), value)
+            }
+
+        @Test
+        fun `when add on complete listener is executed should set flow to false and value Pair of key to null when isSuccessful returns back false`() =
+            runTest {
+                val uid = "uid"
+                val path = "${Constants.USERS_PATH}/$uid/${Constants.SAVED_VOICE_COMMANDS}"
+
+                val mockTaskVoidResult = mockk<Task<Void>>()
+                val mockFirebaseUser = mockk<FirebaseUser>()
+                val onCompleteListenerSlot = slot<OnCompleteListener<Void>>()
+                val failureListenerSlot = slot<OnFailureListener>()
+
+                val values = hashMapOf<String, Any>()
+
+                val reference = firebaseDatabase.getReference(path)
+
+                values[Constants.NAME] = savedVoiceCommandResponse.name
+                values[Constants.TYPE_VALUE] = savedVoiceCommandResponse.typeValue
+
+                mockkStatic(Tasks::class)
+                mockkStatic(FirebaseUser::class)
+
+                every { mockTaskVoidResult.isSuccessful } returns false
+
+                every { mockFirebaseUser.uid } returns uid
+                every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+                every { reference.push().key } returns key
+
+                every {
+                    reference.child(key).setValue(values)
+                        .addOnCompleteListener(capture(onCompleteListenerSlot))
+                        .addOnFailureListener(capture(failureListenerSlot))
+                } answers {
+                    onCompleteListenerSlot.captured.onComplete(mockTaskVoidResult)
+                    mockTaskVoidResult
+                }
+
+                val value =
+                    createFirebaseUserInfoImpl.attemptToCreateSavedVoiceCommandFirebaseRealtimeDatabaseResponseFlow(
+                        savedVoiceCommandRealtimeResponse = savedVoiceCommandResponse
+                    ).first()
+
+                Assertions.assertEquals(Pair(false, null), value)
+            }
+
+        @Test
+        fun `when add on failure listener is executed should set flow to false and null Pair`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.SAVED_VOICE_COMMANDS}"
+
+            val mockException = Exception("Simulated failure")
+
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val completeListenerSlot = slot<OnCompleteListener<Void>>()
+            val failureListenerSlot = slot<OnFailureListener>()
+
+            val values = hashMapOf<String, Any>()
+
+            val reference = firebaseDatabase.getReference(path)
+
+            values[Constants.NAME] = savedVoiceCommandResponse.name
+            values[Constants.TYPE_VALUE] = savedVoiceCommandResponse.typeValue
+
+            mockkStatic(Tasks::class)
+            mockkStatic(FirebaseUser::class)
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every { reference.push().key } returns key
+
+            every {
+                reference.child(key).setValue(values)
+                    .addOnCompleteListener(capture(completeListenerSlot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                failureListenerSlot.captured.onFailure(mockException)
+                mockTaskVoidResult
+            }
+
+            val value =
+                createFirebaseUserInfoImpl.attemptToCreateSavedVoiceCommandFirebaseRealtimeDatabaseResponseFlow(
+                    savedVoiceCommandRealtimeResponse = savedVoiceCommandResponse
+                ).first()
 
             Assertions.assertEquals(Pair(false, null), value)
         }

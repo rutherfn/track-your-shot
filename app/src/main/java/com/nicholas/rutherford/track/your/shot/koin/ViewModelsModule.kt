@@ -24,6 +24,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
+import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -48,7 +50,8 @@ object ViewModelsModule {
             MainActivityViewModel(
                 accountManager = get(),
                 scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
-                network = get()
+                network = get(),
+                dataStorePreferenceReader = get()
             )
         }
 
@@ -306,6 +309,29 @@ object ViewModelsModule {
                 playerRepository = get(),
                 dataStorePreferencesWriter = get(),
                 dataStorePreferencesReader = get()
+            )
+        }
+
+        /** Voice Commands screen ViewModel */
+        viewModel {
+            VoiceCommandListViewModel(
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
+                navigation = get(),
+                savedVoiceCommandRepository = get()
+            )
+        }
+
+        /** Create eDIT Voice Commands Screen ViewModel */
+        viewModel { (stateHandle: SavedStateHandle) ->
+            CreateEditVoiceCommandViewModel(
+                savedStateHandle = stateHandle,
+                application = androidApplication(),
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
+                createFirebaseUserInfo = get(),
+                updateFirebaseUserInfo = get(),
+                deleteFirebaseUserInfo = get(),
+                savedVoiceCommandRepository = get(),
+                navigation = get()
             )
         }
     }

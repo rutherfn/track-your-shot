@@ -10,6 +10,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlaye
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepositoryImpl
+import com.nicholas.rutherford.track.your.shot.data.room.repository.SavedVoiceCommandRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.SavedVoiceCommandRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
@@ -54,5 +56,8 @@ object RepositoryDataModule {
 
         /** Repository for pending players. */
         single<PendingPlayerRepository> { PendingPlayerRepositoryImpl(pendingPlayerDao = get()) }
+
+        /** Repository for saved voice commands. */
+        single<SavedVoiceCommandRepository> { SavedVoiceCommandRepositoryImpl(savedVoiceCommandDao = get()) }
     }
 }

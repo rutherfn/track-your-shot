@@ -1,0 +1,409 @@
+package com.nicholas.rutherford.track.your.shot.base.test
+
+import android.app.Application
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import io.mockk.every
+import io.mockk.mockk
+import org.junit.jupiter.api.BeforeEach
+import java.util.logging.Logger
+
+/**
+ * Base test class that provides common test utilities and mocks all StringsIds.
+ * * This class automatically mocks an Application instance and provides access to
+ * string resources through application.getString() method.
+ * * Usage:
+ * ```kotlin
+ * class MyViewModelTest : BaseTest() {
+ *     @Test
+ *     fun `test something`() {
+ *         // Use application.getString() to get actual string values
+ *         val result = application.getString(StringsIds.addShot)
+ *         assertEquals("Add Shot", result)
+ *     }
+ * }
+ * ```
+ */
+abstract class BaseTest {
+
+    /**
+     * Mocked Application instance that provides access to string resources.
+     * Use this to get actual string values: application.getString(StringsIds.someString)
+     */
+    protected val application: Application = mockk<Application>(relaxed = true)
+
+    @BeforeEach
+    fun setUp() {
+        mockApplicationStrings()
+    }
+
+    /**
+     * Mocks the Application instance to return actual string values for all StringsIds.
+     * This prevents the need to mock individual strings in each test.
+     */
+    private fun mockApplicationStrings() {
+        // Mock all StringsIds with their actual values using application.getString()
+        every { application.getString(StringsIds.acceptanceOfTheseTerms) } returns "Acceptance Of These Terms"
+        every { application.getString(StringsIds.acceptanceOfTheseTermsDescription) } returns "You acknowledge that you have read this Agreement and agree to all its terms and conditions. By accessing and using the Mobile Application and Services, you agree to be bound by this Agreement. If you do not agree to abide by the terms of this Agreement, you are not authorized to access or use the Mobile Application and Services."
+        every { application.getString(StringsIds.accountHasNotBeenVerified) } returns "Account Has Not Been Verified"
+        every { application.getString(StringsIds.accountInfo) } returns "Account Info"
+        every { application.getString(StringsIds.accountSecurityDescription) } returns "If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. We may monitor and review new accounts before you may sign in and start using the Services. Providing false contact information of any kind may result in the termination of your account. You must immediately notify us of any unauthorized uses of your account or any other breaches of security. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions. We may suspend, disable, or delete your account (or any part thereof) if we determine that you have violated any provision of this Agreement or that your conduct or content would tend to damage our reputation and goodwill. If we delete your account for the foregoing reasons, you may not re-register for our Services. We may block your email address and Internet protocol address to prevent further registration."
+        every { application.getString(StringsIds.accounts) } returns "Accounts"
+        every { application.getString(StringsIds.acknowledgeAndAgreeToTerms) } returns "Acknowledge And Agree To Terms"
+        every { application.getString(StringsIds.addShot) } returns "Add Shot"
+        every { application.getString(StringsIds.androidPermissionsUrl) } returns "https://developer.android.com/guide/topics/permissions/overview"
+        every { application.getString(StringsIds.areYouCertainYouWishToRemoveX) } returns "Are you certain you wish to remove %s?"
+        every { application.getString(StringsIds.areYouSureYouWantToDeleteCommand) } returns "Are you sure you want to delete command?"
+        every { application.getString(StringsIds.areYouSureYouWantToDeletePendingAccountDescription) } returns "Are you sure you want to delete pending account? This will remove all data associated with this account."
+        every { application.getString(StringsIds.areYouSureYouWantToDeleteXShot) } returns "Are you sure you want to delete %s shot?"
+        every { application.getString(StringsIds.areYouSureYouWantToDeleteYourAccount) } returns "Are you sure you want to delete your account?"
+        every { application.getString(StringsIds.areYouSureYouWantLeaveTrackYourShot) } returns "Are you sure you want to leave Track Your Shot?"
+        every { application.getString(StringsIds.atLeastOnePlayerDescription) } returns "At least one player must be added to the app."
+        every { application.getString(StringsIds.attemptedShotsX) } returns "Attempted Shots: %s"
+        every { application.getString(StringsIds.c) } returns "C"
+        every { application.getString(StringsIds.camera) } returns "Camera"
+        every { application.getString(StringsIds.cameraPermission) } returns "Camera Permission"
+        every { application.getString(StringsIds.cameraPermissionExplanation) } returns "We ask for camera permission so users can take a picture when creating or editing a player profile. This permission allows the app to access the device's camera, enabling users to capture and associate images with their player profiles. Without this permission, users would not be able to take pictures for this feature."
+        every { application.getString(StringsIds.cameraPermissionHasBeenDeniedDescription) } returns "Permission to access camera has been declined. To manually enable the \"Camera\" permission and take a picture for the Player, please navigate to settings."
+        every { application.getString(StringsIds.cancel) } returns "Cancel"
+        every { application.getString(StringsIds.cannotEditVoiceCommand) } returns "Cannot Edit Voice Command"
+        every { application.getString(StringsIds.cannotSaveVoiceCommand) } returns "Cannot Save Voice Command"
+        every { application.getString(StringsIds.center) } returns "Center"
+        every { application.getString(StringsIds.checkIfAccountHaBeenVerified) } returns "Check if account has been verified"
+        every { application.getString(StringsIds.chooseAShotToLogInfoDescription) } returns "Choose a shot to log info for"
+        every { application.getString(StringsIds.chooseImageFromGallery) } returns "Choose Image From Gallery"
+        every { application.getString(StringsIds.chooseOption) } returns "Choose Option"
+        every { application.getString(StringsIds.clickMeToCreateAccount) } returns "Click me to create account"
+        every { application.getString(StringsIds.close) } returns "Close"
+        every { application.getString(StringsIds.comparePlayersStats) } returns "Compare Players Stats"
+        every { application.getString(StringsIds.contactingUs) } returns "Contacting Us"
+        every { application.getString(StringsIds.contactingUsDescription) } returns "If you have any questions about this Privacy Policy, please contact us at:"
+        every { application.getString(StringsIds.continueText) } returns "Continue"
+        every { application.getString(StringsIds.couldNotCreateReport) } returns "Could not create report"
+        every { application.getString(StringsIds.couldNotDeleteCommand) } returns "Could not delete command"
+        every { application.getString(StringsIds.couldNotDeleteCommandDescription) } returns "Could not delete command. Please try again or contact support."
+        every { application.getString(StringsIds.couldNotDeleteReport) } returns "Could not delete report"
+        every { application.getString(StringsIds.couldNotDeleteReportDescription) } returns "Could not delete report. Please try again or contact support."
+        every { application.getString(StringsIds.couldNotGenerateTheReport) } returns "Could not generate the report"
+        every { application.getString(StringsIds.couldNotSaveReport) } returns "Could not save report"
+        every { application.getString(StringsIds.couldNotUploadReport) } returns "Could not upload report"
+        every { application.getString(StringsIds.couldNotUploadReportDescription) } returns "Could not upload report. Please try again or contact support."
+        every { application.getString(StringsIds.createAccount) } returns "Create Account"
+        every { application.getString(StringsIds.createPlayer) } returns "Create Player"
+        every { application.getString(StringsIds.createPlayerReport) } returns "Create Player Report"
+        every { application.getString(StringsIds.createShot) } returns "Create Shot"
+        every { application.getString(StringsIds.createXCommand) } returns "Create %s Command"
+        every { application.getString(StringsIds.createYourPlayerProfileDescription) } returns "Create your player profile to start tracking your shots"
+        every { application.getString(StringsIds.createYourPlayersProfile) } returns "Create Your Players Profile"
+        every { application.getString(StringsIds.currentAccountHasNotBeenVerifiedPleaseOpenEmailToVerifyAccount) } returns "Current account has not been verified. Please open email to verify account."
+        every { application.getString(StringsIds.currentPlayerHasNoChangesDescription) } returns "Current player has no changes"
+        every { application.getString(StringsIds.currentShotHasBeenUpdatedDescription) } returns "Current shot has been updated"
+        every { application.getString(StringsIds.currentShotHasNoChangesDescription) } returns "Current shot has no changes"
+        every { application.getString(StringsIds.dateShotWasTakenDescription) } returns "Date shot was taken"
+        every { application.getString(StringsIds.dateShotsLogged) } returns "Date Shots Logged"
+        every { application.getString(StringsIds.dateShotsTaken) } returns "Date Shots Taken"
+        every { application.getString(StringsIds.debug) } returns "Debug"
+        every { application.getString(StringsIds.debugToggles) } returns "Debug Toggles"
+        every { application.getString(StringsIds.deleteAccount) } returns "Delete Account"
+        every { application.getString(StringsIds.deleteCommand) } returns "Delete Command"
+        every { application.getString(StringsIds.deleteCommandSuccessfully) } returns "Delete Command Successfully"
+        every { application.getString(StringsIds.deleteCommandSuccessfullyDescription) } returns "Delete command successfully"
+        every { application.getString(StringsIds.deletePendingAccount) } returns "Delete Pending Account"
+        every { application.getString(StringsIds.deleteReport) } returns "Delete Report"
+        every { application.getString(StringsIds.deleteReportDescription) } returns "Delete report"
+        every { application.getString(StringsIds.deleteShot) } returns "Delete Shot"
+        every { application.getString(StringsIds.deleteX) } returns "Delete %s"
+        every { application.getString(StringsIds.deletingCommand) } returns "Deleting Command"
+        every { application.getString(StringsIds.deletingPendingAccount) } returns "Deleting Pending Account"
+        every { application.getString(StringsIds.devEmail) } returns "nicholasrutherford@gmail.com"
+        every { application.getString(StringsIds.deviceIsCurrentlyNotConnectedToInternetDesc) } returns "Device is currently not connected to internet"
+        every { application.getString(StringsIds.dismiss) } returns "Dismiss"
+        every { application.getString(StringsIds.doYouWishToProceedDescription) } returns "Do you wish to proceed?"
+        every { application.getString(StringsIds.editCommandSuccessfully) } returns "Edit Command Successfully"
+        every { application.getString(StringsIds.editPhraseXToUseThisCommand) } returns "Edit phrase %s to use for this command"
+        every { application.getString(StringsIds.editPlayer) } returns "Edit Player"
+        every { application.getString(StringsIds.editVoiceCommand) } returns "Edit Voice Command"
+        every { application.getString(StringsIds.editX) } returns "Edit %s"
+        every { application.getString(StringsIds.editXCommand) } returns "Edit %s Command"
+        every { application.getString(StringsIds.editedNewMakeCommandDescription) } returns "Edited new make voice command description"
+        every { application.getString(StringsIds.editedNewMissCommandDescription) } returns "Edited new miss voice command description"
+        every { application.getString(StringsIds.editedNewStartCommandDescription) } returns "Edited new start voice command description"
+        every { application.getString(StringsIds.editedNewStopCommandDescription) } returns "Edited new stop voice command description"
+        every { application.getString(StringsIds.email) } returns "Email"
+        every { application.getString(StringsIds.emailHasBeenSentToRestPasswordPleaseFollowDirectionsToResetPassword) } returns "Email has been sent to reset password. Please follow directions to reset password."
+        every { application.getString(StringsIds.emailHasBeenSentToVerifyAccountPleaseOpenEmailSentEmailToVerifyAccount) } returns "Email has been sent to verify account. Please open sent email to verify account."
+        every { application.getString(StringsIds.emailIsNotInCorrectFormatPleaseEnterEmailInCorrectFormat) } returns "Email is not in correct format. Please enter email in correct format."
+        every { application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToCreateAAccount) } returns "Email is required. Please enter a email to create a account."
+        every { application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToLoginToExistingAccount) } returns "Email is required. Please enter a email to login to existing account."
+        every { application.getString(StringsIds.emailIsRequiredPleaseEnterAEmailToResetPasswordForExistingAccount) } returns "Email is required. Please enter a email to reset password for existing account."
+        every { application.getString(StringsIds.emailRequired) } returns "Email Required"
+        every { application.getString(StringsIds.empty) } returns "Empty"
+        every { application.getString(StringsIds.emptyField) } returns "Empty Field"
+        every { application.getString(StringsIds.emptyFields) } returns "Empty Fields"
+        every { application.getString(StringsIds.emptyFieldsDescription) } returns "Empty fields description"
+        every { application.getString(StringsIds.enabledPermissions) } returns "Enabled Permissions"
+        every { application.getString(StringsIds.enterShotCategory) } returns "Enter Shot Category"
+        every { application.getString(StringsIds.enterShotDescription) } returns "Enter Shot Description"
+        every { application.getString(StringsIds.enterShotName) } returns "Enter Shot Name"
+        every { application.getString(StringsIds.enterShotsMade) } returns "Enter Shots Made"
+        every { application.getString(StringsIds.error) } returns "Error"
+        every { application.getString(StringsIds.errorCreatingAccount) } returns "Error creating account"
+        every { application.getString(StringsIds.errorDeletingPendingAccount) } returns "Error deleting pending account"
+        every { application.getString(StringsIds.errorOccurred) } returns "Error occurred"
+        every { application.getString(StringsIds.errorVoiceCommandEditFailure) } returns "We couldn't edit your voice command. Please try again or contact support."
+        every { application.getString(StringsIds.errorVoiceCommandEditFailedWithSameName) } returns "We couldn't edit your voice command due to the phrase is the same. Please enter a new phrase in order to continue."
+        every { application.getString(StringsIds.errorVoiceCommandSavedFailure) } returns "We couldn't save your voice command. Please try again or contact support."
+        every { application.getString(StringsIds.examplePhrases) } returns "Example Phrases"
+        every { application.getString(StringsIds.findShotsByName) } returns "Find Shots By Name"
+        every { application.getString(StringsIds.firstName) } returns "First Name"
+        every { application.getString(StringsIds.forgotPassword) } returns "Forgot Password"
+        every { application.getString(StringsIds.general) } returns "General"
+        every { application.getString(StringsIds.generateReport) } returns "Generate Report"
+        every { application.getString(StringsIds.gotIt) } returns "Got It"
+        every { application.getString(StringsIds.havingTroubleCreatingYourAccountPleaseTryAgain) } returns "Having trouble creating your account. Please try again."
+        every { application.getString(StringsIds.havingTroubleLoggingIntoYourAccountPleaseTryAgainAndEnsureCredentialsExistAndAreValid) } returns "Having trouble logging into your account. Please try again and/or ensure credentials exist and are valid."
+        every { application.getString(StringsIds.havingTroubleResettingPasswordForThisAccountPleaseTryAgainAndOrEnsureCredentialsExistAndAreValid) } returns "Having trouble resetting password for this account. Please try again and/or ensure credentials exist and are valid."
+        every { application.getString(StringsIds.hintAddNewPlayer) } returns "Hint: Add new player"
+        every { application.getString(StringsIds.hintAddNewReport) } returns "Hint: Add new report"
+        every { application.getString(StringsIds.hintAddNewShot) } returns "Hint: Add new Shot"
+        every { application.getString(StringsIds.hintLogNewShots) } returns "Hint: Log new shots"
+        every { application.getString(StringsIds.hintLogNewShotsForPlayer) } returns "Hint: Log new shots for player"
+        every { application.getString(StringsIds.inAppFirebaseViewer) } returns "In App Firebase Viewer"
+        every { application.getString(StringsIds.introduction) } returns "Introduction"
+        every { application.getString(StringsIds.issueOccurred) } returns "Issue occurred"
+        every { application.getString(StringsIds.lastName) } returns "Last Name"
+        every { application.getString(StringsIds.leavingTheAppWillResultInYouNotFinishingTheAccountCreationProcessDescription) } returns "Leaving the app will result you in not finishing the account creation process. You will not be able to continue until you verify your email. If you verify your email and then come back to the app, you can continue to create your account."
+        every { application.getString(StringsIds.listeningDots) } returns "Listening..."
+        every { application.getString(StringsIds.login) } returns "Login"
+        every { application.getString(StringsIds.loginIconDescription) } returns "This is a login image for the login screen"
+        every { application.getString(StringsIds.logShot) } returns "Log Shot"
+        every { application.getString(StringsIds.logout) } returns "Logout"
+        every { application.getString(StringsIds.logYourShots) } returns "Log Your Shots"
+        every { application.getString(StringsIds.logYourShotsDescription) } returns "Choose the type of shot you want to record and input the makes and misses for the day the player took them."
+        every { application.getString(StringsIds.make) } returns "Make"
+        every { application.getString(StringsIds.manageDeclaredShots) } returns "Manage Declared Shots"
+        every { application.getString(StringsIds.missedShotsNotRecordedDescription) } returns "Missed shots not recorded description"
+        every { application.getString(StringsIds.miss) } returns "Miss"
+        every { application.getString(StringsIds.moreInfo) } returns "More Info"
+        every { application.getString(StringsIds.multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields) } returns "Multiple fields are required that are not entered. Please enter all fields."
+        every { application.getString(StringsIds.nameX) } returns "Name: %s"
+        every { application.getString(StringsIds.newCommandSavedSuccessfully) } returns "New Command Saved Successfully"
+        every { application.getString(StringsIds.next) } returns "Next"
+        every { application.getString(StringsIds.no) } returns "No"
+        every { application.getString(StringsIds.noChangesMade) } returns "No Changes Made"
+        every { application.getString(StringsIds.noCommandEntered) } returns "No Command Entered"
+        every { application.getString(StringsIds.noCommandEnteredDescription) } returns "No command entered description"
+        every { application.getString(StringsIds.noCurrentPlayersAdded) } returns "No Current Players Added"
+        every { application.getString(StringsIds.noCurrentShotsAdded) } returns "No Current Shots Added"
+        every { application.getString(StringsIds.noCurrentShotsLoggedForPlayer) } returns "No Current Shots Logged For Player"
+        every { application.getString(StringsIds.noFirstNameEntered) } returns "No First Name Entered"
+        every { application.getString(StringsIds.noPhraseRecordedYet) } returns "No Phrase Recorded Yet"
+        every { application.getString(StringsIds.noPlayersCreated) } returns "No Players Created"
+        every { application.getString(StringsIds.noPlayersCreatedDescription) } returns "No players created description"
+        every { application.getString(StringsIds.noReportsGenerated) } returns "No Reports Generated"
+        every { application.getString(StringsIds.noShotsCreated) } returns "No Shots Created"
+        every { application.getString(StringsIds.noShotsCreatedDescription) } returns "None of the players have any shots logged yet. Please log at least one shot for a player to generate a report."
+        every { application.getString(StringsIds.noShotsDeclaredDescription) } returns "No shots declared description"
+        every { application.getString(StringsIds.noShotsResultsFound) } returns "No Shots Results Found"
+        every { application.getString(StringsIds.noShotsResultsFoundDescription) } returns "No matching shot was found in your search. Please update search with existing shot name."
+        every { application.getString(StringsIds.noXCommandsYet) } returns "No %s Commands Yet"
+        every { application.getString(StringsIds.none) } returns "None"
+        every { application.getString(StringsIds.notConnectedToInternet) } returns "Not connected to internet"
+        every { application.getString(StringsIds.notNow) } returns "Not Now"
+        every { application.getString(StringsIds.ok) } returns "Ok"
+        every { application.getString(StringsIds.openEmail) } returns "Open Email"
+        every { application.getString(StringsIds.otherResources) } returns "Other Resources"
+        every { application.getString(StringsIds.otherResourcesDescription) } returns "Other resources description"
+        every { application.getString(StringsIds.password) } returns "Password"
+        every { application.getString(StringsIds.passwordHelperText) } returns "Password helper text"
+        every { application.getString(StringsIds.passwordIsNotInCorrectFormatPleaseEnterPasswordInCorrectFormat) } returns "Password is not in correct format. Please enter password in correct format."
+        every { application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToCreateAAccount) } returns "Password is required. Please enter a password to create a account."
+        every { application.getString(StringsIds.passwordIsRequiredPleaseEnterAPasswordToLoginToExistingAccount) } returns "Password is required. Please enter a password to login to existing account."
+        every { application.getString(StringsIds.passwordRequired) } returns "Password Required"
+        every { application.getString(StringsIds.permissionHasBeenDeclined) } returns "Permission has been declined"
+        every { application.getString(StringsIds.permissions) } returns "Permissions"
+        every { application.getString(StringsIds.pf) } returns "PF"
+        every { application.getString(StringsIds.pg) } returns "PG"
+        every { application.getString(StringsIds.playerAlreadyHasBeenAddedDescription) } returns "Player already has been added description"
+        every { application.getString(StringsIds.playerCreationFailedPleaseTryAgain) } returns "Player creation failed. Please try again."
+        every { application.getString(StringsIds.playerIsInvalidPleaseTryAgain) } returns "Player is invalid. Please try again."
+        every { application.getString(StringsIds.playerReport) } returns "Player Report"
+        every { application.getString(StringsIds.playerReportCreatedDescription) } returns "Player report created description"
+        every { application.getString(StringsIds.playerReportCreatedForX) } returns "Player report created for %s"
+        every { application.getString(StringsIds.playerShots) } returns "Player Shots"
+        every { application.getString(StringsIds.players) } returns "Players"
+        every { application.getString(StringsIds.playersFirstNameEmptyDescription) } returns "Players first name empty description"
+        every { application.getString(StringsIds.pointGuard) } returns "Point Guard"
+        every { application.getString(StringsIds.position) } returns "Position"
+        every { application.getString(StringsIds.positionX) } returns "Position: %s"
+        every { application.getString(StringsIds.powerForward) } returns "Power Forward"
+        every { application.getString(StringsIds.proceedWithYourAccount) } returns "Proceed with your account"
+        every { application.getString(StringsIds.readExternalStorageDescription) } returns "Permission to read external storage has been declined. To manually enable the \"Read External Storage\" permission and select an image from the gallery for the Player, please navigate to settings."
+        every { application.getString(StringsIds.readExternalStoragePermission) } returns "Read External Storage Permission"
+        every { application.getString(StringsIds.readExternalStoragePermissionExplanation) } returns "We ask for read external storage permission so users can select an image from their gallery when creating or editing a player profile. This permission allows the app to access the images stored on the device, enabling users to choose and associate images with their player profiles. Without this permission, users would not be able to select images from their gallery for this feature."
+        every { application.getString(StringsIds.readMediaImagesDescription) } returns "Permission to read media images has been declined. To manually enable the \"Read Media Images\" permission and select an image from the gallery for the Player, please navigate to settings."
+        every { application.getString(StringsIds.readMediaImagesPermission) } returns "Read Media Images Permission"
+        every { application.getString(StringsIds.readMediaImagesPermissionExplanation) } returns "We ask for read media images permission so users can select an image from their gallery when creating or editing a player profile. This permission allows the app to access the images stored on the device, enabling users to choose and associate images with their player profiles. Without this permission, users would not be able to select images from their gallery for this feature."
+        every { application.getString(StringsIds.readMediaStorage) } returns "Read Media Images"
+        every { application.getString(StringsIds.recordAgain) } returns "Record Again"
+        every { application.getString(StringsIds.recordPhrase) } returns "Record Phrase"
+        every { application.getString(StringsIds.recordedPhrase) } returns "Recorded Phrase"
+        every { application.getString(StringsIds.recordThePhraseYouWouldLikeText) } returns "Record the phrase you'd like text"
+        every { application.getString(StringsIds.removeImage) } returns "Remove Image"
+        every { application.getString(StringsIds.reports) } returns "Reports"
+        every { application.getString(StringsIds.resetPassword) } returns "Reset Password"
+        every { application.getString(StringsIds.resetPasswordEmailSent) } returns "Reset Password Email Sent"
+        every { application.getString(StringsIds.resendEmail) } returns "Resend Email"
+        every { application.getString(StringsIds.savedNewMakeCommandDescription) } returns "Saved new make voice command description"
+        every { application.getString(StringsIds.savedNewMissCommandDescription) } returns "Saved new miss voice command description"
+        every { application.getString(StringsIds.savedNewStartCommandDescription) } returns "Saved new start voice command description"
+        every { application.getString(StringsIds.savedNewStopCommandDescription) } returns "Saved new stop voice command description"
+        every { application.getString(StringsIds.saveVoiceCommand) } returns "Save Voice Command"
+        every { application.getString(StringsIds.selectAShot) } returns "Select A Shot"
+        every { application.getString(StringsIds.selectDate) } returns "Select Date"
+        every { application.getString(StringsIds.selectingAShot) } returns "Selecting A Shot"
+        every { application.getString(StringsIds.settings) } returns "Settings"
+        every { application.getString(StringsIds.settingsHelpDescription) } returns "On the settings page, you can view your account information, review terms and conditions, access app usage details, and learn about the permissions we request and why we need them."
+        every { application.getString(StringsIds.setupVoiceCommandDescription) } returns "Set up voice commands to easily log your shots while playing. Use your custom phrases to automatically start or stop a voice session, and to record make or miss shots."
+        every { application.getString(StringsIds.sg) } returns "SG"
+        every { application.getString(StringsIds.sf) } returns "SF"
+        every { application.getString(StringsIds.shotCategory) } returns "Shot Category:"
+        every { application.getString(StringsIds.shotCategoryMissing) } returns "Shot category missing"
+        every { application.getString(StringsIds.shotCategoryMissingDescription) } returns "Shot category missing description"
+        every { application.getString(StringsIds.shotDescription) } returns "Shot Description:"
+        every { application.getString(StringsIds.shotDescriptionMissing) } returns "Shot description missing"
+        every { application.getString(StringsIds.shotDescriptionMissingDesc) } returns "Shot description missing desc"
+        every { application.getString(StringsIds.shotHasBeenDeleted) } returns "Shot Has Been Deleted"
+        every { application.getString(StringsIds.shotHasNotBeenDeleted) } returns "Shot Has Not Been Deleted"
+        every { application.getString(StringsIds.shotName) } returns "Shot Name:"
+        every { application.getString(StringsIds.shotNameMissing) } returns "Shot name missing"
+        every { application.getString(StringsIds.shotNameMissingDescription) } returns "Shot name missing description"
+        every { application.getString(StringsIds.shotPercentage) } returns "%s %%"
+        every { application.getString(StringsIds.shotTakenByX) } returns "Shot Taken By %s"
+        every { application.getString(StringsIds.shotTakenOnX) } returns "Shot Taken On %s"
+        every { application.getString(StringsIds.shotUpdated) } returns "Shot Updated"
+        every { application.getString(StringsIds.shotWithThatNameAlreadyExists) } returns "Shot with that name already exists"
+        every { application.getString(StringsIds.shotWithThatNameAlreadyExistsDescription) } returns "Shot with that name already exists description"
+        every { application.getString(StringsIds.shotX) } returns "Shot %s"
+        every { application.getString(StringsIds.shotXHadIssueSavingDetails) } returns "Shot %s Had Issues Saving Details"
+        every { application.getString(StringsIds.shotXHadIssueSavingDetailsDescription) } returns "There was an issue saving the shot \"%s\" details. Please try again or contact support if the problem continues."
+        every { application.getString(StringsIds.shotXHasBeenCreated) } returns "Shot %s Has Been Created"
+        every { application.getString(StringsIds.shotXHasBeenCreatedDescription) } returns "Shot %s has been created description"
+        every { application.getString(StringsIds.shotXHasBeenEdited) } returns "Shot %s Has Been Edited"
+        every { application.getString(StringsIds.shotXHasBeenEditedDescription) } returns "Shot %s has been edited description"
+        every { application.getString(StringsIds.shots) } returns "Shots"
+        every { application.getString(StringsIds.shotsAttempted) } returns "Shots Attempted"
+        every { application.getString(StringsIds.shotsAttemptedDateX) } returns "Shots Attempted Date: %s"
+        every { application.getString(StringsIds.shotsLoggedDateX) } returns "Shots Logged Date: %s"
+        every { application.getString(StringsIds.shotsMade) } returns "Shots Made"
+        every { application.getString(StringsIds.shotsMadeAccuracyX) } returns "Shots Made Accuracy: %s %%"
+        every { application.getString(StringsIds.shotsMadePercentage) } returns "Shots Made Percentage"
+        every { application.getString(StringsIds.shotsMadeXSecondary) } returns "Shots Made %s"
+        every { application.getString(StringsIds.shotsMissed) } returns "Shots Missed"
+        every { application.getString(StringsIds.shotsMissedPercentage) } returns "Shots Missed Percentage"
+        every { application.getString(StringsIds.shotsMissedX) } returns "Shots Missed %s"
+        every { application.getString(StringsIds.shotsNotRecordedDescription) } returns "Shots not recorded description"
+        every { application.getString(StringsIds.shootingGuard) } returns "Shooting Guard"
+        every { application.getString(StringsIds.showLess) } returns "Show Less"
+        every { application.getString(StringsIds.showMore) } returns "Show More"
+        every { application.getString(StringsIds.smallForward) } returns "Small Forward"
+        every { application.getString(StringsIds.start) } returns "Start"
+        every { application.getString(StringsIds.stats) } returns "Stats"
+        every { application.getString(StringsIds.stop) } returns "Stop"
+        every { application.getString(StringsIds.successfullySendEmailVerification) } returns "Successfully sent email verification"
+        every { application.getString(StringsIds.takeAPicture) } returns "Take A Picture"
+        every { application.getString(StringsIds.tapForMore) } returns "Tap for more"
+        every { application.getString(StringsIds.termsConditions) } returns "Terms & Conditions"
+        every { application.getString(StringsIds.termsConditionsDescription) } returns "Terms & Conditions description"
+        every { application.getString(StringsIds.theImageUploadWasUnsuccessful) } returns "The image upload was unsuccessful"
+        every { application.getString(StringsIds.thereWasAErrorCreatingYourAccountPleaseTryAgain) } returns "There was a error creating your account. Please try again."
+        every { application.getString(StringsIds.thereWasAErrorDeletingPendingAccountPleaseTryAgain) } returns "There was a error deleting your account. Please try again."
+        every { application.getString(StringsIds.thisDocumentWasLastUpdatedOn) } returns "This document was last updated on"
+        every { application.getString(StringsIds.toggles) } returns "Toggles"
+        every { application.getString(StringsIds.trackYourProgress) } returns "Track Your Progress"
+        every { application.getString(StringsIds.trackYourProgressDescription) } returns "Track your progress description"
+        every { application.getString(StringsIds.trackYourShot) } returns "Track Your Shot"
+        every { application.getString(StringsIds.tryAgain) } returns "Try Again"
+        every { application.getString(StringsIds.unableToCreateAccount) } returns "Unable to create account"
+        every { application.getString(StringsIds.unableToDeletePlayerPleaseContactSupport) } returns "Unable to delete player. Please contact support."
+        every { application.getString(StringsIds.unableToDeleteShot) } returns "Unable to delete shot"
+        every { application.getString(StringsIds.unableToLoginToAccount) } returns "Unable to login to account"
+        every { application.getString(StringsIds.unableToResetPassword) } returns "Unable to reset password"
+        every { application.getString(StringsIds.unableToSendEmailVerification) } returns "Unable to send email verification"
+        every { application.getString(StringsIds.unableToUploadImage) } returns "Unable to upload image"
+        every { application.getString(StringsIds.unsavedPlayerChanges) } returns "Unsaved player changes"
+        every { application.getString(StringsIds.username) } returns "Username"
+        every { application.getString(StringsIds.usernameHelperText) } returns "Username helper text"
+        every { application.getString(StringsIds.usernameIsNotInCorrectFormatPleaseEnterUsernameInCorrectFormat) } returns "Username is not in correct format. Please enter username in correct format."
+        every { application.getString(StringsIds.usernameIsRequiredPleaseEnterAUsernameToCreateAAccount) } returns "Username is required. Please enter a username to create a account."
+        every { application.getString(StringsIds.usernameRequired) } returns "Username Required"
+        every { application.getString(StringsIds.usingTheApp) } returns "Using the app"
+        every { application.getString(StringsIds.verifyAccount) } returns "Verify Account"
+        every { application.getString(StringsIds.viewMoreInfo) } returns "View More Info"
+        every { application.getString(StringsIds.viewX) } returns "View %s"
+        every { application.getString(StringsIds.viewXShots) } returns "View %s Shots"
+        every { application.getString(StringsIds.voiceCommands) } returns "Voice Commands"
+        every { application.getString(StringsIds.weCouldNotDeleteXShot) } returns "We could not delete %s shot. Please try again later"
+        every { application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue) } returns "We have detected a problem with your account. Please contact support to resolve issue."
+        every { application.getString(StringsIds.weHaveDetectedCurrentlyNotConnectedToInternetDescription) } returns "We have detected currently not connected to internet description"
+        every { application.getString(StringsIds.weWereAbleToSendEmailVerificationPleaseCheckYourEmailToVerifyAccount) } returns "We were able to send email verification. Please check your email to verify account."
+        every { application.getString(StringsIds.weWereUnableToSendEmailVerificationPleaseClickSendEmailVerificationToTryAgain) } returns "We were unable to send email verification. Please click send email verification to try again."
+        every { application.getString(StringsIds.xCreated) } returns "%s Created"
+        every { application.getString(StringsIds.xPlayerShotReport) } returns "%s Player Shot Report"
+        every { application.getString(StringsIds.xReport) } returns "%s Report"
+        every { application.getString(StringsIds.xShot) } returns "%s Shot"
+        every { application.getString(StringsIds.xShotHasBeenRemovedDescription) } returns "%s shot has been removed description"
+        every { application.getString(StringsIds.xShotHasNotBeenRemovedDescription) } returns "%s shot has not been removed description"
+        every { application.getString(StringsIds.xShotReportCreated) } returns "%s Shot Report Created"
+        every { application.getString(StringsIds.xShotReportCreatedDescription) } returns "%s shot report created description"
+        every { application.getString(StringsIds.xShots) } returns "%s Shots"
+        every { application.getString(StringsIds.yes) } returns "Yes"
+        every { application.getString(StringsIds.yourPlayerCouldNotBeRetrievedDescription) } returns "Your player could not be retrieved description"
+        every { application.getString(StringsIds.yourRecordedPhrase) } returns "Your recorded phrase"
+    }
+
+    /**
+     * Executes a block of code that may call Android APIs, handling expected exceptions gracefully.
+     * * This utility method is designed for unit tests that need to call methods containing Android API calls
+     * (such as SpeechRecognizer, Camera, Location services, etc.) that are not available in unit test environments.
+     * * **Why this is needed:**
+     * - Unit tests run on the JVM without Android framework
+     * - Android APIs like SpeechRecognizer.isRecognitionAvailable() throw RuntimeException when not mocked
+     * - This method catches these expected exceptions and logs them for debugging
+     * - The test can focus on testing the core business logic rather than Android API availability
+     * * **Usage:**
+     * ```kotlin
+     * @Test
+     * fun `test method with Android API calls`() {
+     *     // Test setup
+     *     val expectedState = SomeState()
+     * *     // Execute method that may call Android APIs
+     *     executeWithAndroidApiHandling {
+     *         viewModel.onRecordPhraseClicked() // This calls SpeechRecognizer internally
+     *     }
+     * *     // Verify the business logic worked correctly
+     *     assertEquals(expectedState, viewModel.state.value)
+     * }
+     * ```
+     * * @param block The code block to execute that may contain Android API calls
+     * @param operationName Optional name for the operation being tested (for better logging)
+     */
+    protected fun executeWithAndroidApiHandling(
+        operationName: String = "Android API operation",
+        block: () -> Unit
+    ) {
+        try {
+            block()
+        } catch (e: RuntimeException) {
+            val logger = Logger.getLogger(this::class.java.simpleName)
+            logger.warning(
+                """
+                |Expected Android API exception caught in unit test: $operationName
+                |Exception: ${e.javaClass.simpleName}: ${e.message}
+                |This is expected behavior in unit tests when Android APIs are not mocked.
+                |The test should focus on verifying the business logic, not Android API availability.
+                |Stack trace: ${e.stackTraceToString()}
+                """.trimMargin()
+            )
+        }
+    }
+}

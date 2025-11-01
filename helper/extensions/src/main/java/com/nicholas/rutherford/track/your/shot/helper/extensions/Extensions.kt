@@ -173,6 +173,12 @@ fun hasCameraPermissionEnabled(context: Context) = ContextCompat.checkSelfPermis
     Manifest.permission.CAMERA
 ) == PackageManager.PERMISSION_GRANTED
 
+/** Checks if the record audio permission is granted in the current [context]. */
+fun hasRecordAudioPermissionEnabled(context: Context) = ContextCompat.checkSelfPermission(
+    context,
+    Manifest.permission.RECORD_AUDIO
+) == PackageManager.PERMISSION_GRANTED
+
 /** Parses a string value to a [Date] using the app-defined DATE_PATTERN. */
 fun parseValueToDate(value: String): Date? =
     SimpleDateFormat(DATE_PATTERN, Locale.ENGLISH).parse(value)

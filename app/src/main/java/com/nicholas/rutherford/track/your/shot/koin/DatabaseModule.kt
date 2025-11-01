@@ -49,6 +49,9 @@ object DatabaseModule {
         /** Provides the PlayerDao from the AppDatabase. */
         single { get<AppDatabase>().playerDao() }
 
+        /** Provides the SavedVoiceCommandDao from the AppDatabase. */
+        single { get<AppDatabase>().savedVoiceCommandsDao() }
+
         /** Provides the ShotIgnoringDao from the AppDatabase. */
         single { get<AppDatabase>().shotIgnoringDao() }
     }

@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestDeclaredShotWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestPlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.data.test.firebase.realtime.TestSavedVoiceCommandWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import io.mockk.every
 import io.mockk.mockk
@@ -31,6 +32,8 @@ class UpdateFirebaseUserInfoImplTest {
     val playerInfoRealtimeWithKeyResponse = TestPlayerInfoRealtimeWithKeyResponse().create()
 
     val declaredShotWithKeyRealtimeResponse = TestDeclaredShotWithKeyRealtimeResponse.create()
+
+    val savedVoiceCommandWithKeyRealtimeResponse = TestSavedVoiceCommandWithKeyRealtimeResponse.create()
 
     @BeforeEach
     fun beforeEach() {
@@ -280,6 +283,121 @@ class UpdateFirebaseUserInfoImplTest {
             }
 
             val value = updateFirebaseUserInfoImpl.updatePlayer(playerInfoRealtimeWithKeyResponse = playerInfoRealtimeWithKeyResponse).first()
+
+            Assertions.assertEquals(false, value)
+        }
+    }
+
+    @Nested
+    inner class UpdateSavedVoiceCommand {
+
+        @Test
+        fun `when on complete listener is executed and returns isSuccessful returns true should set flow to true`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS}/$uid/${Constants.SAVED_VOICE_COMMANDS}/${savedVoiceCommandWithKeyRealtimeResponse.savedVoiceCommandKey}"
+
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val failureListenerSlot = slot<OnFailureListener>()
+            val slot = slot<OnCompleteListener<Void>>()
+
+            val savedVoiceCommandDataToUpdate = mapOf(
+                Constants.NAME to savedVoiceCommandWithKeyRealtimeResponse.savedVoiceCommandInfo.name,
+                Constants.TYPE_VALUE to savedVoiceCommandWithKeyRealtimeResponse.savedVoiceCommandInfo.typeValue
+            )
+
+            mockkStatic(Tasks::class)
+            mockkStatic(FirebaseUser::class)
+
+            every { mockTaskVoidResult.isSuccessful } returns true
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path)
+                    .updateChildren(savedVoiceCommandDataToUpdate)
+                    .addOnCompleteListener(capture(slot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                slot.captured.onComplete(mockTaskVoidResult)
+                mockTaskVoidResult
+            }
+
+            val value = updateFirebaseUserInfoImpl.updateSavedVoiceCommand(savedVoiceCommandRealtimeWithKeyResponse = savedVoiceCommandWithKeyRealtimeResponse).first()
+
+            Assertions.assertEquals(true, value)
+        }
+
+        @Test
+        fun `when on complete listener is executed and returns isSuccessful returns false should set flow to false`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS}/$uid/${Constants.SAVED_VOICE_COMMANDS}/${savedVoiceCommandWithKeyRealtimeResponse.savedVoiceCommandKey}"
+
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val failureListenerSlot = slot<OnFailureListener>()
+            val slot = slot<OnCompleteListener<Void>>()
+
+            val savedVoiceCommandDataToUpdate = mapOf(
+                Constants.NAME to savedVoiceCommandWithKeyRealtimeResponse.savedVoiceCommandInfo.name,
+                Constants.TYPE_VALUE to savedVoiceCommandWithKeyRealtimeResponse.savedVoiceCommandInfo.typeValue
+            )
+
+            mockkStatic(Tasks::class)
+            mockkStatic(FirebaseUser::class)
+
+            every { mockTaskVoidResult.isSuccessful } returns false
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path)
+                    .updateChildren(savedVoiceCommandDataToUpdate)
+                    .addOnCompleteListener(capture(slot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                slot.captured.onComplete(mockTaskVoidResult)
+                mockTaskVoidResult
+            }
+
+            val value = updateFirebaseUserInfoImpl.updateSavedVoiceCommand(savedVoiceCommandRealtimeWithKeyResponse = savedVoiceCommandWithKeyRealtimeResponse).first()
+
+            Assertions.assertEquals(false, value)
+        }
+
+        @Test
+        fun `when on failure listener is invoked should set flow to false`() = runTest {
+            val uid = "uid"
+            val path = "${Constants.USERS}/$uid/${Constants.SAVED_VOICE_COMMANDS}/${savedVoiceCommandWithKeyRealtimeResponse.savedVoiceCommandKey}"
+
+            val mockTaskVoidResult = mockk<Task<Void>>()
+            val mockFirebaseUser = mockk<FirebaseUser>()
+            val failureListenerSlot = slot<OnFailureListener>()
+            val slot = slot<OnCompleteListener<Void>>()
+
+            val mockException = Exception("Simulated failure")
+
+            val savedVoiceCommandDataToUpdate = mapOf(
+                Constants.NAME to savedVoiceCommandWithKeyRealtimeResponse.savedVoiceCommandInfo.name,
+                Constants.TYPE_VALUE to savedVoiceCommandWithKeyRealtimeResponse.savedVoiceCommandInfo.typeValue
+            )
+
+            every { mockFirebaseUser.uid } returns uid
+            every { firebaseAuth.currentUser } returns mockFirebaseUser
+
+            every {
+                firebaseDatabase.getReference(path)
+                    .updateChildren(savedVoiceCommandDataToUpdate)
+                    .addOnCompleteListener(capture(slot))
+                    .addOnFailureListener(capture(failureListenerSlot))
+            } answers {
+                failureListenerSlot.captured.onFailure(mockException)
+                mockTaskVoidResult
+            }
+
+            val value = updateFirebaseUserInfoImpl.updateSavedVoiceCommand(savedVoiceCommandRealtimeWithKeyResponse = savedVoiceCommandWithKeyRealtimeResponse).first()
 
             Assertions.assertEquals(false, value)
         }

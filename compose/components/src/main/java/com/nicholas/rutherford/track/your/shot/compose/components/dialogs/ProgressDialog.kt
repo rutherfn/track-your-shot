@@ -53,7 +53,7 @@ fun ProgressDialog(
                     .background(color = Color.White, shape = RoundedCornerShape(Padding.twelve))
             ) {
                 Column {
-//                    CircularProgressIndicator(color = AppColors.Orange)
+                    CircularProgressIndicator(color = AppColors.Orange)
                     title?.let { text ->
                         Text(
                             text = text,

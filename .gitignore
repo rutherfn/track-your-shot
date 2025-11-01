@@ -16,6 +16,9 @@
 bin/
 gen/
 
+# Kotlin folder
+.kotlin
+
 # Ignore gradle files
 .gradle/
 build/kotlin
@@ -26,10 +29,12 @@ build-type/build
 
 # Ignore module build gradles files
 base/vm/build
+base/test-ext/build
 base-resources/build
 
 buildSrc/.gradle
 buildSrc/build
+buildSrc/.kotlin
 
 compose/components/build
 compose/theme/build
@@ -55,6 +60,8 @@ feature/shots/build
 feature/reports/build
 feature/settings/build
 feature/splash/build
+
+feature/voice-commands/build
 
 firebase/core/build
 firebase/util/build

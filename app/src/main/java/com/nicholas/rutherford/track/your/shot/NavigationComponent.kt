@@ -46,13 +46,8 @@ import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePicker
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.data.shared.snackbar.SnackBarInfo
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.navigation.LogoutAction
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
-import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
-import com.nicholas.rutherford.track.your.shot.navigation.ReportingAction
-import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
-import com.nicholas.rutherford.track.your.shot.navigation.ShotsAction
 import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
 import kotlinx.coroutines.launch
 
@@ -290,13 +285,7 @@ fun NavigationComponent(
         drawerState = drawerState,
         drawerContent = {
             DrawerContent(
-                actions = listOf(
-                    PlayersListAction,
-                    ShotsAction,
-                    ReportingAction,
-                    SettingsAction,
-                    LogoutAction
-                ),
+                actions = mainActivityViewModel.buildDrawerActions(),
                 onDestinationClicked = { route, navOptions, titleId ->
                     scope.launch { drawerState.close() }
                     if (route.isEmpty()) {

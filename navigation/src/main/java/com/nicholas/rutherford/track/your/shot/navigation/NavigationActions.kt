@@ -508,4 +508,12 @@ object NavigationActions {
                 .build()
         }
     }
+
+    object VoiceCommands {
+
+        fun createEditVoiceCommandsWithParams(type: Int?, phrase: String?) = object : NavigationAction {
+            override val destination: String = NavigationDestinationsWithParams.createEditVoiceCommandCreateEditScreenWitParams(type = type, phrase = phrase)
+            override val navOptions = NavOptions.Builder().build()
+        }
+    }
 }

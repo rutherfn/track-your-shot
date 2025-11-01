@@ -5,6 +5,7 @@ import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.accountInfoScr
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.authenticationScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createAccountScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createEditDeclaredScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createEditVoiceCommandScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createOrEditPlayerScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.createReportScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.debugToggleScreen
@@ -22,6 +23,7 @@ import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.settingsScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.shotListScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.splashScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.termsAndConditionScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.voiceCommandListScreen
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -67,6 +69,8 @@ object AppNavigationRegistry {
         Screen.StaticScreen { reportListScreen() },
         Screen.StaticScreen { shotListScreen() },
         Screen.StaticScreen { createReportScreen() },
+        Screen.StaticScreen { voiceCommandListScreen() },
+        Screen.StaticScreen { createEditVoiceCommandScreen() },
         Screen.StaticScreen { settingsScreen() },
         Screen.StaticScreen { accountInfoScreen() },
         Screen.StaticScreen { permissionEducationScreen() },

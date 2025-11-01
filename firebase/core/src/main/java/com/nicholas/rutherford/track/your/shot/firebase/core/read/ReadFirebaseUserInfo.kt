@@ -4,6 +4,7 @@ import com.nicholas.rutherford.track.your.shot.firebase.realtime.AccountInfoReal
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.DeclaredShotWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.SavedVoiceCommandRealtimeWithKeyResponse
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
@@ -57,6 +58,13 @@ interface ReadFirebaseUserInfo {
      * @return [Flow] emitting a list of [PlayerInfoRealtimeWithKeyResponse], empty if none exist.
      */
     fun getPlayerInfoList(): Flow<List<PlayerInfoRealtimeWithKeyResponse>>
+
+    /**
+     * Retrieves all saved voice commands associated with the current user, including their Firebase keys.
+     *
+     * @return [Flow] emitting a list of [SavedVoiceCommandRealtimeWithKeyResponse], empty if none exist.
+     */
+    fun getSavedVoiceCommandList(): Flow<List<SavedVoiceCommandRealtimeWithKeyResponse>>
 
     /**
      * Retrieves all individual player reports for the current user, including Firebase keys.

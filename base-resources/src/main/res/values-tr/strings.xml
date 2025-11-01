@@ -220,7 +220,7 @@
     <string name="view_more_info">Daha Fazla Bilgi Görüntüle</string>
     <string name="view_x">%s görüntüle</string>
     <string name="voice_commands">Sesli Komutlar</string>
-    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_position_x_player_name">%1$s , %2$s</string>
     <string name="x_shot">%s Atış</string>
     <string name="x_shot_has_been_removed_description">%s bu oyuncunun şut geçmişinden kaldırıldı.</string>
     <string name="x_shot_has_not_been_removed_description">%s Şut bu oyuncunun şut geçmişinden kaldırılmadı. Lütfen çekimi kaldırmak için tekrar deneyin.</string>

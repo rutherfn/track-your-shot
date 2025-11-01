@@ -220,7 +220,7 @@
     <string name="view_more_info">Weitere Informationen anzeigen</string>
     <string name="view_x">%s anzeigen</string>
     <string name="voice_commands">Sprachbefehle</string>
-    <string name="x_position_x_player_name">%s , %s</string>
+    <string name="x_position_x_player_name">%1$s , %2$s</string>
     <string name="x_shot">%s Aufnahme</string>
     <string name="x_shot_has_been_removed_description">%s wurde aus dem Schussverlauf dieses Spielers entfernt.</string>
     <string name="x_shot_has_not_been_removed_description">%s Der Schuss wurde nicht aus dem Schussverlauf dieses Spielers entfernt. Bitte versuchen Sie erneut, den Schuss zu entfernen.</string>

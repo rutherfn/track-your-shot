@@ -19,6 +19,12 @@ object NavArguments {
         navArgument(NamedArguments.EMAIL) { type = NavType.StringType }
     )
 
+    /** Arguments required when navigating with create edit voice command (voiceCommandType, recordedPhrase). */
+    val createEditVoiceCommand = listOf(
+        navArgument(NamedArguments.VOICE_COMMAND_TYPE_VALUE_PARAM) { type = NavType.IntType },
+        navArgument(NamedArguments.RECORDED_PHRASE_PARAM) { type = NavType.StringType }
+    )
+
     /**
      * Arguments used during authentication.
      * Both username and email are optional, nullable, and default to null.

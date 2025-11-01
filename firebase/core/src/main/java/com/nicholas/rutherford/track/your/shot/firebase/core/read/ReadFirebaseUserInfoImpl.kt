@@ -13,6 +13,8 @@ import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlaye
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.IndividualPlayerReportWithKeyRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.SavedVoiceCommandRealtimeResponse
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.SavedVoiceCommandRealtimeWithKeyResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
 import kotlinx.coroutines.channels.awaitClose
@@ -255,6 +257,50 @@ class ReadFirebaseUserInfoImpl(
 
                     override fun onCancelled(p0: DatabaseError) {
                         Timber.e("Error(getPlayerInfoList) -> Database error")
+                        trySend(emptyList())
+                    }
+                })
+            awaitClose()
+        }
+    }
+
+    /**
+     * Retrieves a list of all saved voice commands associated with the current user, including keys.
+     *
+     * @return [Flow] emitting a list of [SavedVoiceCommandRealtimeWithKeyResponse], empty if none exist.
+     */
+    override fun getSavedVoiceCommandList(): Flow<List<SavedVoiceCommandRealtimeWithKeyResponse>> {
+        return callbackFlow {
+            val uid = firebaseAuth.currentUser?.uid ?: ""
+            val path = "${Constants.USERS_PATH}/$uid/${Constants.SAVED_VOICE_COMMANDS}"
+            val savedVoiceCommandList = arrayListOf<SavedVoiceCommandRealtimeWithKeyResponse>()
+
+            firebaseDatabase.getReference(path)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            if (snapshot.childrenCount == Constants.FIREBASE_CHILDREN_COUNT_ZERO) {
+                                Timber.w("Warning(getSavedVoiceCommandList) -> No saved voice commands exist")
+                                trySend(emptyList())
+                            }
+                            for (savedVoiceCommandSnapshot in snapshot.children) {
+                                val key = savedVoiceCommandSnapshot.key
+                                val info = savedVoiceCommandSnapshot.getValue(SavedVoiceCommandRealtimeResponse::class.java)
+                                safeLet(key, info) { currentKey, currentInfo ->
+                                    savedVoiceCommandList.add(SavedVoiceCommandRealtimeWithKeyResponse(savedVoiceCommandKey = currentKey, savedVoiceCommandInfo = currentInfo))
+                                }
+                            }
+
+                            trySend(savedVoiceCommandList.toList())
+                        } else {
+                            Timber.w("Warning(getSavedVoiceCommandList) -> Current firebase route does not exist for this user")
+                            trySend(emptyList())
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Timber.e("Error(getSavedVoiceCommandList) -> Database error")
                         trySend(emptyList())
                     }
                 })

@@ -26,22 +26,16 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 data class PlayerEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-
     @ColumnInfo(name = "firstName")
     val firstName: String,
-
     @ColumnInfo(name = "lastName")
     val lastName: String,
-
     @ColumnInfo(name = "position")
     val position: PlayerPositions,
-
     @ColumnInfo(name = "firebaseKey")
     val firebaseKey: String,
-
     @ColumnInfo(name = "imageUrl")
     val imageUrl: String?,
-
     @ColumnInfo(name = "shotsLogged")
     val shotsLoggedList: List<ShotLogged>
 )

@@ -7,14 +7,16 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.SavedVoiceCommandRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.ActiveUser
-import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.room.response.IndividualPlayerReport
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
+import com.nicholas.rutherford.track.your.shot.data.room.response.SavedVoiceCommand
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
+import com.nicholas.rutherford.track.your.shot.data.room.response.VoiceCommandTypes
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
@@ -62,6 +64,7 @@ class AccountManagerImpl(
     private val pendingPlayerRepository: PendingPlayerRepository,
     private val shotIgnoringRepository: ShotIgnoringRepository,
     private val userRepository: UserRepository,
+    private val savedVoiceCommandRepository: SavedVoiceCommandRepository,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val existingUserFirebase: ExistingUserFirebase,
     private val dataStorePreferencesWriter: DataStorePreferencesWriter
@@ -160,6 +163,7 @@ class AccountManagerImpl(
         individualPlayerReportRepository.deleteAllReports()
         declaredShotRepository.deleteAllDeclaredShots()
         shotIgnoringRepository.deleteAllShotsIgnoring()
+        savedVoiceCommandRepository.deleteAllCommands()
         deleteAllPendingShotsFromPlayers()
     }
 
@@ -282,6 +286,30 @@ class AccountManagerImpl(
             }
     }
 
+    private suspend fun collectSavedVoiceCommands() {
+        readFirebaseUserInfo.getSavedVoiceCommandList()
+            .collectLatest { savedVoiceCommandList ->
+                if (savedVoiceCommandList.isNotEmpty()) {
+                    val commands =
+                        savedVoiceCommandList.mapIndexed { index, savedVoiceCommand ->
+                            SavedVoiceCommand(
+                                id = index + 1,
+                                name = savedVoiceCommand.savedVoiceCommandInfo.name,
+                                firebaseKey = savedVoiceCommand.savedVoiceCommandKey,
+                                type = VoiceCommandTypes.fromValue(value = savedVoiceCommand.savedVoiceCommandInfo.typeValue)
+                            )
+                        }
+
+                    val currentSavedCommands = savedVoiceCommandRepository.getAllVoiceCommands()
+
+                    savedVoiceCommandRepository.createAllSavedVoiceCommands(commands = commands)
+                    collectDeclaredShots()
+                } else {
+                    collectDeclaredShots()
+                }
+            }
+    }
+
     /** Collects deleted shot IDs from Firebase and updates local database */
     private suspend fun collectDeletedShotIds() {
         readFirebaseUserInfo.getDeletedShotIdsFlow()
@@ -291,9 +319,9 @@ class AccountManagerImpl(
                     shotIds.forEach { shotId ->
                         shotIgnoringRepository.createShotIgnoring(shotId = shotId)
                     }
-                    collectDeclaredShots()
+                    collectSavedVoiceCommands()
                 } else {
-                    collectDeclaredShots()
+                    collectSavedVoiceCommands()
                 }
             }
     }
@@ -302,19 +330,20 @@ class AccountManagerImpl(
     private suspend fun collectDeclaredShots() {
         readFirebaseUserInfo.getCreatedDeclaredShotsFlow()
             .collectLatest { declaredShots ->
-                declaredShots.forEach { shot ->
-                    if (!declaredShotIds.contains(shot.declaredShotRealtimeResponse.id)) {
-                        declaredShotRepository.createNewDeclaredShot(
-                            declaredShot = DeclaredShot(
-                                id = shot.declaredShotRealtimeResponse.id,
-                                shotCategory = shot.declaredShotRealtimeResponse.shotCategory,
-                                title = shot.declaredShotRealtimeResponse.title,
-                                description = shot.declaredShotRealtimeResponse.description,
-                                firebaseKey = shot.declaredShotFirebaseKey
-                            )
-                        )
-                    }
-                }
+                // todo comeback and fix this logic trello link: https://trello.com/c/io2ILw2m/271-bug-look-into-ability-to-edit-updating-existing-shots-with-logging-into-a-account
+//                declaredShots.forEach { shot ->
+//                    if (!declaredShotIds.contains(shot.declaredShotRealtimeResponse.id)) {
+//                        declaredShotRepository.createNewDeclaredShot(
+//                            declaredShot = DeclaredShot(
+//                                id = shot.declaredShotRealtimeResponse.id,
+//                                shotCategory = shot.declaredShotRealtimeResponse.shotCategory,
+//                                title = shot.declaredShotRealtimeResponse.title,
+//                                description = shot.declaredShotRealtimeResponse.description,
+//                                firebaseKey = shot.declaredShotFirebaseKey
+//                            )
+//                        )
+//                    }
+//                }
                 declaredShotRepository.createDeclaredShots(shotIdsToFilterOut = declaredShotIds)
 
                 dataStorePreferencesWriter.saveIsLoggedIn(value = true)
