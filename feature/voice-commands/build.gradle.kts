@@ -82,6 +82,8 @@ dependencies {
     api(project(path = ":firebase:core"))
     api(project(path = ":navigation"))
 
+    compileOnly(files("../../libs/voice-flow-core.aar"))
+
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.androidx.activity.compose)
@@ -91,8 +93,7 @@ dependencies {
 
     implementation(libs.androidx.ui.tooling.preview)
 
-    compileOnly(files("../../libs/voice-flow-core.aar"))
-
+    testImplementation(files("../../libs/voice-flow-core.aar"))
     testImplementation(project(path = ":data-test:firebase"))
     testImplementation(project(path = ":data-test:room"))
 
