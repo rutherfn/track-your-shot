@@ -11,6 +11,5 @@ object BuildIds {
     const val kover = "org.jetbrains.kotlinx.kover"
     const val ksp = "com.google.devtools.ksp"
     const val pluginId = "com.android.application"
-    const val pluginKapt = "kapt"
     const val pluginKotlin = "android"
 }
