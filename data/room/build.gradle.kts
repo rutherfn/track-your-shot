@@ -4,7 +4,6 @@ plugins {
     id(BuildIds.androidLibrary)
     id(BuildIds.ksp)
     kotlin(BuildIds.pluginKotlin)
-    kotlin(BuildIds.pluginKapt)
     id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
 }
 
