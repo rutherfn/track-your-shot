@@ -55,4 +55,5 @@
     <string name="could_not_delete_command_description" translatable="false">We could not delete command description. Please try again or contact support.</string>
     <string name="deleting_command" translatable="false">Deleting Command</string>
     <string name="are_you_sure_you_want_to_delete_command" translatable="false">Are you sure you want to delete command?</string>
+    <string name="rate_the_app" translatable="false">Rate The App</string>
 </resources>

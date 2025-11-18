@@ -17,6 +17,8 @@ import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGenerato
 import com.nicholas.rutherford.track.your.shot.helper.file.generator.PdfGeneratorImpl
 import com.nicholas.rutherford.track.your.shot.helper.network.Network
 import com.nicholas.rutherford.track.your.shot.helper.network.NetworkImpl
+import com.nicholas.rutherford.track.your.shot.helper.reviews.ReviewManager
+import com.nicholas.rutherford.track.your.shot.helper.reviews.ReviewManagerImpl
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import com.nicholas.rutherford.track.your.shot.navigation.NavigatorImpl
 import com.nicholas.rutherford.track.your.shot.notifications.Notifications
@@ -122,6 +124,20 @@ object ExtensionLogicModule {
             LogShotViewModelExtImpl(
                 application = androidApplication(),
                 scope = defaultCoroutineScope
+            )
+        }
+
+        /** Provides a [ReviewManager] implementation for Google Play In-App Reviews. */
+        single<ReviewManager> {
+            ReviewManagerImpl()
+        }
+
+        /** Provides a [ReviewPromptManager] implementation for managing review prompts. */
+        single<com.nicholas.rutherford.track.your.shot.helper.reviews.ReviewPromptManager> {
+            com.nicholas.rutherford.track.your.shot.helper.reviews.ReviewPromptManagerImpl(
+                dataStoreReader = get(),
+                dataStoreWriter = get(),
+                buildType = get()
             )
         }
     }

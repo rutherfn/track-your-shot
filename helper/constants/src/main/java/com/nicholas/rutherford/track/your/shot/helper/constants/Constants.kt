@@ -2,6 +2,8 @@ package com.nicholas.rutherford.track.your.shot.helper.constants
 
 object Constants {
     const val MAIL_TO = "mailto:"
+    const val PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.nicholas.rutherford.track.your.shot.release"
+    const val VENDING_ANDROID_PACKAGE = "com.android.vending"
     object Preferences {
         const val TRACK_MY_SHOT_PREFERENCES = "TRACK_MY_SHOT_PREFERENCES"
 
@@ -11,6 +13,23 @@ object Constants {
         const val PLAYER_FILTER_NAME = "playerFilterName"
         const val VOICE_TOGGLED_DEBUG_ENABLED = "voiceToggledDebugEnabled"
         const val UPLOAD_VIDEO_TOGGLED_DEBUG_ENABLED = "uploadVideoToggledDebugEnabled"
+        const val APP_LAUNCH_COUNT = "appLaunchCount"
+        const val LAST_REVIEW_PROMPT_DATE = "lastReviewPromptDate"
+        const val USER_DECLINED_REVIEW = "userDeclinedReview"
+    }
+
+    object ReviewPrompt {
+        // Minimum number of app launches before showing review prompt for debug builds
+        const val DEBUG_MIN_LAUNCH_COUNT = 1
+
+        // Minimum number of app launches before showing review prompt
+        const val MIN_LAUNCH_COUNT = 5
+
+        // Minimum days between review prompts (even if user declined)
+        const val MIN_DAYS_BETWEEN_PROMPTS = 30
+
+        // Days to wait before asking again if user declined
+        const val DAYS_AFTER_DECLINE = 90
     }
     const val CREATED_SHOTS = "createdShots"
     const val APP_DATABASE_NAME = "app_database.db"

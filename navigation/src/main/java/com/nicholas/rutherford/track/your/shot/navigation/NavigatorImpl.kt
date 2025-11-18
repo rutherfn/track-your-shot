@@ -34,6 +34,7 @@ class NavigatorImpl : Navigator {
     private val _progressActions = MutableStateFlow<Progress?>(value = null)
     private val _snackBarActions = MutableStateFlow<SnackBarInfo?>(value = null)
     private val _navigationDrawerAction = MutableStateFlow<Boolean?>(value = null)
+    private val _reviewActions = MutableStateFlow<Boolean?>(value = null)
     private val _urlAction = MutableStateFlow<String?>(value = null)
 
     // Exposed read-only flows for observers (e.g., UI)
@@ -48,6 +49,7 @@ class NavigatorImpl : Navigator {
     override val popRouteActions: StateFlow<String?> = _popRouteActions.asStateFlow()
     override val progressActions: StateFlow<Progress?> = _progressActions.asStateFlow()
     override val navigationDrawerAction: StateFlow<Boolean?> = _navigationDrawerAction.asStateFlow()
+    override val reviewActions: StateFlow<Boolean?> = _reviewActions.asStateFlow()
     override val snackBarActions: StateFlow<SnackBarInfo?> = _snackBarActions.asStateFlow()
     override val urlAction: StateFlow<String?> = _urlAction.asStateFlow()
 
@@ -86,6 +88,9 @@ class NavigatorImpl : Navigator {
 
     /** Displays a snack bar with the given [snackBarInfo] data. */
     override fun snackBar(snackBarInfo: SnackBarInfo?) = _snackBarActions.update { snackBarInfo }
+
+    /** Requests an in-app review flow. */
+    override fun requestReview(reviewAction: Boolean?) = _reviewActions.update { reviewAction }
 
     /** Opens a given [url] in the user's browser. */
     override fun url(url: String?) = _urlAction.update { url }

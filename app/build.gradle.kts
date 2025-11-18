@@ -124,6 +124,7 @@ dependencies {
     api(project(path = ":helper:file-generator"))
     api(project(path = ":helper:network"))
     api(project(path = ":helper:notifications"))
+    api(project(path = ":helper:reviews"))
 
     debugImplementation(libs.androidx.ui.test.manifest)
     debugImplementation(libs.androidx.ui.tooling)
