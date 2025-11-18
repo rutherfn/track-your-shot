@@ -34,4 +34,3 @@ interface ReviewPromptManager {
      */
     suspend fun resetReviewTracking()
 }
-

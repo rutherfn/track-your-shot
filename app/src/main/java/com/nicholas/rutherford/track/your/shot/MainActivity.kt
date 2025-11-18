@@ -70,7 +70,7 @@ open class MainActivity : ComponentActivity() {
     private fun showReviewPromptDialog() {
         lifecycleScope.launch {
             reviewPromptManager.recordReviewPromptShown()
-            
+
             val alert = Alert(
                 title = getString(StringsIds.rateAppPromptTitle),
                 description = getString(StringsIds.rateAppPromptDescription),

@@ -142,4 +142,3 @@ class ReviewPromptManagerImpl(
         dataStoreWriter.saveUserDeclinedReview(value = false)
     }
 }
-

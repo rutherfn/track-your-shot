@@ -69,7 +69,7 @@ dependencies {
     api(project(path = ":data-store"))
     api(project(path = ":helper:constants"))
     api(project(path = ":helper:extensions"))
-    
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.play.review)
     implementation(libs.play.review.ktx)
@@ -83,4 +83,3 @@ dependencies {
     testImplementation(libs.mockk)
     testRuntimeOnly(libs.junit.jupiter.engine)
 }
-

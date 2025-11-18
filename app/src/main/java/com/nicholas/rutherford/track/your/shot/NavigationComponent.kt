@@ -50,8 +50,8 @@ import com.nicholas.rutherford.track.your.shot.helper.reviews.ReviewManager
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
-import org.koin.compose.koinInject
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 /**
  * Root navigation component for the app.

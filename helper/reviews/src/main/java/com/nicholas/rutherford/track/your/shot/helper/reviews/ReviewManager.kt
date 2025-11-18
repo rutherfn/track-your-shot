@@ -20,4 +20,3 @@ interface ReviewManager {
      */
     suspend fun requestReview(activity: Activity): Boolean
 }
-
