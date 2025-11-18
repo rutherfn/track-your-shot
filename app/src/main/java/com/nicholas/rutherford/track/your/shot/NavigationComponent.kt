@@ -292,7 +292,7 @@ fun NavigationComponent(
         reviewState?.let { shouldRequestReview ->
             if (shouldRequestReview) {
                 scope.launch {
-                    reviewManager.requestReview(activity, Constants.PLAY_STORE_URL)
+                    reviewManager.requestReview(activity = activity)
                 }
                 navigator.requestReview(reviewAction = null)
             }

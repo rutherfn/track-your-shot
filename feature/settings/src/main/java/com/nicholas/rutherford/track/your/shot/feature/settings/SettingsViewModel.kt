@@ -168,10 +168,7 @@ class SettingsViewModel(
             application.getString(StringsIds.enabledPermissions) -> navigation.navigateToEnabledPermissions()
             application.getString(StringsIds.viewMoreInfo) -> navigation.navigateToPermissionEducationScreen()
             application.getString(StringsIds.deleteAccount) -> navigation.alert(alert = deleteAccountAlert())
-            application.getString(StringsIds.rateTheApp) -> {
-                println("click on rate the app ")
-                navigation.requestReview()
-            }
+            application.getString(StringsIds.rateTheApp) -> navigation.requestReview()
             else -> navigation.navigateToDebugToggles()
         }
     }

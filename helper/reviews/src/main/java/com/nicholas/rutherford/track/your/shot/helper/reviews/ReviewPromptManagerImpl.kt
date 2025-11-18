@@ -20,8 +20,19 @@ class ReviewPromptManagerImpl(
     private val dateExt: DateExt
 ) : ReviewPromptManager {
 
+    /**
+     * Builds a new launch count value based on the current count and an increment value.
+     *
+     * @param currentLaunchCount The current launch count value.
+     * @param incrementValue The value to increment the current count by.
+     */
     internal fun buildNewLaunchCount(currentLaunchCount: Int, incrementValue: Int): Int = currentLaunchCount + incrementValue
 
+    /**
+     * Builds the minimum launch count based on the build type (debug or release).
+     *
+     * @param isDebug Whether the build is in debug mode.
+     */
     internal fun buildMinLaunchCount(isDebug: Boolean): Int {
         return if (isDebug) {
             Constants.ReviewPrompt.DEBUG_MIN_LAUNCH_COUNT
@@ -30,6 +41,11 @@ class ReviewPromptManagerImpl(
         }
     }
 
+    /**
+     * Builds the time divisor based on the build type (debug or release).
+     *
+     * @param isDebug Whether the build is in debug mode.
+     */
     internal fun buildTimeDivisor(isDebug: Boolean): Long {
         return if (isDebug) {
             (1000 * 60).toLong()
@@ -38,6 +54,12 @@ class ReviewPromptManagerImpl(
         }
     }
 
+    /**
+     * Builds the time since the last prompt based on the last prompt date and the build type.
+     *
+     * @param lastPromptDateValue The timestamp of the last prompt.
+     * @param isDebug Whether the build is in debug mode.
+     */
     internal fun buildTimeSinceLastPrompt(lastPromptDateValue: Long, isDebug: Boolean): Long {
         return if (lastPromptDateValue > 0) {
             (dateExt.now - lastPromptDateValue) / buildTimeDivisor(isDebug = isDebug)
@@ -46,6 +68,12 @@ class ReviewPromptManagerImpl(
         }
     }
 
+    /**
+     * Builds the minimum time to wait based on user's previous decisions.
+     *
+     * @param hasUserDeclined Whether the user has declined to review.
+     * @param isDebug Whether the build is in debug mode.
+     */
     internal fun buildMinTimeToWait(hasUserDeclined: Boolean, isDebug: Boolean): Long {
         return if (hasUserDeclined) {
             if (isDebug) {

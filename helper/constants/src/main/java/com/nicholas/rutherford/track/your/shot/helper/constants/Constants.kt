@@ -19,16 +19,9 @@ object Constants {
     }
 
     object ReviewPrompt {
-        // Minimum number of app launches before showing review prompt for debug builds
         const val DEBUG_MIN_LAUNCH_COUNT = 1
-
-        // Minimum number of app launches before showing review prompt
         const val MIN_LAUNCH_COUNT = 5
-
-        // Minimum days between review prompts (even if user declined)
         const val MIN_DAYS_BETWEEN_PROMPTS = 30
-
-        // Days to wait before asking again if user declined
         const val DAYS_AFTER_DECLINE = 90
     }
     const val CREATED_SHOTS = "createdShots"

@@ -10,7 +10,6 @@ import androidx.navigation.compose.rememberNavController
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
-import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.reviews.ReviewManager
 import com.nicholas.rutherford.track.your.shot.helper.reviews.ReviewPromptManager
 import kotlinx.coroutines.launch
@@ -79,7 +78,7 @@ open class MainActivity : ComponentActivity() {
                     buttonText = getString(StringsIds.rateNow),
                     onButtonClicked = {
                         lifecycleScope.launch {
-                            reviewManager.requestReview(this@MainActivity)
+                            reviewManager.requestReview(activity = this@MainActivity)
                         }
                     }
                 ),
