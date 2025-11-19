@@ -22,4 +22,5 @@ interface SettingsNavigation {
     fun enableProgress(progress: Progress)
     fun disableProgress()
     fun snackBar(snackBarInfo: SnackBarInfo)
+    fun requestReview()
 }

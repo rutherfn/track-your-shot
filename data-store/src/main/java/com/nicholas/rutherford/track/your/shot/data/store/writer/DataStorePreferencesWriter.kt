@@ -13,6 +13,8 @@ interface DataStorePreferencesWriter {
     suspend fun saveIsLoggedIn(value: Boolean)
     suspend fun savePlayerFilterName(value: String)
     suspend fun saveVoiceToggledDebugEnabled(value: Boolean)
-
     suspend fun saveUploadVideoToggledDebugEnabled(value: Boolean)
+    suspend fun saveAppLaunchCount(value: Int)
+    suspend fun saveLastReviewPromptDate(value: Long)
+    suspend fun saveUserDeclinedReview(value: Boolean)
 }

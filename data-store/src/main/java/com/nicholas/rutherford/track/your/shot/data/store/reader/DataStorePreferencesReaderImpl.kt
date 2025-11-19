@@ -2,6 +2,8 @@ package com.nicholas.rutherford.track.your.shot.data.store.reader
 
 import android.app.Application
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.nicholas.rutherford.track.your.shot.data.store.dataStore
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
@@ -58,6 +60,27 @@ class DataStorePreferencesReaderImpl(private val application: Application) : Dat
     override fun readUploadVideoToggledDebugEnabled(): Flow<Boolean> {
         return application.dataStore.data.map { preferences ->
             preferences[booleanPreferencesKey(Constants.Preferences.UPLOAD_VIDEO_TOGGLED_DEBUG_ENABLED)] ?: false
+        }
+    }
+
+    /** Reads the app launch count. */
+    override fun readAppLaunchCountFlow(): Flow<Int> {
+        return application.dataStore.data.map { preferences ->
+            preferences[intPreferencesKey(Constants.Preferences.APP_LAUNCH_COUNT)] ?: 0
+        }
+    }
+
+    /** Reads the last review prompt date (timestamp in milliseconds). */
+    override fun readLastReviewPromptDateFlow(): Flow<Long> {
+        return application.dataStore.data.map { preferences ->
+            preferences[longPreferencesKey(Constants.Preferences.LAST_REVIEW_PROMPT_DATE)] ?: 0L
+        }
+    }
+
+    /** Reads whether the user has declined to review the app. */
+    override fun readUserDeclinedReviewFlow(): Flow<Boolean> {
+        return application.dataStore.data.map { preferences ->
+            preferences[booleanPreferencesKey(Constants.Preferences.USER_DECLINED_REVIEW)] ?: false
         }
     }
 }

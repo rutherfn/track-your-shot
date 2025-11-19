@@ -11,4 +11,14 @@ interface DateExt {
      * Returns the current time in milliseconds.
      */
     val now: Long
+
+    /**
+     * Returns number of milliseconds in one minute.
+     */
+    val oneMinute: Long
+
+    /**
+     * Returns number of milliseconds in one day.
+     */
+    val oneDay: Long
 }

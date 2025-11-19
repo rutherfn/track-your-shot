@@ -3,6 +3,8 @@ package com.nicholas.rutherford.track.your.shot.data.store.writer
 import android.app.Application
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.nicholas.rutherford.track.your.shot.data.store.dataStore
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
@@ -58,6 +60,27 @@ class DataStorePreferencesWriterImpl(private val application: Application) :
     override suspend fun saveUploadVideoToggledDebugEnabled(value: Boolean) {
         application.dataStore.edit { preference ->
             preference[booleanPreferencesKey(Constants.Preferences.UPLOAD_VIDEO_TOGGLED_DEBUG_ENABLED)] = value
+        }
+    }
+
+    /** Saves the app launch count. */
+    override suspend fun saveAppLaunchCount(value: Int) {
+        application.dataStore.edit { preference ->
+            preference[intPreferencesKey(Constants.Preferences.APP_LAUNCH_COUNT)] = value
+        }
+    }
+
+    /** Saves the last review prompt date (timestamp in milliseconds). */
+    override suspend fun saveLastReviewPromptDate(value: Long) {
+        application.dataStore.edit { preference ->
+            preference[longPreferencesKey(Constants.Preferences.LAST_REVIEW_PROMPT_DATE)] = value
+        }
+    }
+
+    /** Saves whether the user has declined to review the app. */
+    override suspend fun saveUserDeclinedReview(value: Boolean) {
+        application.dataStore.edit { preference ->
+            preference[booleanPreferencesKey(Constants.Preferences.USER_DECLINED_REVIEW)] = value
         }
     }
 }

@@ -13,4 +13,14 @@ class DateExtImpl : DateExt {
      * Returns the current time in milliseconds.
      */
     override val now: Long = Date().time
+
+    /**
+     *  Returns number of milliseconds in one minute.
+     */
+    override val oneMinute: Long = (1000 * 60).toLong()
+
+    /**
+     *  Returns number of milliseconds in one dat.
+     */
+    override val oneDay: Long = (1000 * 60 * 60 * 24).toLong()
 }

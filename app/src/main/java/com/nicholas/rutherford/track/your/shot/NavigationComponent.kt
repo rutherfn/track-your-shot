@@ -46,10 +46,12 @@ import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePicker
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.data.shared.snackbar.SnackBarInfo
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
+import com.nicholas.rutherford.track.your.shot.helper.reviews.ReviewManager
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import com.nicholas.rutherford.track.your.shot.navigation.asLifecycleAwareState
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 /**
  * Root navigation component for the app.
@@ -129,6 +131,10 @@ fun NavigationComponent(
         initialState = null
     )
     val urlState by navigator.urlAction.asLifecycleAwareState(
+        lifecycleOwner = lifecycleOwner,
+        initialState = null
+    )
+    val reviewState by navigator.reviewActions.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
         initialState = null
     )
@@ -278,6 +284,18 @@ fun NavigationComponent(
             val intent = Intent(Intent.ACTION_VIEW, url.toUri())
             activity.startActivity(intent)
             navigator.url(url = null)
+        }
+    }
+    // Request in-app review
+    val reviewManager: ReviewManager = koinInject()
+    LaunchedEffect(reviewState, reviewManager) {
+        reviewState?.let { shouldRequestReview ->
+            if (shouldRequestReview) {
+                scope.launch {
+                    reviewManager.requestReview(activity = activity)
+                }
+                navigator.requestReview(reviewAction = null)
+            }
         }
     }
     // Main UI layout with modal navigation drawer and scaffold

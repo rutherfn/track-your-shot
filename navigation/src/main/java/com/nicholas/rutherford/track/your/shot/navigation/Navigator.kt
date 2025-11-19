@@ -26,6 +26,7 @@ interface Navigator {
     val popRouteActions: StateFlow<String?>
     val progressActions: StateFlow<Progress?>
     val navigationDrawerAction: StateFlow<Boolean?>
+    val reviewActions: StateFlow<Boolean?>
     val snackBarActions: StateFlow<SnackBarInfo?>
     val urlAction: StateFlow<String?>
 
@@ -42,4 +43,5 @@ interface Navigator {
     fun showNavigationDrawer(navigationDrawerAction: Boolean?)
     fun snackBar(snackBarInfo: SnackBarInfo?)
     fun url(url: String?)
+    fun requestReview(reviewAction: Boolean?)
 }
