@@ -5,7 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.helper.reviews.ReviewManager
+import com.nicholas.rutherford.track.your.shot.helper.reviews.ReviewPromptManager
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,6 +32,68 @@ open class MainActivity : ComponentActivity() {
      * Main activity's [MainActivityViewModel] injected by Koin.
      */
     private val viewModel by viewModel<MainActivityViewModel>()
+
+    /**
+     * Review prompt manager for periodic review prompts.
+     */
+    private val reviewPromptManager: ReviewPromptManager = get()
+
+    /**
+     * Review manager for launching review flow.
+     */
+    private val reviewManager: ReviewManager = get()
+
+    /**
+     * Navigator for showing alerts.
+     */
+    private val navigator = get<com.nicholas.rutherford.track.your.shot.navigation.Navigator>()
+
+    override fun onStart() {
+        super.onStart()
+        checkAndShowReviewPrompt()
+    }
+
+    /**
+     * Checks if a review prompt should be shown and displays it if conditions are met.
+     */
+    private fun checkAndShowReviewPrompt() {
+        lifecycleScope.launch {
+            if (reviewPromptManager.shouldShowReviewPrompt()) {
+                showReviewPromptDialog()
+            }
+        }
+    }
+
+    /**
+     * Shows the review prompt dialog asking the user if they want to rate the app.
+     */
+    private fun showReviewPromptDialog() {
+        lifecycleScope.launch {
+            reviewPromptManager.recordReviewPromptShown()
+
+            val alert = Alert(
+                title = getString(StringsIds.rateAppPromptTitle),
+                description = getString(StringsIds.rateAppPromptDescription),
+                confirmButton = AlertConfirmAndDismissButton(
+                    buttonText = getString(StringsIds.rateNow),
+                    onButtonClicked = {
+                        lifecycleScope.launch {
+                            reviewManager.requestReview(activity = this@MainActivity)
+                        }
+                    }
+                ),
+                dismissButton = AlertConfirmAndDismissButton(
+                    buttonText = getString(StringsIds.maybeLater),
+                    onButtonClicked = {
+                        lifecycleScope.launch {
+                            reviewPromptManager.recordUserDeclinedReview()
+                        }
+                    }
+                )
+            )
+            navigator.alert(alert)
+        }
+    }
 
     /**
      * Called when the activity is first created.

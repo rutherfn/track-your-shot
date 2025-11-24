@@ -55,4 +55,7 @@ class SettingsNavigationImpl(private val navigator: Navigator) : SettingsNavigat
 
     /** Displays a snackBar with the specified information. */
     override fun snackBar(snackBarInfo: SnackBarInfo) = navigator.snackBar(snackBarInfo = snackBarInfo)
+
+    /** Requests an in-app review flow. */
+    override fun requestReview() = navigator.requestReview(reviewAction = true)
 }

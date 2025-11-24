@@ -237,6 +237,11 @@ object StringsIds {
     val recordedPhrase = R.string.recorded_phrase
     val recordThePhraseYouWouldLikeText = R.string.record_the_phrase_youd_like_text
     val removeImage = R.string.remove_image
+    val rateTheApp = R.string.rate_the_app
+    val rateAppPromptTitle = R.string.rate_app_prompt_title
+    val rateAppPromptDescription = R.string.rate_app_prompt_description
+    val rateNow = R.string.rate_now
+    val maybeLater = R.string.maybe_later
     val reports = R.string.reports
     val resetPassword = R.string.reset_password
     val resetPasswordEmailSent = R.string.reset_password_email_sent

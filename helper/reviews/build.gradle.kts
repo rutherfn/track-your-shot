@@ -1,0 +1,85 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+plugins {
+    id(BuildIds.androidLibrary)
+    kotlin(BuildIds.pluginKotlin)
+    id(BuildIds.ktLintId) version ConfigurationData.ktlintVersion
+}
+
+android {
+    namespace = "com.nicholas.rutherford.track.your.shot.helper.reviews"
+
+    buildToolsVersion = ConfigurationData.buildToolsVersion
+    compileSdk = ConfigurationData.compileSdk
+
+    compileOptions {
+        sourceCompatibility = types.BuildTypes.CompileOptions.sourceCompatibility
+        targetCompatibility = types.BuildTypes.CompileOptions.targetCompatibility
+    }
+
+    defaultConfig {
+        minSdk = ConfigurationData.minSdk
+
+        testInstrumentationRunner = ConfigurationData.testInstrumentationRunner
+    }
+
+    testOptions {
+        targetSdk = ConfigurationData.targetSdk
+    }
+
+    buildTypes {
+        getByName(types.BuildTypes.UniqueBuilds.Release.buildName) {
+            isMinifyEnabled = types.BuildTypes.UniqueBuilds.Release.isMinifyEnabled
+            proguardFiles(
+                getDefaultProguardFile(types.BuildTypes.proguardAndroidOptimizeTxt),
+                types.BuildTypes.proguardRulesPro
+            )
+        }
+
+        getByName(types.BuildTypes.UniqueBuilds.Debug.buildName) {
+            isMinifyEnabled = types.BuildTypes.UniqueBuilds.Debug.isMinifyEnabled
+        }
+
+        create(types.BuildTypes.UniqueBuilds.Stage.buildName) {
+            initWith(getByName(types.BuildTypes.UniqueBuilds.Debug.buildName))
+            isMinifyEnabled = types.BuildTypes.UniqueBuilds.Stage.isMinifyEnabled
+        }
+    }
+    sourceSets {
+        getByName("main") {
+            java {
+                srcDirs("src/main/java")
+            }
+        }
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(KotlinOptions.jvmTarget))
+        }
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+}
+
+dependencies {
+    api(project(path = ":build-type"))
+    api(project(path = ":data-store"))
+    api(project(path = ":helper:constants"))
+    api(project(path = ":helper:extensions"))
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.play.review)
+    implementation(libs.play.review.ktx)
+    implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.timber)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.android.junit5)
+    testImplementation(libs.mockk)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+}

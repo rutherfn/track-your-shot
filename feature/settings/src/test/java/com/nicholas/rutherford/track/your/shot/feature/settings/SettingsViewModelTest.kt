@@ -81,6 +81,7 @@ class SettingsViewModelTest {
         every { application.getString(StringsIds.yes) } returns "Yes"
         every { application.getString(StringsIds.no) } returns "No"
         every { application.getString(StringsIds.error) } returns "Error"
+        every { application.getString(StringsIds.rateTheApp) } returns "Rate The App"
 
         settingsViewModel = SettingsViewModel(
             navigation = navigation,
@@ -108,7 +109,7 @@ class SettingsViewModelTest {
         Assertions.assertEquals(
             settingsViewModel.settingsMutableStateFlow.value,
             SettingsState(
-                generalSettings = listOf("Account Info", "Manage Declared Shots", "Terms & Conditions", "Using The App"),
+                generalSettings = listOf("Account Info", "Manage Declared Shots", "Rate The App", "Terms & Conditions", "Using The App"),
                 permissionSettings = listOf("Enabled Permissions", "View More Info"),
                 debugSettings = listOf("Delete Account", "In-App Firebase Viewer", "Toggles")
             )
@@ -119,7 +120,7 @@ class SettingsViewModelTest {
     fun `general settings should return expected list`() {
         Assertions.assertEquals(
             settingsViewModel.generalSettings(),
-            listOf("Account Info", "Manage Declared Shots", "Terms & Conditions", "Using The App")
+            listOf("Account Info", "Manage Declared Shots", "Rate The App", "Terms & Conditions", "Using The App")
         )
     }
 

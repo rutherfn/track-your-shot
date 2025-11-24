@@ -83,6 +83,7 @@ class SettingsViewModel(
         listOf(
             application.getString(StringsIds.accountInfo),
             application.getString(StringsIds.manageDeclaredShots),
+            application.getString(StringsIds.rateTheApp),
             application.getString(StringsIds.termsConditions),
             application.getString(StringsIds.usingTheApp)
         )
@@ -167,6 +168,7 @@ class SettingsViewModel(
             application.getString(StringsIds.enabledPermissions) -> navigation.navigateToEnabledPermissions()
             application.getString(StringsIds.viewMoreInfo) -> navigation.navigateToPermissionEducationScreen()
             application.getString(StringsIds.deleteAccount) -> navigation.alert(alert = deleteAccountAlert())
+            application.getString(StringsIds.rateTheApp) -> navigation.requestReview()
             else -> navigation.navigateToDebugToggles()
         }
     }
