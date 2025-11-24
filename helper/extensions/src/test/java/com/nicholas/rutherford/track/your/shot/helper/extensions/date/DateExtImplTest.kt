@@ -20,7 +20,6 @@ class DateExtImplTest {
         val afterTime = System.currentTimeMillis()
 
         Assertions.assertTrue(now >= beforeTime && now <= afterTime)
-        Assertions.assertEquals(dateExt.now, System.currentTimeMillis())
     }
 
     @Test
