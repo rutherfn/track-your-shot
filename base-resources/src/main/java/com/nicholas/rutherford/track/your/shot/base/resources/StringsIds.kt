@@ -156,6 +156,7 @@ object StringsIds {
     val leavingTheAppWillResultInYouNotFinishingTheAccountCreationProcessDescription =
         R.string.leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description
     val listeningDots = R.string.listening_dots
+    val loggedShot = R.string.logged_shot
     val login = R.string.login
     val loginIconDescription = R.string.login_icon_description
     val logShot = R.string.log_shot

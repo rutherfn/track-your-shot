@@ -182,7 +182,8 @@ class LogShotViewModel(
                     shotsAttempted = shot.shotsAttempted,
                     shotsMadePercentValue = calculateShotPercentage(shot, isShotsMade = true),
                     shotsMissedPercentValue = calculateShotPercentage(shot, isShotsMade = false),
-                    deleteShotButtonVisible = true
+                    deleteShotButtonVisible = true,
+                    toolbarId = StringsIds.loggedShot
                 )
             }
         }
@@ -202,7 +203,8 @@ class LogShotViewModel(
                     shotsAttempted = shot.shotsAttempted,
                     shotsMadePercentValue = calculateShotPercentage(shot, isShotsMade = true),
                     shotsMissedPercentValue = calculateShotPercentage(shot, isShotsMade = false),
-                    deleteShotButtonVisible = false
+                    deleteShotButtonVisible = false,
+                    toolbarId = StringsIds.logShot
                 )
             }
         }

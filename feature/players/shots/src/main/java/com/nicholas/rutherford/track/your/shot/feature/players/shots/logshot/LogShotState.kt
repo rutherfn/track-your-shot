@@ -1,5 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot
 
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
  *
@@ -33,5 +35,6 @@ data class LogShotState(
     val shotsAttempted: Int = 0,
     val shotsMadePercentValue: String = "",
     val shotsMissedPercentValue: String = "",
-    val deleteShotButtonVisible: Boolean = false
+    val deleteShotButtonVisible: Boolean = false,
+    val toolbarId: Int = StringsIds.logShot
 )

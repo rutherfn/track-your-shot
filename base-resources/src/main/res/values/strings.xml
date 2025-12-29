@@ -115,6 +115,7 @@
     <string name="issue_occurred">Issue Occurred</string>
     <string name="last_name">Last Name</string>
     <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">Leaving the app will result you in not finishing the account creation process. You will not be able to continue until you verify your email. If you verify your email and then come back to the app, you can continue to create your account.</string>
+    <string name="logged_shot">Logged Shot</string>
     <string name="login">Login</string>
     <string name="login_icon_description">This is a login image for the login screen</string>
     <string name="logout">Logout</string>

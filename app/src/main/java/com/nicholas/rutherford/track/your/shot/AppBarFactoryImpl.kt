@@ -238,7 +238,7 @@ class AppBarFactoryImpl(
     /** Creates AppBar for logging a shot. */
     override fun createLogShotAppBar(params: LogShotParams): AppBar =
         AppBar(
-            toolbarId = StringsIds.logShot,
+            toolbarId = params.state.toolbarId,
             shouldShowMiddleContentAppBar = false,
             shouldIncludeSpaceAfterDeclaration = false,
             shouldShowSecondaryButton = true,
