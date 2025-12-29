@@ -208,10 +208,8 @@ class PlayersListViewModel(
 
     /** Navigates to shot list after saving selected player name */
     private fun onShotListClicked(playerName: String) {
-        scope.launch {
-            databaseStorePreferenceWriter.savePlayerFilterName(value = playerName)
-            navigation.navigateToShotList()
-        }
+        println("on shot list clicked ")
+        navigation.navigateToShotList(playerFilterName = playerName)
     }
 
     /** Navigates to the create/edit screen for the specified player */

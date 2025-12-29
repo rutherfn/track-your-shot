@@ -645,7 +645,8 @@ object AppNavigationGraph {
                 state = debugToggleViewModel.debugToggleStateFlow.collectAsState().value,
                 onToolbarMenuClicked = { debugToggleViewModel.onBackClicked() },
                 onVoiceDebugToggled = { value -> debugToggleViewModel.onVoiceDebugToggled(value = value) },
-                onVideoUploadDebugToggled = { value -> debugToggleViewModel.onVideoUploadDebugToggled(value = value) }
+                onVideoUploadDebugToggled = { value -> debugToggleViewModel.onVideoUploadDebugToggled(value = value) },
+                onReviewPromptDebugToggled = { value -> debugToggleViewModel.onReviewPromptDebugToggled(value = value) }
             )
 
             ObserveLifecycle(viewModel = debugToggleViewModel)

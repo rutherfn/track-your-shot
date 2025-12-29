@@ -13,6 +13,7 @@ object Constants {
         const val PLAYER_FILTER_NAME = "playerFilterName"
         const val VOICE_TOGGLED_DEBUG_ENABLED = "voiceToggledDebugEnabled"
         const val UPLOAD_VIDEO_TOGGLED_DEBUG_ENABLED = "uploadVideoToggledDebugEnabled"
+        const val REVIEW_PROMPT_DEBUG_ENABLED = "reviewPromptDebugEnabled"
         const val APP_LAUNCH_COUNT = "appLaunchCount"
         const val LAST_REVIEW_PROMPT_DATE = "lastReviewPromptDate"
         const val USER_DECLINED_REVIEW = "userDeclinedReview"

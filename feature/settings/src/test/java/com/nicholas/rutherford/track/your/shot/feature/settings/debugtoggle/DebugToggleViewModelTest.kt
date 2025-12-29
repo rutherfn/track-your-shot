@@ -85,6 +85,7 @@ class DebugToggleViewModelTest {
         fun `should update state when voice toggle flow emits true`() {
             every { dataStorePreferencesReader.readVoiceToggledDebugEnabledFlow() } returns flowOf(true)
             every { dataStorePreferencesReader.readUploadVideoToggledDebugEnabled() } returns flowOf(false)
+            every { dataStorePreferencesReader.readReviewPromptDebugEnabledFlow() } returns flowOf(false)
 
             debugToggleViewModel.collectToggleFlows()
             dispatcher.scheduler.advanceUntilIdle()
@@ -93,7 +94,8 @@ class DebugToggleViewModelTest {
                 debugToggleViewModel.debugToggleMutableStateFlow.value,
                 DebugToggleState(
                     voiceToggledState = true,
-                    videoUploadToggleState = false
+                    videoUploadToggleState = false,
+                    reviewPromptToggledState = false
                 )
             )
         }
@@ -102,6 +104,7 @@ class DebugToggleViewModelTest {
         fun `should update state when video upload toggle flow emits true`() {
             every { dataStorePreferencesReader.readVoiceToggledDebugEnabledFlow() } returns flowOf(false)
             every { dataStorePreferencesReader.readUploadVideoToggledDebugEnabled() } returns flowOf(true)
+            every { dataStorePreferencesReader.readReviewPromptDebugEnabledFlow() } returns flowOf(false)
 
             debugToggleViewModel.collectToggleFlows()
             dispatcher.scheduler.advanceUntilIdle()
@@ -110,15 +113,36 @@ class DebugToggleViewModelTest {
                 debugToggleViewModel.debugToggleMutableStateFlow.value,
                 DebugToggleState(
                     voiceToggledState = false,
-                    videoUploadToggleState = true
+                    videoUploadToggleState = true,
+                    reviewPromptToggledState = false
                 )
             )
         }
 
         @Test
-        fun `should update state when both toggle flows emit true`() {
+        fun `should update state when review prompt debug enabled flow emits true`() {
+            every { dataStorePreferencesReader.readVoiceToggledDebugEnabledFlow() } returns flowOf(false)
+            every { dataStorePreferencesReader.readUploadVideoToggledDebugEnabled() } returns flowOf(false)
+            every { dataStorePreferencesReader.readReviewPromptDebugEnabledFlow() } returns flowOf(true)
+
+            debugToggleViewModel.collectToggleFlows()
+            dispatcher.scheduler.advanceUntilIdle()
+
+            Assertions.assertEquals(
+                debugToggleViewModel.debugToggleMutableStateFlow.value,
+                DebugToggleState(
+                    voiceToggledState = false,
+                    videoUploadToggleState = false,
+                    reviewPromptToggledState = true
+                )
+            )
+        }
+
+        @Test
+        fun `should update state when all toggle flows emit true`() {
             every { dataStorePreferencesReader.readVoiceToggledDebugEnabledFlow() } returns flowOf(true)
             every { dataStorePreferencesReader.readUploadVideoToggledDebugEnabled() } returns flowOf(true)
+            every { dataStorePreferencesReader.readReviewPromptDebugEnabledFlow() } returns flowOf(true)
 
             debugToggleViewModel.collectToggleFlows()
             dispatcher.scheduler.advanceUntilIdle()
@@ -127,7 +151,8 @@ class DebugToggleViewModelTest {
                 debugToggleViewModel.debugToggleMutableStateFlow.value,
                 DebugToggleState(
                     voiceToggledState = true,
-                    videoUploadToggleState = true
+                    videoUploadToggleState = true,
+                    reviewPromptToggledState = true
                 )
             )
         }
@@ -154,6 +179,30 @@ class DebugToggleViewModelTest {
             dispatcher.scheduler.advanceUntilIdle()
 
             coVerify { dataStoreWriterPreferencesWriter.saveVoiceToggledDebugEnabled(value = false) }
+        }
+    }
+
+    @Nested
+    inner class OnReviewPromptDebugToggled {
+
+        @Test
+        fun `should save review prompt debug toggle state to dataStore`() = runTest {
+            coEvery { dataStoreWriterPreferencesWriter.saveReviewPromptDebugEnabled(any()) } returns Unit
+
+            debugToggleViewModel.onReviewPromptDebugToggled(true)
+            dispatcher.scheduler.advanceUntilIdle()
+
+            coVerify { dataStoreWriterPreferencesWriter.saveReviewPromptDebugEnabled(value = true) }
+        }
+
+        @Test
+        fun `should save false review prompt debug toggle state to dataStore`() = runTest {
+            coEvery { dataStoreWriterPreferencesWriter.saveReviewPromptDebugEnabled(any()) } returns Unit
+
+            debugToggleViewModel.onReviewPromptDebugToggled(false)
+            dispatcher.scheduler.advanceUntilIdle()
+
+            coVerify { dataStoreWriterPreferencesWriter.saveReviewPromptDebugEnabled(value = false) }
         }
     }
 

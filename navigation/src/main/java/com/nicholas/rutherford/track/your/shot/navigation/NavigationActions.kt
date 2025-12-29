@@ -25,7 +25,7 @@ object NavigationActions {
         fun playersList() = object : NavigationAction {
             override val destination = NavigationDestinations.PLAYERS_LIST_SCREEN
             override val navOptions = NavOptions.Builder()
-                .setPopUpTo(0, true)
+                .setPopUpTo(destinationId = 0, inclusive = true)
                 .build()
         }
 
@@ -33,7 +33,7 @@ object NavigationActions {
         fun login() = object : NavigationAction {
             override val destination = NavigationDestinations.LOGIN_SCREEN
             override val navOptions = NavOptions.Builder()
-                .setPopUpTo(0, false)
+                .setPopUpTo(destinationId = 0, inclusive = false)
                 .build()
         }
 
@@ -46,7 +46,7 @@ object NavigationActions {
                     NavigationDestinationsWithParams.buildAuthenticationDestination(username, email)
 
                 override val navOptions = NavOptions.Builder()
-                    .setPopUpTo(0, true)
+                    .setPopUpTo(destinationId = 0, inclusive = true)
                     .build()
             }
 
@@ -58,8 +58,8 @@ object NavigationActions {
                 NavigationDestinationsWithParams.buildTermsConditionsDestination(shouldAcceptTerms)
 
             override val navOptions = NavOptions.Builder()
-                .setPopUpTo(0, true)
-                .setLaunchSingleTop(true)
+                .setPopUpTo(destinationId = 0, inclusive = true)
+                .setLaunchSingleTop(singleTop = true)
                 .build()
         }
     }
@@ -209,9 +209,9 @@ object NavigationActions {
         /**
          * Navigate to the shots list screen, with a flag for whether to show all players' shots.
          */
-        fun shotList(shouldShowAllPlayersShots: Boolean) = object : NavigationAction {
+        fun shotList(shouldShowAllPlayersShots: Boolean, playerFilterName: String) = object : NavigationAction {
             override val destination =
-                NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots)
+                NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots = shouldShowAllPlayersShots, playerFilterName = playerFilterName)
             override val navOptions = NavOptions.Builder().build()
         }
     }
@@ -346,7 +346,7 @@ object NavigationActions {
         /** Navigate back to the shots list screen. */
         fun shotList(shouldShowAllPlayersShots: Boolean) = object : NavigationAction {
             override val destination =
-                NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots)
+                NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots = shouldShowAllPlayersShots, playerFilterName = "")
             override val navOptions = NavOptions.Builder().build()
         }
 

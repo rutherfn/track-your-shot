@@ -78,7 +78,7 @@ data object VoiceCommandsAction : DrawerAction(
 data object ShotsAction : DrawerAction(
     titleId = StringsIds.shots,
     imageVector = Icons.Filled.SportsBasketball,
-    route = NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots = true),
+    route = NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots = true, playerFilterName = ""),
     navOptions = NavOptions.Builder()
         .setPopUpTo(0, true)
         .build()

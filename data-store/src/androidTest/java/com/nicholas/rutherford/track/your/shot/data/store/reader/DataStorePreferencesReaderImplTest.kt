@@ -89,6 +89,19 @@ class DataStorePreferencesReaderImplTest {
     }
 
     @Test
+    fun readReviewPromptDebugEnabledFlow() = runBlocking {
+        val expectedValue = true
+        val reviewPromptDebugEnabledKey = booleanPreferencesKey(Constants.Preferences.REVIEW_PROMPT_DEBUG_ENABLED)
+        
+        context.dataStore.edit { preferences ->
+            preferences[reviewPromptDebugEnabledKey] = expectedValue
+
+        }
+
+        assertEquals(expectedValue, reader.readReviewPromptDebugEnabledFlow().first())
+    }
+
+    @Test
     fun readUploadVideoToggledDebugEnabled() = runBlocking {
         val expectedValue = true
         val uploadVideoToggledDebugEnabledKey = booleanPreferencesKey(Constants.Preferences.UPLOAD_VIDEO_TOGGLED_DEBUG_ENABLED)

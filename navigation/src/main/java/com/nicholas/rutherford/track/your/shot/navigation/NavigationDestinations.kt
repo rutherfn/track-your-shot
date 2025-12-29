@@ -32,7 +32,7 @@ object NavigationDestinations {
     const val SPLASH_SCREEN = "splashScreen"
     const val COMPARE_PLAYERS_SCREEN = "comparePlayersScreen"
     const val SHOTS_LIST_SCREEN = "shotsListScreen"
-    const val SHOTS_LIST_SCREEN_WITH_PARAMS = "shotsListScreen?shouldShowAllPlayersShots={shouldShowAllPlayersShots}"
+    const val SHOTS_LIST_SCREEN_WITH_PARAMS = "shotsListScreen?shouldShowAllPlayersShots={shouldShowAllPlayersShots}&playerFilterName={playerFilterName}"
     const val ACCOUNT_INFO_SCREEN_WITH_PARAMS = "accountInfoScreen?username={username}&email={email}"
     const val SETTINGS_SCREEN = "settingsScreen"
     const val STATS_SCREEN = "statsScreen"
@@ -57,5 +57,6 @@ object NavigationDestinations {
     const val PARAM_VIEW_CURRENT_PENDING_SHOT = "viewCurrentPendingShot"
     const val PARAM_FROM_SHOT_LIST = "fromShotList"
     const val PARAM_SHOULD_SHOW_ALL_PLAYERS_SHOTS = "shouldShowAllPlayersShots"
+    const val PARAM_PLAYER_FILTER_NAME = "playerFilterName"
     const val LOG_SHOT_SCREEN = "logShotScreen"
 }

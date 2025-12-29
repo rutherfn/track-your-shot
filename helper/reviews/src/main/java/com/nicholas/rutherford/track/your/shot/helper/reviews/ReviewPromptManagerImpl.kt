@@ -33,8 +33,8 @@ class ReviewPromptManagerImpl(
      *
      * @param isDebug Whether the build is in debug mode.
      */
-    internal fun buildMinLaunchCount(isDebug: Boolean): Int {
-        return if (isDebug) {
+    internal fun buildMinLaunchCount(isDebug: Boolean, hasDebugReadReviewEnabled: Boolean): Int {
+        return if (isDebug && hasDebugReadReviewEnabled) {
             Constants.ReviewPrompt.DEBUG_MIN_LAUNCH_COUNT
         } else {
             Constants.ReviewPrompt.MIN_LAUNCH_COUNT
@@ -46,8 +46,8 @@ class ReviewPromptManagerImpl(
      *
      * @param isDebug Whether the build is in debug mode.
      */
-    internal fun buildTimeDivisor(isDebug: Boolean): Long {
-        return if (isDebug) {
+    internal fun buildTimeDivisor(isDebug: Boolean, hasDebugReadReviewEnabled: Boolean): Long {
+        return if (isDebug && hasDebugReadReviewEnabled) {
             (1000 * 60).toLong()
         } else {
             (1000 * 60 * 60 * 24).toLong()
@@ -60,9 +60,9 @@ class ReviewPromptManagerImpl(
      * @param lastPromptDateValue The timestamp of the last prompt.
      * @param isDebug Whether the build is in debug mode.
      */
-    internal fun buildTimeSinceLastPrompt(lastPromptDateValue: Long, isDebug: Boolean): Long {
+    internal fun buildTimeSinceLastPrompt(lastPromptDateValue: Long, isDebug: Boolean, hasDebugReadReviewEnabled: Boolean): Long {
         return if (lastPromptDateValue > 0) {
-            (dateExt.now - lastPromptDateValue) / buildTimeDivisor(isDebug = isDebug)
+            (dateExt.now - lastPromptDateValue) / buildTimeDivisor(isDebug = isDebug, hasDebugReadReviewEnabled = hasDebugReadReviewEnabled)
         } else {
             Long.MAX_VALUE
         }
@@ -74,15 +74,15 @@ class ReviewPromptManagerImpl(
      * @param hasUserDeclined Whether the user has declined to review.
      * @param isDebug Whether the build is in debug mode.
      */
-    internal fun buildMinTimeToWait(hasUserDeclined: Boolean, isDebug: Boolean): Long {
+    internal fun buildMinTimeToWait(hasUserDeclined: Boolean, isDebug: Boolean, hasDebugReadReviewEnabled: Boolean): Long {
         return if (hasUserDeclined) {
-            if (isDebug) {
+            if (isDebug && hasDebugReadReviewEnabled) {
                 1L // 1 minute in debug
             } else {
                 Constants.ReviewPrompt.DAYS_AFTER_DECLINE.toLong()
             }
         } else {
-            if (isDebug) {
+            if (isDebug && hasDebugReadReviewEnabled) {
                 0L // No wait in debug
             } else {
                 Constants.ReviewPrompt.MIN_DAYS_BETWEEN_PROMPTS.toLong()
@@ -101,18 +101,24 @@ class ReviewPromptManagerImpl(
             currentLaunchCount = dataStoreReader.readAppLaunchCountFlow().first(),
             incrementValue = 1
         )
+        val hasDebugReadReviewEnabled = dataStoreReader.readReviewPromptDebugEnabledFlow().first()
 
         dataStoreWriter.saveAppLaunchCount(value = newLaunchCount)
 
-        if (newLaunchCount < buildMinLaunchCount(isDebug = buildType.isDebug())) {
-            return false
+        return if (newLaunchCount < buildMinLaunchCount(
+                isDebug = buildType.isDebug(),
+                hasDebugReadReviewEnabled = hasDebugReadReviewEnabled)
+            ) {
+            false
         } else {
-            return buildTimeSinceLastPrompt(
+            buildTimeSinceLastPrompt(
                 lastPromptDateValue = dataStoreReader.readLastReviewPromptDateFlow().first(),
-                isDebug = buildType.isDebug()
+                isDebug = buildType.isDebug(),
+                hasDebugReadReviewEnabled = hasDebugReadReviewEnabled
             ) >= buildMinTimeToWait(
                 hasUserDeclined = dataStoreReader.readUserDeclinedReviewFlow().first(),
-                isDebug = buildType.isDebug()
+                isDebug = buildType.isDebug(),
+                hasDebugReadReviewEnabled = hasDebugReadReviewEnabled
             )
         }
     }

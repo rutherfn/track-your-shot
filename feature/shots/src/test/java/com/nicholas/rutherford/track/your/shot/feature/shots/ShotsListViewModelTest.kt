@@ -1,5 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.shots
 
+import androidx.lifecycle.SavedStateHandle
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.store.reader.DataStorePreferencesReader
@@ -26,6 +27,8 @@ class ShotsListViewModelTest {
 
     private lateinit var viewModel: ShotsListViewModel
 
+    private var savedStateHandle = mockk<SavedStateHandle>(relaxed = true)
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher = UnconfinedTestDispatcher()
 
@@ -47,7 +50,7 @@ class ShotsListViewModelTest {
             navigation = navigation,
             playerRepository = playerRepository,
             dataStorePreferencesWriter = dataStorePreferencesWriter,
-            dataStorePreferencesReader = dataStorePreferencesReader
+            savedStateHandle = savedStateHandle
         )
     }
 

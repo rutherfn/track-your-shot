@@ -86,4 +86,14 @@ class DataStorePreferencesWriterImplTest {
 
         assertEquals(expectedValue, context.dataStore.data.first()[uploadVideoToggledDebugEnabledKey])
     }
+
+    @Test
+    fun saveReviewPromptDebugEnabled() = runBlocking {
+        val expectedValue = true
+        val reviewDebugPromptDebugEnabledKey = booleanPreferencesKey(Constants.Preferences.REVIEW_PROMPT_DEBUG_ENABLED)
+
+        writer.saveReviewPromptDebugEnabled(value = expectedValue)
+
+        assertEquals(expectedValue, context.dataStore.data.first()[reviewDebugPromptDebugEnabledKey])
+    }
 }

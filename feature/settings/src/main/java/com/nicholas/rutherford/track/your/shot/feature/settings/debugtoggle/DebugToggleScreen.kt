@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,7 +9,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.nicholas.rutherford.track.your.shot.compose.components.SwitchCard
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
@@ -33,7 +31,8 @@ fun DebugToggleScreen(params: DebugToggleParams) {
     DebugToggleContent(
         state = params.state,
         onVoiceDebugToggled = params.onVoiceDebugToggled,
-        onVideoUploadDebugToggled = params.onVideoUploadDebugToggled
+        onVideoUploadDebugToggled = params.onVideoUploadDebugToggled,
+        onReviewPromptDebugToggled = params.onReviewPromptDebugToggled
     )
 }
 
@@ -48,12 +47,14 @@ fun DebugToggleScreen(params: DebugToggleParams) {
  * @param state [DebugToggleState] containing the current state of both debug toggles
  * @param onVoiceDebugToggled Callback invoked when the voice debug toggle is changed
  * @param onVideoUploadDebugToggled Callback invoked when the video upload debug toggle is changed
+ * @param onReviewPromptDebugToggled Callback invoked when the review prompt debug toggle is changed
  */
 @Composable
 fun DebugToggleContent(
     state: DebugToggleState,
     onVoiceDebugToggled: (value: Boolean) -> Unit,
-    onVideoUploadDebugToggled: (value: Boolean) -> Unit
+    onVideoUploadDebugToggled: (value: Boolean) -> Unit,
+    onReviewPromptDebugToggled: (value: Boolean) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -76,100 +77,28 @@ fun DebugToggleContent(
             title = "Enabled Video Upload On Log Shot",
             onSwitchChanged = onVideoUploadDebugToggled
         )
+        SwitchCard(
+            state = state.reviewPromptToggledState,
+            title = "Enabled Review Prompt Debug",
+            onSwitchChanged = onReviewPromptDebugToggled
+        )
     }
 }
 
-/** ------------------- PREVIEWS ------------------- **/
-
-/**
- * Preview of the DebugToggleScreen with both toggles disabled.
- */
 @Preview(showBackground = true)
 @Composable
-fun DebugToggleScreenPreview_BothDisabled() {
+fun DebugToggleScreenPreview() {
     DebugToggleScreen(
         params = DebugToggleParams(
             state = DebugToggleState(
                 voiceToggledState = false,
-                videoUploadToggleState = false
+                videoUploadToggleState = false,
+                reviewPromptToggledState = true
             ),
             onToolbarMenuClicked = {},
             onVoiceDebugToggled = {},
-            onVideoUploadDebugToggled = {}
+            onVideoUploadDebugToggled = {},
+            onReviewPromptDebugToggled = {}
         )
     )
-}
-
-/**
- * Preview of the DebugToggleScreen with both toggles enabled.
- */
-@Preview(showBackground = true)
-@Composable
-fun DebugToggleScreenPreview_BothEnabled() {
-    DebugToggleScreen(
-        params = DebugToggleParams(
-            state = DebugToggleState(
-                voiceToggledState = true,
-                videoUploadToggleState = true
-            ),
-            onToolbarMenuClicked = {},
-            onVoiceDebugToggled = {},
-            onVideoUploadDebugToggled = {}
-        )
-    )
-}
-
-/**
- * Preview of the DebugToggleScreen with mixed toggle states.
- */
-@Preview(showBackground = true)
-@Composable
-fun DebugToggleScreenPreview_MixedStates() {
-    DebugToggleScreen(
-        params = DebugToggleParams(
-            state = DebugToggleState(
-                voiceToggledState = true,
-                videoUploadToggleState = false
-            ),
-            onToolbarMenuClicked = {},
-            onVoiceDebugToggled = {},
-            onVideoUploadDebugToggled = {}
-        )
-    )
-}
-
-/**
- * Preview of the DebugToggleContent composable with both toggles disabled.
- */
-@Preview(showBackground = true)
-@Composable
-fun DebugToggleContentPreview_BothDisabled() {
-    Column(modifier = Modifier.background(Color.White)) {
-        DebugToggleContent(
-            state = DebugToggleState(
-                voiceToggledState = false,
-                videoUploadToggleState = false
-            ),
-            onVoiceDebugToggled = {},
-            onVideoUploadDebugToggled = {}
-        )
-    }
-}
-
-/**
- * Preview of the DebugToggleContent composable with both toggles enabled.
- */
-@Preview(showBackground = true)
-@Composable
-fun DebugToggleContentPreview_BothEnabled() {
-    Column(modifier = Modifier.background(Color.White)) {
-        DebugToggleContent(
-            state = DebugToggleState(
-                voiceToggledState = true,
-                videoUploadToggleState = true
-            ),
-            onVoiceDebugToggled = {},
-            onVideoUploadDebugToggled = {}
-        )
-    }
 }

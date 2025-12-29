@@ -9,10 +9,12 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle
  * @param onToolbarMenuClicked A callback to be invoked when the toolbar menu button is clicked.
  * @param onVoiceDebugToggled A callback to be invoked when the voice debug toggle is changed.
  * @param onVideoUploadDebugToggled A callback to be invoked when the video upload debug toggle is changed.
+ * @param onReviewPromptDebugToggled A callback to be invoked when the review prompt debug toggle is changed.
  */
 data class DebugToggleParams(
     val state: DebugToggleState,
     val onToolbarMenuClicked: () -> Unit,
     val onVoiceDebugToggled: (value: Boolean) -> Unit,
-    val onVideoUploadDebugToggled: (value: Boolean) -> Unit
+    val onVideoUploadDebugToggled: (value: Boolean) -> Unit,
+    val onReviewPromptDebugToggled: (value: Boolean) -> Unit
 )

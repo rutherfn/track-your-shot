@@ -63,6 +63,13 @@ class DataStorePreferencesWriterImpl(private val application: Application) :
         }
     }
 
+    /** Saves the review prompt debug enabled state of the user. Enabling this on the debug functionality for review manager */
+    override suspend fun saveReviewPromptDebugEnabled(value: Boolean) {
+        application.dataStore.edit { preference ->
+            preference[booleanPreferencesKey(Constants.Preferences.REVIEW_PROMPT_DEBUG_ENABLED)] = value
+        }
+    }
+
     /** Saves the app launch count. */
     override suspend fun saveAppLaunchCount(value: Int) {
         application.dataStore.edit { preference ->

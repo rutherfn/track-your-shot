@@ -62,6 +62,7 @@ class DebugToggleViewModel(
      * This method combines two flows:
      * - Voice debug toggle state
      * - Video upload debug toggle state
+     * - Review prompt debug toggle state
      *
      * The collection is lifecycle-aware and will automatically pause/resume based on
      * the ViewModel's lifecycle state. Init flow collection is enabled in init
@@ -70,12 +71,14 @@ class DebugToggleViewModel(
     fun collectToggleFlows() {
         collectFlows(
             flow1 = dataStorePreferencesReader.readVoiceToggledDebugEnabledFlow(),
-            flow2 = dataStorePreferencesReader.readUploadVideoToggledDebugEnabled()
-        ) { voiceToggled, uploadVideoToggled ->
+            flow2 = dataStorePreferencesReader.readUploadVideoToggledDebugEnabled(),
+            flow3 = dataStorePreferencesReader.readReviewPromptDebugEnabledFlow()
+        ) { voiceToggled, uploadVideoToggled, reviewPromptDebugToggled ->
             debugToggleMutableStateFlow.update { state ->
                 state.copy(
                     voiceToggledState = voiceToggled,
-                    videoUploadToggleState = uploadVideoToggled
+                    videoUploadToggleState = uploadVideoToggled,
+                    reviewPromptToggledState = reviewPromptDebugToggled
                 )
             }
         }
@@ -102,4 +105,6 @@ class DebugToggleViewModel(
      * @param value The new state for the video upload debug toggle
      */
     fun onVideoUploadDebugToggled(value: Boolean) = scope.launch { dataStoreWriterPreferencesWriter.saveUploadVideoToggledDebugEnabled(value = value) }
+
+    fun onReviewPromptDebugToggled(value: Boolean) = scope.launch { dataStoreWriterPreferencesWriter.saveReviewPromptDebugEnabled(value = value) }
 }

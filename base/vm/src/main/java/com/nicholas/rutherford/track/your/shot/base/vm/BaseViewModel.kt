@@ -95,6 +95,33 @@ abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
     }
 
     /**
+     * Collects multiple Flows using combine in a lifecycle-aware manner.
+     * The collection will automatically start when the ViewModel is resumed and stop when paused.
+     *
+     * @param flow1 The first Flow to combine
+     * @param flow2 The second Flow to combine
+     * @param flow3 The third Flow to combine
+     * @param onCollect The action to perform for each combined emission
+     */
+    protected fun <T1, T2, T3> collectFlows(
+        flow1: Flow<T1>,
+        flow2: Flow<T2>,
+        flow3: Flow<T3>,
+        onCollect: suspend (T1, T2, T3) -> Unit
+    ) {
+        getScope()?.let { scope ->
+            val job = scope.launch {
+                kotlinx.coroutines.flow.combine(flow1, flow2, flow3) { t1, t2, t3 ->
+                    if (shouldCollectFlow()) {
+                        onCollect(t1, t2, t3)
+                    }
+                }.collectLatest {}
+            }
+            activeFlowCollections.add(job)
+        }
+    }
+
+    /**
      * Collects four Flows using combine in a lifecycle-aware manner.
      * The collection will automatically start when the ViewModel is resumed and stop when paused.
      *

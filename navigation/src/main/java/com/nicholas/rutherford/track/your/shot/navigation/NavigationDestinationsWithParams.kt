@@ -82,11 +82,13 @@ object NavigationDestinationsWithParams {
      * to show all players' shots.
      *
      * @param shouldShowAllPlayersShots Flag to control filtering in the UI.
+     * @param playerFilterName Name of the player to filter by.
      * @return A route string like: `shotsListScreen?shouldShowAllPlayersShots=true`
      */
-    fun shotsListScreenWithParams(shouldShowAllPlayersShots: Boolean): String {
+    fun shotsListScreenWithParams(shouldShowAllPlayersShots: Boolean, playerFilterName: String): String {
         return "${NavigationDestinations.SHOTS_LIST_SCREEN}?" +
-            "${NavigationDestinations.PARAM_SHOULD_SHOW_ALL_PLAYERS_SHOTS}=$shouldShowAllPlayersShots"
+            "${NavigationDestinations.PARAM_SHOULD_SHOW_ALL_PLAYERS_SHOTS}=$shouldShowAllPlayersShots&" +
+                "${NavigationDestinations.PARAM_PLAYER_FILTER_NAME}=$playerFilterName"
     }
 
     fun createEditVoiceCommandCreateEditScreenWitParams(type: Int?, phrase: String?): String {

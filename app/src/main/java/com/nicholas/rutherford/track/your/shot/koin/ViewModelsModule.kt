@@ -302,13 +302,13 @@ object ViewModelsModule {
         }
 
         /** Shots List screen ViewModel */
-        viewModel {
+        viewModel { (stateHandle: SavedStateHandle) ->
             ShotsListViewModel(
                 scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
                 navigation = get(),
                 playerRepository = get(),
-                dataStorePreferencesWriter = get(),
-                dataStorePreferencesReader = get()
+                savedStateHandle = stateHandle,
+                dataStorePreferencesWriter = get()
             )
         }
 

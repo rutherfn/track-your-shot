@@ -13,6 +13,6 @@ interface PlayersListNavigation {
     fun disableProgress()
     fun enableProgress(progress: Progress)
     fun navigateToCreateEditPlayer(firstName: String?, lastName: String?)
-    fun navigateToShotList()
+    fun navigateToShotList(playerFilterName: String)
     fun openNavigationDrawer()
 }
