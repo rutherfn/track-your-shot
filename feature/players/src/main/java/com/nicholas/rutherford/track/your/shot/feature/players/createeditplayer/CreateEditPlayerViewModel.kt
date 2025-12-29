@@ -10,22 +10,16 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlaye
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.Center.toPlayerPosition
-import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
-import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
-import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.your.shot.data.shared.sheet.Sheet
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.helper.CreateEditPlayerSharedHelper
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.helper.CreatePlayerHelper
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.helper.EditPlayerHelper
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
 import com.nicholas.rutherford.track.your.shot.firebase.core.create.CreateFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import com.nicholas.rutherford.track.your.shot.firebase.core.update.UpdateFirebaseUserInfo
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.PlayerInfoRealtimeWithKeyResponse
-import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
-import com.nicholas.rutherford.track.your.shot.helper.extensions.safeLet
-import com.nicholas.rutherford.track.your.shot.helper.extensions.toType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -96,6 +90,21 @@ class CreateEditPlayerViewModel(
     /** Initial last name from saved state, if any. */
     private val lastNameParam: String = savedStateHandle.get<String>("lastName") ?: ""
 
+    /** Helper classes for organizing logic */
+    private val sharedHelper = CreateEditPlayerSharedHelper(application = application)
+    private val createPlayerHelper = CreatePlayerHelper(
+        application = application,
+        playerRepository = playerRepository,
+        createFirebaseUserInfo = createFirebaseUserInfo
+    )
+    private val editPlayerHelper = EditPlayerHelper(
+        application = application,
+        playerRepository = playerRepository,
+        activeUserRepository = activeUserRepository,
+        updateFirebaseUserInfo = updateFirebaseUserInfo,
+        deleteFirebaseUserInfo = deleteFirebaseUserInfo
+    )
+
     init {
         checkForExistingPlayer(firstName = firstNameParam, lastName = lastNameParam)
         scope.launch { collectPendingShotsLogged() }
@@ -137,11 +146,14 @@ class CreateEditPlayerViewModel(
             createEditPlayerMutableStateFlow.update { state ->
                 state.copy(
                     pendingShots = pendingShotLoggedList.map { it.shotLogged },
-                    shots = currentShotsNotPending()
+                    shots = sharedHelper.currentShotsNotPending(
+                        editedPlayerShots = editedPlayer?.shotsLoggedList ?: emptyList(),
+                        pendingShotLoggedList = pendingShotLoggedList
+                    )
                 )
             }
 
-            navigation.alert(alert = showUpdatedAlert())
+            navigation.alert(alert = sharedHelper.showUpdatedAlert())
         }
     }
 
@@ -150,63 +162,22 @@ class CreateEditPlayerViewModel(
             val firstName = editedPlayer?.firstName ?: ""
             val lastName = editedPlayer?.lastName ?: ""
 
-            playerRepository.fetchPlayerByName(
-                firstName = firstName,
-                lastName = lastName
-            )
-                ?.let { player ->
-                    editedPlayer = player
-                    createEditPlayerMutableStateFlow.value =
-                        createEditPlayerMutableStateFlow.value.copy(
-                            firstName = player.firstName,
-                            lastName = player.lastName,
-                            editedPlayerUrl = player.imageUrl ?: "",
-                            toolbarNameResId = StringsIds.editPlayer,
-                            playerPositionString = application.getString(player.position.toType()),
-                            hintLogNewShotText = hintLogNewShotText(
-                                firstName = player.firstName,
-                                lastName = player.lastName
-                            ),
-                            shots = player.shotsLoggedList
-                        )
-                    deleteFirebaseUserInfo.updateHasDeletedShotFlow(hasDeletedShot = false)
-                }
-        }
-    }
-
-    /**
-     * Creates an Alert to inform user a shot was updated.
-     */
-    internal fun showUpdatedAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.shotUpdated),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(
-                    StringsIds.gotIt
+            editPlayerHelper.processHasDeletedShot(
+                hasDeletedShot = hasDeletedShot,
+                playerFirstName = firstName,
+                playerLastName = lastName
+            )?.let { player ->
+                editedPlayer = player
+                val updatedState = editPlayerHelper.buildStateForExistingPlayer(
+                    player = player,
+                    currentHintText = createEditPlayerMutableStateFlow.value.hintLogNewShotText,
+                    sharedHelper = sharedHelper
                 )
-            ),
-            description = application.getString(StringsIds.currentShotHasBeenUpdatedDescription)
-        )
-    }
-
-    /**
-     * Returns a list of shots that are not pending from the current edited player.
-     */
-    internal fun currentShotsNotPending(): List<ShotLogged> {
-        val currentShotsArrayList: ArrayList<ShotLogged> = arrayListOf()
-
-        editedPlayer?.let { player ->
-            val pendingShotIds = pendingShotLoggedList.map { it.shotLogged.id }
-
-            player.shotsLoggedList.forEach { shot ->
-                if (!pendingShotIds.contains(shot.id)) {
-                    currentShotsArrayList.add(shot)
-                }
+                createEditPlayerMutableStateFlow.value = updatedState
             }
         }
-
-        return currentShotsArrayList.toList()
     }
+
 
     /**
      * Checks if a player already exists in the repository by first and last name,
@@ -235,23 +206,11 @@ class CreateEditPlayerViewModel(
      * @return The hint text to show.
      */
     internal fun hintLogNewShotText(firstName: String? = null, lastName: String? = null): String {
-        var hintLogNewShotText: String = createEditPlayerMutableStateFlow.value.hintLogNewShotText
-
-        safeLet(firstName, lastName) { first, last ->
-            hintLogNewShotText = if (first.isNotEmpty() && last.isNotEmpty()) {
-                application.getString(StringsIds.hintLogNewShotsForPlayer) + " $first $last"
-            } else if (first.isNotEmpty()) {
-                application.getString(StringsIds.hintLogNewShotsForPlayer) + " $first"
-            } else if (last.isNotEmpty()) {
-                application.getString(StringsIds.hintLogNewShotsForPlayer) + " $last"
-            } else {
-                application.getString(StringsIds.hintLogNewShots)
-            }
-        } ?: run {
-            hintLogNewShotText = application.getString(StringsIds.hintLogNewShots)
-        }
-
-        return hintLogNewShotText
+        return sharedHelper.hintLogNewShotText(
+            firstName = firstName,
+            lastName = lastName,
+            currentHintText = createEditPlayerMutableStateFlow.value.hintLogNewShotText
+        )
     }
 
     /**
@@ -259,19 +218,12 @@ class CreateEditPlayerViewModel(
      */
     internal fun updateStateForExistingPlayer(player: Player) {
         editedPlayer = player
-        createEditPlayerMutableStateFlow.value =
-            createEditPlayerMutableStateFlow.value.copy(
-                firstName = player.firstName,
-                lastName = player.lastName,
-                editedPlayerUrl = player.imageUrl ?: "",
-                toolbarNameResId = StringsIds.editPlayer,
-                playerPositionString = application.getString(player.position.toType()),
-                hintLogNewShotText = hintLogNewShotText(
-                    firstName = player.firstName,
-                    lastName = player.lastName
-                ),
-                shots = player.shotsLoggedList
-            )
+        val updatedState = editPlayerHelper.buildStateForExistingPlayer(
+            player = player,
+            currentHintText = createEditPlayerMutableStateFlow.value.hintLogNewShotText,
+            sharedHelper = sharedHelper
+        )
+        createEditPlayerMutableStateFlow.value = updatedState
     }
 
     /**
@@ -293,7 +245,9 @@ class CreateEditPlayerViewModel(
      */
     fun onToolbarMenuClicked() {
         if (pendingPlayers.size == Constants.PENDING_PLAYERS_EXPECTED_SIZE || pendingShotLoggedList.isNotEmpty()) {
-            navigation.alert(alert = unsavedPlayerChangesAlert())
+            navigation.alert(alert = sharedHelper.unsavedPlayerChangesAlert {
+                onConfirmUnsavedPlayerChangesButtonClicked()
+            })
         } else {
             navigation.pop()
         }
@@ -360,13 +314,13 @@ class CreateEditPlayerViewModel(
 
     private fun updateSheetToChooseFromGalleryOrTakePictureSheet() {
         createEditPlayerMutableStateFlow.value = createEditPlayerMutableStateFlow.value.copy(
-            sheet = chooseFromGalleryOrTakePictureSheet()
+            sheet = sharedHelper.chooseFromGalleryOrTakePictureSheet()
         )
     }
 
     private fun updateSheetToRemoveImageSheet() {
         createEditPlayerMutableStateFlow.value = createEditPlayerMutableStateFlow.value.copy(
-            sheet = removeImageSheet()
+            sheet = sharedHelper.removeImageSheet()
         )
     }
 
@@ -405,7 +359,9 @@ class CreateEditPlayerViewModel(
      * Shows alert if camera permission is not granted.
      */
     fun permissionNotGrantedForCameraAlert() {
-        navigation.alert(alert = cameraPermissionNotGrantedAlert())
+        navigation.alert(alert = sharedHelper.cameraPermissionNotGrantedAlert {
+            onNavigateToAppSettings()
+        })
     }
 
     /**
@@ -423,7 +379,7 @@ class CreateEditPlayerViewModel(
 
                 validatePlayer(state = state, uri = state.imageUri)
             } else {
-                navigation.alert(alert = notConnectedToInternetAlert())
+                navigation.alert(alert = sharedHelper.notConnectedToInternetAlert())
             }
         }
     }
@@ -435,9 +391,9 @@ class CreateEditPlayerViewModel(
      * @param uri The selected image URI.
      */
     internal fun validatePlayer(state: CreateEditPlayerState, uri: Uri?) {
-        if (state.firstName.isEmpty()) {
+        if (!sharedHelper.validatePlayer(state = state)) {
             navigation.disableProgress()
-            navigation.alert(alert = firstNameEmptyAlert())
+            navigation.alert(alert = sharedHelper.firstNameEmptyAlert())
         } else {
             determineCreatingOrEditingPlayer(state = state, uri = uri)
         }
@@ -451,9 +407,15 @@ class CreateEditPlayerViewModel(
      */
     internal fun determineCreatingOrEditingPlayer(state: CreateEditPlayerState, uri: Uri?) {
         editedPlayer?.let { player ->
-            if (hasNotEditedExistingPlayer(existingPlayer = player, uri = uri, state = state)) {
+            if (editPlayerHelper.hasNotEditedExistingPlayer(
+                    existingPlayer = player,
+                    uri = uri,
+                    state = state,
+                    pendingShotLoggedList = pendingShotLoggedList
+                )
+            ) {
                 navigation.disableProgress()
-                navigation.alert(alert = noChangesHaveBeenMadeAlert())
+                navigation.alert(alert = editPlayerHelper.noChangesHaveBeenMadeAlert())
             } else {
                 if (state.editedPlayerUrl.isNotEmpty()) {
                     updateUserInFirebase(state = state, imageUrl = state.editedPlayerUrl)
@@ -474,41 +436,17 @@ class CreateEditPlayerViewModel(
             createEditPlayerMutableStateFlow.value.copy(editedPlayerUrl = "")
     }
 
-    /**
-     * Checks if there were any edits made to the existing player.
-     */
-    internal fun hasNotEditedExistingPlayer(
-        existingPlayer: Player,
-        uri: Uri?,
-        state: CreateEditPlayerState
-    ): Boolean {
-        val hasSameName =
-            existingPlayer.firstName == state.firstName && existingPlayer.lastName == state.lastName
-        val hasSamePosition =
-            application.getString(existingPlayer.position.toType()) == state.playerPositionString
-        val hasSamePlacedImage = if (existingPlayer.imageUrl == null) {
-            false
-        } else if (uri != null) {
-            false
-        } else {
-            state.editedPlayerUrl == existingPlayer.imageUrl
-        }
-        return hasSameName && hasSamePosition && hasSamePlacedImage && pendingShotLoggedList.isEmpty()
-    }
 
     /**
      * Checks if a player with the same name already exists before creating.
      */
     fun checkIfPlayerAlreadyExists(state: CreateEditPlayerState, uri: Uri?) {
         scope.launch {
-            val player = playerRepository.fetchPlayerByName(
-                firstName = state.firstName,
-                lastName = state.lastName
-            )
+            val existingPlayer = createPlayerHelper.checkIfPlayerAlreadyExists(state = state)
 
-            if (player != null) {
+            if (existingPlayer != null) {
                 navigation.disableProgress()
-                navigation.alert(alert = playerAlreadyHasBeenAddedAlert())
+                navigation.alert(alert = sharedHelper.playerAlreadyHasBeenAddedAlert())
             } else {
                 checkImageUri(uri = uri, state = state)
             }
@@ -522,7 +460,7 @@ class CreateEditPlayerViewModel(
     fun checkImageUri(state: CreateEditPlayerState, uri: Uri?) {
         scope.launch {
             uri?.let { playerUri ->
-                createFirebaseUserInfo.attemptToCreateImageFirebaseStorageResponseFlow(uri = playerUri)
+                createPlayerHelper.uploadImageToFirebase(uri = playerUri)
                     .collectLatest { imageUrl ->
                         if (imageUrl != null) {
                             determineToUpdateOrCreateUserInFirebase(
@@ -531,7 +469,7 @@ class CreateEditPlayerViewModel(
                             )
                         } else {
                             navigation.disableProgress()
-                            navigation.alert(alert = notAbleToUploadImageAlert())
+                            navigation.alert(alert = sharedHelper.notAbleToUploadImageAlert())
                         }
                     }
             } ?: run {
@@ -552,14 +490,18 @@ class CreateEditPlayerViewModel(
     }
 
     private suspend fun createUserInFirebase(state: CreateEditPlayerState, imageUrl: String?) {
-        createFirebaseUserInfo.attemptToCreatePlayerFirebaseRealtimeDatabaseResponseFlow(
-            playerInfoRealtimeResponse = PlayerInfoRealtimeResponse(
-                firstName = state.firstName,
-                lastName = state.lastName,
-                positionValue = state.playerPositionString.toPlayerPosition(application = application).value,
-                imageUrl = imageUrl ?: "",
-                shotsLogged = currentShotLoggedRealtimeResponseList(currentShotList = state.shots.map { shots -> shots.toRealtimeResponse() })
-            )
+        val shotsRealtimeResponse = state.shots.map { shot ->
+            sharedHelper.shotLoggedToRealtimeResponse(shotLogged = shot)
+        }
+        val combinedShots = sharedHelper.currentShotLoggedRealtimeResponseList(
+            currentShotList = shotsRealtimeResponse,
+            pendingShotLoggedList = pendingShotLoggedList
+        )
+
+        createPlayerHelper.createUserInFirebase(
+            state = state,
+            imageUrl = imageUrl,
+            shotsLoggedRealtimeResponseList = combinedShots
         ).collectLatest { result ->
             result.second?.let { key ->
                 val isSuccessful = result.first
@@ -571,66 +513,15 @@ class CreateEditPlayerViewModel(
                     )
                 } else {
                     navigation.disableProgress()
-                    navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
+                    navigation.alert(alert = sharedHelper.weHaveDetectedAProblemWithYourAccountAlert())
                 }
             } ?: run {
                 navigation.disableProgress()
-                navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
+                navigation.alert(alert = sharedHelper.weHaveDetectedAProblemWithYourAccountAlert())
             }
         }
     }
 
-    /**
-     * Combines current shots with any pending shots (not yet confirmed).
-     *
-     * @param currentShotList List of confirmed shots.
-     * @return Combined list including pending shots marked as not pending.
-     */
-    internal fun currentShotLoggedRealtimeResponseList(currentShotList: List<ShotLoggedRealtimeResponse>): List<ShotLoggedRealtimeResponse> {
-        if (pendingShotLoggedList.isNotEmpty()) {
-            val shotLoggedRealtimeResponseArrayList: ArrayList<ShotLoggedRealtimeResponse> =
-                arrayListOf()
-
-            pendingShotLoggedList.forEach { pendingShot ->
-                shotLoggedRealtimeResponseArrayList.add(
-                    ShotLoggedRealtimeResponse(
-                        id = pendingShot.shotLogged.id,
-                        shotName = pendingShot.shotLogged.shotName,
-                        shotType = pendingShot.shotLogged.shotType,
-                        shotsAttempted = pendingShot.shotLogged.shotsAttempted,
-                        shotsMade = pendingShot.shotLogged.shotsMade,
-                        shotsMissed = pendingShot.shotLogged.shotsMissed,
-                        shotsMadePercentValue = pendingShot.shotLogged.shotsMadePercentValue,
-                        shotsMissedPercentValue = pendingShot.shotLogged.shotsMissedPercentValue,
-                        shotsAttemptedMillisecondsValue = pendingShot.shotLogged.shotsAttemptedMillisecondsValue,
-                        shotsLoggedMillisecondsValue = pendingShot.shotLogged.shotsLoggedMillisecondsValue,
-                        isPending = false
-                    )
-                )
-            }
-            return currentShotList + shotLoggedRealtimeResponseArrayList.toList()
-        } else {
-            return currentShotList
-        }
-    }
-
-    /**
-     * Combines current shots with pending shots (marked as not pending).
-     *
-     * @param currentShotLoggedList List of confirmed shots.
-     * @return Combined list including pending shots.
-     */
-    internal fun currentShotLoggedList(currentShotLoggedList: List<ShotLogged>): List<ShotLogged> {
-        return if (pendingShotLoggedList.isNotEmpty()) {
-            currentShotLoggedList + pendingShotLoggedList.map { pendingShot ->
-                pendingShot.shotLogged.copy(
-                    isPending = false
-                )
-            }
-        } else {
-            currentShotLoggedList
-        }
-    }
 
     /**
      * Updates an existing user in Firebase with the new state and image URL.
@@ -638,45 +529,37 @@ class CreateEditPlayerViewModel(
     internal fun updateUserInFirebase(state: CreateEditPlayerState, imageUrl: String?) {
         scope.launch {
             editedPlayer?.let { player ->
-                val key = activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey ?: ""
-                val playerKey =
-                    safeLet(player.firstName, player.lastName) { firstName, lastName ->
-                        playerRepository.fetchPlayerByName(
-                            firstName = firstName,
-                            lastName = lastName
-                        )?.firebaseKey ?: ""
-                    } ?: run { "" }
+                try {
+                    val shotsRealtimeResponse = state.shots.map { shot ->
+                        sharedHelper.shotLoggedToRealtimeResponse(shotLogged = shot)
+                    }
+                    val combinedShots = sharedHelper.currentShotLoggedRealtimeResponseList(
+                        currentShotList = shotsRealtimeResponse,
+                        pendingShotLoggedList = pendingShotLoggedList
+                    )
 
-                if (key.isNotEmpty() && playerKey.isNotEmpty()) {
-                    updateFirebaseUserInfo.updatePlayer(
-                        playerInfoRealtimeWithKeyResponse = PlayerInfoRealtimeWithKeyResponse(
-                            playerFirebaseKey = playerKey,
-                            playerInfo = PlayerInfoRealtimeResponse(
-                                firstName = state.firstName,
-                                lastName = state.lastName,
-                                positionValue = state.playerPositionString.toPlayerPosition(
-                                    application = application
-                                ).value,
-                                imageUrl = imageUrl ?: "",
-                                shotsLogged = currentShotLoggedRealtimeResponseList(currentShotList = state.shots.map { shots -> shots.toRealtimeResponse() })
-                            )
-                        )
+                    editPlayerHelper.updateUserInFirebase(
+                        player = player,
+                        state = state,
+                        imageUrl = imageUrl,
+                        shotsLoggedRealtimeResponseList = combinedShots
                     ).collectLatest { isSuccessful ->
                         if (isSuccessful) {
                             handleSavingPlayer(
-                                key = playerKey,
+                                key = player.firebaseKey,
                                 state = state,
                                 imageUrl = imageUrl
                             )
                         }
                     }
-                } else {
+                } catch (e: IllegalStateException) {
+                    e.printStackTrace()
                     navigation.disableProgress()
-                    navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
+                    navigation.alert(alert = sharedHelper.weHaveDetectedAProblemWithYourAccountAlert())
                 }
             } ?: run {
                 navigation.disableProgress()
-                navigation.alert(alert = weHaveDetectedAProblemWithYourAccountAlert())
+                navigation.alert(alert = sharedHelper.weHaveDetectedAProblemWithYourAccountAlert())
             }
         }
     }
@@ -689,17 +572,26 @@ class CreateEditPlayerViewModel(
         state: CreateEditPlayerState,
         imageUrl: String?
     ) {
-        val positionString = state.playerPositionString.ifEmpty {
-            application.getString(StringsIds.pointGuard)
-        }
-        val player = Player(
-            firstName = state.firstName,
-            lastName = state.lastName,
-            position = positionString.toPlayerPosition(application = application),
-            firebaseKey = key,
-            imageUrl = imageUrl ?: "",
-            shotsLoggedList = currentShotLoggedList(currentShotLoggedList = state.shots)
+        val combinedShots = sharedHelper.currentShotLoggedList(
+            currentShotLoggedList = state.shots,
+            pendingShotLoggedList = pendingShotLoggedList
         )
+
+        val player = if (editedPlayer == null) {
+            createPlayerHelper.buildPlayerFromState(
+                state = state,
+                firebaseKey = key,
+                imageUrl = imageUrl ?: "",
+                shotsLoggedList = combinedShots
+            )
+        } else {
+            editPlayerHelper.buildPlayerFromState(
+                existingPlayer = editedPlayer!!,
+                state = state,
+                imageUrl = imageUrl ?: "",
+                shotsLoggedList = combinedShots
+            )
+        }
 
         createOrEditPlayerInRoom(player = player)
 
@@ -714,14 +606,12 @@ class CreateEditPlayerViewModel(
      */
     suspend fun createOrEditPlayerInRoom(player: Player) {
         if (editedPlayer == null) {
-            playerRepository.createPlayer(player = player)
+            createPlayerHelper.createPlayerInRoom(player = player)
         } else {
-            editedPlayer?.let { currentPlayer ->
-                playerRepository.updatePlayer(
-                    currentPlayer = currentPlayer,
-                    newPlayer = player
-                )
-            }
+            editPlayerHelper.updatePlayerInRoom(
+                currentPlayer = editedPlayer!!,
+                newPlayer = player
+            )
         }
     }
 
@@ -770,212 +660,6 @@ class CreateEditPlayerViewModel(
             createEditPlayerMutableStateFlow.value.copy(playerPositionString = newPositionString)
     }
 
-    /**
-     * Creates an alert dialog informing the user that camera permission has been declined.
-     *
-     * Provides options to navigate to app settings or dismiss the alert.
-     *
-     * @return Alert configured for camera permission denial.
-     */
-    internal fun cameraPermissionNotGrantedAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.permissionHasBeenDeclined),
-            confirmButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.settings),
-                onButtonClicked = { onNavigateToAppSettings() }
-            ),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.notNow)
-            ),
-            description = application.getString(StringsIds.cameraPermissionHasBeenDeniedDescription)
-        )
-    }
-
-    /**
-     * Creates an alert dialog informing the user that media or external storage permission has been declined.
-     *
-     * The description changes depending on whether the permission should be requested again.
-     *
-     * Provides options to navigate to app settings or dismiss the alert.
-     *
-     * @param shouldAskForPermission Indicates if permission should be requested again; affects description text.
-     * @return Alert configured for media or external storage permission denial.
-     */
-    internal fun mediaOrExternalStorageNotGrantedAlert(shouldAskForPermission: Boolean): Alert {
-        return Alert(
-            title = application.getString(StringsIds.permissionHasBeenDeclined),
-            confirmButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.settings),
-                onButtonClicked = { onNavigateToAppSettings() }
-            ),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.notNow)
-            ),
-            description = if (!shouldAskForPermission) {
-                application.getString(StringsIds.readExternalStorageDescription)
-            } else {
-                application.getString(StringsIds.readMediaImagesDescription)
-            }
-        )
-    }
-
-    /**
-     * Creates an alert dialog indicating that no first name has been entered.
-     *
-     * Provides a dismiss button.
-     *
-     * @return Alert for empty first name input.
-     */
-    internal fun firstNameEmptyAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.noFirstNameEntered),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.gotIt)
-            ),
-            description = application.getString(StringsIds.playersFirstNameEmptyDescription)
-        )
-    }
-
-    /**
-     * Creates an alert dialog informing the user that no changes have been made to the current player.
-     *
-     * Provides a dismiss button.
-     *
-     * @return Alert indicating no changes were detected.
-     */
-    internal fun noChangesHaveBeenMadeAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.noChangesMade),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.gotIt)
-            ),
-            description = application.getString(StringsIds.currentPlayerHasNoChangesDescription)
-        )
-    }
-
-    /**
-     * Creates an alert dialog informing the user that there is no internet connection.
-     *
-     * Provides a dismiss button.
-     *
-     * @return Alert for lack of internet connectivity.
-     */
-    internal fun notConnectedToInternetAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.notConnectedToInternet),
-            description = application.getString(StringsIds.weHaveDetectedCurrentlyNotConnectedToInternetDescription),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.gotIt)
-            )
-        )
-    }
-
-    /**
-     * Creates an alert dialog indicating that image upload was unsuccessful.
-     *
-     * Provides a dismiss button.
-     *
-     * @return Alert for failed image upload.
-     */
-    internal fun notAbleToUploadImageAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.unableToUploadImage),
-            description = application.getString(StringsIds.theImageUploadWasUnsuccessful),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.ok)
-            )
-        )
-    }
-
-    /**
-     * Creates an alert dialog indicating that a problem with the user's account was detected.
-     *
-     * Provides a dismiss button.
-     *
-     * @return Alert for detected account issues.
-     */
-    internal fun weHaveDetectedAProblemWithYourAccountAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.issueOccurred),
-            description = application.getString(StringsIds.weHaveDetectedAProblemWithYourAccountPleaseContactSupportToResolveIssue),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.gotIt)
-            )
-        )
-    }
-
-    /**
-     * Creates an alert dialog indicating that the player creation failed.
-     *
-     * Provides a dismiss button.
-     *
-     * @return Alert for failed player creation.
-     */
-    internal fun weWereNotAbleToCreateThePlayerAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.issueOccurred),
-            description = application.getString(StringsIds.playerCreationFailedPleaseTryAgain),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.gotIt)
-            )
-        )
-    }
-
-    /**
-     * Creates an alert dialog indicating that the player's data could not be retrieved.
-     *
-     * Provides a dismiss button.
-     *
-     * @return Alert for failed player retrieval.
-     */
-    internal fun yourPlayerCouldNotBeRetrievedAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.issueOccurred),
-            description = application.getString(StringsIds.yourPlayerCouldNotBeRetrievedDescription),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.gotIt)
-            )
-        )
-    }
-
-    /**
-     * Creates an alert dialog indicating the player has already been added.
-     *
-     * Provides a dismiss button.
-     *
-     * @return Alert for duplicate player addition.
-     */
-    internal fun playerAlreadyHasBeenAddedAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.issueOccurred),
-            description = application.getString(StringsIds.playerAlreadyHasBeenAddedDescription),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.gotIt)
-            )
-        )
-    }
-
-    /**
-     * Creates an alert dialog asking the user to confirm proceeding with unsaved player changes.
-     *
-     * Provides buttons to confirm or cancel the action.
-     *
-     * @return Alert prompting confirmation for unsaved changes.
-     */
-    internal fun unsavedPlayerChangesAlert(): Alert {
-        return Alert(
-            title = application.getString(StringsIds.unsavedPlayerChanges),
-            description = application.getString(StringsIds.doYouWishToProceedDescription),
-            confirmButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.yes),
-                onButtonClicked = { onConfirmUnsavedPlayerChangesButtonClicked() }
-            ),
-            dismissButton = AlertConfirmAndDismissButton(
-                buttonText = application.getString(StringsIds.no),
-                onButtonClicked = {}
-            )
-        )
-    }
 
     /**
      * Handles confirmation action when the user chooses to discard unsaved player changes.
@@ -1002,34 +686,6 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    /**
-     * Creates a [Sheet] UI model representing an option sheet to remove the player image.
-     *
-     * @return A [Sheet] instance with a title and a single option to remove the image.
-     */
-    internal fun removeImageSheet(): Sheet {
-        return Sheet(
-            title = application.getString(StringsIds.chooseOption),
-            values = listOf(application.getString(StringsIds.removeImage))
-        )
-    }
-
-    /**
-     * Creates a [Sheet] UI model representing an option sheet for selecting an image source.
-     *
-     * Provides options to either choose an image from the gallery or take a new picture.
-     *
-     * @return A [Sheet] instance with a title and two options: choose from gallery or take a picture.
-     */
-    internal fun chooseFromGalleryOrTakePictureSheet(): Sheet {
-        return Sheet(
-            title = application.getString(StringsIds.chooseOption),
-            values = listOf(
-                application.getString(StringsIds.chooseImageFromGallery),
-                application.getString(StringsIds.takeAPicture)
-            )
-        )
-    }
 
     /**
      * Checks if the user has access to log shots.
@@ -1048,7 +704,7 @@ class CreateEditPlayerViewModel(
         return when {
             firstName.isEmpty() -> {
                 // Show alert for empty first name
-                navigation.alert(alert = firstNameEmptyAlert())
+                navigation.alert(alert = sharedHelper.firstNameEmptyAlert())
                 false
             }
 
@@ -1158,27 +814,4 @@ class CreateEditPlayerViewModel(
         }
     }
 
-    /**
-     * Extension function to convert a [ShotLogged] instance to a [ShotLoggedRealtimeResponse].
-     *
-     * Maps all relevant shot properties and preserves the pending state.
-     *
-     * @receiver The [ShotLogged] instance to convert.
-     * @return The corresponding [ShotLoggedRealtimeResponse] instance.
-     */
-    private fun ShotLogged.toRealtimeResponse(): ShotLoggedRealtimeResponse {
-        return ShotLoggedRealtimeResponse(
-            id = this.id,
-            shotName = this.shotName,
-            shotType = this.shotType,
-            shotsAttempted = this.shotsAttempted,
-            shotsMade = this.shotsMade,
-            shotsMissed = this.shotsMissed,
-            shotsMadePercentValue = this.shotsMadePercentValue,
-            shotsMissedPercentValue = this.shotsMissedPercentValue,
-            shotsAttemptedMillisecondsValue = this.shotsAttemptedMillisecondsValue,
-            shotsLoggedMillisecondsValue = this.shotsLoggedMillisecondsValue,
-            isPending = this.isPending
-        )
-    }
 }
