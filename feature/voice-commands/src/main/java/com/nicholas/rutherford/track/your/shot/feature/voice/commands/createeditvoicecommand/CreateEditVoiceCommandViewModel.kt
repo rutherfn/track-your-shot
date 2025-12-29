@@ -407,9 +407,7 @@ class CreateEditVoiceCommandViewModel(
                         typeValue = type?.value ?: VoiceCommandTypes.None.value
                     )
                 ).collectLatest { result ->
-                    println("get here test2")
                     if (result.first && !result.second.isNullOrEmpty()) {
-                        println("get here test")
                         val currentSavedCommandSize = savedVoiceCommandRepository.getVoiceCommandSize()
 
                         savedVoiceCommandRepository.createSavedVoiceCommand(
@@ -424,7 +422,6 @@ class CreateEditVoiceCommandViewModel(
                         navigation.pop()
                         navigation.alert(alert = savedNewCommandAlert(type = type ?: VoiceCommandTypes.None))
                     } else {
-                        println("get here test444")
                         navigation.disableProgress()
                         navigation.alert(alert = errorSavingNewVoiceCommandAlert())
                     }

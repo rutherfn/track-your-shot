@@ -53,7 +53,6 @@ class ShotsListViewModel(
     override fun getFlowCollectionTrigger(): FlowCollectionTrigger = FlowCollectionTrigger.INIT
 
     init {
-        println("here is the player filter name $playerFilteredName")
         scope.launch { checkToCreatePlayerFilterName() }
         scope.launch { updateShotListState() }
     }

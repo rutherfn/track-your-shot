@@ -208,7 +208,6 @@ class PlayersListViewModel(
 
     /** Navigates to shot list after saving selected player name */
     private fun onShotListClicked(playerName: String) {
-        println("on shot list clicked ")
         navigation.navigateToShotList(playerFilterName = playerName)
     }
 

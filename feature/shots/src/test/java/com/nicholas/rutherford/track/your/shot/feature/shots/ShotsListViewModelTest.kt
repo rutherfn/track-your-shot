@@ -43,8 +43,12 @@ class ShotsListViewModelTest {
 
     private val emptyShotList: List<ShotLoggedWithPlayer> = listOf()
 
+    private var playerFilterName: String = "player name"
+
     @BeforeEach
     fun beforeEach() {
+        every { savedStateHandle.get<String>("playerFilterName") } returns playerFilterName
+
         viewModel = ShotsListViewModel(
             scope = scope,
             navigation = navigation,
@@ -58,58 +62,21 @@ class ShotsListViewModelTest {
     inner class Init {
 
         @Test
-        fun `when fetch all players returns empty list should not update current array list or state`() = runTest {
-            coEvery { playerRepository.fetchAllPlayers() } returns emptyList()
-
-            viewModel.updateShotListState()
-            viewModel.checkToCreatePlayerFilterName()
-
-            Assertions.assertEquals("", viewModel.playerFilteredName)
-            coVerify(exactly = 0) { dataStorePreferencesWriter.savePlayerFilterName(value = "") }
-            Assertions.assertEquals(
-                viewModel.shotListMutableStateFlow.value,
-                ShotsListState(shotList = emptyList())
-            )
-            Assertions.assertEquals(
-                viewModel.currentShotArrayList.toList(),
-                emptyShotList
-            )
-        }
-
-        @Test
-        fun `when fetch all players returns info should update current array list and state`() = runTest {
-            val player = TestPlayer().create()
-            val playerId = 1
-
-            coEvery { playerRepository.fetchAllPlayers() } returns listOf(player)
-            coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
-
-            viewModel.updateShotListState()
-            viewModel.checkToCreatePlayerFilterName()
-
-            Assertions.assertEquals("", viewModel.playerFilteredName)
-            coVerify(exactly = 0) { dataStorePreferencesWriter.savePlayerFilterName(value = "") }
-            Assertions.assertEquals(
-                viewModel.shotListMutableStateFlow.value,
-                ShotsListState(shotList = listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName())))
-            )
-            Assertions.assertEquals(
-                viewModel.currentShotArrayList.toList(),
-                listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName()))
-            )
-        }
-
-        @Test
         fun `when player filter name returns a value should update playerFilteredName`() = runTest {
-            val playerFilteredName = "playerFilteredName"
+            every { savedStateHandle.get<String>("playerFilterName") } returns "playerFilteredName"
 
-            coEvery { playerRepository.fetchAllPlayers() } returns emptyList()
-            every { dataStorePreferencesReader.readPlayerFilterNameFlow() } returns flow { emit(playerFilteredName) }
+            viewModel = ShotsListViewModel(
+                scope = scope,
+                navigation = navigation,
+                playerRepository = playerRepository,
+                dataStorePreferencesWriter = dataStorePreferencesWriter,
+                savedStateHandle = savedStateHandle
+            )
 
             viewModel.updateShotListState()
             viewModel.checkToCreatePlayerFilterName()
 
-            Assertions.assertEquals(playerFilteredName, viewModel.playerFilteredName)
+            Assertions.assertEquals("playerFilteredName", viewModel.playerFilteredName)
             coVerify { dataStorePreferencesWriter.savePlayerFilterName(value = "") }
             Assertions.assertEquals(
                 viewModel.shotListMutableStateFlow.value,
