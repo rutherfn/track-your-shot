@@ -1,6 +1,11 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.extension
 
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotState
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import java.util.Date
 
@@ -131,4 +136,40 @@ interface LogShotViewModelExt {
      * @return [Alert] instance.
      */
     fun showUpdatedAlert(): Alert
+
+    /**
+     * Calculates the shot percentage as a formatted string for made or missed shots.
+     *
+     * @param shot The shot data.
+     * @param isShotsMade True to calculate percentage for made shots, false for missed shots.
+     * @return Formatted percentage string.
+     */
+    fun calculateShotPercentage(shot: ShotLogged, isShotsMade: Boolean): String
+
+    /**
+     * Converts a list of [ShotLogged] to a list of Firebase response objects for upload.
+     *
+     * @param currentShotList List of shots to convert.
+     * @return List of [ShotLoggedRealtimeResponse].
+     */
+    fun currentShotLoggedRealtimeResponseList(currentShotList: List<ShotLogged>): List<ShotLoggedRealtimeResponse>
+
+    /**
+     * Constructs a [PendingShot] object based on the current player and UI state.
+     *
+     * @param player The player the shot is associated with.
+     * @param state Current UI state containing shot data.
+     * @param declaredShot The declared shot type.
+     * @return Constructed [PendingShot].
+     */
+    fun buildPendingShotOnSave(player: Player, state: LogShotState, declaredShot: DeclaredShot?): PendingShot
+
+    /**
+     * Initializes a [ShotLogged] from the current state for change detection.
+     *
+     * @param state Current UI state.
+     * @param declaredShot The declared shot type.
+     * @return Initialized [ShotLogged].
+     */
+    fun initializeShotLogged(state: LogShotState, declaredShot: DeclaredShot?): ShotLogged
 }

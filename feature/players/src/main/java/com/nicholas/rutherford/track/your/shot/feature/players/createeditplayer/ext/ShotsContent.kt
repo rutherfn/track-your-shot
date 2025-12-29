@@ -218,14 +218,6 @@ private fun ColumnScope.ShotContentEmptyState(
     hintLogNewShotText: String,
     onLogShotsClicked: () -> Unit
 ) {
-    Text(
-        text = stringResource(id = R.string.log_shots),
-        style = TextStyles.smallBold,
-        modifier = Modifier
-            .align(Alignment.Start)
-            .padding(top = 16.dp, bottom = 8.dp)
-    )
-
     Card(
         modifier = Modifier
             .fillMaxWidth()

@@ -117,7 +117,7 @@ class LogShotViewModel(
         resetState()
 
         logShotViewModelExt.setInitialInfo(
-            LogShotInfo(
+            logShotInfo = LogShotInfo(
                 isExistingPlayer = isExistingPlayerArgument,
                 playerId = playerIdArgument,
                 shotType = shotTypeArgument,
@@ -156,7 +156,7 @@ class LogShotViewModel(
     /**
      * Loads and updates the shot state if viewing an existing or pending shot.
      */
-    private suspend fun updateViewShotState() {
+    internal suspend fun updateViewShotState() {
         logShotViewModelExt.logShotInfo.let { info ->
             if (info.viewCurrentExistingShot) {
                 updateShotStateFromExisting()
@@ -171,7 +171,7 @@ class LogShotViewModel(
     /**
      * Updates the UI state from an existing shot loaded from player data.
      */
-    private fun updateShotStateFromExisting() {
+    internal fun updateShotStateFromExisting() {
         currentPlayer?.shotsLoggedList?.firstOrNull { it.id == logShotViewModelExt.logShotInfo.shotId }?.let { shot ->
             logShotMutableStateFlow.update { state ->
                 state.copy(
@@ -180,8 +180,8 @@ class LogShotViewModel(
                     shotsMade = shot.shotsMade,
                     shotsMissed = shot.shotsMissed,
                     shotsAttempted = shot.shotsAttempted,
-                    shotsMadePercentValue = calculateShotPercentage(shot, isShotsMade = true),
-                    shotsMissedPercentValue = calculateShotPercentage(shot, isShotsMade = false),
+                    shotsMadePercentValue = logShotViewModelExt.calculateShotPercentage(shot, isShotsMade = true),
+                    shotsMissedPercentValue = logShotViewModelExt.calculateShotPercentage(shot, isShotsMade = false),
                     deleteShotButtonVisible = true,
                     toolbarId = StringsIds.loggedShot
                 )
@@ -192,7 +192,7 @@ class LogShotViewModel(
     /**
      * Updates the UI state from a pending shot loaded from local pending shot storage.
      */
-    private suspend fun updateShotStateFromPending() {
+    internal suspend fun updateShotStateFromPending() {
         currentPendingShot.shotsStateFlow.firstOrNull()?.firstOrNull()?.shotLogged?.let { shot ->
             logShotMutableStateFlow.update { state ->
                 state.copy(
@@ -201,13 +201,23 @@ class LogShotViewModel(
                     shotsMade = shot.shotsMade,
                     shotsMissed = shot.shotsMissed,
                     shotsAttempted = shot.shotsAttempted,
-                    shotsMadePercentValue = calculateShotPercentage(shot, isShotsMade = true),
-                    shotsMissedPercentValue = calculateShotPercentage(shot, isShotsMade = false),
+                    shotsMadePercentValue = logShotViewModelExt.calculateShotPercentage(shot, isShotsMade = true),
+                    shotsMissedPercentValue = logShotViewModelExt.calculateShotPercentage(shot, isShotsMade = false),
                     deleteShotButtonVisible = false,
                     toolbarId = StringsIds.logShot
                 )
             }
         }
+    }
+
+    /**
+     * Initializes the [initialShotLogged] property with the current state for change detection.
+     */
+    internal fun initializeShotLogged() {
+        initialShotLogged = logShotViewModelExt.initializeShotLogged(
+            state = logShotMutableStateFlow.value,
+            declaredShot = currentDeclaredShot
+        )
     }
 
     /**
@@ -217,31 +227,18 @@ class LogShotViewModel(
      * @param isShotsMade True to calculate percentage for made shots, false for missed shots.
      * @return Formatted percentage string.
      */
-    private fun calculateShotPercentage(shot: ShotLogged, isShotsMade: Boolean): String {
-        return logShotViewModelExt.percentageFormat(
-            shotsMade = shot.shotsMade.toDouble(),
-            shotsMissed = shot.shotsMissed.toDouble(),
-            isShotsMade = isShotsMade
-        )
+    internal fun calculateShotPercentage(shot: ShotLogged, isShotsMade: Boolean): String {
+        return logShotViewModelExt.calculateShotPercentage(shot = shot, isShotsMade = isShotsMade)
     }
 
     /**
-     * Initializes the [initialShotLogged] property with the current state for change detection.
+     * Converts a list of [ShotLogged] to a list of Firebase response objects for upload.
+     *
+     * @param currentShotList List of shots to convert.
+     * @return List of [ShotLoggedRealtimeResponse].
      */
-    private fun initializeShotLogged() {
-        initialShotLogged = ShotLogged(
-            id = 0, // Ignored field
-            shotName = logShotMutableStateFlow.value.shotName,
-            shotType = currentDeclaredShot?.id ?: 0,
-            shotsAttempted = logShotMutableStateFlow.value.shotsAttempted,
-            shotsMade = logShotMutableStateFlow.value.shotsMade,
-            shotsMissed = logShotMutableStateFlow.value.shotsMissed,
-            shotsMadePercentValue = logShotViewModelExt.convertPercentageToDouble(logShotMutableStateFlow.value.shotsMadePercentValue.trim().replace(" ", "")),
-            shotsMissedPercentValue = logShotViewModelExt.convertPercentageToDouble(logShotMutableStateFlow.value.shotsMissedPercentValue.trim().replace(" ", "")),
-            shotsAttemptedMillisecondsValue = logShotViewModelExt.convertValueToDate(logShotMutableStateFlow.value.shotsTakenDateValue)?.time ?: 0L,
-            shotsLoggedMillisecondsValue = logShotViewModelExt.convertValueToDate(logShotMutableStateFlow.value.shotsLoggedDateValue)?.time ?: 0L,
-            isPending = true // Ignored field
-        )
+    internal fun currentShotLoggedRealtimeResponseList(currentShotList: List<ShotLogged>): List<ShotLoggedRealtimeResponse> {
+        return logShotViewModelExt.currentShotLoggedRealtimeResponseList(currentShotList = currentShotList)
     }
 
     /**
@@ -251,7 +248,7 @@ class LogShotViewModel(
      * @param playerId The ID of the player.
      * @return The player or null if not found.
      */
-    private suspend fun getPlayer(isExisting: Boolean, playerId: Int): Player? {
+    internal suspend fun getPlayer(isExisting: Boolean, playerId: Int): Player? {
         return if (isExisting) {
             playerRepository.fetchPlayerById(id = playerId)
         } else {
@@ -342,29 +339,11 @@ class LogShotViewModel(
      * @param state Current UI state containing shot data.
      * @return Constructed [PendingShot].
      */
-    private fun buildPendingShotOnSave(player: Player, state: LogShotState): PendingShot =
-        PendingShot(
+    internal fun buildPendingShotOnSave(player: Player, state: LogShotState): PendingShot =
+        logShotViewModelExt.buildPendingShotOnSave(
             player = player,
-            shotLogged = ShotLogged(
-                id = 0,
-                shotName = state.shotName,
-                shotType = currentDeclaredShot?.id ?: 0,
-                shotsAttempted = state.shotsAttempted,
-                shotsMade = state.shotsMade,
-                shotsMissed = state.shotsMissed,
-                shotsMadePercentValue = logShotViewModelExt.convertPercentageToDouble(
-                    percentage = state.shotsMadePercentValue.trim().replace(" ", "")
-                ),
-                shotsMissedPercentValue = logShotViewModelExt.convertPercentageToDouble(
-                    percentage = state.shotsMissedPercentValue.trim().replace(" ", "")
-                ),
-                shotsAttemptedMillisecondsValue = logShotViewModelExt.convertValueToDate(value = state.shotsTakenDateValue)?.time
-                    ?: 0L,
-                shotsLoggedMillisecondsValue = logShotViewModelExt.convertValueToDate(value = state.shotsLoggedDateValue)?.time
-                    ?: 0L,
-                isPending = true
-            ),
-            isPendingPlayer = logShotViewModelExt.logShotInfo.isExistingPlayer
+            state = state,
+            declaredShot = currentDeclaredShot
         )
 
     /**
@@ -373,7 +352,7 @@ class LogShotViewModel(
      *
      * @param pendingShot The shot to save.
      */
-    private fun handleExistingShotSaveClicked(pendingShot: PendingShot) {
+    internal fun handleExistingShotSaveClicked(pendingShot: PendingShot) {
         logShotViewModelExt.noChangesForShotAlert(initialShotLogged = initialShotLogged, pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
             disableProgressAndShowAlert(alert = alert)
         } ?: createPendingShot(
@@ -387,7 +366,7 @@ class LogShotViewModel(
      *
      * @param pendingShot The shot to update.
      */
-    private fun handlePendingShotSaveClicked(pendingShot: PendingShot) {
+    internal fun handlePendingShotSaveClicked(pendingShot: PendingShot) {
         logShotViewModelExt.noChangesForShotAlert(initialShotLogged = initialShotLogged, pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
             disableProgressAndShowAlert(alert = alert)
         } ?: updatePendingShot(pendingShot = pendingShot)
@@ -398,7 +377,7 @@ class LogShotViewModel(
      *
      * @param pendingShot The shot to update.
      */
-    private suspend fun handleFromShotListSaveClicked(pendingShot: PendingShot) {
+    internal suspend fun handleFromShotListSaveClicked(pendingShot: PendingShot) {
         logShotViewModelExt.noChangesForShotAlert(initialShotLogged = initialShotLogged, pendingShotLogged = pendingShot.shotLogged)?.let { alert ->
             disableProgressAndShowAlert(alert = alert)
         } ?: updateCurrentShot(pendingShot = pendingShot)
@@ -449,7 +428,7 @@ class LogShotViewModel(
     /**
      * Resets the UI state to default empty values.
      */
-    private fun resetState() =
+    internal fun resetState() =
         logShotMutableStateFlow.update { state ->
             state.copy(
                 shotName = "",
@@ -471,7 +450,7 @@ class LogShotViewModel(
      *
      * @param pendingShot The shot to update.
      */
-    private fun updatePendingShot(pendingShot: PendingShot) {
+    internal fun updatePendingShot(pendingShot: PendingShot) {
         val firstShotLogged = currentPendingShot.fetchPendingShots().first()
         currentPendingShot.deleteShot(shotLogged = firstShotLogged)
         currentPendingShot.createShot(shotLogged = pendingShot.copy(shotLogged = pendingShot.shotLogged.copy(id = firstShotLogged.shotLogged.id)))
@@ -484,7 +463,7 @@ class LogShotViewModel(
      * @param player The player whose info is being updated.
      * @param shotLogged List of shots to upload.
      */
-    private suspend fun updateUserInFirebase(player: Player, shotLogged: List<ShotLogged>) {
+    internal suspend fun updateUserInFirebase(player: Player, shotLogged: List<ShotLogged>) {
         val key = activeUserRepository.fetchActiveUser()?.firebaseAccountInfoKey ?: ""
         val playerKey =
             safeLet(player.firstName, player.lastName) { firstName, lastName ->
@@ -502,7 +481,7 @@ class LogShotViewModel(
                         lastName = player.lastName,
                         positionValue = player.position.value,
                         imageUrl = player.imageUrl ?: "",
-                        shotsLogged = currentShotLoggedRealtimeResponseList(currentShotList = shotLogged)
+                        shotsLogged = logShotViewModelExt.currentShotLoggedRealtimeResponseList(currentShotList = shotLogged)
                     )
                 )
             ).collectLatest { isSuccessful ->
@@ -518,38 +497,6 @@ class LogShotViewModel(
         }
     }
 
-    /**
-     * Converts a list of [ShotLogged] to a list of Firebase response objects for upload.
-     *
-     * @param currentShotList List of shots to convert.
-     * @return List of [ShotLoggedRealtimeResponse].
-     */
-    private fun currentShotLoggedRealtimeResponseList(currentShotList: List<ShotLogged>): List<ShotLoggedRealtimeResponse> {
-        if (currentShotList.isNotEmpty()) {
-            val shotLoggedRealtimeResponseArrayList: ArrayList<ShotLoggedRealtimeResponse> = arrayListOf()
-
-            currentShotList.forEach { shotLogged ->
-                shotLoggedRealtimeResponseArrayList.add(
-                    ShotLoggedRealtimeResponse(
-                        id = shotLogged.id,
-                        shotName = shotLogged.shotName,
-                        shotType = shotLogged.shotType,
-                        shotsAttempted = shotLogged.shotsAttempted,
-                        shotsMade = shotLogged.shotsMade,
-                        shotsMissed = shotLogged.shotsMissed,
-                        shotsMadePercentValue = shotLogged.shotsMadePercentValue,
-                        shotsMissedPercentValue = shotLogged.shotsMissedPercentValue,
-                        shotsAttemptedMillisecondsValue = shotLogged.shotsAttemptedMillisecondsValue,
-                        shotsLoggedMillisecondsValue = shotLogged.shotsLoggedMillisecondsValue,
-                        isPending = false
-                    )
-                )
-            }
-            return shotLoggedRealtimeResponseArrayList
-        } else {
-            return arrayListOf()
-        }
-    }
 
     /**
      * Handles the result of attempting to update a shot in Firebase.
@@ -558,7 +505,7 @@ class LogShotViewModel(
      * @param player Player whose shots were updated.
      * @param shotLogged List of updated shots.
      */
-    private suspend fun handleUpdatedShot(
+    internal suspend fun handleUpdatedShot(
         isSuccessful: Boolean,
         player: Player,
         shotLogged: List<ShotLogged>
@@ -589,7 +536,7 @@ class LogShotViewModel(
      *
      * @param pendingShot Shot data to update.
      */
-    private suspend fun updateCurrentShot(pendingShot: PendingShot) {
+    internal suspend fun updateCurrentShot(pendingShot: PendingShot) {
         currentPlayer?.let { player ->
             updateUserInFirebase(
                 player = player,

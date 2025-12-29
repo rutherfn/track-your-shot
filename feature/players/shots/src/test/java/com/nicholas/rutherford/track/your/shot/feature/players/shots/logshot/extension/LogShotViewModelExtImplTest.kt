@@ -2,9 +2,15 @@ package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.ex
 
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayer
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotState
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
@@ -473,5 +479,218 @@ class LogShotViewModelExtImplTest {
             logShotViewModelExtImpl.showUpdatedAlert(),
             alert
         )
+    }
+
+    @Nested
+    inner class CalculateShotPercentage {
+
+        @Test
+        fun `when isShotsMade is true should format made shots percentage`() {
+            val shot = TestShotLogged.build().copy(shotsMade = 10, shotsMissed = 5)
+
+            every { application.getString(StringsIds.shotPercentage, "66.7") } returns "66.7%"
+
+            val result = logShotViewModelExtImpl.calculateShotPercentage(shot = shot, isShotsMade = true)
+
+            Assertions.assertEquals("66.7%", result)
+        }
+
+        @Test
+        fun `when isShotsMade is false should format missed shots percentage`() {
+            val shot = TestShotLogged.build().copy(shotsMade = 8, shotsMissed = 12)
+
+            every { application.getString(StringsIds.shotPercentage, "60") } returns "60.0%"
+
+            val result = logShotViewModelExtImpl.calculateShotPercentage(shot = shot, isShotsMade = false)
+
+            Assertions.assertEquals("60.0%", result)
+        }
+    }
+
+    @Nested
+    inner class CurrentShotLoggedRealtimeResponseList {
+
+        @Test
+        fun `when currentShotList is empty should return empty list`() {
+            val currentShotList = emptyList<ShotLogged>()
+
+            val result = logShotViewModelExtImpl.currentShotLoggedRealtimeResponseList(currentShotList = currentShotList)
+
+            Assertions.assertTrue(result.isEmpty())
+        }
+
+        @Test
+        fun `when currentShotList has one item should convert to ShotLoggedRealtimeResponse with isPending false`() {
+            val shotLogged = TestShotLogged.build().copy(
+                id = 1,
+                shotName = "Test Shot",
+                shotType = 5,
+                shotsAttempted = 10,
+                shotsMade = 7,
+                shotsMissed = 3,
+                shotsMadePercentValue = 70.0,
+                shotsMissedPercentValue = 30.0,
+                shotsAttemptedMillisecondsValue = 1000L,
+                shotsLoggedMillisecondsValue = 2000L,
+                isPending = true // Should be converted to false
+            )
+            val currentShotList = listOf(shotLogged)
+
+            val result = logShotViewModelExtImpl.currentShotLoggedRealtimeResponseList(currentShotList = currentShotList)
+
+            Assertions.assertEquals(1, result.size)
+            val response = result.first()
+            Assertions.assertEquals(shotLogged.id, response.id)
+            Assertions.assertEquals(shotLogged.shotName, response.shotName)
+            Assertions.assertEquals(shotLogged.shotType, response.shotType)
+            Assertions.assertEquals(shotLogged.shotsAttempted, response.shotsAttempted)
+            Assertions.assertEquals(shotLogged.shotsMade, response.shotsMade)
+            Assertions.assertEquals(shotLogged.shotsMissed, response.shotsMissed)
+            Assertions.assertEquals(shotLogged.shotsMadePercentValue, response.shotsMadePercentValue)
+            Assertions.assertEquals(shotLogged.shotsMissedPercentValue, response.shotsMissedPercentValue)
+            Assertions.assertEquals(shotLogged.shotsAttemptedMillisecondsValue, response.shotsAttemptedMillisecondsValue)
+            Assertions.assertEquals(shotLogged.shotsLoggedMillisecondsValue, response.shotsLoggedMillisecondsValue)
+            Assertions.assertFalse(response.isPending) // Should always be false
+        }
+
+        @Test
+        fun `when currentShotList has multiple items should convert all to ShotLoggedRealtimeResponse`() {
+            val shot1 = TestShotLogged.build().copy(id = 1, shotName = "Shot 1")
+            val shot2 = TestShotLogged.build().copy(id = 2, shotName = "Shot 2")
+            val shot3 = TestShotLogged.build().copy(id = 3, shotName = "Shot 3")
+            val currentShotList = listOf(shot1, shot2, shot3)
+
+            val result = logShotViewModelExtImpl.currentShotLoggedRealtimeResponseList(currentShotList = currentShotList)
+
+            Assertions.assertEquals(3, result.size)
+            Assertions.assertEquals(shot1.id, result[0].id)
+            Assertions.assertEquals(shot1.shotName, result[0].shotName)
+            Assertions.assertEquals(shot2.id, result[1].id)
+            Assertions.assertEquals(shot2.shotName, result[1].shotName)
+            Assertions.assertEquals(shot3.id, result[2].id)
+            Assertions.assertEquals(shot3.shotName, result[2].shotName)
+        }
+
+        @Test
+        fun `when currentShotList has multiple items all should have isPending false`() {
+            val shot1 = TestShotLogged.build().copy(id = 1, isPending = true)
+            val shot2 = TestShotLogged.build().copy(id = 2, isPending = false)
+            val shot3 = TestShotLogged.build().copy(id = 3, isPending = true)
+            val currentShotList = listOf(shot1, shot2, shot3)
+
+            val result = logShotViewModelExtImpl.currentShotLoggedRealtimeResponseList(currentShotList = currentShotList)
+
+            Assertions.assertEquals(3, result.size)
+            result.forEach { response ->
+                Assertions.assertFalse(response.isPending)
+            }
+        }
+    }
+
+    @Nested
+    inner class BuildPendingShotOnSave {
+
+        @Test
+        fun `should build PendingShot with correct values from state`() {
+            val player = TestPlayer().create()
+            val declaredShot = TestDeclaredShot.build()
+            val state = LogShotState(
+                shotName = "Test Shot",
+                shotsAttempted = 15,
+                shotsMade = 10,
+                shotsMissed = 5,
+                shotsMadePercentValue = "66.7%",
+                shotsMissedPercentValue = "33.3%",
+                shotsTakenDateValue = "Jan 1, 2024",
+                shotsLoggedDateValue = "Jan 2, 2024"
+            )
+
+            logShotViewModelExtImpl.logShotInfo = LogShotInfo(isExistingPlayer = true)
+            every { application.getString(StringsIds.empty) } returns ""
+            val dateValue = dateFormat.parse("Jan 1, 2024")
+            val loggedDateValue = dateFormat.parse("Jan 2, 2024")
+
+            val result = logShotViewModelExtImpl.buildPendingShotOnSave(
+                player = player,
+                state = state,
+                declaredShot = declaredShot
+            )
+
+            Assertions.assertEquals(player, result.player)
+            Assertions.assertEquals("Test Shot", result.shotLogged.shotName)
+            Assertions.assertEquals(declaredShot.id, result.shotLogged.shotType)
+            Assertions.assertEquals(15, result.shotLogged.shotsAttempted)
+            Assertions.assertEquals(10, result.shotLogged.shotsMade)
+            Assertions.assertEquals(5, result.shotLogged.shotsMissed)
+            Assertions.assertTrue(result.isPendingPlayer)
+            Assertions.assertEquals(0, result.shotLogged.id)
+            Assertions.assertTrue(result.shotLogged.isPending)
+        }
+
+        @Test
+        fun `when declaredShot is null should use 0 for shotType`() {
+            val player = TestPlayer().create()
+            val state = LogShotState(shotName = "Test Shot")
+
+            every { application.getString(StringsIds.empty) } returns ""
+
+            val result = logShotViewModelExtImpl.buildPendingShotOnSave(
+                player = player,
+                state = state,
+                declaredShot = null
+            )
+
+            Assertions.assertEquals(0, result.shotLogged.shotType)
+        }
+    }
+
+    @Nested
+    inner class InitializeShotLogged {
+
+        @Test
+        fun `should initialize ShotLogged with correct values from state`() {
+            val declaredShot = TestDeclaredShot.build()
+            val state = LogShotState(
+                shotName = "Test Shot",
+                shotsAttempted = 15,
+                shotsMade = 10,
+                shotsMissed = 5,
+                shotsMadePercentValue = "66.7%",
+                shotsMissedPercentValue = "33.3%",
+                shotsTakenDateValue = "Jan 1, 2024",
+                shotsLoggedDateValue = "Jan 2, 2024"
+            )
+
+            every { application.getString(StringsIds.empty) } returns ""
+            val dateValue = dateFormat.parse("Jan 1, 2024")
+            val loggedDateValue = dateFormat.parse("Jan 2, 2024")
+
+            val result = logShotViewModelExtImpl.initializeShotLogged(
+                state = state,
+                declaredShot = declaredShot
+            )
+
+            Assertions.assertEquals("Test Shot", result.shotName)
+            Assertions.assertEquals(declaredShot.id, result.shotType)
+            Assertions.assertEquals(15, result.shotsAttempted)
+            Assertions.assertEquals(10, result.shotsMade)
+            Assertions.assertEquals(5, result.shotsMissed)
+            Assertions.assertEquals(0, result.id)
+            Assertions.assertTrue(result.isPending)
+        }
+
+        @Test
+        fun `when declaredShot is null should use 0 for shotType`() {
+            val state = LogShotState()
+
+            every { application.getString(StringsIds.empty) } returns ""
+
+            val result = logShotViewModelExtImpl.initializeShotLogged(
+                state = state,
+                declaredShot = null
+            )
+
+            Assertions.assertEquals(0, result.shotType)
+        }
     }
 }

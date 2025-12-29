@@ -3,8 +3,13 @@ package com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.ex
 import android.app.Application
 import android.util.Log
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.room.response.isTheSame
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotState
+import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.PendingShot
+import com.nicholas.rutherford.track.your.shot.firebase.realtime.ShotLoggedRealtimeResponse
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
@@ -327,6 +332,111 @@ class LogShotViewModelExtImpl(
                 )
             ),
             description = application.getString(StringsIds.currentShotHasBeenUpdatedDescription)
+        )
+    }
+
+    /**
+     * Calculates the shot percentage as a formatted string for made or missed shots.
+     *
+     * @param shot The shot data.
+     * @param isShotsMade True to calculate percentage for made shots, false for missed shots.
+     * @return Formatted percentage string.
+     */
+    override fun calculateShotPercentage(shot: ShotLogged, isShotsMade: Boolean): String {
+        return percentageFormat(
+            shotsMade = shot.shotsMade.toDouble(),
+            shotsMissed = shot.shotsMissed.toDouble(),
+            isShotsMade = isShotsMade
+        )
+    }
+
+    /**
+     * Converts a list of [ShotLogged] to a list of Firebase response objects for upload.
+     *
+     * @param currentShotList List of shots to convert.
+     * @return List of [ShotLoggedRealtimeResponse].
+     */
+    override fun currentShotLoggedRealtimeResponseList(currentShotList: List<ShotLogged>): List<ShotLoggedRealtimeResponse> {
+        if (currentShotList.isNotEmpty()) {
+            val shotLoggedRealtimeResponseArrayList: ArrayList<ShotLoggedRealtimeResponse> = arrayListOf()
+
+            currentShotList.forEach { shotLogged ->
+                shotLoggedRealtimeResponseArrayList.add(
+                    ShotLoggedRealtimeResponse(
+                        id = shotLogged.id,
+                        shotName = shotLogged.shotName,
+                        shotType = shotLogged.shotType,
+                        shotsAttempted = shotLogged.shotsAttempted,
+                        shotsMade = shotLogged.shotsMade,
+                        shotsMissed = shotLogged.shotsMissed,
+                        shotsMadePercentValue = shotLogged.shotsMadePercentValue,
+                        shotsMissedPercentValue = shotLogged.shotsMissedPercentValue,
+                        shotsAttemptedMillisecondsValue = shotLogged.shotsAttemptedMillisecondsValue,
+                        shotsLoggedMillisecondsValue = shotLogged.shotsLoggedMillisecondsValue,
+                        isPending = false
+                    )
+                )
+            }
+            return shotLoggedRealtimeResponseArrayList
+        } else {
+            return arrayListOf()
+        }
+    }
+
+    /**
+     * Constructs a [PendingShot] object based on the current player and UI state.
+     *
+     * @param player The player the shot is associated with.
+     * @param state Current UI state containing shot data.
+     * @param declaredShot The declared shot type.
+     * @return Constructed [PendingShot].
+     */
+    override fun buildPendingShotOnSave(player: Player, state: LogShotState, declaredShot: DeclaredShot?): PendingShot {
+        return PendingShot(
+            player = player,
+            shotLogged = ShotLogged(
+                id = 0,
+                shotName = state.shotName,
+                shotType = declaredShot?.id ?: 0,
+                shotsAttempted = state.shotsAttempted,
+                shotsMade = state.shotsMade,
+                shotsMissed = state.shotsMissed,
+                shotsMadePercentValue = convertPercentageToDouble(
+                    percentage = state.shotsMadePercentValue.trim().replace(" ", "")
+                ),
+                shotsMissedPercentValue = convertPercentageToDouble(
+                    percentage = state.shotsMissedPercentValue.trim().replace(" ", "")
+                ),
+                shotsAttemptedMillisecondsValue = convertValueToDate(value = state.shotsTakenDateValue)?.time
+                    ?: 0L,
+                shotsLoggedMillisecondsValue = convertValueToDate(value = state.shotsLoggedDateValue)?.time
+                    ?: 0L,
+                isPending = true
+            ),
+            isPendingPlayer = logShotInfo.isExistingPlayer
+        )
+    }
+
+    /**
+     * Initializes a [ShotLogged] from the current state for change detection.
+     *
+     * @param state Current UI state.
+     * @param declaredShot The declared shot type.
+     * @return Initialized [ShotLogged].
+     */
+    override fun initializeShotLogged(state: LogShotState, declaredShot: DeclaredShot?): ShotLogged {
+        return ShotLogged(
+            id = 0, // Ignored field
+            shotName = state.shotName,
+            shotType = declaredShot?.id ?: 0,
+            shotsAttempted = state.shotsAttempted,
+            shotsMade = state.shotsMade,
+            shotsMissed = state.shotsMissed,
+            shotsMadePercentValue = convertPercentageToDouble(state.shotsMadePercentValue.trim().replace(" ", "")),
+            shotsMissedPercentValue = convertPercentageToDouble(state.shotsMissedPercentValue.trim().replace(" ", "")),
+            shotsAttemptedMillisecondsValue = convertValueToDate(state.shotsTakenDateValue)?.time ?: 0L,
+            shotsLoggedMillisecondsValue = convertValueToDate(state.shotsLoggedDateValue)?.time ?: 0L,
+            isPending = true // Ignored field
         )
     }
 }
