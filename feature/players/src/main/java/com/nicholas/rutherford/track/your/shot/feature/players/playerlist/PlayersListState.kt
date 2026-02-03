@@ -26,5 +26,6 @@ data class PlayersListState(
         imageUrl = "",
         shotsLoggedList = emptyList()
     ),
-    val sheetOptions: List<String> = emptyList()
+    val sheetOptions: List<String> = emptyList(),
+    val filterCount: Int = 0
 )

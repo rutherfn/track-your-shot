@@ -133,6 +133,7 @@ object StringsIds {
     val errorVoiceCommandSavedFailure = R.string.error_voice_command_save_failed
     val examplePhrases = R.string.example_phrases
     val findShotsByName = R.string.find_shots_by_name
+    val filters = R.string.filters
     val firstName = R.string.first_name
     val forgotPassword = R.string.forgot_password
     val general = R.string.general

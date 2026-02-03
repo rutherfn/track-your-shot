@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -66,7 +68,10 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
     if (!isPlayerListEmpty) {
         PlayerListContent(playerListScreenParams = playerListScreenParams)
     } else {
-        AddNewPlayerEmptyStateContent()
+        AddNewPlayerEmptyStateContent(
+            filterCount = playerListScreenParams.state.filterCount,
+            onFilterChipClicked = playerListScreenParams.onFilterChipClicked
+        )
     }
 }
 
@@ -98,24 +103,87 @@ private fun PlayerListContent(playerListScreenParams: PlayersListScreenParams) {
         },
         onCancelItemClicked = { scope.launch { sheetState.hide() } },
         content = {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(playerListScreenParams.state.playerList) { player ->
-                    PlayerItem(
-                        player = player,
-                        onPlayerClicked = playerListScreenParams.onPlayerClicked,
-                        sheetState = sheetState,
-                        scope = scope
-                    )
+            Box(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(bottom = 80.dp)
+                ) {
+                    items(playerListScreenParams.state.playerList) { player ->
+                        PlayerItem(
+                            player = player,
+                            onPlayerClicked = playerListScreenParams.onPlayerClicked,
+                            sheetState = sheetState,
+                            scope = scope
+                        )
+                    }
                 }
+                
+                FilterChipWithBadge(
+                    filterCount = playerListScreenParams.state.filterCount,
+                    onFilterChipClicked = playerListScreenParams.onFilterChipClicked,
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 16.dp)
+                )
             }
         }
     )
 }
 
 /**
+ * Displays a filter chip with optional badge showing the count of active filters.
+ *
+ * The chip always shows "Filters" text. If there are active filters (filterCount > 0),
+ * it displays a circular badge with the count number.
+ *
+ * @param filterCount The number of active filters. If 0, no badge is shown.
+ * @param onFilterChipClicked Callback when the filter chip is clicked.
+ * @param modifier Optional modifier for positioning and styling.
+ */
+@Composable
+private fun FilterChipWithBadge(
+    filterCount: Int,
+    onFilterChipClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    FilterChip(
+        onClick = onFilterChipClicked,
+        modifier = modifier,
+        label = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = stringResource(id = StringsIds.filters),
+                    style = TextStyles.bodyBold
+                )
+                
+                if (filterCount > 0) {
+                    Box(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clip(CircleShape)
+                            .background(AppColors.Orange),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = filterCount.toString(),
+                            style = TextStyles.smallBold,
+                            color = AppColors.White
+                        )
+                    }
+                }
+            }
+        },
+        selected = filterCount > 0
+    )
+}
+
+/**
  * Displays a single player item as a card.
  *
- * The card shows the player’s image, name, and position. Clicking the card opens the bottom sheet.
+ * The card shows the player's image, name, and position. Clicking the card opens the bottom sheet.
  *
  * @param player The player data to display.
  * @param onPlayerClicked Callback when a player is selected.
@@ -197,82 +265,79 @@ private fun PlayerItem(
  * This UI encourages users to add a new player to their list.
  */
 @Composable
-private fun AddNewPlayerEmptyStateContent() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(AppColors.White),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(16.dp)
+private fun AddNewPlayerEmptyStateContent(
+    filterCount: Int,
+    onFilterChipClicked: () -> Unit
+) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(AppColors.White),
+            contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_basketball_player_empty_state),
-                contentDescription = null,
-                modifier = Modifier.size(120.dp)
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_basketball_player_empty_state),
+                    contentDescription = null,
+                    modifier = Modifier.size(120.dp)
+                )
 
-            Text(
-                text = stringResource(id = StringsIds.noCurrentPlayersAdded),
-                style = TextStyles.medium,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(vertical = 4.dp)
-            )
+                Text(
+                    text = stringResource(id = StringsIds.noCurrentPlayersAdded),
+                    style = TextStyles.medium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
 
-            Text(
-                text = stringResource(id = StringsIds.hintAddNewPlayer),
-                style = TextStyles.smallBold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(vertical = 4.dp)
-            )
+                Text(
+                    text = stringResource(id = StringsIds.hintAddNewPlayer),
+                    style = TextStyles.smallBold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+            }
         }
+        
+        FilterChipWithBadge(
+            filterCount = filterCount,
+            onFilterChipClicked = onFilterChipClicked,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp)
+        )
     }
 }
 
-/**
- * Preview of [PlayersListScreen] with players present.
- */
-@Composable
-@Preview
-private fun PlayersListScreenWithItemsPreview() {
-    PlayersListScreen(
-        playerListScreenParams = PlayersListScreenParams(
-            state = PlayersListState(
-                playerList = listOf(
-                    Player(
-                        firstName = "first",
-                        lastName = "last",
-                        position = PlayerPositions.Center,
-                        firebaseKey = "key",
-                        imageUrl = null,
-                        shotsLoggedList = emptyList()
+    /**
+     * Preview of [PlayersListScreen] with players present.
+     */
+    @Preview
+    @Composable
+    private fun PlayersListScreenWithItemsPreview() {
+        PlayersListScreen(
+            playerListScreenParams = PlayersListScreenParams(
+                state = PlayersListState(
+                    playerList = listOf(
+                        Player(
+                            firstName = "first",
+                            lastName = "last",
+                            position = PlayerPositions.Center,
+                            firebaseKey = "key",
+                            imageUrl = null,
+                            shotsLoggedList = emptyList()
+                        )
                     )
-                )
-            ),
-            onToolbarMenuClicked = {},
-            onAddPlayerClicked = {},
-            onPlayerClicked = {},
-            onSheetItemClicked = {}
+                ),
+                onToolbarMenuClicked = {},
+                onAddPlayerClicked = {},
+                onPlayerClicked = {},
+                onSheetItemClicked = {},
+                onFilterChipClicked = {}
+            )
         )
-    )
-}
-
-/**
- * Preview of [PlayersListScreen] in the empty state when no players exist.
- */
-@Composable
-@Preview
-fun PlayerListScreenEmptyStatePreview() {
-    PlayersListScreen(
-        playerListScreenParams = PlayersListScreenParams(
-            state = PlayersListState(playerList = emptyList()),
-            onToolbarMenuClicked = {},
-            onAddPlayerClicked = {},
-            onPlayerClicked = {},
-            onSheetItemClicked = {}
-        )
-    )
-}
+    }

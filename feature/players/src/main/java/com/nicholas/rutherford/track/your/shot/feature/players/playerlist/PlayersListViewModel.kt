@@ -138,6 +138,11 @@ class PlayersListViewModel(
         navigation.navigateToCreateEditPlayer(firstName = null, lastName = null)
     }
 
+    /** Navigation event to open the player filters screen */
+    fun onFilterChipClicked() {
+        navigation.navigateToPlayerFilters()
+    }
+
     /** Deletes the player after confirming and showing progress */
     suspend fun onYesDeletePlayerClicked(isConnectedToInternet: Boolean, player: Player) {
         enableProgressAndDelay()

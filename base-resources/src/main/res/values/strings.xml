@@ -97,6 +97,7 @@
     <string name="error_creating_account">Error Creating Account</string>
     <string name="error_deleting_pending_account">Error deleting pending account</string>
     <string name="find_shots_by_name">Find shots by name </string>
+    <string name="filters">Filters</string>
     <string name="general">General</string>
     <string name="general_information">General Information</string>
     <string name="generate_report">Generate Report</string>
