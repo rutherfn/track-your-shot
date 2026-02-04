@@ -60,13 +60,13 @@ fun EnhancedSearchTextField(
             )
         )
     }
-    
+
     // Track the last text we sent to onValueChange to distinguish user input from external updates
     var lastSentText by remember { mutableStateOf(value) }
-    
+
     // Get focus manager to clear focus when needed
     val focusManager = LocalFocusManager.current
-    
+
     // Sync with external value changes (from ViewModel/StateFlow)
     // Only update if the text changed externally (not from user typing)
     LaunchedEffect(value) {
@@ -80,7 +80,7 @@ fun EnhancedSearchTextField(
             lastSentText = value // Update lastSentText to match external value
         }
     }
-    
+
     OutlinedTextField(
         value = currentTextFieldValue,
         onValueChange = { newValue ->

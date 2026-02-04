@@ -1,7 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.playerlist
 
-import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.compose.components.EnhancedSearchTextField
+import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 
 /**
  * Represents the UI state for the Create/Edit Player screen.

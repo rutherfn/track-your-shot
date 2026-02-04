@@ -141,7 +141,7 @@ private fun PlayerListContentWithSearch(
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                             .onFocusChanged { isSearchFocused = it.isFocused }
                     )
-                    
+
                     if (isPlayerListEmpty && searchQuery.isNotEmpty()) {
                         SearchResultsEmptyState(
                             onClearSearch = { playerListScreenParams.onSearchTextChanged("") }
@@ -161,7 +161,7 @@ private fun PlayerListContentWithSearch(
                         }
                     }
                 }
-                
+
                 FilterChipWithBadge(
                     filterCount = playerListScreenParams.state.filterCount,
                     onFilterChipClicked = playerListScreenParams.onFilterChipClicked,
@@ -217,7 +217,7 @@ private fun FilterChipWithBadge(
                     AppColors.Black
                 }
             )
-            
+
             if (filterCount > 0) {
                 Box(
                     modifier = Modifier
@@ -360,7 +360,7 @@ private fun AddNewPlayerEmptyStateContent(
                 )
             }
         }
-        
+
         FilterChipWithBadge(
             filterCount = filterCount,
             onFilterChipClicked = onFilterChipClicked,
