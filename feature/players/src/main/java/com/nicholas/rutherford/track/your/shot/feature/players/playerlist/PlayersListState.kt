@@ -15,6 +15,9 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPosition
  * @property selectedPlayer The currently selected player, used when interacting with bottom sheet options.
  *                          Defaults to an empty player instance with default values.
  * @property sheetOptions A list of string options to be displayed in the bottom sheet when a player is selected.
+ * @property filterCount The number of active filters applied to the player list.
+ * @property searchQuery The current search query entered by the user.
+ * @property hasAnyPlayersInDatabase A boolean indicating whether there are any players in the database.
  */
 data class PlayersListState(
     val playerList: List<Player> = emptyList(),
@@ -26,5 +29,8 @@ data class PlayersListState(
         imageUrl = "",
         shotsLoggedList = emptyList()
     ),
-    val sheetOptions: List<String> = emptyList()
+    val sheetOptions: List<String> = emptyList(),
+    val filterCount: Int = 0,
+    val searchQuery: String = "",
+    val hasAnyPlayersInDatabase: Boolean = false
 )

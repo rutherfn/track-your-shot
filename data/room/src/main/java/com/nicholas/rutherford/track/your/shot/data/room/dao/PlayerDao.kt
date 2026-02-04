@@ -107,4 +107,14 @@ interface PlayerDao {
      */
     @Query("SELECT COUNT(*) FROM players")
     suspend fun getPlayerCount(): Int
+
+    /**
+     * Searches for players by first name or last name using partial matching.
+     * Returns all players whose first name or last name contains the search query.
+     *
+     * @param query The search string to match against first and last names.
+     * @return A list of players matching the search query, or an empty list if none found.
+     */
+    @Query("SELECT * FROM players WHERE firstName LIKE '%' || :query || '%' OR lastName LIKE '%' || :query || '%'")
+    suspend fun searchPlayers(query: String): List<PlayerEntity>
 }

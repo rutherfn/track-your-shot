@@ -371,6 +371,10 @@ object AppNavigationGraph {
                             isConnectedToInternet = isConnectedToInternet,
                             index = index
                         )
+                    },
+                    onFilterChipClicked = { playersListViewModel.onFilterChipClicked() },
+                    onSearchTextChanged = { searchQuery ->
+                        playersListViewModel.onSearchTextChanged(searchQuery = searchQuery)
                     }
                 )
             )

@@ -31,6 +31,7 @@
     <string name="choose_a_shot_to_log_info_description">Choose a shot to log its information. To view additional details about the shot, click \"Show More\",</string>
     <string name="choose_image_from_gallery">Choose Image From Gallery</string>
     <string name="choose_option">Choose Option</string>
+    <string name="clear_search_results">Clear Search Results</string>
     <string name="close">Close</string>
     <string name="compare_players_stats">Compare Players &amp; Stats</string>
     <string name="contacting_us">Contacting Us</string>
@@ -96,6 +97,7 @@
     <string name="error">Error</string>
     <string name="error_creating_account">Error Creating Account</string>
     <string name="error_deleting_pending_account">Error deleting pending account</string>
+    <string name="filters">Filters</string>
     <string name="find_shots_by_name">Find shots by name </string>
     <string name="general">General</string>
     <string name="general_information">General Information</string>
@@ -144,6 +146,8 @@
     <string name="no_players_created">No Players Created</string>
     <string name="no_players_created_description">No players have been created for your account yet. Please create at least one player and record at least one shot to generate a report of shots taken by the player.</string>
     <string name="no_reports_generated">No Reports Generated</string>
+    <string name="no_players_results_found">No Players Results Found</string>
+    <string name="no_players_results_found_description">No matching players was found in your search. Please update search with existing player name for results.</string>
     <string name="no_current_shots_logged_for_player">No Current Shots Logged For Player</string>
     <string name="open_email">Open Email</string>
     <string name="ok">OK</string>
@@ -157,6 +161,7 @@
     <string name="reset_password">Reset Password</string>
     <string name="reset_password_email_sent">Reset Password Email Sent</string>
     <string name="resend_email">Resend Email</string>
+    <string name="search_players">Search players</string>
     <string name="select_a_shot">Select A Shot</string>
     <string name="selecting_a_shot">Selecting A Shot</string>
     <string name="select_date">Select Date</string>

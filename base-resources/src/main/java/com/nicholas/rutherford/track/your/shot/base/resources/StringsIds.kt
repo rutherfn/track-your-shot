@@ -43,6 +43,7 @@ object StringsIds {
     val chooseImageFromGallery = R.string.choose_image_from_gallery
     val chooseOption = R.string.choose_option
     val clickMeToCreateAccount = R.string.click_me_to_create_account
+    val clearSearchResults = R.string.clear_search_results
     val close = R.string.close
     val comparePlayersStats = R.string.compare_players_stats
     val contactingUs = R.string.contacting_us
@@ -132,6 +133,7 @@ object StringsIds {
     val errorVoiceCommandEditFailedWithSameName = R.string.error_voice_command_edit_failed_with_same_name
     val errorVoiceCommandSavedFailure = R.string.error_voice_command_save_failed
     val examplePhrases = R.string.example_phrases
+    val filters = R.string.filters
     val findShotsByName = R.string.find_shots_by_name
     val firstName = R.string.first_name
     val forgotPassword = R.string.forgot_password
@@ -184,6 +186,8 @@ object StringsIds {
     val noPlayersCreated = R.string.no_players_created
     val noPlayersCreatedDescription = R.string.no_players_created_description
     val noReportsGenerated = R.string.no_reports_generated
+    val noPlayersResultsFound = R.string.no_players_results_found
+    val noPlayersResultsFoundDescription = R.string.no_players_results_found_description
     val noShotsCreated = R.string.no_shots_created
     val noShotsCreatedDescription = R.string.no_shots_created_descriipton
     val noShotsDeclaredDescription = R.string._no_shots_declared_description
@@ -218,6 +222,7 @@ object StringsIds {
     val playerReportCreatedForX = R.string.player_report_created_for_x
     val playerShots = R.string.player_shots
     val players = R.string.players
+    val searchPlayers = R.string.search_players
     val playersFirstNameEmptyDescription = R.string.players_first_name_empty_description
     val pointGuard = R.string.point_guard
     val position = R.string.position

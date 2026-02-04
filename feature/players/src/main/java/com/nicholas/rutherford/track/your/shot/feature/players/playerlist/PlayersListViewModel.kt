@@ -22,6 +22,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 const val DELETE_PLAYER_DELAY_IN_MILLIS = 2000L
+const val EDIT_SHEET_OPTION_INDEX = 0
+const val VIEW_SHOTS_SHEET_OPTION_INDEX = 0
+const val EDIT_PLAYER_SHEET_OPTION_INDEX = 1
 
 /**
  * Represents the UI state for the Create/Edit Player screen.
@@ -74,23 +77,26 @@ class PlayersListViewModel(
     fun updatePlayerListState() {
         scope.launch {
             currentPlayerArrayList.clear()
-            playerRepository.fetchAllPlayers().forEach { player ->
+            val allPlayers = playerRepository.fetchAllPlayers()
+
+            allPlayers.forEach { player ->
                 currentPlayerArrayList.add(player)
             }
-            playerListMutableStateFlow.value =
-                PlayersListState(playerList = currentPlayerArrayList.toList())
+            playerListMutableStateFlow.update { state ->
+                state.copy(
+                    playerList = currentPlayerArrayList.toList(),
+                    hasAnyPlayersInDatabase = allPlayers.isNotEmpty()
+                )
+            }
         }
     }
 
     /** Builds sheet options based on whether the selected player has logged shots or not */
     internal fun buildSheetOptions(selectedPlayer: Player): List<String> {
-        val selectedPlayerFullName = selectedPlayer.fullName()
-        val baseSheetOptions = buildBaseSheetOptions(selectedPlayerFullName)
-
         return if (selectedPlayer.shotsLoggedList.isEmpty()) {
-            baseSheetOptions
+            buildBaseSheetOptions(selectedPlayerFullName = selectedPlayer.fullName())
         } else {
-            buildAddViewShotsOption(selectedPlayerFullName)
+            buildAddViewShotsOption(selectedPlayerFullName = selectedPlayer.fullName())
         }
     }
 
@@ -118,30 +124,49 @@ class PlayersListViewModel(
     internal fun shouldUpdateFromUserLoggedIn(
         loggedInPlayerList: List<Player>,
         shouldUpdateLoggedInPlayerListState: Boolean
-    ): Boolean {
-        return loggedInPlayerList.isNotEmpty() && shouldUpdateLoggedInPlayerListState
-    }
+    ): Boolean = loggedInPlayerList.isNotEmpty() && shouldUpdateLoggedInPlayerListState
 
     /** Updates the UI state with players from login */
     internal fun handleLoggedInPlayerList(playerList: List<Player>) {
         currentPlayerArrayList.clear()
         currentPlayerArrayList.addAll(playerList)
-        playerListMutableStateFlow.value =
-            PlayersListState(playerList = currentPlayerArrayList.toList())
+        playerListMutableStateFlow.update { state ->
+            state.copy(
+                playerList = currentPlayerArrayList.toList(),
+                hasAnyPlayersInDatabase = playerList.isNotEmpty()
+            )
+        }
     }
 
     /** Navigation event to open the drawer menu */
     fun onToolbarMenuClicked() = navigation.openNavigationDrawer()
 
     /** Navigation event to open the create/edit player screen */
-    fun onAddPlayerClicked() {
-        navigation.navigateToCreateEditPlayer(firstName = null, lastName = null)
+    fun onAddPlayerClicked() = navigation.navigateToCreateEditPlayer(firstName = null, lastName = null)
+
+    /** Navigation event to open the player filters screen */
+    fun onFilterChipClicked() = navigation.navigateToPlayerFilters()
+
+    /** Updates the search state in the state */
+    fun onSearchTextChanged(searchQuery: String) {
+        scope.launch {
+            currentPlayerArrayList.clear()
+            playerRepository.fetchPlayerByQuery(query = searchQuery).forEach { player ->
+                currentPlayerArrayList.add(player)
+            }
+            playerListMutableStateFlow.update { state ->
+                state.copy(
+                    searchQuery = searchQuery,
+                    playerList = currentPlayerArrayList.toList()
+                )
+            }
+        }
     }
 
     /** Deletes the player after confirming and showing progress */
     suspend fun onYesDeletePlayerClicked(isConnectedToInternet: Boolean, player: Player) {
         enableProgressAndDelay()
-        deletePlayer(isConnectedToInternet, player)
+        deletePlayer(isConnectedToInternet = isConnectedToInternet, player = player)
     }
 
     /** Enables a progress indicator and waits before deletion */
@@ -157,7 +182,11 @@ class PlayersListViewModel(
                 if (isSuccessful) {
                     playerRepository.deletePlayerByName(player.firstName, player.lastName)
                     currentPlayerArrayList.remove(player)
-                    playerListMutableStateFlow.value = PlayersListState(playerList = currentPlayerArrayList.toList())
+                    val hasAnyPlayers = playerRepository.fetchPlayerCount() > 0
+                    playerListMutableStateFlow.value = PlayersListState(
+                        playerList = currentPlayerArrayList.toList(),
+                        hasAnyPlayersInDatabase = hasAnyPlayers
+                    )
                     navigation.disableProgress()
                 } else {
                     navigation.disableProgress()
@@ -173,8 +202,8 @@ class PlayersListViewModel(
     /** Updates the selected player and shows sheet options */
     fun onPlayerClicked(player: Player) {
         selectedPlayer = player
-        playerListMutableStateFlow.update {
-            it.copy(
+        playerListMutableStateFlow.update { state ->
+            state.copy(
                 selectedPlayer = player,
                 sheetOptions = buildSheetOptions(player)
             )
@@ -184,25 +213,25 @@ class PlayersListViewModel(
     /** Handles sheet item actions based on index and player shot count */
     fun onSheetItemClicked(isConnectedToInternet: Boolean, index: Int) {
         if (selectedPlayer.shotsLoggedList.isEmpty()) {
-            handleSheetItemClickForEmptyPlayerList(isConnectedToInternet, index)
+            handleSheetItemClickForEmptyPlayerList(isConnectedToInternet = isConnectedToInternet, index = index)
         } else {
-            handleSheetItemClickForPlayerList(isConnectedToInternet, index)
+            handleSheetItemClickForPlayerList(isConnectedToInternet = isConnectedToInternet, index = index)
         }
     }
 
     private fun handleSheetItemClickForEmptyPlayerList(isConnectedToInternet: Boolean, index: Int) {
-        if (index == 0) {
+        if (index == EDIT_SHEET_OPTION_INDEX) {
             onEditPlayerClicked(player = selectedPlayer)
         } else {
-            onDeletePlayerClicked(isConnectedToInternet, selectedPlayer)
+            onDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = selectedPlayer)
         }
     }
 
     private fun handleSheetItemClickForPlayerList(isConnectedToInternet: Boolean, index: Int) {
         when (index) {
-            0 -> onShotListClicked(selectedPlayer.fullName())
-            1 -> onEditPlayerClicked(selectedPlayer)
-            else -> onDeletePlayerClicked(isConnectedToInternet, selectedPlayer)
+            VIEW_SHOTS_SHEET_OPTION_INDEX -> onShotListClicked(playerName = selectedPlayer.fullName())
+            EDIT_PLAYER_SHEET_OPTION_INDEX -> onEditPlayerClicked(player = selectedPlayer)
+            else -> onDeletePlayerClicked(isConnectedToInternet = isConnectedToInternet, player = selectedPlayer)
         }
     }
 
@@ -215,14 +244,10 @@ class PlayersListViewModel(
     }
 
     /** Navigates to the create/edit screen for the specified player */
-    internal fun onEditPlayerClicked(player: Player) {
-        navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)
-    }
+    internal fun onEditPlayerClicked(player: Player) = navigation.navigateToCreateEditPlayer(firstName = player.firstName, lastName = player.lastName)
 
     /** Triggers alert before confirming deletion of player */
-    internal fun onDeletePlayerClicked(isConnectedToInternet: Boolean, player: Player) {
-        navigation.alert(alert = deletePlayerAlert(isConnectedToInternet, player))
-    }
+    internal fun onDeletePlayerClicked(isConnectedToInternet: Boolean, player: Player) = navigation.alert(alert = deletePlayerAlert(isConnectedToInternet, player))
 
     /** Alert for confirming deletion of a player */
     private fun deletePlayerAlert(isConnectedToInternet: Boolean, player: Player): Alert {
@@ -230,11 +255,7 @@ class PlayersListViewModel(
             title = application.getString(StringsIds.deleteX, player.fullName()),
             confirmButton = AlertConfirmAndDismissButton(
                 buttonText = application.getString(StringsIds.yes),
-                onButtonClicked = {
-                    scope.launch {
-                        onYesDeletePlayerClicked(isConnectedToInternet, player)
-                    }
-                }
+                onButtonClicked = { scope.launch { onYesDeletePlayerClicked(isConnectedToInternet, player) } }
             ),
             dismissButton = AlertConfirmAndDismissButton(buttonText = application.getString(StringsIds.no)),
             description = application.getString(StringsIds.areYouCertainYouWishToRemoveX, player.fullName())

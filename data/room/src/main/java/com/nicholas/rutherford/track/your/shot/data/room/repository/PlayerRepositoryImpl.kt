@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.data.room.repository
 
 import com.nicholas.rutherford.track.your.shot.data.room.dao.PlayerDao
+import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toPlayer
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.toPlayerEntity
@@ -87,4 +88,8 @@ class PlayerRepositoryImpl(private val playerDao: PlayerDao) : PlayerRepository 
 
     /** Returns the total count of players in the database. */
     override suspend fun fetchPlayerCount(): Int = playerDao.getPlayerCount()
+
+    /** Returns all players from the database from the [query]. This will give results based on the first or last name partial match, this also goes in and converts [PlayerEntity] to a given [Player] */
+    override suspend fun fetchPlayerByQuery(query: String): List<Player> =
+        playerDao.searchPlayers(query = query).map { playerEntity -> playerEntity.toPlayer() }
 }
