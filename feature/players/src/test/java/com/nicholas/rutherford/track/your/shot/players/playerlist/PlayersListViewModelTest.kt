@@ -287,7 +287,7 @@ class PlayersListViewModelTest {
 
         @Test
         fun `when fetchPlayerByQuery returns empty list should update state`() = runTest {
-            coEvery { playerRepository.fetchPlayerByQuery(query = searchQuery) } returns emptyPlayerList
+            coEvery { playerRepository.fetchPlayerByQuery(query = searchQuery, playerFilter = any()) } returns emptyPlayerList
 
             playersListViewModel.onSearchTextChanged(searchQuery = searchQuery)
 
@@ -305,7 +305,7 @@ class PlayersListViewModelTest {
         fun `when fetchPlayerByQuery returns list should update state`() = runTest {
             val playerList = listOf(TestPlayer().create())
 
-            coEvery { playerRepository.fetchPlayerByQuery(query = searchQuery) } returns playerList
+            coEvery { playerRepository.fetchPlayerByQuery(query = searchQuery, playerFilter = any()) } returns playerList
 
             playersListViewModel.onSearchTextChanged(searchQuery = searchQuery)
 

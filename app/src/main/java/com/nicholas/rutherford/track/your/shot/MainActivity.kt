@@ -59,7 +59,7 @@ open class MainActivity : ComponentActivity() {
     private fun checkAndShowReviewPrompt() {
         lifecycleScope.launch {
             if (reviewPromptManager.shouldShowReviewPrompt()) {
-                showReviewPromptDialog()
+                // showReviewPromptDialog()
             }
         }
     }

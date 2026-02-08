@@ -174,7 +174,14 @@ class PlayerRepositoryImpl(
     /** Returns the total count of players in the database. */
     override suspend fun fetchPlayerCount(): Int = playerDao.getPlayerCount()
 
-    /** Returns all players from the database from the [query]. This will give results based on the first or last name partial match, this also goes in and converts [PlayerEntity] to a given [Player] */
-    override suspend fun fetchPlayerByQuery(query: String): List<Player> =
-        playerDao.searchPlayers(query = query).map { playerEntity -> playerEntity.toPlayer() }
+    /** Returns all players from the database from the [query]. It will then filtered by [PlayerFilter]. This will give results based on the first or last name partial match, this also goes in and converts [PlayerEntity] to a given [Player] */
+    override suspend fun fetchPlayerByQuery(query: String, playerFilter: PlayerFilter): List<Player> {
+        val searchedPlayers = playerDao.searchPlayers(query = query).map { playerEntity -> playerEntity.toPlayer() }
+
+        return searchedPlayers.filter { player ->
+            matchesPositionFilter(player = player, filter = playerFilter) &&
+                matchesHasShotsLoggedFilter(player = player, filter = playerFilter) &&
+                matchesShotCountRangeFilter(player = player, filter = playerFilter)
+        }
+    }
 }

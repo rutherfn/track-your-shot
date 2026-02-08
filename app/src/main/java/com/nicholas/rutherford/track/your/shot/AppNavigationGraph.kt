@@ -807,7 +807,7 @@ object AppNavigationGraph {
             val shotsListParams = ShotsListScreenParams(
                 state = shotsListViewModel.shotListStateFlow.collectAsState().value,
                 onHelpClicked = { shotsListViewModel.onHelpClicked() },
-                onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked() },
+                onToolbarMenuClicked = { shotsListViewModel.onToolbarMenuClicked(shouldShowAllPlayerShots = shouldShowAllPlayerShotsArgument) },
                 onShotItemClicked = { shotLoggedWithPlayer ->
                     shotsListViewModel.onShotItemClicked(
                         shotLoggedWithPlayer

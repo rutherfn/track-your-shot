@@ -58,6 +58,8 @@ class PlayersListViewModel(
     private val databaseStorePreferenceWriter: DataStorePreferencesWriter
 ) : BaseViewModel() {
 
+    internal var playerFilter = PlayerFilter()
+
     internal var selectedPlayer: Player = Player(
         firstName = "",
         lastName = "",
@@ -73,8 +75,8 @@ class PlayersListViewModel(
 
     val playerListStateFlow = playerListMutableStateFlow.asStateFlow()
 
-    override fun onResume(owner: LifecycleOwner) {
-        super.onResume(owner)
+    override fun onStart(owner: LifecycleOwner) {
+        super.onStart(owner)
         updatePlayerListState()
         deleteAllNonEmptyPendingPlayers()
     }
@@ -83,11 +85,14 @@ class PlayersListViewModel(
     fun updatePlayerListState() {
         scope.launch {
             currentPlayerArrayList.clear()
-            val allPlayers = playerRepository.fetchAllPlayersWithFilter(filter = playerFilterRepository.fetchActiveFilter() ?: PlayerFilter())
+
+            playerFilter = playerFilterRepository.fetchActiveFilter() ?: PlayerFilter()
+            val allPlayers = playerRepository.fetchAllPlayersWithFilter(filter = playerFilter)
 
             allPlayers.forEach { player ->
                 currentPlayerArrayList.add(player)
             }
+
             playerListMutableStateFlow.update { state ->
                 state.copy(
                     playerList = currentPlayerArrayList.toList(),
@@ -158,7 +163,7 @@ class PlayersListViewModel(
     fun onSearchTextChanged(searchQuery: String) {
         scope.launch {
             currentPlayerArrayList.clear()
-            playerRepository.fetchPlayerByQuery(query = searchQuery).forEach { player ->
+            playerRepository.fetchPlayerByQuery(query = searchQuery, playerFilter = playerFilter).forEach { player ->
                 currentPlayerArrayList.add(player)
             }
             playerListMutableStateFlow.update { state ->

@@ -81,6 +81,6 @@ interface PlayerRepository {
     /** Returns the total count of players in the database. */
     suspend fun fetchPlayerCount(): Int
 
-    /** Fetches all players from the database from the [query]. This will give results based on the first or last name partial match */
-    suspend fun fetchPlayerByQuery(query: String): List<Player>
+    /** Fetches all players from the database from the [query]. It will then look at results with applied to it by [PlayerFilter]. This will give results based on the first or last name partial match */
+    suspend fun fetchPlayerByQuery(query: String, playerFilter: PlayerFilter): List<Player>
 }

@@ -105,8 +105,8 @@ class ShotsListViewModel(
      * Handles the click event on the toolbar menu button.
      * If filtering is not applied, it opens the navigation drawer; otherwise, it returns to the player list.
      */
-    fun onToolbarMenuClicked() {
-        if (playerFilteredName.isEmpty()) {
+    fun onToolbarMenuClicked(shouldShowAllPlayerShots: Boolean) {
+        if (playerFilteredName.isEmpty() && shouldShowAllPlayerShots) {
             navigation.openNavigationDrawer()
         } else {
             navigation.popToPlayerList()
