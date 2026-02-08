@@ -287,9 +287,10 @@ class PlayerFiltersViewModelTest {
             playerRepository = playersRepository,
             dateExt = dateExt
         )
+        advanceUntilIdle() // Wait for ViewModel initialization
 
         viewModel.onResetFiltersConfirmed()
-        advanceUntilIdle()
+        advanceUntilIdle() // Wait for onResetFiltersConfirmed to complete
 
         val expectedFilter = PlayerFilter(
             hasShotsLogged = HasShotsLoggedFilter.Both,
@@ -960,8 +961,10 @@ class PlayerFiltersViewModelTest {
 
         viewModel.pendingFilter = pendingFilter
         viewModel.initialFilter = PlayerFilter(hasShotsLogged = HasShotsLoggedFilter.Both)
+        advanceUntilIdle() // Ensure any pending coroutines complete
+        
         viewModel.onSeeResultsClicked()
-        advanceUntilIdle()
+        advanceUntilIdle() // Wait for onSeeResultsClicked to complete
 
         val savedFilter = viewModel.pendingFilter.copy(lastUpdatedValue = expectedDateString)
         Assertions.assertEquals(expectedDateString, viewModel.pendingFilter.lastUpdatedValue)
