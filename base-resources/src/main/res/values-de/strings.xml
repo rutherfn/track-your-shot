@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="acceptance_of_these_terms">Akzeptanz dieser Bedingungen</string>
     <string name="acceptance_of_these_terms_description">Sie bestätigen, dass Sie diese Vereinbarung gelesen haben und allen darin enthaltenen Bedingungen zustimmen. Indem Sie auf die mobile Anwendung und die Dienste zugreifen und diese verwenden, erklären Sie sich mit dieser Vereinbarung einverstanden. Wenn Sie den Bedingungen dieser Vereinbarung nicht zustimmen, sind Sie nicht berechtigt, auf die mobile Anwendung und die Dienste zuzugreifen oder diese zu verwenden.</string>
     <string name="accounts">Konten</string>
@@ -13,6 +14,8 @@
     <string name="are_you_sure_you_want_to_delete_x_shot">Möchten Sie %s wirklich löschen?</string>
     <string name="are_you_sure_you_want_to_leave_track_your_shot">Möchten Sie Track Your Shot wirklich verlassen?</string>
     <string name="are_you_sure_you_want_to_delete_pending_account_description">Zum Löschen Ihres ausstehenden Kontos müssen Sie entweder ein neues Konto registrieren oder sich bei einem vorhandenen anmelden. Möchten Sie mit der Löschung Ihres ausstehenden Kontos wirklich fortfahren?</string>
+    <string name="all">Alle</string>
+    <string name="both">Beide</string>
     <string name="by_nicholas_rutherford">Von Nicholas Rutherford</string>
     <string name="c">C</string>
     <string name="camera">Kamera</string>
@@ -21,12 +24,17 @@
     <string name="camera_permission_has_been_denied_description">Die Kameraerlaubnis wurde verweigert. Um manuell die Berechtigung für die Kamera zu erteilen und Bilder für den Player hochzuladen, navigieren Sie bitte zu den Einstellungen.</string>
     <string name="cancel">Stornieren</string>
     <string name="center">Center</string>
+    <string name="clear">Löschen</string>
+    <string name="clear_search_results">Suchergebnisse löschen</string>
+    <string name="clear_shot_range">Schussbereich löschen?</string>
+    <string name="clear_shot_range_description">Sind Sie sicher, dass Sie die minimalen und maximalen Schusswerte auf ihre Standardwerte zurücksetzen möchten? Dies setzt beide Werte auf 0.</string>
     <string name="changes_and_amendments">Änderungen und Ergänzungen</string>
     <string name="changes_and_amendments_description">Wir behalten uns das Recht vor, diese Vereinbarung oder ihre Bedingungen in Bezug auf die mobile Anwendung und die Dienste jederzeit nach unserem Ermessen zu ändern. Wenn dies der Fall ist, senden wir Ihnen eine Benachrichtigung per E-Mail. Wir können Sie nach unserem Ermessen auch auf andere Weise benachrichtigen, beispielsweise über die von Ihnen angegebenen Kontaktinformationen. Sofern nicht anders angegeben, tritt eine aktualisierte Version dieser Vereinbarung sofort nach der Veröffentlichung der überarbeiteten Vereinbarung in Kraft. Ihre fortgesetzte Nutzung der mobilen Anwendung und Dienste nach dem Inkrafttreten der überarbeiteten Vereinbarung (oder einer anderen zu diesem Zeitpunkt angegebenen Handlung) gilt als Ihre Zustimmung zu diesen Änderungen.</string>
     <string name="check_if_account_has_been_verified">Überprüfen Sie, ob das Konto verifiziert wurde</string>
     <string name="choose_a_shot_to_log_info_description">Wählen Sie einen Schuss aus, um dessen Informationen zu protokollieren. Um weitere Details zur Aufnahme anzuzeigen, klicken Sie auf \"Mehr anzeigen\".</string>
     <string name="choose_image_from_gallery">Bild aus Galerie auswählen</string>
     <string name="choose_option">Option wählen</string>
+    <string name="choose_positions">Positionen auswählen</string>
     <string name="close">Schließen</string>
     <string name="compare_players_stats">Spieler und Statistiken vergleichen</string>
     <string name="contacting_us">Kontaktmöglichkeit</string>
@@ -50,10 +58,13 @@
     <string name="delete_x">%s löschen</string>
     <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Das Gerät ist derzeit nicht mit dem Internet verbunden. Bitte verbinden Sie das Gerät mit dem Internet, um die Aktion abzuschließen.</string>
+    <string name="discard_filter_changes">Filteränderungen verwerfen?</string>
+    <string name="discard_filter_changes_description">Sie haben nicht gespeicherte Filteränderungen. Wenn Sie jetzt verlassen, werden alle Ihre aktuellen Filterauswahlen verworfen.</string>
     <string name="do_you_wish_to_proceed_description">Möchten Sie trotz nicht gespeicherter Spieleränderungen fortfahren? Vorgenommene Änderungen werden nicht gespeichert.</string>
     <string name="edit_x">%s bearbeiten</string>
     <string name="enter_first_name">Vorname eingeben</string>
     <string name="enter_last_name">Geben Sie den Nachnamen ein</string>
+    <string name="filters">Filter</string>
     <string name="first_name">Vorname</string>
     <string name="forgot_password">Passwort vergessen</string>
     <string name="email">E-Mail</string>
@@ -86,12 +97,15 @@
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Beim Zurücksetzen des Passworts für dieses Konto sind Probleme aufgetreten. Bitte versuchen Sie es erneut und/oder stellen Sie sicher, dass die Anmeldeinformationen vorhanden und gültig sind.</string>
     <string name="hint_add_new_player">Tippen Sie auf das +-Symbol in der rechten Symbolleiste, um einen neuen Spieler hinzuzufügen</string>
     <string name="hint_log_new_shots">Drücken Sie die Schaltfläche „Schüsse protokollieren“, um Schläge für den Spieler aufzuzeichnen.</string>
-    <string name="hint_log_new_shots_for_player">Drücken Sie die Taste „Aufnahmen protokollieren“, um Aufnahmen für</string>
+    <string name="has_shots">Hat Schüsse</string>
+    <string name="has_shots_logged">Hat Schüsse protokolliert</string>
+    <string name="hint_log_new_shots_for_player">Drücken Sie die Taste „Aufnahmen protokollieren", um Aufnahmen für</string>
     <string name="introduction">Einführung</string>
     <string name="invalid_shot_input">Ungültige Schusseingabe</string>
     <string name="invalid_shot_input_description">Die protokollierten Schüsse müssen ganze Zahlen sein. Um gültige Schüsse bzw. Fehlschüsse zu protokollieren, geben Sie bitte eine ganze Zahl ein.</string>
     <string name="issue_occurred">Problem ist aufgetreten</string>
     <string name="last_name">Nachname</string>
+    <string name="last_updated">Zuletzt aktualisiert</string>
     <string name="leaving_the_app_will_result_you_in_not_finishing_the_account_creation_process_description">Wenn Sie die App verlassen, wird die Kontoerstellung nicht abgeschlossen. Sie können nicht fortfahren, bis Sie Ihre E-Mail bestätigt haben. Wenn Sie Ihre E-Mail bestätigen und anschließend zur App zurückkehren, können Sie mit der Erstellung Ihres Kontos fortfahren.</string>
     <string name="login">Login</string>
     <string name="login_icon_description">Dies ist ein Anmeldebild für den Anmeldebildschirm</string>
@@ -100,6 +114,9 @@
     <string name="log_shots">Protokollaufnahmen</string>
     <string name="log_your_shots">Protokollieren Sie Ihre Aufnahmen</string>
     <string name="log_your_shots_description">Wählen Sie die Art des Schlags aus, den Sie aufzeichnen möchten, und geben Sie die Treffer und Fehlschüsse für den Tag ein, an dem der Spieler sie ausgeführt hat.</string>
+    <string name="max_shots">Max. Schüsse</string>
+    <string name="maybe_later" tools:ignore="MissingTranslation">Maybe Later</string>
+    <string name="min_shots">Min. Schüsse</string>
     <string name="menu">Speisekarte</string>
     <string name="more_info">Weitere Infos</string>
     <string name="multiple_fields_are_required_that_are_not_entered_please_enter_all_fields">Es sind mehrere Felder erforderlich, die nicht ausgefüllt werden. Bitte füllen Sie alle Felder aus.</string>
@@ -109,18 +126,30 @@
     <string name="not_connected_to_internet">Keine Verbindung zum Internet</string>
     <string name="no_first_name_entered">Kein Vorname eingegeben</string>
     <string name="no_last_name_entered">Kein Nachname eingegeben</string>
+    <string name="no_players_results_found">Keine Spielergebnisse gefunden</string>
+    <string name="no_players_results_found_description">Bei Ihrer Suche wurde kein passender Spieler gefunden. Bitte aktualisieren Sie die Suche mit dem vorhandenen Spielernamen für Ergebnisse.</string>
+    <string name="no_shots">Keine Schüsse</string>
     <string name="no_shots_results_found">Keine Shots-Ergebnisse gefunden</string>
     <string name="no_shots_results_found_description">Bei Ihrer Suche wurde kein passendes Bild gefunden. Bitte aktualisieren Sie die Suche mit dem vorhandenen Aufnahmenamen.</string>
     <string name="not_now">Nicht jetzt</string>
     <string name="no_current_players_added">Keine aktuellen Spieler hinzugefügt</string>
+    <string name="number_of_filters">Anzahl der Filter</string>
+    <string name="number_of_shots">Anzahl der Schüsse</string>
     <string name="no_current_shots_logged_for_player">Für den Spieler sind derzeit keine Schüsse protokolliert</string>
     <string name="open_email">E-Mail öffnen</string>
     <string name="ok">OK</string>
     <string name="other_resources">Andere Ressourcen</string>
     <string name="other_resources_description">Obwohl die mobile Anwendung und die Dienste möglicherweise Links zu anderen Ressourcen (wie Websites, mobilen Anwendungen usw.) enthalten, implizieren wir weder direkt noch indirekt eine Genehmigung, Verbindung, Förderung, Unterstützung oder Zugehörigkeit zu einer verlinkten Ressource, sofern hierin nicht ausdrücklich etwas anderes angegeben ist. Wir sind nicht für die Prüfung oder Bewertung der Angebote von Unternehmen oder Einzelpersonen oder den Inhalt ihrer Ressourcen verantwortlich und übernehmen hierfür keine Gewähr. Wir übernehmen keine Verantwortung oder Haftung für die Handlungen, Produkte, Dienstleistungen und Inhalte anderer Dritter. Sie sollten die rechtlichen Hinweise und sonstigen Nutzungsbedingungen aller Ressourcen, auf die Sie über einen Link in der mobilen Anwendung zugreifen, sorgfältig prüfen. Das Herstellen einer Verbindung zu anderen externen Ressourcen erfolgt auf Ihr eigenes Risiko.</string>
+    <string name="rate_app_prompt_description" tools:ignore="MissingTranslation">If you\'re enjoying the app, please consider leaving a review on the Play Store. Your feedback helps us improve!</string>
+    <string name="rate_app_prompt_title" tools:ignore="MissingTranslation">Enjoying Track Your Shot?</string>
+    <string name="rate_now" tools:ignore="MissingTranslation">Rate Now</string>
+    <string name="reset_defaults">Standardeinstellungen zurücksetzen</string>
+    <string name="reset_filters">Filter zurücksetzen</string>
+    <string name="reset_filters_description">Sind Sie sicher, dass Sie alle Filter auf ihren Standardzustand zurücksetzen möchten?</string>
     <string name="reset_password">Passwort zurücksetzen</string>
     <string name="reset_password_email_sent">E-Mail zum Zurücksetzen des Passworts gesendet</string>
     <string name="resend_email">E-Mail erneut senden</string>
+    <string name="search_players">Spieler suchen</string>
     <string name="select_a_shot">Wählen Sie eine Aufnahme</string>
     <string name="selecting_a_shot">Einen Schuss auswählen</string>
     <string name="select_date">Datum auswählen</string>
@@ -131,6 +160,7 @@
     <string name="password_is_required_please_enter_a_password_to_create_a_account">Passwort ist erforderlich. Bitte geben Sie ein Passwort ein, um ein Konto zu erstellen.</string>
     <string name="password_is_required_please_enter_a_password_to_login_to_existing_account">Passwort ist erforderlich. Bitte geben Sie ein Passwort ein, um sich bei Ihrem bestehenden Konto anzumelden.</string>
     <string name="pending_shots">Ausstehende Aufnahmen</string>
+    <string name="player_filters">Spielerfilter</string>
     <string name="permissions">Berechtigungen</string>
     <string name="permission_has_been_declined">Die Erlaubnis wurde abgelehnt</string>
     <string name="pg">Seite</string>
@@ -155,9 +185,11 @@
     <string name="read_media_images_description">Die Berechtigung zum Lesen von Medienbildern wurde abgelehnt. Um die Berechtigung „Medienbilder lesen“ manuell zu aktivieren und ein Bild aus der Galerie für den Player auszuwählen, navigieren Sie bitte zu den Einstellungen.</string>
     <string name="remove_image">Bild entfernen</string>
     <string name="settings">Einstellungen</string>
+    <string name="set_minimum_shot_count_description">Legen Sie eine Mindestanzahl von Schüssen fest, um maximale Schüsse zu aktivieren. Max. muss mindestens eins mehr als Min. sein.</string>
     <string name="settings_help_description">Auf der Einstellungsseite können Sie Ihre Kontoinformationen anzeigen, die Allgemeinen Geschäftsbedingungen überprüfen, auf Details zur App-Nutzung zugreifen und sich über die von uns angeforderten Berechtigungen und den Grund dafür informieren, warum wir diese benötigen.</string>
     <string name="shot_has_been_deleted">Aufnahme wurde gelöscht</string>
     <string name="shot_has_not_been_deleted">Shot Hsa wurde nicht gelöscht</string>
+    <string name="shot_logs">Schussprotokolle</string>
     <string name="shot_percentage">%s %%</string>
     <string name="shot_updated">Schuss aktualisiert</string>
     <string name="shots">Schüsse</string>
@@ -183,6 +215,7 @@
     <string name="splash_icon_description">Dies ist ein Begrüßungsbild für den Begrüßungsbildschirm, der angezeigt wird, bevor die App ausgelöst wird</string>
     <string name="successfully_sent_email_verification">Bestätigung erfolgreich gesendet</string>
     <string name="take_a_picture">Machen Sie ein Foto</string>
+    <string name="tap_for_more" tools:ignore="MissingTranslation">Tap for more</string>
     <string name="terms_conditions">Allgemeine Geschäftsbedingungen</string>
     <string name="terms_conditions_description">Diese Geschäftsbedingungen (Vereinbarung) legen die allgemeinen Geschäftsbedingungen für Ihre Nutzung der mobilen Anwendung „Track Your Shot“ (mobile Anwendung oder Dienst) und aller damit verbundenen Produkte und Dienste (zusammen „Dienste“) fest. Diese Vereinbarung ist zwischen Ihnen (Benutzer, Sie oder Ihr) und Track Your Shot (Track Your Shot, wir, uns oder unser) rechtlich bindend. Wenn Sie diese Vereinbarung im Namen eines Unternehmens oder einer anderen juristischen Person abschließen, erklären Sie, dass Sie befugt sind, diese Vereinbarung gegenüber dieser juristischen Person verbindlich durchzusetzen. In diesem Fall beziehen sich die Begriffe „Benutzer“, „Sie“ oder „Ihr“ auf die jeweilige juristische Person. Wenn Sie nicht über eine solche Befugnis verfügen oder mit den Bedingungen dieser Vereinbarung nicht einverstanden sind, dürfen Sie diese Vereinbarung nicht akzeptieren und nicht auf die mobile Anwendung und die Dienste zugreifen und diese verwenden. Indem Sie auf die mobile Anwendung und die Dienste zugreifen und diese verwenden, bestätigen Sie, dass Sie die Bedingungen dieser Vereinbarung gelesen und verstanden haben und sich mit ihnen einverstanden erklären. Sie erkennen an, dass diese Vereinbarung einen Vertrag zwischen Ihnen und Track Your Shot darstellt, auch wenn sie elektronisch erfolgt und nicht physisch von Ihnen unterzeichnet ist, und dass sie Ihre Nutzung der mobilen Anwendung und Dienste regelt.</string>
     <string name="track_your_progress">Verfolgen Sie Ihren Fortschritt</string>
@@ -210,6 +243,7 @@
     <string name="unsaved_player_changes">Nicht gespeicherte Spieleränderungen</string>
     <string name="we_have_detected_a_problem_with_your_account_please_contact_support_to_resolve_issue">Wir haben ein Problem mit Ihrem Konto festgestellt. Bitte wenden Sie sich an den Support, um das Problem zu lösen.</string>
     <string name="we_have_detected_currently_not_connected_to_internet_description">Wir haben festgestellt, dass derzeit keine Verbindung zum Internet besteht. Bitte stellen Sie eine Verbindung zum Dienst her und versuchen Sie es erneut.</string>
+    <string name="username_helper_text" tools:ignore="MissingTranslation">Username must be 8–30 characters long, contain only letters, numbers, underscores (_), and periods (.), start with a letter, and cannot have consecutive underscores or periods, or start/end with an underscore or period.</string>
     <string name="username_is_required_please_enter_a_username_to_create_a_account">Benutzername ist erforderlich. Bitte geben Sie einen Benutzernamen ein, um ein Konto zu erstellen.</string>
     <string name="using_the_app">Verwenden der App</string>
     <string name="we_were_able_to_send_email_verification_please_check_your_email_to_verify_account">Wir konnten eine E-Mail-Bestätigung senden. Bitte prüfen Sie Ihre E-Mail, um Ihr Konto zu bestätigen</string>
@@ -220,13 +254,13 @@
     <string name="view_more_info">Weitere Informationen anzeigen</string>
     <string name="view_x">%s anzeigen</string>
     <string name="voice_commands">Sprachbefehle</string>
-    <string name="x_position_x_player_name">%1$s , %2$s</string>
+    <string name="x_position_x_player_name" formatted="false">%1$s , %2$s</string>
     <string name="x_shot">%s Aufnahme</string>
     <string name="x_shot_has_been_removed_description">%s wurde aus dem Schussverlauf dieses Spielers entfernt.</string>
     <string name="x_shot_has_not_been_removed_description">%s Der Schuss wurde nicht aus dem Schussverlauf dieses Spielers entfernt. Bitte versuchen Sie erneut, den Schuss zu entfernen.</string>
     <string name="x_shots">%s Aufnahmen</string>
     <string name="x_shot_category">Kategorie– %s</string>
-    <string name="x_x">%s – %s</string>
+    <string name="x_x" formatted="false">%1$s - %2$s</string>
     <string name="yes">Ja</string>
     <string name="your_player_could_not_be_retrieved_description">Ihr Player konnte nicht abgerufen werden. Bitte versuchen Sie es erneut.</string>
     <string name="at_least_one_player_description">Zum Erstellen eines Berichts ist mindestens ein Spieler mit mindestens einem registrierten Schuss erforderlich. Bitte stellen Sie sicher, dass dieser Vorgang abgeschlossen ist, um fortzufahren.</string>

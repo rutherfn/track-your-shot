@@ -70,9 +70,10 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.UserEntity
         AutoMigration(from = 9, to = 10),
         AutoMigration(from = 10, to = 11),
         AutoMigration(from = 11, to = 12),
-        AutoMigration(from = 12, to = 13)
+        AutoMigration(from = 12, to = 13),
+        AutoMigration(from = 13, to = 14)
     ],
-    version = 13,
+    version = 14,
     exportSchema = true
 )
 @TypeConverters(PlayerPositionsConverter::class, ShotLoggedConverter::class, VoiceCommandTypesConverter::class)

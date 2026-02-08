@@ -5,6 +5,7 @@ import com.nicholas.rutherford.track.your.shot.feature.create.account.createacco
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordViewModel
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.playerfilters.PlayerFiltersViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotViewModel
@@ -54,6 +55,7 @@ import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createedit
  * - [shotsListViewModel] handles shots list screen state.
  * - [declaredShotsListViewModel] manages declared shots list screen state.
  * - [createEditDeclaredShotsViewModel] handles create/edit declared shots flow.
+ * - [playersListViewModel] handles managing player filters flow
  */
 data class ViewModels(
     val mainActivityViewModel: MainActivityViewModel,
@@ -77,5 +79,6 @@ data class ViewModels(
     val shotsListViewModel: ShotsListViewModel,
     val declaredShotsListViewModel: DeclaredShotsListViewModel,
     val createEditDeclaredShotsViewModel: CreateEditDeclaredShotViewModel,
-    val createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel
+    val createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel,
+    val playerFiltersViewModel: PlayerFiltersViewModel
 )

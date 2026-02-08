@@ -220,13 +220,13 @@
     <string name="view_more_info">ดูข้อมูลเพิ่มเติม</string>
     <string name="view_x">ดู %s</string>
     <string name="voice_commands">คำสั่งเสียง</string>
-    <string name="x_position_x_player_name">%1$s , %2$s</string>
+    <string name="x_position_x_player_name" formatted="false">%1$s , %2$s</string>
     <string name="x_shot">%s ช็อต</string>
     <string name="x_shot_has_been_removed_description">%s ถูกนำออกจากประวัติการยิงของผู้เล่นรายนี้แล้ว</string>
     <string name="x_shot_has_not_been_removed_description">%s การยิงไม่ได้ถูกลบออกจากประวัติการยิงของผู้เล่นรายนี้ กรุณาลองลบช็อตอีกครั้ง</string>
     <string name="x_shots">%s ช็อต</string>
     <string name="x_shot_category">หมวดหมู่ - %s</string>
-    <string name="x_x">%s - %s</string>
+    <string name="x_x" formatted="false">%s - %s</string>
     <string name="yes">ใช่</string>
     <string name="your_player_could_not_be_retrieved_description">ไม่สามารถดึงเครื่องเล่นของคุณได้ กรุณาลองอีกครั้ง.</string>
     <string name="at_least_one_player_description">ต้องมีผู้เล่นอย่างน้อยหนึ่งคนที่มีการบันทึกการยิงอย่างน้อยหนึ่งครั้งจึงจะสร้างรายงานได้ กรุณาตรวจสอบให้แน่ใจว่าได้ดำเนินการให้เสร็จสิ้นก่อนดำเนินการต่อ</string>

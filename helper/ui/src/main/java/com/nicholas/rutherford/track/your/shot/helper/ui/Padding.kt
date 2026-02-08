@@ -13,6 +13,9 @@ import androidx.compose.ui.unit.dp
  */
 object Padding {
 
+    /** 2dp padding */
+    val two = 2.dp
+
     /** 4dp padding */
     val four = 4.dp
 

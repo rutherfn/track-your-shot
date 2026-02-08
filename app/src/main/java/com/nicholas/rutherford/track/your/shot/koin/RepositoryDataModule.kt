@@ -8,6 +8,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepositoryImpl
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerFilterRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerFilterRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.data.room.repository.SavedVoiceCommandRepository
@@ -18,6 +20,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.UserReposito
 import com.nicholas.rutherford.track.your.shot.data.room.repository.UserRepositoryImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShot
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.pendingshot.CurrentPendingShotImpl
+import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
 /**
@@ -52,12 +55,15 @@ object RepositoryDataModule {
         single<ShotIgnoringRepository> { ShotIgnoringRepositoryImpl(shotIgnoringDao = get()) }
 
         /** Repository for player data. */
-        single<PlayerRepository> { PlayerRepositoryImpl(playerDao = get()) }
+        single<PlayerRepository> { PlayerRepositoryImpl(playerDao = get(), playerFilterDao = get(), application = androidApplication()) }
 
         /** Repository for pending players. */
         single<PendingPlayerRepository> { PendingPlayerRepositoryImpl(pendingPlayerDao = get()) }
 
         /** Repository for saved voice commands. */
         single<SavedVoiceCommandRepository> { SavedVoiceCommandRepositoryImpl(savedVoiceCommandDao = get()) }
+
+        /** Repository for player filter data. */
+        single<PlayerFilterRepository> { PlayerFilterRepositoryImpl(playerFilterDao = get()) }
     }
 }

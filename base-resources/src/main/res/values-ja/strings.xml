@@ -220,13 +220,13 @@
     <string name="view_more_info">詳細情報を見る</string>
     <string name="view_x">%s を表示</string>
     <string name="voice_commands">音声コマンド</string>
-    <string name="x_position_x_player_name">%s、%s</string>
+    <string name="x_position_x_player_name" formatted="false">%s、%s</string>
     <string name="x_shot">%s ショット</string>
     <string name="x_shot_has_been_removed_description">%s はこのプレイヤーのショット履歴から削除されました。</string>
     <string name="x_shot_has_not_been_removed_description">%sこのプレイヤーのショット履歴からショットは削除されていません。ショットを削除するにはもう一度お試しください。</string>
     <string name="x_shots">%s ショット</string>
     <string name="x_shot_category">カテゴリ - %s</string>
-    <string name="x_x">%s - %s</string>
+    <string name="x_x" formatted="false">%s - %s</string>
     <string name="yes">はい</string>
     <string name="your_player_could_not_be_retrieved_description">プレーヤーを取得できませんでした。もう一度お試しください。</string>
     <string name="at_least_one_player_description">レポートを生成するには、少なくとも 1 回のショットを記録したプレーヤーが少なくとも 1 人必要です。続行するには、これが完了していることを確認してください。</string>

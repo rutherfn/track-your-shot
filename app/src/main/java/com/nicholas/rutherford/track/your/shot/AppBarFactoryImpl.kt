@@ -17,6 +17,7 @@ import com.nicholas.rutherford.track.your.shot.feature.create.account.authentica
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
+import com.nicholas.rutherford.track.your.shot.feature.players.playerfilters.PlayerFiltersViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotParams
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotParams
@@ -295,6 +296,14 @@ class AppBarFactoryImpl(
             },
             shouldShowMiddleContentAppBar = false,
             onIconButtonClicked = { createEditVoiceCommandViewModel.onToolbarMenuClicked() }
+        )
+
+    override fun createPlayerFilterScreenAppBar(playersFilterViewModel: PlayerFiltersViewModel): AppBar =
+        AppBar(
+            toolbarId = StringsIds.playerFilters,
+            shouldShowMiddleContentAppBar = false,
+            imageVector = Icons.Default.Close,
+            onIconButtonClicked = { playersFilterViewModel.onToolbarMenuClicked() }
         )
 
     /** Creates a default AppBar that is hidden. */

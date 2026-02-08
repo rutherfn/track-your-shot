@@ -1,23 +1,29 @@
 package com.nicholas.rutherford.track.your.shot.data.room.response
 
+import com.nicholas.rutherford.track.your.shot.data.room.converters.HasShotsLoggedFilterConverter
 import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerFilterEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerFilterPositionEntity
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
  *
  * Domain model representing a player filter with all filter criteria.
  *
- * @property hasShotsLogged Filter for players with shots logged. null = no filter, true = has shots, false = no shots.
+ * @property hasShotsLogged Filter for players with shots logged. null = no filter, HasShots = has shots, NoShots = no shots, Both = all players.
  * @property minShots Minimum number of shots for filtering. null = no minimum.
  * @property maxShots Maximum number of shots for filtering. null = no maximum.
  * @property selectedPositions List of player positions to filter by. Empty list = no position filter.
+ * @property lastUpdatedValue Timestamp in String for when the filter was last updated.
  */
 data class PlayerFilter(
-    val hasShotsLogged: Boolean? = null,
+    val hasShotsLogged: HasShotsLoggedFilter? = null,
     val minShots: Int? = null,
     val maxShots: Int? = null,
-    val selectedPositions: List<String> = emptyList()
+    val selectedPositions: List<String> = emptyList(),
+    val lastUpdatedValue: String = ""
 )
 
 /**
@@ -27,11 +33,13 @@ data class PlayerFilter(
  * @return A [PlayerFilter] instance with values mapped from the entity and positions.
  */
 fun PlayerFilterEntity.toPlayerFilter(positions: List<String>): PlayerFilter {
+    val formatter = SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault())
     return PlayerFilter(
-        hasShotsLogged = hasShotsLogged,
+        hasShotsLogged = HasShotsLoggedFilter.fromValue(hasShotsLogged).takeIf { it !is HasShotsLoggedFilter.None },
         minShots = minShots,
         maxShots = maxShots,
-        selectedPositions = positions.sorted()
+        selectedPositions = positions.sorted(),
+        lastUpdatedValue = formatter.format(Date(lastUpdated))
     )
 }
 
@@ -40,7 +48,7 @@ fun PlayerFilterEntity.toPlayerFilter(positions: List<String>): PlayerFilter {
  *
  * Count includes:
  * - Each selected position (1 per position)
- * - hasShotsLogged filter (1 if set)
+ * - hasShotsLogged filter (1 if set, but excludes "Both" as it's the default state)
  * - minShots filter (1 if set)
  * - maxShots filter (1 if set)
  *
@@ -52,8 +60,9 @@ fun PlayerFilter.getFilterCount(): Int {
     // Count selected positions
     count += selectedPositions.size
 
-    // Count hasShotsLogged filter (1 if not null)
-    if (hasShotsLogged != null) {
+    // Count hasShotsLogged filter (1 if not null, not None, and not Both)
+    // "Both" is the default state and should not count as a filter
+    if (hasShotsLogged != null && hasShotsLogged !is HasShotsLoggedFilter.None && hasShotsLogged !is HasShotsLoggedFilter.Both) {
         count += 1
     }
 
@@ -76,9 +85,10 @@ fun PlayerFilter.getFilterCount(): Int {
  * @return Pair containing the [PlayerFilterEntity] and list of [PlayerFilterPositionEntity].
  */
 fun PlayerFilter.toPlayerFilterEntities(): Pair<PlayerFilterEntity, List<PlayerFilterPositionEntity>> {
+    val converter = HasShotsLoggedFilterConverter()
     val filterEntity = PlayerFilterEntity(
         id = 1,
-        hasShotsLogged = hasShotsLogged,
+        hasShotsLogged = converter.toValue(hasShotsLogged),
         minShots = minShots,
         maxShots = maxShots,
         lastUpdated = System.currentTimeMillis()

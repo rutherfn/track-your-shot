@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="add_shot">Add Shot</string>
+    <string name="all">All</string>
     <string name="acceptance_of_these_terms">Acceptance Of These Terms</string>
     <string name="acceptance_of_these_terms_description"><![CDATA[You acknowledge that you have read this Agreement and agree to all its terms and conditions. By accessing and using the Mobile Application and Services, you agree to be bound by this Agreement. If you do not agree to abide by the terms of this Agreement, you are not authorized to access or use the Mobile Application and Services.]]></string>
     <string name="accounts">Accounts</string>
@@ -30,8 +31,13 @@
     <string name="check_if_account_has_been_verified">Check if account has been verified</string>
     <string name="choose_a_shot_to_log_info_description">Choose a shot to log its information. To view additional details about the shot, click \"Show More\",</string>
     <string name="choose_image_from_gallery">Choose Image From Gallery</string>
+    <string name="choose_positions">Choose Positions</string>
     <string name="choose_option">Choose Option</string>
+    <string name="clear">Clear</string>
     <string name="clear_search_results">Clear Search Results</string>
+    <string name="clear_shot_range">Clear Shot Range?</string>
+    <string name="clear_shot_range_description">Are you sure you want to reset the minimum and maximum shot values to their defaults? This will set both values to 0.</string>
+    <string name="reset_defaults">Reset Defaults</string>
     <string name="close">Close</string>
     <string name="compare_players_stats">Compare Players &amp; Stats</string>
     <string name="contacting_us">Contacting Us</string>
@@ -66,6 +72,8 @@
     <string name="delete_x">Delete %s</string>
     <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Device is currently not connected to internet. Please connect device to internet to complete action.</string>
+    <string name="discard_filter_changes">Discard Filter Changes?</string>
+    <string name="discard_filter_changes_description">You have unsaved filter changes. Leaving now will discard all your current filter selections.</string>
     <string name="do_you_wish_to_proceed_description">Do you wish to proceed despite having unsaved player modifications? Any changes made will not be saved.</string>
     <string name="download_report">Download Report</string>
     <string name="edit_x">Edit %s</string>
@@ -98,11 +106,16 @@
     <string name="error_creating_account">Error Creating Account</string>
     <string name="error_deleting_pending_account">Error deleting pending account</string>
     <string name="filters">Filters</string>
+    <string name="last_updated">Last Updated</string>
+    <string name="number_of_filters">Number of Filters</string>
     <string name="find_shots_by_name">Find shots by name </string>
     <string name="general">General</string>
     <string name="general_information">General Information</string>
     <string name="generate_report">Generate Report</string>
     <string name="got_it">Got It</string>
+    <string name="has_shots">Has Shots</string>
+    <string name="has_shots_logged">Has Shots Logged</string>
+    <string name="both">Both</string>
     <string name="having_trouble_creating_your_account_please_try_again">Having trouble creating your account. Please try again</string>
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Having trouble logging into your account. Please try again and or ensure credentials exist and are valid.</string>
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Having trouble resetting password for this account. Please try again and or ensure credentials exist and are valid.</string>
@@ -135,6 +148,7 @@
     <string name="no_changes_made">No Changes Made</string>
     <string name="not_connected_to_internet">Not connected to internet</string>
     <string name="no_first_name_entered">No First Name Entered</string>
+    <string name="no_shots">No Shots</string>
     <string name="no_last_name_entered">No Last Name Entered</string>
     <string name="no_shots_created">No Shots Created</string>
     <string name="no_shots_created_descriipton">None of the players have any shots logged yet. Please log at least one shot for a player to generate a report.</string>
@@ -149,6 +163,9 @@
     <string name="no_players_results_found">No Players Results Found</string>
     <string name="no_players_results_found_description">No matching players was found in your search. Please update search with existing player name for results.</string>
     <string name="no_current_shots_logged_for_player">No Current Shots Logged For Player</string>
+    <string name="number_of_shots">Number Of Shots</string>
+    <string name="min_shots">Min Shots</string>
+    <string name="max_shots">Nax Shots</string>
     <string name="open_email">Open Email</string>
     <string name="ok">OK</string>
     <string name="other_resources">Other Resources</string>
@@ -158,6 +175,8 @@
     <string name="rate_now" tools:ignore="MissingTranslation">Rate Now</string>
     <string name="maybe_later" tools:ignore="MissingTranslation">Maybe Later</string>
     <string name="reports">Reports</string>
+    <string name="reset_filters">Reset Filters</string>
+    <string name="reset_filters_description">Are you sure you want to reset all filters to their default state?</string>
     <string name="reset_password">Reset Password</string>
     <string name="reset_password_email_sent">Reset Password Email Sent</string>
     <string name="resend_email">Resend Email</string>
@@ -186,6 +205,7 @@
     <string name="player_report">Player Report</string>
     <string name="player_report_created_description">A player report has been generated and saved to your device\'s download folder. You can view the report now or access it later in the app for future use.</string>
     <string name="player_report_created_for_x">Player Report Created For %s</string>
+    <string name="player_filters">Player Filters</string>
     <string name="player_shots">Player Shots</string>
     <string name="players">Players</string>
     <string name="players_first_name_empty_description">The player\'s first name is missing. Kindly provide a first name to proceed.</string>
@@ -202,6 +222,7 @@
     <string name="remove_image">Remove Image</string>
     <string name="settings">Settings</string>
     <string name="settings_help_description">On the settings page, you can view your account information, review terms and conditions, access app usage details, and learn about the permissions we request and why we need them.</string>
+    <string name="set_minimum_shot_count_description">Set a minimum shot count to enable max shots. Max must be at least one more than min.</string>
     <string name="shots_attempted_date_x">Shots Attempted Date: %s</string>
     <string name="shots_logged_date_x">Shots Logged Date: %s</string>
     <string name="shots_made_accuracy_x">Shots Made Accuracy: %s %%</string>
@@ -209,6 +230,7 @@
     <string name="shot_ceategory">Shot Category:</string>
     <string name="shot_description">Shot Description:</string>
     <string name="shot_name">Shot Name:</string>
+    <string name="shot_logs">Shot Logs</string>
     <string name="shot_has_been_deleted">Shot Has Been Deleted</string>
     <string name="shot_has_not_been_deleted">Shot Hsa Not Been Deleted</string>
     <string name="shot_percentage">%s %%</string>

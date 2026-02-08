@@ -54,5 +54,8 @@ object DatabaseModule {
 
         /** Provides the ShotIgnoringDao from the AppDatabase. */
         single { get<AppDatabase>().shotIgnoringDao() }
+
+        /** Provides the PlayerFilterDao from the AppDatabase. */
+        single { get<AppDatabase>().playerFilterDao() }
     }
 }

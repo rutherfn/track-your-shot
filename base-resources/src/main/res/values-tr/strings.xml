@@ -220,13 +220,13 @@
     <string name="view_more_info">Daha Fazla Bilgi Görüntüle</string>
     <string name="view_x">%s görüntüle</string>
     <string name="voice_commands">Sesli Komutlar</string>
-    <string name="x_position_x_player_name">%1$s , %2$s</string>
+    <string name="x_position_x_player_name" formatted="false">%1$s , %2$s</string>
     <string name="x_shot">%s Atış</string>
     <string name="x_shot_has_been_removed_description">%s bu oyuncunun şut geçmişinden kaldırıldı.</string>
     <string name="x_shot_has_not_been_removed_description">%s Şut bu oyuncunun şut geçmişinden kaldırılmadı. Lütfen çekimi kaldırmak için tekrar deneyin.</string>
     <string name="x_shots">%s Atışlar</string>
     <string name="x_shot_category">Kategori - %s</string>
-    <string name="x_x">%s - %s</string>
+    <string name="x_x" formatted="false">%s - %s</string>
     <string name="yes">Evet</string>
     <string name="your_player_could_not_be_retrieved_description">Oyuncunuz kurtarılamadı. Lütfen tekrar deneyin.</string>
     <string name="at_least_one_player_description">Rapor oluşturmak için en az bir oyuncunun en az bir şutu olması gerekiyor. Devam edebilmek için lütfen bunun tamamlandığından emin olun.</string>

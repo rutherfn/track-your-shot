@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.data.room.repository
 
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerFilter
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -64,6 +65,18 @@ interface PlayerRepository {
 
     /** Fetches all players from the database. Returns an empty list if none exist. */
     suspend fun fetchAllPlayers(): List<Player>
+
+    /** Fetches all players from the database based nn the latest [PlayerFilter], Returns an empty list if none exist. */
+    suspend fun fetchAllPlayersWithFilters(): List<Player>
+
+    /**
+     * Fetches all players from the database filtered by the provided [PlayerFilter].
+     * This allows filtering without saving the filter to the database first.
+     *
+     * @param filter The filter to apply to the players.
+     * @return List of players matching the filter criteria.
+     */
+    suspend fun fetchAllPlayersWithFilter(filter: PlayerFilter): List<Player>
 
     /** Returns the total count of players in the database. */
     suspend fun fetchPlayerCount(): Int

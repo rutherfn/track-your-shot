@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.feature.create.account.createacco
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordViewModel
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.playerfilters.PlayerFiltersViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotViewModel
@@ -332,6 +333,18 @@ object ViewModelsModule {
                 deleteFirebaseUserInfo = get(),
                 savedVoiceCommandRepository = get(),
                 navigation = get()
+            )
+        }
+
+        /** Player Filters Screen ViewModel */
+        viewModel {
+            PlayerFiltersViewModel(
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
+                application = androidApplication(),
+                navigation = get(),
+                playerFilterRepository = get(),
+                playerRepository = get(),
+                dateExt = get()
             )
         }
     }

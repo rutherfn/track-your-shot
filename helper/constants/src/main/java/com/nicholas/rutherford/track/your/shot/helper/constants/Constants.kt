@@ -77,4 +77,8 @@ object Constants {
     const val VOICE_COMMAND_MAKE_VALUE = 2
     const val VOICE_COMMAND_MISS_VALUE = 3
     const val VOICE_COMMAND_NONE_VALUE = 4
+    const val HAS_SHOTS_LOGGED_VALUE = 1 // Maps to old Boolean true (1)
+    const val NO_SHOTS_LOGGED_VALUE = 0 // Maps to old Boolean false (0)
+    const val BOTH_SHOTS_LOGGED_VALUE = 2
+    const val NO_SHOTS_LOGGED_FILTER_VALUE = 3
 }

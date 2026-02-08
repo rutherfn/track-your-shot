@@ -1,10 +1,17 @@
 package com.nicholas.rutherford.track.your.shot.data.room.repository
 
+import android.app.Application
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.dao.PlayerDao
+import com.nicholas.rutherford.track.your.shot.data.room.dao.PlayerFilterDao
 import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.toPlayer
+import com.nicholas.rutherford.track.your.shot.data.room.response.HasShotsLoggedFilter
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerFilter
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions.Center.toPlayerPositionValue
 import com.nicholas.rutherford.track.your.shot.data.room.response.toPlayerEntity
+import com.nicholas.rutherford.track.your.shot.data.room.response.toPlayerFilter
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -12,7 +19,11 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.toPlayerEntity
  * Repository implementation for managing Player data.
  * Provides CRUD operations and abstracts the underlying PlayerDao.
  */
-class PlayerRepositoryImpl(private val playerDao: PlayerDao) : PlayerRepository {
+class PlayerRepositoryImpl(
+    private val playerDao: PlayerDao,
+    private val playerFilterDao: PlayerFilterDao,
+    private val application: Application
+) : PlayerRepository {
 
     /** Inserts a single [Player] into the database. */
     override suspend fun createPlayer(player: Player) =
@@ -85,6 +96,75 @@ class PlayerRepositoryImpl(private val playerDao: PlayerDao) : PlayerRepository 
     /** Fetches all players from the database. Returns an empty list if none exist. */
     override suspend fun fetchAllPlayers(): List<Player> =
         playerDao.getAllPlayers()?.map { it.toPlayer() } ?: emptyList()
+
+    override suspend fun fetchAllPlayersWithFilters(): List<Player> {
+        val currentActiveFilter = playerFilterDao.getActiveFilter()?.toPlayerFilter(positions = playerFilterDao.getActiveFilterPositions()) ?: PlayerFilter()
+        return fetchAllPlayersWithFilter(filter = currentActiveFilter)
+    }
+
+    override suspend fun fetchAllPlayersWithFilter(filter: PlayerFilter): List<Player> {
+        val allPlayers = playerDao.getAllPlayers()?.map { it.toPlayer() } ?: emptyList()
+
+        return allPlayers.filter { player ->
+            matchesPositionFilter(player = player, filter = filter) &&
+                matchesHasShotsLoggedFilter(player = player, filter = filter) &&
+                matchesShotCountRangeFilter(player = player, filter = filter)
+        }
+    }
+
+    /**
+     * Checks if a player matches the position filter criteria.
+     *
+     * @param player The player to check.
+     * @param filter The active filter containing position criteria.
+     * @return true if the player matches the position filter, false otherwise.
+     * Also if the [PlayerFilter.selectedPositions] is empty or if it contains All then it should return all filtered players
+     */
+    private fun matchesPositionFilter(player: Player, filter: PlayerFilter): Boolean {
+        if (filter.selectedPositions.isEmpty() || filter.selectedPositions.contains(application.getString(StringsIds.all))) {
+            return true
+        }
+
+        return filter.selectedPositions.contains(player.position.toPlayerPositionValue(application))
+    }
+
+    /**
+     * Checks if a player matches the hasShotsLogged filter criteria.
+     *
+     * @param player The player to check.
+     * @param filter The active filter containing hasShotsLogged criteria.
+     * @return true if the player matches the hasShotsLogged filter, false otherwise.
+     */
+    private fun matchesHasShotsLoggedFilter(player: Player, filter: PlayerFilter): Boolean {
+        return when (filter.hasShotsLogged) {
+            is HasShotsLoggedFilter.HasShots -> player.shotsLoggedList.isNotEmpty()
+            is HasShotsLoggedFilter.NoShots -> player.shotsLoggedList.isEmpty()
+            is HasShotsLoggedFilter.Both -> true // Show all players regardless of shot status
+            is HasShotsLoggedFilter.None -> true // No filter applied
+            null -> true // No filter applied
+        }
+    }
+
+    /**
+     * Checks if a player matches the shot count range filter criteria (minShots and maxShots).
+     *
+     * @param player The player to check.
+     * @param filter The active filter containing minShots and maxShots criteria.
+     * @return true if the player matches the shot count range filter, false otherwise.
+     */
+    private fun matchesShotCountRangeFilter(player: Player, filter: PlayerFilter): Boolean {
+        val totalShots = player.shotsLoggedList.size
+
+        val matchesMinShots = filter.minShots?.let { min ->
+            totalShots >= min
+        } ?: true
+
+        val matchesMaxShots = filter.maxShots?.let { max ->
+            totalShots <= max
+        } ?: true
+
+        return matchesMinShots && matchesMaxShots
+    }
 
     /** Returns the total count of players in the database. */
     override suspend fun fetchPlayerCount(): Int = playerDao.getPlayerCount()

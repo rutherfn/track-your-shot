@@ -222,13 +222,13 @@
     <string name="view_more_info">查看更多信息</string>
     <string name="view_x">查看%s</string>
     <string name="voice_commands">语音命令</string>
-    <string name="x_position_x_player_name">%s，%s</string>
+    <string name="x_position_x_player_name" formatted="false">%s，%s</string>
     <string name="x_shot">%s 球</string>
     <string name="x_shot_has_been_removed_description">已从该球员的投篮历史记录中移除“%s”。</string>
     <string name="x_shot_has_not_been_removed_description">%s 次投篮尚未从该球员的投篮历史记录中移除。请再次尝试移除镜头。</string>
     <string name="x_shots">%s 张照片</string>
     <string name="x_shot_category">类别 - %s</string>
-    <string name="x_x">%s - %s</string>
+    <string name="x_x" formatted="false">%s - %s</string>
     <string name="yes">是的</string>
     <string name="your_player_could_not_be_retrieved_description">无法检索您的播放器。请重试。</string>
     <string name="at_least_one_player_description">需要至少一名记录过一次投篮的球员来生成报告。请确保此操作已完成才能继续。</string>

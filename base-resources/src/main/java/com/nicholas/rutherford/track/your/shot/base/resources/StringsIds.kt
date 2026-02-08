@@ -15,6 +15,7 @@ object StringsIds {
     val accounts = R.string.accounts
     val acknowledgeAndAgreeToTerms = R.string.acknowledge_and_agree_to_terms
     val addShot = R.string.add_shot
+    val all = R.string.all
     val androidPermissionsUrl = R.string.android_permissions_url
     val areYouCertainYouWishToRemoveX = R.string.are_you_certain_you_wish_to_remove_x
     val areYouSureYouWantToDeleteCommand = R.string.are_you_sure_you_want_to_delete_command
@@ -41,10 +42,15 @@ object StringsIds {
     val checkIfAccountHaBeenVerified = R.string.check_if_account_has_been_verified
     val chooseAShotToLogInfoDescription = R.string.choose_a_shot_to_log_info_description
     val chooseImageFromGallery = R.string.choose_image_from_gallery
+    val choosePositions = R.string.choose_positions
     val chooseOption = R.string.choose_option
     val clickMeToCreateAccount = R.string.click_me_to_create_account
+    val clear = R.string.clear
     val clearSearchResults = R.string.clear_search_results
+    val clearShotRange = R.string.clear_shot_range
+    val clearShotRangeDescription = R.string.clear_shot_range_description
     val close = R.string.close
+    val both = R.string.both
     val comparePlayersStats = R.string.compare_players_stats
     val contactingUs = R.string.contacting_us
     val contactingUsDescription = R.string.contacting_us_description
@@ -90,6 +96,8 @@ object StringsIds {
     val deviceIsCurrentlyNotConnectedToInternetDesc =
         R.string.device_is_currently_not_connected_to_internet_desc
     val dismiss = R.string.dismiss
+    val discardFilterChanges = R.string.discard_filter_changes
+    val discardFilterChangesDescription = R.string.discard_filter_changes_description
     val doYouWishToProceedDescription =
         R.string.do_you_wish_to_proceed_description
     val editCommandSuccessfully = R.string.edit_command_successfully
@@ -135,11 +143,15 @@ object StringsIds {
     val examplePhrases = R.string.example_phrases
     val filters = R.string.filters
     val findShotsByName = R.string.find_shots_by_name
+    val lastUpdated = R.string.last_updated
+    val numberOfFilters = R.string.number_of_filters
     val firstName = R.string.first_name
     val forgotPassword = R.string.forgot_password
     val general = R.string.general
     val generateReport = R.string.generate_report
     val gotIt = R.string.got_it
+    val hasShots = R.string.has_shots
+    val hasShotsLogged = R.string.has_shots_logged
     val havingTroubleCreatingYourAccountPleaseTryAgain =
         R.string.having_trouble_creating_your_account_please_try_again
     val havingTroubleLoggingIntoYourAccountPleaseTryAgainAndEnsureCredentialsExistAndAreValid =
@@ -165,9 +177,11 @@ object StringsIds {
     val logYourShots = R.string.log_your_shots
     val logYourShotsDescription = R.string.log_your_shots_description
     val make = R.string.make
+    val maxShots = R.string.max_shots
     val manageDeclaredShots = R.string.manage_declared_shots
     val missedShotsNotRecordedDescription = R.string.missed_shots_not_recorded_description
     val miss = R.string.miss
+    val minShots = R.string.min_shots
     val moreInfo = R.string.more_info
     val multipleFieldsAreRequiredThatAreNotEnteredPleaseEnterAllFields =
         R.string.multiple_fields_are_required_that_are_not_entered_please_enter_all_fields
@@ -182,6 +196,7 @@ object StringsIds {
     val noCurrentShotsAdded = R.string.no_current_shots_added
     val noCurrentShotsLoggedForPlayer = R.string.no_current_shots_logged_for_player
     val noFirstNameEntered = R.string.no_first_name_entered
+    val noShots = R.string.no_shots
     val noPhraseRecordedYet = R.string.no_phrase_recorded_uet
     val noPlayersCreated = R.string.no_players_created
     val noPlayersCreatedDescription = R.string.no_players_created_description
@@ -197,6 +212,7 @@ object StringsIds {
     val none = R.string.none
     val notConnectedToInternet = R.string.not_connected_to_internet
     val notNow = R.string.not_now
+    val numberOfShots = R.string.number_of_shots
     val ok = R.string.ok
     val openEmail = R.string.open_email
     val otherResources = R.string.other_resources
@@ -220,6 +236,7 @@ object StringsIds {
     val playerReport = R.string.player_report
     val playerReportCreatedDescription = R.string.player_report_created_description
     val playerReportCreatedForX = R.string.player_report_created_for_x
+    val playerFilters = R.string.player_filters
     val playerShots = R.string.player_shots
     val players = R.string.players
     val searchPlayers = R.string.search_players
@@ -248,6 +265,9 @@ object StringsIds {
     val rateNow = R.string.rate_now
     val maybeLater = R.string.maybe_later
     val reports = R.string.reports
+    val resetDefaults = R.string.reset_defaults
+    val resetFilters = R.string.reset_filters
+    val resetFiltersDescription = R.string.reset_filters_description
     val resetPassword = R.string.reset_password
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email
@@ -261,6 +281,7 @@ object StringsIds {
     val selectingAShot = R.string.selecting_a_shot
     val settings = R.string.settings
     val settingsHelpDescription = R.string.settings_help_description
+    val setMinimumShotCountDescription = R.string.set_minimum_shot_count_description
     val setupVoiceCommandDescription = R.string.setup_voice_commands_description
     val sg = R.string.sg
     val sf = R.string.sf
@@ -273,6 +294,7 @@ object StringsIds {
     val shotHasBeenDeleted = R.string.shot_has_been_deleted
     val shotHasNotBeenDeleted = R.string.shot_has_not_been_deleted
     val shotName = R.string.shot_name
+    val shotLogs = R.string.shot_logs
     val shotNameMissing = R.string.shot_name_missing
     val shotNameMissingDescription = R.string.shot_name_missing_description
     val shotPercentage = R.string.shot_percentage

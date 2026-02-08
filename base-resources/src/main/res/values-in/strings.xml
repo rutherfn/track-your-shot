@@ -220,13 +220,13 @@
     <string name="view_more_info">Lihat Info Lebih Lanjut</string>
     <string name="view_x">Melihat%s</string>
     <string name="voice_commands">Perintah Suara</string>
-    <string name="x_position_x_player_name">%sBahasa Indonesia:%s</string>
+    <string name="x_position_x_player_name" formatted="false">%sBahasa Indonesia:%s</string>
     <string name="x_shot">%sTembakan</string>
     <string name="x_shot_has_been_removed_description">%stelah dihapus dari riwayat tembakan pemain ini.</string>
     <string name="x_shot_has_not_been_removed_description">%sTembakan belum dihapus dari riwayat tembakan pemain ini. Silakan coba lagi untuk menghapus tembakan.</string>
     <string name="x_shots">%sTembakan</string>
     <string name="x_shot_category">Kategori -%s</string>
-    <string name="x_x">%s - %s</string>
+    <string name="x_x" formatted="false">%s - %s</string>
     <string name="yes">Ya</string>
     <string name="your_player_could_not_be_retrieved_description">Pemutar Anda tidak dapat diambil. Silakan coba lagi.</string>
     <string name="at_least_one_player_description">Setidaknya satu pemain dengan setidaknya satu tembakan yang dicatat diperlukan untuk membuat laporan. Pastikan ini diselesaikan untuk melanjutkan.</string>

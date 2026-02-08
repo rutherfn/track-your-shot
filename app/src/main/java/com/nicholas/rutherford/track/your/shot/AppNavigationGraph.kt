@@ -24,6 +24,9 @@ import com.nicholas.rutherford.track.your.shot.feature.login.LoginViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerViewModel
+import com.nicholas.rutherford.track.your.shot.feature.players.playerfilters.PlayerFiltersScreen
+import com.nicholas.rutherford.track.your.shot.feature.players.playerfilters.PlayerFiltersScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.players.playerfilters.PlayerFiltersViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreen
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
@@ -334,6 +337,37 @@ object AppNavigationGraph {
                 onboardingEducationParams = OnboardingEducationParams(
                     onGotItButtonClicked = { onboardingEducationViewModel.onGotItButtonClicked() },
                     state = onboardingEducationViewModel.onboardingEducationStateFlow.collectAsState().value
+                )
+            )
+        }
+    }
+
+    /**
+     * Adds the Player Filters Screen destination to the NavGraph.
+     *
+     * Retrieves [PlayerFiltersViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [PlayerFiltersScreen].
+     * Displays the [PlayerFiltersScreen] composable.
+     */
+    fun NavGraphBuilder.playerFiltersScreen() {
+        composable(route = NavigationDestinations.PLAYER_FILTERS_SCREEN) {
+            val playerFiltersViewModel: PlayerFiltersViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
+
+            ObserveLifecycle(viewModel = playerFiltersViewModel)
+            updateAppBar(appBar = appBarFactory.createPlayerFilterScreenAppBar(playersFilterViewModel = playerFiltersViewModel))
+
+            PlayerFiltersScreen(
+                params = PlayerFiltersScreenParams(
+                    state = playerFiltersViewModel.playerFilterStateFlow.collectAsState().value,
+                    onToolbarMenuClicked = { playerFiltersViewModel.onToolbarMenuClicked() },
+                    onPositionToggled = { title -> playerFiltersViewModel.onPositionToggled(title = title) },
+                    onShotLogsToggled = { title -> playerFiltersViewModel.onShotLogsToggled(title = title) },
+                    onMinShotsChanged = { value -> playerFiltersViewModel.onMinShotsChanged(value = value) },
+                    onMaxShotsChanged = { value -> playerFiltersViewModel.onMaxShotsChanged(value = value) },
+                    onSeeResultsClicked = { playerFiltersViewModel.onSeeResultsClicked() },
+                    onClearShotRangeClicked = { playerFiltersViewModel.onClearShotRangeClicked() },
+                    onResetFiltersClicked = { playerFiltersViewModel.onResetFiltersClicked() }
                 )
             )
         }

@@ -220,13 +220,13 @@
     <string name="view_more_info">Zobacz więcej informacji</string>
     <string name="view_x">Pogląd%s</string>
     <string name="voice_commands">Polecenia głosowe</string>
-    <string name="x_position_x_player_name">%1$s , %2$s</string>
+    <string name="x_position_x_player_name" formatted="false">%1$s , %2$s</string>
     <string name="x_shot">%s Strzał</string>
     <string name="x_shot_has_been_removed_description">%s został usunięty z historii strzałów tego zawodnika.</string>
     <string name="x_shot_has_not_been_removed_description">%s Strzał nie został usunięty z historii strzałów tego zawodnika. Spróbuj ponownie usunąć ujęcie.</string>
     <string name="x_shots">%s Strzały</string>
     <string name="x_shot_category">Kategoria - %s</string>
-    <string name="x_x">%s - %s</string>
+    <string name="x_x" formatted="false">%s - %s</string>
     <string name="yes">Tak</string>
     <string name="your_player_could_not_be_retrieved_description">Nie udało się odzyskać Twojego odtwarzacza. Spróbuj ponownie.</string>
     <string name="at_least_one_player_description">Aby wygenerować raport, wymagany jest co najmniej jeden gracz, który oddał co najmniej jeden strzał. Aby kontynuować, upewnij się, że ta czynność została wykonana.</string>

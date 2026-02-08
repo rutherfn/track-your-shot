@@ -10,6 +10,8 @@ import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigation
 import com.nicholas.rutherford.track.your.shot.feature.login.LoginNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.players.playerfilters.PlayerFiltersNavigation
+import com.nicholas.rutherford.track.your.shot.feature.players.playerfilters.PlayerFiltersNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotNavigation
@@ -78,6 +80,8 @@ object NavigationModule {
 
         /** Navigation for the Players List screen. */
         single<PlayersListNavigation> { PlayersListNavigationImpl(navigator = get()) }
+
+        single<PlayerFiltersNavigation> { PlayerFiltersNavigationImpl(navigator = get()) }
 
         /** Navigation for Create/Edit Player screen. */
         single<CreateEditPlayerNavigation> { CreateEditPlayerNavigationImpl(navigator = get()) }

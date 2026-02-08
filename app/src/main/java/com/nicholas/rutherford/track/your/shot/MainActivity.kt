@@ -143,7 +143,8 @@ open class MainActivity : ComponentActivity() {
                     shotsListViewModel = getViewModel(),
                     declaredShotsListViewModel = getViewModel(),
                     createEditDeclaredShotsViewModel = getViewModel(),
-                    createEditVoiceCommandViewModel = getViewModel()
+                    createEditVoiceCommandViewModel = getViewModel(),
+                    playerFiltersViewModel = getViewModel()
                 )
             )
         }

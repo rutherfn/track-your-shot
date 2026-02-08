@@ -6,6 +6,7 @@ import com.nicholas.rutherford.track.your.shot.feature.create.account.authentica
 import com.nicholas.rutherford.track.your.shot.feature.create.account.createaccount.CreateAccountViewModel
 import com.nicholas.rutherford.track.your.shot.feature.forgot.password.ForgotPasswordViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.CreateEditPlayerParams
+import com.nicholas.rutherford.track.your.shot.feature.players.playerfilters.PlayerFiltersViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.playerlist.PlayersListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.logshot.LogShotParams
 import com.nicholas.rutherford.track.your.shot.feature.players.shots.selectshot.SelectShotParams
@@ -105,6 +106,8 @@ interface AppBarFactory {
 
     /** Creates an AppBar for create edit voice create screen. */
     fun createEditVoiceCommandCreateScreenAppBar(createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel, type: VoiceCommandTypes, isCreating: Boolean): AppBar
+
+    fun createPlayerFilterScreenAppBar(playersFilterViewModel: PlayerFiltersViewModel): AppBar
 
     /** Creates a default, hidden AppBar. */
     fun createDefaultAppBar(): AppBar

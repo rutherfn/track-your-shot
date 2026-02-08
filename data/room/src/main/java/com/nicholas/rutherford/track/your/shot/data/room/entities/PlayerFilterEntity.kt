@@ -22,7 +22,7 @@ data class PlayerFilterEntity(
     @PrimaryKey
     val id: Int = 1,
     @ColumnInfo(name = "hasShotsLogged")
-    val hasShotsLogged: Boolean? = null,
+    val hasShotsLogged: Int? = null,
     @ColumnInfo(name = "minShots")
     val minShots: Int? = null,
     @ColumnInfo(name = "maxShots")

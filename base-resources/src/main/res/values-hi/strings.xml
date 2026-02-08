@@ -220,13 +220,13 @@
     <string name="view_more_info">अधिक जानकारी देखें</string>
     <string name="view_x">%s देखें</string>
     <string name="voice_commands">ध्वनि आदेश</string>
-    <string name="x_position_x_player_name">%1$s , %2$s</string>
+    <string name="x_position_x_player_name" formatted="false">%1$s , %2$s</string>
     <string name="x_shot">%s शॉट</string>
     <string name="x_shot_has_been_removed_description">%s को इस खिलाड़ी के शॉट इतिहास से हटा दिया गया है.</string>
     <string name="x_shot_has_not_been_removed_description">%s शॉट को इस खिलाड़ी के शॉट इतिहास से हटाया नहीं गया है. कृपया शॉट हटाने के लिए पुनः प्रयास करें.</string>
     <string name="x_shots">%s शॉट्स</string>
     <string name="x_shot_category">श्रेणी - %s</string>
-    <string name="x_x">%s - %s</string>
+    <string name="x_x" formatted="false">%s - %s</string>
     <string name="yes">हाँ</string>
     <string name="your_player_could_not_be_retrieved_description">आपका प्लेयर पुनः प्राप्त नहीं किया जा सका. कृपया पुन: प्रयास करें.</string>
     <string name="at_least_one_player_description">रिपोर्ट तैयार करने के लिए कम से कम एक खिलाड़ी का कम से कम एक लॉग शॉट होना आवश्यक है. कृपया सुनिश्चित करें कि आगे बढ़ने के लिए यह प्रक्रिया पूरी हो गई है.</string>
