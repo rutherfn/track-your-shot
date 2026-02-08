@@ -249,6 +249,20 @@ class NavigationActionsTest {
                     NavOptions.Builder().build()
                 )
             }
+
+            @Test
+            fun playerFilters() {
+                val result = Actions.PlayersList.playerFilters()
+
+                Assertions.assertEquals(
+                    result.destination,
+                    NavigationDestinations.PLAYER_FILTERS_SCREEN
+                )
+                Assertions.assertEquals(
+                    result.navOptions,
+                    NavOptions.Builder().build()
+                )
+            }
         }
 
         @Nested

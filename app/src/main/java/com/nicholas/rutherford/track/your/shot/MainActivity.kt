@@ -76,7 +76,6 @@ open class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-
             // Allows the app to draw behind system bars for edge-to-edge experience
             enableEdgeToEdge()
 
