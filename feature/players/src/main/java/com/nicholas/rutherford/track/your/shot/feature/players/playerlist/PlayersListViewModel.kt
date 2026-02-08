@@ -58,22 +58,14 @@ class PlayersListViewModel(
     private val databaseStorePreferenceWriter: DataStorePreferencesWriter
 ) : BaseViewModel() {
 
-    internal var playerFilter = PlayerFilter()
-
-    internal var selectedPlayer: Player = Player(
-        firstName = "",
-        lastName = "",
-        position = PlayerPositions.None,
-        firebaseKey = "",
-        imageUrl = "",
-        shotsLoggedList = emptyList()
-    )
-
-    internal var currentPlayerArrayList: ArrayList<Player> = arrayListOf()
-
     internal val playerListMutableStateFlow = MutableStateFlow(value = PlayersListState())
 
     val playerListStateFlow = playerListMutableStateFlow.asStateFlow()
+
+    /** Helper to get current player filter from state or fetch from repository */
+    private suspend fun getCurrentPlayerFilter(): PlayerFilter {
+        return playerFilterRepository.fetchActiveFilter() ?: PlayerFilter()
+    }
 
     override fun onStart(owner: LifecycleOwner) {
         super.onStart(owner)
@@ -84,18 +76,12 @@ class PlayersListViewModel(
     /** Loads all players from the repository and updates the state */
     fun updatePlayerListState() {
         scope.launch {
-            currentPlayerArrayList.clear()
-
-            playerFilter = playerFilterRepository.fetchActiveFilter() ?: PlayerFilter()
+            val playerFilter = getCurrentPlayerFilter()
             val allPlayers = playerRepository.fetchAllPlayersWithFilter(filter = playerFilter)
-
-            allPlayers.forEach { player ->
-                currentPlayerArrayList.add(player)
-            }
 
             playerListMutableStateFlow.update { state ->
                 state.copy(
-                    playerList = currentPlayerArrayList.toList(),
+                    playerList = allPlayers,
                     hasAnyPlayersInDatabase = allPlayers.isNotEmpty(),
                     filterCount = playerFilterRepository.getActiveFilterCount()
                 )
@@ -140,11 +126,9 @@ class PlayersListViewModel(
 
     /** Updates the UI state with players from login */
     internal fun handleLoggedInPlayerList(playerList: List<Player>) {
-        currentPlayerArrayList.clear()
-        currentPlayerArrayList.addAll(playerList)
         playerListMutableStateFlow.update { state ->
             state.copy(
-                playerList = currentPlayerArrayList.toList(),
+                playerList = playerList,
                 hasAnyPlayersInDatabase = playerList.isNotEmpty()
             )
         }
@@ -162,14 +146,12 @@ class PlayersListViewModel(
     /** Updates the search state in the state */
     fun onSearchTextChanged(searchQuery: String) {
         scope.launch {
-            currentPlayerArrayList.clear()
-            playerRepository.fetchPlayerByQuery(query = searchQuery, playerFilter = playerFilter).forEach { player ->
-                currentPlayerArrayList.add(player)
-            }
+            val playerFilter = getCurrentPlayerFilter()
+            val queriedPlayers = playerRepository.fetchPlayerByQuery(query = searchQuery, playerFilter = playerFilter)
             playerListMutableStateFlow.update { state ->
                 state.copy(
                     searchQuery = searchQuery,
-                    playerList = currentPlayerArrayList.toList()
+                    playerList = queriedPlayers
                 )
             }
         }
@@ -193,12 +175,14 @@ class PlayersListViewModel(
             deleteFirebaseUserInfo.deletePlayer(player.firebaseKey).collectLatest { isSuccessful ->
                 if (isSuccessful) {
                     playerRepository.deletePlayerByName(player.firstName, player.lastName)
-                    currentPlayerArrayList.remove(player)
+                    val updatedPlayerList = playerListMutableStateFlow.value.playerList.filter { it != player }
                     val hasAnyPlayers = playerRepository.fetchPlayerCount() > 0
-                    playerListMutableStateFlow.value = PlayersListState(
-                        playerList = currentPlayerArrayList.toList(),
-                        hasAnyPlayersInDatabase = hasAnyPlayers
-                    )
+                    playerListMutableStateFlow.update { state ->
+                        state.copy(
+                            playerList = updatedPlayerList,
+                            hasAnyPlayersInDatabase = hasAnyPlayers
+                        )
+                    }
                     navigation.disableProgress()
                 } else {
                     navigation.disableProgress()
@@ -213,7 +197,6 @@ class PlayersListViewModel(
 
     /** Updates the selected player and shows sheet options */
     fun onPlayerClicked(player: Player) {
-        selectedPlayer = player
         playerListMutableStateFlow.update { state ->
             state.copy(
                 selectedPlayer = player,
@@ -224,14 +207,15 @@ class PlayersListViewModel(
 
     /** Handles sheet item actions based on index and player shot count */
     fun onSheetItemClicked(isConnectedToInternet: Boolean, index: Int) {
+        val selectedPlayer = playerListMutableStateFlow.value.selectedPlayer
         if (selectedPlayer.shotsLoggedList.isEmpty()) {
-            handleSheetItemClickForEmptyPlayerList(isConnectedToInternet = isConnectedToInternet, index = index)
+            handleSheetItemClickForEmptyPlayerList(isConnectedToInternet = isConnectedToInternet, index = index, selectedPlayer = selectedPlayer)
         } else {
-            handleSheetItemClickForPlayerList(isConnectedToInternet = isConnectedToInternet, index = index)
+            handleSheetItemClickForPlayerList(isConnectedToInternet = isConnectedToInternet, index = index, selectedPlayer = selectedPlayer)
         }
     }
 
-    private fun handleSheetItemClickForEmptyPlayerList(isConnectedToInternet: Boolean, index: Int) {
+    private fun handleSheetItemClickForEmptyPlayerList(isConnectedToInternet: Boolean, index: Int, selectedPlayer: Player) {
         if (index == EDIT_SHEET_OPTION_INDEX) {
             onEditPlayerClicked(player = selectedPlayer)
         } else {
@@ -239,7 +223,7 @@ class PlayersListViewModel(
         }
     }
 
-    private fun handleSheetItemClickForPlayerList(isConnectedToInternet: Boolean, index: Int) {
+    private fun handleSheetItemClickForPlayerList(isConnectedToInternet: Boolean, index: Int, selectedPlayer: Player) {
         when (index) {
             VIEW_SHOTS_SHEET_OPTION_INDEX -> onShotListClicked(playerName = selectedPlayer.fullName())
             EDIT_PLAYER_SHEET_OPTION_INDEX -> onEditPlayerClicked(player = selectedPlayer)
