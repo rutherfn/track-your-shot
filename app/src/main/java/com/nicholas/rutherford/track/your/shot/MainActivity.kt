@@ -48,18 +48,70 @@ open class MainActivity : ComponentActivity() {
      */
     private val navigator = get<com.nicholas.rutherford.track.your.shot.navigation.Navigator>()
 
-    override fun onStart() {
-        super.onStart()
-        checkAndShowReviewPrompt()
+    /**
+     * Tracks whether we've already checked for review prompt in this session.
+     * Prevents multiple checks when activity is resumed.
+     */
+    private var hasCheckedReviewPromptThisSession = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (savedInstanceState == null) {
+            checkAndShowReviewPrompt()
+        }
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        setContent {
+            enableEdgeToEdge()
+
+            NavigationComponent(
+                activity = this,
+                navHostController = rememberNavController(),
+                navigator = get(),
+                viewModels = ViewModels(
+                    mainActivityViewModel = viewModel,
+                    splashViewModel = getViewModel(),
+                    loginViewModel = getViewModel(),
+                    playersListViewModel = getViewModel(),
+                    createEditPlayerViewModel = getViewModel(),
+                    forgotPasswordViewModel = getViewModel(),
+                    createAccountViewModel = getViewModel(),
+                    authenticationViewModel = getViewModel(),
+                    selectShotViewModel = getViewModel(),
+                    logShotViewModel = getViewModel(),
+                    settingsViewModel = getViewModel(),
+                    permissionEducationViewModel = getViewModel(),
+                    termsConditionsViewModel = getViewModel(),
+                    onboardingEducationViewModel = getViewModel(),
+                    enabledPermissionsViewModel = getViewModel(),
+                    accountInfoViewModel = getViewModel(),
+                    reportListViewModel = getViewModel(),
+                    createReportViewModel = getViewModel(),
+                    shotsListViewModel = getViewModel(),
+                    declaredShotsListViewModel = getViewModel(),
+                    createEditDeclaredShotsViewModel = getViewModel(),
+                    createEditVoiceCommandViewModel = getViewModel(),
+                    playerFiltersViewModel = getViewModel()
+                )
+            )
+        }
     }
 
     /**
      * Checks if a review prompt should be shown and displays it if conditions are met.
+     * Only runs once per app launch session to prevent spamming the user.
      */
     private fun checkAndShowReviewPrompt() {
+        if (hasCheckedReviewPromptThisSession) {
+            return
+        }
+        hasCheckedReviewPromptThisSession = true
+
         lifecycleScope.launch {
             if (reviewPromptManager.shouldShowReviewPrompt()) {
-                // showReviewPromptDialog()
+                showReviewPromptDialog()
             }
         }
     }
@@ -92,61 +144,6 @@ open class MainActivity : ComponentActivity() {
                 )
             )
             navigator.alert(alert)
-        }
-    }
-
-    /**
-     * Called when the activity is first created.
-     *
-     * Sets up the Compose content, enables edge-to-edge display, and initializes
-     * the [NavigationComponent] with:
-     * - [androidx.navigation.NavHostController] for screen navigation
-     * - [com.nicholas.rutherford.track.your.shot.navigation.Navigator] instance for navigation, dialogs, and system actions
-     * - [ViewModels] container for all app ViewModels
-     *
-     * @param savedInstanceState The saved instance state bundle.
-     */
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Allows the app to draw behind system bars for edge-to-edge experience
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        setContent {
-            // Enables edge-to-edge content rendering in Compose
-            enableEdgeToEdge()
-
-            // Initializes the NavigationComponent with required dependencies
-            NavigationComponent(
-                activity = this,
-                navHostController = rememberNavController(),
-                navigator = get(),
-                viewModels = ViewModels(
-                    mainActivityViewModel = viewModel,
-                    splashViewModel = getViewModel(),
-                    loginViewModel = getViewModel(),
-                    playersListViewModel = getViewModel(),
-                    createEditPlayerViewModel = getViewModel(),
-                    forgotPasswordViewModel = getViewModel(),
-                    createAccountViewModel = getViewModel(),
-                    authenticationViewModel = getViewModel(),
-                    selectShotViewModel = getViewModel(),
-                    logShotViewModel = getViewModel(),
-                    settingsViewModel = getViewModel(),
-                    permissionEducationViewModel = getViewModel(),
-                    termsConditionsViewModel = getViewModel(),
-                    onboardingEducationViewModel = getViewModel(),
-                    enabledPermissionsViewModel = getViewModel(),
-                    accountInfoViewModel = getViewModel(),
-                    reportListViewModel = getViewModel(),
-                    createReportViewModel = getViewModel(),
-                    shotsListViewModel = getViewModel(),
-                    declaredShotsListViewModel = getViewModel(),
-                    createEditDeclaredShotsViewModel = getViewModel(),
-                    createEditVoiceCommandViewModel = getViewModel(),
-                    playerFiltersViewModel = getViewModel()
-                )
-            )
         }
     }
 }
