@@ -23,6 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -288,6 +289,7 @@ class PlayerFiltersViewModelTest {
         )
 
         viewModel.onResetFiltersConfirmed()
+        advanceUntilIdle()
 
         val expectedFilter = PlayerFilter(
             hasShotsLogged = HasShotsLoggedFilter.Both,
@@ -959,6 +961,7 @@ class PlayerFiltersViewModelTest {
         viewModel.pendingFilter = pendingFilter
         viewModel.initialFilter = PlayerFilter(hasShotsLogged = HasShotsLoggedFilter.Both)
         viewModel.onSeeResultsClicked()
+        advanceUntilIdle()
 
         val savedFilter = viewModel.pendingFilter.copy(lastUpdatedValue = expectedDateString)
         Assertions.assertEquals(expectedDateString, viewModel.pendingFilter.lastUpdatedValue)

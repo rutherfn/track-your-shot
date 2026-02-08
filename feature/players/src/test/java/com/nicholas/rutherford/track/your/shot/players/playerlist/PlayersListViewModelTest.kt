@@ -102,7 +102,7 @@ class PlayersListViewModelTest {
             PlayersListState(playerList = playerList, hasAnyPlayersInDatabase = true, filterCount = filterCount)
         )
         Assertions.assertEquals(
-            playersListViewModel.currentPlayerArrayList.toList(),
+            playersListViewModel.playerListMutableStateFlow.value.playerList,
             playerList
         )
     }
@@ -217,7 +217,6 @@ class PlayersListViewModelTest {
         val emptyPlayerList: List<Player> = emptyList()
         val newPlayerList: List<Player> = listOf(newPlayer)
 
-        playersListViewModel.currentPlayerArrayList = arrayListOf()
         playersListViewModel.playerListMutableStateFlow.value =
             PlayersListState(playerList = emptyPlayerList)
 
@@ -228,7 +227,7 @@ class PlayersListViewModelTest {
             PlayersListState(playerList = newPlayerList, hasAnyPlayersInDatabase = true)
         )
         Assertions.assertEquals(
-            playersListViewModel.currentPlayerArrayList.toList(),
+            playersListViewModel.playerListMutableStateFlow.value.playerList,
             newPlayerList
         )
     }
@@ -244,7 +243,7 @@ class PlayersListViewModelTest {
             PlayersListState(playerList = emptyList())
         )
         Assertions.assertEquals(
-            playersListViewModel.currentPlayerArrayList.toList(),
+            playersListViewModel.playerListMutableStateFlow.value.playerList,
             emptyPlayerList
         )
     }
@@ -260,7 +259,7 @@ class PlayersListViewModelTest {
             PlayersListState(playerList = emptyList())
         )
         Assertions.assertEquals(
-            playersListViewModel.currentPlayerArrayList.toList(),
+            playersListViewModel.playerListMutableStateFlow.value.playerList,
             emptyPlayerList
         )
     }
@@ -276,7 +275,7 @@ class PlayersListViewModelTest {
             PlayersListState(playerList = emptyList())
         )
         Assertions.assertEquals(
-            playersListViewModel.currentPlayerArrayList.toList(),
+            playersListViewModel.playerListMutableStateFlow.value.playerList,
             emptyPlayerList
         )
     }
@@ -296,7 +295,7 @@ class PlayersListViewModelTest {
                 PlayersListState(playerList = emptyList(), searchQuery = searchQuery)
             )
             Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
+                playersListViewModel.playerListMutableStateFlow.value.playerList,
                 emptyPlayerList
             )
         }
@@ -314,7 +313,7 @@ class PlayersListViewModelTest {
                 PlayersListState(playerList = playerList, searchQuery = searchQuery)
             )
             Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
+                playersListViewModel.playerListMutableStateFlow.value.playerList,
                 playerList
             )
         }
@@ -329,7 +328,7 @@ class PlayersListViewModelTest {
             PlayersListState(playerList = emptyList())
         )
         Assertions.assertEquals(
-            playersListViewModel.currentPlayerArrayList.toList(),
+            playersListViewModel.playerListMutableStateFlow.value.playerList,
             emptyPlayerList
         )
         coVerify { playersListViewModel.enableProgressAndDelay() }
@@ -347,7 +346,7 @@ class PlayersListViewModelTest {
             PlayersListState(playerList = emptyList())
         )
         Assertions.assertEquals(
-            playersListViewModel.currentPlayerArrayList.toList(),
+            playersListViewModel.playerListMutableStateFlow.value.playerList,
             emptyPlayerList
         )
         verify { navigation.enableProgress(progress = any()) }
@@ -387,7 +386,7 @@ class PlayersListViewModelTest {
                 PlayersListState(playerList = emptyList())
             )
             Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
+                playersListViewModel.playerListMutableStateFlow.value.playerList,
                 emptyPlayerList
             )
             verify { navigation.disableProgress() }
@@ -410,7 +409,7 @@ class PlayersListViewModelTest {
                 PlayersListState(playerList = emptyList())
             )
             Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
+                playersListViewModel.playerListMutableStateFlow.value.playerList,
                 emptyPlayerList
             )
             verify { navigation.disableProgress() }
@@ -420,14 +419,13 @@ class PlayersListViewModelTest {
         @Test
         fun `when all conditions are met should delete player`() = runTest {
             playersListViewModel.playerListMutableStateFlow.value = PlayersListState(playerList = listOf(player))
-            playersListViewModel.currentPlayerArrayList = arrayListOf(player)
 
             Assertions.assertEquals(
                 playersListViewModel.playerListMutableStateFlow.value,
                 PlayersListState(playerList = listOf(player))
             )
             Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
+                playersListViewModel.playerListMutableStateFlow.value.playerList,
                 listOf(player)
             )
 
@@ -440,7 +438,7 @@ class PlayersListViewModelTest {
                 PlayersListState(playerList = emptyList())
             )
             Assertions.assertEquals(
-                playersListViewModel.currentPlayerArrayList.toList(),
+                playersListViewModel.playerListMutableStateFlow.value.playerList,
                 emptyPlayerList
             )
 
@@ -465,7 +463,7 @@ class PlayersListViewModelTest {
 
         val result = playersListViewModel.playerListMutableStateFlow.value
 
-        Assertions.assertEquals(playersListViewModel.selectedPlayer, player)
+        Assertions.assertEquals(playersListViewModel.playerListMutableStateFlow.value.selectedPlayer, player)
         Assertions.assertEquals(result, PlayersListState(selectedPlayer = player, sheetOptions = listOf(viewShotsOption, editPlayerOption, deletePlayerOption)))
     }
 
@@ -477,7 +475,7 @@ class PlayersListViewModelTest {
             val index = 0
             val player = TestPlayer().create().copy(shotsLoggedList = emptyList())
 
-            playersListViewModel.selectedPlayer = player
+            playersListViewModel.playerListMutableStateFlow.value = playersListViewModel.playerListMutableStateFlow.value.copy(selectedPlayer = player)
 
             playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
 
@@ -490,7 +488,7 @@ class PlayersListViewModelTest {
             val index = 1
             val player = TestPlayer().create().copy(shotsLoggedList = emptyList())
 
-            playersListViewModel.selectedPlayer = player
+            playersListViewModel.playerListMutableStateFlow.value = playersListViewModel.playerListMutableStateFlow.value.copy(selectedPlayer = player)
 
             playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
 
@@ -503,7 +501,7 @@ class PlayersListViewModelTest {
             val index = 0
             val player = TestPlayer().create().copy(shotsLoggedList = listOf(TestShotLogged.build()))
 
-            playersListViewModel.selectedPlayer = player
+            playersListViewModel.playerListMutableStateFlow.value = playersListViewModel.playerListMutableStateFlow.value.copy(selectedPlayer = player)
 
             playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
 
@@ -516,7 +514,7 @@ class PlayersListViewModelTest {
             val index = 1
             val player = TestPlayer().create()
 
-            playersListViewModel.selectedPlayer = player
+            playersListViewModel.playerListMutableStateFlow.value = playersListViewModel.playerListMutableStateFlow.value.copy(selectedPlayer = player)
 
             playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
 
@@ -529,7 +527,7 @@ class PlayersListViewModelTest {
             val index = 2
             val player = TestPlayer().create()
 
-            playersListViewModel.selectedPlayer = player
+            playersListViewModel.playerListMutableStateFlow.value = playersListViewModel.playerListMutableStateFlow.value.copy(selectedPlayer = player)
 
             playersListViewModel.onSheetItemClicked(isConnectedToInternet = true, index = index)
 
