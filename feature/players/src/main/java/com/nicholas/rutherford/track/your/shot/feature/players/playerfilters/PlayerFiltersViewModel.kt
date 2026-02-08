@@ -54,10 +54,10 @@ class PlayerFiltersViewModel(
     val playerFilterStateFlow = playerFiltersMutableStateFlow.asStateFlow()
 
     /** The initial state of the [PlayerFilter] pulled directly from the database*/
-    private var initialFilter = PlayerFilter()
+    internal var initialFilter = PlayerFilter()
 
     /** A copy of initially the [initialFilter] but will get updated based on UI interactions which then be used to override the current filter.*/
-    private var pendingFilter = PlayerFilter()
+    internal var pendingFilter = PlayerFilter()
 
     init {
         initializePlayerFilterState()
@@ -103,7 +103,7 @@ class PlayerFiltersViewModel(
      * Clears the minimum and maximum shot values to their defaults (null/0).
      * Called when the user confirms the clear action in the alert.
      */
-    private fun onClearShotRangeConfirmed() {
+    internal fun onClearShotRangeConfirmed() {
         scope.launch {
             pendingFilter = pendingFilter.copy(
                 minShots = null,
@@ -141,7 +141,7 @@ class PlayerFiltersViewModel(
      * - minShots and maxShots set to null
      * Saves the reset filter to the database and updates the UI state.
      */
-    private fun onResetFiltersConfirmed() {
+    internal fun onResetFiltersConfirmed() {
         scope.launch {
             navigation.enableProgress(progress = Progress())
 
@@ -181,19 +181,18 @@ class PlayerFiltersViewModel(
      * Default filter has "Both" as the hasShotsLogged filter (the default state)
      * If hasShotsLogged is null, treat it as "Both" since that's the default state
      */
-    private suspend fun loadInitialFilterFromDatabase() {
+    internal suspend fun loadInitialFilterFromDatabase() {
         val fetchedFilter = playerFilterRepository.fetchActiveFilter()
         initialFilter = fetchedFilter?.copy(
             hasShotsLogged = fetchedFilter.hasShotsLogged ?: HasShotsLoggedFilter.Both
-        )
-            ?: PlayerFilter(hasShotsLogged = HasShotsLoggedFilter.Both)
+        ) ?: PlayerFilter(hasShotsLogged = HasShotsLoggedFilter.Both)
         pendingFilter = initialFilter.copy()
     }
 
     /**
      * Gives us a list of all the selectable positions string values.
      */
-    private fun buildDefaultPositions(): List<String> =
+    internal fun buildDefaultPositions(): List<String> =
         listOf(
             application.getString(StringsIds.pointGuard),
             application.getString(StringsIds.shootingGuard),
@@ -206,7 +205,7 @@ class PlayerFiltersViewModel(
     /**
      * Gives us a list of all the actual player positions which just doesn't include all
      */
-    private fun buildDefaultPositionNames(): List<String> =
+    internal fun buildDefaultPositionNames(): List<String> =
         listOf(
             application.getString(StringsIds.pointGuard),
             application.getString(StringsIds.shootingGuard),
@@ -218,17 +217,17 @@ class PlayerFiltersViewModel(
     /**
      * Returns true if the [title] passed in is equal to All.
      */
-    private fun isSelectedAllChoosePositionsOption(title: String): Boolean = title == application.getString(StringsIds.all)
+    internal fun isSelectedAllChoosePositionsOption(title: String): Boolean = title == application.getString(StringsIds.all)
 
     /**
      * Returns true if the [currentPositions] contains all the default positions and doesn't contain all.
      */
-    private fun shouldAddAllPosition(currentPositions: List<String>): Boolean = currentPositions.containsAll(buildDefaultPositionNames()) && !currentPositions.contains(application.getString(StringsIds.all))
+    internal fun shouldAddAllPosition(currentPositions: List<String>): Boolean = currentPositions.containsAll(buildDefaultPositionNames()) && !currentPositions.contains(application.getString(StringsIds.all))
 
     /**
      * Returns the list of strings for the default shot logs options.
      */
-    private fun buildDefaultShotLogsOptions(): List<String> =
+    internal fun buildDefaultShotLogsOptions(): List<String> =
         listOf(
             application.getString(StringsIds.hasShots),
             application.getString(StringsIds.noShots),
@@ -239,7 +238,7 @@ class PlayerFiltersViewModel(
      * Returns the list of string ids for default selected shot log options based on [hasShotsLogged]
      * "Both" is the default state, so when null, we show "Both" as selected
      */
-    private fun buildDefaultSelectedShotLogOptions(hasShotsLogged: HasShotsLoggedFilter?): List<String> =
+    internal fun buildDefaultSelectedShotLogOptions(hasShotsLogged: HasShotsLoggedFilter?): List<String> =
         when (hasShotsLogged) {
             is HasShotsLoggedFilter.HasShots -> listOf(application.getString(StringsIds.hasShots))
             is HasShotsLoggedFilter.NoShots -> listOf(application.getString(StringsIds.noShots))
@@ -251,7 +250,7 @@ class PlayerFiltersViewModel(
     /**
      * Loads initial filter info fron the database and updates the filter state
      */
-    private fun initializePlayerFilterState() {
+    internal fun initializePlayerFilterState() {
         scope.launch {
             loadInitialFilterFromDatabase()
             updatePlayerFilterState()
@@ -261,7 +260,7 @@ class PlayerFiltersViewModel(
     /**
      * Updates the player filter state from mostly the [pendingFilter]
      */
-    private suspend fun updatePlayerFilterState() {
+    internal suspend fun updatePlayerFilterState() {
         playerFiltersMutableStateFlow.update { state ->
             state.copy(
                 filterCount = pendingFilter.getFilterCount(),
@@ -310,7 +309,7 @@ class PlayerFiltersViewModel(
      *
      * @param title The title of the position that was deselected.
      */
-    private fun handlePositionDeselection(title: String, currentPositions: MutableList<String>) {
+    internal fun handlePositionDeselection(title: String, currentPositions: MutableList<String>) {
         val all = application.getString(StringsIds.all)
 
         if (isSelectedAllChoosePositionsOption(title = title)) {
@@ -329,7 +328,7 @@ class PlayerFiltersViewModel(
      * @param title The title of the position that was deselected.
      * @param currentPositions The current list of positions that are selected.
      */
-    private fun handlePositionSelection(title: String, currentPositions: MutableList<String>) {
+    internal fun handlePositionSelection(title: String, currentPositions: MutableList<String>) {
         if (isSelectedAllChoosePositionsOption(title = title)) {
             currentPositions.clear()
             currentPositions.addAll(buildDefaultPositions())
@@ -351,7 +350,11 @@ class PlayerFiltersViewModel(
         scope.launch {
             val newFilter = title.toHasShotsLoggedFilter(application)
             pendingFilter = pendingFilter.copy(
-                hasShotsLogged = if (newFilter is HasShotsLoggedFilter.None) null else newFilter
+                hasShotsLogged = if (newFilter is HasShotsLoggedFilter.None) {
+                    null
+                } else {
+                    newFilter
+                }
             )
             updatePlayerFilterState()
         }
