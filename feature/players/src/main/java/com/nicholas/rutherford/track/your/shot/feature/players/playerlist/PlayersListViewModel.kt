@@ -1,11 +1,14 @@
 package com.nicholas.rutherford.track.your.shot.feature.players.playerlist
 
 import android.app.Application
+import androidx.lifecycle.LifecycleOwner
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerFilterRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
+import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerFilter
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
@@ -39,6 +42,7 @@ const val EDIT_PLAYER_SHEET_OPTION_INDEX = 1
  * @property scope The coroutine scope used for asynchronous operations.
  * @property navigation Defines navigation actions for the Players List screen.
  * @property deleteFirebaseUserInfo Handles deletion of player data from Firebase.
+ * @property playerFilterRepository Repository for managing player filters.
  * @property playerRepository Repository for accessing and modifying player data.
  * @property pendingPlayerRepository Repository for managing temporary/pending players.
  * @property databaseStorePreferenceWriter Writes data to the local database.
@@ -48,6 +52,7 @@ class PlayersListViewModel(
     private val scope: CoroutineScope,
     private val navigation: PlayersListNavigation,
     private val deleteFirebaseUserInfo: DeleteFirebaseUserInfo,
+    private val playerFilterRepository: PlayerFilterRepository,
     private val playerRepository: PlayerRepository,
     private val pendingPlayerRepository: PendingPlayerRepository,
     private val databaseStorePreferenceWriter: DataStorePreferencesWriter
@@ -68,7 +73,8 @@ class PlayersListViewModel(
 
     val playerListStateFlow = playerListMutableStateFlow.asStateFlow()
 
-    init {
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
         updatePlayerListState()
         deleteAllNonEmptyPendingPlayers()
     }
@@ -77,7 +83,7 @@ class PlayersListViewModel(
     fun updatePlayerListState() {
         scope.launch {
             currentPlayerArrayList.clear()
-            val allPlayers = playerRepository.fetchAllPlayers()
+            val allPlayers = playerRepository.fetchAllPlayersWithFilter(filter = playerFilterRepository.fetchActiveFilter() ?: PlayerFilter())
 
             allPlayers.forEach { player ->
                 currentPlayerArrayList.add(player)
@@ -85,7 +91,8 @@ class PlayersListViewModel(
             playerListMutableStateFlow.update { state ->
                 state.copy(
                     playerList = currentPlayerArrayList.toList(),
-                    hasAnyPlayersInDatabase = allPlayers.isNotEmpty()
+                    hasAnyPlayersInDatabase = allPlayers.isNotEmpty(),
+                    filterCount = playerFilterRepository.getActiveFilterCount()
                 )
             }
         }

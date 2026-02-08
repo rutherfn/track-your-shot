@@ -87,6 +87,7 @@ object ViewModelsModule {
                 scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
                 navigation = get(),
                 deleteFirebaseUserInfo = get(),
+                playerFilterRepository = get(),
                 playerRepository = get(),
                 pendingPlayerRepository = get(),
                 databaseStorePreferenceWriter = get()

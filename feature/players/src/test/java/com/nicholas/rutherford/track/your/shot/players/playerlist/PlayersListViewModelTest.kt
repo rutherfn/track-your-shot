@@ -3,6 +3,7 @@ package com.nicholas.rutherford.track.your.shot.players.playerlist
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerFilterRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
@@ -54,6 +55,8 @@ class PlayersListViewModelTest {
 
     private val databaseStorePreferenceWriter = mockk<DataStorePreferencesWriter>(relaxed = true)
 
+    private val playerFilterRepository = mockk<PlayerFilterRepository>(relaxed = true)
+
     private val playerRepository = mockk<PlayerRepository>(relaxed = true)
     private val pendingPlayerRepository = mockk<PendingPlayerRepository>(relaxed = true)
 
@@ -68,6 +71,7 @@ class PlayersListViewModelTest {
             scope = scope,
             navigation = navigation,
             deleteFirebaseUserInfo = deleteFirebaseUserInfo,
+            playerFilterRepository = playerFilterRepository,
             playerRepository = playerRepository,
             pendingPlayerRepository = pendingPlayerRepository,
             databaseStorePreferenceWriter = databaseStorePreferenceWriter
@@ -83,16 +87,19 @@ class PlayersListViewModelTest {
     }
 
     @Test
-    fun `update player info list state should update state property`() {
+    fun `update player info list state should update state property`() = runTest {
         val playerList = listOf(TestPlayer().create())
+        val filterCount = 0
 
-        coEvery { playerRepository.fetchAllPlayers() } returns playerList
+        coEvery { playerFilterRepository.fetchActiveFilter() } returns null
+        coEvery { playerRepository.fetchAllPlayersWithFilter(filter = any()) } returns playerList
+        coEvery { playerFilterRepository.getActiveFilterCount() } returns filterCount
 
         playersListViewModel.updatePlayerListState()
 
         Assertions.assertEquals(
             playersListViewModel.playerListMutableStateFlow.value,
-            PlayersListState(playerList = playerList, hasAnyPlayersInDatabase = true)
+            PlayersListState(playerList = playerList, hasAnyPlayersInDatabase = true, filterCount = filterCount)
         )
         Assertions.assertEquals(
             playersListViewModel.currentPlayerArrayList.toList(),
