@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="acceptance_of_these_terms">接受这些条款</string>
     <string name="acceptance_of_these_terms_description">您承认您已阅读本协议并同意其所有条款和条件。通过访问和使用移动应用程序和服务，您同意接受本协议的约束。如果您不同意遵守本协议的条款，您无权访问或使用移动应用程序和服务。</string>
     <string name="accounts">帐号</string>
@@ -121,6 +122,7 @@
     <string name="reset_password">重设密码</string>
     <string name="reset_password_email_sent">重设密码电子邮件已发送</string>
     <string name="resend_email">重新发送电子邮件</string>
+    <string name="see_results" tools:ignore="MissingTranslation">See Results (%1$d)</string>
     <string name="select_a_shot">选择一张照片</string>
     <string name="selecting_a_shot">选择镜头</string>
     <string name="select_date">选择日期</string>

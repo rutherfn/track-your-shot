@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="acceptance_of_these_terms">Bu Şartların Kabulü</string>
     <string name="acceptance_of_these_terms_description">Bu Sözleşmeyi okuduğunuzu ve tüm hüküm ve koşullarını kabul ettiğinizi kabul edersiniz. Mobil Uygulama ve Hizmetlere erişerek ve bunları kullanarak, bu Sözleşme\'ye bağlı olmayı kabul etmiş olursunuz. Bu Sözleşme\'nin şartlarına uymayı kabul etmiyorsanız, Mobil Uygulama ve Hizmetlere erişmeniz veya bunları kullanmanız yetkilendirilmez.</string>
     <string name="accounts">Hesaplar</string>
@@ -121,6 +122,7 @@
     <string name="reset_password">Şifreyi Sıfırla</string>
     <string name="reset_password_email_sent">Şifreyi Sıfırla E-posta Gönderildi</string>
     <string name="resend_email">E-postayı yeniden gönder</string>
+    <string name="see_results" tools:ignore="MissingTranslation">See Results (%1$d)</string>
     <string name="select_a_shot">Bir Atış Seçin</string>
     <string name="selecting_a_shot">Bir Atış Seçmek</string>
     <string name="select_date">Tarih Seçin</string>

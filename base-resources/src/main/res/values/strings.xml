@@ -177,6 +177,7 @@
     <string name="reports">Reports</string>
     <string name="reset_filters">Reset Filters</string>
     <string name="reset_filters_description">Are you sure you want to reset all filters to their default state?</string>
+    <string name="see_results">See Results (%1$d)</string>
     <string name="reset_password">Reset Password</string>
     <string name="reset_password_email_sent">Reset Password Email Sent</string>
     <string name="resend_email">Resend Email</string>

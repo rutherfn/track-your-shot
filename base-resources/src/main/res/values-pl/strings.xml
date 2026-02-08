@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="acceptance_of_these_terms">Akceptacja niniejszych warunków</string>
     <string name="acceptance_of_these_terms_description">Potwierdzasz, że przeczytałeś niniejszą Umowę i akceptujesz wszystkie jej postanowienia. Uzyskując dostęp do Aplikacji Mobilnej i Usług oraz korzystając z nich, zgadzasz się być związany postanowieniami niniejszej Umowy. Jeżeli nie zgadzasz się przestrzegać postanowień niniejszej Umowy, nie jesteś upoważniony do uzyskiwania dostępu do Aplikacji Mobilnej i Usług ani do korzystania z nich.</string>
     <string name="accounts">Konta</string>
@@ -121,6 +122,7 @@
     <string name="reset_password">Zresetuj hasło</string>
     <string name="reset_password_email_sent">Resetuj hasło E-mail wysłany</string>
     <string name="resend_email">Wyślij ponownie e-mail</string>
+    <string name="see_results" tools:ignore="MissingTranslation">See Results (%1$d)</string>
     <string name="select_a_shot">Wybierz ujęcie</string>
     <string name="selecting_a_shot">Wybieranie ujęcia</string>
     <string name="select_date">Wybierz datę</string>

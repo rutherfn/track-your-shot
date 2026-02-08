@@ -147,6 +147,7 @@
     <string name="reset_defaults">Redefinir padrões</string>
     <string name="reset_filters">Redefinir filtros</string>
     <string name="reset_filters_description">Tem certeza de que deseja redefinir todos os filtros para seu estado padrão?</string>
+    <string name="see_results">Ver resultados (%1$d)</string>
     <string name="reset_password">Redefinir senha</string>
     <string name="reset_password_email_sent">Redefinir senha E-mail enviado</string>
     <string name="resend_email">Reenviar e-mail</string>

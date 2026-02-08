@@ -50,8 +50,6 @@ fun EnhancedSearchTextField(
     placeholderValue: String,
     modifier: Modifier = Modifier
 ) {
-    // Use TextFieldValue to preserve cursor position
-    // Remember the state without a key so it persists across recompositions
     var currentTextFieldValue by remember {
         mutableStateOf(
             TextFieldValue(
@@ -64,11 +62,8 @@ fun EnhancedSearchTextField(
     // Track the last text we sent to onValueChange to distinguish user input from external updates
     var lastSentText by remember { mutableStateOf(value) }
 
-    // Get focus manager to clear focus when needed
     val focusManager = LocalFocusManager.current
 
-    // Sync with external value changes (from ViewModel/StateFlow)
-    // Only update if the text changed externally (not from user typing)
     LaunchedEffect(value) {
         // If the external value is different from what we last sent, it's an external update
         // In that case, update the TextFieldValue and place cursor at the end
@@ -77,7 +72,7 @@ fun EnhancedSearchTextField(
                 text = value,
                 selection = TextRange(value.length)
             )
-            lastSentText = value // Update lastSentText to match external value
+            lastSentText = value
         }
     }
 
@@ -114,14 +109,8 @@ fun EnhancedSearchTextField(
             }
         },
         singleLine = true,
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                focusManager.clearFocus()
-            }
-        ),
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         shape = RoundedCornerShape(16.dp),
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = AppColors.Orange,

@@ -146,6 +146,7 @@
     <string name="reset_defaults">Restablecer valores predeterminados</string>
     <string name="reset_filters">Restablecer filtros</string>
     <string name="reset_filters_description">¿Está seguro de que desea restablecer todos los filtros a su estado predeterminado?</string>
+    <string name="see_results">Ver resultados (%1$d)</string>
     <string name="reset_password">Restablecer contraseña</string>
     <string name="reset_password_email_sent">Correo electrónico enviado para restablecer contraseña</string>
     <string name="resend_email">Reenviar correo electrónico</string>

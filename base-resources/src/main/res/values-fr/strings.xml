@@ -147,6 +147,7 @@
     <string name="reset_defaults">Réinitialiser les valeurs par défaut</string>
     <string name="reset_filters">Réinitialiser les filtres</string>
     <string name="reset_filters_description">Êtes-vous sûr de vouloir réinitialiser tous les filtres à leur état par défaut ?</string>
+    <string name="see_results">Voir les résultats (%1$d)</string>
     <string name="reset_password">Réinitialiser le mot de passe</string>
     <string name="reset_password_email_sent">Réinitialiser le mot de passe E-mail envoyé</string>
     <string name="resend_email">Renvoyer l\'e-mail</string>

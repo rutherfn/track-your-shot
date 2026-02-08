@@ -102,8 +102,15 @@ class PlayerRepositoryImpl(
         return fetchAllPlayersWithFilter(filter = currentActiveFilter)
     }
 
+    /**
+     * Fetches all Players and then will filter which players to show based on [playerFilterDao].
+     * That filter gets set and what gets return back is based on those user set filters
+     *
+     * @param filter The active filter to apply to the player list.
+     * @return A list of filtered players given by the selected user filters
+     */
     override suspend fun fetchAllPlayersWithFilter(filter: PlayerFilter): List<Player> {
-        val allPlayers = playerDao.getAllPlayers()?.map { it.toPlayer() } ?: emptyList()
+        val allPlayers = playerDao.getAllPlayers()?.map { playerEntity -> playerEntity.toPlayer() } ?: emptyList()
 
         return allPlayers.filter { player ->
             matchesPositionFilter(player = player, filter = filter) &&

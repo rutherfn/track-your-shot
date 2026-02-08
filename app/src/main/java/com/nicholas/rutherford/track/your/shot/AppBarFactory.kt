@@ -107,6 +107,7 @@ interface AppBarFactory {
     /** Creates an AppBar for create edit voice create screen. */
     fun createEditVoiceCommandCreateScreenAppBar(createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel, type: VoiceCommandTypes, isCreating: Boolean): AppBar
 
+    /** Creates an AppBar for player filter screen. */
     fun createPlayerFilterScreenAppBar(playersFilterViewModel: PlayerFiltersViewModel): AppBar
 
     /** Creates a default, hidden AppBar. */

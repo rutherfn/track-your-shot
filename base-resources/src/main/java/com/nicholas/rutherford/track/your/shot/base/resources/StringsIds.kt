@@ -268,6 +268,7 @@ object StringsIds {
     val resetDefaults = R.string.reset_defaults
     val resetFilters = R.string.reset_filters
     val resetFiltersDescription = R.string.reset_filters_description
+    val seeResults = R.string.see_results
     val resetPassword = R.string.reset_password
     val resetPasswordEmailSent = R.string.reset_password_email_sent
     val resendEmail = R.string.resend_email

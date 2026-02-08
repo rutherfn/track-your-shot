@@ -28,6 +28,7 @@ data class PlayerFilter(
 
 /**
  * Converts a [PlayerFilterEntity] and list of positions to a [PlayerFilter] domain model.
+ * It will also filter the last provided last updated date value
  *
  * @param positions List of position strings from PlayerFilterPositionEntity.
  * @return A [PlayerFilter] instance with values mapped from the entity and positions.

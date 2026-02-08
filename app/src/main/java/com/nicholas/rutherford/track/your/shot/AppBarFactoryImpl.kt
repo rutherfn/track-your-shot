@@ -298,6 +298,7 @@ class AppBarFactoryImpl(
             onIconButtonClicked = { createEditVoiceCommandViewModel.onToolbarMenuClicked() }
         )
 
+    /** Creates AppBar for create player filter screen. */
     override fun createPlayerFilterScreenAppBar(playersFilterViewModel: PlayerFiltersViewModel): AppBar =
         AppBar(
             toolbarId = StringsIds.playerFilters,

@@ -78,7 +78,11 @@ fun NumericRowStepper(
                 text = title,
                 modifier = titleModifier,
                 style = titleStyle,
-                color = if (enabled) LocalContentColor.current else LocalContentColor.current.copy(alpha = 0.38f)
+                color = if (enabled) {
+                    LocalContentColor.current
+                } else {
+                    LocalContentColor.current.copy(alpha = 0.38f)
+                }
             )
 
             NumericRowStepperRightContent(
@@ -114,18 +118,14 @@ fun NumericRowStepperRightContent(
     enabled: Boolean = true
 ) {
     var internalValue by remember { mutableIntStateOf(defaultValue) }
-
-    // Use external value if provided, otherwise use internal state
     val displayValue = currentValue ?: internalValue
 
-    // Sync internal state when defaultValue changes (only if not using external state)
     LaunchedEffect(defaultValue) {
         if (currentValue == null) {
             internalValue = defaultValue
         }
     }
 
-    // Sync internal state when external value changes
     LaunchedEffect(currentValue) {
         currentValue?.let { internalValue = it }
     }
@@ -154,7 +154,13 @@ fun NumericRowStepperRightContent(
             modifier = Modifier
                 .size(28.dp)
                 .background(
-                    Color.Gray.copy(alpha = if (enabled) enabledBackgroundAlpha else disabledBackgroundAlpha),
+                    Color.Gray.copy(
+                        alpha = if (enabled) {
+                            enabledBackgroundAlpha
+                        } else {
+                            disabledBackgroundAlpha
+                        }
+                    ),
                     shape = CircleShape
                 )
                 .clip(CircleShape)
@@ -171,7 +177,11 @@ fun NumericRowStepperRightContent(
         Text(
             text = displayValue.toString(),
             style = TextStyles.body,
-            color = if (enabled) LocalContentColor.current else LocalContentColor.current.copy(alpha = disabledAlpha)
+            color = if (enabled) {
+                LocalContentColor.current
+            } else {
+                LocalContentColor.current.copy(alpha = disabledAlpha)
+            }
         )
 
         IconButton(

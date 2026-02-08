@@ -81,6 +81,7 @@ object NavigationModule {
         /** Navigation for the Players List screen. */
         single<PlayersListNavigation> { PlayersListNavigationImpl(navigator = get()) }
 
+        /** Navigation for the Players Filters screen. */
         single<PlayerFiltersNavigation> { PlayerFiltersNavigationImpl(navigator = get()) }
 
         /** Navigation for Create/Edit Player screen. */

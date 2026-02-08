@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="acceptance_of_these_terms">इन शर्तों की स्वीकृति</string>
     <string name="acceptance_of_these_terms_description">आप स्वीकार करते हैं कि आपने इस अनुबंध को पढ़ लिया है और इसके सभी नियमों व शर्तों से सहमत हैं. मोबाइल एप्लिकेशन और सेवाओं तक पहुंच और उनका उपयोग करके, आप इस समझौते से बंधे होने के लिए सहमत होते हैं. यदि आप इस अनुबंध की शर्तों का पालन करने के लिए सहमत नहीं हैं, तो आप मोबाइल एप्लिकेशन और सेवाओं तक पहुंचने या उनका उपयोग करने के लिए अधिकृत नहीं हैं.</string>
     <string name="accounts">हिसाब किताब</string>
@@ -121,6 +122,7 @@
     <string name="reset_password">पासवर्ड रीसेट</string>
     <string name="reset_password_email_sent">पासवर्ड रीसेट करें ईमेल भेजा गया</string>
     <string name="resend_email">ईमेल दुबारा भेजें</string>
+    <string name="see_results" tools:ignore="MissingTranslation">See Results (%1$d)</string>
     <string name="select_a_shot">एक शॉट का चयन करें</string>
     <string name="selecting_a_shot">एक शॉट का चयन</string>
     <string name="select_date">तारीख़ चुनें</string>

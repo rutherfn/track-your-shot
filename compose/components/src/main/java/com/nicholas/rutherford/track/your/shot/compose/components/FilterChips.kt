@@ -27,6 +27,10 @@ import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
+private const val SPECIAL_LAYOUT_ITEM_COUNT = 3
+private const val TWO_COLUMN_LAYOUT = 2
+private const val FIRST_ROW_ITEM_COUNT = 2
+
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
  *
@@ -44,20 +48,107 @@ fun FilterChips(
     options: List<String>,
     selectedOptions: List<String>,
     onOptionToggled: (String) -> Unit,
-    itemsPerRow: Int = 2,
+    itemsPerRow: Int = TWO_COLUMN_LAYOUT,
     @SuppressLint("ModifierParameter")
     modifier: Modifier = Modifier
 ) {
-    // Special layout for exactly 3 items: first two side by side, third centered below
-    if (options.size == 3 && itemsPerRow == 2) {
-        // First row: first two items side by side
+    if (options.size == SPECIAL_LAYOUT_ITEM_COUNT && itemsPerRow == TWO_COLUMN_LAYOUT) {
+        FilterChipsThreeItemLayout(
+            options = options,
+            selectedOptions = selectedOptions,
+            onOptionToggled = onOptionToggled,
+            modifier = modifier
+        )
+    } else {
+        FilterChipsDefaultLayout(
+            options = options,
+            selectedOptions = selectedOptions,
+            onOptionToggled = onOptionToggled,
+            itemsPerRow = itemsPerRow,
+            modifier = modifier
+        )
+    }
+}
+
+/**
+ * Special layout for exactly 3 items: first two side by side, third centered below.
+ * The third chip is stretched to match the combined width of the two chips above.
+ *
+ * @param options List of exactly 3 filter option strings to display.
+ * @param selectedOptions List of currently selected filter options.
+ * @param onOptionToggled Callback invoked when a filter option is clicked, passing the option string.
+ * @param modifier Optional [Modifier] to customize the layout or styling of the component.
+ */
+@Composable
+private fun FilterChipsThreeItemLayout(
+    options: List<String>,
+    selectedOptions: List<String>,
+    onOptionToggled: (String) -> Unit,
+    @SuppressLint("ModifierParameter")
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(Padding.twelve)
+    ) {
+        options.take(FIRST_ROW_ITEM_COUNT).forEach { option ->
+            FilterChipItem(
+                option = option,
+                isSelected = selectedOptions.contains(option),
+                onOptionToggled = onOptionToggled,
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(Padding.twelve)
+    ) {
+        Spacer(modifier = Modifier.weight(0.5f))
+
+        FilterChipItem(
+            option = options[2],
+            isSelected = selectedOptions.contains(options[2]),
+            onOptionToggled = onOptionToggled,
+            modifier = Modifier.weight(2f)
+        )
+
+        Spacer(modifier = Modifier.weight(0.5f))
+    }
+}
+
+/**
+ * Default layout: chunk items into rows based on itemsPerRow.
+ * Each row contains up to itemsPerRow chips, with spacers filling empty slots.
+ *
+ * @param options List of filter option strings to display.
+ * @param selectedOptions List of currently selected filter options.
+ * @param onOptionToggled Callback invoked when a filter option is clicked, passing the option string.
+ * @param itemsPerRow Number of items to display per row.
+ * @param modifier Optional [Modifier] to customize the layout or styling of the component.
+ */
+@Composable
+private fun FilterChipsDefaultLayout(
+    options: List<String>,
+    selectedOptions: List<String>,
+    onOptionToggled: (String) -> Unit,
+    itemsPerRow: Int,
+    @SuppressLint("ModifierParameter")
+    modifier: Modifier = Modifier
+) {
+    options.chunked(itemsPerRow).forEach { rowOptions ->
         Row(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(bottom = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(Padding.twelve)
         ) {
-            options.take(2).forEach { option ->
+            rowOptions.forEach { option ->
                 FilterChipItem(
                     option = option,
                     isSelected = selectedOptions.contains(option),
@@ -65,53 +156,23 @@ fun FilterChips(
                     modifier = Modifier.weight(1f)
                 )
             }
-        }
 
-        // Second row: third item centered and stretched to match the combined width of the two chips above
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(bottom = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(Padding.twelve)
-        ) {
-            // Left spacer to center the chip
-            Spacer(modifier = Modifier.weight(0.5f))
-            // Third chip stretched to span the width of both chips above (weight 2 to match the two chips)
-            FilterChipItem(
-                option = options[2],
-                isSelected = selectedOptions.contains(options[2]),
-                onOptionToggled = onOptionToggled,
-                modifier = Modifier.weight(2f)
-            )
-            // Right spacer to center the chip
-            Spacer(modifier = Modifier.weight(0.5f))
-        }
-    } else {
-        // Default layout: chunk items into rows
-        options.chunked(itemsPerRow).forEach { rowOptions ->
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(Padding.twelve)
-            ) {
-                rowOptions.forEach { option ->
-                    FilterChipItem(
-                        option = option,
-                        isSelected = selectedOptions.contains(option),
-                        onOptionToggled = onOptionToggled,
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-
-                repeat(itemsPerRow - rowOptions.size) {
-                    Spacer(modifier = Modifier.weight(1f))
-                }
+            repeat(itemsPerRow - rowOptions.size) {
+                Spacer(modifier = Modifier.weight(1f))
             }
         }
     }
 }
 
+/**
+ * Individual filter chip item that displays a single filter option.
+ * Shows a checkmark icon when selected and changes color based on selection state.
+ *
+ * @param option The filter option string to display.
+ * @param isSelected Whether this chip is currently selected.
+ * @param onOptionToggled Callback invoked when the chip is clicked, passing the option string.
+ * @param modifier Optional [Modifier] to customize the layout or styling of the chip.
+ */
 @Composable
 private fun FilterChipItem(
     option: String,

@@ -320,7 +320,10 @@ private fun PlayerFiltersButtons(params: PlayerFiltersScreenParams) {
         shape = RoundedCornerShape(50.dp)
     ) {
         Text(
-            text = "See Results (${params.state.filteredPlayerCount})",
+            text = stringResource(
+                id = StringsIds.seeResults,
+                params.state.filteredPlayerCount
+            ),
             style = TextStyles.bodyBold,
             color = AppColors.White
         )

@@ -146,6 +146,7 @@
     <string name="reset_defaults">Standardeinstellungen zurücksetzen</string>
     <string name="reset_filters">Filter zurücksetzen</string>
     <string name="reset_filters_description">Sind Sie sicher, dass Sie alle Filter auf ihren Standardzustand zurücksetzen möchten?</string>
+    <string name="see_results">Ergebnisse anzeigen (%1$d)</string>
     <string name="reset_password">Passwort zurücksetzen</string>
     <string name="reset_password_email_sent">E-Mail zum Zurücksetzen des Passworts gesendet</string>
     <string name="resend_email">E-Mail erneut senden</string>
