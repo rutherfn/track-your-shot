@@ -62,7 +62,7 @@ sealed class HasShotsLoggedFilter(val value: Int) {
 
 /**
  * Converts a localized string to its corresponding [HasShotsLoggedFilter] instance.
- * Defaults to [None] if the string does not match any known filter state.
+ * Defaults to [HasShotsLoggedFilter.None] if the string does not match any known filter state.
  *
  * @param application Application context for accessing string resources.
  * @return Corresponding [HasShotsLoggedFilter] instance.

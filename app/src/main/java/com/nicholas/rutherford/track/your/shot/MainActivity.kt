@@ -54,6 +54,17 @@ open class MainActivity : ComponentActivity() {
      */
     private var hasCheckedReviewPromptThisSession = false
 
+    /**
+     * Called when the activity is first created.
+     *
+     * Sets up the Compose content, enables edge-to-edge display, and initializes
+     * the [NavigationComponent] with:
+     * - [androidx.navigation.NavHostController] for screen navigation
+     * - [com.nicholas.rutherford.track.your.shot.navigation.Navigator] instance for navigation, dialogs, and system actions
+     * - [ViewModels] container for all app ViewModels
+     *
+     * @param savedInstanceState The saved instance state bundle.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -61,11 +72,15 @@ open class MainActivity : ComponentActivity() {
             checkAndShowReviewPrompt()
         }
 
+        // Allows the app to draw behind system bars for edge-to-edge experience
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
+
+            // Allows the app to draw behind system bars for edge-to-edge experience
             enableEdgeToEdge()
 
+            // Initializes the NavigationComponent with required dependencies
             NavigationComponent(
                 activity = this,
                 navHostController = rememberNavController(),

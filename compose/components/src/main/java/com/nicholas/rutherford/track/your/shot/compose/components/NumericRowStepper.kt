@@ -169,7 +169,11 @@ fun NumericRowStepperRightContent(
             Icon(
                 imageVector = Icons.Default.ArrowDownward,
                 contentDescription = "Decrease Value",
-                tint = if (enabled) enabledIconTint else disabledIconTint,
+                tint = if (enabled) {
+                    enabledIconTint
+                } else {
+                    disabledIconTint
+                },
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -207,7 +211,11 @@ fun NumericRowStepperRightContent(
             Icon(
                 imageVector = Icons.Default.ArrowUpward,
                 contentDescription = "Increase Value",
-                tint = if (enabled) enabledIconTint else disabledIconTint,
+                tint = if (enabled) {
+                    enabledIconTint
+                } else {
+                    disabledIconTint
+                },
                 modifier = Modifier.size(24.dp)
             )
         }
