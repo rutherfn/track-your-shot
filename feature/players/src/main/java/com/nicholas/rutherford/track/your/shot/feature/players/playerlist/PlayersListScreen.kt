@@ -38,6 +38,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,6 +47,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.DrawablesIds
 import com.nicholas.rutherford.track.your.shot.base.resources.R
@@ -256,7 +258,13 @@ private fun PlayerItem(
     scope: CoroutineScope
 ) {
     val imagePainter = if (!player.imageUrl.isNullOrEmpty()) {
-        rememberAsyncImagePainter(model = player.imageUrl)
+        rememberAsyncImagePainter(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(player.imageUrl)
+                .placeholder(DrawablesIds.launcherRound)
+                .error(DrawablesIds.launcherRound)
+                .build()
+        )
     } else {
         painterResource(id = DrawablesIds.launcherRound)
     }
