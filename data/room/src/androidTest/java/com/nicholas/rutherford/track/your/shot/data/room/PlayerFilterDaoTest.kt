@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.dao.PlayerFilterDao
 import com.nicholas.rutherford.track.your.shot.data.room.database.AppDatabase
 import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerFilterEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerFilterPositionEntity
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.nullValue
@@ -46,7 +47,7 @@ class PlayerFilterDaoTest {
     fun getActiveFilterWhenFilterExistsReturnsFilter() = runBlocking {
         val filterEntity = PlayerFilterEntity(
             id = 1,
-            hasShotsLogged = true,
+            hasShotsLogged = Constants.HAS_SHOTS_LOGGED_VALUE,
             minShots = 10,
             maxShots = 50,
             lastUpdated = System.currentTimeMillis()
@@ -64,7 +65,7 @@ class PlayerFilterDaoTest {
     fun saveActiveFilterInsertsNewFilter() = runBlocking {
         val filterEntity = PlayerFilterEntity(
             id = 1,
-            hasShotsLogged = true,
+            hasShotsLogged = Constants.HAS_SHOTS_LOGGED_VALUE,
             minShots = 5,
             maxShots = 20,
             lastUpdated = System.currentTimeMillis()
@@ -82,7 +83,7 @@ class PlayerFilterDaoTest {
     fun saveActiveFilterUpdatesExistingFilter() = runBlocking {
         val initialFilter = PlayerFilterEntity(
             id = 1,
-            hasShotsLogged = true,
+            hasShotsLogged = Constants.HAS_SHOTS_LOGGED_VALUE,
             minShots = 10,
             maxShots = null,
             lastUpdated = System.currentTimeMillis()
@@ -90,18 +91,18 @@ class PlayerFilterDaoTest {
 
         val updatedFilter = PlayerFilterEntity(
             id = 1,
-            hasShotsLogged = false,
+            hasShotsLogged = Constants.NO_SHOTS_LOGGED_VALUE,
             minShots = 20,
             maxShots = 100,
             lastUpdated = System.currentTimeMillis()
         )
 
         playerFilterDao.saveActiveFilter(initialFilter)
-        assertThat(playerFilterDao.getActiveFilter()?.hasShotsLogged, equalTo(true))
+        assertThat(playerFilterDao.getActiveFilter()?.hasShotsLogged, equalTo(Constants.HAS_SHOTS_LOGGED_VALUE))
 
         playerFilterDao.saveActiveFilter(updatedFilter)
         val fetchedFilter = playerFilterDao.getActiveFilter()
-        assertThat(fetchedFilter?.hasShotsLogged, equalTo(false))
+        assertThat(fetchedFilter?.hasShotsLogged, equalTo(Constants.NO_SHOTS_LOGGED_VALUE))
         assertThat(fetchedFilter?.minShots, equalTo(20))
         assertThat(fetchedFilter?.maxShots, equalTo(100))
     }
@@ -110,7 +111,7 @@ class PlayerFilterDaoTest {
     fun clearActiveFilterRemovesFilter() = runBlocking {
         val filterEntity = PlayerFilterEntity(
             id = 1,
-            hasShotsLogged = true,
+            hasShotsLogged = Constants.HAS_SHOTS_LOGGED_VALUE,
             minShots = 10,
             maxShots = 50,
             lastUpdated = System.currentTimeMillis()
@@ -131,7 +132,7 @@ class PlayerFilterDaoTest {
     fun clearActiveFilterCascadesToPositions() = runBlocking {
         val filterEntity = PlayerFilterEntity(
             id = 1,
-            hasShotsLogged = true,
+            hasShotsLogged = Constants.HAS_SHOTS_LOGGED_VALUE,
             minShots = null,
             maxShots = null,
             lastUpdated = System.currentTimeMillis()
@@ -278,7 +279,7 @@ class PlayerFilterDaoTest {
     fun clearFilterPositionsDoesNotRemoveFilter() = runBlocking {
         val filterEntity = PlayerFilterEntity(
             id = 1,
-            hasShotsLogged = true,
+            hasShotsLogged = Constants.HAS_SHOTS_LOGGED_VALUE,
             minShots = 10,
             maxShots = 50,
             lastUpdated = System.currentTimeMillis()
@@ -308,7 +309,7 @@ class PlayerFilterDaoTest {
     fun hasActiveFilterWhenFilterExistsReturnsTrue() = runBlocking {
         val filterEntity = PlayerFilterEntity(
             id = 1,
-            hasShotsLogged = true,
+            hasShotsLogged = Constants.HAS_SHOTS_LOGGED_VALUE,
             minShots = null,
             maxShots = null,
             lastUpdated = System.currentTimeMillis()
@@ -323,7 +324,7 @@ class PlayerFilterDaoTest {
     fun hasActiveFilterAfterClearReturnsFalse() = runBlocking {
         val filterEntity = PlayerFilterEntity(
             id = 1,
-            hasShotsLogged = true,
+            hasShotsLogged = Constants.HAS_SHOTS_LOGGED_VALUE,
             minShots = null,
             maxShots = null,
             lastUpdated = System.currentTimeMillis()

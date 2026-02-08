@@ -7,6 +7,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.dao.PlayerFilterDao
 import com.nicholas.rutherford.track.your.shot.data.room.database.AppDatabase
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DEFAULT_FILTER_COUNT
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerFilterRepositoryImpl
+import com.nicholas.rutherford.track.your.shot.data.room.response.HasShotsLoggedFilter
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerFilter
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
@@ -49,7 +50,7 @@ class PlayerFilterRepositoryImplTest {
     @Test
     fun fetchActiveFilterWhenFilterExistsReturnsFilter() = runBlocking {
         val filter = PlayerFilter(
-            hasShotsLogged = true,
+            hasShotsLogged = HasShotsLoggedFilter.HasShots,
             minShots = 10,
             maxShots = 50,
             selectedPositions = listOf("PG", "SG").sorted()
@@ -58,13 +59,16 @@ class PlayerFilterRepositoryImplTest {
         playerFilterRepositoryImpl.saveActiveFilter(filter)
 
         val fetchedFilter = playerFilterRepositoryImpl.fetchActiveFilter()
-        assertThat(fetchedFilter, equalTo(filter))
+        assertThat(fetchedFilter?.hasShotsLogged, equalTo(filter.hasShotsLogged))
+        assertThat(fetchedFilter?.minShots, equalTo(filter.minShots))
+        assertThat(fetchedFilter?.maxShots, equalTo(filter.maxShots))
+        assertThat(fetchedFilter?.selectedPositions, equalTo(filter.selectedPositions))
     }
 
     @Test
     fun fetchActiveFilterWhenFilterExistsWithNoPositionsReturnsFilter() = runBlocking {
         val filter = PlayerFilter(
-            hasShotsLogged = false,
+            hasShotsLogged = HasShotsLoggedFilter.NoShots,
             minShots = null,
             maxShots = null,
             selectedPositions = emptyList()
@@ -73,13 +77,16 @@ class PlayerFilterRepositoryImplTest {
         playerFilterRepositoryImpl.saveActiveFilter(filter)
 
         val fetchedFilter = playerFilterRepositoryImpl.fetchActiveFilter()
-        assertThat(fetchedFilter, equalTo(filter))
+        assertThat(fetchedFilter?.hasShotsLogged, equalTo(filter.hasShotsLogged))
+        assertThat(fetchedFilter?.minShots, equalTo(filter.minShots))
+        assertThat(fetchedFilter?.maxShots, equalTo(filter.maxShots))
+        assertThat(fetchedFilter?.selectedPositions, equalTo(filter.selectedPositions))
     }
 
     @Test
     fun saveActiveFilterSavesFilterWithPositions() = runBlocking {
         val filter = PlayerFilter(
-            hasShotsLogged = true,
+            hasShotsLogged = HasShotsLoggedFilter.HasShots,
             minShots = 5,
             maxShots = 20,
             selectedPositions = listOf("PG", "SG", "SF").sorted()
@@ -88,30 +95,41 @@ class PlayerFilterRepositoryImplTest {
         playerFilterRepositoryImpl.saveActiveFilter(filter)
 
         val fetchedFilter = playerFilterRepositoryImpl.fetchActiveFilter()
-        assertThat(fetchedFilter, equalTo(filter))
+        assertThat(fetchedFilter?.hasShotsLogged, equalTo(filter.hasShotsLogged))
+        assertThat(fetchedFilter?.minShots, equalTo(filter.minShots))
+        assertThat(fetchedFilter?.maxShots, equalTo(filter.maxShots))
+        assertThat(fetchedFilter?.selectedPositions, equalTo(filter.selectedPositions))
     }
 
     @Test
     fun saveActiveFilterUpdatesExistingFilter() = runBlocking {
         val initialFilter = PlayerFilter(
-            hasShotsLogged = true,
+            hasShotsLogged = HasShotsLoggedFilter.HasShots,
             minShots = 10,
             maxShots = null,
             selectedPositions = listOf("PG").sorted()
         )
 
         val updatedFilter = PlayerFilter(
-            hasShotsLogged = false,
+            hasShotsLogged = HasShotsLoggedFilter.NoShots,
             minShots = 20,
             maxShots = 100,
             selectedPositions = listOf("SG", "SF", "PF", "C").sorted()
         )
 
         playerFilterRepositoryImpl.saveActiveFilter(initialFilter)
-        assertThat(playerFilterRepositoryImpl.fetchActiveFilter(), equalTo(initialFilter))
+        val fetchedInitialFilter = playerFilterRepositoryImpl.fetchActiveFilter()
+        assertThat(fetchedInitialFilter?.hasShotsLogged, equalTo(initialFilter.hasShotsLogged))
+        assertThat(fetchedInitialFilter?.minShots, equalTo(initialFilter.minShots))
+        assertThat(fetchedInitialFilter?.maxShots, equalTo(initialFilter.maxShots))
+        assertThat(fetchedInitialFilter?.selectedPositions, equalTo(initialFilter.selectedPositions))
 
         playerFilterRepositoryImpl.saveActiveFilter(updatedFilter)
-        assertThat(playerFilterRepositoryImpl.fetchActiveFilter(), equalTo(updatedFilter))
+        val fetchedUpdatedFilter = playerFilterRepositoryImpl.fetchActiveFilter()
+        assertThat(fetchedUpdatedFilter?.hasShotsLogged, equalTo(updatedFilter.hasShotsLogged))
+        assertThat(fetchedUpdatedFilter?.minShots, equalTo(updatedFilter.minShots))
+        assertThat(fetchedUpdatedFilter?.maxShots, equalTo(updatedFilter.maxShots))
+        assertThat(fetchedUpdatedFilter?.selectedPositions, equalTo(updatedFilter.selectedPositions))
     }
 
     @Test
@@ -163,14 +181,18 @@ class PlayerFilterRepositoryImplTest {
     @Test
     fun clearActiveFilterRemovesFilterAndPositions() = runBlocking {
         val filter = PlayerFilter(
-            hasShotsLogged = true,
+            hasShotsLogged = HasShotsLoggedFilter.HasShots,
             minShots = 10,
             maxShots = 50,
             selectedPositions = listOf("PG", "SG", "SF").sorted()
         )
 
         playerFilterRepositoryImpl.saveActiveFilter(filter)
-        assertThat(playerFilterRepositoryImpl.fetchActiveFilter(), equalTo(filter))
+        val fetchedFilter = playerFilterRepositoryImpl.fetchActiveFilter()
+        assertThat(fetchedFilter?.hasShotsLogged, equalTo(filter.hasShotsLogged))
+        assertThat(fetchedFilter?.minShots, equalTo(filter.minShots))
+        assertThat(fetchedFilter?.maxShots, equalTo(filter.maxShots))
+        assertThat(fetchedFilter?.selectedPositions, equalTo(filter.selectedPositions))
 
         playerFilterRepositoryImpl.clearActiveFilter()
 
@@ -186,7 +208,7 @@ class PlayerFilterRepositoryImplTest {
     @Test
     fun hasActiveFilterWhenFilterExistsReturnsTrue() = runBlocking {
         val filter = PlayerFilter(
-            hasShotsLogged = true,
+            hasShotsLogged = HasShotsLoggedFilter.HasShots,
             minShots = null,
             maxShots = null,
             selectedPositions = emptyList()
@@ -219,7 +241,7 @@ class PlayerFilterRepositoryImplTest {
     @Test
     fun getActiveFilterCountWithHasShotsLoggedReturnsOne() = runBlocking {
         val filter = PlayerFilter(
-            hasShotsLogged = true,
+            hasShotsLogged = HasShotsLoggedFilter.HasShots,
             minShots = null,
             maxShots = null,
             selectedPositions = emptyList()
@@ -228,6 +250,20 @@ class PlayerFilterRepositoryImplTest {
         playerFilterRepositoryImpl.saveActiveFilter(filter)
 
         assertThat(playerFilterRepositoryImpl.getActiveFilterCount(), equalTo(1))
+    }
+
+    @Test
+    fun getActiveFilterCountWithBothShotsLoggedReturnsZero() = runBlocking {
+        val filter = PlayerFilter(
+            hasShotsLogged = HasShotsLoggedFilter.Both,
+            minShots = null,
+            maxShots = null,
+            selectedPositions = emptyList()
+        )
+
+        playerFilterRepositoryImpl.saveActiveFilter(filter)
+
+        assertThat(playerFilterRepositoryImpl.getActiveFilterCount(), equalTo(0))
     }
 
     @Test
@@ -261,7 +297,7 @@ class PlayerFilterRepositoryImplTest {
     @Test
     fun getActiveFilterCountWithAllFiltersReturnsCorrectCount() = runBlocking {
         val filter = PlayerFilter(
-            hasShotsLogged = true, // +1
+            hasShotsLogged = HasShotsLoggedFilter.HasShots, // +1
             minShots = 10, // +1
             maxShots = 50, // +1
             selectedPositions = listOf("PG", "SG", "SF", "PF", "C").sorted() // +5
@@ -275,10 +311,10 @@ class PlayerFilterRepositoryImplTest {
     @Test
     fun getActiveFilterCountWithMixedFiltersReturnsCorrectCount() = runBlocking {
         val filter = PlayerFilter(
-            hasShotsLogged = false, // +1
+            hasShotsLogged = HasShotsLoggedFilter.NoShots,
             minShots = null,
             maxShots = 100, // +1
-            selectedPositions = listOf("PG", "SG").sorted() // +2
+            selectedPositions = listOf("PG", "SG").sorted()
         )
 
         playerFilterRepositoryImpl.saveActiveFilter(filter)

@@ -76,8 +76,8 @@ class PlayerRepositoryImpl(
         playerDao.getPlayerById(id = id).toPlayer()
 
     /**
-     * Fetches a [Player] by first or last name.
-     * If last name passed in is empty; it should grab the player by the firstName.
+     * Fetches a [Player] by first and last name.
+     * Both firstName and lastName must be non-empty to fetch a player.
      *
      * @param firstName The first name of the player.
      * @param lastName The last name of the player.
@@ -86,8 +86,6 @@ class PlayerRepositoryImpl(
     override suspend fun fetchPlayerByName(firstName: String, lastName: String): Player? {
         return if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
             playerDao.getPlayersByName(firstName = firstName, lastName = lastName)?.toPlayer()
-        } else if (firstName.isNotEmpty()) {
-            playerDao.getPlayerByFirstName(firstName = firstName)?.toPlayer()
         } else {
             null
         }
@@ -127,7 +125,7 @@ class PlayerRepositoryImpl(
      * @return true if the player matches the position filter, false otherwise.
      * Also if the [PlayerFilter.selectedPositions] is empty or if it contains All then it should return all filtered players
      */
-    private fun matchesPositionFilter(player: Player, filter: PlayerFilter): Boolean {
+    internal fun matchesPositionFilter(player: Player, filter: PlayerFilter): Boolean {
         if (filter.selectedPositions.isEmpty() || filter.selectedPositions.contains(application.getString(StringsIds.all))) {
             return true
         }
@@ -142,13 +140,13 @@ class PlayerRepositoryImpl(
      * @param filter The active filter containing hasShotsLogged criteria.
      * @return true if the player matches the hasShotsLogged filter, false otherwise.
      */
-    private fun matchesHasShotsLoggedFilter(player: Player, filter: PlayerFilter): Boolean {
+    internal fun matchesHasShotsLoggedFilter(player: Player, filter: PlayerFilter): Boolean {
         return when (filter.hasShotsLogged) {
             is HasShotsLoggedFilter.HasShots -> player.shotsLoggedList.isNotEmpty()
             is HasShotsLoggedFilter.NoShots -> player.shotsLoggedList.isEmpty()
-            is HasShotsLoggedFilter.Both -> true // Show all players regardless of shot status
-            is HasShotsLoggedFilter.None -> true // No filter applied
-            null -> true // No filter applied
+            is HasShotsLoggedFilter.Both -> true
+            is HasShotsLoggedFilter.None -> true
+            null -> true
         }
     }
 
@@ -159,7 +157,7 @@ class PlayerRepositoryImpl(
      * @param filter The active filter containing minShots and maxShots criteria.
      * @return true if the player matches the shot count range filter, false otherwise.
      */
-    private fun matchesShotCountRangeFilter(player: Player, filter: PlayerFilter): Boolean {
+    internal fun matchesShotCountRangeFilter(player: Player, filter: PlayerFilter): Boolean {
         val totalShots = player.shotsLoggedList.size
 
         val matchesMinShots = filter.minShots?.let { min ->
