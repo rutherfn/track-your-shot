@@ -8,6 +8,8 @@
     <string name="account_security_description">Jeśli utworzysz konto w Aplikacji Mobilnej, jesteś odpowiedzialny za utrzymanie bezpieczeństwa swojego konta i ponosisz pełną odpowiedzialność za wszelkie działania podejmowane za pośrednictwem konta i wszelkie inne działania podejmowane w związku z nim. Możemy monitorować i sprawdzać nowe konta, zanim będziesz mógł się na nich zalogować i rozpocząć korzystanie z Usług. Podanie jakichkolwiek fałszywych danych kontaktowych może skutkować zamknięciem konta. Musisz natychmiast powiadomić nas o każdym nieautoryzowanym użyciu Twojego konta lub innych naruszeniach bezpieczeństwa. Nie ponosimy odpowiedzialności za żadne Twoje działania lub zaniechania, w tym za szkody jakiegokolwiek rodzaju poniesione w wyniku takich działań lub zaniechań. Mamy prawo zawiesić, wyłączyć lub usunąć Twoje konto (lub dowolną jego część), jeśli stwierdzimy, że naruszyłeś jakiekolwiek postanowienie niniejszej Umowy lub że Twoje zachowanie lub treść mogą zaszkodzić naszej reputacji i dobrej woli. Jeżeli usuniemy Twoje konto z wyżej wymienionych powodów, nie będziesz mógł ponownie zarejestrować się w celu korzystania z naszych Usług. Możemy zablokować Twój adres e-mail i adres protokołu internetowego, aby uniemożliwić dalszą rejestrację.</string>
     <string name="add_player">Dodaj gracza</string>
     <string name="add_player_stats">Dodaj statystyki gracza</string>
+    <string name="all">Wszystkie</string>
+    <string name="both">Oba</string>
     <string name="acknowledge_and_agree_to_terms">Potwierdź / Zgadzam się na warunki</string>
     <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
     <string name="are_you_certain_you_wish_to_remove_x">Czy na pewno chcesz usunąć %s?</string>
@@ -22,12 +24,20 @@
     <string name="camera_permission_has_been_denied_description">Odmówiono pozwolenia na zrobienie zdjęcia. Aby ręcznie przyznać uprawnienia dla aparatu i przesłać zdjęcia do odtwarzacza, przejdź do Ustawień.</string>
     <string name="cancel">Anulować</string>
     <string name="center">Centrum</string>
+    <string name="clear">Wyczyść</string>
+    <string name="clear_search_results">Wyczyść wyniki wyszukiwania</string>
+    <string name="clear_shot_range">Wyczyścić zakres strzałów?</string>
+    <string name="clear_shot_range_description">Czy na pewno chcesz zresetować wartości minimalne i maksymalne strzałów do wartości domyślnych? Spowoduje to ustawienie obu wartości na 0.</string>
+    <string name="reset_defaults">Resetuj wartości domyślne</string>
+    <string name="reset_filters">Resetuj filtry</string>
+    <string name="reset_filters_description">Czy na pewno chcesz zresetować wszystkie filtry do stanu domyślnego?</string>
     <string name="changes_and_amendments">Zmiany i poprawki</string>
     <string name="changes_and_amendments_description">Zastrzegamy sobie prawo do zmiany niniejszej Umowy lub jej postanowień dotyczących Aplikacji Mobilnej i Usług w dowolnym momencie według naszego uznania. Gdy to nastąpi, wyślemy Ci powiadomienie e-mailem. Możemy również przesłać Ci powiadomienia w inny sposób, według naszego uznania, na przykład korzystając z podanych przez Ciebie danych kontaktowych. Zaktualizowana wersja niniejszej Umowy wchodzi w życie natychmiast po opublikowaniu zmienionej wersji Umowy, o ile nie określono inaczej. Dalsze korzystanie z Aplikacji Mobilnej i Usług po dacie wejścia w życie zmienionej Umowy (lub innej czynności określonej w tym czasie) będzie oznaczać zgodę na te zmiany.</string>
     <string name="check_if_account_has_been_verified">Sprawdź czy konto zostało zweryfikowane</string>
     <string name="choose_a_shot_to_log_info_description">Wybierz ujęcie, aby zapisać informacje na jego temat. Aby zobaczyć dodatkowe szczegóły dotyczące zdjęcia, kliknij „Pokaż więcej”,</string>
     <string name="choose_image_from_gallery">Wybierz obraz z galerii</string>
     <string name="choose_option">Wybierz opcję</string>
+    <string name="choose_positions">Wybierz pozycje</string>
     <string name="close">Zamknąć</string>
     <string name="compare_players_stats">Porównaj graczy i statystyki</string>
     <string name="contacting_us">Kontakt z nami</string>
@@ -51,6 +61,8 @@
     <string name="delete_x">Usuwać%s</string>
     <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Urządzenie nie jest obecnie połączone z internetem. Aby dokończyć działanie, połącz urządzenie z internetem.</string>
+    <string name="discard_filter_changes">Odrzucić zmiany filtrów?</string>
+    <string name="discard_filter_changes_description">Masz niezapisane zmiany filtrów. Opuszczenie teraz spowoduje odrzucenie wszystkich bieżących wyborów filtrów.</string>
     <string name="do_you_wish_to_proceed_description">Czy chcesz kontynuować pomimo niezapisanych modyfikacji gracza? Wprowadzone zmiany nie zostaną zapisane.</string>
     <string name="edit_x">Edytuj %s</string>
     <string name="enter_first_name">Wprowadź imię</string>
@@ -78,10 +90,21 @@
     <string name="error">Błąd</string>
     <string name="error_creating_account">Błąd podczas tworzenia konta</string>
     <string name="error_deleting_pending_account">Błąd podczas usuwania oczekującego konta</string>
+    <string name="filters">Filtry</string>
+    <string name="player_filters">Filtry graczy</string>
     <string name="find_shots_by_name">Znajdź zdjęcia według nazwy </string>
+    <string name="search_players">Szukaj graczy</string>
     <string name="general">Ogólny</string>
     <string name="general_information">Informacje ogólne</string>
     <string name="got_it">Zrozumiałem</string>
+    <string name="last_updated">Ostatnia aktualizacja</string>
+    <string name="number_of_filters">Liczba filtrów</string>
+    <string name="number_of_shots">Liczba strzałów</string>
+    <string name="min_shots">Min. strzały</string>
+    <string name="max_shots">Maks. strzały</string>
+    <string name="set_minimum_shot_count_description">Ustaw minimalną liczbę strzałów, aby włączyć maksymalne strzały. Maksimum musi być co najmniej o jeden większe od minimum.</string>
+    <string name="has_shots">Ma strzały</string>
+    <string name="has_shots_logged">Ma zarejestrowane strzały</string>
     <string name="having_trouble_creating_your_account_please_try_again">Masz problem z utworzeniem konta. Proszę spróbować ponownie</string>
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Masz problem z zalogowaniem się na swoje konto. Spróbuj ponownie i/lub upewnij się, że dane logowania istnieją i są prawidłowe.</string>
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Wystąpił problem ze zresetowaniem hasła do tego konta. Spróbuj ponownie i/lub upewnij się, że dane logowania istnieją i są prawidłowe.</string>
@@ -110,6 +133,7 @@
     <string name="not_connected_to_internet">Nie połączono z internetem</string>
     <string name="no_first_name_entered">Nie wprowadzono imienia</string>
     <string name="no_last_name_entered">Nie wprowadzono nazwiska</string>
+    <string name="no_shots">Brak strzałów</string>
     <string name="no_shots_results_found">Nie znaleziono wyników ujęć</string>
     <string name="no_shots_results_found_description">Nie znaleziono żadnego pasującego ujęcia w wyszukiwaniu. Proszę uaktualnić wyszukiwanie o istniejącą nazwę ujęcia.</string>
     <string name="not_now">Nie teraz</string>
@@ -178,6 +202,7 @@
     <string name="small_forward">Mały napastnik</string>
     <string name="shooting_guard">Rzucający obrońca</string>
     <string name="shot_info">Informacje o strzale</string>
+    <string name="shot_logs">Dzienniki strzałów</string>
     <string name="shot_name_x">Nazwa ujęcia - %s \n</string>
     <string name="shots_made_x">\nWykonane strzały - %s</string>
     <string name="shots_made_percentage_x">\nProcent trafionych strzałów: %s</string>
@@ -252,6 +277,8 @@
     <string name="no_shots_created_descriipton">Żaden z graczy nie oddał jeszcze żadnego strzału. Proszę zarejestrować co najmniej jeden strzał, aby gracz mógł wygenerować raport.</string>
     <string name="no_players_created">Nie utworzono żadnych graczy</string>
     <string name="no_players_created_description">Na Twoim koncie nie utworzono jeszcze żadnego gracza. Proszę utworzyć co najmniej jednego gracza i zapisać co najmniej jedno uderzenie, aby wygenerować raport uderzeń wykonanych przez gracza.</string>
+    <string name="no_players_results_found">Nie znaleziono wyników graczy</string>
+    <string name="no_players_results_found_description">Nie znaleziono pasujących graczy w wyszukiwaniu. Zaktualizuj wyszukiwanie istniejącą nazwą gracza, aby zobaczyć wyniki.</string>
     <string name="no_reports_generated">Nie wygenerowano żadnych raportów</string>
     <string name="reports">Raporty</string>
     <string name="player_report">Raport gracza</string>

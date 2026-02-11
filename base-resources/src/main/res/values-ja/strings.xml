@@ -8,6 +8,8 @@
     <string name="account_security_description">モバイル アプリケーションでアカウントを作成する場合、アカウントのセキュリティを維持する責任はお客様にあり、アカウントで発生するすべてのアクティビティおよびそれに関連して実行されるその他のアクションに対して全責任を負います。お客様がサインインしてサービスの使用を開始する前に、当社は新しいアカウントを監視および確認する場合があります。いかなる種類の虚偽の連絡先情報を提供すると、アカウントが終了される可能性があります。アカウントの不正使用やその他のセキュリティ侵害があった場合は、直ちに当社に通知する必要があります。当社は、お客様のいかなる行為または不作為、ならびにかかる行為または不作為の結果として生じたいかなる種類の損害についても責任を負いません。当社は、お客様が本契約のいずれかの条項に違反した、またはお客様の行為やコンテンツが当社の評判や信用を損なうおそれがあると判断した場合、お客様のアカウント（またはその一部）を停止、無効化、または削除することがあります。上記の理由により当社がお客様のアカウントを削除した場合、お客様は当社のサービスに再登録することはできません。今後の登録を防止するために、お客様の電子メール アドレスとインターネット プロトコル アドレスをブロックする場合があります。</string>
     <string name="add_player">プレイヤーを追加</string>
     <string name="add_player_stats">プレイヤー統計情報を追加</string>
+    <string name="all">すべて</string>
+    <string name="both">両方</string>
     <string name="acknowledge_and_agree_to_terms">利用規約を承認 / 同意する</string>
     <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
     <string name="are_you_certain_you_wish_to_remove_x">%s を削除してもよろしいですか?</string>
@@ -22,12 +24,20 @@
     <string name="camera_permission_has_been_denied_description">カメラの許可が拒否されました。カメラの許可を手動で付与し、プレーヤーに写真をアップロードするには、[設定] に移動してください。</string>
     <string name="cancel">キャンセル</string>
     <string name="center">中心</string>
+    <string name="clear">クリア</string>
+    <string name="clear_search_results">検索結果をクリア</string>
+    <string name="clear_shot_range">ショット範囲をクリアしますか？</string>
+    <string name="clear_shot_range_description">最小および最大ショット値をデフォルトにリセットしてもよろしいですか？両方の値が 0 に設定されます。</string>
+    <string name="reset_defaults">デフォルトにリセット</string>
+    <string name="reset_filters">フィルターをリセット</string>
+    <string name="reset_filters_description">すべてのフィルターをデフォルト状態にリセットしてもよろしいですか？</string>
     <string name="changes_and_amendments">変更と修正</string>
     <string name="changes_and_amendments_description">当社は、当社の裁量によりいつでも本契約またはモバイル アプリケーションおよびサービスに関連するその条件を変更する権利を留保します。その場合は、メールでお知らせいたします。当社は、お客様が提供した連絡先情報を通じてなど、当社の裁量により他の方法でお客様に通知する場合もあります。本契約の更新版は、別途指定がない限り、改訂された契約が掲載された時点で直ちに有効になります。改訂された契約の発効日（またはその時点で指定されたその他の行為）以降もモバイル アプリケーションおよびサービスを継続して使用した場合、お客様はそれらの変更に同意したものとみなされます。</string>
     <string name="check_if_account_has_been_verified">アカウントが認証されているか確認する</string>
     <string name="choose_a_shot_to_log_info_description">情報を記録したいショットを選択します。ショットの詳細を表示するには、「詳細を表示」をクリックします。</string>
     <string name="choose_image_from_gallery">ギャラリーから画像を選択</string>
     <string name="choose_option">オプションを選択</string>
+    <string name="choose_positions">ポジションを選択</string>
     <string name="close">近い</string>
     <string name="compare_players_stats">選手と統計を比較する</string>
     <string name="contacting_us">お問い合わせ</string>
@@ -51,6 +61,8 @@
     <string name="delete_x">%s を削除</string>
     <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
     <string name="device_is_currently_not_connected_to_internet_desc">デバイスは現在インターネットに接続されていません。アクションを完了するには、デバイスをインターネットに接続してください。</string>
+    <string name="discard_filter_changes">フィルターの変更を破棄しますか？</string>
+    <string name="discard_filter_changes_description">保存されていないフィルターの変更があります。今すぐ終了すると、現在のすべてのフィルター選択が破棄されます。</string>
     <string name="do_you_wish_to_proceed_description">プレーヤーの変更が保存されていないにもかかわらず続行しますか? 変更内容は保存されません。</string>
     <string name="edit_x">%s を編集</string>
     <string name="enter_first_name">名を入力してください</string>
@@ -78,10 +90,21 @@
     <string name="error">エラー</string>
     <string name="error_creating_account">アカウント作成エラー</string>
     <string name="error_deleting_pending_account">保留中のアカウントの削除中にエラーが発生しました</string>
+    <string name="filters">フィルター</string>
+    <string name="player_filters">プレイヤーフィルター</string>
     <string name="find_shots_by_name">名前でショットを探す </string>
+    <string name="search_players">プレイヤーを検索</string>
     <string name="general">一般的な</string>
     <string name="general_information">一般情報</string>
     <string name="got_it">わかった</string>
+    <string name="last_updated">最終更新</string>
+    <string name="number_of_filters">フィルター数</string>
+    <string name="number_of_shots">ショット数</string>
+    <string name="min_shots">最小ショット</string>
+    <string name="max_shots">最大ショット</string>
+    <string name="set_minimum_shot_count_description">最大ショットを有効にするには、最小ショット数を設定してください。最大値は最小値より少なくとも1つ多くする必要があります。</string>
+    <string name="has_shots">ショットあり</string>
+    <string name="has_shots_logged">記録されたショットあり</string>
     <string name="having_trouble_creating_your_account_please_try_again">アカウントの作成中に問題が発生しました。もう一度お試しください</string>
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">アカウントにログインできません。もう一度お試しください。または、資格情報が存在し、有効であることを確認してください。</string>
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">このアカウントのパスワードをリセットする際に問題が発生しました。もう一度お試しください。または、資格情報が存在し、有効であることを確認してください。</string>
@@ -110,6 +133,7 @@
     <string name="not_connected_to_internet">インターネットに接続されていません</string>
     <string name="no_first_name_entered">名が入力されていません</string>
     <string name="no_last_name_entered">姓が入力されていません</string>
+    <string name="no_shots">ショットなし</string>
     <string name="no_shots_results_found">ショットの結果が見つかりません</string>
     <string name="no_shots_results_found_description">検索に一致するショットは見つかりませんでした。既存のショット名で検索を更新してください。</string>
     <string name="not_now">今じゃない</string>
@@ -178,6 +202,7 @@
     <string name="small_forward">スモールフォワード</string>
     <string name="shooting_guard">シューティングガード</string>
     <string name="shot_info">ショット情報</string>
+    <string name="shot_logs">ショットログ</string>
     <string name="shot_name_x">ショット名 -%s \n</string>
     <string name="shots_made_x">撮影したショット -%s</string>
     <string name="shots_made_percentage_x">シュート成功率: %s</string>
@@ -252,6 +277,8 @@
     <string name="no_shots_created_descriipton">どの選手もまだショットを記録していません。プレーヤーがレポートを生成するには、少なくとも 1 ショットを記録してください。</string>
     <string name="no_players_created">プレーヤーが作成されていません</string>
     <string name="no_players_created_description">あなたのアカウントにはまだプレーヤーが作成されていません。プレーヤーが実行したショットのレポートを生成するには、少なくとも 1 人のプレーヤーを作成し、少なくとも 1 つのショットを記録してください。</string>
+    <string name="no_players_results_found">プレイヤー結果が見つかりませんでした</string>
+    <string name="no_players_results_found_description">検索で一致するプレイヤーが見つかりませんでした。結果を表示するには、既存のプレイヤー名で検索を更新してください。</string>
     <string name="no_reports_generated">レポートは生成されませんでした</string>
     <string name="reports">レポート</string>
     <string name="player_report">プレイヤーレポート</string>

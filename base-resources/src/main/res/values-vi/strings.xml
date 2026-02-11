@@ -8,6 +8,8 @@
     <string name="account_security_description">Nếu bạn tạo tài khoản trong Ứng dụng di động, bạn có trách nhiệm duy trì tính bảo mật của tài khoản và hoàn toàn chịu trách nhiệm về mọi hoạt động diễn ra trong tài khoản đó cũng như mọi hành động khác được thực hiện liên quan đến tài khoản đó. Chúng tôi có thể theo dõi và xem xét các tài khoản mới trước khi bạn đăng nhập và bắt đầu sử dụng Dịch vụ. Cung cấp thông tin liên lạc sai dưới bất kỳ hình thức nào cũng có thể dẫn đến việc chấm dứt tài khoản của bạn. Bạn phải thông báo ngay cho chúng tôi về bất kỳ hành vi sử dụng trái phép nào đối với tài khoản của bạn hoặc bất kỳ vi phạm bảo mật nào khác. Chúng tôi sẽ không chịu trách nhiệm cho bất kỳ hành vi hoặc thiếu sót nào của bạn, bao gồm bất kỳ thiệt hại nào phát sinh do những hành vi hoặc thiếu sót đó. Chúng tôi có thể tạm ngừng, vô hiệu hóa hoặc xóa tài khoản của bạn (hoặc bất kỳ phần nào của tài khoản) nếu chúng tôi xác định rằng bạn đã vi phạm bất kỳ điều khoản nào của Thỏa thuận này hoặc hành vi hoặc nội dung của bạn có thể gây tổn hại đến danh tiếng và thiện chí của chúng tôi. Nếu chúng tôi xóa tài khoản của bạn vì những lý do nêu trên, bạn không được đăng ký lại Dịch vụ của chúng tôi. Chúng tôi có thể chặn địa chỉ email và địa chỉ giao thức Internet của bạn để ngăn chặn việc đăng ký sau này.</string>
     <string name="add_player">Thêm Người chơi</string>
     <string name="add_player_stats">Thêm số liệu thống kê của người chơi</string>
+    <string name="all">Tất cả</string>
+    <string name="both">Cả hai</string>
     <string name="acknowledge_and_agree_to_terms">Xác nhận / Đồng ý với các điều khoản</string>
     <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
     <string name="are_you_certain_you_wish_to_remove_x">Bạn có chắc chắn muốn xóa %s không?</string>
@@ -22,12 +24,20 @@
     <string name="camera_permission_has_been_denied_description">Quyền sử dụng máy ảnh đã bị từ chối. Để cấp quyền thủ công cho máy ảnh và tải ảnh lên Trình phát, vui lòng điều hướng đến Cài đặt.</string>
     <string name="cancel">Hủy bỏ</string>
     <string name="center">Trung tâm</string>
+    <string name="clear">Xóa</string>
+    <string name="clear_search_results">Xóa kết quả tìm kiếm</string>
+    <string name="clear_shot_range">Xóa phạm vi bắn?</string>
+    <string name="clear_shot_range_description">Bạn có chắc chắn muốn đặt lại giá trị bắn tối thiểu và tối đa về mặc định không? Điều này sẽ đặt cả hai giá trị thành 0.</string>
+    <string name="reset_defaults">Đặt lại mặc định</string>
+    <string name="reset_filters">Đặt lại bộ lọc</string>
+    <string name="reset_filters_description">Bạn có chắc chắn muốn đặt lại tất cả bộ lọc về trạng thái mặc định không?</string>
     <string name="changes_and_amendments">Thay đổi và sửa đổi</string>
     <string name="changes_and_amendments_description">Chúng tôi có quyền sửa đổi Thỏa thuận này hoặc các điều khoản liên quan đến Ứng dụng di động và Dịch vụ bất kỳ lúc nào theo quyết định của chúng tôi. Khi đó, chúng tôi sẽ gửi cho bạn email để thông báo. Chúng tôi cũng có thể thông báo cho bạn theo những cách khác tùy theo quyết định của chúng tôi, chẳng hạn như thông qua thông tin liên hệ mà bạn đã cung cấp. Phiên bản cập nhật của Thỏa thuận này sẽ có hiệu lực ngay sau khi Thỏa thuận đã sửa đổi được đăng tải, trừ khi có quy định khác. Việc bạn tiếp tục sử dụng Ứng dụng di động và Dịch vụ sau ngày có hiệu lực của Thỏa thuận đã sửa đổi (hoặc hành vi khác được chỉ định tại thời điểm đó) sẽ cấu thành sự đồng ý của bạn đối với những thay đổi đó.</string>
     <string name="check_if_account_has_been_verified">Kiểm tra xem tài khoản đã được xác minh chưa</string>
     <string name="choose_a_shot_to_log_info_description">Chọn một cú đánh để ghi lại thông tin. Để xem thêm thông tin chi tiết về bức ảnh, hãy nhấp vào \"Hiển thị thêm\",</string>
     <string name="choose_image_from_gallery">Chọn hình ảnh từ thư viện</string>
     <string name="choose_option">Chọn tùy chọn</string>
+    <string name="choose_positions">Chọn vị trí</string>
     <string name="close">Đóng</string>
     <string name="compare_players_stats">So sánh người chơi và số liệu thống kê</string>
     <string name="contacting_us">Liên hệ với chúng tôi</string>
@@ -51,6 +61,8 @@
     <string name="delete_x">Xóa %s</string>
     <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Thiết bị hiện không được kết nối Internet. Vui lòng kết nối thiết bị với Internet để hoàn tất thao tác.</string>
+    <string name="discard_filter_changes">Hủy thay đổi bộ lọc?</string>
+    <string name="discard_filter_changes_description">Bạn có thay đổi bộ lọc chưa được lưu. Rời khỏi bây giờ sẽ hủy tất cả các lựa chọn bộ lọc hiện tại của bạn.</string>
     <string name="do_you_wish_to_proceed_description">Bạn có muốn tiếp tục mặc dù chưa lưu các thay đổi của người chơi không? Bất kỳ thay đổi nào được thực hiện sẽ không được lưu.</string>
     <string name="edit_x">Chỉnh sửa %s</string>
     <string name="enter_first_name">Nhập Tên</string>
@@ -78,10 +90,21 @@
     <string name="error">Lỗi</string>
     <string name="error_creating_account">Lỗi khi tạo tài khoản</string>
     <string name="error_deleting_pending_account">Lỗi khi xóa tài khoản đang chờ xử lý</string>
+    <string name="filters">Bộ lọc</string>
+    <string name="player_filters">Bộ lọc người chơi</string>
     <string name="find_shots_by_name">Tìm ảnh theo tên </string>
+    <string name="search_players">Tìm kiếm người chơi</string>
     <string name="general">Tổng quan</string>
     <string name="general_information">Thông tin chung</string>
     <string name="got_it">Hiểu rồi</string>
+    <string name="last_updated">Cập nhật lần cuối</string>
+    <string name="number_of_filters">Số lượng bộ lọc</string>
+    <string name="number_of_shots">Số lượng cú đánh</string>
+    <string name="min_shots">Cú đánh tối thiểu</string>
+    <string name="max_shots">Cú đánh tối đa</string>
+    <string name="set_minimum_shot_count_description">Đặt số lượng cú đánh tối thiểu để kích hoạt cú đánh tối đa. Tối đa phải ít nhất nhiều hơn tối thiểu một.</string>
+    <string name="has_shots">Có cú đánh</string>
+    <string name="has_shots_logged">Có cú đánh đã ghi</string>
     <string name="having_trouble_creating_your_account_please_try_again">Đang gặp sự cố khi tạo tài khoản. Vui lòng thử lại</string>
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Gặp sự cố khi đăng nhập vào tài khoản của bạn. Vui lòng thử lại hoặc đảm bảo thông tin đăng nhập tồn tại và hợp lệ.</string>
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Đang gặp sự cố khi đặt lại mật khẩu cho tài khoản này. Vui lòng thử lại hoặc đảm bảo thông tin đăng nhập tồn tại và hợp lệ.</string>
@@ -110,6 +133,7 @@
     <string name="not_connected_to_internet">Không kết nối internet</string>
     <string name="no_first_name_entered">Không nhập tên</string>
     <string name="no_last_name_entered">Không nhập họ</string>
+    <string name="no_shots">Không có cú đánh</string>
     <string name="no_shots_results_found">Không tìm thấy kết quả nào</string>
     <string name="no_shots_results_found_description">Không tìm thấy ảnh nào phù hợp trong tìm kiếm của bạn. Vui lòng cập nhật tìm kiếm bằng tên ảnh hiện có.</string>
     <string name="not_now">Không phải bây giờ</string>
@@ -178,6 +202,7 @@
     <string name="small_forward">Tiền đạo nhỏ</string>
     <string name="shooting_guard">Tiền vệ ghi bàn</string>
     <string name="shot_info">Thông tin về cú đánh</string>
+    <string name="shot_logs">Nhật ký cú đánh</string>
     <string name="shot_name_x">Tên ảnh - %s \n</string>
     <string name="shots_made_x">\nSố lần chụp - %s</string>
     <string name="shots_made_percentage_x">\nTỷ lệ cú sút thành công: %s</string>
@@ -252,6 +277,8 @@
     <string name="no_shots_created_descriipton">Chưa có cầu thủ nào ghi được cú sút nào. Vui lòng ghi lại ít nhất một lần bắn để người chơi có thể tạo báo cáo.</string>
     <string name="no_players_created">Không có người chơi nào được tạo</string>
     <string name="no_players_created_description">Chưa có người chơi nào được tạo cho tài khoản của bạn. Vui lòng tạo ít nhất một người chơi và ghi lại ít nhất một cú đánh để tạo báo cáo về những cú đánh của người chơi đó.</string>
+    <string name="no_players_results_found">Không tìm thấy kết quả người chơi</string>
+    <string name="no_players_results_found_description">Không tìm thấy người chơi khớp trong tìm kiếm của bạn. Vui lòng cập nhật tìm kiếm bằng tên người chơi hiện có để có kết quả.</string>
     <string name="no_reports_generated">Không có báo cáo nào được tạo ra</string>
     <string name="reports">Báo cáo</string>
     <string name="player_report">Báo cáo người chơi</string>
