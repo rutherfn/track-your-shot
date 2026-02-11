@@ -18,6 +18,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -44,7 +45,12 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
  * @param onUpwardClicked Callback invoked when the increment button is pressed with the new value.
  * @param titleStyle Optional text style for the title, defaults to `TextStyles.smallBold`.
  * @param shouldShowDivider Optional flag to show a horizontal divider below the row.
- * @param defaultValue Initial value of the stepper, defaults to 0.
+ * @param defaultValue Initial value of the stepper, defaults to 0. Used when [currentValue] is null.
+ * @param currentValue Optional external state value. If provided, the stepper will use this value instead of internal state.
+ *                     This allows external state management for cases where the value needs to be controlled from outside.
+ * @param enabled Whether the stepper is enabled. When false, buttons are disabled and content appears grayed out. Defaults to true.
+ * @param modifier Optional [Modifier] to customize the row layout. Defaults to padding(8.dp) for backward compatibility.
+ * @param titleModifier Optional [Modifier] to customize the title text layout. Defaults to padding(start = 4.dp) for backward compatibility.
  */
 @Composable
 fun NumericRowStepper(
@@ -53,28 +59,38 @@ fun NumericRowStepper(
     onUpwardClicked: ((value: Int) -> Unit),
     titleStyle: TextStyle = TextStyles.smallBold,
     shouldShowDivider: Boolean = false,
-    defaultValue: Int = 0
+    defaultValue: Int = 0,
+    currentValue: Int? = null,
+    enabled: Boolean = true,
+    modifier: Modifier = Modifier.padding(8.dp),
+    titleModifier: Modifier = Modifier.padding(start = 4.dp)
 ) {
     Column {
         Row(
             modifier = Modifier
                 .fillMaxSize()
                 .fillMaxWidth()
-                .padding(8.dp),
+                .then(modifier),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = title,
-                modifier = Modifier.padding(start = 4.dp),
+                modifier = titleModifier,
                 style = titleStyle,
-                color = LocalContentColor.current
+                color = if (enabled) {
+                    LocalContentColor.current
+                } else {
+                    LocalContentColor.current.copy(alpha = 0.38f)
+                }
             )
 
             NumericRowStepperRightContent(
                 defaultValue = defaultValue,
+                currentValue = currentValue,
                 onDownwardClicked = onDownwardClicked,
-                onUpwardClicked = onUpwardClicked
+                onUpwardClicked = onUpwardClicked,
+                enabled = enabled
             )
         }
 
@@ -87,17 +103,38 @@ fun NumericRowStepper(
 /**
  * Internal composable for the numeric value display and increment/decrement buttons.
  *
- * @param defaultValue Initial value of the stepper.
+ * @param defaultValue Initial value of the stepper. Used when [currentValue] is null.
+ * @param currentValue Optional external state value. If provided, uses this instead of internal state.
  * @param onDownwardClicked Callback invoked when decrementing the value.
  * @param onUpwardClicked Callback invoked when incrementing the value.
+ * @param enabled Whether the stepper is enabled. When false, buttons are disabled and content appears grayed out.
  */
 @Composable
 fun NumericRowStepperRightContent(
     defaultValue: Int,
+    currentValue: Int?,
     onDownwardClicked: ((value: Int) -> Unit),
-    onUpwardClicked: ((value: Int) -> Unit)
+    onUpwardClicked: ((value: Int) -> Unit),
+    enabled: Boolean = true
 ) {
-    var value by remember { mutableIntStateOf(defaultValue) }
+    var internalValue by remember { mutableIntStateOf(defaultValue) }
+    val displayValue = currentValue ?: internalValue
+
+    LaunchedEffect(defaultValue) {
+        if (currentValue == null) {
+            internalValue = defaultValue
+        }
+    }
+
+    LaunchedEffect(currentValue) {
+        currentValue?.let { internalValue = it }
+    }
+
+    val disabledAlpha = 0.38f
+    val enabledIconTint = AppColors.Black
+    val disabledIconTint = AppColors.Black.copy(alpha = disabledAlpha)
+    val enabledBackgroundAlpha = 0.2f
+    val disabledBackgroundAlpha = 0.1f
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -105,48 +142,80 @@ fun NumericRowStepperRightContent(
     ) {
         IconButton(
             onClick = {
-                if (value != 0) {
-                    value -= 1
-                    onDownwardClicked.invoke(value)
+                if (enabled && displayValue != 0) {
+                    val newValue = displayValue - 1
+                    if (currentValue == null) {
+                        internalValue = newValue
+                    }
+                    onDownwardClicked.invoke(newValue)
                 }
             },
+            enabled = enabled,
             modifier = Modifier
                 .size(28.dp)
-                .background(Color.Gray.copy(alpha = 0.2f), shape = CircleShape)
+                .background(
+                    Color.Gray.copy(
+                        alpha = if (enabled) {
+                            enabledBackgroundAlpha
+                        } else {
+                            disabledBackgroundAlpha
+                        }
+                    ),
+                    shape = CircleShape
+                )
                 .clip(CircleShape)
                 .padding(8.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowDownward,
                 contentDescription = "Decrease Value",
-                tint = AppColors.Black,
+                tint = if (enabled) {
+                    enabledIconTint
+                } else {
+                    disabledIconTint
+                },
                 modifier = Modifier.size(24.dp)
             )
         }
 
         Text(
-            text = value.toString(),
+            text = displayValue.toString(),
             style = TextStyles.body,
-            color = LocalContentColor.current
+            color = if (enabled) {
+                LocalContentColor.current
+            } else {
+                LocalContentColor.current.copy(alpha = disabledAlpha)
+            }
         )
 
         IconButton(
             onClick = {
-                if (value < 99) {
-                    value++
-                    onUpwardClicked.invoke(value)
+                if (enabled && displayValue < 99) {
+                    val newValue = displayValue + 1
+                    if (currentValue == null) {
+                        internalValue = newValue
+                    }
+                    onUpwardClicked.invoke(newValue)
                 }
             },
+            enabled = enabled,
             modifier = Modifier
                 .size(28.dp)
-                .background(Color.Gray.copy(alpha = 0.2f), shape = CircleShape)
+                .background(
+                    Color.Gray.copy(alpha = if (enabled) enabledBackgroundAlpha else disabledBackgroundAlpha),
+                    shape = CircleShape
+                )
                 .clip(CircleShape)
                 .padding(8.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowUpward,
                 contentDescription = "Increase Value",
-                tint = AppColors.Black,
+                tint = if (enabled) {
+                    enabledIconTint
+                } else {
+                    disabledIconTint
+                },
                 modifier = Modifier.size(24.dp)
             )
         }

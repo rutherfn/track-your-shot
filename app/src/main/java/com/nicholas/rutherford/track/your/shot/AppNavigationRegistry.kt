@@ -16,6 +16,7 @@ import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.logShotScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.loginScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.onBoardingEducationScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.permissionEducationScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.playerFiltersScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.playersListScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.reportListScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.selectShotScreen
@@ -77,7 +78,8 @@ object AppNavigationRegistry {
         Screen.StaticScreen { enabledPermissionScreen() },
         Screen.StaticScreen { debugToggleScreen() },
         Screen.StaticScreen { createEditDeclaredScreen() },
-        Screen.StaticScreen { declaredShotsListScreen() }
+        Screen.StaticScreen { declaredShotsListScreen() },
+        Screen.StaticScreen { playerFiltersScreen() }
     )
 
     // Dynamic screens that require runtime parameters

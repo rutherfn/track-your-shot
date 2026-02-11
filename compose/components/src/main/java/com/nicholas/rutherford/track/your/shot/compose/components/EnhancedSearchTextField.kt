@@ -4,6 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -13,7 +15,16 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
@@ -22,6 +33,7 @@ import com.nicholas.rutherford.track.your.shot.AppColors
  * Created by Nicholas Rutherford, last edited on 2025-08-16
  *
  * A reusable search input field with built-in search and clear icons.
+ * Uses TextFieldValue to properly manage cursor position.
  *
  * @param value The current text input.
  * @param onValueChange Callback triggered when the text changes.
@@ -38,9 +50,39 @@ fun EnhancedSearchTextField(
     placeholderValue: String,
     modifier: Modifier = Modifier
 ) {
+    var currentTextFieldValue by remember {
+        mutableStateOf(
+            TextFieldValue(
+                text = value,
+                selection = TextRange(value.length)
+            )
+        )
+    }
+
+    // Track the last text we sent to onValueChange to distinguish user input from external updates
+    var lastSentText by remember { mutableStateOf(value) }
+
+    val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(value) {
+        // If the external value is different from what we last sent, it's an external update
+        // In that case, update the TextFieldValue and place cursor at the end
+        if (value != lastSentText && currentTextFieldValue.text != value) {
+            currentTextFieldValue = TextFieldValue(
+                text = value,
+                selection = TextRange(value.length)
+            )
+            lastSentText = value
+        }
+    }
+
     OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
+        value = currentTextFieldValue,
+        onValueChange = { newValue ->
+            currentTextFieldValue = newValue
+            lastSentText = newValue.text
+            onValueChange(newValue.text)
+        },
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
@@ -59,11 +101,16 @@ fun EnhancedSearchTextField(
                     contentDescription = "Clear Search",
                     tint = AppColors.Black.copy(alpha = 0.6f),
                     modifier = Modifier
-                        .clickable { onClearClick() }
+                        .clickable {
+                            onClearClick()
+                            focusManager.clearFocus()
+                        }
                 )
             }
         },
         singleLine = true,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         shape = RoundedCornerShape(16.dp),
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = AppColors.Orange,
@@ -78,7 +125,7 @@ fun EnhancedSearchTextField(
 @Preview(showBackground = true)
 @Composable
 private fun EnhancedSearchTextFieldPreview() {
-    var text = "Search term"
+    var text by remember { mutableStateOf("Search term") }
 
     EnhancedSearchTextField(
         value = text,

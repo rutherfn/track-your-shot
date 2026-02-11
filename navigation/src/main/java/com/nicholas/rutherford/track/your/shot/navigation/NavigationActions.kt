@@ -214,6 +214,14 @@ object NavigationActions {
                 NavigationDestinationsWithParams.shotsListScreenWithParams(shouldShowAllPlayersShots)
             override val navOptions = NavOptions.Builder().build()
         }
+
+        /**
+         * Navigate to the player filters screen.
+         */
+        fun playerFilters() = object : NavigationAction {
+            override val destination = NavigationDestinations.PLAYER_FILTERS_SCREEN
+            override val navOptions = NavOptions.Builder().build()
+        }
     }
 
     /**

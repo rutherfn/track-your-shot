@@ -111,6 +111,12 @@ fun Date.toTimestampString(): String {
     return formatter.format(this)
 }
 
+/** Converts a timestamp in milliseconds to a formatted string with date and time using "MMM dd, yyyy hh:mm a" format. */
+fun Long.toDateWithTimestampString(): String {
+    val formatter = SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault())
+    return formatter.format(Date(this))
+}
+
 /** Converts a string to [LocalDate] using "MMM d, y" pattern; logs error if parsing fails. */
 fun String.toLocalDate(): LocalDate? {
     return try {

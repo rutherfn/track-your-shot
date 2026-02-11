@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="acceptance_of_these_terms">इन शर्तों की स्वीकृति</string>
     <string name="acceptance_of_these_terms_description">आप स्वीकार करते हैं कि आपने इस अनुबंध को पढ़ लिया है और इसके सभी नियमों व शर्तों से सहमत हैं. मोबाइल एप्लिकेशन और सेवाओं तक पहुंच और उनका उपयोग करके, आप इस समझौते से बंधे होने के लिए सहमत होते हैं. यदि आप इस अनुबंध की शर्तों का पालन करने के लिए सहमत नहीं हैं, तो आप मोबाइल एप्लिकेशन और सेवाओं तक पहुंचने या उनका उपयोग करने के लिए अधिकृत नहीं हैं.</string>
     <string name="accounts">हिसाब किताब</string>
@@ -7,6 +8,8 @@
     <string name="account_security_description">यदि आप मोबाइल एप्लिकेशन में खाता बनाते हैं, तो आप अपने खाते की सुरक्षा बनाए रखने के लिए जिम्मेदार हैं और आप खाते के अंतर्गत होने वाली सभी गतिविधियों और इसके संबंध में की गई अन्य कार्रवाई के लिए पूरी तरह जिम्मेदार हैं. आपके द्वारा साइन इन करने और सेवाओं का उपयोग शुरू करने से पहले हम नए खातों की निगरानी और समीक्षा कर सकते हैं. किसी भी प्रकार की गलत संपर्क जानकारी प्रदान करने पर आपका खाता समाप्त किया जा सकता है. आपको अपने खाते के किसी भी अनधिकृत उपयोग या सुरक्षा के किसी अन्य उल्लंघन के बारे में हमें तुरंत सूचित करना होगा. हम आपके द्वारा किए गए किसी भी कार्य या चूक के लिए उत्तरदायी नहीं होंगे, जिसमें ऐसे कार्यों या चूक के परिणामस्वरूप हुई किसी भी प्रकार की क्षति भी शामिल है. यदि हम यह निर्धारित करते हैं कि आपने इस अनुबंध के किसी प्रावधान का उल्लंघन किया है या आपका आचरण या सामग्री हमारी प्रतिष्ठा और सद्भावना को नुकसान पहुंचाएगी, तो हम आपके खाते (या उसके किसी भाग) को निलंबित, अक्षम या हटा सकते हैं. यदि हम उपरोक्त कारणों से आपका खाता हटा देते हैं, तो आप हमारी सेवाओं के लिए पुनः पंजीकरण नहीं कर सकेंगे. हम आगे पंजीकरण को रोकने के लिए आपके ईमेल पते और इंटरनेट प्रोटोकॉल पते को ब्लॉक कर सकते हैं.</string>
     <string name="add_player">खिलाड़ी जोड़ें</string>
     <string name="add_player_stats">खिलाड़ी के आँकड़े जोड़ें</string>
+    <string name="all">सभी</string>
+    <string name="both">दोनों</string>
     <string name="acknowledge_and_agree_to_terms">शर्तों को स्वीकार करें / उनसे सहमत हों</string>
     <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
     <string name="are_you_certain_you_wish_to_remove_x">क्या आप वाकई %s को हटाना चाहते हैं?</string>
@@ -21,12 +24,20 @@
     <string name="camera_permission_has_been_denied_description">कैमरे की अनुमति अस्वीकृत कर दी गई है. कैमरे के लिए मैन्युअल रूप से अनुमति देने और प्लेयर के लिए चित्र अपलोड करने के लिए कृपया सेटिंग्स पर जाएँ.</string>
     <string name="cancel">रद्द करना</string>
     <string name="center">केंद्र</string>
+    <string name="clear">साफ़ करें</string>
+    <string name="clear_search_results">खोज परिणाम साफ़ करें</string>
+    <string name="clear_shot_range">शॉट रेंज साफ़ करें?</string>
+    <string name="clear_shot_range_description">क्या आप वाकई न्यूनतम और अधिकतम शॉट मानों को उनके डिफ़ॉल्ट पर रीसेट करना चाहते हैं? यह दोनों मानों को 0 पर सेट कर देगा।</string>
+    <string name="reset_defaults">डिफ़ॉल्ट रीसेट करें</string>
+    <string name="reset_filters">फ़िल्टर रीसेट करें</string>
+    <string name="reset_filters_description">क्या आप वाकई सभी फ़िल्टर को उनकी डिफ़ॉल्ट स्थिति में रीसेट करना चाहते हैं?</string>
     <string name="changes_and_amendments">परिवर्तन और संशोधन</string>
     <string name="changes_and_amendments_description">हम अपने विवेकानुसार किसी भी समय इस अनुबंध या मोबाइल एप्लिकेशन और सेवाओं से संबंधित इसकी शर्तों को संशोधित करने का अधिकार सुरक्षित रखते हैं. जब हम ऐसा करेंगे, तो हम आपको सूचित करने के लिए एक ईमेल भेजेंगे. हम अपने विवेकानुसार अन्य तरीकों से भी आपको सूचना दे सकते हैं, जैसे कि आपके द्वारा दी गई संपर्क जानकारी के माध्यम से. इस समझौते का अद्यतन संस्करण संशोधित समझौते के पोस्ट होने के तुरंत बाद प्रभावी हो जाएगा, जब तक कि अन्यथा निर्दिष्ट न किया जाए. संशोधित अनुबंध (या उस समय निर्दिष्ट अन्य कार्य) की प्रभावी तिथि के बाद मोबाइल एप्लिकेशन और सेवाओं का आपका निरंतर उपयोग उन परिवर्तनों के लिए आपकी सहमति का प्रतीक होगा.</string>
     <string name="check_if_account_has_been_verified">जाँचें कि खाता सत्यापित हुआ है या नहीं</string>
     <string name="choose_a_shot_to_log_info_description">इसकी जानकारी लॉग करने के लिए एक शॉट चुनें. शॉट के बारे में अतिरिक्त विवरण देखने के लिए, \"अधिक दिखाएं\" पर क्लिक करें,</string>
     <string name="choose_image_from_gallery">गैलरी से छवि चुनें</string>
     <string name="choose_option">विकल्प चुनें</string>
+    <string name="choose_positions">पद चुनें</string>
     <string name="close">बंद करना</string>
     <string name="compare_players_stats">खिलाड़ियों और आंकड़ों की तुलना करें</string>
     <string name="contacting_us">हमसे संपर्क करें</string>
@@ -50,7 +61,9 @@
     <string name="delete_x">%s मिटाएं</string>
     <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
     <string name="device_is_currently_not_connected_to_internet_desc">डिवाइस फिलहाल इंटरनेट से कनेक्ट नहीं है. कृपया कार्रवाई पूरी करने के लिए डिवाइस को इंटरनेट से कनेक्ट करें.</string>
-    <string name="do_you_wish_to_proceed_description">क्या आप बिना सहेजे गए प्लेयर संशोधनों के बावजूद आगे बढ़ना चाहते हैं? किए गए कोई भी परिवर्तन सहेजे नहीं जाएंगे.</string>
+    <string name="discard_filter_changes">फ़िल्टर परिवर्तन छोड़ें?</string>
+    <string name="discard_filter_changes_description">आपके पास सहेजे न गए फ़िल्टर परिवर्तन हैं. अभी छोड़ने से आपके सभी वर्तमान फ़िल्टर चयन छूट जाएंगे।</string>
+    <string name="do_you_wish_to_proceed_description">क्या आप बिना सहेजे गए प्लेयर संशोधनों के बावजूद आगे बढ़ना चाहते हैं? किए गए कोई भी परिवर्तन सहेजे नहीं जाएंगे।</string>
     <string name="edit_x">%s संपादित करें</string>
     <string name="enter_first_name">प्रथम नाम दर्ज करें</string>
     <string name="enter_last_name">अंतिम नाम दर्ज करो</string>
@@ -77,10 +90,21 @@
     <string name="error">गलती</string>
     <string name="error_creating_account">खाता बनाते समय त्रुटि</string>
     <string name="error_deleting_pending_account">लंबित खाता हटाने में त्रुटि</string>
+    <string name="filters">फ़िल्टर</string>
+    <string name="player_filters">प्लेयर फ़िल्टर</string>
     <string name="find_shots_by_name">नाम से शॉट्स खोजें </string>
+    <string name="search_players">खिलाड़ियों को खोजें</string>
     <string name="general">सामान्य</string>
+    <string name="last_updated">अंतिम अपडेट</string>
     <string name="general_information">सामान्य जानकारी</string>
     <string name="got_it">समझ गया</string>
+    <string name="number_of_filters">फ़िल्टर की संख्या</string>
+    <string name="number_of_shots">शॉट्स की संख्या</string>
+    <string name="min_shots">न्यूनतम शॉट्स</string>
+    <string name="max_shots">अधिकतम शॉट्स</string>
+    <string name="set_minimum_shot_count_description">अधिकतम शॉट्स सक्षम करने के लिए न्यूनतम शॉट गिनती सेट करें। अधिकतम न्यूनतम से कम से कम एक अधिक होना चाहिए।</string>
+    <string name="has_shots">शॉट्स हैं</string>
+    <string name="has_shots_logged">शॉट्स लॉग किए गए हैं</string>
     <string name="having_trouble_creating_your_account_please_try_again">अपना खाता बनाने में समस्या आ रही है. कृपया पुन: प्रयास करें</string>
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">आपके खाते में लॉग इन करने में समस्या आ रही है. कृपया पुनः प्रयास करें और सुनिश्चित करें कि क्रेडेंशियल मौजूद हैं और वैध हैं.</string>
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">इस खाते के लिए पासवर्ड रीसेट करने में समस्या आ रही है. कृपया पुनः प्रयास करें और सुनिश्चित करें कि क्रेडेंशियल मौजूद हैं और वैध हैं.</string>
@@ -109,6 +133,7 @@
     <string name="not_connected_to_internet">इंटरनेट से कनेक्ट नहीं है</string>
     <string name="no_first_name_entered">कोई प्रथम नाम दर्ज नहीं किया गया</string>
     <string name="no_last_name_entered">कोई अंतिम नाम दर्ज नहीं किया गया</string>
+    <string name="no_shots">कोई शॉट नहीं</string>
     <string name="no_shots_results_found">कोई शॉट परिणाम नहीं मिला</string>
     <string name="no_shots_results_found_description">आपकी खोज में कोई मेल खाता शॉट नहीं मिला. कृपया मौजूदा शॉट नाम के साथ खोज अपडेट करें.</string>
     <string name="not_now">अभी नहीं</string>
@@ -121,6 +146,7 @@
     <string name="reset_password">पासवर्ड रीसेट</string>
     <string name="reset_password_email_sent">पासवर्ड रीसेट करें ईमेल भेजा गया</string>
     <string name="resend_email">ईमेल दुबारा भेजें</string>
+    <string name="see_results" tools:ignore="MissingTranslation">See Results (%1$d)</string>
     <string name="select_a_shot">एक शॉट का चयन करें</string>
     <string name="selecting_a_shot">एक शॉट का चयन</string>
     <string name="select_date">तारीख़ चुनें</string>
@@ -176,6 +202,7 @@
     <string name="small_forward">स्मॉल फ़ॉरवर्ड</string>
     <string name="shooting_guard">मृगया रक्षक</string>
     <string name="shot_info">शॉट जानकारी</string>
+    <string name="shot_logs">शॉट लॉग</string>
     <string name="shot_name_x">शॉट का नाम - %s \n</string>
     <string name="shots_made_x">\nबनाए गए शॉट्स - %s</string>
     <string name="shots_made_percentage_x">\nबनाए गए शॉट्स का प्रतिशत: %s</string>
@@ -220,13 +247,13 @@
     <string name="view_more_info">अधिक जानकारी देखें</string>
     <string name="view_x">%s देखें</string>
     <string name="voice_commands">ध्वनि आदेश</string>
-    <string name="x_position_x_player_name">%1$s , %2$s</string>
+    <string name="x_position_x_player_name" formatted="false">%1$s , %2$s</string>
     <string name="x_shot">%s शॉट</string>
     <string name="x_shot_has_been_removed_description">%s को इस खिलाड़ी के शॉट इतिहास से हटा दिया गया है.</string>
     <string name="x_shot_has_not_been_removed_description">%s शॉट को इस खिलाड़ी के शॉट इतिहास से हटाया नहीं गया है. कृपया शॉट हटाने के लिए पुनः प्रयास करें.</string>
     <string name="x_shots">%s शॉट्स</string>
     <string name="x_shot_category">श्रेणी - %s</string>
-    <string name="x_x">%s - %s</string>
+    <string name="x_x" formatted="false">%s - %s</string>
     <string name="yes">हाँ</string>
     <string name="your_player_could_not_be_retrieved_description">आपका प्लेयर पुनः प्राप्त नहीं किया जा सका. कृपया पुन: प्रयास करें.</string>
     <string name="at_least_one_player_description">रिपोर्ट तैयार करने के लिए कम से कम एक खिलाड़ी का कम से कम एक लॉग शॉट होना आवश्यक है. कृपया सुनिश्चित करें कि आगे बढ़ने के लिए यह प्रक्रिया पूरी हो गई है.</string>
@@ -250,6 +277,8 @@
     <string name="no_shots_created_descriipton">किसी भी खिलाड़ी ने अभी तक कोई शॉट लॉग नहीं किया है. रिपोर्ट तैयार करने के लिए कृपया किसी खिलाड़ी के कम से कम एक शॉट का रिकॉर्ड दर्ज करें.</string>
     <string name="no_players_created">कोई खिलाड़ी नहीं बनाया गया</string>
     <string name="no_players_created_description">आपके खाते के लिए अभी तक कोई खिलाड़ी नहीं बनाया गया है. कृपया कम से कम एक खिलाड़ी बनाएं और खिलाड़ी द्वारा लिए गए शॉट्स की रिपोर्ट तैयार करने के लिए कम से कम एक शॉट रिकॉर्ड करें.</string>
+    <string name="no_players_results_found">कोई खिलाड़ी परिणाम नहीं मिला</string>
+    <string name="no_players_results_found_description">आपकी खोज में कोई मेल खाता खिलाड़ी नहीं मिला. कृपया परिणामों के लिए मौजूदा खिलाड़ी नाम के साथ खोज अपडेट करें।</string>
     <string name="no_reports_generated">कोई रिपोर्ट नहीं बनाई गई</string>
     <string name="reports">रिपोर्टों</string>
     <string name="player_report">खिलाड़ी रिपोर्ट</string>

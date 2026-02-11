@@ -219,10 +219,10 @@ class ShotsListViewModelTest {
     inner class OnToolbarMenuClicked {
 
         @Test
-        fun `when playerFilterName is empty should call openNavigationDrawer`() {
+        fun `when playerFilterName is empty and shouldShowAllPlayerShots is set to true should call openNavigationDrawer`() {
             viewModel.playerFilteredName = ""
 
-            viewModel.onToolbarMenuClicked()
+            viewModel.onToolbarMenuClicked(shouldShowAllPlayerShots = true)
 
             verify { navigation.openNavigationDrawer() }
             verify(exactly = 0) { navigation.popToPlayerList() }
@@ -238,10 +238,29 @@ class ShotsListViewModelTest {
         }
 
         @Test
-        fun `when playerFilterName is not empty should call popToPlayerList`() {
+        fun `when playerFilterName is empty and shouldShowAllPlayerShots is set to false should call popToPlayerList`() {
+            viewModel.playerFilteredName = ""
+
+            viewModel.onToolbarMenuClicked(shouldShowAllPlayerShots = false)
+
+            verify(exactly = 0) { navigation.openNavigationDrawer() }
+            verify { navigation.popToPlayerList() }
+
+            Assertions.assertEquals(
+                viewModel.shotListMutableStateFlow.value,
+                ShotsListState(shotList = emptyList())
+            )
+            Assertions.assertEquals(
+                viewModel.currentShotArrayList.toList(),
+                emptyShotList
+            )
+        }
+
+        @Test
+        fun `when playerFilterName is not empty and shouldShowAllPlayerShots is set to true should call popToPlayerList`() {
             viewModel.playerFilteredName = "filteredName"
 
-            viewModel.onToolbarMenuClicked()
+            viewModel.onToolbarMenuClicked(shouldShowAllPlayerShots = true)
 
             verify(exactly = 0) { navigation.openNavigationDrawer() }
             verify { navigation.popToPlayerList() }

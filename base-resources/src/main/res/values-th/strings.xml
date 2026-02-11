@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="acceptance_of_these_terms">การยอมรับข้อกำหนดเหล่านี้</string>
     <string name="acceptance_of_these_terms_description">คุณทราบว่าคุณได้อ่านข้อตกลงนี้แล้วและยอมรับข้อกำหนดและเงื่อนไขทั้งหมด การเข้าถึงและใช้งานแอปพลิเคชั่นมือถือและบริการถือว่าคุณตกลงที่จะผูกพันตามข้อตกลงนี้ หากคุณไม่ยินยอมที่จะปฏิบัติตามข้อกำหนดของข้อตกลงนี้ คุณจะไม่ได้รับอนุญาตให้เข้าถึงหรือใช้แอพพลิเคชั่นและบริการมือถือ</string>
     <string name="accounts">บัญชี</string>
@@ -7,6 +8,8 @@
     <string name="account_security_description">หากคุณสร้างบัญชีในแอปพลิเคชันมือถือ คุณจะต้องรับผิดชอบในการรักษาความปลอดภัยบัญชีของคุณ และคุณจะต้องรับผิดชอบโดยสมบูรณ์ต่อกิจกรรมทั้งหมดที่เกิดขึ้นภายใต้บัญชีดังกล่าว และการดำเนินการอื่นๆ ที่ดำเนินการใดๆ ที่เกี่ยวข้องกับบัญชีดังกล่าว เราอาจตรวจสอบและตรวจสอบบัญชีใหม่ก่อนที่คุณจะลงชื่อเข้าใช้และเริ่มใช้บริการ การให้ข้อมูลติดต่ออันเป็นเท็จไม่ว่าประเภทใดอาจส่งผลให้บัญชีของคุณถูกยกเลิก คุณจะต้องแจ้งให้เราทราบทันทีเกี่ยวกับการใช้งานบัญชีของคุณโดยไม่ได้รับอนุญาตหรือการละเมิดความปลอดภัยอื่น ๆ เราจะไม่รับผิดชอบต่อการกระทำหรือการละเว้นใดๆ ของคุณ รวมถึงความเสียหายใดๆ ที่เกิดขึ้นอันเป็นผลจากการกระทำหรือการละเว้นดังกล่าว เราอาจระงับ ปิดใช้งาน หรือลบบัญชีของคุณ (หรือส่วนใดส่วนหนึ่ง) หากเราพิจารณาว่าคุณละเมิดข้อกำหนดใดๆ ของข้อตกลงนี้ หรือการกระทำหรือเนื้อหาของคุณอาจก่อให้เกิดความเสียหายต่อชื่อเสียงและความน่าเชื่อถือของเรา หากเราลบบัญชีของคุณเนื่องจากเหตุผลข้างต้น คุณจะไม่สามารถลงทะเบียนใช้บริการของเราอีกครั้งได้ เราอาจบล็อกที่อยู่อีเมลและที่อยู่โปรโตคอลอินเทอร์เน็ตของคุณเพื่อป้องกันการลงทะเบียนเพิ่มเติม</string>
     <string name="add_player">เพิ่มผู้เล่น</string>
     <string name="add_player_stats">เพิ่มสถิติผู้เล่น</string>
+    <string name="all">ทั้งหมด</string>
+    <string name="both">ทั้งสอง</string>
     <string name="acknowledge_and_agree_to_terms">ยอมรับ / ตกลงตามเงื่อนไข</string>
     <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
     <string name="are_you_certain_you_wish_to_remove_x">คุณแน่ใจหรือไม่ว่าต้องการลบ %s?</string>
@@ -21,12 +24,20 @@
     <string name="camera_permission_has_been_denied_description">ไม่ได้รับอนุญาติให้นำกล้องเข้าไปใช้งาน หากต้องการให้สิทธิ์ใช้งานกล้องและอัพโหลดรูปภาพสำหรับเครื่องเล่นด้วยตนเอง โปรดไปที่การตั้งค่า</string>
     <string name="cancel">ยกเลิก</string>
     <string name="center">ศูนย์</string>
+    <string name="clear">ล้าง</string>
+    <string name="clear_search_results">ล้างผลการค้นหา</string>
+    <string name="clear_shot_range">ล้างช่วงการยิง?</string>
+    <string name="clear_shot_range_description">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตค่าการยิงขั้นต่ำและสูงสุดเป็นค่าเริ่มต้น? สิ่งนี้จะตั้งค่าทั้งสองค่าเป็น 0</string>
+    <string name="reset_defaults">รีเซ็ตค่าเริ่มต้น</string>
+    <string name="reset_filters">รีเซ็ตตัวกรอง</string>
+    <string name="reset_filters_description">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตตัวกรองทั้งหมดเป็นสถานะเริ่มต้น?</string>
     <string name="changes_and_amendments">การเปลี่ยนแปลงและการแก้ไข</string>
     <string name="changes_and_amendments_description">เราสงวนสิทธิ์ในการแก้ไขข้อตกลงนี้หรือข้อกำหนดที่เกี่ยวข้องกับแอปพลิเคชันมือถือและบริการได้ตลอดเวลาตามดุลยพินิจของเรา เมื่อเราทำเราจะส่งอีเมลเพื่อแจ้งให้คุณทราบ เราอาจแจ้งให้คุณทราบโดยวิธีอื่นๆ ตามดุลยพินิจของเรา เช่น ผ่านข้อมูลการติดต่อที่คุณให้ไว้ ข้อตกลงฉบับปรับปรุงจะมีผลบังคับใช้ทันทีเมื่อมีการโพสต์ข้อตกลงที่แก้ไข เว้นแต่จะระบุไว้เป็นอย่างอื่น การใช้งานแอปพลิเคชันมือถือและบริการต่อเนื่องของคุณหลังจากวันที่ข้อตกลงแก้ไขมีผลบังคับใช้ (หรือการกระทำอื่นใดที่ระบุไว้ในขณะนั้น) ถือเป็นการยินยอมต่อการเปลี่ยนแปลงดังกล่าว</string>
     <string name="check_if_account_has_been_verified">ตรวจสอบว่าบัญชีได้รับการตรวจสอบแล้วหรือไม่</string>
     <string name="choose_a_shot_to_log_info_description">เลือกช็อตที่จะบันทึกข้อมูล หากต้องการดูรายละเอียดเพิ่มเติมเกี่ยวกับช็อตนี้ ให้คลิก \"แสดงเพิ่มเติม\"</string>
     <string name="choose_image_from_gallery">เลือกภาพจากแกลเลอรี่</string>
     <string name="choose_option">เลือกตัวเลือก</string>
+    <string name="choose_positions">เลือกตำแหน่ง</string>
     <string name="close">ปิด</string>
     <string name="compare_players_stats">เปรียบเทียบผู้เล่นและสถิติ</string>
     <string name="contacting_us">ติดต่อเรา</string>
@@ -50,6 +61,8 @@
     <string name="delete_x">ลบ %s</string>
     <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
     <string name="device_is_currently_not_connected_to_internet_desc">อุปกรณ์ไม่ได้เชื่อมต่อกับอินเทอร์เน็ตในปัจจุบัน กรุณาเชื่อมต่ออุปกรณ์กับอินเตอร์เน็ตเพื่อดำเนินการให้เสร็จสมบูรณ์</string>
+    <string name="discard_filter_changes">ยกเลิกการเปลี่ยนแปลงตัวกรอง?</string>
+    <string name="discard_filter_changes_description">คุณมีการเปลี่ยนแปลงตัวกรองที่ยังไม่ได้บันทึก การออกตอนนี้จะยกเลิกการเลือกตัวกรองปัจจุบันทั้งหมดของคุณ</string>
     <string name="do_you_wish_to_proceed_description">คุณต้องการดำเนินการต่อแม้จะมีการปรับเปลี่ยนผู้เล่นที่ยังไม่ได้บันทึกหรือไม่? การเปลี่ยนแปลงใด ๆ ที่เกิดขึ้นจะไม่ได้รับการบันทึก</string>
     <string name="edit_x">แก้ไข %s</string>
     <string name="enter_first_name">กรุณากรอกชื่อ</string>
@@ -77,10 +90,21 @@
     <string name="error">ข้อผิดพลาด</string>
     <string name="error_creating_account">ข้อผิดพลาดในการสร้างบัญชี</string>
     <string name="error_deleting_pending_account">เกิดข้อผิดพลาดในการลบบัญชีที่รอดำเนินการ</string>
+    <string name="filters">ตัวกรอง</string>
+    <string name="player_filters">ตัวกรองผู้เล่น</string>
     <string name="find_shots_by_name">ค้นหาภาพตามชื่อ </string>
+    <string name="search_players">ค้นหาผู้เล่น</string>
     <string name="general">ทั่วไป</string>
     <string name="general_information">ข้อมูลทั่วไป</string>
     <string name="got_it">เข้าใจแล้ว</string>
+    <string name="last_updated">อัปเดตล่าสุด</string>
+    <string name="number_of_filters">จำนวนตัวกรอง</string>
+    <string name="number_of_shots">จำนวนการยิง</string>
+    <string name="min_shots">การยิงขั้นต่ำ</string>
+    <string name="max_shots">การยิงสูงสุด</string>
+    <string name="set_minimum_shot_count_description">ตั้งค่าจำนวนการยิงขั้นต่ำเพื่อเปิดใช้งานการยิงสูงสุด สูงสุดต้องมากกว่าขั้นต่ำอย่างน้อยหนึ่ง</string>
+    <string name="has_shots">มีการยิง</string>
+    <string name="has_shots_logged">มีการยิงที่บันทึกไว้</string>
     <string name="having_trouble_creating_your_account_please_try_again">มีปัญหาในการสร้างบัญชีของคุณ กรุณาลองอีกครั้ง</string>
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">มีปัญหาในการเข้าสู่ระบบบัญชีของคุณ โปรดลองอีกครั้งและ/หรือตรวจสอบให้แน่ใจว่าข้อมูลประจำตัวมีอยู่และถูกต้อง</string>
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">มีปัญหาในการรีเซ็ตรหัสผ่านสำหรับบัญชีนี้ โปรดลองอีกครั้งและ/หรือตรวจสอบให้แน่ใจว่าข้อมูลประจำตัวมีอยู่และถูกต้อง</string>
@@ -109,6 +133,7 @@
     <string name="not_connected_to_internet">ไม่ได้เชื่อมต่ออินเตอร์เน็ต</string>
     <string name="no_first_name_entered">ไม่มีการป้อนชื่อจริง</string>
     <string name="no_last_name_entered">ไม่มีการป้อนนามสกุล</string>
+    <string name="no_shots">ไม่มีการยิง</string>
     <string name="no_shots_results_found">ไม่พบผลลัพธ์ช็อต</string>
     <string name="no_shots_results_found_description">ไม่พบภาพที่ตรงกันในการค้นหาของคุณ กรุณาอัปเดตการค้นหาด้วยชื่อช็อตที่มีอยู่</string>
     <string name="not_now">ไม่ใช่ตอนนี้</string>
@@ -121,6 +146,7 @@
     <string name="reset_password">รีเซ็ตรหัสผ่าน</string>
     <string name="reset_password_email_sent">รีเซ็ตรหัสผ่าน ส่งอีเมลแล้ว</string>
     <string name="resend_email">ส่งอีเมลอีกครั้ง</string>
+    <string name="see_results" tools:ignore="MissingTranslation">See Results (%1$d)</string>
     <string name="select_a_shot">เลือกช็อต</string>
     <string name="selecting_a_shot">การเลือกช็อต</string>
     <string name="select_date">เลือกวันที่</string>
@@ -176,6 +202,7 @@
     <string name="small_forward">สมอลฟอร์เวิร์ด</string>
     <string name="shooting_guard">การ์ดยิงปืน</string>
     <string name="shot_info">ข้อมูลช็อต</string>
+    <string name="shot_logs">บันทึกช็อต</string>
     <string name="shot_name_x">ชื่อช็อต - %s \n</string>
     <string name="shots_made_x">\nช็อตที่ถ่าย - %s</string>
     <string name="shots_made_percentage_x">\nเปอร์เซ็นต์การยิงที่ทำได้: %s</string>
@@ -220,13 +247,13 @@
     <string name="view_more_info">ดูข้อมูลเพิ่มเติม</string>
     <string name="view_x">ดู %s</string>
     <string name="voice_commands">คำสั่งเสียง</string>
-    <string name="x_position_x_player_name">%1$s , %2$s</string>
+    <string name="x_position_x_player_name" formatted="false">%1$s , %2$s</string>
     <string name="x_shot">%s ช็อต</string>
     <string name="x_shot_has_been_removed_description">%s ถูกนำออกจากประวัติการยิงของผู้เล่นรายนี้แล้ว</string>
     <string name="x_shot_has_not_been_removed_description">%s การยิงไม่ได้ถูกลบออกจากประวัติการยิงของผู้เล่นรายนี้ กรุณาลองลบช็อตอีกครั้ง</string>
     <string name="x_shots">%s ช็อต</string>
     <string name="x_shot_category">หมวดหมู่ - %s</string>
-    <string name="x_x">%s - %s</string>
+    <string name="x_x" formatted="false">%s - %s</string>
     <string name="yes">ใช่</string>
     <string name="your_player_could_not_be_retrieved_description">ไม่สามารถดึงเครื่องเล่นของคุณได้ กรุณาลองอีกครั้ง.</string>
     <string name="at_least_one_player_description">ต้องมีผู้เล่นอย่างน้อยหนึ่งคนที่มีการบันทึกการยิงอย่างน้อยหนึ่งครั้งจึงจะสร้างรายงานได้ กรุณาตรวจสอบให้แน่ใจว่าได้ดำเนินการให้เสร็จสิ้นก่อนดำเนินการต่อ</string>
@@ -250,6 +277,8 @@
     <string name="no_shots_created_descriipton">ยังไม่มีการบันทึกการยิงของนักเตะเลย กรุณาบันทึกการยิงอย่างน้อยหนึ่งครั้งสำหรับผู้เล่นเพื่อสร้างรายงาน</string>
     <string name="no_players_created">ไม่มีผู้เล่นที่สร้างขึ้น</string>
     <string name="no_players_created_description">ยังไม่มีการสร้างผู้เล่นสำหรับบัญชีของคุณ กรุณาสร้างผู้เล่นอย่างน้อย 1 คน และบันทึกการยิงอย่างน้อย 1 ครั้ง เพื่อสร้างรายงานการยิงที่ผู้เล่นถ่าย</string>
+    <string name="no_players_results_found">ไม่พบผลผู้เล่น</string>
+    <string name="no_players_results_found_description">ไม่พบผู้เล่นที่ตรงกันในการค้นหาของคุณ โปรดอัปเดตการค้นหาด้วยชื่อผู้เล่นที่มีอยู่เพื่อดูผลลัพธ์</string>
     <string name="no_reports_generated">ไม่มีการสร้างรายงาน</string>
     <string name="reports">รายงาน</string>
     <string name="player_report">รายงานผู้เล่น</string>

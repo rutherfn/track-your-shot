@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="acceptance_of_these_terms">Bu Şartların Kabulü</string>
     <string name="acceptance_of_these_terms_description">Bu Sözleşmeyi okuduğunuzu ve tüm hüküm ve koşullarını kabul ettiğinizi kabul edersiniz. Mobil Uygulama ve Hizmetlere erişerek ve bunları kullanarak, bu Sözleşme\'ye bağlı olmayı kabul etmiş olursunuz. Bu Sözleşme\'nin şartlarına uymayı kabul etmiyorsanız, Mobil Uygulama ve Hizmetlere erişmeniz veya bunları kullanmanız yetkilendirilmez.</string>
     <string name="accounts">Hesaplar</string>
@@ -7,6 +8,8 @@
     <string name="account_security_description">Mobil Uygulama üzerinden bir hesap oluşturmanız halinde, hesabınızın güvenliğini sağlamaktan siz sorumlusunuz ve hesabınız altında gerçekleşen tüm faaliyetlerden ve hesabınızla bağlantılı olarak gerçekleştirilen diğer tüm eylemlerden tamamen siz sorumlusunuz. Oturum açmadan ve Hizmetleri kullanmaya başlamadan önce yeni hesapları izleyebilir ve inceleyebiliriz. Herhangi bir şekilde yanlış iletişim bilgisi vermeniz hesabınızın sonlandırılmasına yol açabilir. Hesabınızın yetkisiz kullanımı veya başka bir güvenlik ihlali durumunda bizi derhal bilgilendirmelisiniz. Sizin eylem veya ihmallerinizden, bu eylem veya ihmaller sonucu ortaya çıkan herhangi bir türdeki zarar da dahil olmak üzere, sorumlu olmayacağız. Bu Sözleşme\'nin herhangi bir hükmünü ihlal ettiğinizi veya davranışlarınızın veya içeriğinizin itibarımıza ve itibarımıza zarar verme eğiliminde olduğunu tespit edersek hesabınızı (veya herhangi bir bölümünü) askıya alabilir, devre dışı bırakabilir veya silebiliriz. Yukarıda belirtilen sebeplerden dolayı hesabınızı silmemiz halinde, Hizmetlerimize yeniden kayıt yaptıramazsınız. Daha fazla kayıt olmanızı engellemek için e-posta adresinizi ve İnternet protokol adresinizi engelleyebiliriz.</string>
     <string name="add_player">Oyuncu Ekle</string>
     <string name="add_player_stats">Oyuncu İstatistiklerini Ekle</string>
+    <string name="all">Tümü</string>
+    <string name="both">Her ikisi</string>
     <string name="acknowledge_and_agree_to_terms">Şartları Kabul Et / Kabul Et</string>
     <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
     <string name="are_you_certain_you_wish_to_remove_x">%s öğesini kaldırmak istediğinizden emin misiniz?</string>
@@ -21,12 +24,20 @@
     <string name="camera_permission_has_been_denied_description">Kamera izni reddedildi. Kameraya manuel olarak izin vermek ve Player\'a resim yüklemek için lütfen Ayarlar\'a gidin.</string>
     <string name="cancel">İptal etmek</string>
     <string name="center">Merkez</string>
+    <string name="clear">Temizle</string>
+    <string name="clear_search_results">Arama sonuçlarını temizle</string>
+    <string name="clear_shot_range">Atış aralığını temizle?</string>
+    <string name="clear_shot_range_description">Minimum ve maksimum atış değerlerini varsayılanlarına sıfırlamak istediğinizden emin misiniz? Bu, her iki değeri de 0 olarak ayarlayacaktır.</string>
+    <string name="reset_defaults">Varsayılanları sıfırla</string>
+    <string name="reset_filters">Filtreleri Sıfırla</string>
+    <string name="reset_filters_description">Tüm filtreleri varsayılan durumlarına sıfırlamak istediğinizden emin misiniz?</string>
     <string name="changes_and_amendments">Değişiklikler ve Tadilatlar</string>
     <string name="changes_and_amendments_description">Mobil Uygulama ve Hizmetlerle ilgili bu Sözleşmeyi veya hükümlerini kendi takdirimize bağlı olarak herhangi bir zamanda değiştirme hakkını saklı tutuyoruz. Bunu yaptığımızda size haber vermek için bir e-posta göndereceğiz. Ayrıca, takdirimize bağlı olarak size başka yollarla, örneğin bize sağladığınız iletişim bilgileri aracılığıyla bildirimde bulunabiliriz. Aksi belirtilmediği takdirde, bu Sözleşmenin güncellenmiş bir versiyonu, revize edilmiş Sözleşmenin yayınlanmasının ardından derhal yürürlüğe girecektir. Gözden geçirilmiş Sözleşmenin (veya o tarihte belirtilen diğer bir eylemin) yürürlük tarihinden sonra Mobil Uygulama ve Hizmetleri kullanmaya devam etmeniz, söz konusu değişiklikleri kabul ettiğiniz anlamına gelecektir.</string>
     <string name="check_if_account_has_been_verified">Hesabın doğrulanıp doğrulanmadığını kontrol edin</string>
     <string name="choose_a_shot_to_log_info_description">Bilgilerini kaydetmek istediğiniz çekimi seçin. Atış hakkında ek ayrıntıları görüntülemek için \"Daha Fazlasını Göster\"e tıklayın.</string>
     <string name="choose_image_from_gallery">Galeriden Resim Seçin</string>
     <string name="choose_option">Seçenek Seçin</string>
+    <string name="choose_positions">Pozisyonları Seçin</string>
     <string name="close">Kapalı</string>
     <string name="compare_players_stats">Oyuncuları ve İstatistikleri Karşılaştır</string>
     <string name="contacting_us">Bizimle İletişime Geçin</string>
@@ -50,6 +61,8 @@
     <string name="delete_x">%s öğesini sil</string>
     <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Cihaz şu anda internete bağlı değil. İşlemi tamamlamak için lütfen cihazı internete bağlayın.</string>
+    <string name="discard_filter_changes">Filtre Değişikliklerini İptal Et?</string>
+    <string name="discard_filter_changes_description">Kaydedilmemiş filtre değişiklikleriniz var. Şimdi çıkmak, mevcut tüm filtre seçimlerinizi iptal edecektir.</string>
     <string name="do_you_wish_to_proceed_description">Kaydedilmemiş oyuncu değişiklikleriniz olmasına rağmen devam etmek istiyor musunuz? Yapılan değişiklikler kaydedilmeyecektir.</string>
     <string name="edit_x">%s Düzenle</string>
     <string name="enter_first_name">Adınızı Girin</string>
@@ -77,10 +90,21 @@
     <string name="error">Hata</string>
     <string name="error_creating_account">Hesap Oluşturulurken Hata Oluştu</string>
     <string name="error_deleting_pending_account">Bekleyen hesabı silme hatası</string>
+    <string name="filters">Filtreler</string>
+    <string name="player_filters">Oyuncu Filtreleri</string>
     <string name="find_shots_by_name">İsme göre çekimleri bulun </string>
+    <string name="search_players">Oyuncuları ara</string>
     <string name="general">Genel</string>
     <string name="general_information">Genel bilgi</string>
     <string name="got_it">Anladım</string>
+    <string name="last_updated">Son Güncelleme</string>
+    <string name="number_of_filters">Filtre Sayısı</string>
+    <string name="number_of_shots">Atış Sayısı</string>
+    <string name="min_shots">Min. Atış</string>
+    <string name="max_shots">Maks. Atış</string>
+    <string name="set_minimum_shot_count_description">Maksimum atışları etkinleştirmek için minimum atış sayısını ayarlayın. Maksimum, minimumdan en az bir fazla olmalıdır.</string>
+    <string name="has_shots">Atış Var</string>
+    <string name="has_shots_logged">Kayıtlı Atış Var</string>
     <string name="having_trouble_creating_your_account_please_try_again">Hesabınızı oluştururken sorun mu yaşıyorsunuz? Lütfen tekrar deneyin</string>
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Hesabınıza giriş yaparken sorun mu yaşıyorsunuz? Lütfen tekrar deneyin ve/veya kimlik bilgilerinizin mevcut ve geçerli olduğundan emin olun.</string>
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Bu hesabın şifresini sıfırlamada sorun yaşıyorum. Lütfen tekrar deneyin ve/veya kimlik bilgilerinizin mevcut ve geçerli olduğundan emin olun.</string>
@@ -109,6 +133,7 @@
     <string name="not_connected_to_internet">İnternete bağlı değil</string>
     <string name="no_first_name_entered">Ad Girilmedi</string>
     <string name="no_last_name_entered">Soyadı Girilmedi</string>
+    <string name="no_shots">Atış Yok</string>
     <string name="no_shots_results_found">Hiçbir Atış Sonucu Bulunamadı</string>
     <string name="no_shots_results_found_description">Aradığınız kriterlere uygun çekim bulunamadı. Lütfen aramayı mevcut çekim adıyla güncelleyin.</string>
     <string name="not_now">Şimdi değil</string>
@@ -121,6 +146,7 @@
     <string name="reset_password">Şifreyi Sıfırla</string>
     <string name="reset_password_email_sent">Şifreyi Sıfırla E-posta Gönderildi</string>
     <string name="resend_email">E-postayı yeniden gönder</string>
+    <string name="see_results" tools:ignore="MissingTranslation">See Results (%1$d)</string>
     <string name="select_a_shot">Bir Atış Seçin</string>
     <string name="selecting_a_shot">Bir Atış Seçmek</string>
     <string name="select_date">Tarih Seçin</string>
@@ -176,6 +202,7 @@
     <string name="small_forward">Küçük Forvet</string>
     <string name="shooting_guard">Şutör Gard</string>
     <string name="shot_info">Atış Bilgileri</string>
+    <string name="shot_logs">Atış Kayıtları</string>
     <string name="shot_name_x">Atış Adı - %s \n</string>
     <string name="shots_made_x">\nAtılan Şutlar - %s</string>
     <string name="shots_made_percentage_x">\nAtılan Şut Yüzdesi: %s</string>
@@ -220,13 +247,13 @@
     <string name="view_more_info">Daha Fazla Bilgi Görüntüle</string>
     <string name="view_x">%s görüntüle</string>
     <string name="voice_commands">Sesli Komutlar</string>
-    <string name="x_position_x_player_name">%1$s , %2$s</string>
+    <string name="x_position_x_player_name" formatted="false">%1$s , %2$s</string>
     <string name="x_shot">%s Atış</string>
     <string name="x_shot_has_been_removed_description">%s bu oyuncunun şut geçmişinden kaldırıldı.</string>
     <string name="x_shot_has_not_been_removed_description">%s Şut bu oyuncunun şut geçmişinden kaldırılmadı. Lütfen çekimi kaldırmak için tekrar deneyin.</string>
     <string name="x_shots">%s Atışlar</string>
     <string name="x_shot_category">Kategori - %s</string>
-    <string name="x_x">%s - %s</string>
+    <string name="x_x" formatted="false">%s - %s</string>
     <string name="yes">Evet</string>
     <string name="your_player_could_not_be_retrieved_description">Oyuncunuz kurtarılamadı. Lütfen tekrar deneyin.</string>
     <string name="at_least_one_player_description">Rapor oluşturmak için en az bir oyuncunun en az bir şutu olması gerekiyor. Devam edebilmek için lütfen bunun tamamlandığından emin olun.</string>
@@ -250,6 +277,8 @@
     <string name="no_shots_created_descriipton">Henüz hiçbir oyuncunun kayıtlı şutu yok. Lütfen bir oyuncunun rapor oluşturabilmesi için en az bir şutu kaydedin.</string>
     <string name="no_players_created">Hiçbir Oyuncu Oluşturulmadı</string>
     <string name="no_players_created_description">Hesabınız için henüz hiçbir oyuncu oluşturulmadı. Lütfen en az bir oyuncu oluşturun ve en az bir şutu kaydederek oyuncunun attığı şutların raporunu oluşturun.</string>
+    <string name="no_players_results_found">Oyuncu sonuçları bulunamadı</string>
+    <string name="no_players_results_found_description">Aramanızda eşleşen oyuncu bulunamadı. Sonuçları görmek için lütfen mevcut oyuncu adıyla aramayı güncelleyin.</string>
     <string name="no_reports_generated">Hiçbir Rapor Oluşturulmadı</string>
     <string name="reports">Raporlar</string>
     <string name="player_report">Oyuncu Raporu</string>

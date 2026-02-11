@@ -12,6 +12,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.dao.DeclaredShotDao
 import com.nicholas.rutherford.track.your.shot.data.room.dao.IndividualPlayerReportDao
 import com.nicholas.rutherford.track.your.shot.data.room.dao.PendingPlayerDao
 import com.nicholas.rutherford.track.your.shot.data.room.dao.PlayerDao
+import com.nicholas.rutherford.track.your.shot.data.room.dao.PlayerFilterDao
 import com.nicholas.rutherford.track.your.shot.data.room.dao.SavedVoiceCommandDao
 import com.nicholas.rutherford.track.your.shot.data.room.dao.ShotIgnoringDao
 import com.nicholas.rutherford.track.your.shot.data.room.dao.UserDao
@@ -20,6 +21,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.DeclaredShotEn
 import com.nicholas.rutherford.track.your.shot.data.room.entities.IndividualPlayerReportEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.PendingPlayerEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerEntity
+import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerFilterEntity
+import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerFilterPositionEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.SavedVoiceCommandEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.ShotIgnoringEntity
 import com.nicholas.rutherford.track.your.shot.data.room.entities.UserEntity
@@ -38,6 +41,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.UserEntity
  * - [PendingPlayerDao]
  * - [SavedVoiceCommandDao]
  * - [PlayerDao]
+ * - [PlayerFilterDao]
  * - [ShotIgnoringDao]
  * - [UserDao]
  */
@@ -48,6 +52,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.UserEntity
         IndividualPlayerReportEntity::class,
         PendingPlayerEntity::class,
         PlayerEntity::class,
+        PlayerFilterEntity::class,
+        PlayerFilterPositionEntity::class,
         SavedVoiceCommandEntity::class,
         ShotIgnoringEntity::class,
         UserEntity::class
@@ -63,9 +69,11 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.UserEntity
         AutoMigration(from = 8, to = 9),
         AutoMigration(from = 9, to = 10),
         AutoMigration(from = 10, to = 11),
-        AutoMigration(from = 11, to = 12)
+        AutoMigration(from = 11, to = 12),
+        AutoMigration(from = 12, to = 13),
+        AutoMigration(from = 13, to = 14)
     ],
-    version = 12,
+    version = 14,
     exportSchema = true
 )
 @TypeConverters(PlayerPositionsConverter::class, ShotLoggedConverter::class, VoiceCommandTypesConverter::class)
@@ -85,6 +93,9 @@ abstract class AppDatabase : RoomDatabase() {
 
     /** Provides access to Player table operations. */
     abstract fun playerDao(): PlayerDao
+
+    /** Provides access to PlayerFilter table operations. */
+    abstract fun playerFilterDao(): PlayerFilterDao
 
     /** Provides access to SavedVoiceCommand table operations. */
     abstract fun savedVoiceCommandsDao(): SavedVoiceCommandDao

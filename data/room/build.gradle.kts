@@ -32,6 +32,10 @@ android {
         targetSdk = ConfigurationData.targetSdk
     }
 
+    lint {
+        disable += "xIdentifier"
+    }
+
     buildTypes {
         getByName(types.BuildTypes.UniqueBuilds.Release.buildName) {
             isMinifyEnabled = types.BuildTypes.UniqueBuilds.Release.isMinifyEnabled

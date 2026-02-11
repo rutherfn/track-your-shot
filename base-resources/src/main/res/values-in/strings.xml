@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="acceptance_of_these_terms">Penerimaan Ketentuan Ini</string>
     <string name="acceptance_of_these_terms_description">Anda mengakui bahwa Anda telah membaca Perjanjian ini dan menyetujui semua syarat dan ketentuannya. Dengan mengakses dan menggunakan Aplikasi Seluler dan Layanan, Anda setuju untuk terikat oleh Perjanjian ini. Jika Anda tidak setuju untuk mematuhi ketentuan Perjanjian ini, Anda tidak berwenang untuk mengakses atau menggunakan Aplikasi Seluler dan Layanan.</string>
     <string name="accounts">Akun</string>
@@ -7,6 +8,8 @@
     <string name="account_security_description">Jika Anda membuat akun di Aplikasi Seluler, Anda bertanggung jawab untuk menjaga keamanan akun Anda dan Anda bertanggung jawab penuh atas semua aktivitas yang terjadi pada akun tersebut dan tindakan lain yang diambil sehubungan dengan akun tersebut. Kami dapat memantau dan meninjau akun baru sebelum Anda dapat masuk dan mulai menggunakan Layanan. Memberikan informasi kontak palsu dalam bentuk apa pun dapat mengakibatkan penghentian akun Anda. Anda harus segera memberitahukan kami tentang penggunaan akun Anda yang tidak sah atau pelanggaran keamanan lainnya. Kami tidak akan bertanggung jawab atas segala tindakan atau kelalaian Anda, termasuk segala jenis kerusakan yang terjadi akibat tindakan atau kelalaian tersebut. Kami dapat menangguhkan, menonaktifkan, atau menghapus akun Anda (atau bagian mana pun darinya) jika kami menentukan bahwa Anda telah melanggar ketentuan apa pun dalam Perjanjian ini atau bahwa perilaku atau konten Anda cenderung merusak reputasi dan niat baik kami. Jika kami menghapus akun Anda karena alasan-alasan di atas, Anda tidak dapat mendaftar ulang untuk Layanan kami. Kami mungkin memblokir alamat email dan alamat protokol Internet Anda untuk mencegah pendaftaran lebih lanjut.</string>
     <string name="add_player">Tambahkan Pemain</string>
     <string name="add_player_stats">Tambahkan Statistik Pemain</string>
+    <string name="all">Semua</string>
+    <string name="both">Keduanya</string>
     <string name="acknowledge_and_agree_to_terms">Mengakui / Menyetujui Persyaratan</string>
     <string name="android_permissions_url" translatable="false">https://developer.android.com/guide/topics/permissions/overview</string>
     <string name="are_you_certain_you_wish_to_remove_x">Apakah Anda yakin ingin menghapus?%s ....</string>
@@ -21,12 +24,20 @@
     <string name="camera_permission_has_been_denied_description">Izin kamera telah ditolak. Untuk memberikan izin secara manual kepada kamera dan mengunggah gambar untuk Pemutar, silakan navigasikan ke Pengaturan.</string>
     <string name="cancel">Membatalkan</string>
     <string name="center">Tengah</string>
+    <string name="clear">Hapus</string>
+    <string name="clear_search_results">Hapus Hasil Pencarian</string>
+    <string name="clear_shot_range">Hapus Rentang Tembakan?</string>
+    <string name="clear_shot_range_description">Apakah Anda yakin ingin mengatur ulang nilai tembakan minimum dan maksimum ke defaultnya? Ini akan mengatur kedua nilai ke 0.</string>
+    <string name="reset_defaults">Atur Ulang Default</string>
+    <string name="reset_filters">Reset Filter</string>
+    <string name="reset_filters_description">Apakah Anda yakin ingin mereset semua filter ke status default mereka?</string>
     <string name="changes_and_amendments">Perubahan dan Amandemen</string>
     <string name="changes_and_amendments_description">Kami berhak mengubah Perjanjian ini atau ketentuannya yang terkait dengan Aplikasi Seluler dan Layanan kapan saja sesuai dengan kebijakan kami. Jika ya, kami akan mengirimkan email untuk memberi tahu Anda. Kami juga dapat memberikan pemberitahuan kepada Anda dengan cara lain sesuai kebijakan kami, seperti melalui informasi kontak yang telah Anda berikan. Versi terkini Perjanjian ini akan berlaku segera setelah Perjanjian yang direvisi diposting kecuali ditentukan lain. Penggunaan Aplikasi Seluler dan Layanan secara terus-menerus setelah tanggal berlakunya Perjanjian yang direvisi (atau tindakan lain yang ditetapkan pada saat itu) akan dianggap sebagai persetujuan Anda terhadap perubahan tersebut.</string>
     <string name="check_if_account_has_been_verified">Periksa apakah akun telah diverifikasi</string>
     <string name="choose_a_shot_to_log_info_description">Pilih bidikan untuk mencatat informasinya. Untuk melihat detail tambahan tentang bidikan, klik \"Tampilkan Lebih Banyak\",</string>
     <string name="choose_image_from_gallery">Pilih Gambar Dari Galeri</string>
     <string name="choose_option">Pilih Opsi</string>
+    <string name="choose_positions">Pilih Posisi</string>
     <string name="close">Menutup</string>
     <string name="compare_players_stats">Bandingkan Pemain &amp; Statistik</string>
     <string name="contacting_us">Menghubungi Kami</string>
@@ -50,6 +61,8 @@
     <string name="delete_x">Menghapus%s</string>
     <string name="dev_email">nicholasrutherforddeveloper@gmail.com</string>
     <string name="device_is_currently_not_connected_to_internet_desc">Perangkat saat ini tidak terhubung ke internet. Harap hubungkan perangkat ke internet untuk menyelesaikan tindakan.</string>
+    <string name="discard_filter_changes">Buang Perubahan Filter?</string>
+    <string name="discard_filter_changes_description">Anda memiliki perubahan filter yang belum disimpan. Meninggalkan sekarang akan membuang semua pilihan filter saat ini.</string>
     <string name="do_you_wish_to_proceed_description">Apakah Anda ingin melanjutkan meskipun memiliki modifikasi pemain yang belum disimpan? Segala perubahan yang dibuat tidak akan disimpan.</string>
     <string name="edit_x">Sunting%s</string>
     <string name="enter_first_name">Masukkan Nama Depan</string>
@@ -77,10 +90,21 @@
     <string name="error">Kesalahan</string>
     <string name="error_creating_account">Kesalahan dalam Membuat Akun</string>
     <string name="error_deleting_pending_account">Terjadi kesalahan saat menghapus akun yang tertunda</string>
+    <string name="filters">Filter</string>
+    <string name="player_filters">Filter Pemain</string>
     <string name="find_shots_by_name">Temukan bidikan berdasarkan nama </string>
+    <string name="search_players">Cari pemain</string>
     <string name="general">Umum</string>
     <string name="general_information">Informasi Umum</string>
     <string name="got_it">Mengerti</string>
+    <string name="last_updated">Terakhir Diperbarui</string>
+    <string name="number_of_filters">Jumlah Filter</string>
+    <string name="number_of_shots">Jumlah Tembakan</string>
+    <string name="min_shots">Tembakan Minimum</string>
+    <string name="max_shots">Tembakan Maksimum</string>
+    <string name="set_minimum_shot_count_description">Tetapkan jumlah tembakan minimum untuk mengaktifkan tembakan maksimum. Maks harus setidaknya satu lebih dari min.</string>
+    <string name="has_shots">Memiliki Tembakan</string>
+    <string name="has_shots_logged">Memiliki Tembakan yang Dicatat</string>
     <string name="having_trouble_creating_your_account_please_try_again">Mengalami masalah saat membuat akun. Silakan coba lagi</string>
     <string name="having_trouble_logging_into_your_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Mengalami masalah saat masuk ke akun Anda. Silakan coba lagi dan atau pastikan kredensial ada dan valid.</string>
     <string name="having_trouble_resetting_password_for_this_account_please_try_again_and_or_ensure_credentials_exist_and_are_valid">Mengalami masalah saat mengatur ulang kata sandi untuk akun ini. Silakan coba lagi dan atau pastikan kredensial ada dan valid.</string>
@@ -109,6 +133,7 @@
     <string name="not_connected_to_internet">Tidak terhubung ke internet</string>
     <string name="no_first_name_entered">Tidak Ada Nama Depan yang Dimasukkan</string>
     <string name="no_last_name_entered">Tidak Ada Nama Belakang yang Dimasukkan</string>
+    <string name="no_shots">Tidak Ada Tembakan</string>
     <string name="no_shots_results_found">Tidak Ditemukan Hasil Tembakan</string>
     <string name="no_shots_results_found_description">Tidak ada gambar yang cocok ditemukan dalam pencarian Anda. Harap perbarui pencarian dengan nama bidikan yang ada.</string>
     <string name="not_now">Tidak Sekarang</string>
@@ -121,6 +146,7 @@
     <string name="reset_password">Setel Ulang Kata Sandi</string>
     <string name="reset_password_email_sent">Setel Ulang Kata Sandi Email Terkirim</string>
     <string name="resend_email">Kirim Ulang Email</string>
+    <string name="see_results" tools:ignore="MissingTranslation">See Results (%1$d)</string>
     <string name="select_a_shot">Pilih Sebuah Tembakan</string>
     <string name="selecting_a_shot">Memilih Bidikan</string>
     <string name="select_date">Pilih Tanggal</string>
@@ -176,6 +202,7 @@
     <string name="small_forward">Pemain Depan Kecil</string>
     <string name="shooting_guard">Penjaga Tembak</string>
     <string name="shot_info">Info Tembakan</string>
+    <string name="shot_logs">Log Tembakan</string>
     <string name="shot_name_x">Nama Tembakan -%s \n</string>
     <string name="shots_made_x">\nTembakan Dilakukan -%s</string>
     <string name="shots_made_percentage_x">\nPersentase Tembakan yang Dilakukan: %s</string>
@@ -220,13 +247,13 @@
     <string name="view_more_info">Lihat Info Lebih Lanjut</string>
     <string name="view_x">Melihat%s</string>
     <string name="voice_commands">Perintah Suara</string>
-    <string name="x_position_x_player_name">%sBahasa Indonesia:%s</string>
+    <string name="x_position_x_player_name" formatted="false">%sBahasa Indonesia:%s</string>
     <string name="x_shot">%sTembakan</string>
     <string name="x_shot_has_been_removed_description">%stelah dihapus dari riwayat tembakan pemain ini.</string>
     <string name="x_shot_has_not_been_removed_description">%sTembakan belum dihapus dari riwayat tembakan pemain ini. Silakan coba lagi untuk menghapus tembakan.</string>
     <string name="x_shots">%sTembakan</string>
     <string name="x_shot_category">Kategori -%s</string>
-    <string name="x_x">%s - %s</string>
+    <string name="x_x" formatted="false">%s - %s</string>
     <string name="yes">Ya</string>
     <string name="your_player_could_not_be_retrieved_description">Pemutar Anda tidak dapat diambil. Silakan coba lagi.</string>
     <string name="at_least_one_player_description">Setidaknya satu pemain dengan setidaknya satu tembakan yang dicatat diperlukan untuk membuat laporan. Pastikan ini diselesaikan untuk melanjutkan.</string>
@@ -250,6 +277,8 @@
     <string name="no_shots_created_descriipton">Belum ada satupun pemain yang mencatatkan tembakan. Harap catat setidaknya satu tembakan agar pemain dapat membuat laporan.</string>
     <string name="no_players_created">Tidak Ada Pemain yang Dibuat</string>
     <string name="no_players_created_description">Belum ada pemain yang dibuat untuk akun Anda. Harap buat setidaknya satu pemain dan rekam setidaknya satu tembakan untuk menghasilkan laporan tembakan yang diambil oleh pemain.</string>
+    <string name="no_players_results_found">Tidak Ada Hasil Pemain Ditemukan</string>
+    <string name="no_players_results_found_description">Tidak ada pemain yang cocok ditemukan dalam pencarian Anda. Harap perbarui pencarian dengan nama pemain yang ada untuk hasil.</string>
     <string name="no_reports_generated">Tidak Ada Laporan yang Dihasilkan</string>
     <string name="reports">Laporan</string>
     <string name="player_report">Laporan Pemain</string>

@@ -44,6 +44,7 @@ object NavigationComponentExt {
             destination.contains(NavigationDestinations.TERMS_CONDITIONS_SCREEN) -> viewModels.termsConditionsViewModel
             destination.contains(NavigationDestinations.ACCOUNT_INFO_SCREEN) -> viewModels.accountInfoViewModel
             destination.contains(NavigationDestinations.CREATE_EDIT_PLAYER_SCREEN) -> viewModels.createEditPlayerViewModel
+            destination.contains(NavigationDestinations.PLAYER_FILTERS_SCREEN) -> viewModels.playerFiltersViewModel
             else -> null
         }
     }
