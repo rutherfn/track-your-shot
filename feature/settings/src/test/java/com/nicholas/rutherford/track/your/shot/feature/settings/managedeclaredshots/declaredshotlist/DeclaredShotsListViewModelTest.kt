@@ -1,7 +1,6 @@
 package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotlist
 
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
-import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestDeclaredShot
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListState
@@ -31,8 +30,6 @@ class DeclaredShotsListViewModelTest {
 
     private val scope = CoroutineScope(SupervisorJob() + dispatcher)
 
-    val state = DeclaredShotsListState()
-
     @BeforeEach
     fun beforeEach() {
         viewModel = DeclaredShotsListViewModel(
@@ -47,26 +44,28 @@ class DeclaredShotsListViewModelTest {
 
         @Test
         fun `when fetchAllDeclaredShots returns a empty list should not update value and state`() = runTest {
-            val emptyDeclaredShotArrayList: ArrayList<DeclaredShot> = arrayListOf()
-
             coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns emptyList()
 
             viewModel.initializeDeclaredShotsScreen()
 
-            Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, emptyDeclaredShotArrayList)
-            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state)
+            Assertions.assertEquals(
+                viewModel.declaredShotsListMutableStateFlow.value,
+                DeclaredShotsListState(declaredShotsList = emptyList())
+            )
         }
 
         @Test
         fun `when fetchAllDeclaredShots returns list should update value and state`() = runTest {
-            val declaredShotArrayList = listOf(TestDeclaredShot.build())
+            val declaredShotList = listOf(TestDeclaredShot.build())
 
-            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotArrayList
+            coEvery { declaredShotRepository.fetchAllDeclaredShots() } returns declaredShotList
 
             viewModel.initializeDeclaredShotsScreen()
 
-            Assertions.assertEquals(viewModel.currentDeclaredShotArrayList, declaredShotArrayList)
-            Assertions.assertEquals(viewModel.declaredShotsListMutableStateFlow.value, state.copy(declaredShotsList = declaredShotArrayList.toList()))
+            Assertions.assertEquals(
+                viewModel.declaredShotsListMutableStateFlow.value,
+                DeclaredShotsListState(declaredShotsList = declaredShotList)
+            )
         }
     }
 

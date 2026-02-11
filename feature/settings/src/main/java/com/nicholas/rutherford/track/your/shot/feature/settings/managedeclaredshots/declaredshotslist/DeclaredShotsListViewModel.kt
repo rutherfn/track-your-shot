@@ -2,7 +2,6 @@ package com.nicholas.rutherford.track.your.shot.feature.settings.managedeclareds
 
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
-import com.nicholas.rutherford.track.your.shot.data.room.response.DeclaredShot
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,10 +26,7 @@ class DeclaredShotsListViewModel(
     private val scope: CoroutineScope
 ) : BaseViewModel() {
 
-    /** Holds the currently fetched list of declared shots. */
-    internal var currentDeclaredShotArrayList: ArrayList<DeclaredShot> = arrayListOf()
-
-    internal var declaredShotsListMutableStateFlow = MutableStateFlow(value = DeclaredShotsListState())
+    internal val declaredShotsListMutableStateFlow = MutableStateFlow(value = DeclaredShotsListState())
 
     /** State flow representing the current UI state of the declared shots list screen. */
     val declaredShotsListStateFlow = declaredShotsListMutableStateFlow.asStateFlow()
@@ -54,12 +50,9 @@ class DeclaredShotsListViewModel(
      */
     fun updateDeclaredShotsListState() {
         scope.launch {
-            currentDeclaredShotArrayList.clear()
-            declaredShotRepository.fetchAllDeclaredShots().forEach { declaredShot ->
-                currentDeclaredShotArrayList.add(declaredShot)
-            }
+            val declaredShots = declaredShotRepository.fetchAllDeclaredShots()
             declaredShotsListMutableStateFlow.update { state ->
-                state.copy(declaredShotsList = currentDeclaredShotArrayList.toList())
+                state.copy(declaredShotsList = declaredShots)
             }
         }
     }
