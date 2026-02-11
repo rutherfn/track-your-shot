@@ -1,5 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.shots
 
+import com.nicholas.rutherford.track.your.shot.compose.components.EnhancedSearchTextField
+
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
  *
@@ -12,11 +14,15 @@ package com.nicholas.rutherford.track.your.shot.feature.shots
  *                              Receives the selected [ShotLoggedWithPlayer] as input.
  * @property shouldShowAllPlayerShots Flag to indicate whether shots for all players should be displayed.
  *                                    If false, the UI may filter or restrict to a subset of players.
+ * @property onFilterChipClicked Callback triggered when the filter chip is clicked.
+ * @property onSearchTextChanged Callback triggered when the search text changes from the [EnhancedSearchTextField]
  */
 data class ShotsListScreenParams(
     val state: ShotsListState,
     val onHelpClicked: () -> Unit,
     val onToolbarMenuClicked: () -> Unit,
     val onShotItemClicked: (ShotLoggedWithPlayer) -> Unit,
-    val shouldShowAllPlayerShots: Boolean
+    val shouldShowAllPlayerShots: Boolean,
+    val onFilterChipClicked: () -> Unit,
+    val onSearchTextChanged: (String) -> Unit
 )

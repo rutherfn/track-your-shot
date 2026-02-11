@@ -96,6 +96,7 @@ object ExtensionLogicModule {
                 shotIgnoringRepository = get(),
                 savedVoiceCommandRepository = get(),
                 userRepository = get(),
+                playerFilterRepository = get(),
                 readFirebaseUserInfo = get(),
                 existingUserFirebase = get(),
                 dataStorePreferencesWriter = get()

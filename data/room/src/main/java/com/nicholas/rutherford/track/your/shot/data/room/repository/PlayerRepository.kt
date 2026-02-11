@@ -83,4 +83,13 @@ interface PlayerRepository {
 
     /** Fetches all players from the database from the [query]. It will then look at results with applied to it by [PlayerFilter]. This will give results based on the first or last name partial match */
     suspend fun fetchPlayerByQuery(query: String, playerFilter: PlayerFilter): List<Player>
+
+    /**
+     * Fetches all players from the database whose shots contain a shot name matching the search query.
+     * Returns players that have at least one shot with a name containing the query string.
+     *
+     * @param query The search string to match against shot names.
+     * @return A list of players whose shots match the search query, or an empty list if none found.
+     */
+    suspend fun fetchPlayersByShotNameQuery(query: String): List<Player>
 }

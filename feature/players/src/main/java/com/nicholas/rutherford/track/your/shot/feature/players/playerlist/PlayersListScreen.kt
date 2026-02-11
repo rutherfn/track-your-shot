@@ -84,7 +84,7 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
             onFilterChipClicked = playerListScreenParams.onFilterChipClicked
         )
     } else {
-        PlayerListContentWithSearch(
+        PlayerList(
             playerListScreenParams = playerListScreenParams,
             isPlayerListEmpty = isPlayerListEmpty,
             searchQuery = searchQuery
@@ -104,7 +104,7 @@ fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PlayerListContentWithSearch(
+private fun PlayerList(
     playerListScreenParams: PlayersListScreenParams,
     isPlayerListEmpty: Boolean,
     searchQuery: String
@@ -114,9 +114,7 @@ private fun PlayerListContentWithSearch(
     val focusManager = LocalFocusManager.current
     var isSearchFocused by remember { mutableStateOf(false) }
 
-    BackHandler(enabled = isSearchFocused) {
-        focusManager.clearFocus()
-    }
+    BackHandler(enabled = isSearchFocused) { focusManager.clearFocus() }
 
     BottomSheetWithOptions(
         sheetState = sheetState,
@@ -139,9 +137,7 @@ private fun PlayerListContentWithSearch(
                         onValueChange = playerListScreenParams.onSearchTextChanged,
                         onClearClick = { playerListScreenParams.onSearchTextChanged("") },
                         placeholderValue = stringResource(id = StringsIds.searchPlayers),
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                            .onFocusChanged { isSearchFocused = it.isFocused }
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).onFocusChanged { isSearchFocused = it.isFocused }
                     )
 
                     if (isPlayerListEmpty && searchQuery.isNotEmpty()) {
@@ -149,9 +145,7 @@ private fun PlayerListContentWithSearch(
                             onClearSearch = { playerListScreenParams.onSearchTextChanged("") }
                         )
                     } else if (!isPlayerListEmpty) {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize()
-                        ) {
+                        LazyColumn(modifier = Modifier.fillMaxSize()) {
                             items(playerListScreenParams.state.playerList) { player ->
                                 PlayerItem(
                                     player = player,

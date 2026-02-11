@@ -239,6 +239,7 @@ object StringsIds {
     val playerFilters = R.string.player_filters
     val playerShots = R.string.player_shots
     val players = R.string.players
+    val searchShots = R.string.search_shots
     val searchPlayers = R.string.search_players
     val playersFirstNameEmptyDescription = R.string.players_first_name_empty_description
     val pointGuard = R.string.point_guard

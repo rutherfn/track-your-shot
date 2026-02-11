@@ -813,7 +813,11 @@ object AppNavigationGraph {
                         shotLoggedWithPlayer
                     )
                 },
-                shouldShowAllPlayerShots = shouldShowAllPlayerShotsArgument
+                shouldShowAllPlayerShots = shouldShowAllPlayerShotsArgument,
+                onFilterChipClicked = {},
+                onSearchTextChanged = { searchQuery ->
+                    shotsListViewModel.onSearchTextChanged(searchQuery = searchQuery)
+                }
             )
             ObserveLifecycle(viewModel = shotsListViewModel)
 

@@ -117,4 +117,14 @@ interface PlayerDao {
      */
     @Query("SELECT * FROM players WHERE firstName LIKE '%' || :query || '%' OR lastName LIKE '%' || :query || '%'")
     suspend fun searchPlayers(query: String): List<PlayerEntity>
+
+    /**
+     * Searches for players by shot name using partial matching within the JSON shotsLogged column.
+     * Returns all players whose shots contain a shot with a name matching the search query.
+     *
+     * @param query The search string to match against shot names.
+     * @return A list of players matching the search query, or an empty list if none found.
+     */
+    @Query("SELECT * FROM players WHERE shotsLogged LIKE '%\"shotName\":\"%' || :query || '%\"%'")
+    suspend fun searchPlayersByShotName(query: String): List<PlayerEntity>
 }

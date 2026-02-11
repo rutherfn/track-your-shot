@@ -184,4 +184,15 @@ class PlayerRepositoryImpl(
                 matchesShotCountRangeFilter(player = player, filter = playerFilter)
         }
     }
+
+    /**
+     * Fetches all players from the database whose shots contain a shot name matching the search query.
+     * Returns players that have at least one shot with a name containing the query string.
+     *
+     * @param query The search string to match against shot names.
+     * @return A list of players whose shots match the search query, or an empty list if none found.
+     */
+    override suspend fun fetchPlayersByShotNameQuery(query: String): List<Player> {
+        return playerDao.searchPlayersByShotName(query = query).map { playerEntity -> playerEntity.toPlayer() }
+    }
 }

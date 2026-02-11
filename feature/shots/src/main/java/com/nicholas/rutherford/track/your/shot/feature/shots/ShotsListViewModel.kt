@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
  * Created by Nicholas Rutherford, last edited on 2025-08-16
  *
  * ViewModel for the Shots List screen, responsible for managing and presenting the list of shots
- * logged by players. It handles filtering by player name, collecting updates, and navigating between screens.
+ * logged by players. It handles filtering by player name and searching by shot name, collecting updates, and navigating between screens.
  *
  * @property scope CoroutineScope used for asynchronous operations.
  * @property navigation Interface for handling navigation events from the Shots List screen.
@@ -87,6 +87,7 @@ class ShotsListViewModel(
         }
 
         val currentState = shotListMutableStateFlow.value
+
         val filteredShots = if (currentState.playerFilteredName.isEmpty()) {
             allShots
         } else {
@@ -95,6 +96,54 @@ class ShotsListViewModel(
 
         shotListMutableStateFlow.update { state ->
             state.copy(shotList = filteredShots)
+        }
+    }
+
+    /** Navigation event to open the shot filters screen */
+    fun onFilterChipClicked() {
+    }
+
+    /**
+     * Handles search text changes from the search field.
+     * Filters the shot list by shot name based on the search query.
+     *
+     * @param searchQuery The search query entered by the user.
+     */
+    fun onSearchTextChanged(searchQuery: String) {
+        scope.launch {
+            if (searchQuery.isEmpty()) {
+                updateShotListState()
+                shotListMutableStateFlow.update { state ->
+                    state.copy(searchQuery = searchQuery)
+                }
+            } else {
+                val queriedPlayers = playerRepository.fetchPlayersByShotNameQuery(query = searchQuery)
+                val queriedShots = queriedPlayers.flatMap { player ->
+                    player.shotsLoggedList
+                        .filter { shotLogged -> shotLogged.shotName.lowercase().contains(searchQuery.lowercase().trim()) }
+                        .map { shotLogged ->
+                            ShotLoggedWithPlayer(
+                                shotLogged = shotLogged,
+                                playerId = playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) ?: 0,
+                                playerName = player.fullName()
+                            )
+                        }
+                }
+
+                val currentState = shotListMutableStateFlow.value
+                val filteredShots = if (currentState.playerFilteredName.isEmpty()) {
+                    queriedShots
+                } else {
+                    filterShotList(shotList = queriedShots, playerFilteredName = currentState.playerFilteredName)
+                }
+
+                shotListMutableStateFlow.update { state ->
+                    state.copy(
+                        searchQuery = searchQuery,
+                        shotList = filteredShots
+                    )
+                }
+            }
         }
     }
 

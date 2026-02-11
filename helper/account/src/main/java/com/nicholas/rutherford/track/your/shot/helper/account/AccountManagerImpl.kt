@@ -6,6 +6,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.repository.ActiveUserRe
 import com.nicholas.rutherford.track.your.shot.data.room.repository.DeclaredShotRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.IndividualPlayerReportRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PendingPlayerRepository
+import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerFilterRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.SavedVoiceCommandRepository
 import com.nicholas.rutherford.track.your.shot.data.room.repository.ShotIgnoringRepository
@@ -47,6 +48,7 @@ import kotlinx.coroutines.launch
  * @param pendingPlayerRepository Repository for pending player data.
  * @param shotIgnoringRepository Repository for ignored shots.
  * @param userRepository Repository for user data.
+ * @param playerFilterRepository Repository for filtering players data.
  * @param readFirebaseUserInfo Firebase helper to read user and player info.
  * @param existingUserFirebase Firebase helper for login/logout.
  * @param dataStorePreferencesWriter Writer for DataStore preferences.
@@ -64,6 +66,7 @@ class AccountManagerImpl(
     private val pendingPlayerRepository: PendingPlayerRepository,
     private val shotIgnoringRepository: ShotIgnoringRepository,
     private val userRepository: UserRepository,
+    private val playerFilterRepository: PlayerFilterRepository,
     private val savedVoiceCommandRepository: SavedVoiceCommandRepository,
     private val readFirebaseUserInfo: ReadFirebaseUserInfo,
     private val existingUserFirebase: ExistingUserFirebase,
@@ -164,6 +167,7 @@ class AccountManagerImpl(
         declaredShotRepository.deleteAllDeclaredShots()
         shotIgnoringRepository.deleteAllShotsIgnoring()
         savedVoiceCommandRepository.deleteAllCommands()
+        playerFilterRepository.clearActiveFilter()
         deleteAllPendingShotsFromPlayers()
     }
 
@@ -299,8 +303,6 @@ class AccountManagerImpl(
                                 type = VoiceCommandTypes.fromValue(value = savedVoiceCommand.savedVoiceCommandInfo.typeValue)
                             )
                         }
-
-                    val currentSavedCommands = savedVoiceCommandRepository.getAllVoiceCommands()
 
                     savedVoiceCommandRepository.createAllSavedVoiceCommands(commands = commands)
                     collectDeclaredShots()
