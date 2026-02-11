@@ -15,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -38,8 +39,6 @@ class ShotsListViewModelTest {
     private val dataStorePreferencesWriter = mockk<DataStorePreferencesWriter>(relaxed = true)
     private val dataStorePreferencesReader = mockk<DataStorePreferencesReader>(relaxed = true)
 
-    private val emptyShotList: List<ShotLoggedWithPlayer> = listOf()
-
     @BeforeEach
     fun beforeEach() {
         viewModel = ShotsListViewModel(
@@ -57,19 +56,16 @@ class ShotsListViewModelTest {
         @Test
         fun `when fetch all players returns empty list should not update current array list or state`() = runTest {
             coEvery { playerRepository.fetchAllPlayers() } returns emptyList()
+            every { dataStorePreferencesReader.readPlayerFilterNameFlow() } returns flow { emit("") }
 
             viewModel.updateShotListState()
             viewModel.checkToCreatePlayerFilterName()
 
-            Assertions.assertEquals("", viewModel.playerFilteredName)
+            Assertions.assertEquals("", viewModel.shotListStateFlow.value.playerFilteredName)
             coVerify(exactly = 0) { dataStorePreferencesWriter.savePlayerFilterName(value = "") }
             Assertions.assertEquals(
                 viewModel.shotListMutableStateFlow.value,
-                ShotsListState(shotList = emptyList())
-            )
-            Assertions.assertEquals(
-                viewModel.currentShotArrayList.toList(),
-                emptyShotList
+                ShotsListState(shotList = emptyList(), playerFilteredName = "")
             )
         }
 
@@ -80,19 +76,19 @@ class ShotsListViewModelTest {
 
             coEvery { playerRepository.fetchAllPlayers() } returns listOf(player)
             coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
+            every { dataStorePreferencesReader.readPlayerFilterNameFlow() } returns flow { emit("") }
 
             viewModel.updateShotListState()
             viewModel.checkToCreatePlayerFilterName()
 
-            Assertions.assertEquals("", viewModel.playerFilteredName)
+            Assertions.assertEquals("", viewModel.shotListStateFlow.value.playerFilteredName)
             coVerify(exactly = 0) { dataStorePreferencesWriter.savePlayerFilterName(value = "") }
             Assertions.assertEquals(
                 viewModel.shotListMutableStateFlow.value,
-                ShotsListState(shotList = listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName())))
-            )
-            Assertions.assertEquals(
-                viewModel.currentShotArrayList.toList(),
-                listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName()))
+                ShotsListState(
+                    shotList = listOf(ShotLoggedWithPlayer(shotLogged = player.shotsLoggedList.first(), playerId = playerId, playerName = player.fullName())),
+                    playerFilteredName = ""
+                )
             )
         }
 
@@ -106,15 +102,11 @@ class ShotsListViewModelTest {
             viewModel.updateShotListState()
             viewModel.checkToCreatePlayerFilterName()
 
-            Assertions.assertEquals(playerFilteredName, viewModel.playerFilteredName)
+            Assertions.assertEquals(playerFilteredName, viewModel.shotListStateFlow.value.playerFilteredName)
             coVerify { dataStorePreferencesWriter.savePlayerFilterName(value = "") }
             Assertions.assertEquals(
                 viewModel.shotListMutableStateFlow.value,
-                ShotsListState(shotList = emptyList())
-            )
-            Assertions.assertEquals(
-                viewModel.currentShotArrayList.toList(),
-                emptyShotList
+                ShotsListState(shotList = emptyList(), playerFilteredName = playerFilteredName)
             )
         }
     }
@@ -122,8 +114,8 @@ class ShotsListViewModelTest {
     @Nested
     inner class FilterShotList {
 
-        val playerFilteredName = "PlayerA"
-        val defaultShot = ShotLoggedWithPlayer(
+        private val playerFilteredName = "PlayerA"
+        private val defaultShot = ShotLoggedWithPlayer(
             shotLogged = TestShotLogged.build(),
             playerId = 1,
             playerName = "playerName"
@@ -131,9 +123,12 @@ class ShotsListViewModelTest {
 
         @Test
         fun `should return shots matching playerFilteredName`() {
-            viewModel.playerFilteredName = playerFilteredName
+            viewModel.shotListMutableStateFlow.update { state -> state.copy(playerFilteredName = playerFilteredName) }
 
-            val result = viewModel.filterShotList(shotList = listOf(defaultShot, defaultShot.copy(playerName = "playerB"), defaultShot.copy(playerName = playerFilteredName)))
+            val result = viewModel.filterShotList(
+                shotList = listOf(defaultShot, defaultShot.copy(playerName = "playerB"), defaultShot.copy(playerName = playerFilteredName)),
+                playerFilteredName = playerFilteredName
+            )
 
             Assertions.assertEquals(result.size, 1)
             Assertions.assertEquals(result, listOf(defaultShot.copy(playerName = playerFilteredName)))
@@ -141,9 +136,12 @@ class ShotsListViewModelTest {
 
         @Test
         fun `should return empty list if no shots match the playerFilteredName`() {
-            viewModel.playerFilteredName = playerFilteredName
+            viewModel.shotListMutableStateFlow.update { it.copy(playerFilteredName = playerFilteredName) }
 
-            val result = viewModel.filterShotList(shotList = listOf(defaultShot, defaultShot.copy(playerName = "playerB"), defaultShot.copy(playerName = "test")))
+            val result = viewModel.filterShotList(
+                shotList = listOf(defaultShot, defaultShot.copy(playerName = "playerB"), defaultShot.copy(playerName = "test")),
+                playerFilteredName = playerFilteredName
+            )
 
             Assertions.assertEquals(result.size, 0)
             Assertions.assertEquals(result, emptyList<ShotLoggedWithPlayer>())
@@ -152,11 +150,11 @@ class ShotsListViewModelTest {
 
     @Nested
     inner class UpdateShotListState {
-        val playerFilteredName = "Player A"
+        private val playerFilteredName = "Player A"
 
         @Test
         fun `when playerFilterName is empty should not filter shots and update state`() = runTest {
-            val shotLoggedWithPlayerArrayList = arrayListOf(
+            val expectedShotList = listOf(
                 ShotLoggedWithPlayer(
                     shotLogged = TestPlayer().create().copy(firstName = "test", lastName = "first").shotsLoggedList.first(),
                     playerId = 2,
@@ -182,20 +180,22 @@ class ShotsListViewModelTest {
             coEvery { playerRepository.fetchPlayerIdByName(firstName = "test", lastName = "second") } returns 3
             coEvery { playerRepository.fetchPlayerIdByName(firstName = "Player", lastName = "A") } returns 4
 
-            viewModel.playerFilteredName = ""
+            viewModel.shotListMutableStateFlow.update { state -> state.copy(playerFilteredName = "") }
 
             viewModel.updateShotListState()
 
-            Assertions.assertEquals(viewModel.currentShotArrayList, shotLoggedWithPlayerArrayList)
-            Assertions.assertEquals(viewModel.shotListMutableStateFlow.value.shotList, shotLoggedWithPlayerArrayList)
+            Assertions.assertEquals(viewModel.shotListMutableStateFlow.value.shotList, expectedShotList)
+            Assertions.assertEquals(viewModel.shotListMutableStateFlow.value.playerFilteredName, "")
         }
 
         @Test
         fun `when playerFilterName is not empty should filter shots and update state`() = runTest {
-            val shotLoggedWithPlayer = ShotLoggedWithPlayer(
-                shotLogged = TestPlayer().create().copy(firstName = "Player", lastName = "A").shotsLoggedList.first(),
-                playerId = 4,
-                playerName = playerFilteredName
+            val expectedShotList = listOf(
+                ShotLoggedWithPlayer(
+                    shotLogged = TestPlayer().create().copy(firstName = "Player", lastName = "A").shotsLoggedList.first(),
+                    playerId = 4,
+                    playerName = playerFilteredName
+                )
             )
             coEvery { playerRepository.fetchAllPlayers() } returns listOf(
                 TestPlayer().create().copy(firstName = "test", lastName = "first"),
@@ -206,12 +206,12 @@ class ShotsListViewModelTest {
             coEvery { playerRepository.fetchPlayerIdByName(firstName = "test", lastName = "second") } returns 3
             coEvery { playerRepository.fetchPlayerIdByName(firstName = "Player", lastName = "A") } returns 4
 
-            viewModel.playerFilteredName = playerFilteredName
+            viewModel.shotListMutableStateFlow.update { it.copy(playerFilteredName = playerFilteredName) }
 
             viewModel.updateShotListState()
 
-            Assertions.assertEquals(viewModel.currentShotArrayList, arrayListOf(shotLoggedWithPlayer))
-            Assertions.assertEquals(viewModel.shotListMutableStateFlow.value.shotList, arrayListOf(shotLoggedWithPlayer))
+            Assertions.assertEquals(viewModel.shotListMutableStateFlow.value.shotList, expectedShotList)
+            Assertions.assertEquals(viewModel.shotListMutableStateFlow.value.playerFilteredName, playerFilteredName)
         }
     }
 
@@ -220,7 +220,7 @@ class ShotsListViewModelTest {
 
         @Test
         fun `when playerFilterName is empty and shouldShowAllPlayerShots is set to true should call openNavigationDrawer`() {
-            viewModel.playerFilteredName = ""
+            viewModel.shotListMutableStateFlow.update { state -> state.copy(playerFilteredName = "") }
 
             viewModel.onToolbarMenuClicked(shouldShowAllPlayerShots = true)
 
@@ -229,17 +229,13 @@ class ShotsListViewModelTest {
 
             Assertions.assertEquals(
                 viewModel.shotListMutableStateFlow.value,
-                ShotsListState(shotList = emptyList())
-            )
-            Assertions.assertEquals(
-                viewModel.currentShotArrayList.toList(),
-                emptyShotList
+                ShotsListState(shotList = emptyList(), playerFilteredName = "")
             )
         }
 
         @Test
         fun `when playerFilterName is empty and shouldShowAllPlayerShots is set to false should call popToPlayerList`() {
-            viewModel.playerFilteredName = ""
+            viewModel.shotListMutableStateFlow.update { state -> state.copy(playerFilteredName = "") }
 
             viewModel.onToolbarMenuClicked(shouldShowAllPlayerShots = false)
 
@@ -248,17 +244,13 @@ class ShotsListViewModelTest {
 
             Assertions.assertEquals(
                 viewModel.shotListMutableStateFlow.value,
-                ShotsListState(shotList = emptyList())
-            )
-            Assertions.assertEquals(
-                viewModel.currentShotArrayList.toList(),
-                emptyShotList
+                ShotsListState(shotList = emptyList(), playerFilteredName = "")
             )
         }
 
         @Test
         fun `when playerFilterName is not empty and shouldShowAllPlayerShots is set to true should call popToPlayerList`() {
-            viewModel.playerFilteredName = "filteredName"
+            viewModel.shotListMutableStateFlow.update { state -> state.copy(playerFilteredName = "filteredName") }
 
             viewModel.onToolbarMenuClicked(shouldShowAllPlayerShots = true)
 
@@ -267,11 +259,7 @@ class ShotsListViewModelTest {
 
             Assertions.assertEquals(
                 viewModel.shotListMutableStateFlow.value,
-                ShotsListState(shotList = emptyList())
-            )
-            Assertions.assertEquals(
-                viewModel.currentShotArrayList.toList(),
-                emptyShotList
+                ShotsListState(shotList = emptyList(), playerFilteredName = "filteredName")
             )
         }
     }
@@ -302,11 +290,7 @@ class ShotsListViewModelTest {
 
         Assertions.assertEquals(
             viewModel.shotListMutableStateFlow.value,
-            ShotsListState(shotList = emptyList())
-        )
-        Assertions.assertEquals(
-            viewModel.currentShotArrayList.toList(),
-            emptyShotList
+            ShotsListState(shotList = emptyList(), playerFilteredName = "")
         )
     }
 

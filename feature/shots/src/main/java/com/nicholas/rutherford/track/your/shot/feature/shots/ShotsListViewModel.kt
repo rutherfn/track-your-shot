@@ -34,12 +34,6 @@ class ShotsListViewModel(
     private val dataStorePreferencesReader: DataStorePreferencesReader
 ) : BaseViewModel() {
 
-    /** Name of the player currently being filtered. */
-    var playerFilteredName = ""
-
-    /** List of shots logged by players. */
-    internal var currentShotArrayList: ArrayList<ShotLoggedWithPlayer> = arrayListOf()
-
     internal val shotListMutableStateFlow = MutableStateFlow(value = ShotsListState())
 
     /** State flow representing the current state of the shots list. */
@@ -52,13 +46,16 @@ class ShotsListViewModel(
 
     /**
      * Checks to see if a player filter name exists.
-     * If it does, it creates a new one.
+     * If it does, it updates the filter and re-filters the shot list.
      */
     internal suspend fun checkToCreatePlayerFilterName() {
         dataStorePreferencesReader.readPlayerFilterNameFlow().collectLatest { filterName ->
-            playerFilteredName = filterName
-            if (playerFilteredName.isNotEmpty()) {
+            shotListMutableStateFlow.update { state ->
+                state.copy(playerFilteredName = filterName)
+            }
+            if (filterName.isNotEmpty()) {
                 dataStorePreferencesWriter.savePlayerFilterName(value = "")
+                updateShotListState()
             }
         }
     }
@@ -67,9 +64,10 @@ class ShotsListViewModel(
      * Filters the list of shots by the filtered player name.
      *
      * @param shotList The complete list of shots.
+     * @param playerFilteredName The name of the player to filter by.
      * @return A filtered list of shots that belong to the player with the filtered name.
      */
-    internal fun filterShotList(shotList: List<ShotLoggedWithPlayer>): List<ShotLoggedWithPlayer> {
+    internal fun filterShotList(shotList: List<ShotLoggedWithPlayer>, playerFilteredName: String): List<ShotLoggedWithPlayer> {
         return shotList.filterNot { it.playerName != playerFilteredName }
     }
 
@@ -78,9 +76,7 @@ class ShotsListViewModel(
      * Applies filtering based on the player's name if applicable.
      */
     internal suspend fun updateShotListState() {
-        currentShotArrayList.clear()
-
-        playerRepository.fetchAllPlayers().flatMap { player ->
+        val allShots = playerRepository.fetchAllPlayers().flatMap { player ->
             player.shotsLoggedList.map { shotLogged ->
                 ShotLoggedWithPlayer(
                     shotLogged = shotLogged,
@@ -88,17 +84,18 @@ class ShotsListViewModel(
                     playerName = player.fullName()
                 )
             }
-        }.let { updatedShotList ->
-            currentShotArrayList.addAll(
-                if (playerFilteredName.isEmpty()) {
-                    updatedShotList
-                } else {
-                    filterShotList(shotList = updatedShotList)
-                }
-            )
         }
 
-        shotListMutableStateFlow.update { it.copy(shotList = currentShotArrayList.toList()) }
+        val currentState = shotListMutableStateFlow.value
+        val filteredShots = if (currentState.playerFilteredName.isEmpty()) {
+            allShots
+        } else {
+            filterShotList(shotList = allShots, playerFilteredName = currentState.playerFilteredName)
+        }
+
+        shotListMutableStateFlow.update { state ->
+            state.copy(shotList = filteredShots)
+        }
     }
 
     /**
@@ -106,7 +103,9 @@ class ShotsListViewModel(
      * If filtering is not applied, it opens the navigation drawer; otherwise, it returns to the player list.
      */
     fun onToolbarMenuClicked(shouldShowAllPlayerShots: Boolean) {
-        if (playerFilteredName.isEmpty() && shouldShowAllPlayerShots) {
+        val currentState = shotListMutableStateFlow.value
+
+        if (currentState.playerFilteredName.isEmpty() && shouldShowAllPlayerShots) {
             navigation.openNavigationDrawer()
         } else {
             navigation.popToPlayerList()
