@@ -36,10 +36,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.EnhancedSearchTextField
+import com.nicholas.rutherford.track.your.shot.compose.components.FilterChipWithBadge
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.helper.extensions.toTimestampString
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
@@ -151,6 +153,11 @@ private fun ShotsList(params: ShotsListScreenParams) {
                 }
             }
         }
+        FilterChipWithBadge(
+            filterCount = 0,
+            onFilterChipClicked = {},
+            modifier = Modifier.zIndex(10f).align(Alignment.BottomCenter).padding(bottom = 16.dp)
+        )
     }
 }
 

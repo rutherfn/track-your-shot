@@ -54,6 +54,7 @@ import com.nicholas.rutherford.track.your.shot.base.resources.R
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.BottomSheetWithOptions
 import com.nicholas.rutherford.track.your.shot.compose.components.EnhancedSearchTextField
+import com.nicholas.rutherford.track.your.shot.compose.components.FilterChipWithBadge
 import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
 import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
@@ -166,71 +167,6 @@ private fun PlayerList(
             }
         }
     )
-}
-
-/**
- * Displays a filter chip with optional badge showing the count of active filters.
- *
- * The chip always shows "Filters" text. If there are active filters (filterCount > 0),
- * it displays a circular badge with the count number. The chip is positioned at the
- * bottom center of the screen and is always visible with elevated card styling.
- *
- * @param filterCount The number of active filters. If 0, no badge is shown.
- * @param onFilterChipClicked Callback when the filter chip is clicked.
- * @param modifier Optional modifier for positioning and styling.
- */
-@Composable
-private fun FilterChipWithBadge(
-    filterCount: Int,
-    onFilterChipClicked: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier
-            .clickable { onFilterChipClicked() },
-        shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (filterCount > 0) {
-                AppColors.Orange
-            } else {
-                AppColors.White
-            }
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 16.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Text(
-                text = stringResource(id = StringsIds.filters),
-                style = TextStyles.bodyBold,
-                color = if (filterCount > 0) {
-                    AppColors.White
-                } else {
-                    AppColors.Black
-                }
-            )
-
-            if (filterCount > 0) {
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clip(CircleShape)
-                        .background(AppColors.White),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = filterCount.toString(),
-                        style = TextStyles.smallBold,
-                        color = AppColors.Orange
-                    )
-                }
-            }
-        }
-    }
 }
 
 /**
