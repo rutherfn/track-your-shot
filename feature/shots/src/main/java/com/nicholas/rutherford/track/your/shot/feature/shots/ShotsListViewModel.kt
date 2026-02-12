@@ -113,9 +113,7 @@ class ShotsListViewModel(
         scope.launch {
             if (searchQuery.isEmpty()) {
                 updateShotListState()
-                shotListMutableStateFlow.update { state ->
-                    state.copy(searchQuery = searchQuery)
-                }
+                shotListMutableStateFlow.update { state -> state.copy(searchQuery = searchQuery) }
             } else {
                 val queriedPlayers = playerRepository.fetchPlayersByShotNameQuery(query = searchQuery)
                 val queriedShots = queriedPlayers.flatMap { player ->

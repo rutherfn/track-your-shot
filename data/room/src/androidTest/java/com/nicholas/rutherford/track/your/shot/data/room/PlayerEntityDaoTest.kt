@@ -6,6 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nicholas.rutherford.track.your.shot.data.room.dao.PlayerDao
 import com.nicholas.rutherford.track.your.shot.data.room.database.AppDatabase
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestPlayerEntity
+import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
@@ -143,5 +144,49 @@ class PlayerEntityDaoTest {
         playerDao.insert(playerEntity = newPlayerEntity)
 
         assertThat(2, equalTo(playerDao.getPlayerCount()))
+    }
+
+    @Test
+    fun searchPlayers() = runBlocking {
+        val newPlayerEntity = playerEntity.copy(id = 2, firstName = "nick", lastName = "last1")
+
+        playerDao.insert(playerEntity = playerEntity)
+        playerDao.insert(playerEntity = newPlayerEntity)
+
+        assertThat(listOf(newPlayerEntity), equalTo(playerDao.searchPlayers(query = "nick")))
+    }
+
+    @Test
+    fun searchPlayersByShotName() = runBlocking {
+        val shotWithLayup = TestShotLogged.build().copy(shotName = "Layup")
+        val shotWithJumpShot = TestShotLogged.build().copy(shotName = "Jump Shot")
+        val shotWithThreePointer = TestShotLogged.build().copy(shotName = "Three Pointer")
+
+        val playerWithLayup = playerEntity.copy(
+            id = 2,
+            firstName = "player1",
+            lastName = "last1",
+            shotsLoggedList = listOf(shotWithLayup)
+        )
+        val playerWithJumpShot = playerEntity.copy(
+            id = 3,
+            firstName = "player2",
+            lastName = "last2",
+            shotsLoggedList = listOf(shotWithJumpShot)
+        )
+        val playerWithThreePointer = playerEntity.copy(
+            id = 4,
+            firstName = "player3",
+            lastName = "last3",
+            shotsLoggedList = listOf(shotWithThreePointer)
+        )
+
+        playerDao.insert(playerEntity = playerWithLayup)
+        playerDao.insert(playerEntity = playerWithJumpShot)
+        playerDao.insert(playerEntity = playerWithThreePointer)
+
+        assertThat(listOf(playerWithLayup), equalTo(playerDao.searchPlayersByShotName(query = "Layup")))
+        assertThat(listOf(playerWithJumpShot), equalTo(playerDao.searchPlayersByShotName(query = "Jump")))
+        assertThat(listOf(playerWithThreePointer), equalTo(playerDao.searchPlayersByShotName(query = "Three")))
     }
 }

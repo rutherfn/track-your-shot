@@ -81,4 +81,9 @@ object Constants {
     const val NO_SHOTS_LOGGED_VALUE = 0
     const val BOTH_SHOTS_LOGGED_VALUE = 2
     const val NO_SHOTS_LOGGED_FILTER_VALUE = 3
+    const val ZERO_FILTER_COUNT = 0
+    const val SINGLE_DIGIT_BADGE_SIZE = 24
+    const val DOUBLE_DIGIT_BADGE_SIZE = 28
+    const val MAX_BADGE_SIZE = 36
+    const val MAX_FILTER_COUNT = 99
 }

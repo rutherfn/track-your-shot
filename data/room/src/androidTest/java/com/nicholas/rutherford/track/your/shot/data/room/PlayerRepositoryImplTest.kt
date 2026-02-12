@@ -194,12 +194,44 @@ class PlayerRepositoryImplTest {
     @Test
     fun fetchPlayerByQuery() = runBlocking {
         val newPlayer = player.copy(firstName = "name1", lastName = "name2")
+        val playerFilter = PlayerFilter()
 
         playerRepositoryImpl.createPlayer(player = player)
         playerRepositoryImpl.createPlayer(player = newPlayer)
 
-        assertThat(playerRepositoryImpl.fetchPlayerByQuery(query = "Name"), equalTo(listOf(newPlayer)))
-        assertThat(playerRepositoryImpl.fetchPlayerByQuery(query = "First"), equalTo(listOf(player)))
+        assertThat(playerRepositoryImpl.fetchPlayerByQuery(query = "Name", playerFilter = playerFilter), equalTo(listOf(newPlayer)))
+        assertThat(playerRepositoryImpl.fetchPlayerByQuery(query = "First", playerFilter = playerFilter), equalTo(listOf(player)))
+    }
+
+    @Test
+    fun fetchPlayersByShotNameQuery() = runBlocking {
+        val shotWithLayup = TestShotLogged.build().copy(shotName = "Layup")
+        val shotWithJumpShot = TestShotLogged.build().copy(shotName = "Jump Shot")
+        val shotWithThreePointer = TestShotLogged.build().copy(shotName = "Three Pointer")
+
+        val playerWithLayup = player.copy(
+            firstName = "player1",
+            lastName = "last1",
+            shotsLoggedList = listOf(shotWithLayup)
+        )
+        val playerWithJumpShot = player.copy(
+            firstName = "player2",
+            lastName = "last2",
+            shotsLoggedList = listOf(shotWithJumpShot)
+        )
+        val playerWithThreePointer = player.copy(
+            firstName = "player3",
+            lastName = "last3",
+            shotsLoggedList = listOf(shotWithThreePointer)
+        )
+
+        playerRepositoryImpl.createPlayer(player = playerWithLayup)
+        playerRepositoryImpl.createPlayer(player = playerWithJumpShot)
+        playerRepositoryImpl.createPlayer(player = playerWithThreePointer)
+
+        assertThat(playerRepositoryImpl.fetchPlayersByShotNameQuery(query = "Layup"), equalTo(listOf(playerWithLayup)))
+        assertThat(playerRepositoryImpl.fetchPlayersByShotNameQuery(query = "Jump"), equalTo(listOf(playerWithJumpShot)))
+        assertThat(playerRepositoryImpl.fetchPlayersByShotNameQuery(query = "Three"), equalTo(listOf(playerWithThreePointer)))
     }
 
     @Test

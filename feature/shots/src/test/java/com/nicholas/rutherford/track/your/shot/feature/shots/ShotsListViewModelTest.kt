@@ -300,4 +300,189 @@ class ShotsListViewModelTest {
 
         verify { navigation.alert(alert = any()) }
     }
+
+    @Nested
+    inner class OnSearchTextChanged {
+
+        @Test
+        fun `when searchQuery is empty should call updateShotListState and update searchQuery in state`() = runTest {
+            val player = TestPlayer().create()
+            val playerId = 1
+
+            coEvery { playerRepository.fetchAllPlayers() } returns listOf(player)
+            coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
+
+            viewModel.onSearchTextChanged(searchQuery = "")
+
+            coVerify { playerRepository.fetchAllPlayers() }
+            Assertions.assertEquals("", viewModel.shotListStateFlow.value.searchQuery)
+        }
+
+        @Test
+        fun `when searchQuery is not empty and no playerFilteredName should return filtered shots by shot name`() = runTest {
+            val searchQuery = "Layup"
+            val shotWithLayup = TestShotLogged.build().copy(shotName = "Layup")
+            val shotWithJumpShot = TestShotLogged.build().copy(shotName = "Jump Shot")
+            val player1 = TestPlayer().create().copy(
+                firstName = "player1",
+                lastName = "last1",
+                shotsLoggedList = listOf(shotWithLayup)
+            )
+            val player2 = TestPlayer().create().copy(
+                firstName = "player2",
+                lastName = "last2",
+                shotsLoggedList = listOf(shotWithJumpShot)
+            )
+            val player1Id = 1
+            val player2Id = 2
+
+            coEvery { playerRepository.fetchPlayersByShotNameQuery(query = searchQuery) } returns listOf(player1, player2)
+            coEvery { playerRepository.fetchPlayerIdByName(firstName = player1.firstName, lastName = player1.lastName) } returns player1Id
+            coEvery { playerRepository.fetchPlayerIdByName(firstName = player2.firstName, lastName = player2.lastName) } returns player2Id
+
+            viewModel.shotListMutableStateFlow.update { state -> state.copy(playerFilteredName = "") }
+
+            viewModel.onSearchTextChanged(searchQuery = searchQuery)
+
+            coVerify { playerRepository.fetchPlayersByShotNameQuery(query = searchQuery) }
+            Assertions.assertEquals(searchQuery, viewModel.shotListStateFlow.value.searchQuery)
+            Assertions.assertEquals(1, viewModel.shotListStateFlow.value.shotList.size)
+            Assertions.assertEquals("Layup", viewModel.shotListStateFlow.value.shotList.first().shotLogged.shotName)
+            Assertions.assertEquals(player1.fullName(), viewModel.shotListStateFlow.value.shotList.first().playerName)
+        }
+
+        @Test
+        fun `when searchQuery is not empty with partial match should return filtered shots`() = runTest {
+            val searchQuery = "Jump"
+            val shotWithJumpShot = TestShotLogged.build().copy(shotName = "Jump Shot")
+            val shotWithLayup = TestShotLogged.build().copy(shotName = "Layup")
+            val player = TestPlayer().create().copy(
+                firstName = "player1",
+                lastName = "last1",
+                shotsLoggedList = listOf(shotWithJumpShot, shotWithLayup)
+            )
+            val playerId = 1
+
+            coEvery { playerRepository.fetchPlayersByShotNameQuery(query = searchQuery) } returns listOf(player)
+            coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
+
+            viewModel.shotListMutableStateFlow.update { state -> state.copy(playerFilteredName = "") }
+
+            viewModel.onSearchTextChanged(searchQuery = searchQuery)
+
+            Assertions.assertEquals(searchQuery, viewModel.shotListStateFlow.value.searchQuery)
+            Assertions.assertEquals(1, viewModel.shotListStateFlow.value.shotList.size)
+            Assertions.assertEquals("Jump Shot", viewModel.shotListStateFlow.value.shotList.first().shotLogged.shotName)
+        }
+
+        @Test
+        fun `when searchQuery is not empty with case insensitive match should return filtered shots`() = runTest {
+            val searchQuery = "layup"
+            val shotWithLayup = TestShotLogged.build().copy(shotName = "Layup")
+            val player = TestPlayer().create().copy(
+                firstName = "player1",
+                lastName = "last1",
+                shotsLoggedList = listOf(shotWithLayup)
+            )
+            val playerId = 1
+
+            coEvery { playerRepository.fetchPlayersByShotNameQuery(query = searchQuery) } returns listOf(player)
+            coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
+
+            viewModel.shotListMutableStateFlow.update { state -> state.copy(playerFilteredName = "") }
+
+            viewModel.onSearchTextChanged(searchQuery = searchQuery)
+
+            Assertions.assertEquals(searchQuery, viewModel.shotListStateFlow.value.searchQuery)
+            Assertions.assertEquals(1, viewModel.shotListStateFlow.value.shotList.size)
+            Assertions.assertEquals("Layup", viewModel.shotListStateFlow.value.shotList.first().shotLogged.shotName)
+        }
+
+        @Test
+        fun `when searchQuery is not empty with playerFilteredName should apply both filters`() = runTest {
+            val searchQuery = "Layup"
+            val playerFilteredName = "player1 last1"
+            val shotWithLayup = TestShotLogged.build().copy(shotName = "Layup")
+            val player1 = TestPlayer().create().copy(
+                firstName = "player1",
+                lastName = "last1",
+                shotsLoggedList = listOf(shotWithLayup)
+            )
+            val player2 = TestPlayer().create().copy(
+                firstName = "player2",
+                lastName = "last2",
+                shotsLoggedList = listOf(shotWithLayup)
+            )
+            val player1Id = 1
+            val player2Id = 2
+
+            coEvery { playerRepository.fetchPlayersByShotNameQuery(query = searchQuery) } returns listOf(player1, player2)
+            coEvery { playerRepository.fetchPlayerIdByName(firstName = player1.firstName, lastName = player1.lastName) } returns player1Id
+            coEvery { playerRepository.fetchPlayerIdByName(firstName = player2.firstName, lastName = player2.lastName) } returns player2Id
+
+            viewModel.shotListMutableStateFlow.update { state -> state.copy(playerFilteredName = playerFilteredName) }
+
+            viewModel.onSearchTextChanged(searchQuery = searchQuery)
+
+            Assertions.assertEquals(searchQuery, viewModel.shotListStateFlow.value.searchQuery)
+            Assertions.assertEquals(1, viewModel.shotListStateFlow.value.shotList.size)
+            Assertions.assertEquals(playerFilteredName, viewModel.shotListStateFlow.value.shotList.first().playerName)
+        }
+
+        @Test
+        fun `when searchQuery is not empty and no matching shots should return empty list`() = runTest {
+            val searchQuery = "NonExistentShot"
+            val shotWithLayup = TestShotLogged.build().copy(shotName = "Layup")
+            val player = TestPlayer().create().copy(
+                firstName = "player1",
+                lastName = "last1",
+                shotsLoggedList = listOf(shotWithLayup)
+            )
+
+            coEvery { playerRepository.fetchPlayersByShotNameQuery(query = searchQuery) } returns listOf(player)
+
+            viewModel.shotListMutableStateFlow.update { state -> state.copy(playerFilteredName = "") }
+
+            viewModel.onSearchTextChanged(searchQuery = searchQuery)
+
+            Assertions.assertEquals(searchQuery, viewModel.shotListStateFlow.value.searchQuery)
+            Assertions.assertEquals(0, viewModel.shotListStateFlow.value.shotList.size)
+        }
+
+        @Test
+        fun `when searchQuery is not empty and no players returned should return empty list`() = runTest {
+            val searchQuery = "NonExistentShot"
+
+            coEvery { playerRepository.fetchPlayersByShotNameQuery(query = searchQuery) } returns emptyList()
+
+            viewModel.shotListMutableStateFlow.update { state -> state.copy(playerFilteredName = "") }
+
+            viewModel.onSearchTextChanged(searchQuery = searchQuery)
+
+            Assertions.assertEquals(searchQuery, viewModel.shotListStateFlow.value.searchQuery)
+            Assertions.assertEquals(0, viewModel.shotListStateFlow.value.shotList.size)
+        }
+
+        @Test
+        fun `when searchQuery has whitespace should trim and match correctly`() = runTest {
+            val searchQuery = "  Layup  "
+            val shotWithLayup = TestShotLogged.build().copy(shotName = "Layup")
+            val player = TestPlayer().create().copy(
+                firstName = "player1",
+                lastName = "last1",
+                shotsLoggedList = listOf(shotWithLayup)
+            )
+            val playerId = 1
+
+            coEvery { playerRepository.fetchPlayersByShotNameQuery(query = searchQuery) } returns listOf(player)
+            coEvery { playerRepository.fetchPlayerIdByName(firstName = player.firstName, lastName = player.lastName) } returns playerId
+
+            viewModel.shotListMutableStateFlow.update { state -> state.copy(playerFilteredName = "") }
+
+            viewModel.onSearchTextChanged(searchQuery = searchQuery)
+
+            Assertions.assertEquals(searchQuery, viewModel.shotListStateFlow.value.searchQuery)
+            Assertions.assertEquals(1, viewModel.shotListStateFlow.value.shotList.size)
+        }
+    }
 }
