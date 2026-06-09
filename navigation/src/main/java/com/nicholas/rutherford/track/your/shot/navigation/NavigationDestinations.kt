@@ -26,6 +26,7 @@ object NavigationDestinations {
     const val REPORT_LIST_SCREEN_WITH_PARAMS = "reportListScreen?hasNewReportBeenAdded={hasNewReportBeenAdded}"
     const val SELECT_SHOT_SCREEN_WITH_PARAMS = "selectShotScreen?isExistingPlayer={isExistingPlayer}&playerId={playerId}"
     const val PLAYERS_LIST_SCREEN = "playersListScreen"
+    const val STATISTICS_SCREEN = "statisticsScreen"
     const val PLAYER_FILTERS_SCREEN = "playerFiltersScreen"
     const val REPORTS_LIST_SCREEN = "reportListScreen"
     const val CREATE_REPORT_SCREEN = "createReportScreen"

@@ -13,6 +13,7 @@ import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
 import com.nicholas.rutherford.track.your.shot.navigation.ReportingAction
 import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
 import com.nicholas.rutherford.track.your.shot.navigation.ShotsAction
+import com.nicholas.rutherford.track.your.shot.navigation.StatisticsAction
 import com.nicholas.rutherford.track.your.shot.navigation.VoiceCommandsAction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -88,6 +89,7 @@ class MainActivityViewModel(
         drawerActions.add(PlayersListAction)
         drawerActions.add(ShotsAction)
         drawerActions.add(ReportingAction)
+        drawerActions.add(StatisticsAction)
         drawerActions.add(SettingsAction)
 
         if (isVoiceToggleEnabled) {

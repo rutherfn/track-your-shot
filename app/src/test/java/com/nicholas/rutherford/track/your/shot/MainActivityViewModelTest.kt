@@ -9,6 +9,7 @@ import com.nicholas.rutherford.track.your.shot.navigation.PlayersListAction
 import com.nicholas.rutherford.track.your.shot.navigation.ReportingAction
 import com.nicholas.rutherford.track.your.shot.navigation.SettingsAction
 import com.nicholas.rutherford.track.your.shot.navigation.ShotsAction
+import com.nicholas.rutherford.track.your.shot.navigation.StatisticsAction
 import com.nicholas.rutherford.track.your.shot.navigation.VoiceCommandsAction
 import io.mockk.coEvery
 import io.mockk.every
@@ -198,6 +199,7 @@ class MainActivityViewModelTest {
                 PlayersListAction,
                 ShotsAction,
                 ReportingAction,
+                StatisticsAction,
                 SettingsAction,
                 LogoutAction
             )
@@ -214,6 +216,7 @@ class MainActivityViewModelTest {
                 PlayersListAction,
                 ShotsAction,
                 ReportingAction,
+                StatisticsAction,
                 SettingsAction,
                 VoiceCommandsAction,
                 LogoutAction

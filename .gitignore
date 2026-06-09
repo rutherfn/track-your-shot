@@ -59,6 +59,7 @@ feature/players/shots/build
 feature/shots/build
 feature/reports/build
 feature/settings/build
+feature/statistics/build
 feature/splash/build
 
 feature/voice-commands/build

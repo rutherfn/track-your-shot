@@ -43,6 +43,16 @@ data object ReportingAction : DrawerAction(
         .build()
 )
 
+/** Navigate to the statistics screen. */
+data object StatisticsAction : DrawerAction(
+    titleId = StringsIds.statistics,
+    imageVector = Icons.Filled.Analytics,
+    route = NavigationDestinations.STATISTICS_SCREEN,
+    navOptions = NavOptions.Builder()
+        .setPopUpTo(0, true)
+        .build()
+)
+
 /** Navigate to the stats screen. */
 data object StatsAction : DrawerAction(
     titleId = StringsIds.stats,
