@@ -962,7 +962,7 @@ object AppNavigationGraph {
      * Displays the [PlayerStatisticsScreen] composable
      */
     fun NavGraphBuilder.playerStatisticsScreen() {
-        composable (
+        composable(
             route = NavigationDestinations.PLAYER_STATISTICS_SCREEN_WITH_PARAMS,
             arguments = NavArguments.playerStatistics
         ) { entry ->

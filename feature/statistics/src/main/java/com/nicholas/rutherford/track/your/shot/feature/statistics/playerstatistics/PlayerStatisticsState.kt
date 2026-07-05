@@ -10,5 +10,5 @@ import com.nicholas.rutherford.track.your.shot.feature.statistics.PlayerStatisti
  * @property playerStatistics List of aggregated statistics for the selected player.
  */
 data class PlayerStatisticsState(
-    val playerStatistics: List<PlayerStatisticsSummary> = emptyList(),
+    val playerStatistics: List<PlayerStatisticsSummary> = emptyList()
 )
