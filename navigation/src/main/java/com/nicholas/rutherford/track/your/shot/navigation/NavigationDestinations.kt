@@ -40,10 +40,13 @@ object NavigationDestinations {
     const val STATS_SCREEN = "statsScreen"
     const val CREATE_EDIT_VOICE_COMMANDS_SCREEN = "createEditVoiceCommandScreen"
     const val CREATE_EDIT_VOICE_COMMAND_SCREEN_WITH_PARAMS = "createEditVoiceCommandScreen?voiceCommandTypeValueParam={voiceCommandTypeValueParam}&recordedPhraseParam={recordedPhraseParam}"
+    const val PLAYER_STATISTICS_SCREEN = "playerStatisticsScreen"
+    const val PLAYER_STATISTICS_SCREEN_WITH_PARAMS = "playerStatisticsScreen?playerIdParam={playerIdParam}"
     const val VOICE_COMMANDS_SCREEN = "voiceCommandsScreen"
 
     // Param keys
     const val VOICE_COMMAND_TYPE_VALUE_PARAM = "voiceCommandTypeValueParam"
+    const val PLAYER_ID_PARAM = "playerIdParam"
     const val RECORDED_PHRASE_PARAM = "recordedPhraseParam"
     const val PARAM_USERNAME = "username"
     const val PARAM_EMAIL = "email"

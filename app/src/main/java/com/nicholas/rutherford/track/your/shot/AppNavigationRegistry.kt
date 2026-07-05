@@ -17,6 +17,7 @@ import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.loginScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.onBoardingEducationScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.permissionEducationScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.playerFiltersScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.playerStatisticsScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.playersListScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.reportListScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.selectShotScreen
@@ -70,6 +71,7 @@ object AppNavigationRegistry {
         Screen.StaticScreen { selectShotScreen() },
         Screen.StaticScreen { reportListScreen() },
         Screen.StaticScreen { statisticsScreen() },
+        Screen.StaticScreen { playerStatisticsScreen() },
         Screen.StaticScreen { shotListScreen() },
         Screen.StaticScreen { createReportScreen() },
         Screen.StaticScreen { voiceCommandListScreen() },

@@ -98,6 +98,13 @@ object NavigationDestinationsWithParams {
             "${NavigationDestinations.RECORDED_PHRASE_PARAM}=$phraseParam"
     }
 
+    fun createPlayerStatisticsScreenWithParams(playerId: Int?): String {
+        val playerIdParam = playerId ?: -1
+
+        return "${NavigationDestinations.PLAYER_STATISTICS_SCREEN}?" +
+            "${NavigationDestinations.PLAYER_ID_PARAM}=$playerIdParam"
+    }
+
     /**
      * Builds the create/edit declared shot screen route with a shot name.
      *

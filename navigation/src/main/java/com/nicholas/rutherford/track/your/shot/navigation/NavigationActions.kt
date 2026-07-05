@@ -524,4 +524,12 @@ object NavigationActions {
             override val navOptions = NavOptions.Builder().build()
         }
     }
+
+    object Statistics {
+
+        fun createPlayerStatisticsWithParams(playerId: Int?) = object : NavigationAction {
+            override val destination: String = NavigationDestinationsWithParams.createPlayerStatisticsScreenWithParams(playerId = playerId)
+            override val navOptions = NavOptions.Builder().build()
+        }
+    }
 }

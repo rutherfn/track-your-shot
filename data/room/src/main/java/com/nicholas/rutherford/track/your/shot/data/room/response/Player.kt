@@ -14,6 +14,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.entities.PlayerEntity
  * @property firebaseKey Firebase identifier for the player.
  * @property imageUrl Optional URL for the player's profile image.
  * @property shotsLoggedList List of [ShotLogged] representing the player's shot history.
+ * @property id Optional unique identifier for the player.
  */
 data class Player(
     val firstName: String,
@@ -21,7 +22,8 @@ data class Player(
     val position: PlayerPositions,
     val firebaseKey: String,
     val imageUrl: String?,
-    val shotsLoggedList: List<ShotLogged>
+    val shotsLoggedList: List<ShotLogged>,
+    val id: Int? = null
 )
 
 /**

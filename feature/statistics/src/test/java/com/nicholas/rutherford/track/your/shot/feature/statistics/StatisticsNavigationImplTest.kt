@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.statistics
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
+import com.nicholas.rutherford.track.your.shot.feature.statistics.main.StatisticsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.mockk
 import io.mockk.verify

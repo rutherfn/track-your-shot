@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.statistics
+package com.nicholas.rutherford.track.your.shot.feature.statistics.main
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 
@@ -10,5 +10,5 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 interface StatisticsNavigation {
     fun alert(alert: Alert)
     fun openNavigationDrawer()
-    fun navigateToPlayerDetailedStatistics(playerName: String)
+    fun navigateToPlayerStatistics(playerId: Int)
 }

@@ -52,6 +52,7 @@ data class PendingPlayerEntity(
  */
 fun PendingPlayerEntity.toPlayer(): Player {
     return Player(
+        id = id,
         firstName = firstName,
         lastName = lastName,
         position = position,

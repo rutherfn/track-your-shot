@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.statistics
+package com.nicholas.rutherford.track.your.shot.feature.statistics.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +31,8 @@ import com.nicholas.rutherford.track.your.shot.compose.components.charts.PlayerS
 import com.nicholas.rutherford.track.your.shot.compose.components.charts.PlayerShotBreakdownChartInfo
 import com.nicholas.rutherford.track.your.shot.compose.components.charts.PlayerShotBreakdownPieChart
 import com.nicholas.rutherford.track.your.shot.compose.components.charts.ShotBreakdownLegend
+import com.nicholas.rutherford.track.your.shot.feature.statistics.PlayerStatisticsSummary
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsOverview
 import com.nicholas.rutherford.track.your.shot.helper.extensions.formatPercentageValue
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
@@ -402,6 +404,7 @@ fun TeamStatisticsSnapshotCardPreview() {
         ),
         playerStatistics = listOf(
             PlayerStatisticsSummary(
+                playerId = 3,
                 playerName = "John Doe",
                 totalShotsAttempted = 50,
                 totalShotsMade = 35,
@@ -425,6 +428,7 @@ fun PlayerStatisticsSnapshotCardPreview() {
             .background(AppColors.White)
             .padding(Padding.sixteen),
         playerStatisticsSummary = PlayerStatisticsSummary(
+            playerId = 2,
             playerName = "John Doe",
             totalShotsAttempted = 50,
             totalShotsMade = 35,

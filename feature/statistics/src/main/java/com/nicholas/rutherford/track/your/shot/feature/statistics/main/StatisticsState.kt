@@ -1,4 +1,7 @@
-package com.nicholas.rutherford.track.your.shot.feature.statistics
+package com.nicholas.rutherford.track.your.shot.feature.statistics.main
+
+import com.nicholas.rutherford.track.your.shot.feature.statistics.PlayerStatisticsSummary
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsOverview
 
 /**
  * Created by Nicholas Rutherford, last edited on 2026-07-03

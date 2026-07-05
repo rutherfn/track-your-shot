@@ -1,4 +1,4 @@
-package com.nicholas.rutherford.track.your.shot.feature.statistics
+package com.nicholas.rutherford.track.your.shot.feature.statistics.main
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -22,6 +22,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.nicholas.rutherford.track.your.shot.AppColors
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
+import com.nicholas.rutherford.track.your.shot.feature.statistics.PlayerStatisticsSummary
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsOverview
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsPlayerFilterRow
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 
@@ -238,6 +241,7 @@ fun StatisticsScreenEmptyStatePreview() {
 fun StatisticsScreenAllPlayersPreview() {
     val samplePlayers = listOf(
         PlayerStatisticsSummary(
+            playerId = 0,
             playerName = "John Doe",
             totalShotsAttempted = 50,
             totalShotsMade = 35,
@@ -246,6 +250,7 @@ fun StatisticsScreenAllPlayersPreview() {
             loggedShotsCount = 3
         ),
         PlayerStatisticsSummary(
+            playerId = 1,
             playerName = "Jane Smith",
             totalShotsAttempted = 40,
             totalShotsMade = 22,
@@ -288,6 +293,7 @@ fun StatisticsScreenAllPlayersPreview() {
 @Composable
 fun StatisticsScreenFilteredPlayerPreview() {
     val samplePlayer = PlayerStatisticsSummary(
+        playerId = 2,
         playerName = "John Doe",
         totalShotsAttempted = 50,
         totalShotsMade = 35,

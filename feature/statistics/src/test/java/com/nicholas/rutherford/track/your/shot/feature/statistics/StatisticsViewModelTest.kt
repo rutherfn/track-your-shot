@@ -8,6 +8,8 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPosition
 import com.nicholas.rutherford.track.your.shot.data.room.response.ShotLogged
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.test.room.TestShotLogged
+import com.nicholas.rutherford.track.your.shot.feature.statistics.main.StatisticsNavigation
+import com.nicholas.rutherford.track.your.shot.feature.statistics.main.StatisticsViewModel
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -54,7 +56,7 @@ class StatisticsViewModelTest {
     fun `when no players have logged shots should update empty state`() = runTest {
         coEvery { playerRepository.fetchAllPlayers() } returns emptyList()
 
-        viewModel.updateStatisticsState()
+        viewModel.updateStatisticsState(currentSelectedFilter = "")
 
         Assertions.assertTrue(viewModel.statisticsStateFlow.value.hasNoStatistics)
         Assertions.assertTrue(viewModel.statisticsStateFlow.value.playerStatistics.isEmpty())
@@ -70,7 +72,7 @@ class StatisticsViewModelTest {
 
         coEvery { playerRepository.fetchAllPlayers() } returns listOf(player)
 
-        viewModel.updateStatisticsState()
+        viewModel.updateStatisticsState(currentSelectedFilter = "")
 
         val playerStatistics = viewModel.statisticsStateFlow.value.playerStatistics
 
@@ -100,7 +102,7 @@ class StatisticsViewModelTest {
 
         coEvery { playerRepository.fetchAllPlayers() } returns listOf(firstPlayer, secondPlayer)
 
-        viewModel.updateStatisticsState()
+        viewModel.updateStatisticsState(currentSelectedFilter = "")
         viewModel.onPlayerFilterSelected(filter = "Jane Smith")
 
         val state = viewModel.statisticsStateFlow.value
@@ -165,7 +167,7 @@ class StatisticsViewModelTest {
     }
 
     @Test
-    fun `build player statistics summary should exclude pending shots`() {
+    fun `to player statistics summary should exclude pending shots`() {
         val pendingShot = TestShotLogged.build().copy(isPending = true)
         val finalizedShot = TestShotLogged.build()
         val player = buildPlayer(
@@ -174,15 +176,10 @@ class StatisticsViewModelTest {
             shotsLoggedList = listOf(pendingShot, finalizedShot)
         )
 
-        val summary = viewModel.buildPlayerStatisticsSummary(player = player)
+        val summary = player.toPlayerStatisticsSummary()
 
         Assertions.assertEquals(1, summary.loggedShotsCount)
         Assertions.assertEquals(finalizedShot.shotsAttempted, summary.totalShotsAttempted)
-    }
-
-    @Test
-    fun `format percentage should return formatted value`() {
-        Assertions.assertEquals("70.0%", viewModel.formatPercentage(value = 70.0))
     }
 
     @Test

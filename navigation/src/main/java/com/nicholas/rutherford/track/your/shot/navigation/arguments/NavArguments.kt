@@ -25,6 +25,8 @@ object NavArguments {
         navArgument(NamedArguments.RECORDED_PHRASE_PARAM) { type = NavType.StringType }
     )
 
+    val playerStatistics = listOf(navArgument(NamedArguments.PLAYER_ID_PARAM) { type = NavType.IntType })
+
     /**
      * Arguments used during authentication.
      * Both username and email are optional, nullable, and default to null.

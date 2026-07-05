@@ -44,8 +44,10 @@ import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListNavigation
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigation
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashNavigationImpl
-import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsNavigation
-import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.statistics.main.StatisticsNavigation
+import com.nicholas.rutherford.track.your.shot.feature.statistics.main.StatisticsNavigationImpl
+import com.nicholas.rutherford.track.your.shot.feature.statistics.playerstatistics.PlayerStatisticsNavigation
+import com.nicholas.rutherford.track.your.shot.feature.statistics.playerstatistics.PlayerStatisticsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandNavigation
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandNavigationImpl
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListNavigation
@@ -124,6 +126,9 @@ object NavigationModule {
 
         /** Navigation for Statistics screen. */
         single<StatisticsNavigation> { StatisticsNavigationImpl(navigator = get()) }
+
+        /** Navigation for Player Statistics screen. */
+        single<PlayerStatisticsNavigation> { PlayerStatisticsNavigationImpl(navigator = get()) }
 
         /** Navigation for Shots List screen. */
         single<ShotsListNavigation> { ShotsListNavigationImpl(navigator = get()) }

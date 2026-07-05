@@ -21,7 +21,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredsh
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsParams
+import com.nicholas.rutherford.track.your.shot.feature.statistics.main.StatisticsParams
+import com.nicholas.rutherford.track.your.shot.feature.statistics.playerstatistics.PlayerStatisticsParams
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
 
@@ -62,6 +63,9 @@ interface AppBarFactory {
 
     /** Creates an AppBar for the statistics screen with help action. */
     fun createStatisticsAppBar(params: StatisticsParams): AppBar
+
+    /** Creates an AppBar for the player statistics screen with help action. */
+    fun createPlayerStatisticsAppBar(params: PlayerStatisticsParams): AppBar
 
     /** Creates an AppBar for the enabled permissions screen with back navigation. */
     fun createEnabledPermissionsAppBar(params: EnabledPermissionsParams): AppBar

@@ -74,9 +74,12 @@ import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenPara
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
-import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsParams
-import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsScreen
-import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.statistics.main.StatisticsParams
+import com.nicholas.rutherford.track.your.shot.feature.statistics.main.StatisticsScreen
+import com.nicholas.rutherford.track.your.shot.feature.statistics.main.StatisticsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.statistics.playerstatistics.PlayerStatisticsParams
+import com.nicholas.rutherford.track.your.shot.feature.statistics.playerstatistics.PlayerStatisticsScreen
+import com.nicholas.rutherford.track.your.shot.feature.statistics.playerstatistics.PlayerStatisticsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandState
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandParams
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandScreen
@@ -940,14 +943,8 @@ object AppNavigationGraph {
                 state = statisticsViewModel.statisticsStateFlow.collectAsState().value,
                 onToolbarMenuClicked = { statisticsViewModel.onToolbarMenuClicked() },
                 onHelpClicked = { statisticsViewModel.onHelpClicked() },
-                onPlayerFilterSelected = { filter ->
-                    statisticsViewModel.onPlayerFilterSelected(filter = filter)
-                },
-                onViewDetailedStatsClicked = { playerStatisticsSummary ->
-                    statisticsViewModel.onViewDetailedStatsClicked(
-                        playerStatisticsSummary = playerStatisticsSummary
-                    )
-                },
+                onPlayerFilterSelected = { filter -> statisticsViewModel.onPlayerFilterSelected(filter = filter) },
+                onViewDetailedStatsClicked = { playerStatisticsSummary -> statisticsViewModel.onViewDetailedStatsClicked(playerStatisticsSummary = playerStatisticsSummary) },
                 formatPercentage = { value -> formatPercentage(value = value) }
             )
 
@@ -955,6 +952,35 @@ object AppNavigationGraph {
 
             updateAppBar(appBar = appBarFactory.createStatisticsAppBar(params = statisticsParams))
             StatisticsScreen(params = statisticsParams)
+        }
+    }
+
+    /**
+     * Adds the Player Statistics Screen destination to the NavGraph.
+     * Retrieves [PlayerStatisticsViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [PlayerStatisticsScreen].
+     * Displays the [PlayerStatisticsScreen] composable
+     */
+    fun NavGraphBuilder.playerStatisticsScreen() {
+        composable (
+            route = NavigationDestinations.PLAYER_STATISTICS_SCREEN_WITH_PARAMS,
+            arguments = NavArguments.playerStatistics
+        ) { entry ->
+            val playerStatisticsViewModel: PlayerStatisticsViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
+
+            val state = playerStatisticsViewModel.playerStatisticsStateFlow.collectAsState().value
+
+            val params = PlayerStatisticsParams(
+                state = state,
+                onToolbarMenuClicked = { playerStatisticsViewModel.onToolbarMenuClicked() }
+            )
+
+            ObserveLifecycle(viewModel = playerStatisticsViewModel)
+
+            updateAppBar(appBar = appBarFactory.createPlayerStatisticsAppBar(params = params))
+
+            PlayerStatisticsScreen(params = params)
         }
     }
 

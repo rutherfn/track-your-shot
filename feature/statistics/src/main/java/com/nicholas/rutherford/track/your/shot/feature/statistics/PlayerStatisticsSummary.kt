@@ -5,6 +5,7 @@ package com.nicholas.rutherford.track.your.shot.feature.statistics
  *
  * Represents aggregated shooting statistics for a single player.
  *
+ * @property playerId Unique identifier for the player.
  * @property playerName Full name of the player.
  * @property totalShotsAttempted Total number of shot attempts across all logged sessions.
  * @property totalShotsMade Total number of successful shots across all logged sessions.
@@ -13,6 +14,7 @@ package com.nicholas.rutherford.track.your.shot.feature.statistics
  * @property loggedShotsCount Number of finalized shot logs included in the summary.
  */
 data class PlayerStatisticsSummary(
+    val playerId: Int,
     val playerName: String,
     val totalShotsAttempted: Int,
     val totalShotsMade: Int,

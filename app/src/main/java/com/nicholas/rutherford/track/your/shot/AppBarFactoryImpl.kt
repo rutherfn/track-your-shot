@@ -33,7 +33,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredsh
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
-import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsParams
+import com.nicholas.rutherford.track.your.shot.feature.statistics.main.StatisticsParams
+import com.nicholas.rutherford.track.your.shot.feature.statistics.playerstatistics.PlayerStatisticsParams
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
 
@@ -136,6 +137,15 @@ class AppBarFactoryImpl(
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
             onSecondaryIconButtonClicked = { params.onHelpClicked.invoke() },
             secondaryImageVector = Icons.AutoMirrored.Filled.Help
+        )
+
+    /** Creates AppBar for the player statistics screen. */
+    override fun createPlayerStatisticsAppBar(params: PlayerStatisticsParams): AppBar =
+        AppBar(
+            toolbarId = StringsIds.stats,
+            shouldShowMiddleContentAppBar = false,
+            onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
+            shouldShowSecondaryButton = false
         )
 
     /** Creates AppBar for the enabled permissions screen with back arrow. */

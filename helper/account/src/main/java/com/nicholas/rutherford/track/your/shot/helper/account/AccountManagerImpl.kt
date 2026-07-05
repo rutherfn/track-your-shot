@@ -175,6 +175,7 @@ class AccountManagerImpl(
 
                 if (pendingShots.isNotEmpty()) {
                     val newPlayer = Player(
+                        id = player.id,
                         firstName = player.firstName,
                         lastName = player.lastName,
                         position = player.position,
@@ -232,6 +233,7 @@ class AccountManagerImpl(
                     val playerList =
                         playerInfoRealtimeWithKeyResponseList.map { player ->
                             Player(
+                                id = 0, // this gets ignored so we don't care about it
                                 firstName = player.playerInfo.firstName,
                                 lastName = player.playerInfo.lastName,
                                 position = PlayerPositions.fromValue(player.playerInfo.positionValue),

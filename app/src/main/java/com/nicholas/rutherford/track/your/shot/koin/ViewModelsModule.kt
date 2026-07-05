@@ -25,7 +25,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
-import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.statistics.main.StatisticsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.statistics.playerstatistics.PlayerStatisticsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -318,6 +319,17 @@ object ViewModelsModule {
         /** Statistics screen ViewModel */
         viewModel {
             StatisticsViewModel(
+                application = androidApplication(),
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
+                navigation = get(),
+                playerRepository = get()
+            )
+        }
+
+        /** Player Statistics screen ViewModel */
+        viewModel { (stateHandle: SavedStateHandle) ->
+            PlayerStatisticsViewModel(
+                savedStateHandle = stateHandle,
                 application = androidApplication(),
                 scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
                 navigation = get(),

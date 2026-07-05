@@ -47,6 +47,7 @@ data class PlayerEntity(
  */
 fun PlayerEntity.toPlayer(): Player {
     return Player(
+        id = id,
         firstName = firstName,
         lastName = lastName,
         position = position,

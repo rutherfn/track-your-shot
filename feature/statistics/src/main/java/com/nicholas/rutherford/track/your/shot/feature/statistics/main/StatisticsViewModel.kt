@@ -1,15 +1,16 @@
-package com.nicholas.rutherford.track.your.shot.feature.statistics
+package com.nicholas.rutherford.track.your.shot.feature.statistics.main
 
 import android.app.Application
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
-import com.nicholas.rutherford.track.your.shot.data.room.response.Player
 import com.nicholas.rutherford.track.your.shot.data.room.response.buildPlayersWithShots
-import com.nicholas.rutherford.track.your.shot.data.room.response.fullName
 import com.nicholas.rutherford.track.your.shot.data.room.response.sortedPlayers
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
+import com.nicholas.rutherford.track.your.shot.feature.statistics.PlayerStatisticsSummary
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsOverview
+import com.nicholas.rutherford.track.your.shot.feature.statistics.toPlayerStatisticsSummary
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,7 +52,7 @@ class StatisticsViewModel(
             val playerStatistics = playerRepository.fetchAllPlayers()
                 .buildPlayersWithShots()
                 .sortedPlayers()
-                .map { player -> buildPlayerStatisticsSummary(player = player) }
+                .map { player -> player.toPlayerStatisticsSummary() }
             val selectedPlayerFilter = resolveSelectedPlayerFilter(
                 currentSelectedFilter = currentSelectedFilter,
                 allPlayersFilterLabel = application.getString(StringsIds.all),
@@ -102,33 +103,7 @@ class StatisticsViewModel(
      *
      * @param playerStatisticsSummary Aggregated statistics for the selected player.
      */
-    fun onViewDetailedStatsClicked(playerStatisticsSummary: PlayerStatisticsSummary) = navigation.navigateToPlayerDetailedStatistics(playerName = playerStatisticsSummary.playerName)
-
-    /**
-     * Builds aggregated shooting statistics for a single [player].
-     *
-     * Pending shots are excluded from the summary.
-     */
-    internal fun buildPlayerStatisticsSummary(player: Player): PlayerStatisticsSummary {
-        val finalizedShots = player.shotsLoggedList.filterNot { value -> value.isPending }
-        val totalAttempted = finalizedShots.sumOf { value -> value.shotsAttempted }
-        val totalMade = finalizedShots.sumOf { it.shotsMade }
-        val totalMissed = finalizedShots.sumOf { it.shotsMissed }
-        val overallMadePercentage = if (totalAttempted > 0) {
-            (totalMade.toDouble() / totalAttempted.toDouble()) * Constants.PERCENTAGE_MULTIPLIER
-        } else {
-            0.0
-        }
-
-        return PlayerStatisticsSummary(
-            playerName = player.fullName(),
-            totalShotsAttempted = totalAttempted,
-            totalShotsMade = totalMade,
-            totalShotsMissed = totalMissed,
-            overallMadePercentage = overallMadePercentage,
-            loggedShotsCount = finalizedShots.size
-        )
-    }
+    fun onViewDetailedStatsClicked(playerStatisticsSummary: PlayerStatisticsSummary) = navigation.navigateToPlayerStatistics(playerId = playerStatisticsSummary.playerId)
 
     /**
      * Builds team-level snapshot statistics from the full player statistics list.
