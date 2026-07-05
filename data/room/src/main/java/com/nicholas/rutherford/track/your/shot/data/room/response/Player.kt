@@ -29,14 +29,14 @@ data class Player(
  *
  * @return List of players with non-empty shot logs.
  */
-fun List<Player>.buildPlayersWithShots(): List<Player> = this.filter { it.shotsLoggedList.isNotEmpty() }
+fun List<Player>.buildPlayersWithShots(): List<Player> = this.filter { value -> value.shotsLoggedList.isNotEmpty() }
 
 /**
  * Sorts players alphabetically by first name, then last name.
  *
  * @return Sorted list of players.
  */
-fun List<Player>.sortedPlayers(): List<Player> = this.sortedWith(compareBy({ it.firstName }, { it.lastName }))
+fun List<Player>.sortedPlayers(): List<Player> = this.sortedWith(compareBy({ value -> value.firstName }, { value -> value.lastName }))
 
 /**
  * Collects all [ShotLogged] objects from a list of players into a single flat list.

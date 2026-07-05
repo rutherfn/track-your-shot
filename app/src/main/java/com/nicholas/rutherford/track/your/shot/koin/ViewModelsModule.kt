@@ -24,6 +24,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
@@ -311,6 +312,16 @@ object ViewModelsModule {
                 playerRepository = get(),
                 dataStorePreferencesWriter = get(),
                 dataStorePreferencesReader = get()
+            )
+        }
+
+        /** Statistics screen ViewModel */
+        viewModel {
+            StatisticsViewModel(
+                application = androidApplication(),
+                scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
+                navigation = get(),
+                playerRepository = get()
             )
         }
 

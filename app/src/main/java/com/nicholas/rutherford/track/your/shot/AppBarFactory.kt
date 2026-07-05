@@ -18,6 +18,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.debugtoggle.Debu
 import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissions.EnabledPermissionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
@@ -58,6 +59,9 @@ interface AppBarFactory {
 
     /** Creates an AppBar for the settings screen with help action. */
     fun createSettingsAppBar(params: SettingsParams): AppBar
+
+    /** Creates an AppBar for the statistics screen with help action. */
+    fun createStatisticsAppBar(params: StatisticsParams): AppBar
 
     /** Creates an AppBar for the enabled permissions screen with back navigation. */
     fun createEnabledPermissionsAppBar(params: EnabledPermissionsParams): AppBar

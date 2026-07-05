@@ -30,6 +30,7 @@ object NavigationComponentExt {
             destination.contains(NavigationDestinations.FORGOT_PASSWORD_SCREEN) -> viewModels.forgotPasswordViewModel
             destination.contains(NavigationDestinations.AUTHENTICATION_SCREEN) -> viewModels.authenticationViewModel
             destination.contains(NavigationDestinations.REPORTS_LIST_SCREEN) -> viewModels.reportListViewModel
+            destination.contains(NavigationDestinations.STATISTICS_SCREEN) -> viewModels.statisticsViewModel
             destination.contains(NavigationDestinations.CREATE_REPORT_SCREEN) -> viewModels.createReportViewModel
             destination.contains(NavigationDestinations.PLAYERS_LIST_SCREEN) -> viewModels.playersListViewModel
             destination.contains(NavigationDestinations.SELECT_SHOT_SCREEN) -> viewModels.selectShotViewModel
@@ -56,6 +57,7 @@ object NavigationComponentExt {
      * - Players List
      * - Shots List
      * - Reports List
+     * - Statistics
      * - Settings
      *
      * @param viewModel The current [BaseViewModel] representing the active screen.
@@ -63,5 +65,5 @@ object NavigationComponentExt {
      * @return `true` if drawer gestures should be enabled, `false` otherwise.
      */
     fun buildModalDrawerGesturesEnabled(viewModel: BaseViewModel, viewModels: ViewModels): Boolean =
-        viewModel == viewModels.playersListViewModel || viewModel == viewModels.shotsListViewModel || viewModel == viewModels.reportListViewModel || viewModel == viewModels.settingsViewModel
+        viewModel == viewModels.playersListViewModel || viewModel == viewModels.shotsListViewModel || viewModel == viewModels.reportListViewModel || viewModel == viewModels.statisticsViewModel || viewModel == viewModels.settingsViewModel
 }

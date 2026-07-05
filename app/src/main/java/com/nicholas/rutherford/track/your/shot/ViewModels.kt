@@ -20,6 +20,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
 
@@ -53,6 +54,7 @@ import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createedit
  * - [reportListViewModel] handles reports list screen state.
  * - [createReportViewModel] manages creating a report.
  * - [shotsListViewModel] handles shots list screen state.
+ * - [statisticsViewModel] handles statistics screen state.
  * - [declaredShotsListViewModel] manages declared shots list screen state.
  * - [createEditDeclaredShotsViewModel] handles create/edit declared shots flow.
  * - [playersListViewModel] handles managing player filters flow
@@ -77,6 +79,7 @@ data class ViewModels(
     val reportListViewModel: ReportListViewModel,
     val createReportViewModel: CreateReportViewModel,
     val shotsListViewModel: ShotsListViewModel,
+    val statisticsViewModel: StatisticsViewModel,
     val declaredShotsListViewModel: DeclaredShotsListViewModel,
     val createEditDeclaredShotsViewModel: CreateEditDeclaredShotViewModel,
     val createEditVoiceCommandViewModel: CreateEditVoiceCommandViewModel,

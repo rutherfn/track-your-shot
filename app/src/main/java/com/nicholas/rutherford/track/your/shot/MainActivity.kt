@@ -104,6 +104,7 @@ open class MainActivity : ComponentActivity() {
                     reportListViewModel = getViewModel(),
                     createReportViewModel = getViewModel(),
                     shotsListViewModel = getViewModel(),
+                    statisticsViewModel = getViewModel(),
                     declaredShotsListViewModel = getViewModel(),
                     createEditDeclaredShotsViewModel = getViewModel(),
                     createEditVoiceCommandViewModel = getViewModel(),

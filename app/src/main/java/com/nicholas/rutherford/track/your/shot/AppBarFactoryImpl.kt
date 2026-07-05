@@ -30,6 +30,7 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.enabledpermissio
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.CreateEditDeclaredShotScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.createeditdeclaredshot.DeclaredShotState
 import com.nicholas.rutherford.track.your.shot.feature.settings.managedeclaredshots.declaredshotslist.DeclaredShotsListScreenParams
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducation.OnboardingEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
@@ -121,6 +122,16 @@ class AppBarFactoryImpl(
     override fun createSettingsAppBar(params: SettingsParams): AppBar =
         AppBar(
             toolbarId = StringsIds.settings,
+            shouldShowMiddleContentAppBar = true,
+            onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
+            onSecondaryIconButtonClicked = { params.onHelpClicked.invoke() },
+            secondaryImageVector = Icons.AutoMirrored.Filled.Help
+        )
+
+    /** Creates AppBar for the statistics screen with help action. */
+    override fun createStatisticsAppBar(params: StatisticsParams): AppBar =
+        AppBar(
+            toolbarId = StringsIds.statistics,
             shouldShowMiddleContentAppBar = true,
             onIconButtonClicked = { params.onToolbarMenuClicked.invoke() },
             onSecondaryIconButtonClicked = { params.onHelpClicked.invoke() },

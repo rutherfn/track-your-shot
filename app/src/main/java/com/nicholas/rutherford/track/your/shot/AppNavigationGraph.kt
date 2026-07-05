@@ -69,6 +69,9 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsParams
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsScreen
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreen
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
@@ -81,6 +84,7 @@ import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createedit
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListParams
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListScreen
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.voicecommandlist.VoiceCommandListViewModel
+import com.nicholas.rutherford.track.your.shot.helper.extensions.formatPercentage
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NamedArguments
 import com.nicholas.rutherford.track.your.shot.navigation.arguments.NavArguments
@@ -916,6 +920,41 @@ object AppNavigationGraph {
             updateAppBar(appBar = appBarFactory.createEditVoiceCommandCreateScreenAppBar(createEditVoiceCommandViewModel = createEditVoiceCommandViewModel, type = state.type, isCreating = state.voiceCommandState == VoiceCommandState.CREATING || state.voiceCommandState == VoiceCommandState.RECORDING_NEW || state.voiceCommandState == VoiceCommandState.RECORDING_ERROR))
 
             CreateEditVoiceCommandScreen(params = params)
+        }
+    }
+
+    /**
+     * Adds the Statistics Screen destination to the NavGraph.
+     * Retrieves [StatisticsViewModel] via Koin and observes its lifecycle.
+     * Collects UI state from the ViewModel and passes event callbacks to [StatisticsScreen].
+     * Displays the [StatisticsScreen] composable
+     */
+    fun NavGraphBuilder.statisticsScreen() {
+        composable(
+            route = NavigationDestinations.STATISTICS_SCREEN
+        ) {
+            val statisticsViewModel: StatisticsViewModel = koinViewModel()
+            val appBarFactory: AppBarFactory = koinInject()
+
+            val statisticsParams = StatisticsParams(
+                state = statisticsViewModel.statisticsStateFlow.collectAsState().value,
+                onToolbarMenuClicked = { statisticsViewModel.onToolbarMenuClicked() },
+                onHelpClicked = { statisticsViewModel.onHelpClicked() },
+                onPlayerFilterSelected = { filter ->
+                    statisticsViewModel.onPlayerFilterSelected(filter = filter)
+                },
+                onViewDetailedStatsClicked = { playerStatisticsSummary ->
+                    statisticsViewModel.onViewDetailedStatsClicked(
+                        playerStatisticsSummary = playerStatisticsSummary
+                    )
+                },
+                formatPercentage = { value -> formatPercentage(value = value) }
+            )
+
+            ObserveLifecycle(viewModel = statisticsViewModel)
+
+            updateAppBar(appBar = appBarFactory.createStatisticsAppBar(params = statisticsParams))
+            StatisticsScreen(params = statisticsParams)
         }
     }
 

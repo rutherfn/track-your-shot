@@ -81,4 +81,6 @@ object Constants {
     const val NO_SHOTS_LOGGED_VALUE = 0
     const val BOTH_SHOTS_LOGGED_VALUE = 2
     const val NO_SHOTS_LOGGED_FILTER_VALUE = 3
+    const val PERCENTAGE_MULTIPLIER = 100.0
+    const val PERCENTAGE_FORMAT = "%.1f%%"
 }

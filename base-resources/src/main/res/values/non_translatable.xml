@@ -57,4 +57,7 @@
     <string name="are_you_sure_you_want_to_delete_command" translatable="false">Are you sure you want to delete command?</string>
     <string name="rate_the_app" translatable="false">Rate The App</string>
     <string name="statistics" translatable="false">Statistics</string>
+    <string name="stats_attempts_short" translatable="false">Attempts</string>
+    <string name="stats_accuracy_short" translatable="false">Accuracy</string>
+    <string name="stats_accuracy_x" translatable="false">Accuracy: %s%%</string>
 </resources>

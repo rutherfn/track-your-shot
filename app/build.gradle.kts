@@ -116,6 +116,7 @@ dependencies {
     api(project(path = ":feature:players:shots"))
     api(project(path = ":feature:reports"))
     api(project(path = ":feature:settings"))
+    api(project(path = ":feature:statistics"))
     api(project(path = ":feature:shots"))
     api(project(path = ":feature:splash"))
     api(project(path = ":feature:voice-commands"))

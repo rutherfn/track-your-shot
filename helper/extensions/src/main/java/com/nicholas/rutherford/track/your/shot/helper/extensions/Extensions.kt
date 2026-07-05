@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPositions
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants.DATE_PATTERN
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -172,6 +173,25 @@ fun getImageUri(context: Context, image: Bitmap): Uri? {
 
     return uri
 }
+
+/**
+ * Formats a numeric percentage value into a display string.
+
+ * @return A formatted percentage string (e.g., "45.5%").
+ */
+fun formatPercentageValue(value: Double): String =
+    String.format(Locale.US, "%.1f", value)
+
+/**
+ * Formats a numeric percentage value into a display string.
+ *
+ * @param value The percentage value to format.
+ * @return A formatted percentage string (e.g., "45.5%").
+ */
+fun formatPercentage(
+    value: Double
+): String =
+    String.format(Locale.US, Constants.PERCENTAGE_FORMAT, value)
 
 /** Checks if the camera permission is granted in the current [context]. */
 fun hasCameraPermissionEnabled(context: Context) = ContextCompat.checkSelfPermission(
