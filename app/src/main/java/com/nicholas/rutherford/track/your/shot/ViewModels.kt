@@ -20,8 +20,8 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.onboardingeducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducation.PermissionEducationViewModel
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
-import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandViewModel
 
 /**

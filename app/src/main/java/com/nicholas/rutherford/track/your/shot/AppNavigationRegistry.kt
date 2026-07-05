@@ -21,9 +21,9 @@ import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.playersListScr
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.reportListScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.selectShotScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.settingsScreen
-import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.statisticsScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.shotListScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.splashScreen
+import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.statisticsScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.termsAndConditionScreen
 import com.nicholas.rutherford.track.your.shot.AppNavigationGraph.voiceCommandListScreen
 

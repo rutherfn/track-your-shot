@@ -69,14 +69,14 @@ import com.nicholas.rutherford.track.your.shot.feature.settings.permissioneducat
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsParams
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsScreen
 import com.nicholas.rutherford.track.your.shot.feature.settings.termsconditions.TermsConditionsViewModel
-import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsParams
-import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsScreen
-import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreen
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListScreenParams
 import com.nicholas.rutherford.track.your.shot.feature.shots.ShotsListViewModel
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashScreen
 import com.nicholas.rutherford.track.your.shot.feature.splash.SplashViewModel
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsParams
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsScreen
+import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModel
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.VoiceCommandState
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandParams
 import com.nicholas.rutherford.track.your.shot.feature.voice.commands.createeditvoicecommand.CreateEditVoiceCommandScreen

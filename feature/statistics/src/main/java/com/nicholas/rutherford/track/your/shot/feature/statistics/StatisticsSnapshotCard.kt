@@ -34,7 +34,6 @@ import com.nicholas.rutherford.track.your.shot.compose.components.charts.ShotBre
 import com.nicholas.rutherford.track.your.shot.helper.extensions.formatPercentageValue
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
-import java.util.Locale
 
 /**
  * Created by Nicholas Rutherford, last edited on 2026-07-03
@@ -105,7 +104,7 @@ fun PlayerStatisticsSnapshotCard(
     formatPercentage: (value: Double) -> String,
     onViewDetailedStatsClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    isExpanded: Boolean = false,
+    isExpanded: Boolean = false
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
