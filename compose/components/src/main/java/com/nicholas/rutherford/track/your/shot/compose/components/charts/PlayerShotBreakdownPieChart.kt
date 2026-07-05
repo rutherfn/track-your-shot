@@ -23,63 +23,45 @@ import ir.ehsannarmani.compose_charts.models.LabelHelperProperties
 import ir.ehsannarmani.compose_charts.models.Pie
 
 /**
- * Created by Nicholas Rutherford, last edited on 2026-07-03
- *
- * Represents made and missed shot counts for a pie chart breakdown.
- *
- * @property madeLabel Label displayed for made shots.
- * @property missedLabel Label displayed for missed shots.
- * @property shotsMade Total number of made shots.
- * @property shotsMissed Total number of missed shots.
- */
-data class PlayerShotBreakdownChartData(
-    val madeLabel: String,
-    val missedLabel: String,
-    val shotsMade: Int,
-    val shotsMissed: Int
-)
-
-/**
  * Displays a pie chart breaking down a player's made and missed shots.
  *
  * The built-in chart legend is disabled so callers can render a compact custom legend
  * with short labels that fit on one line.
  *
- * @param chartData Made and missed shot counts with display labels.
+ * @param chartInfo Made and missed shot counts with display labels.
  * @param modifier Optional modifier applied to the chart container.
  * @param chartSize Size of the pie chart drawable area.
  */
 @Composable
 fun PlayerShotBreakdownPieChart(
-    chartData: PlayerShotBreakdownChartData,
+    chartInfo: PlayerShotBreakdownChartInfo,
     modifier: Modifier = Modifier,
     chartSize: Dp = 120.dp
 ) {
-    val totalShots = chartData.shotsMade + chartData.shotsMissed
-    if (totalShots == 0) {
-        return
-    }
+    val totalShots = chartInfo.shotsMade + chartInfo.shotsMissed
 
-    PieChart(
-        modifier = modifier.size(chartSize),
-        data = listOf(
-            Pie(
-                label = chartData.madeLabel,
-                data = chartData.shotsMade.toDouble(),
-                color = AppColors.Orange,
-                selectedColor = AppColors.OrangeVariant
+    if (totalShots != 0) {
+        PieChart(
+            modifier = modifier.size(chartSize),
+            data = listOf(
+                Pie(
+                    label = chartInfo.madeLabel,
+                    data = chartInfo.shotsMade.toDouble(),
+                    color = AppColors.Orange,
+                    selectedColor = AppColors.OrangeVariant
+                ),
+                Pie(
+                    label = chartInfo.missedLabel,
+                    data = chartInfo.shotsMissed.toDouble(),
+                    color = AppColors.Red,
+                    selectedColor = AppColors.LightGray
+                )
             ),
-            Pie(
-                label = chartData.missedLabel,
-                data = chartData.shotsMissed.toDouble(),
-                color = AppColors.Red,
-                selectedColor = AppColors.LightGray
-            )
-        ),
-        labelHelperProperties = LabelHelperProperties(enabled = false),
-        labelHelperPadding = 0.dp,
-        style = Pie.Style.Fill
-    )
+            labelHelperProperties = LabelHelperProperties(enabled = false),
+            labelHelperPadding = 0.dp,
+            style = Pie.Style.Fill
+        )
+    }
 }
 
 /**
@@ -138,7 +120,7 @@ private fun ShotBreakdownLegendItem(
 fun PlayerShotBreakdownPieChartPreview() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         PlayerShotBreakdownPieChart(
-            chartData = PlayerShotBreakdownChartData(
+            chartInfo = PlayerShotBreakdownChartInfo(
                 madeLabel = "Make",
                 missedLabel = "Miss",
                 shotsMade = 35,

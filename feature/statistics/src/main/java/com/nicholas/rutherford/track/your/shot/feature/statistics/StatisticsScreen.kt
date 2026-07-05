@@ -54,9 +54,7 @@ fun StatisticsScreen(params: StatisticsParams) {
  * @param params Contains the state and callback handlers for this screen.
  */
 @Composable
-private fun StatisticsSnapshotContent(
-    params: StatisticsParams
-) {
+private fun StatisticsSnapshotContent(params: StatisticsParams) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()

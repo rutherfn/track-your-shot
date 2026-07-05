@@ -88,7 +88,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation("io.github.ehsannarmani:compose-charts:0.2.5")
+    implementation(libs.compose.charts)
 
     implementation(libs.androidx.ui.tooling.preview)
 

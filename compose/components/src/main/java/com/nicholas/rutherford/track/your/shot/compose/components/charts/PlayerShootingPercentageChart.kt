@@ -8,23 +8,11 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nicholas.rutherford.track.your.shot.AppColors
+import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import ir.ehsannarmani.compose_charts.ColumnChart
 import ir.ehsannarmani.compose_charts.models.BarProperties
 import ir.ehsannarmani.compose_charts.models.Bars
 import ir.ehsannarmani.compose_charts.models.LabelHelperProperties
-
-/**
- * Created by Nicholas Rutherford, last edited on 2026-07-02
- *
- * Represents a single player's shooting percentage entry for chart display.
- *
- * @property playerName Display label for the player.
- * @property shootingPercentage Overall shooting percentage value (0–100).
- */
-data class PlayerShootingChartEntry(
-    val playerName: String,
-    val shootingPercentage: Double
-)
 
 /**
  * Displays a column chart comparing shooting percentages across players.
@@ -52,8 +40,8 @@ fun PlayerShootingPercentageChart(
                 )
             )
         },
-        maxValue = MAX_SHOOTING_PERCENTAGE,
-        minValue = MIN_SHOOTING_PERCENTAGE,
+        maxValue = Constants.MAX_SHOOTING_PERCENTAGE,
+        minValue = Constants.MIN_SHOOTING_PERCENTAGE,
         barProperties = BarProperties(
             thickness = 24.dp,
             spacing = 8.dp,
@@ -77,6 +65,3 @@ fun PlayerShootingPercentageChartPreview() {
         )
     )
 }
-
-private const val MAX_SHOOTING_PERCENTAGE = 100.0
-private const val MIN_SHOOTING_PERCENTAGE = 0.0

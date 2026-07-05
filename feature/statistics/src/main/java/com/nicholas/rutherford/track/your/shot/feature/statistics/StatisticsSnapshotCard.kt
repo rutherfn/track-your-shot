@@ -28,7 +28,7 @@ import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.compose.components.BaseRow
 import com.nicholas.rutherford.track.your.shot.compose.components.charts.PlayerShootingChartEntry
 import com.nicholas.rutherford.track.your.shot.compose.components.charts.PlayerShootingPercentageChart
-import com.nicholas.rutherford.track.your.shot.compose.components.charts.PlayerShotBreakdownChartData
+import com.nicholas.rutherford.track.your.shot.compose.components.charts.PlayerShotBreakdownChartInfo
 import com.nicholas.rutherford.track.your.shot.compose.components.charts.PlayerShotBreakdownPieChart
 import com.nicholas.rutherford.track.your.shot.compose.components.charts.ShotBreakdownLegend
 import com.nicholas.rutherford.track.your.shot.helper.extensions.formatPercentageValue
@@ -200,7 +200,11 @@ private fun PlayerSnapshotBody(
 ) {
     val madeLabel = stringResource(id = StringsIds.make)
     val missedLabel = stringResource(id = StringsIds.miss)
-    val chartSize = if (isExpanded) 140.dp else 110.dp
+    val chartSize = if (isExpanded) {
+        140.dp
+    } else {
+        110.dp
+    }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -212,7 +216,7 @@ private fun PlayerSnapshotBody(
             verticalArrangement = Arrangement.spacedBy(Padding.eight)
         ) {
             PlayerShotBreakdownPieChart(
-                chartData = PlayerShotBreakdownChartData(
+                chartInfo = PlayerShotBreakdownChartInfo(
                     madeLabel = madeLabel,
                     missedLabel = missedLabel,
                     shotsMade = playerStatisticsSummary.totalShotsMade,

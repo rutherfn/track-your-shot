@@ -22,7 +22,7 @@ data class StatisticsState(
     val teamOverview: StatisticsOverview? = null,
     val hasNoStatistics: Boolean = true
 ) {
+
     /** Whether the snapshot is showing all players rather than a single filtered player. */
-    val isShowingAllPlayers: Boolean
-        get() = selectedPlayerFilter.isEmpty() || selectedPlayerFilter == allPlayersFilterLabel
+    val isShowingAllPlayers: Boolean = selectedPlayerFilter.isEmpty() || selectedPlayerFilter == allPlayersFilterLabel
 }

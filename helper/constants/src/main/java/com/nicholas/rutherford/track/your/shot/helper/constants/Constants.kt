@@ -83,4 +83,6 @@ object Constants {
     const val NO_SHOTS_LOGGED_FILTER_VALUE = 3
     const val PERCENTAGE_MULTIPLIER = 100.0
     const val PERCENTAGE_FORMAT = "%.1f%%"
+    const val MAX_SHOOTING_PERCENTAGE = 100.0
+    const val MIN_SHOOTING_PERCENTAGE = 0.0
 }
