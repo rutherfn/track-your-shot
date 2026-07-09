@@ -16,6 +16,7 @@ import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
 import com.nicholas.rutherford.track.your.shot.data.store.writer.DataStorePreferencesWriter
 import com.nicholas.rutherford.track.your.shot.firebase.core.delete.DeleteFirebaseUserInfo
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -61,6 +62,8 @@ class PlayersListViewModel(
 
     val playerListStateFlow = playerListMutableStateFlow.asStateFlow()
 
+    private var loadPlayersJob: Job? = null
+
     /** Helper to get current player filter from state or fetch from repository */
     private suspend fun getCurrentPlayerFilter(): PlayerFilter {
         return playerFilterRepository.fetchActiveFilter() ?: PlayerFilter()
@@ -68,21 +71,35 @@ class PlayersListViewModel(
 
     override fun onStart(owner: LifecycleOwner) {
         super.onStart(owner)
-        updatePlayerListState()
+        val currentState = playerListMutableStateFlow.value
+        val isInitialLoad = currentState.isLoading && currentState.playerList.isEmpty()
+        updatePlayerListState(showLoading = isInitialLoad)
         deleteAllNonEmptyPendingPlayers()
     }
 
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
+        updatePlayerListState(showLoading = false)
+    }
+
     /** Loads all players from the repository and updates the state */
-    fun updatePlayerListState() {
-        scope.launch {
+    fun updatePlayerListState(showLoading: Boolean = false) {
+        loadPlayersJob?.cancel()
+        loadPlayersJob = scope.launch {
+            if (showLoading) {
+                playerListMutableStateFlow.update { state -> state.copy(isLoading = true) }
+            }
+
             val playerFilter = getCurrentPlayerFilter()
             val allPlayers = playerRepository.fetchAllPlayersWithFilter(filter = playerFilter)
+            val hasAnyPlayers = playerRepository.fetchPlayerCount() > 0
 
             playerListMutableStateFlow.update { state ->
                 state.copy(
                     playerList = allPlayers,
-                    hasAnyPlayersInDatabase = allPlayers.isNotEmpty(),
-                    filterCount = playerFilterRepository.getActiveFilterCount()
+                    hasAnyPlayersInDatabase = hasAnyPlayers,
+                    filterCount = playerFilterRepository.getActiveFilterCount(),
+                    isLoading = false
                 )
             }
         }
@@ -128,7 +145,8 @@ class PlayersListViewModel(
         playerListMutableStateFlow.update { state ->
             state.copy(
                 playerList = playerList,
-                hasAnyPlayersInDatabase = playerList.isNotEmpty()
+                hasAnyPlayersInDatabase = playerList.isNotEmpty(),
+                isLoading = false
             )
         }
     }
@@ -147,10 +165,13 @@ class PlayersListViewModel(
         scope.launch {
             val playerFilter = getCurrentPlayerFilter()
             val queriedPlayers = playerRepository.fetchPlayerByQuery(query = searchQuery, playerFilter = playerFilter)
+            val hasAnyPlayers = playerRepository.fetchPlayerCount() > 0
             playerListMutableStateFlow.update { state ->
                 state.copy(
                     searchQuery = searchQuery,
-                    playerList = queriedPlayers
+                    playerList = queriedPlayers,
+                    hasAnyPlayersInDatabase = hasAnyPlayers,
+                    isLoading = false
                 )
             }
         }

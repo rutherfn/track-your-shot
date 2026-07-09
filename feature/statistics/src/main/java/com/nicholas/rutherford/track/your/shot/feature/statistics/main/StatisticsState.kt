@@ -15,6 +15,7 @@ import com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsOver
  * @property displayedPlayerStatistics Player statistics filtered by [selectedPlayerFilter].
  * @property teamOverview Team-level snapshot shown when all players are selected.
  * @property hasNoStatistics Whether there are no player statistics available to display.
+ * @property isLoading Whether player statistics are currently being loaded.
  */
 data class StatisticsState(
     val allPlayersFilterLabel: String = "",
@@ -23,7 +24,8 @@ data class StatisticsState(
     val playerStatistics: List<PlayerStatisticsSummary> = emptyList(),
     val displayedPlayerStatistics: List<PlayerStatisticsSummary> = emptyList(),
     val teamOverview: StatisticsOverview? = null,
-    val hasNoStatistics: Boolean = true
+    val hasNoStatistics: Boolean = true,
+    val isLoading: Boolean = true
 ) {
 
     /** Whether the snapshot is showing all players rather than a single filtered player. */

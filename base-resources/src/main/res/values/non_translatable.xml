@@ -60,4 +60,5 @@
     <string name="stats_attempts_short" translatable="false">Attempts</string>
     <string name="stats_accuracy_short" translatable="false">Accuracy</string>
     <string name="stats_accuracy_x" translatable="false">Accuracy: %s%%</string>
+    <string name="stats_filter_by_date" translatable="false">Filter by date</string>
 </resources>

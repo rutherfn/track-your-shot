@@ -93,13 +93,19 @@ class PlayersListViewModelTest {
 
         coEvery { playerFilterRepository.fetchActiveFilter() } returns null
         coEvery { playerRepository.fetchAllPlayersWithFilter(filter = any()) } returns playerList
+        coEvery { playerRepository.fetchPlayerCount() } returns playerList.size
         coEvery { playerFilterRepository.getActiveFilterCount() } returns filterCount
 
         playersListViewModel.updatePlayerListState()
 
         Assertions.assertEquals(
             playersListViewModel.playerListMutableStateFlow.value,
-            PlayersListState(playerList = playerList, hasAnyPlayersInDatabase = true, filterCount = filterCount)
+            PlayersListState(
+                playerList = playerList,
+                hasAnyPlayersInDatabase = true,
+                filterCount = filterCount,
+                isLoading = false
+            )
         )
         Assertions.assertEquals(
             playersListViewModel.playerListMutableStateFlow.value.playerList,
@@ -224,7 +230,7 @@ class PlayersListViewModelTest {
 
         Assertions.assertEquals(
             playersListViewModel.playerListMutableStateFlow.value,
-            PlayersListState(playerList = newPlayerList, hasAnyPlayersInDatabase = true)
+            PlayersListState(playerList = newPlayerList, hasAnyPlayersInDatabase = true, isLoading = false)
         )
         Assertions.assertEquals(
             playersListViewModel.playerListMutableStateFlow.value.playerList,
@@ -286,13 +292,19 @@ class PlayersListViewModelTest {
 
         @Test
         fun `when fetchPlayerByQuery returns empty list should update state`() = runTest {
+            coEvery { playerFilterRepository.fetchActiveFilter() } returns null
             coEvery { playerRepository.fetchPlayerByQuery(query = searchQuery, playerFilter = any()) } returns emptyPlayerList
+            coEvery { playerRepository.fetchPlayerCount() } returns 0
 
             playersListViewModel.onSearchTextChanged(searchQuery = searchQuery)
 
             Assertions.assertEquals(
                 playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = emptyList(), searchQuery = searchQuery)
+                PlayersListState(
+                    playerList = emptyList(),
+                    searchQuery = searchQuery,
+                    isLoading = false
+                )
             )
             Assertions.assertEquals(
                 playersListViewModel.playerListMutableStateFlow.value.playerList,
@@ -304,13 +316,20 @@ class PlayersListViewModelTest {
         fun `when fetchPlayerByQuery returns list should update state`() = runTest {
             val playerList = listOf(TestPlayer().create())
 
+            coEvery { playerFilterRepository.fetchActiveFilter() } returns null
             coEvery { playerRepository.fetchPlayerByQuery(query = searchQuery, playerFilter = any()) } returns playerList
+            coEvery { playerRepository.fetchPlayerCount() } returns playerList.size
 
             playersListViewModel.onSearchTextChanged(searchQuery = searchQuery)
 
             Assertions.assertEquals(
                 playersListViewModel.playerListMutableStateFlow.value,
-                PlayersListState(playerList = playerList, searchQuery = searchQuery)
+                PlayersListState(
+                    playerList = playerList,
+                    searchQuery = searchQuery,
+                    hasAnyPlayersInDatabase = true,
+                    isLoading = false
+                )
             )
             Assertions.assertEquals(
                 playersListViewModel.playerListMutableStateFlow.value.playerList,

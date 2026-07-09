@@ -18,6 +18,7 @@ import com.nicholas.rutherford.track.your.shot.data.room.response.PlayerPosition
  * @property filterCount The number of active filters applied to the player list.
  * @property searchQuery The current search query entered by the user.
  * @property hasAnyPlayersInDatabase A boolean indicating whether there are any players in the database.
+ * @property isLoading Whether the initial player list load is still in progress.
  */
 data class PlayersListState(
     val playerList: List<Player> = emptyList(),
@@ -32,5 +33,6 @@ data class PlayersListState(
     val sheetOptions: List<String> = emptyList(),
     val filterCount: Int = 0,
     val searchQuery: String = "",
-    val hasAnyPlayersInDatabase: Boolean = false
+    val hasAnyPlayersInDatabase: Boolean = false,
+    val isLoading: Boolean = true
 )

@@ -38,12 +38,12 @@ fun PlayerShotsBreakdownLineChart(
         return
     }
 
-    val sessionLabels = chartInfo.entries.map { entry -> entry.sessionLabel }
+    val sessionLabels = chartInfo.entries.map { entry -> entry.sessionLabel.truncateForChartLabel() }
 
     LineChart(
         modifier = modifier
             .fillMaxWidth()
-            .height(220.dp),
+            .height(280.dp),
         data = listOf(
             Line(
                 label = chartInfo.madeLabel,
@@ -81,10 +81,23 @@ fun PlayerShotsBreakdownLineChart(
         labelProperties = LabelProperties(
             enabled = true,
             labels = sessionLabels,
+            padding = 16.dp,
             rotation = LabelProperties.Rotation(mode = LabelProperties.Rotation.Mode.IfNecessary)
         ),
-        labelHelperProperties = LabelHelperProperties(enabled = true)
+        labelHelperProperties = LabelHelperProperties(enabled = false),
+        labelHelperPadding = 0.dp
     )
+}
+
+/**
+ * Truncates long session labels so they fit on the chart x-axis without overlapping.
+ */
+private fun String.truncateForChartLabel(maxLength: Int = 14): String {
+    return if (length <= maxLength) {
+        this
+    } else {
+        "${take(maxLength - 1)}…"
+    }
 }
 
 /**
@@ -99,6 +112,10 @@ fun PlayerShotsBreakdownLineChartPreview() {
             .padding(Padding.sixteen),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        ShotBreakdownLegend(madeLabel = "Make", missedLabel = "Miss")
+
+        Spacer(modifier = Modifier.height(Padding.twelve))
+
         PlayerShotsBreakdownLineChart(
             chartInfo = PlayerShotsBreakdownLineChartInfo(
                 madeLabel = "Make",
@@ -132,9 +149,5 @@ fun PlayerShotsBreakdownLineChartPreview() {
                 )
             )
         )
-
-        Spacer(modifier = Modifier.height(Padding.twelve))
-
-        ShotBreakdownLegend(madeLabel = "Make", missedLabel = "Miss")
     }
 }

@@ -393,13 +393,14 @@ object AppNavigationGraph {
         composable(route = NavigationDestinations.PLAYERS_LIST_SCREEN) {
             val playersListViewModel: PlayersListViewModel = koinViewModel()
             val appBarFactory: AppBarFactory = koinInject()
+            val playerListState by playersListViewModel.playerListStateFlow.collectAsState()
 
             ObserveLifecycle(viewModel = playersListViewModel)
             updateAppBar(appBar = appBarFactory.createPlayersListAppBar(viewModel = playersListViewModel))
 
             PlayersListScreen(
                 playerListScreenParams = PlayersListScreenParams(
-                    state = playersListViewModel.playerListStateFlow.collectAsState().value,
+                    state = playerListState,
                     onToolbarMenuClicked = { playersListViewModel.onToolbarMenuClicked() },
                     onAddPlayerClicked = { playersListViewModel.onAddPlayerClicked() },
                     onPlayerClicked = { player ->
@@ -973,7 +974,9 @@ object AppNavigationGraph {
 
             val params = PlayerStatisticsParams(
                 state = state,
-                onToolbarMenuClicked = { playerStatisticsViewModel.onToolbarMenuClicked() }
+                onToolbarMenuClicked = { playerStatisticsViewModel.onToolbarMenuClicked() },
+                onDateFilterSelected = { filter -> playerStatisticsViewModel.onDateFilterSelected(filter = filter) },
+                formatPercentage = { value -> formatPercentage(value = value) }
             )
 
             ObserveLifecycle(viewModel = playerStatisticsViewModel)

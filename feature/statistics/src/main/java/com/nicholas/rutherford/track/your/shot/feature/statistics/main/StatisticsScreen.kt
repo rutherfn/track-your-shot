@@ -44,10 +44,10 @@ import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
 fun StatisticsScreen(params: StatisticsParams) {
     BackHandler { params.onToolbarMenuClicked.invoke() }
 
-    if (!params.state.hasNoStatistics) {
-        StatisticsSnapshotContent(params = params)
-    } else {
-        StatisticsEmptyState()
+    when {
+        params.state.isLoading -> StatisticsLoadingState()
+        params.state.hasNoStatistics -> StatisticsEmptyState()
+        else -> StatisticsSnapshotContent(params = params)
     }
 }
 
@@ -61,7 +61,7 @@ private fun StatisticsSnapshotContent(params: StatisticsParams) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.OffWhite)
+            .background(color = AppColors.OffWhite)
     ) {
         item { StatisticsSnapshotHeader(isShowingAllPlayers = params.state.isShowingAllPlayers) }
 
@@ -87,6 +87,11 @@ private fun StatisticsSnapshotContent(params: StatisticsParams) {
     }
 }
 
+/**
+ * Displays all the players view when the user clicks on the filter row being All.
+ *
+ * @param params Contains the state and callback handlers for this screen.
+ */
 private fun LazyListScope.allPlayersContent(params: StatisticsParams) {
     params.state.teamOverview?.let { teamOverview ->
         item {
@@ -111,7 +116,12 @@ private fun LazyListScope.allPlayersContent(params: StatisticsParams) {
         )
     }
 
-    items(params.state.displayedPlayerStatistics) { playerStatisticsSummary ->
+    items(
+        items = params.state.displayedPlayerStatistics,
+        key = { playerStatisticsSummary ->
+            "${playerStatisticsSummary.playerId}_${playerStatisticsSummary.playerName}"
+        }
+    ) { playerStatisticsSummary ->
         PlayerStatisticsSnapshotCard(
             modifier = Modifier.padding(
                 horizontal = Padding.sixteen,
@@ -124,6 +134,11 @@ private fun LazyListScope.allPlayersContent(params: StatisticsParams) {
     }
 }
 
+/**
+ * Displays the selected player stats when the user clicks on a specific person to filter stats by.
+ *
+ * @param params Contains the state and callback handlers for this screen.
+ */
 private fun LazyListScope.selectedPlayerContent(params: StatisticsParams) {
     params.state.displayedPlayerStatistics.firstOrNull()?.let { playerStatisticsSummary ->
         item {
@@ -173,6 +188,25 @@ private fun StatisticsSnapshotHeader(isShowingAllPlayers: Boolean) {
             } else {
                 stringResource(id = StringsIds.playerShots)
             },
+            style = TextStyles.bodySmall,
+            color = AppColors.LightGray
+        )
+    }
+}
+
+/**
+ * Displays a loading state while statistics data is being fetched.
+ */
+@Composable
+private fun StatisticsLoadingState() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppColors.OffWhite),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(id = StringsIds.stats),
             style = TextStyles.bodySmall,
             color = AppColors.LightGray
         )

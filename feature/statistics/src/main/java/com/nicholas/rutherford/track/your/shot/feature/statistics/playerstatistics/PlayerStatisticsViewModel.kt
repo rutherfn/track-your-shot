@@ -1,7 +1,9 @@
 package com.nicholas.rutherford.track.your.shot.feature.statistics.playerstatistics
 
 import android.app.Application
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.SavedStateHandle
+import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
 import com.nicholas.rutherford.track.your.shot.feature.statistics.toPlayerStatisticsSummary
@@ -36,20 +38,76 @@ class PlayerStatisticsViewModel(
 
     private val playerIdParam: Int? = savedStateHandle.get<Int>("playerIdParam")
 
+    private val madeLabel: String
+        get() = application.getString(StringsIds.make)
+
+    private val missedLabel: String
+        get() = application.getString(StringsIds.miss)
+
     init {
         updateStatisticsForPlayer()
     }
 
+    override fun onStart(owner: LifecycleOwner) {
+        super.onStart(owner)
+        updateStatisticsForPlayer()
+    }
+
+    /**
+     * Loads player statistics and builds the initial chart and date filter options.
+     */
     internal fun updateStatisticsForPlayer() {
         playerIdParam?.let { id ->
             scope.launch {
-                playerRepository.fetchPlayerById(id = id)?.let { player ->
+                val player = playerRepository.fetchPlayerById(id = id)
+
+                if (player == null) {
+                    navigation.pop()
+                } else {
+                    val allDatesFilterLabel = application.getString(StringsIds.all)
+                    val loggedShotEntries = player.toLoggedShotEntries()
+
                     playerStatisticsMutableStateFlow.update { state ->
-                        state.copy(playerStatistics = listOf(player.toPlayerStatisticsSummary()))
+                        state.copy(
+                            playerStatisticsSummary = player.toPlayerStatisticsSummary(),
+                            loggedShotEntries = loggedShotEntries,
+                            dateFilterOptions = loggedShotEntries.buildDateFilterOptions(
+                                allLabel = allDatesFilterLabel
+                            ),
+                            selectedDateFilter = allDatesFilterLabel,
+                            allDatesFilterLabel = allDatesFilterLabel,
+                            chartInfo = loggedShotEntries.toLineChartInfo(
+                                madeLabel = madeLabel,
+                                missedLabel = missedLabel
+                            ),
+                            hasNoLoggedShots = loggedShotEntries.isEmpty()
+                        )
                     }
-                } ?: navigation.pop()
+                }
             }
         } ?: navigation.pop()
+    }
+
+    /**
+     * Updates the selected date filter and refreshes the displayed line chart data.
+     *
+     * @param filter The selected date filter option.
+     */
+    fun onDateFilterSelected(filter: String) {
+        playerStatisticsMutableStateFlow.update { state ->
+            val filteredEntries = state.loggedShotEntries.filterByDate(
+                selectedFilter = filter,
+                allLabel = state.allDatesFilterLabel
+            )
+
+            state.copy(
+                selectedDateFilter = filter,
+                chartInfo = filteredEntries.toLineChartInfo(
+                    madeLabel = madeLabel,
+                    missedLabel = missedLabel
+                )
+            )
+        }
     }
 
     fun onToolbarMenuClicked() = navigation.pop()

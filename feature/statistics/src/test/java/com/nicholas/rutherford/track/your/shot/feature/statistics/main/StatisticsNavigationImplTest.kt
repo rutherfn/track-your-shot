@@ -1,7 +1,6 @@
-package com.nicholas.rutherford.track.your.shot.feature.statistics
+package com.nicholas.rutherford.track.your.shot.feature.statistics.main
 
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
-import com.nicholas.rutherford.track.your.shot.feature.statistics.main.StatisticsNavigationImpl
 import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 import io.mockk.mockk
 import io.mockk.verify
@@ -36,7 +35,9 @@ class StatisticsNavigationImplTest {
     }
 
     @Test
-    fun `navigate to player detailed statistics`() {
-        statisticsNavigationImpl.navigateToPlayerDetailedStatistics(playerName = "John Doe")
+    fun `navigate to player statistics`() {
+        statisticsNavigationImpl.navigateToPlayerStatistics(playerId = 1)
+
+        verify(exactly = 1) { navigator.navigate(navigationAction = any()) }
     }
 }

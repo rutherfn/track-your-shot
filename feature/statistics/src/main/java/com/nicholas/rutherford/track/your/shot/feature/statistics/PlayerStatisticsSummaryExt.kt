@@ -25,7 +25,7 @@ fun Player.toPlayerStatisticsSummary(): PlayerStatisticsSummary {
     }
 
     return PlayerStatisticsSummary(
-        playerId = id ?: 0,
+        playerId = requireNotNull(id) { "Player id is required to build statistics summary." },
         playerName = fullName(),
         totalShotsAttempted = totalAttempted,
         totalShotsMade = totalMade,

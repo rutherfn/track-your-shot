@@ -13,7 +13,5 @@ import com.nicholas.rutherford.track.your.shot.navigation.Navigator
 class StatisticsNavigationImpl(private val navigator: Navigator) : StatisticsNavigation {
     override fun alert(alert: Alert) = navigator.alert(alertAction = alert)
     override fun openNavigationDrawer() = navigator.showNavigationDrawer(navigationDrawerAction = true)
-
-    // todo -> Wire up player detailed statistics destination when that screen is added.
     override fun navigateToPlayerStatistics(playerId: Int) = navigator.navigate(NavigationActions.Statistics.createPlayerStatisticsWithParams(playerId = playerId))
 }

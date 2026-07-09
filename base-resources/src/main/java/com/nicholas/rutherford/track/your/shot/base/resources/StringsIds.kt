@@ -243,6 +243,7 @@ object StringsIds {
     val statsAttemptsShort = R.string.stats_attempts_short
     val statsAccuracyShort = R.string.stats_accuracy_short
     val statsAccuracyX = R.string.stats_accuracy_x
+    val statsFilterByDate = R.string.stats_filter_by_date
     val searchPlayers = R.string.search_players
     val playersFirstNameEmptyDescription = R.string.players_first_name_empty_description
     val pointGuard = R.string.point_guard

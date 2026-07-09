@@ -1,6 +1,7 @@
 package com.nicholas.rutherford.track.your.shot.feature.statistics.main
 
 import android.app.Application
+import androidx.lifecycle.LifecycleOwner
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
 import com.nicholas.rutherford.track.your.shot.base.vm.BaseViewModel
 import com.nicholas.rutherford.track.your.shot.data.room.repository.PlayerRepository
@@ -40,41 +41,68 @@ class StatisticsViewModel(
     internal val statisticsMutableStateFlow = MutableStateFlow(value = StatisticsState())
     val statisticsStateFlow = statisticsMutableStateFlow.asStateFlow()
 
-    init {
-        updateStatisticsState(currentSelectedFilter = statisticsMutableStateFlow.value.selectedPlayerFilter)
+    override fun onStart(owner: LifecycleOwner) {
+        super.onStart(owner)
+        refreshStatisticsState(showLoading = true)
+    }
+
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
+        refreshStatisticsState(showLoading = false)
+    }
+
+    /**
+     * Reloads statistics and resets the player filter to show all players.
+     */
+    fun refreshStatisticsState(showLoading: Boolean = true) {
+        updateStatisticsState(
+            currentSelectedFilter = application.getString(StringsIds.all),
+            showLoading = showLoading
+        )
     }
 
     /**
      * Fetches all players with logged shots and updates the statistics screen state.
+     *
+     * @param currentSelectedFilter The currently selected filter option.
+     * @param showLoading Whether to show a loading state while fetching data.
      */
-    internal fun updateStatisticsState(currentSelectedFilter: String) {
+    internal fun updateStatisticsState(currentSelectedFilter: String, showLoading: Boolean = true) {
         scope.launch {
+            if (showLoading) {
+                statisticsMutableStateFlow.update { statisticsState ->
+                    statisticsState.copy(isLoading = true)
+                }
+            }
+
+            val allPlayersFilterLabel = application.getString(StringsIds.all)
             val playerStatistics = playerRepository.fetchAllPlayers()
                 .buildPlayersWithShots()
                 .sortedPlayers()
                 .map { player -> player.toPlayerStatisticsSummary() }
             val selectedPlayerFilter = resolveSelectedPlayerFilter(
                 currentSelectedFilter = currentSelectedFilter,
-                allPlayersFilterLabel = application.getString(StringsIds.all),
+                allPlayersFilterLabel = allPlayersFilterLabel,
                 playerStatistics = playerStatistics
             )
 
             statisticsMutableStateFlow.update { statisticsState ->
                 statisticsState.copy(
-                    allPlayersFilterLabel = application.getString(StringsIds.all),
+                    allPlayersFilterLabel = allPlayersFilterLabel,
                     playerFilterOptions = buildPlayerFilterOptions(
-                        allPlayersFilterLabel = application.getString(StringsIds.all),
+                        allPlayersFilterLabel = allPlayersFilterLabel,
                         playerStatistics = playerStatistics
                     ),
                     selectedPlayerFilter = selectedPlayerFilter,
                     playerStatistics = playerStatistics,
                     displayedPlayerStatistics = filterPlayerStatistics(
-                        allPlayersFilterLabel = application.getString(StringsIds.all),
+                        allPlayersFilterLabel = allPlayersFilterLabel,
                         selectedPlayerFilter = selectedPlayerFilter,
                         playerStatistics = playerStatistics
                     ),
                     teamOverview = buildTeamStatisticsOverview(playerStatistics = playerStatistics),
-                    hasNoStatistics = playerStatistics.isEmpty()
+                    hasNoStatistics = playerStatistics.isEmpty(),
+                    isLoading = false
                 )
             }
         }
@@ -107,10 +135,10 @@ class StatisticsViewModel(
 
     /**
      * Builds team-level snapshot statistics from the full player statistics list.
+     *
+     * @param playerStatistics Full list of aggregated statistics for each player with logged shots.
      */
-    internal fun buildTeamStatisticsOverview(
-        playerStatistics: List<PlayerStatisticsSummary>
-    ): StatisticsOverview? {
+    internal fun buildTeamStatisticsOverview(playerStatistics: List<PlayerStatisticsSummary>): StatisticsOverview? {
         if (playerStatistics.isEmpty()) {
             return null
         } else {
@@ -134,6 +162,9 @@ class StatisticsViewModel(
 
     /**
      * Builds the list of player filter options shown on the statistics snapshot screen.
+     *
+     * @param allPlayersFilterLabel Localized label used for the "All players" filter option.
+     * @param playerStatistics Full list of aggregated statistics for each player with logged shots.
      */
     internal fun buildPlayerFilterOptions(
         allPlayersFilterLabel: String,
@@ -142,6 +173,10 @@ class StatisticsViewModel(
 
     /**
      * Filters player statistics based on the selected filter option.
+     *
+     * @param allPlayersFilterLabel Localized label used for the "All players" filter option.
+     * @param selectedPlayerFilter Currently selected player filter option.
+     * @param playerStatistics Full list of aggregated statistics for each player with logged shots.
      */
     internal fun filterPlayerStatistics(
         allPlayersFilterLabel: String,
@@ -151,12 +186,16 @@ class StatisticsViewModel(
         return if (selectedPlayerFilter.isEmpty() || selectedPlayerFilter == allPlayersFilterLabel) {
             playerStatistics
         } else {
-            playerStatistics.filter { it.playerName == selectedPlayerFilter }
+            playerStatistics.filter { value -> value.playerName == selectedPlayerFilter }
         }
     }
 
     /**
      * Keeps the current filter when possible, otherwise falls back to the all-players filter.
+     *
+     * @param currentSelectedFilter The currently selected filter option.
+     * @param allPlayersFilterLabel Localized label used for the "All players" filter option.
+     * @param playerStatistics Full list of aggregated statistics for each player with logged shots.
      */
     internal fun resolveSelectedPlayerFilter(
         currentSelectedFilter: String,

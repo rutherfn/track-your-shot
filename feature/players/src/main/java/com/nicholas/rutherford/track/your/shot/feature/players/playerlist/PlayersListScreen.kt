@@ -74,21 +74,32 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun PlayersListScreen(playerListScreenParams: PlayersListScreenParams) {
-    val isPlayerListEmpty = playerListScreenParams.state.playerList.isEmpty()
-    val searchQuery = playerListScreenParams.state.searchQuery
-    val hasAnyPlayersInDatabase = playerListScreenParams.state.hasAnyPlayersInDatabase
+    val state = playerListScreenParams.state
 
-    if (!hasAnyPlayersInDatabase && searchQuery.isEmpty()) {
-        AddNewPlayerEmptyStateContent(
-            filterCount = playerListScreenParams.state.filterCount,
-            onFilterChipClicked = playerListScreenParams.onFilterChipClicked
-        )
-    } else {
-        PlayerListContentWithSearch(
-            playerListScreenParams = playerListScreenParams,
-            isPlayerListEmpty = isPlayerListEmpty,
-            searchQuery = searchQuery
-        )
+    when {
+        state.isLoading &&
+            state.playerList.isEmpty() &&
+            !state.hasAnyPlayersInDatabase &&
+            state.searchQuery.isEmpty() -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(AppColors.White)
+            )
+        }
+        !state.hasAnyPlayersInDatabase && state.searchQuery.isEmpty() -> {
+            AddNewPlayerEmptyStateContent(
+                filterCount = state.filterCount,
+                onFilterChipClicked = playerListScreenParams.onFilterChipClicked
+            )
+        }
+        else -> {
+            PlayerListContentWithSearch(
+                playerListScreenParams = playerListScreenParams,
+                isPlayerListEmpty = state.playerList.isEmpty(),
+                searchQuery = state.searchQuery
+            )
+        }
     }
 }
 
@@ -109,7 +120,7 @@ private fun PlayerListContentWithSearch(
     isPlayerListEmpty: Boolean,
     searchQuery: String
 ) {
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
     var isSearchFocused by remember { mutableStateOf(false) }
@@ -118,12 +129,58 @@ private fun PlayerListContentWithSearch(
         focusManager.clearFocus()
     }
 
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            EnhancedSearchTextField(
+                value = searchQuery,
+                onValueChange = playerListScreenParams.onSearchTextChanged,
+                onClearClick = { playerListScreenParams.onSearchTextChanged("") },
+                placeholderValue = stringResource(id = StringsIds.searchPlayers),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .onFocusChanged { isSearchFocused = it.isFocused }
+            )
+
+            if (isPlayerListEmpty && searchQuery.isNotEmpty()) {
+                SearchResultsEmptyState(
+                    onClearSearch = { playerListScreenParams.onSearchTextChanged("") }
+                )
+            } else if (!isPlayerListEmpty) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(playerListScreenParams.state.playerList) { player ->
+                        PlayerItem(
+                            player = player,
+                            onPlayerClicked = playerListScreenParams.onPlayerClicked,
+                            sheetState = sheetState,
+                            scope = scope
+                        )
+                    }
+                }
+            } else if (playerListScreenParams.state.filterCount > 0) {
+                FilteredResultsEmptyState(
+                    onOpenFilters = playerListScreenParams.onFilterChipClicked
+                )
+            }
+        }
+
+        FilterChipWithBadge(
+            filterCount = playerListScreenParams.state.filterCount,
+            onFilterChipClicked = playerListScreenParams.onFilterChipClicked,
+            modifier = Modifier.zIndex(10f).align(Alignment.BottomCenter).padding(bottom = 16.dp)
+        )
+    }
+
+    val sheetOptions = playerListScreenParams.state.sheetOptions
     BottomSheetWithOptions(
         sheetState = sheetState,
-        sheetInfo = Sheet(
-            title = stringResource(id = StringsIds.chooseOption),
-            values = playerListScreenParams.state.sheetOptions
-        ),
+        sheetInfo = sheetOptions.takeIf { it.isNotEmpty() }?.let { options ->
+            Sheet(
+                title = stringResource(id = StringsIds.chooseOption),
+                values = options
+            )
+        },
         onSheetItemClicked = { _, index ->
             scope.launch {
                 sheetState.hide()
@@ -131,46 +188,7 @@ private fun PlayerListContentWithSearch(
             }
         },
         onCancelItemClicked = { scope.launch { sheetState.hide() } },
-        content = {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    EnhancedSearchTextField(
-                        value = searchQuery,
-                        onValueChange = playerListScreenParams.onSearchTextChanged,
-                        onClearClick = { playerListScreenParams.onSearchTextChanged("") },
-                        placeholderValue = stringResource(id = StringsIds.searchPlayers),
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                            .onFocusChanged { isSearchFocused = it.isFocused }
-                    )
-
-                    if (isPlayerListEmpty && searchQuery.isNotEmpty()) {
-                        SearchResultsEmptyState(
-                            onClearSearch = { playerListScreenParams.onSearchTextChanged("") }
-                        )
-                    } else if (!isPlayerListEmpty) {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            items(playerListScreenParams.state.playerList) { player ->
-                                PlayerItem(
-                                    player = player,
-                                    onPlayerClicked = playerListScreenParams.onPlayerClicked,
-                                    sheetState = sheetState,
-                                    scope = scope
-                                )
-                            }
-                        }
-                    }
-                }
-
-                FilterChipWithBadge(
-                    filterCount = playerListScreenParams.state.filterCount,
-                    onFilterChipClicked = playerListScreenParams.onFilterChipClicked,
-                    modifier = Modifier.zIndex(10f).align(Alignment.BottomCenter).padding(bottom = 16.dp)
-                )
-            }
-        }
+        content = {}
     )
 }
 
@@ -378,6 +396,61 @@ private fun AddNewPlayerEmptyStateContent(
 }
 
 /**
+ * Displays the empty state when active filters exclude all players.
+ *
+ * @param onOpenFilters Callback invoked when the user chooses to review filters.
+ */
+@Composable
+private fun FilteredResultsEmptyState(
+    onOpenFilters: () -> Unit = {}
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppColors.White),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_basketball_player_empty_state),
+                contentDescription = null,
+                modifier = Modifier.size(120.dp)
+            )
+
+            Text(
+                text = stringResource(id = StringsIds.noPlayersResultsFound),
+                style = TextStyles.medium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+
+            Text(
+                text = stringResource(id = StringsIds.resetFiltersDescription),
+                style = TextStyles.smallBold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+
+            Spacer(modifier = Modifier.padding(vertical = 4.dp))
+
+            TextButton(
+                onClick = onOpenFilters,
+                colors = ButtonDefaults.textButtonColors(contentColor = AppColors.OrangeVariant)
+            ) {
+                Text(
+                    text = stringResource(id = StringsIds.filters),
+                    style = TextStyles.smallBold
+                )
+            }
+        }
+    }
+}
+
+/**
  * Displays the empty state when search results are empty.
  *
  * This UI is shown when a user searches but no players match the query.
@@ -452,7 +525,9 @@ private fun PlayersListScreenWithItemsPreview() {
                         imageUrl = null,
                         shotsLoggedList = emptyList()
                     )
-                )
+                ),
+                hasAnyPlayersInDatabase = true,
+                isLoading = false
             ),
             onToolbarMenuClicked = {},
             onAddPlayerClicked = {},
@@ -472,7 +547,10 @@ private fun PlayersListScreenWithItemsPreview() {
 fun PlayerListScreenEmptyStatePreview() {
     PlayersListScreen(
         playerListScreenParams = PlayersListScreenParams(
-            state = PlayersListState(playerList = emptyList()),
+            state = PlayersListState(
+                playerList = emptyList(),
+                isLoading = false
+            ),
             onToolbarMenuClicked = {},
             onAddPlayerClicked = {},
             onPlayerClicked = {},
@@ -494,7 +572,8 @@ fun PlayerListScreenEmptySearchResultsPreview() {
             state = PlayersListState(
                 playerList = emptyList(),
                 searchQuery = "nonexistent",
-                hasAnyPlayersInDatabase = true
+                hasAnyPlayersInDatabase = true,
+                isLoading = false
             ),
             onToolbarMenuClicked = {},
             onAddPlayerClicked = {},
