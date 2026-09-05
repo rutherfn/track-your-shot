@@ -11,8 +11,6 @@ repositories {
 }
 
 dependencies {
-    // Must match the Kotlin version embedded in the Gradle distribution used by buildSrc.
-    // Project modules use kotlin from libs.versions.toml independently.
-    //noinspection GradleDependency
+    //noinspection UseTomlInstead,GradleDependency
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21")
 }
