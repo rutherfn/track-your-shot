@@ -57,15 +57,7 @@ timber = "5.0.1"
 truth = "1.4.5"
 playReview = "2.0.2"
 
-# --- Firebase ---
-# firebase-bom 34.x is the current line, but this app still uses older -ktx artifacts and
-# pinned firebaseAuthKtx / firebaseStorageDatabase versions. Bumping the BOM alone can
-# silently change Auth/Database/Storage APIs — migrate to non-ktx BOM artifacts in a
-# dedicated follow-up before moving past 31.0.3.
-firebaseBom = "31.0.3"
-firebaseAnalytics = "22.4.0"
-firebaseAuthKtx = "21.1.0"
-firebaseStorageDatabase = "20.1.0"
+firebaseBom = "34.18.0"
 protoliteWellKnownTypes = "18.0.1"
 
 [libraries]
@@ -98,11 +90,11 @@ androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 compose-showcase = { module = "io.github.jocoand:showcase-sequence", version.ref = "composeShowcase"}
 data-store = { module ="androidx.datastore:datastore-preferences", version.ref = "dataStore"}
-firebase-analytics = { module = "com.google.firebase:firebase-analytics", version.ref = "firebaseAnalytics" }
-firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
-firebase-database-ktx = { module = "com.google.firebase:firebase-database-ktx", version.ref = "firebaseStorageDatabase" }
-firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx", version.ref = "firebaseStorageDatabase" }
+firebase-database = { module = "com.google.firebase:firebase-database" }
+firebase-storage = { module = "com.google.firebase:firebase-storage" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { module = "junit:junit", version.ref = "junit" }
