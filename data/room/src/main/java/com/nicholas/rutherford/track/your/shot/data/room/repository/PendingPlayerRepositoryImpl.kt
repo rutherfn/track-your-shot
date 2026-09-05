@@ -59,5 +59,5 @@ class PendingPlayerRepositoryImpl(private val pendingPlayerDao: PendingPlayerDao
 
     /** Fetches all pending players from the database. Returns an empty list if none exist. */
     override suspend fun fetchAllPendingPlayers(): List<Player> =
-        pendingPlayerDao.getAllPendingPlayers()?.map { pendingPlayer -> pendingPlayer.toPlayer() } ?: emptyList()
+        pendingPlayerDao.getAllPendingPlayers().map { pendingPlayer -> pendingPlayer.toPlayer() }
 }

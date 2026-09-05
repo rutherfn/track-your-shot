@@ -3,8 +3,6 @@ package com.nicholas.rutherford.track.your.shot
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 /**
  * Created by Nicholas Rutherford, last edited on 2025-08-16
@@ -32,11 +30,6 @@ private val lightColorScheme = lightColorScheme(
 fun TrackYourShotTheme(
     content: @Composable () -> Unit
 ) {
-    val systemUiController = rememberSystemUiController()
-
-    systemUiController.setStatusBarColor(color = lightColorScheme.primary)
-    systemUiController.setNavigationBarColor(color = Color.Black)
-
     MaterialTheme(
         colorScheme = lightColorScheme,
         typography = Typography,

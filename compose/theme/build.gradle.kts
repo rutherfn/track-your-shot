@@ -77,8 +77,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.accompanist.systemuicontroller)
-
     implementation(libs.androidx.material3)
     implementation(libs.androidx.ui)
 }

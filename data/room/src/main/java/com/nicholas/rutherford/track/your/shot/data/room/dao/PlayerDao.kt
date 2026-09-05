@@ -98,7 +98,7 @@ interface PlayerDao {
      * @return A list of all players or null if none exist.
      */
     @Query("SELECT * FROM players")
-    suspend fun getAllPlayers(): List<PlayerEntity>?
+    suspend fun getAllPlayers(): List<PlayerEntity>
 
     /**
      * Returns the total number of players in the database.

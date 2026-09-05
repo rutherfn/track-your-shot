@@ -1,68 +1,73 @@
 [versions]
-# --- Toolchain ---
-# Cap AGP at 8.13.0: current Android Studio reports that as the latest supported plugin.
-# AGP 9.1+ (needed for compileSdk 37 / Android 17 and Compose 1.12) requires a newer Studio
-# (Panda 3+). Revisit after upgrading Android Studio.
-agp = "8.13.0"
-agpVersion = "8.13.0"
-# Kotlin 2.3 needs AGP 8.13.2+ for full R8 support; Kotlin 2.4 needs AGP 9.1+ and a KSP
-# release that targets 2.4. Stay on 2.2.21 until Studio allows a newer AGP.
-kotlin = "2.2.21"
-ksp = "2.2.21-2.0.5"
-
-# --- Compose ---
-# 2026.08.00 = Compose 1.12 (needs compileSdk 37 + AGP 9.1+). Hold at 2026.06.01 (Compose
-# 1.11.4) while Studio caps us at AGP 8.13 / API 36.
-composeBom = "2026.06.01"
-# Explicit UI artifacts when not using the BOM; keep aligned with the BOM mapping.
-uiTestManifest = "1.11.4"
-# material3 / icons: prefer BOM-managed versions in modules that apply the Compose BOM.
-# Explicit pins kept for modules that still declare versions directly.
-material3 = "1.4.0"
-materialIconsCore = "1.7.8"
-
-# --- AndroidX / Google ---
 accompanistPermissions = "0.37.3"
-# systemuicontroller is deprecated upstream; 0.36.0 is the last published artifact.
-accompanistSystemuicontroller = "0.36.0"
 activityKtx = "1.13.0"
-androidJunit5 = "1.10.0.0"
-annotationJvm = "1.9.1"
-appCompat = "1.7.1"
+
+#noinspection AndroidGradlePluginVersion
+agp = "8.13.0"
+
+androidJunit5 = "2.0.1"
+annotationJvm = "1.10.0"
+appCompat = "1.8.0"
 coilCompose = "2.7.0"
+
+#noinspection GradleDependency
+composeBom = "2026.06.01"
+
 composeShowcase = "1.3.1"
+
+#noinspection GradleDependency
 coreKtx = "1.17.0"
+
 coreTesting = "2.2.0"
-dataStore = "1.1.7"
+dataStore = "1.2.1"
 espressoCore = "3.7.0"
-googleServices = "4.4.2"
-gson = "2.13.1"
+firebaseBom = "34.18.0"
+googleServices = "4.5.0"
+gson = "2.14.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
+
+#noinspection NewerVersionAvailable
 jupiter = "5.7.2"
+
 koin = "4.2.2"
 koinAndroidxNavigation = "4.2.2"
-kotlinxCoroutinesAndroid = "1.10.2"
-kotlinxCoroutinesCore = "1.10.2"
-kotlinxCoroutinesPlayServices = "1.10.2"
-lifecycleRuntimeCompose = "2.10.0"
-lifecycleViewmodelCompose = "2.10.0"
-material = "1.12.0"
-mockk = "1.13.10"
+
+#noinspection NewerVersionAvailable
+kotlin = "2.2.21"
+
+kotlinxCoroutinesAndroid = "1.11.0"
+kotlinxCoroutinesCore = "1.11.0"
+kotlinxCoroutinesPlayServices = "1.11.0"
+
+#noinspection GradleDependency
+ksp = "2.2.21-2.0.5"
+
+material = "1.14.0"
+material3 = "1.4.0"
+materialIconsCore = "1.7.8"
+mockk = "1.14.11"
 multidex = "2.0.1"
+
+#noinspection GradleDependency
 navigationCompose = "2.9.8"
+
+playReview = "2.0.2"
+protoliteWellKnownTypes = "18.0.1"
 room = "2.8.4"
 rules = "1.7.0"
+
+#noinspection GradleDependency
+runtime = "2.10.0"
+
 timber = "5.0.1"
 truth = "1.4.5"
-playReview = "2.0.2"
 
-firebaseBom = "34.18.0"
-protoliteWellKnownTypes = "18.0.1"
+#noinspection GradleDependency
+uiTestManifest = "1.11.4"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 android-junit5 = { module = "de.mannodermaus.gradle.plugins:android-junit5", version.ref = "androidJunit5" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityKtx" }
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
@@ -73,8 +78,8 @@ androidx-core-testing = { module = "androidx.arch.core:core-testing", version.re
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 androidx-espresso-idling-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espressoCore" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junitVersion" }
-androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
-androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "runtime" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "runtime" }
 androidx-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "materialIconsCore" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsCore" }
 androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
@@ -124,7 +129,7 @@ play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref =
 
 [plugins]
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-android-library = { id = "com.android.library", version.ref = "agpVersion" }
-android-application = { id = "com.android.application", version.ref = "agpVersion" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
