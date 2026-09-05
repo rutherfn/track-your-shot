@@ -69,5 +69,5 @@ dependencies {
     api(project(path = ":base-resources"))
     api(project(path = ":helper:constants"))
 
-    implementation("androidx.core:core:")
+    implementation(libs.androidx.core.ktx)
 }

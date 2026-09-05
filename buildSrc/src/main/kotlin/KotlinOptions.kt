@@ -4,5 +4,5 @@
  *
  * To define kotlin options data */
 object KotlinOptions {
-    const val jvmTarget = "1.8"
+    const val jvmTarget = "11"
 }

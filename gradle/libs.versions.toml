@@ -1,49 +1,72 @@
 [versions]
-accompanistPermissions = "0.23.1"
+# --- Toolchain ---
+# Cap AGP at 8.13.0: current Android Studio reports that as the latest supported plugin.
+# AGP 9.1+ (needed for compileSdk 37 / Android 17 and Compose 1.12) requires a newer Studio
+# (Panda 3+). Revisit after upgrading Android Studio.
+agp = "8.13.0"
+agpVersion = "8.13.0"
+# Kotlin 2.3 needs AGP 8.13.2+ for full R8 support; Kotlin 2.4 needs AGP 9.1+ and a KSP
+# release that targets 2.4. Stay on 2.2.21 until Studio allows a newer AGP.
+kotlin = "2.2.21"
+ksp = "2.2.21-2.0.5"
+
+# --- Compose ---
+# 2026.08.00 = Compose 1.12 (needs compileSdk 37 + AGP 9.1+). Hold at 2026.06.01 (Compose
+# 1.11.4) while Studio caps us at AGP 8.13 / API 36.
+composeBom = "2026.06.01"
+# Explicit UI artifacts when not using the BOM; keep aligned with the BOM mapping.
+uiTestManifest = "1.11.4"
+# material3 / icons: prefer BOM-managed versions in modules that apply the Compose BOM.
+# Explicit pins kept for modules that still declare versions directly.
+material3 = "1.4.0"
+materialIconsCore = "1.7.8"
+
+# --- AndroidX / Google ---
+accompanistPermissions = "0.37.3"
+# systemuicontroller is deprecated upstream; 0.36.0 is the last published artifact.
 accompanistSystemuicontroller = "0.36.0"
-activityKtx = "1.11.0"
+activityKtx = "1.13.0"
 androidJunit5 = "1.10.0.0"
 annotationJvm = "1.9.1"
 appCompat = "1.7.1"
-coilCompose = "2.5.0"
-composeBom = "2025.06.01"
+coilCompose = "2.7.0"
 composeShowcase = "1.3.1"
 coreKtx = "1.17.0"
 coreTesting = "2.2.0"
 dataStore = "1.1.7"
-espressoCore = "3.3.0"
-firebaseAnalytics = "22.4.0"
-firebaseAuthKtx = "21.1.0"
-firebaseBom = "31.0.3"
-firebaseStorageDatabase = "20.1.0"
+espressoCore = "3.7.0"
 googleServices = "4.4.2"
 gson = "2.13.1"
 junit = "4.13.2"
-junitVersion = "1.2.1"
+junitVersion = "1.3.0"
 jupiter = "5.7.2"
-koin = "4.0.0"
-koinAndroidxNavigation = "4.1.0"
-kotlin = "2.4.10"
+koin = "4.2.2"
+koinAndroidxNavigation = "4.2.2"
 kotlinxCoroutinesAndroid = "1.10.2"
 kotlinxCoroutinesCore = "1.10.2"
 kotlinxCoroutinesPlayServices = "1.10.2"
 lifecycleRuntimeCompose = "2.10.0"
-lifecycleViewmodelCompose = "2.9.2"
+lifecycleViewmodelCompose = "2.10.0"
 material = "1.12.0"
-material3 = "1.3.2"
-materialIconsCore = "1.7.8"
 mockk = "1.13.10"
 multidex = "2.0.1"
-navigationCompose = "2.9.2"
-room = "2.6.1"
-rules = "1.6.1"
+navigationCompose = "2.9.8"
+room = "2.8.4"
+rules = "1.7.0"
 timber = "5.0.1"
 truth = "1.4.5"
-uiTestManifest = "1.9.4"
+playReview = "2.0.2"
+
+# --- Firebase ---
+# firebase-bom 34.x is the current line, but this app still uses older -ktx artifacts and
+# pinned firebaseAuthKtx / firebaseStorageDatabase versions. Bumping the BOM alone can
+# silently change Auth/Database/Storage APIs — migrate to non-ktx BOM artifacts in a
+# dedicated follow-up before moving past 31.0.3.
+firebaseBom = "31.0.3"
+firebaseAnalytics = "22.4.0"
+firebaseAuthKtx = "21.1.0"
+firebaseStorageDatabase = "20.1.0"
 protoliteWellKnownTypes = "18.0.1"
-agp = "8.9.3"
-agpVersion = "8.9.3"
-playReview = "2.0.1"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -110,5 +133,6 @@ play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref =
 [plugins]
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agpVersion" }
+android-application = { id = "com.android.application", version.ref = "agpVersion" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
