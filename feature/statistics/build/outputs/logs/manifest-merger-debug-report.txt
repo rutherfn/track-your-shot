@@ -1,0 +1,15 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/nicholasrutherford/Desktop/projects/track-your-shot/feature/statistics/src/main/AndroidManifest.xml:1:1-82
+INJECTED from /Users/nicholasrutherford/Desktop/projects/track-your-shot/feature/statistics/src/main/AndroidManifest.xml:1:1-82
+	package
+		ADDED from /Users/nicholasrutherford/Desktop/projects/track-your-shot/feature/statistics/src/main/AndroidManifest.xml:1:11-79
+		INJECTED from /Users/nicholasrutherford/Desktop/projects/track-your-shot/feature/statistics/src/main/AndroidManifest.xml
+uses-sdk
+INJECTED from /Users/nicholasrutherford/Desktop/projects/track-your-shot/feature/statistics/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/nicholasrutherford/Desktop/projects/track-your-shot/feature/statistics/src/main/AndroidManifest.xml
+INJECTED from /Users/nicholasrutherford/Desktop/projects/track-your-shot/feature/statistics/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/nicholasrutherford/Desktop/projects/track-your-shot/feature/statistics/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/nicholasrutherford/Desktop/projects/track-your-shot/feature/statistics/src/main/AndroidManifest.xml

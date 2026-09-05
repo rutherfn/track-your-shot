@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModelTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-07-05T19:54:59" hostname="Nicholass-MBP.lan" time="2.502">
+  <properties/>
+  <testcase name="when no players have logged shots should update empty state()" classname="com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModelTest" time="2.242"/>
+  <testcase name="build team statistics overview should return null when no players exist()" classname="com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModelTest" time="0.015"/>
+  <testcase name="on help clicked should show statistics help alert()" classname="com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModelTest" time="0.11"/>
+  <testcase name="when players have logged shots should update statistics state()" classname="com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModelTest" time="0.038"/>
+  <testcase name="on toolbar menu clicked should open navigation drawer()" classname="com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModelTest" time="0.019"/>
+  <testcase name="on player filter selected should update displayed player statistics()" classname="com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModelTest" time="0.025"/>
+  <testcase name="build team statistics overview should aggregate player statistics()" classname="com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModelTest" time="0.009"/>
+  <testcase name="to player statistics summary should exclude pending shots()" classname="com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModelTest" time="0.01"/>
+  <testcase name="on view detailed stats clicked should navigate to player detailed statistics()" classname="com.nicholas.rutherford.track.your.shot.feature.statistics.StatisticsViewModelTest" time="0.013"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,8 @@
+/Users/nicholasrutherford/Desktop/projects/track-your-shot/feature/statistics/build/kover/bin-reports/testDebugUnitTest.ic
+false
+false
+true
+false
+-exclude
+android\..*
+com\.android\..*
