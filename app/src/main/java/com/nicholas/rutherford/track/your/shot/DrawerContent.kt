@@ -56,7 +56,8 @@ fun DrawerContent(
                 .background(AppColors.White)
                 .padding(horizontal = 24.dp, vertical = 32.dp)
         ) {
-            // App logo
+
+            Spacer(Modifier.height(32.dp))
             Image(
                 painter = painterResource(R.mipmap.ic_launcher_round),
                 contentDescription = null,
@@ -70,7 +71,6 @@ fun DrawerContent(
             HorizontalDivider()
             Spacer(Modifier.height(16.dp))
 
-            // App name and author
             Text(
                 text = stringResource(id = R.string.track_your_shot),
                 style = TextStyles.subLarge
@@ -82,7 +82,6 @@ fun DrawerContent(
 
             Spacer(Modifier.height(24.dp))
 
-            // Menu section title
             Text(
                 text = stringResource(id = R.string.menu),
                 style = TextStyles.subLarge
@@ -90,14 +89,12 @@ fun DrawerContent(
 
             Spacer(Modifier.height(12.dp))
 
-            // Menu items
             actions.forEach { action ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            // Safely invoke callback with route, navOptions, and titleId
                             safeLet(action.route, action.navOptions, action.titleId) { route, navOptions, titleId ->
                                 onDestinationClicked(route, navOptions, titleId)
                             } ?: run {
