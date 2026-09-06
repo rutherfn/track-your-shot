@@ -20,8 +20,7 @@ coreKtx = "1.17.0"
 
 coreTesting = "2.2.0"
 dataStore = "1.2.1"
-# Compose UI Test 1.11.4 (BOM 2026.06.01) depends on espresso 3.5.0; bumping to 3.7.0
-# conflicts under AGP consistent resolution across debug/androidTest classpaths.
+
 #noinspection GradleDependency
 espressoCore = "3.5.0"
 firebaseBom = "34.18.0"
