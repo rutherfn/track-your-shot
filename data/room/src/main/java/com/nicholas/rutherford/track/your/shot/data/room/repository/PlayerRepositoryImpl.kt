@@ -108,7 +108,7 @@ class PlayerRepositoryImpl(
      * @return A list of filtered players given by the selected user filters
      */
     override suspend fun fetchAllPlayersWithFilter(filter: PlayerFilter): List<Player> {
-        val allPlayers = playerDao.getAllPlayers()?.map { playerEntity -> playerEntity.toPlayer() } ?: emptyList()
+        val allPlayers = playerDao.getAllPlayers().map { playerEntity -> playerEntity.toPlayer() }
 
         return allPlayers.filter { player ->
             matchesPositionFilter(player = player, filter = filter) &&

@@ -2,9 +2,10 @@ package com.nicholas.rutherford.track.your.shot
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.core.view.WindowCompat
+import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.nicholas.rutherford.track.your.shot.base.resources.StringsIds
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import android.graphics.Color as AndroidColor
 
 /**
  * The main entry point activity for the app
@@ -66,19 +68,17 @@ open class MainActivity : ComponentActivity() {
      * @param savedInstanceState The saved instance state bundle.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(AppColors.Orange.toArgb()),
+            navigationBarStyle = SystemBarStyle.dark(AndroidColor.BLACK)
+        )
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
             checkAndShowReviewPrompt()
         }
 
-        // Allows the app to draw behind system bars for edge-to-edge experience
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
         setContent {
-            // Allows the app to draw behind system bars for edge-to-edge experience
-            enableEdgeToEdge()
-
             // Initializes the NavigationComponent with required dependencies
             NavigationComponent(
                 activity = this,

@@ -69,7 +69,7 @@ dependencies {
     api(project(path = ":data:room"))
 
     implementation(libs.androidx.annotation.jvm)
-    implementation("androidx.core:core:")
+    implementation(libs.androidx.core.ktx)
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter.api)

@@ -112,8 +112,7 @@ class LogShotViewModelExtImpl(
         return if (percentage == Constants.SHOT_ZERO_VALUE) {
             application.getString(StringsIds.empty)
         } else {
-            val locale = Locale("en", "US")
-            val percentageRoundedValue = String.format(locale, "%.1f", percentage)
+            val percentageRoundedValue = String.format(Locale.US, "%.1f", percentage)
             if (percentageRoundedValue.endsWith(".0")) {
                 application.getString(
                     StringsIds.shotPercentage,

@@ -52,7 +52,7 @@ interface PendingPlayerDao {
      * @return A list of all pending players or null if none exist.
      */
     @Query("SELECT * FROM pendingPlayers")
-    suspend fun getAllPendingPlayers(): List<PendingPlayerEntity>?
+    suspend fun getAllPendingPlayers(): List<PendingPlayerEntity>
 
     /**
      * Retrieves a pending player's ID by their first and last name.

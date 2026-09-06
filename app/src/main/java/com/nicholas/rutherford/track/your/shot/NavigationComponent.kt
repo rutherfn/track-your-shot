@@ -44,7 +44,6 @@ import com.nicholas.rutherford.track.your.shot.data.shared.alert.Alert
 import com.nicholas.rutherford.track.your.shot.data.shared.alert.AlertConfirmAndDismissButton
 import com.nicholas.rutherford.track.your.shot.data.shared.datepicker.DatePickerInfo
 import com.nicholas.rutherford.track.your.shot.data.shared.progress.Progress
-import com.nicholas.rutherford.track.your.shot.data.shared.snackbar.SnackBarInfo
 import com.nicholas.rutherford.track.your.shot.helper.constants.Constants
 import com.nicholas.rutherford.track.your.shot.helper.reviews.ReviewManager
 import com.nicholas.rutherford.track.your.shot.navigation.NavigationDestinations
@@ -143,7 +142,6 @@ fun NavigationComponent(
     var datePicker: DatePickerInfo? by remember { mutableStateOf(value = null) }
     var inputInfo: InputInfo? by remember { mutableStateOf(value = null) }
     var progress: Progress? by remember { mutableStateOf(value = null) }
-    var snackBarInfo: SnackBarInfo? by remember { mutableStateOf(value = null) }
     var modalDrawerGesturesEnabled: Boolean by remember { mutableStateOf(value = false) }
     val appBar = AppNavigationGraph.currentAppBar
 
@@ -255,14 +253,15 @@ fun NavigationComponent(
             progress = null
         }
     }
-    // Show or hide snackBar
     LaunchedEffect(snackBarState) {
         snackBarState?.let { state ->
-            snackBarInfo = state
             navigator.snackBar(snackBarInfo = null)
-        } ?: run {
-            snackBarInfo = null
-            navigator.snackBar(snackBarInfo = null)
+            snackBarHostState.showSnackbar(
+                message = state.message,
+                actionLabel = state.actionLabel,
+                withDismissAction = state.withDismissAction,
+                duration = SnackbarDuration.Short
+            )
         }
     }
     // Open or close navigation drawer
@@ -446,17 +445,6 @@ fun NavigationComponent(
                     },
                     title = newProgress.title
                 )
-            }
-
-            snackBarInfo?.let { newSnackBarInfo ->
-                scope.launch {
-                    snackBarHostState.showSnackbar(
-                        message = newSnackBarInfo.message,
-                        actionLabel = newSnackBarInfo.actionLabel,
-                        withDismissAction = newSnackBarInfo.withDismissAction,
-                        duration = SnackbarDuration.Short
-                    )
-                }
             }
         },
         gesturesEnabled = modalDrawerGesturesEnabled

@@ -11,8 +11,8 @@ object BuildTypes {
     const val proguardRulesPro = "proguard.rules.pro"
 
     object CompileOptions {
-        val sourceCompatibility = JavaVersion.VERSION_1_8
-        val targetCompatibility = JavaVersion.VERSION_1_8
+        val sourceCompatibility = JavaVersion.VERSION_11
+        val targetCompatibility = JavaVersion.VERSION_11
     }
 
     object ManifiestOptions {

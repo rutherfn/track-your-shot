@@ -11,6 +11,6 @@ repositories {
 }
 
 dependencies {
-    //noinspection GradleDependency
+    //noinspection UseTomlInstead,GradleDependency
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21")
 }

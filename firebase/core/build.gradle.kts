@@ -71,10 +71,10 @@ dependencies {
     api(project(path = ":helper:constants"))
     api(project(path = ":helper:extensions"))
 
-    implementation(libs.firebase.auth.ktx)
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.database.ktx)
-    implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.storage)
 
     implementation(libs.timber)
 
