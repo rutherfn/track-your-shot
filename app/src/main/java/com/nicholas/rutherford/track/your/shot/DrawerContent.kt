@@ -56,7 +56,6 @@ fun DrawerContent(
                 .background(AppColors.White)
                 .padding(horizontal = 24.dp, vertical = 32.dp)
         ) {
-
             Spacer(Modifier.height(32.dp))
             Image(
                 painter = painterResource(R.mipmap.ic_launcher_round),
