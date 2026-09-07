@@ -36,7 +36,7 @@ koin = "4.2.2"
 koinAndroidxNavigation = "4.2.2"
 
 #noinspection NewerVersionAvailable
-kotlin = "2.2.21"
+kotlin = "2.4.10"
 
 kotlinxCoroutinesAndroid = "1.11.0"
 kotlinxCoroutinesCore = "1.11.0"
