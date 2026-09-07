@@ -3,7 +3,7 @@ accompanistPermissions = "0.37.3"
 activityKtx = "1.13.0"
 
 #noinspection AndroidGradlePluginVersion
-agp = "8.13.0"
+agp = "9.4.0"
 
 androidJunit5 = "2.0.1"
 annotationJvm = "1.10.0"
